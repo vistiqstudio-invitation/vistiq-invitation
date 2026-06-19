@@ -1,552 +1,300 @@
+import Link from "next/link";
+import styles from "./home.module.css";
+
+const WA_NUMBER = "6281371338032";
+
+const features = [
+  {
+    icon: "⚡",
+    title: "Website Siap Jual",
+    desc: "Sistem undangan digital siap digunakan untuk jualan.",
+  },
+  {
+    icon: "🎨",
+    title: "Template Premium",
+    desc: "Tema modern, islami, floral, dan luxury.",
+  },
+  {
+    icon: "👤",
+    title: "Custom Nama Tamu",
+    desc: "Link undangan bisa memakai nama tamu otomatis.",
+  },
+  {
+    icon: "💌",
+    title: "RSVP & Ucapan",
+    desc: "Tamu bisa konfirmasi hadir dan mengirim doa.",
+  },
+  {
+    icon: "🎵",
+    title: "Musik Undangan",
+    desc: "Backsound membuat undangan terasa lebih hidup.",
+  },
+  {
+    icon: "🎁",
+    title: "Amplop Digital",
+    desc: "Support rekening bank dan love gift cashless.",
+  },
+  {
+    icon: "📍",
+    title: "Google Maps",
+    desc: "Lokasi acara langsung terhubung ke Google Maps.",
+  },
+  {
+    icon: "📱",
+    title: "Mobile Friendly",
+    desc: "Tampilan optimal di HP, tablet, dan desktop.",
+  },
+];
+
+const themes = [
+  {
+    name: "Gold Premium",
+    type: "Luxury Wedding",
+    demo: "/andi-siti?to=Bapak%20Ahmad",
+  },
+  {
+    name: "Islamic Minimalist",
+    type: "Muslim Wedding",
+    demo: "/andi-siti",
+  },
+  {
+    name: "Modern Floral",
+    type: "Elegant Wedding",
+    demo: "/andi-siti",
+  },
+  {
+    name: "Classic Beige",
+    type: "Soft Wedding",
+    demo: "/andi-siti",
+  },
+  {
+    name: "Faceless Wedding",
+    type: "No Photo Theme",
+    demo: "/andi-siti",
+  },
+  {
+    name: "Blue Premium",
+    type: "Modern Digital",
+    demo: "/andi-siti",
+  },
+];
+
 export default function Home() {
-  const features = [
-    "Responsive Mobile Friendly",
-    "Elegant & Colorful Styles",
-    "Custom Nama Tamu",
-    "Autoplay Backsound",
-    "Galeri Foto & Video",
-    "RSVP & Ucapan",
-    "Navigasi Lokasi",
-    "Love Gift",
-    "Kutiptables Ayat / Quote",
-    "Countdown Wedding",
-    "Story Love Timeline",
-    "Sender Tools",
-  ];
-
-  const templates = [
-    {
-      name: "Gold Premium Wedding",
-      price: "Rp. 99.000",
-      oldPrice: "Rp. 149.000",
-      demo: "/andi-siti",
-      image: "/preview/template-1.png",
-    },
-    {
-      name: "Islamic Minimalist",
-      price: "Rp. 99.000",
-      oldPrice: "Rp. 149.000",
-      demo: "/andi-siti?to=Bapak%20Ahmad",
-      image: "/preview/template-2.png",
-    },
-    {
-      name: "Luxury Floral",
-      price: "Rp. 99.000",
-      oldPrice: "Rp. 149.000",
-      demo: "/andi-siti",
-      image: "/preview/template-3.png",
-    },
-    {
-      name: "Faceless Wedding 01",
-      price: "Rp. 99.000",
-      oldPrice: "Rp. 149.000",
-      demo: "/andi-siti",
-      image: "/preview/template-4.png",
-    },
-    {
-      name: "Modern Soft Beige",
-      price: "Rp. 99.000",
-      oldPrice: "Rp. 149.000",
-      demo: "/andi-siti",
-      image: "/preview/template-5.png",
-    },
-    {
-      name: "Elegant Classic",
-      price: "Rp. 99.000",
-      oldPrice: "Rp. 149.000",
-      demo: "/andi-siti",
-      image: "/preview/template-6.png",
-    },
-  ];
-
-  const whatsappNumber = "6282177788281";
-  const message =
-    "Halo, saya tertarik untuk daftar reseller undangan digital.";
+  const waText = encodeURIComponent(
+    "Halo Vistiq Studio, saya tertarik untuk menjadi reseller undangan digital."
+  );
 
   return (
-    <main style={styles.page}>
-      <nav style={styles.navbar}>
-        <div>
-          <h1 style={styles.logo}>Brand Usaha</h1>
-          <p style={styles.tagline}>Undangan Digital Kamu</p>
-        </div>
-
-        <div style={styles.navButtons}>
-          <a
-            href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-              message
-            )}`}
-            target="_blank"
-            style={styles.navButtonGold}
-          >
-            👥 Daftar Reseller
-          </a>
-
-          <a href="#tema" style={styles.navButtonPink}>
-            📊 Contoh Tema
-          </a>
-        </div>
-      </nav>
-
-      <section style={styles.hero}>
-        <div style={styles.badge}>Buat Usaha Undangan Digital Tanpa Ribet</div>
-
-        <h2 style={styles.heroTitle}>
-          Mau punya usaha undangan web dengan brand sendiri?
-        </h2>
-
-        <p style={styles.heroText}>
-          Kami bisa bantu! Kamu gak harus repot, kami yang urus semuanya.
-        </p>
-
-        <a
-          href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-            message
-          )}`}
-          target="_blank"
-          style={styles.ctaBlue}
-        >
-          💬 Konsultasi via WA
-        </a>
-
-        <div style={styles.phoneMockup}>
-          <div style={styles.phone}>Gold</div>
-          <div style={{ ...styles.phone, transform: "rotate(-12deg)" }}>
-            Floral
-          </div>
-          <div style={{ ...styles.phone, transform: "rotate(12deg)" }}>
-            Islamic
-          </div>
-        </div>
-      </section>
-
-      <section style={styles.featureSection}>
-        <div style={styles.sectionBadge}>KEUNGGULAN LAYANAN JASA KAMI</div>
-        <p style={styles.featureIntro}>
-          Temukan fitur-fitur menarik yang akan membuat undangan pernikahan
-          Anda tampil beda.
-        </p>
-
-        <div style={styles.featureGrid}>
-          {features.map((feature, index) => (
-            <div key={feature} style={styles.featureCard}>
-              <div style={styles.featureIcon}>{featureIcons[index]}</div>
-              <p>{feature}</p>
+    <main className={styles.page}>
+      <header className={styles.header}>
+        <div className={styles.headerInner}>
+          <Link href="/" className={styles.brand}>
+            <img src="/logo-vistiq.png" alt="Vistiq Studio" />
+            <div>
+              <strong>Vistiq Invitation</strong>
+              <span>Digital Wedding Business</span>
             </div>
-          ))}
+          </Link>
+
+          <nav className={styles.nav}>
+            <a href="#fitur">Fitur</a>
+            <a href="#tema">Tema</a>
+            <a href="#reseller">Reseller</a>
+            <a
+              href={`https://wa.me/${WA_NUMBER}?text=${waText}`}
+              target="_blank"
+              className={styles.navCta}
+            >
+              Daftar Reseller
+            </a>
+          </nav>
         </div>
+      </header>
 
-        <h3 style={styles.featureClosing}>
-          Website Undangan Berikan Solusi Semua Yang Anda Butuhkan
-          <br />
-          Untuk Membuat Halaman Undangan Pernikahan Digital Yang Kekinian,
-          Modern, & Elegan.
-        </h3>
+      <section className={styles.hero}>
+        <div className={styles.blurOne} />
+        <div className={styles.blurTwo} />
 
-        <a
-          href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-            message
-          )}`}
-          target="_blank"
-          style={styles.ctaSmall}
-        >
-          💬 Buat Usaha
-        </a>
-      </section>
+        <div className={styles.heroText}>
+          <div className={styles.badge}>🚀 Peluang Bisnis Digital Wedding</div>
 
-      <section id="tema" style={styles.templateSection}>
-        <div style={styles.coupleIllustration}>🤵🏻‍♂️ 👰🏻‍♀️</div>
-        <p style={styles.templateIntro}>
-          Di bawah ini contoh tema
-          <br />
-          Undangan Digital kami
-        </p>
-
-        <div style={styles.templateGrid}>
-          {templates.map((template) => (
-            <div key={template.name} style={styles.templateCard}>
-              <div style={styles.templateImage}>
-                <span>{template.name}</span>
-              </div>
-
-              <p style={styles.templateName}>🕊 {template.name}</p>
-
-              <h3 style={styles.price}>{template.price}</h3>
-
-              <div style={styles.discountRow}>
-                <span style={styles.discount}>34%</span>
-                <span style={styles.oldPrice}>{template.oldPrice}</span>
-              </div>
-
-              <a href={template.demo} target="_blank" style={styles.demoButton}>
-                👁 Lihat Demo
-              </a>
-
-              <a
-                href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-                  `Halo, saya ingin order tema ${template.name}`
-                )}`}
-                target="_blank"
-                style={styles.orderButton}
-              >
-                👁 Order
-              </a>
-            </div>
-          ))}
-        </div>
-
-        <div style={styles.finalCta}>
-          <div style={styles.divider}>🕊</div>
-          <p>
-            Tunggu apa lagi?
+          <h1>
+            Bangun Bisnis Undangan Digital
             <br />
-            Buat usaha kamu sekarang!
+            Dengan Brand Kamu Sendiri
+          </h1>
+
+          <p>
+            Vistiq Invitation membantu reseller, freelancer, agency, dan
+            percetakan memiliki layanan undangan digital profesional tanpa harus
+            membangun sistem dari nol.
           </p>
 
-          <a
-            href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-              message
-            )}`}
-            target="_blank"
-            style={styles.ctaBlue}
-          >
-            💬 Hubungi Kami
-          </a>
+          <div className={styles.heroActions}>
+            <a
+              href={`https://wa.me/${WA_NUMBER}?text=${waText}`}
+              target="_blank"
+              className={styles.primaryButton}
+            >
+              Konsultasi via WhatsApp
+            </a>
+
+            <Link
+              href="/andi-siti?to=Bapak%20Ahmad"
+              className={styles.secondaryButton}
+            >
+              Lihat Demo Undangan
+            </Link>
+          </div>
+
+          <div className={styles.stats}>
+            <div>
+              <strong>100%</strong>
+              <span>Online</span>
+            </div>
+            <div>
+              <strong>Premium</strong>
+              <span>Template</span>
+            </div>
+            <div>
+              <strong>No Coding</strong>
+              <span>Siap Jual</span>
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.heroVisual}>
+          <div className={styles.phoneLeft}>RSVP</div>
+
+          <div className={styles.phoneMain}>
+            <span>The Wedding Of</span>
+            <h3>Andi & Siti</h3>
+            <p>20 Desember 2026</p>
+            <button>Buka Undangan</button>
+          </div>
+
+          <div className={styles.phoneRight}>Gift</div>
         </div>
       </section>
 
-      <footer style={styles.footer}>
-        <strong>- Nama Website Kamu -</strong>
+      <section id="fitur" className={styles.section}>
+        <div className={styles.sectionHead}>
+          <span>FITUR PREMIUM</span>
+          <h2>Semua yang Dibutuhkan Untuk Jualan</h2>
+          <p>
+            Sistem dibuat agar mudah dipasarkan ke calon pengantin, reseller,
+            dan klien bisnis wedding.
+          </p>
+        </div>
+
+        <div className={styles.featureGrid}>
+          {features.map((feature) => (
+            <div className={styles.featureCard} key={feature.title}>
+              <div>{feature.icon}</div>
+              <h3>{feature.title}</h3>
+              <p>{feature.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section id="tema" className={styles.themeSection}>
+        <div className={styles.sectionHead}>
+          <span>PILIHAN TEMA</span>
+          <h2>Template Undangan Siap Jual</h2>
+          <p>
+            Cocok untuk berbagai style: islami, premium gold, floral, minimalis,
+            dan modern.
+          </p>
+        </div>
+
+        <div className={styles.themeGrid}>
+          {themes.map((theme, index) => (
+            <div className={styles.themeCard} key={theme.name}>
+              <div className={styles.themePreview}>
+                <div className={styles.themePhone}>
+                  <span>The Wedding Of</span>
+                  <strong>{theme.name}</strong>
+                  <small>{theme.type}</small>
+                </div>
+              </div>
+
+              <div className={styles.themeInfo}>
+                <p>Wedding Template — 0{index + 1}</p>
+                <h3>{theme.name}</h3>
+
+                <div className={styles.priceRow}>
+                  <strong>Rp99.000</strong>
+                  <span>Rp149.000</span>
+                </div>
+
+                <div className={styles.themeButtons}>
+                  <Link href={theme.demo} className={styles.demoButton}>
+                    Lihat Demo
+                  </Link>
+
+                  <a
+                    href={`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(
+                      `Halo Vistiq Studio, saya ingin order tema ${theme.name}`
+                    )}`}
+                    target="_blank"
+                    className={styles.orderButton}
+                  >
+                    Order
+                  </a>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section id="reseller" className={styles.reseller}>
+        <div className={styles.resellerCard}>
+          <div>
+            <span>PROGRAM RESELLER</span>
+            <h2>Jual Undangan Digital Dengan Brand Kamu Sendiri</h2>
+            <p>
+              Kamu fokus cari klien dan closing. Sistem, template, dan teknis
+              website kami bantu siapkan agar kamu bisa mulai jualan lebih cepat.
+            </p>
+          </div>
+
+          <div className={styles.packageBox}>
+            <p>Mulai dari</p>
+            <h3>Rp99.000</h3>
+            <span>per undangan</span>
+
+            <a
+              href={`https://wa.me/${WA_NUMBER}?text=${waText}`}
+              target="_blank"
+            >
+              Gabung Reseller
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section className={styles.finalCta}>
+        <h2>Siap Bangun Bisnis Undangan Digital?</h2>
         <p>
-          Jl. Alamat Usaha Kamu, No. 45.
-          <br />
-          Jakarta Barat - Indonesia
+          Mulai dari satu template, lalu kembangkan menjadi bisnis digital
+          dengan banyak klien.
         </p>
+
+        <a
+          href={`https://wa.me/${WA_NUMBER}?text=${waText}`}
+          target="_blank"
+          className={styles.primaryButton}
+        >
+          Mulai Konsultasi Sekarang
+        </a>
+      </section>
+
+      <footer className={styles.footer}>
+        <img src="/logo-vistiq.png" alt="Vistiq Studio" />
+        <p>© 2026 Vistiq Studio Invitation. All rights reserved.</p>
       </footer>
     </main>
   );
 }
-
-const featureIcons = [
-  "💎",
-  "🎨",
-  "🏷️",
-  "🎵",
-  "🎥",
-  "💌",
-  "📍",
-  "🎁",
-  "📜",
-  "📅",
-  "💞",
-  "📨",
-];
-
-const styles: { [key: string]: React.CSSProperties } = {
-  page: {
-    minHeight: "100vh",
-    background: "#fffaf4",
-    color: "#4b2c17",
-    fontFamily: "Georgia, serif",
-  },
-
-  navbar: {
-    height: 80,
-    background: "#4e6a78",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: "0 8%",
-    position: "sticky",
-    top: 0,
-    zIndex: 50,
-  },
-
-  logo: {
-    color: "white",
-    fontSize: 32,
-    margin: 0,
-    lineHeight: 1,
-  },
-
-  tagline: {
-    color: "#e0b845",
-    fontSize: 18,
-    margin: 0,
-    fontStyle: "italic",
-  },
-
-  navButtons: {
-    display: "flex",
-    gap: 12,
-  },
-
-  navButtonGold: {
-    background: "#e6c19d",
-    color: "white",
-    padding: "12px 24px",
-    borderRadius: 6,
-    textDecoration: "none",
-    fontFamily: "Arial",
-    fontWeight: "bold",
-  },
-
-  navButtonPink: {
-    background: "#ffa2ad",
-    color: "white",
-    padding: "12px 24px",
-    borderRadius: 6,
-    textDecoration: "none",
-    fontFamily: "Arial",
-    fontWeight: "bold",
-  },
-
-  hero: {
-    minHeight: 530,
-    textAlign: "center",
-    padding: "50px 24px 0",
-    background:
-      "radial-gradient(circle at top left, rgba(255,255,255,.8), transparent 20%), linear-gradient(180deg, #f6e5d0, #f9ead8)",
-    overflow: "hidden",
-  },
-
-  badge: {
-    display: "inline-block",
-    background: "#caa47b",
-    color: "white",
-    padding: "12px 30px",
-    borderRadius: 8,
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-
-  heroTitle: {
-    fontSize: 38,
-    margin: "18px auto 12px",
-    maxWidth: 900,
-  },
-
-  heroText: {
-    fontSize: 18,
-    fontFamily: "Arial",
-    lineHeight: 1.6,
-  },
-
-  ctaBlue: {
-    display: "inline-block",
-    background: "#4e6a78",
-    color: "white",
-    padding: "14px 32px",
-    borderRadius: 8,
-    marginTop: 20,
-    textDecoration: "none",
-    fontFamily: "Arial",
-    fontWeight: "bold",
-  },
-
-  phoneMockup: {
-    margin: "70px auto 0",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "flex-end",
-    gap: 18,
-  },
-
-  phone: {
-    width: 170,
-    height: 280,
-    border: "8px solid #2b2018",
-    borderRadius: 32,
-    background: "linear-gradient(180deg, #4e6a78, #f2d6b7)",
-    color: "#f8e9c7",
-    display: "grid",
-    placeItems: "center",
-    fontSize: 28,
-    boxShadow: "0 20px 45px rgba(0,0,0,.25)",
-  },
-
-  featureSection: {
-    background: "#b08b63",
-    color: "white",
-    padding: "54px 24px 70px",
-    textAlign: "center",
-  },
-
-  sectionBadge: {
-    display: "inline-block",
-    background: "#d4b38e",
-    padding: "10px 34px",
-    borderRadius: 8,
-    fontWeight: "bold",
-  },
-
-  featureIntro: {
-    fontFamily: "Arial",
-    fontWeight: "bold",
-    margin: "22px 0",
-  },
-
-  featureGrid: {
-    maxWidth: 980,
-    margin: "0 auto",
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))",
-    gap: 14,
-  },
-
-  featureCard: {
-    background: "rgba(255,255,255,.12)",
-    padding: "24px 14px",
-    borderRadius: 8,
-    fontFamily: "Arial",
-    fontWeight: "bold",
-  },
-
-  featureIcon: {
-    width: 54,
-    height: 54,
-    borderRadius: "50%",
-    background: "white",
-    margin: "0 auto 16px",
-    display: "grid",
-    placeItems: "center",
-    fontSize: 26,
-  },
-
-  featureClosing: {
-    marginTop: 46,
-    lineHeight: 1.4,
-  },
-
-  ctaSmall: {
-    display: "inline-block",
-    marginTop: 20,
-    background: "#4e6a78",
-    color: "white",
-    padding: "10px 24px",
-    borderRadius: 6,
-    textDecoration: "none",
-    fontFamily: "Arial",
-    fontWeight: "bold",
-  },
-
-  templateSection: {
-    padding: "56px 24px 70px",
-    textAlign: "center",
-  },
-
-  coupleIllustration: {
-    fontSize: 90,
-    marginBottom: 10,
-  },
-
-  templateIntro: {
-    fontSize: 18,
-    lineHeight: 1.6,
-  },
-
-  templateGrid: {
-    maxWidth: 980,
-    margin: "50px auto 0",
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-    gap: 22,
-    textAlign: "left",
-  },
-
-  templateCard: {
-    border: "1px solid #caa47b",
-    borderRadius: 6,
-    padding: 18,
-    background: "white",
-  },
-
-  templateImage: {
-    height: 250,
-    borderRadius: 6,
-    background:
-      "linear-gradient(160deg, #4e6a78, #f3d2b8 60%, #b08b63)",
-    display: "grid",
-    placeItems: "center",
-    color: "white",
-    fontSize: 24,
-    textAlign: "center",
-  },
-
-  templateName: {
-    fontFamily: "Arial",
-    marginBottom: 4,
-  },
-
-  price: {
-    fontSize: 28,
-    margin: 0,
-  },
-
-  discountRow: {
-    display: "flex",
-    gap: 10,
-    alignItems: "center",
-    margin: "10px 0 14px",
-  },
-
-  discount: {
-    background: "#b08b63",
-    color: "white",
-    padding: "8px 10px",
-    borderRadius: 4,
-    fontFamily: "Arial",
-    fontWeight: "bold",
-  },
-
-  oldPrice: {
-    textDecoration: "line-through",
-    color: "#aaa",
-    fontFamily: "Arial",
-  },
-
-  demoButton: {
-    display: "block",
-    border: "1px solid #b08b63",
-    color: "#b08b63",
-    padding: "10px",
-    borderRadius: 5,
-    textAlign: "center",
-    textDecoration: "none",
-    fontFamily: "Arial",
-    marginBottom: 10,
-  },
-
-  orderButton: {
-    display: "block",
-    background: "#b08b63",
-    color: "white",
-    padding: "11px",
-    borderRadius: 5,
-    textAlign: "center",
-    textDecoration: "none",
-    fontFamily: "Arial",
-  },
-
-  finalCta: {
-    marginTop: 60,
-    textAlign: "center",
-    fontFamily: "Arial",
-  },
-
-  divider: {
-    maxWidth: 240,
-    margin: "0 auto 28px",
-    borderTop: "1px solid #b08b63",
-    paddingTop: 10,
-    color: "#b08b63",
-  },
-
-  footer: {
-    background: "#b08b63",
-    color: "white",
-    padding: "36px 8%",
-    fontFamily: "Arial",
-    lineHeight: 1.8,
-  },
-};
