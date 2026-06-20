@@ -56,7 +56,24 @@ const rundown = [
     desc: "Resepsi pernikahan dan jamuan makan bersama tamu undangan.",
   },
 ];
-
+type InvitationData = {
+  id?: string;
+  slug?: string;
+  groom_name?: string;
+  bride_name?: string;
+  event_date?: string;
+  akad_location?: string;
+  reception_location?: string;
+  maps_url?: string;
+  bank_name?: string;
+  bank_account?: string;
+  bank_holder?: string;
+  music_url?: string;
+  cover_photo?: string;
+  bride_photo?: string;
+  groom_photo?: string;
+  gallery_photos?: string[];
+};
 type Wish = {
   id?: number;
   name: string;
@@ -66,7 +83,7 @@ type Wish = {
   created_at?: string;
 };
 
-export default function LuxuryGold() {
+export default function LuxuryGold({ invitation }: { invitation?: InvitationData }) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const [isOpened, setIsOpened] = useState(false);
@@ -76,17 +93,57 @@ export default function LuxuryGold() {
   const [submitMessage, setSubmitMessage] = useState("");
   const [wishes, setWishes] = useState<Wish[]>([]);
 
-  const [form, setForm] = useState({
+  const [form, setForm] = useState({ 
     name: "",
     whatsapp: "",
     attendance: "",
     message: "",
   });
+  const groomName = invitation?.groom_name || "Rizky";
+  const brideName = invitation?.bride_name || "Nabila";
+  const coupleNames = `${groomName} & ${brideName}`;
 
-  const targetDate = useMemo(
-    () => new Date("2026-09-20T08:30:00").getTime(),
-    []
-  );
+  const eventDateText = invitation?.event_date
+    ? new Date(invitation.event_date).toLocaleDateString("id-ID", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      })
+    : "20 September 2026";
+
+  const eventDateTarget = invitation?.event_date
+    ? new Date(`${invitation.event_date}T08:30:00`).getTime()
+    : new Date("2026-09-20T08:30:00").getTime();
+
+  const coverImage = invitation?.cover_photo || `${ASSET}/cover.png`;
+  const sampulImage = invitation?.cover_photo || `${ASSET}/sampul.png`;
+  const brideImage = invitation?.bride_photo || `${ASSET}/bride.png`;
+  const groomImage = invitation?.groom_photo || `${ASSET}/groom.png`;
+  const coupleImage = invitation?.cover_photo || `${ASSET}/couple.png`;
+
+  const musicSource = invitation?.music_url || MUSIC;
+
+  const akadLocation = invitation?.akad_location || "Masjid Agung Al-Muttaqin";
+  const receptionLocation =
+    invitation?.reception_location || "Savoy Homann Bidakara Hotel";
+
+  const mapsUrl = invitation?.maps_url || MAP_AKAD;
+
+  const bankName = invitation?.bank_name || "Bank BCA";
+  const bankAccount = invitation?.bank_account || "1234 5678 90";
+  const bankHolder = invitation?.bank_holder || `a/n ${coupleNames}`;
+
+  const galleryImages =
+    invitation?.gallery_photos && invitation.gallery_photos.length > 0
+      ? invitation.gallery_photos
+      : [
+          `${ASSET}/Photo 01.png`,
+          `${ASSET}/Photo 02.png`,
+          `${ASSET}/Photo 03.png`,
+          `${ASSET}/Photo 04.png`,
+        ];
+  const targetDate = useMemo(() => eventDateTarget, [eventDateTarget]);
 
   const [timeLeft, setTimeLeft] = useState({
     days: "00",
@@ -252,11 +309,11 @@ export default function LuxuryGold() {
 
   return (
     <main className={styles.page}>
-      <audio ref={audioRef} src={MUSIC} loop preload="auto" />
+      <audio ref={audioRef} src={musicSource} loop preload="auto" />
 
       {!isOpened && (
         <section className={styles.openingScreen}>
-          <img src={`${ASSET}/sampul.png`} alt="Sampul" className={styles.bg} />
+          <img src={sampulImage} alt="Sampul" className={styles.bg} />
           <div className={styles.overlay} />
 
           <div className={styles.sampulContent}>
@@ -264,7 +321,7 @@ export default function LuxuryGold() {
             <p className={styles.overline}>The Wedding Of</p>
 
             <h1 className={styles.names}>
-              Rizky <span>&</span> Nabila
+              {groomName} <span>&</span> {brideName}
             </h1>
 
             <div className={styles.guestBox}>
@@ -284,7 +341,7 @@ export default function LuxuryGold() {
       </button>
 
       <section id="cover" className={styles.cover}>
-        <img src={`${ASSET}/cover.png`} alt="Cover" className={styles.bg} />
+        <img src={coverImage} alt="Cover" className={styles.bg} />
         <div className={styles.overlay} />
         <div className={styles.coverContent}>
           <p className={styles.overline}>The Wedding Of</p>
@@ -319,9 +376,9 @@ export default function LuxuryGold() {
         <p className={styles.overline}>Bride & Groom</p>
         <h2 className={styles.title}>Dua Jiwa, Satu Ikatan</h2>
         <div className={styles.coupleBox}>
-          <img src={`${ASSET}/couple.png`} alt="Couple" />
+          <img src={coupleImage} alt="Couple" />
           <div>
-            <h3>Rizky & Nabila</h3>
+            <h3>{coupleNames}</h3>
             <p>Setiap momen bersamamu adalah awal dari sebuah cerita indah.</p>
           </div>
         </div>
@@ -333,14 +390,14 @@ export default function LuxuryGold() {
 
         <div className={styles.profileGrid}>
           <div className={styles.profileCard}>
-            <img src={`${ASSET}/bride.png`} alt="Bride" />
+            <img src={brideImage} alt="Bride" />
             <h3>Nabila Azzahra Kusumawati, S.Pd.</h3>
             <p>Putri pertama dari</p>
             <strong>Bapak H. Kusuma Wijaya & Ibu Hj. Sri Rahayu</strong>
           </div>
 
           <div className={styles.profileCard}>
-            <img src={`${ASSET}/groom.png`} alt="Groom" />
+            <img src={groomImage} alt="Groom" />
             <h3>Muhammad Rizky Pratama, S.T.</h3>
             <p>Putra kedua dari</p>
             <strong>Bapak Ir. Budi Santoso & Ibu Dewi Lestari, S.E.</strong>
@@ -379,7 +436,7 @@ export default function LuxuryGold() {
       <section className={styles.darkSection}>
         <p className={styles.overline}>Menghitung Hari</p>
         <h2 className={styles.title}>Hari Bahagia Kami</h2>
-        <p className={styles.date}>Sabtu, 20 September 2026 · Bandung</p>
+        <p className={styles.date}>Sabtu, {eventDateText} · Bandung</p>
 
         <div className={styles.countdown}>
           <div>
@@ -425,24 +482,22 @@ export default function LuxuryGold() {
 
         <div className={styles.eventGrid}>
           <div className={styles.eventCard}>
-            <h3>Akad Nikah</h3>
-            <p>Masjid Agung Al-Muttaqin</p>
-            <p>Jl. Asia Afrika No. 63, Bandung</p>
-            <strong>08.30 – 10.00 WIB</strong>
-            <a href={MAP_AKAD} target="_blank" className={styles.goldButton}>
-              Lihat Peta
-            </a>
-          </div>
+  <h3>Akad Nikah</h3>
+  <p>{akadLocation}</p>
+  <strong>08.30 – 10.00 WIB</strong>
+  <a href={mapsUrl} target="_blank" className={styles.goldButton}>
+    Lihat Peta
+  </a>
+</div>
 
           <div className={styles.eventCard}>
-            <h3>Resepsi</h3>
-            <p>Savoy Homann Bidakara Hotel</p>
-            <p>Ballroom Swarnadwipa, Bandung</p>
-            <strong>12.00 – 16.00 WIB</strong>
-            <a href={MAP_RESEPSI} target="_blank" className={styles.goldButton}>
-              Lihat Peta
-            </a>
-          </div>
+  <h3>Resepsi</h3>
+  <p>{receptionLocation}</p>
+  <strong>12.00 – 16.00 WIB</strong>
+  <a href={mapsUrl} target="_blank" className={styles.goldButton}>
+    Lihat Peta
+  </a>
+</div>
         </div>
       </section>
 
@@ -467,11 +522,10 @@ export default function LuxuryGold() {
         </p>
 
         <div className={styles.gallery}>
-          <img src={`${ASSET}/Photo 01.png`} alt="Gallery 1" />
-          <img src={`${ASSET}/Photo 02.png`} alt="Gallery 2" />
-          <img src={`${ASSET}/Photo 03.png`} alt="Gallery 3" />
-          <img src={`${ASSET}/Photo 04.png`} alt="Gallery 4" />
-        </div>
+  {galleryImages.map((photo, index) => (
+    <img key={photo} src={photo} alt={`Gallery ${index + 1}`} />
+  ))}
+</div>
       </section>
 
       <section className={styles.rsvpSection}>
@@ -556,18 +610,18 @@ export default function LuxuryGold() {
 
         <div className={styles.eventGrid}>
           <div className={styles.eventCard}>
-            <h3>Bank BCA</h3>
-            <strong>1234 5678 90</strong>
-            <p>a/n Muhammad Rizky Pratama</p>
+            <h3>{bankName}</h3>
+            <strong>{bankAccount}</strong>
+            <p>{bankHolder}</p>
             <button
               type="button"
-              onClick={() => copyBank("1234567890")}
+              onClick={() => copyBank(bankAccount)}
               className={styles.goldButton}
             >
               Salin Nomor
             </button>
           </div>
-
+          
           <div className={styles.eventCard}>
             <h3>Bank Mandiri</h3>
             <strong>1400 0987 6543</strong>
