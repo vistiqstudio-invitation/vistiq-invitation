@@ -852,4 +852,54 @@
     display: grid !important;
     grid-template-columns: 1fr !important;
   }
+}@media (max-width: 768px) {
+  .headerInner {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    padding: 16px 20px !important;
+    gap: 14px !important;
+  }
+
+  .brand {
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+  }
+
+  .brand img {
+    width: 44px !important;
+    height: 44px !important;
+  }
+
+  .brand strong {
+    font-size: 20px !important;
+    line-height: 1.1 !important;
+  }
+
+  .brand span {
+    font-size: 12px !important;
+  }
+
+  .nav {
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 14px !important;
+    overflow-x: auto !important;
+    padding-bottom: 6px !important;
+    white-space: nowrap !important;
+  }
+
+  .nav a {
+    display: inline-flex !important;
+    font-size: 14px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .nav .navCta {
+    padding: 9px 14px !important;
+    border-radius: 999px !important;
+  }
 }
