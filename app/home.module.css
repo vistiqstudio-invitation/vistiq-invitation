@@ -781,4 +781,75 @@
   .packageBox {
     width: 100%;
   }
+}@media (max-width: 768px) {
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden !important;
+  }
+
+  .headerInner {
+    width: 100%;
+    display: block !important;
+    padding: 18px 20px !important;
+  }
+
+  .nav {
+    margin-top: 14px;
+    width: 100%;
+    display: flex !important;
+    overflow-x: auto !important;
+    white-space: nowrap;
+    gap: 18px;
+  }
+
+  .hero {
+    width: 100% !important;
+    max-width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    grid-template-columns: none !important;
+    padding: 48px 24px 70px !important;
+    gap: 40px !important;
+  }
+
+  .heroText {
+    width: 100% !important;
+  }
+
+  .heroText h1 {
+    font-size: 42px !important;
+    line-height: 1.12 !important;
+    letter-spacing: -1px !important;
+  }
+
+  .heroText p {
+    font-size: 17px !important;
+    max-width: 100% !important;
+  }
+
+  .heroVisual {
+    width: 100% !important;
+    height: auto !important;
+    margin-top: 20px !important;
+  }
+
+  .phoneMain {
+    width: 230px !important;
+    height: 400px !important;
+    margin: 0 auto !important;
+  }
+
+  .phoneLeft,
+  .phoneRight {
+    display: none !important;
+  }
+
+  .featureGrid,
+  .themeGrid,
+  .resellerCard {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+  }
 }
