@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 type AppUser = {
@@ -8,7 +8,7 @@ type AppUser = {
   role: "owner" | "reseller" | "client";
   name: string;
   email: string;
-  password: string;
+  password?: string;
   whatsapp?: string;
 };
 
@@ -20,41 +20,84 @@ export default function LoginPage() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const redirectByRole = (role: AppUser["role"]) => {
+    if (role === "owner") router.push("/admin");
+    if (role === "reseller") router.push("/reseller");
+    if (role === "client") router.push("/client");
+  };
+
+  useEffect(() => {
+    const savedUser = localStorage.getItem("vistiq_user");
+
+    if (!savedUser) return;
+
+    try {
+      const parsedUser: AppUser = JSON.parse(savedUser);
+
+      if (parsedUser?.role) {
+        redirectByRole(parsedUser.role);
+      }
+    } catch {
+      localStorage.removeItem("vistiq_user");
+    }
+  }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!email || !password) {
+    if (!email.trim() || !password.trim()) {
       alert("Email dan password wajib diisi.");
       return;
     }
 
-    const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/app_users?email=eq.${encodeURIComponent(
-        email.trim()
-      )}&password=eq.${encodeURIComponent(password.trim())}&select=*`,
-      {
-        headers: {
-          apikey: SUPABASE_ANON_KEY,
-          Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
-        },
+    setLoading(true);
+
+    try {
+      const res = await fetch(
+        `${SUPABASE_URL}/rest/v1/app_users?email=eq.${encodeURIComponent(
+          email.trim()
+        )}&password=eq.${encodeURIComponent(password.trim())}&select=*`,
+        {
+          headers: {
+            apikey: SUPABASE_ANON_KEY,
+            Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+          },
+        }
+      );
+
+      if (!res.ok) {
+        alert("Gagal menghubungkan ke database.");
+        setLoading(false);
+        return;
       }
-    );
 
-    const users: AppUser[] = await res.json();
+      const users: AppUser[] = await res.json();
 
-    if (!Array.isArray(users) || users.length === 0) {
-      alert("Email atau password salah.");
-      return;
+      if (!Array.isArray(users) || users.length === 0) {
+        alert("Email atau password salah.");
+        setLoading(false);
+        return;
+      }
+
+      const user = users[0];
+
+      const safeUser = {
+        id: user.id,
+        role: user.role,
+        name: user.name,
+        email: user.email,
+        whatsapp: user.whatsapp || "",
+      };
+
+      localStorage.setItem("vistiq_user", JSON.stringify(safeUser));
+
+      redirectByRole(user.role);
+    } catch {
+      alert("Terjadi kesalahan saat login.");
+      setLoading(false);
     }
-
-    const user = users[0];
-
-    localStorage.setItem("vistiq_user", JSON.stringify(user));
-
-    if (user.role === "owner") router.push("/admin");
-    if (user.role === "reseller") router.push("/reseller");
-    if (user.role === "client") router.push("/client");
   };
 
   return (
@@ -80,8 +123,8 @@ export default function LoginPage() {
             style={styles.input}
           />
 
-          <button type="submit" style={styles.button}>
-            Login
+          <button type="submit" style={styles.button} disabled={loading}>
+            {loading ? "Memproses..." : "Login"}
           </button>
         </form>
       </div>

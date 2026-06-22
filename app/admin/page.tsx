@@ -121,14 +121,14 @@ export default function AdminPage() {
     const savedUser = localStorage.getItem("vistiq_user");
 
     if (!savedUser) {
-      router.push("/admin-login");
+      router.push("/admin/admin-login");
       return;
     }
 
     const parsedUser: AppUser = JSON.parse(savedUser);
 
     if (parsedUser.role !== "owner") {
-      router.push("/admin-login");
+      router.push("/admin/admin-login");
       return;
     }
 
@@ -139,7 +139,7 @@ export default function AdminPage() {
   const logout = () => {
     localStorage.removeItem("vistiq_user");
     localStorage.removeItem("vistiq_admin");
-    router.push("/admin-login");
+    router.push("/admin/admin-login");
   };
 
   const totalOmzet = transactions.reduce(
