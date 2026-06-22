@@ -29,7 +29,7 @@ export default function HomePage() {
           <a href="#tema">Tema</a>
           <a href="#harga">Harga</a>
           <a href="#reseller">Reseller</a>
-          <Link href="/admin-login">Login</Link>
+          <Link href="/admin/admin-login">Login</Link>
           <a
             href={`https://wa.me/${WA_NUMBER}?text=${resellerText}`}
             target="_blank"
@@ -175,7 +175,7 @@ export default function HomePage() {
             Lihat Demo
           </Link>
 
-          <Link href="/admin-login" className="secondaryButton">
+          <Link href="/admin/admin-login" className="secondaryButton">
             Login Dashboard
           </Link>
         </div>
