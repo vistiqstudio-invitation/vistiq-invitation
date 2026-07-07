@@ -3,23 +3,38 @@
 import { useState } from "react";
 import { supabase } from "../lib/supabase";
 
-export default function RsvpForm({ invitationId }: { invitationId: number }) {
+export default function RsvpForm({ invitation }: { invitation?: any }) {
   const [name, setName] = useState("");
   const [attendance, setAttendance] = useState("Hadir");
   const [totalGuest, setTotalGuest] = useState(1);
   const [message, setMessage] = useState("");
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
+    setError("");
 
-    await supabase.from("rsvp").insert({
-      invitation_id: invitationId,
+    if (!supabase) {
+      setError(
+        "RSVP belum aktif: konfigurasi database belum lengkap. Silakan hubungi admin."
+      );
+      return;
+    }
+
+    const { error: insertError } = await supabase.from("rsvp").insert({
+      invitation_id: invitation?.id ?? null,
+      invitation_slug: invitation?.slug ?? null,
       guest_name: name,
       attendance,
       total_guest: totalGuest,
       message,
     });
+
+    if (insertError) {
+      setError("Gagal mengirim RSVP. Silakan coba lagi.");
+      return;
+    }
 
     setName("");
     setAttendance("Hadir");
@@ -39,6 +54,7 @@ export default function RsvpForm({ invitationId }: { invitationId: number }) {
         <option>Tidak Hadir</option>
       </select>
       <button style={button}>Kirim RSVP</button>
+      {error && <p style={{ color: "#b00020" }}>{error}</p>}
       {success && <p>Terima kasih, konfirmasi Anda sudah terkirim.</p>}
     </form>
   );

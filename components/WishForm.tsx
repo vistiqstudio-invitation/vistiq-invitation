@@ -3,19 +3,34 @@
 import { useState } from "react";
 import { supabase } from "../lib/supabase";
 
-export default function WishForm({ invitationId }: { invitationId: number }) {
+export default function WishForm({ invitation }: { invitation?: any }) {
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
+    setError("");
 
-    await supabase.from("wishes").insert({
-      invitation_id: invitationId,
+    if (!supabase) {
+      setError(
+        "Fitur ucapan belum aktif: konfigurasi database belum lengkap."
+      );
+      return;
+    }
+
+    const { error: insertError } = await supabase.from("wishes").insert({
+      invitation_id: invitation?.id ?? null,
+      invitation_slug: invitation?.slug ?? null,
       guest_name: name,
       message,
     });
+
+    if (insertError) {
+      setError("Gagal mengirim ucapan. Silakan coba lagi.");
+      return;
+    }
 
     setName("");
     setMessage("");
@@ -27,6 +42,7 @@ export default function WishForm({ invitationId }: { invitationId: number }) {
       <input style={input} placeholder="Nama Anda" value={name} onChange={(e) => setName(e.target.value)} required />
       <textarea style={textarea} placeholder="Tulis ucapan dan doa terbaik" value={message} onChange={(e) => setMessage(e.target.value)} required />
       <button style={button}>Kirim Ucapan</button>
+      {error && <p style={{ color: "#b00020" }}>{error}</p>}
       {success && <p>Ucapan berhasil dikirim.</p>}
     </form>
   );
