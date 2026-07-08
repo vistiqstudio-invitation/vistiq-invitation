@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { useInvitation } from "@/components/InvitationProvider";
 import type { InvitationData } from "@/types/invitation";
 import SakuraBranch from "./SakuraBranch";
+import SakuraCanopy from "./SakuraCanopy";
 import styles from "./style.module.css";
 
 export default function Cover({ invitation }: { invitation: InvitationData }) {
@@ -33,8 +34,12 @@ export default function Cover({ invitation }: { invitation: InvitationData }) {
 
       <div className={styles.coverOverlay} />
 
-      <SakuraBranch className={`${styles.branch} ${styles.branchTopRight}`} />
-      <SakuraBranch className={`${styles.branch} ${styles.branchBottomLeft}`} />
+      <SakuraCanopy className={styles.canopy} />
+
+      <SakuraBranch className={`${styles.branch} ${styles.branchLarge} ${styles.branchTopRight}`} />
+      <SakuraBranch className={`${styles.branch} ${styles.branchLarge} ${styles.branchBottomLeft}`} />
+      <SakuraBranch className={`${styles.branch} ${styles.branchSide} ${styles.branchMidLeft}`} />
+      <SakuraBranch className={`${styles.branch} ${styles.branchSide} ${styles.branchMidRight}`} />
 
       <motion.div
         className={styles.coverContent}

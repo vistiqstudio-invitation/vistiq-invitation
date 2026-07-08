@@ -966,16 +966,60 @@
 }
 
 .branchSmall {
-  width: 56px;
-  height: 64px;
-  opacity: 0.85;
+  width: 76px;
+  height: 86px;
+  opacity: 0.95;
 }
 
 @media (max-width: 640px) {
   .branchSmall {
-    width: 40px;
-    height: 46px;
+    width: 54px;
+    height: 62px;
   }
+}
+
+.branchLarge {
+  width: 150px;
+  height: 168px;
+  opacity: 0.95;
+}
+
+@media (max-width: 640px) {
+  .branchLarge {
+    width: 110px;
+    height: 124px;
+  }
+}
+
+.branchSide {
+  width: 70px;
+  height: 130px;
+  opacity: 0.55;
+}
+
+.branchMidLeft {
+  top: 40%;
+  left: -6px;
+  transform: rotate(90deg);
+}
+
+.branchMidRight {
+  top: 40%;
+  right: -6px;
+  transform: rotate(-90deg) scaleX(-1);
+}
+
+/* ---------- Sakura canopy (cover top arch) ---------- */
+
+.canopy {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 130px;
+  color: var(--sakura);
+  z-index: 2;
+  pointer-events: none;
 }
 
 /* ---------- Falling sakura ---------- */
