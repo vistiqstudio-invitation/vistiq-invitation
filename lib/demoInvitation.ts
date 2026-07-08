@@ -1,8 +1,23 @@
 import type { InvitationData } from "@/types/invitation";
 
-// One shared sample invitation used to demo every theme. Only the `theme`
-// and `slug` fields change per theme - the content is identical on purpose,
-// so switching themes in the picker is an apples-to-apples comparison.
+// Cover photos vary by theme so the demo picker doesn't show the same
+// image eight times over. All photos are either original theme assets or
+// free-to-use stock photos (Pexels License - free for commercial use, no
+// attribution required); see public/photos/README for sourcing notes.
+const COVER_BY_THEME: Record<string, string> = {
+  "luxury-gold": "/themes/luxury-gold/cover.png",
+  "royal-black": "/themes/luxury-gold/cover.png",
+  "islamic-green": "/themes/luxury-gold/cover.png",
+  "emerald-lantern": "/photos/garden-tree.jpg",
+  "minimal-white": "/photos/garden-carry.jpg",
+  "floral-garden": "/photos/garden-tree.jpg",
+  sakura: "/photos/garden-carry.jpg",
+};
+
+// One shared sample invitation used to demo every theme. Only the `theme`,
+// `slug`, and `coverImage` fields change per theme - the rest is identical
+// on purpose, so switching themes in the picker is an apples-to-apples
+// comparison.
 export function getDemoInvitation(theme: string): InvitationData {
   return {
     id: 0,
@@ -10,7 +25,7 @@ export function getDemoInvitation(theme: string): InvitationData {
     theme,
     status: "active",
 
-    coverImage: "/themes/luxury-gold/cover.png",
+    coverImage: COVER_BY_THEME[theme] || "/themes/luxury-gold/cover.png",
     musicUrl: "/music/wedding2.mp3",
     videoUrl: null,
 
