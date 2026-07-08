@@ -2,11 +2,14 @@
 
 import Reveal from "@/components/Reveal";
 import type { InvitationData } from "@/types/invitation";
+import BotanicalSprig from "./BotanicalSprig";
 import styles from "./style.module.css";
 
 export default function Footer({ invitation }: { invitation: InvitationData }) {
   return (
     <footer className={styles.footer}>
+      <BotanicalSprig className={`${styles.cornerSprig} ${styles.cornerSprigTop}`} />
+
       <Reveal>
         <p className={styles.footerQuote}>
           "Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila

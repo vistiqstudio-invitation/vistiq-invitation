@@ -858,6 +858,51 @@
   }
 }
 
+/* ---------- Floating petals ---------- */
+
+.petalField {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.petal {
+  position: absolute;
+  top: 0;
+  color: var(--gold-ink);
+  opacity: 0.5;
+}
+
+.petal svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ---------- Botanical corner accents ---------- */
+
+.cornerSprig {
+  position: absolute;
+  width: 90px;
+  height: 130px;
+  color: var(--gold-ink);
+  opacity: 0.55;
+  z-index: 2;
+}
+
+.cornerSprigTop {
+  top: 18px;
+  right: 18px;
+  transform: scaleX(-1);
+}
+
+.cornerSprigBottom {
+  bottom: 18px;
+  left: 18px;
+  transform: rotate(180deg);
+}
+
 /* ---------- Floating menu ---------- */
 
 .floatingMenu {

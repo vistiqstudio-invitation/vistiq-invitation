@@ -21,6 +21,7 @@ import Wishes from "./Wishes";
 import Footer from "./Footer";
 import MusicPlayer from "./MusicPlayer";
 import FloatingMenu from "./FloatingMenu";
+import FloatingPetals from "./FloatingPetals";
 import styles from "./style.module.css";
 
 export default function MinimalWhite({ invitation }: { invitation: InvitationData }) {
@@ -42,6 +43,8 @@ export default function MinimalWhite({ invitation }: { invitation: InvitationDat
 
       {ready && opened && (
         <>
+          <FloatingPetals />
+
           <section id="home">
             <Hero invitation={invitation} />
           </section>

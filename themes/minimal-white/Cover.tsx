@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useSearchParams } from "next/navigation";
 import { useInvitation } from "@/components/InvitationProvider";
 import type { InvitationData } from "@/types/invitation";
+import BotanicalSprig from "./BotanicalSprig";
 import styles from "./style.module.css";
 
 export default function Cover({ invitation }: { invitation: InvitationData }) {
@@ -31,6 +32,8 @@ export default function Cover({ invitation }: { invitation: InvitationData }) {
       )}
 
       <div className={styles.coverOverlay} />
+
+      <BotanicalSprig className={`${styles.cornerSprig} ${styles.cornerSprigBottom}`} />
 
       <motion.div
         className={styles.coverContent}
