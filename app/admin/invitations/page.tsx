@@ -235,6 +235,7 @@ export default function InvitationsPage() {
             >
               <option value="luxury-gold">Luxury Gold</option>
               <option value="minimal-white">Minimal White</option>
+              <option value="islamic-green">Islamic Green</option>
             </select>
 
             <input
