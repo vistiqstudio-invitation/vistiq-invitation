@@ -81,7 +81,7 @@ export default function LuxuryGold({ invitation }: { invitation: InvitationData 
             <Maps invitation={invitation} />
           </section>
 
-          {invitation.gift && (
+          {invitation.gifts.length > 0 && (
             <section id="gift">
               <Gift invitation={invitation} />
             </section>

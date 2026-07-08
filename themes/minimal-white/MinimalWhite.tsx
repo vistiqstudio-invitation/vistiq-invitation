@@ -81,7 +81,7 @@ export default function MinimalWhite({ invitation }: { invitation: InvitationDat
             <Maps invitation={invitation} />
           </section>
 
-          {invitation.gift && (
+          {invitation.gifts.length > 0 && (
             <section id="gift">
               <Gift invitation={invitation} />
             </section>

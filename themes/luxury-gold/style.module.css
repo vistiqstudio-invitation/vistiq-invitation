@@ -657,12 +657,27 @@
 
 /* ---------- Gift ---------- */
 
+.giftGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
 .giftCard {
   composes: glass;
-  max-width: 480px;
-  margin: 0 auto;
-  padding: 44px 36px;
+  padding: 44px 32px;
   text-align: center;
+}
+
+.giftOwner {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 14px;
 }
 
 .giftBank {

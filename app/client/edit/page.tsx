@@ -37,9 +37,12 @@ const initialForm = {
   story_3_title: "",
   story_3_desc: "",
 
-  bank_name: "",
-  bank_account: "",
-  bank_holder: "",
+  groom_bank_name: "",
+  groom_bank_account: "",
+  groom_bank_holder: "",
+  bride_bank_name: "",
+  bride_bank_account: "",
+  bride_bank_holder: "",
   music_url: "",
 
   cover_photo: "",
@@ -138,9 +141,12 @@ export default function ClientEditPage() {
         story_3_title: invitation.story_3_title || "",
         story_3_desc: invitation.story_3_desc || "",
 
-        bank_name: invitation.bank_name || "",
-        bank_account: invitation.bank_account || "",
-        bank_holder: invitation.bank_holder || "",
+        groom_bank_name: invitation.groom_bank_name || "",
+        groom_bank_account: invitation.groom_bank_account || "",
+        groom_bank_holder: invitation.groom_bank_holder || "",
+        bride_bank_name: invitation.bride_bank_name || "",
+        bride_bank_account: invitation.bride_bank_account || "",
+        bride_bank_holder: invitation.bride_bank_holder || "",
         music_url: invitation.music_url || "",
 
         cover_photo: invitation.cover_photo || "",
@@ -427,35 +433,67 @@ export default function ClientEditPage() {
           />
         </div>
 
-        <h2 className={styles.editSectionTitle}>Amplop Digital &amp; Musik</h2>
+        <h2 className={styles.editSectionTitle}>Amplop Digital - Mempelai Pria</h2>
 
         <div className={styles.formGrid}>
           <input
             placeholder="Nama Bank"
-            value={form.bank_name}
-            onChange={(e) => set("bank_name", e.target.value)}
+            value={form.groom_bank_name}
+            onChange={(e) => set("groom_bank_name", e.target.value)}
             className={styles.input}
           />
 
           <input
             placeholder="Nomor Rekening"
-            value={form.bank_account}
-            onChange={(e) => set("bank_account", e.target.value)}
+            value={form.groom_bank_account}
+            onChange={(e) => set("groom_bank_account", e.target.value)}
             className={styles.input}
           />
 
           <input
             placeholder="Atas Nama"
-            value={form.bank_holder}
-            onChange={(e) => set("bank_holder", e.target.value)}
+            value={form.groom_bank_holder}
+            onChange={(e) => set("groom_bank_holder", e.target.value)}
+            className={styles.input}
+            style={{ gridColumn: "1 / -1" }}
+          />
+        </div>
+
+        <h2 className={styles.editSectionTitle}>Amplop Digital - Mempelai Wanita</h2>
+
+        <div className={styles.formGrid}>
+          <input
+            placeholder="Nama Bank"
+            value={form.bride_bank_name}
+            onChange={(e) => set("bride_bank_name", e.target.value)}
             className={styles.input}
           />
 
+          <input
+            placeholder="Nomor Rekening"
+            value={form.bride_bank_account}
+            onChange={(e) => set("bride_bank_account", e.target.value)}
+            className={styles.input}
+          />
+
+          <input
+            placeholder="Atas Nama"
+            value={form.bride_bank_holder}
+            onChange={(e) => set("bride_bank_holder", e.target.value)}
+            className={styles.input}
+            style={{ gridColumn: "1 / -1" }}
+          />
+        </div>
+
+        <h2 className={styles.editSectionTitle}>Musik</h2>
+
+        <div className={styles.formGrid}>
           <input
             placeholder="URL Musik MP3"
             value={form.music_url}
             onChange={(e) => set("music_url", e.target.value)}
             className={styles.input}
+            style={{ gridColumn: "1 / -1" }}
           />
         </div>
 

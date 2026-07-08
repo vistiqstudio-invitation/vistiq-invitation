@@ -1,7 +1,12 @@
 import "server-only";
 
 import { createClient } from "@/lib/supabase/server";
-import type { EventItem, InvitationData, StoryItem } from "@/types/invitation";
+import type {
+  EventItem,
+  GiftAccount,
+  InvitationData,
+  StoryItem,
+} from "@/types/invitation";
 
 // The invitations table accumulated a few duplicate/renamed columns across
 // earlier iterations (e.g. gallery1 vs gallery_1, video_url vs youtube_url).
@@ -97,9 +102,50 @@ function normalizeInvitation(raw: Record<string, any>): InvitationData {
     ...(Array.isArray(raw.gallery_photos) ? raw.gallery_photos : []),
   ].filter((url): url is string => Boolean(url));
 
-  const bankName = firstNonEmpty(raw.gift_bank_name, raw.bank_name);
-  const accountNumber = firstNonEmpty(raw.gift_account_number, raw.bank_account, raw.account_number);
-  const accountName = firstNonEmpty(raw.gift_account_name, raw.bank_holder, raw.account_name);
+  // The gift_*/bank_*/account_* columns predate per-person accounts and
+  // aren't tied to either side - treat them as the groom's account unless
+  // he already has a dedicated one.
+  const groomBankName = firstNonEmpty(
+    raw.groom_bank_name,
+    raw.gift_bank_name,
+    raw.bank_name
+  );
+  const groomAccountNumber = firstNonEmpty(
+    raw.groom_bank_account,
+    raw.gift_account_number,
+    raw.bank_account,
+    raw.account_number
+  );
+  const groomAccountName = firstNonEmpty(
+    raw.groom_bank_holder,
+    raw.gift_account_name,
+    raw.bank_holder,
+    raw.account_name
+  );
+
+  const brideBankName = firstNonEmpty(raw.bride_bank_name);
+  const brideAccountNumber = firstNonEmpty(raw.bride_bank_account);
+  const brideAccountName = firstNonEmpty(raw.bride_bank_holder);
+
+  const gifts: GiftAccount[] = [];
+
+  if (groomBankName || groomAccountNumber) {
+    gifts.push({
+      owner: "Mempelai Pria",
+      bankName: groomBankName,
+      accountNumber: groomAccountNumber,
+      accountName: groomAccountName,
+    });
+  }
+
+  if (brideBankName || brideAccountNumber) {
+    gifts.push({
+      owner: "Mempelai Wanita",
+      bankName: brideBankName,
+      accountNumber: brideAccountNumber,
+      accountName: brideAccountName,
+    });
+  }
 
   return {
     id: raw.id,
@@ -142,7 +188,7 @@ function normalizeInvitation(raw: Record<string, any>): InvitationData {
     events,
     gallery,
 
-    gift: bankName || accountNumber ? { bankName, accountNumber, accountName } : null,
+    gifts,
   };
 }
 

@@ -12,20 +12,20 @@ const invitation: InvitationData = {
   videoUrl: null,
 
   mapsUrl: "https://maps.google.com",
-  mapsEmbedUrl: null,
+  mapsEmbedUrl: "https://www.google.com/maps?q=Jakarta&output=embed",
 
   groom: {
     name: "Rizky Pratama",
     parents: "Bapak Yusuf & Ibu Fatimah",
     photo: "/themes/luxury-gold/groom.png",
-    instagram: null,
+    instagram: "rizkypratama",
   },
 
   bride: {
     name: "Nabila Putri",
     parents: "Bapak Ahmad & Ibu Siti",
     photo: "/themes/luxury-gold/bride.png",
-    instagram: null,
+    instagram: "nabilaputri",
   },
 
   story: [
@@ -75,11 +75,20 @@ const invitation: InvitationData = {
     "/gallery/6.jpg",
   ],
 
-  gift: {
-    bankName: "BCA",
-    accountNumber: "1234567890",
-    accountName: "Rizky Pratama",
-  },
+  gifts: [
+    {
+      owner: "Mempelai Pria",
+      bankName: "BCA",
+      accountNumber: "1234567890",
+      accountName: "Rizky Pratama",
+    },
+    {
+      owner: "Mempelai Wanita",
+      bankName: "Mandiri",
+      accountNumber: "0987654321",
+      accountName: "Nabila Putri",
+    },
+  ],
 };
 
 export default function DemoPage() {

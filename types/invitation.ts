@@ -43,9 +43,12 @@ export type InvitationData = {
   events: EventItem[];
   gallery: string[];
 
-  gift: {
-    bankName: string | null;
-    accountNumber: string | null;
-    accountName: string | null;
-  } | null;
+  gifts: GiftAccount[];
+};
+
+export type GiftAccount = {
+  owner: "Mempelai Pria" | "Mempelai Wanita";
+  bankName: string | null;
+  accountNumber: string | null;
+  accountName: string | null;
 };

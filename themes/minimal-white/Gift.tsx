@@ -2,15 +2,12 @@
 
 import { useState } from "react";
 import Reveal from "@/components/Reveal";
-import type { InvitationData } from "@/types/invitation";
+import type { GiftAccount, InvitationData } from "@/types/invitation";
 import styles from "./style.module.css";
 
-export default function Gift({ invitation }: { invitation: InvitationData }) {
+function GiftCard({ account }: { account: GiftAccount }) {
   const [copied, setCopied] = useState(false);
-
-  if (!invitation.gift) return null;
-
-  const { bankName, accountNumber, accountName } = invitation.gift;
+  const { owner, bankName, accountNumber, accountName } = account;
 
   const copyNumber = async () => {
     if (!accountNumber) return;
@@ -20,6 +17,28 @@ export default function Gift({ invitation }: { invitation: InvitationData }) {
   };
 
   return (
+    <div className={styles.giftCard}>
+      <p className={styles.giftOwner}>{owner}</p>
+      {bankName && <h3 className={styles.giftBank}>{bankName}</h3>}
+      {accountNumber && <p className={styles.giftNumber}>{accountNumber}</p>}
+      {accountName && <p className={styles.giftName}>a.n {accountName}</p>}
+
+      {accountNumber && (
+        <button
+          className={`${styles.button} ${styles.solid}`}
+          onClick={copyNumber}
+        >
+          {copied ? "Tersalin" : "Salin Nomor Rekening"}
+        </button>
+      )}
+    </div>
+  );
+}
+
+export default function Gift({ invitation }: { invitation: InvitationData }) {
+  if (invitation.gifts.length === 0) return null;
+
+  return (
     <div className={styles.section}>
       <Reveal>
         <p className={styles.eyebrow}>Wedding Gift</p>
@@ -27,24 +46,13 @@ export default function Gift({ invitation }: { invitation: InvitationData }) {
         <div className={styles.ornament}><span className={styles.ornamentMark} /></div>
       </Reveal>
 
-      <Reveal delay={0.1}>
-        <div className={styles.giftCard}>
-          {bankName && <h3 className={styles.giftBank}>{bankName}</h3>}
-          {accountNumber && (
-            <p className={styles.giftNumber}>{accountNumber}</p>
-          )}
-          {accountName && <p className={styles.giftName}>a.n {accountName}</p>}
-
-          {accountNumber && (
-            <button
-              className={`${styles.button} ${styles.solid}`}
-              onClick={copyNumber}
-            >
-              {copied ? "Tersalin" : "Salin Nomor Rekening"}
-            </button>
-          )}
-        </div>
-      </Reveal>
+      <div className={styles.giftGrid}>
+        {invitation.gifts.map((account, index) => (
+          <Reveal key={account.owner} delay={index * 0.1}>
+            <GiftCard account={account} />
+          </Reveal>
+        ))}
+      </div>
     </div>
   );
 }
