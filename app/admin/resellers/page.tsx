@@ -3,7 +3,17 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import DashboardSidebar from "@/components/admin/DashboardSidebar";
 import styles from "@/styles/dashboard.module.css";
+
+const NAV_ITEMS = [
+  { key: "dashboard", label: "Dashboard", href: "/admin" },
+  { key: "clients", label: "Client", href: "/admin/clients" },
+  { key: "resellers", label: "Reseller", href: "/admin/resellers" },
+  { key: "invitations", label: "Undangan", href: "/admin/invitations" },
+  { key: "rsvp", label: "RSVP", href: "/admin/rsvp" },
+  { key: "transactions", label: "Transaksi", href: "/admin/transactions" },
+];
 
 type Reseller = {
   id: string;
@@ -117,41 +127,13 @@ export default function ResellersPage() {
 
   return (
     <main className={styles.page}>
-      <aside className={styles.sidebar}>
-        <div className={styles.brandBlock}>
-          <p className={styles.brandSmall}>VISTIQ</p>
-          <h2 className={styles.brand}>Invitation</h2>
-        </div>
-
-        <nav className={styles.menu}>
-          <button
-            onClick={() => router.push("/admin")}
-            className={styles.menuButton}
-          >
-            Dashboard
-          </button>
-
-          <button
-            onClick={() => router.push("/admin/clients")}
-            className={styles.menuButton}
-          >
-            Client
-          </button>
-
-          <button className={styles.menuActive}>Reseller</button>
-
-          <button
-            onClick={() => router.push("/admin/invitations")}
-            className={styles.menuButton}
-          >
-            Undangan
-          </button>
-        </nav>
-
-        <button onClick={logout} className={styles.logoutButton}>
-          Logout
-        </button>
-      </aside>
+      <DashboardSidebar
+        brandTop="VISTIQ"
+        brandBottom="Invitation"
+        items={NAV_ITEMS}
+        activeKey="resellers"
+        onLogout={logout}
+      />
 
       <section className={styles.content}>
         <header className={styles.header}>

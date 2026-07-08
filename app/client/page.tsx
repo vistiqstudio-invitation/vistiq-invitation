@@ -3,7 +3,13 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import DashboardSidebar from "@/components/admin/DashboardSidebar";
 import styles from "@/styles/dashboard.module.css";
+
+const NAV_ITEMS = [
+  { key: "dashboard", label: "Dashboard", href: "/client" },
+  { key: "edit", label: "Edit Undangan", href: "/client/edit" },
+];
 
 type AppUser = {
   id: string;
@@ -204,27 +210,13 @@ export default function ClientPage() {
 
   return (
     <main className={styles.page}>
-      <aside className={styles.sidebar}>
-        <div className={styles.brandBlock}>
-          <p className={styles.brandSmall}>VISTIQ</p>
-          <h2 className={styles.brand}>Client</h2>
-        </div>
-
-        <nav className={styles.menu}>
-          <button className={styles.menuActive}>Dashboard</button>
-          <button
-            className={styles.menuButton}
-            onClick={() => router.push("/client/edit")}
-          >
-            Edit Undangan
-          </button>
-          <button className={styles.menuButton}>RSVP</button>
-        </nav>
-
-        <button onClick={logout} className={styles.logoutButton}>
-          Logout
-        </button>
-      </aside>
+      <DashboardSidebar
+        brandTop="VISTIQ"
+        brandBottom="Client"
+        items={NAV_ITEMS}
+        activeKey="dashboard"
+        onLogout={logout}
+      />
 
       <section className={styles.content}>
         <header className={styles.header}>
