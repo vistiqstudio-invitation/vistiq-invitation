@@ -3,6 +3,7 @@ import LuxuryGold from "@/themes/luxury-gold/LuxuryGold";
 import MinimalWhite from "@/themes/minimal-white/MinimalWhite";
 import IslamicGreen from "@/themes/islamic-green/IslamicGreen";
 import RoyalBlack from "@/themes/royal-black/RoyalBlack";
+import FloralGarden from "@/themes/floral-garden/FloralGarden";
 
 export const themeRegistry: Record<
   string,
@@ -12,6 +13,7 @@ export const themeRegistry: Record<
   "minimal-white": MinimalWhite,
   "islamic-green": IslamicGreen,
   "royal-black": RoyalBlack,
+  "floral-garden": FloralGarden,
 };
 
 export type ThemeMeta = {
@@ -45,5 +47,11 @@ export const themeList: ThemeMeta[] = [
     label: "Royal Black",
     description: "Hitam pekat & emas, formal, bingkai crest kerajaan",
     swatch: ["#000000", "#d4af37"],
+  },
+  {
+    key: "floral-garden",
+    label: "Floral Garden",
+    description: "Krem lembut, sage & blush, motif bunga natural",
+    swatch: ["#fdf9f3", "#8a9a7e"],
   },
 ];
