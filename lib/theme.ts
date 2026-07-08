@@ -2,6 +2,7 @@ import type { InvitationData } from "@/types/invitation";
 import LuxuryGold from "@/themes/luxury-gold/LuxuryGold";
 import MinimalWhite from "@/themes/minimal-white/MinimalWhite";
 import IslamicGreen from "@/themes/islamic-green/IslamicGreen";
+import RoyalBlack from "@/themes/royal-black/RoyalBlack";
 
 export const themeRegistry: Record<
   string,
@@ -10,6 +11,7 @@ export const themeRegistry: Record<
   "luxury-gold": LuxuryGold,
   "minimal-white": MinimalWhite,
   "islamic-green": IslamicGreen,
+  "royal-black": RoyalBlack,
 };
 
 export type ThemeMeta = {
@@ -37,5 +39,11 @@ export const themeList: ThemeMeta[] = [
     label: "Islamic Green",
     description: "Krem hangat, hijau emerald & emas, motif islami",
     swatch: ["#faf6ec", "#0b5d42"],
+  },
+  {
+    key: "royal-black",
+    label: "Royal Black",
+    description: "Hitam pekat & emas, formal, bingkai crest kerajaan",
+    swatch: ["#000000", "#d4af37"],
   },
 ];
