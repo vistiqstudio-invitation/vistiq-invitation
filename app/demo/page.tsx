@@ -1,96 +1,48 @@
-import LuxuryGold from "@/themes/luxury-gold/LuxuryGold";
-import type { InvitationData } from "@/types/invitation";
+import Link from "next/link";
+import { themeList } from "@/lib/theme";
+import styles from "./demo.module.css";
 
-const invitation: InvitationData = {
-  id: 0,
-  slug: "demo",
-  theme: "luxury-gold",
-  status: "active",
+export default function DemoPickerPage() {
+  return (
+    <main className={styles.page}>
+      <div className={styles.inner}>
+        <Link href="/" className={styles.back}>
+          ← Kembali ke Beranda
+        </Link>
 
-  coverImage: "/themes/luxury-gold/cover.png",
-  musicUrl: "/music/wedding2.mp3",
-  videoUrl: null,
+        <p className={styles.eyebrow}>Vistiq Invitation</p>
+        <h1 className={styles.title}>Pilih Tema Undangan</h1>
+        <p className={styles.subtitle}>
+          Lihat langsung tampilan setiap tema undangan digital yang tersedia,
+          lengkap dengan animasi, RSVP, dan galeri fotonya.
+        </p>
 
-  mapsUrl: "https://maps.google.com",
-  mapsEmbedUrl: "https://www.google.com/maps?q=Jakarta&output=embed",
+        <div className={styles.grid}>
+          {themeList.map((theme) => (
+            <div className={styles.card} key={theme.key}>
+              <div className={styles.swatch}>
+                <span
+                  className={styles.swatchHalf}
+                  style={{ background: theme.swatch[0] }}
+                />
+                <span
+                  className={styles.swatchHalf}
+                  style={{ background: theme.swatch[1] }}
+                />
+              </div>
 
-  groom: {
-    name: "Rizky Pratama",
-    parents: "Bapak Yusuf & Ibu Fatimah",
-    photo: "/themes/luxury-gold/groom.png",
-    instagram: "rizkypratama",
-  },
+              <div className={styles.cardBody}>
+                <h2 className={styles.cardTitle}>{theme.label}</h2>
+                <p className={styles.cardDesc}>{theme.description}</p>
 
-  bride: {
-    name: "Nabila Putri",
-    parents: "Bapak Ahmad & Ibu Siti",
-    photo: "/themes/luxury-gold/bride.png",
-    instagram: "nabilaputri",
-  },
-
-  story: [
-    {
-      year: "2021",
-      title: "Pertama Bertemu",
-      description:
-        "Kami dipertemukan dalam sebuah kesempatan yang tidak pernah kami sangka sebelumnya.",
-    },
-    {
-      year: "2023",
-      title: "Menjalin Hubungan",
-      description:
-        "Setelah saling mengenal lebih dekat, kami memutuskan untuk berjalan bersama.",
-    },
-    {
-      year: "2026",
-      title: "Menuju Pernikahan",
-      description:
-        "Dengan restu kedua orang tua, kami memutuskan mengikat janji suci pernikahan.",
-    },
-  ],
-
-  events: [
-    {
-      name: "Akad Nikah",
-      date: "Minggu, 20 September 2026",
-      rawDate: "2026-09-20T08:00:00",
-      time: "08.00 WIB",
-      location: "Gedung Serbaguna Vistiq, Jakarta",
-    },
-    {
-      name: "Resepsi",
-      date: "Minggu, 20 September 2026",
-      rawDate: "2026-09-20T11:00:00",
-      time: "11.00 WIB",
-      location: "Gedung Serbaguna Vistiq, Jakarta",
-    },
-  ],
-
-  gallery: [
-    "/gallery/1.jpg",
-    "/gallery/2.jpg",
-    "/gallery/3.jpg",
-    "/gallery/4.jpg",
-    "/gallery/5.jpg",
-    "/gallery/6.jpg",
-  ],
-
-  gifts: [
-    {
-      owner: "Mempelai Pria",
-      bankName: "BCA",
-      accountNumber: "1234567890",
-      accountName: "Rizky Pratama",
-    },
-    {
-      owner: "Mempelai Wanita",
-      bankName: "Mandiri",
-      accountNumber: "0987654321",
-      accountName: "Nabila Putri",
-    },
-  ],
-};
-
-export default function DemoPage() {
-  return <LuxuryGold invitation={invitation} />;
+                <Link href={`/demo/${theme.key}`} className={styles.cardButton}>
+                  Lihat Demo
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </main>
+  );
 }

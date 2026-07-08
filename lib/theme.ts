@@ -11,3 +11,31 @@ export const themeRegistry: Record<
   "minimal-white": MinimalWhite,
   "islamic-green": IslamicGreen,
 };
+
+export type ThemeMeta = {
+  key: string;
+  label: string;
+  description: string;
+  swatch: [string, string];
+};
+
+export const themeList: ThemeMeta[] = [
+  {
+    key: "luxury-gold",
+    label: "Luxury Gold",
+    description: "Dark & glamorous, aksen gold, glassmorphism",
+    swatch: ["#0b0b0b", "#d4af37"],
+  },
+  {
+    key: "minimal-white",
+    label: "Minimal White",
+    description: "Putih bersih, editorial, elegan minimalis",
+    swatch: ["#ffffff", "#96742a"],
+  },
+  {
+    key: "islamic-green",
+    label: "Islamic Green",
+    description: "Krem hangat, hijau emerald & emas, motif islami",
+    swatch: ["#faf6ec", "#0b5d42"],
+  },
+];
