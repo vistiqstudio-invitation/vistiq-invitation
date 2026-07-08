@@ -1,74 +1,32 @@
 "use client";
 
+import Reveal from "@/components/Reveal";
+import type { InvitationData } from "@/types/invitation";
 import styles from "./style.module.css";
 
-type Props = {
-  invitation: any;
-};
-
-export default function Story({ invitation }: Props) {
+export default function Story({ invitation }: { invitation: InvitationData }) {
   return (
-    <section className={styles.story}>
-      <div className={styles.container}>
+    <div className={styles.section}>
+      <Reveal>
+        <p className={styles.eyebrow}>Our Journey</p>
+        <h2 className={styles.title}>Love Story</h2>
+        <div className={styles.ornament}><span className={styles.ornamentMark} /></div>
+      </Reveal>
 
-        <p className={styles.sectionLabel}>
-          Our Journey
-        </p>
+      <div className={styles.storyTimeline}>
+        {invitation.story.map((item, index) => (
+          <Reveal key={`${item.title}-${index}`} delay={index * 0.1}>
+            <div className={styles.storyItem}>
+              <div className={styles.storyYear}>{item.year}</div>
 
-        <h2 className={styles.sectionTitle}>
-          Love Story
-        </h2>
-
-        <div className={styles.storyTimeline}>
-
-          <div className={styles.storyItem}>
-            <div className={styles.storyYear}>2021</div>
-
-            <div className={styles.storyContent}>
-              <h3>Pertama Bertemu</h3>
-
-              <p>
-                Kami dipertemukan dalam sebuah kesempatan yang
-                tidak pernah kami sangka sebelumnya.
-                Dari perkenalan sederhana, tumbuh rasa nyaman
-                yang perlahan menjadi kasih sayang.
-              </p>
+              <div>
+                <h3 className={styles.storyTitle}>{item.title}</h3>
+                <p className={styles.storyDesc}>{item.description}</p>
+              </div>
             </div>
-          </div>
-
-          <div className={styles.storyItem}>
-            <div className={styles.storyYear}>2023</div>
-
-            <div className={styles.storyContent}>
-              <h3>Menjalin Hubungan</h3>
-
-              <p>
-                Setelah saling mengenal lebih dekat,
-                kami memutuskan untuk berjalan bersama,
-                saling mendukung dalam setiap langkah,
-                dan tumbuh menjadi pribadi yang lebih baik.
-              </p>
-            </div>
-          </div>
-
-          <div className={styles.storyItem}>
-            <div className={styles.storyYear}>2026</div>
-
-            <div className={styles.storyContent}>
-              <h3>Menuju Pernikahan</h3>
-
-              <p>
-                Dengan restu kedua orang tua serta ridho Allah SWT,
-                kami memutuskan mengikat janji suci pernikahan
-                sebagai awal perjalanan baru menuju keluarga
-                yang sakinah, mawaddah, warahmah.
-              </p>
-            </div>
-          </div>
-
-        </div>
-
+          </Reveal>
+        ))}
       </div>
-    </section>
+    </div>
   );
 }

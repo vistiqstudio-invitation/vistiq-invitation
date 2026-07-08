@@ -2,83 +2,106 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
+import styles from "@/styles/dashboard.module.css";
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
-const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
 const BUCKET = "invitation-assets";
 
 type PhotoField = "cover_photo" | "bride_photo" | "groom_photo";
 
+const initialForm = {
+  groom_name: "",
+  bride_name: "",
+  groom_parent: "",
+  bride_parent: "",
+  groom_instagram: "",
+  bride_instagram: "",
+
+  akad_date: "",
+  akad_time: "",
+  akad_location: "",
+  resepsi_date: "",
+  reception_time: "",
+  reception_location: "",
+  maps_url: "",
+
+  youtube_url: "",
+
+  story_1_year: "",
+  story_1_title: "",
+  story_1_desc: "",
+  story_2_year: "",
+  story_2_title: "",
+  story_2_desc: "",
+  story_3_year: "",
+  story_3_title: "",
+  story_3_desc: "",
+
+  bank_name: "",
+  bank_account: "",
+  bank_holder: "",
+  music_url: "",
+
+  cover_photo: "",
+  bride_photo: "",
+  groom_photo: "",
+  gallery_photos: [] as string[],
+};
+
+type FormState = typeof initialForm;
+
 export default function ClientEditPage() {
   const router = useRouter();
+  const supabase = createClient();
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [invitationId, setInvitationId] = useState("");
-
-  const [form, setForm] = useState({
-    groom_name: "",
-    bride_name: "",
-    event_date: "",
-    akad_location: "",
-    reception_location: "",
-    maps_url: "",
-    bank_name: "",
-    bank_account: "",
-    bank_holder: "",
-    music_url: "",
-    cover_photo: "",
-    bride_photo: "",
-    groom_photo: "",
-    gallery_photos: [] as string[],
-  });
-
-  const headers = {
-    apikey: SUPABASE_ANON_KEY,
-    Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
-    "Content-Type": "application/json",
-  };
+  const [form, setForm] = useState<FormState>(initialForm);
 
   useEffect(() => {
     loadInvitation();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const loadInvitation = async () => {
     try {
-      const savedUser = localStorage.getItem("vistiq_user");
+      const {
+        data: { user: authUser },
+      } = await supabase.auth.getUser();
 
-      if (!savedUser) {
-        router.push("/admin-login");
+      if (!authUser) {
+        router.push("/login");
         return;
       }
 
-      const user = JSON.parse(savedUser);
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", authUser.id)
+        .single();
 
-      if (user.role !== "client") {
-        router.push("/admin-login");
+      if (!profile || profile.role !== "client") {
+        router.push("/login");
         return;
       }
 
-      const clientRes = await fetch(
-        `${SUPABASE_URL}/rest/v1/clients?user_id=eq.${user.id}&select=*`,
-        { headers }
-      );
+      const { data: clients } = await supabase
+        .from("clients")
+        .select("*")
+        .eq("user_id", authUser.id);
 
-      const clients = await clientRes.json();
-
-      if (!Array.isArray(clients) || clients.length === 0) {
+      if (!clients || clients.length === 0) {
         setLoading(false);
         return;
       }
 
-      const invitationRes = await fetch(
-        `${SUPABASE_URL}/rest/v1/invitations?client_id=eq.${clients[0].id}&select=*`,
-        { headers }
-      );
+      const { data: invitations } = await supabase
+        .from("invitations")
+        .select("*")
+        .eq("client_id", clients[0].id);
 
-      const invitations = await invitationRes.json();
-
-      if (!Array.isArray(invitations) || invitations.length === 0) {
+      if (!invitations || invitations.length === 0) {
         setLoading(false);
         return;
       }
@@ -90,14 +113,36 @@ export default function ClientEditPage() {
       setForm({
         groom_name: invitation.groom_name || "",
         bride_name: invitation.bride_name || "",
-        event_date: invitation.event_date || "",
+        groom_parent: invitation.groom_parent || "",
+        bride_parent: invitation.bride_parent || "",
+        groom_instagram: invitation.groom_instagram || "",
+        bride_instagram: invitation.bride_instagram || "",
+
+        akad_date: invitation.akad_date || "",
+        akad_time: invitation.akad_time || "",
         akad_location: invitation.akad_location || "",
+        resepsi_date: invitation.resepsi_date || "",
+        reception_time: invitation.reception_time || "",
         reception_location: invitation.reception_location || "",
         maps_url: invitation.maps_url || "",
+
+        youtube_url: invitation.youtube_url || "",
+
+        story_1_year: invitation.story_1_year || "",
+        story_1_title: invitation.story_1_title || "",
+        story_1_desc: invitation.story_1_desc || "",
+        story_2_year: invitation.story_2_year || "",
+        story_2_title: invitation.story_2_title || "",
+        story_2_desc: invitation.story_2_desc || "",
+        story_3_year: invitation.story_3_year || "",
+        story_3_title: invitation.story_3_title || "",
+        story_3_desc: invitation.story_3_desc || "",
+
         bank_name: invitation.bank_name || "",
         bank_account: invitation.bank_account || "",
         bank_holder: invitation.bank_holder || "",
         music_url: invitation.music_url || "",
+
         cover_photo: invitation.cover_photo || "",
         bride_photo: invitation.bride_photo || "",
         groom_photo: invitation.groom_photo || "",
@@ -112,6 +157,10 @@ export default function ClientEditPage() {
     setLoading(false);
   };
 
+  const set = (field: keyof FormState, value: string) => {
+    setForm((prev) => ({ ...prev, [field]: value }));
+  };
+
   const uploadToStorage = async (file: File, folder: string) => {
     if (!invitationId) {
       alert("Undangan tidak ditemukan.");
@@ -123,36 +172,24 @@ export default function ClientEditPage() {
       .toString(36)
       .slice(2)}.${ext}`;
 
-    const uploadRes = await fetch(
-      `${SUPABASE_URL}/storage/v1/object/${BUCKET}/${fileName}`,
-      {
-        method: "POST",
-        headers: {
-          apikey: SUPABASE_ANON_KEY,
-          Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
-          "Content-Type": file.type,
-        },
-        body: file,
-      }
-    );
+    const { error } = await supabase.storage
+      .from(BUCKET)
+      .upload(fileName, file, { contentType: file.type });
 
-    if (!uploadRes.ok) {
+    if (error) {
       alert("Upload gagal. Cek policy Storage Supabase.");
       return "";
     }
 
-    return `${SUPABASE_URL}/storage/v1/object/public/${BUCKET}/${fileName}`;
+    return supabase.storage.from(BUCKET).getPublicUrl(fileName).data
+      .publicUrl;
   };
 
   const uploadSingleFile = async (file: File, field: PhotoField) => {
     const publicUrl = await uploadToStorage(file, field);
     if (!publicUrl) return;
 
-    setForm((prev) => ({
-      ...prev,
-      [field]: publicUrl,
-    }));
-
+    setForm((prev) => ({ ...prev, [field]: publicUrl }));
     alert("Foto berhasil diupload. Klik Simpan Perubahan.");
   };
 
@@ -162,7 +199,7 @@ export default function ClientEditPage() {
     const selectedFiles = Array.from(files);
 
     if (form.gallery_photos.length + selectedFiles.length > 10) {
-      alert("Maksimal 10 foto gallery.");
+      alert("Maksimal 10 foto galeri.");
       return;
     }
 
@@ -178,7 +215,7 @@ export default function ClientEditPage() {
       gallery_photos: [...prev.gallery_photos, ...uploadedUrls],
     }));
 
-    alert(`${uploadedUrls.length} foto gallery berhasil diupload.`);
+    alert(`${uploadedUrls.length} foto galeri berhasil diupload.`);
   };
 
   const removeGalleryPhoto = (index: number) => {
@@ -196,18 +233,14 @@ export default function ClientEditPage() {
 
     setSaving(true);
 
-    const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/invitations?id=eq.${invitationId}`,
-      {
-        method: "PATCH",
-        headers,
-        body: JSON.stringify(form),
-      }
-    );
+    const { error } = await supabase
+      .from("invitations")
+      .update(form)
+      .eq("id", invitationId);
 
     setSaving(false);
 
-    if (!res.ok) {
+    if (error) {
       alert("Gagal menyimpan data.");
       return;
     }
@@ -217,123 +250,218 @@ export default function ClientEditPage() {
 
   if (loading) {
     return (
-      <main style={styles.page}>
+      <main className={styles.editPage}>
         <h2>Memuat data...</h2>
       </main>
     );
   }
 
   return (
-    <main style={styles.page}>
-      <div style={styles.card}>
-        <div style={styles.header}>
+    <main className={styles.editPage}>
+      <div className={styles.editCard}>
+        <div className={styles.editHeader}>
           <div>
-            <p style={styles.label}>CLIENT DASHBOARD</p>
-            <h1 style={styles.title}>Edit Undangan</h1>
-            <p style={styles.subtitle}>
+            <p className={styles.label}>CLIENT DASHBOARD</p>
+            <h1 className={styles.title} style={{ fontSize: 36 }}>
+              Edit Undangan
+            </h1>
+            <p className={styles.subtitle}>
               Ubah data undangan dan upload foto langsung dari dashboard.
             </p>
           </div>
 
           <button
             onClick={() => router.push("/client")}
-            style={styles.secondaryButton}
+            className={styles.secondaryButton}
           >
             Kembali
           </button>
         </div>
 
-        <h2 style={styles.sectionTitle}>Data Mempelai</h2>
+        <h2 className={styles.editSectionTitle}>Data Mempelai</h2>
 
-        <div style={styles.grid}>
+        <div className={styles.formGrid}>
           <input
             placeholder="Nama Mempelai Pria"
             value={form.groom_name}
-            onChange={(e) => setForm({ ...form, groom_name: e.target.value })}
-            style={styles.input}
+            onChange={(e) => set("groom_name", e.target.value)}
+            className={styles.input}
           />
 
           <input
             placeholder="Nama Mempelai Wanita"
             value={form.bride_name}
-            onChange={(e) => setForm({ ...form, bride_name: e.target.value })}
-            style={styles.input}
+            onChange={(e) => set("bride_name", e.target.value)}
+            className={styles.input}
+          />
+
+          <input
+            placeholder="Putra dari (nama orang tua pria)"
+            value={form.groom_parent}
+            onChange={(e) => set("groom_parent", e.target.value)}
+            className={styles.input}
+          />
+
+          <input
+            placeholder="Putri dari (nama orang tua wanita)"
+            value={form.bride_parent}
+            onChange={(e) => set("bride_parent", e.target.value)}
+            className={styles.input}
+          />
+
+          <input
+            placeholder="Instagram Mempelai Pria (opsional)"
+            value={form.groom_instagram}
+            onChange={(e) => set("groom_instagram", e.target.value)}
+            className={styles.input}
+          />
+
+          <input
+            placeholder="Instagram Mempelai Wanita (opsional)"
+            value={form.bride_instagram}
+            onChange={(e) => set("bride_instagram", e.target.value)}
+            className={styles.input}
+          />
+        </div>
+
+        <h2 className={styles.editSectionTitle}>Jadwal &amp; Lokasi Acara</h2>
+
+        <div className={styles.formGrid}>
+          <input
+            type="date"
+            value={form.akad_date}
+            onChange={(e) => set("akad_date", e.target.value)}
+            className={styles.input}
+          />
+
+          <input
+            placeholder="Jam Akad, contoh: 08.00 WIB"
+            value={form.akad_time}
+            onChange={(e) => set("akad_time", e.target.value)}
+            className={styles.input}
+          />
+
+          <input
+            placeholder="Lokasi Akad"
+            value={form.akad_location}
+            onChange={(e) => set("akad_location", e.target.value)}
+            className={styles.input}
+            style={{ gridColumn: "1 / -1" }}
           />
 
           <input
             type="date"
-            value={form.event_date}
-            onChange={(e) => setForm({ ...form, event_date: e.target.value })}
-            style={styles.input}
+            value={form.resepsi_date}
+            onChange={(e) => set("resepsi_date", e.target.value)}
+            className={styles.input}
           />
-        </div>
 
-        <h2 style={styles.sectionTitle}>Lokasi Acara</h2>
-
-        <div style={styles.grid}>
           <input
-            placeholder="Lokasi Akad"
-            value={form.akad_location}
-            onChange={(e) =>
-              setForm({ ...form, akad_location: e.target.value })
-            }
-            style={styles.input}
+            placeholder="Jam Resepsi, contoh: 11.00 WIB"
+            value={form.reception_time}
+            onChange={(e) => set("reception_time", e.target.value)}
+            className={styles.input}
           />
 
           <input
             placeholder="Lokasi Resepsi"
             value={form.reception_location}
-            onChange={(e) =>
-              setForm({ ...form, reception_location: e.target.value })
-            }
-            style={styles.input}
+            onChange={(e) => set("reception_location", e.target.value)}
+            className={styles.input}
+            style={{ gridColumn: "1 / -1" }}
           />
 
           <input
             placeholder="Google Maps URL"
             value={form.maps_url}
-            onChange={(e) => setForm({ ...form, maps_url: e.target.value })}
-            style={styles.input}
+            onChange={(e) => set("maps_url", e.target.value)}
+            className={styles.input}
+            style={{ gridColumn: "1 / -1" }}
           />
         </div>
 
-        <h2 style={styles.sectionTitle}>Amplop Digital & Musik</h2>
+        <h2 className={styles.editSectionTitle}>Love Story</h2>
 
-        <div style={styles.grid}>
+        {[1, 2, 3].map((n) => {
+          const yearKey = `story_${n}_year` as keyof FormState;
+          const titleKey = `story_${n}_title` as keyof FormState;
+          const descKey = `story_${n}_desc` as keyof FormState;
+
+          return (
+            <div key={n} className={styles.storyBlock}>
+              <div className={styles.storyGrid}>
+                <input
+                  placeholder="Tahun / Label, contoh: 2021"
+                  value={form[yearKey]}
+                  onChange={(e) => set(yearKey, e.target.value)}
+                  className={styles.input}
+                />
+
+                <input
+                  placeholder="Judul momen, contoh: Pertama Bertemu"
+                  value={form[titleKey]}
+                  onChange={(e) => set(titleKey, e.target.value)}
+                  className={styles.input}
+                />
+              </div>
+
+              <textarea
+                placeholder="Ceritakan momen ini..."
+                value={form[descKey]}
+                onChange={(e) => set(descKey, e.target.value)}
+                className={styles.textarea}
+              />
+            </div>
+          );
+        })}
+
+        <h2 className={styles.editSectionTitle}>Video Pre-Wedding</h2>
+
+        <div className={styles.formGrid}>
+          <input
+            placeholder="Link YouTube (opsional)"
+            value={form.youtube_url}
+            onChange={(e) => set("youtube_url", e.target.value)}
+            className={styles.input}
+            style={{ gridColumn: "1 / -1" }}
+          />
+        </div>
+
+        <h2 className={styles.editSectionTitle}>Amplop Digital &amp; Musik</h2>
+
+        <div className={styles.formGrid}>
           <input
             placeholder="Nama Bank"
             value={form.bank_name}
-            onChange={(e) => setForm({ ...form, bank_name: e.target.value })}
-            style={styles.input}
+            onChange={(e) => set("bank_name", e.target.value)}
+            className={styles.input}
           />
 
           <input
             placeholder="Nomor Rekening"
             value={form.bank_account}
-            onChange={(e) =>
-              setForm({ ...form, bank_account: e.target.value })
-            }
-            style={styles.input}
+            onChange={(e) => set("bank_account", e.target.value)}
+            className={styles.input}
           />
 
           <input
             placeholder="Atas Nama"
             value={form.bank_holder}
-            onChange={(e) => setForm({ ...form, bank_holder: e.target.value })}
-            style={styles.input}
+            onChange={(e) => set("bank_holder", e.target.value)}
+            className={styles.input}
           />
 
           <input
             placeholder="URL Musik MP3"
             value={form.music_url}
-            onChange={(e) => setForm({ ...form, music_url: e.target.value })}
-            style={styles.input}
+            onChange={(e) => set("music_url", e.target.value)}
+            className={styles.input}
           />
         </div>
 
-        <h2 style={styles.sectionTitle}>Upload Foto Utama</h2>
+        <h2 className={styles.editSectionTitle}>Upload Foto Utama</h2>
 
-        <div style={styles.uploadGrid}>
+        <div className={styles.uploadGrid}>
           <UploadBox
             title="Foto Cover"
             value={form.cover_photo}
@@ -353,23 +481,23 @@ export default function ClientEditPage() {
           />
         </div>
 
-        <h2 style={styles.sectionTitle}>Galeri Foto</h2>
+        <h2 className={styles.editSectionTitle}>Galeri Foto</h2>
 
-        <div style={styles.galleryUploadBox}>
-          <p style={styles.helpText}>
-            Upload maksimal 10 foto galeri. Foto akan tampil di undangan setelah
-            klik Simpan Perubahan.
+        <div className={styles.galleryUploadBox}>
+          <p className={styles.helpText}>
+            Upload maksimal 10 foto galeri. Foto akan tampil sebagai slide di
+            undangan setelah klik Simpan Perubahan.
           </p>
 
           <label
-            style={styles.galleryDropZone}
+            className={styles.galleryDropZone}
             onDragOver={(e) => e.preventDefault()}
             onDrop={(e) => {
               e.preventDefault();
               uploadGalleryFiles(e.dataTransfer.files);
             }}
           >
-            <div style={styles.uploadIcon}>☁</div>
+            <div className={styles.uploadIcon}>☁</div>
             <strong>Drag & drop foto galeri di sini</strong>
             <span>atau klik untuk pilih file</span>
 
@@ -377,31 +505,32 @@ export default function ClientEditPage() {
               type="file"
               accept="image/*"
               multiple
+              disabled={form.gallery_photos.length >= 10}
               onChange={(e) => uploadGalleryFiles(e.target.files)}
-              style={styles.hiddenInput}
+              className={styles.hiddenInput}
             />
           </label>
 
-          <p style={styles.galleryCounter}>
-            Maksimal 10 foto • Saat ini: {form.gallery_photos.length} foto
+          <p className={styles.galleryCounter}>
+            Maksimal 10 foto • Saat ini: {form.gallery_photos.length}/10 foto
           </p>
 
-          <div style={styles.galleryGrid}>
+          <div className={styles.galleryGrid}>
             {form.gallery_photos.length === 0 ? (
-              <div style={styles.emptyGallery}>Belum ada foto galeri</div>
+              <div className={styles.emptyGallery}>Belum ada foto galeri</div>
             ) : (
               form.gallery_photos.map((photo, index) => (
-                <div key={photo} style={styles.galleryItem}>
+                <div key={photo} className={styles.galleryItem}>
                   <img
                     src={photo}
                     alt={`Gallery ${index + 1}`}
-                    style={styles.galleryImage}
+                    className={styles.galleryImage}
                   />
 
                   <button
                     type="button"
                     onClick={() => removeGalleryPhoto(index)}
-                    style={styles.deleteButton}
+                    className={styles.deleteButton}
                   >
                     Hapus
                   </button>
@@ -411,7 +540,12 @@ export default function ClientEditPage() {
           </div>
         </div>
 
-        <button onClick={saveData} style={styles.button}>
+        <button
+          onClick={saveData}
+          className={styles.button}
+          disabled={saving}
+          style={{ marginTop: 28 }}
+        >
           {saving ? "Menyimpan..." : "Simpan Perubahan"}
         </button>
       </div>
@@ -435,19 +569,19 @@ function UploadBox({
   };
 
   return (
-    <div style={styles.uploadBox}>
+    <div className={styles.uploadBox}>
       <strong>{title}</strong>
 
       <label
-        style={styles.dropZone}
+        className={styles.dropZone}
         onDragOver={(e) => e.preventDefault()}
         onDrop={handleDrop}
       >
         {value ? (
-          <img src={value} alt={title} style={styles.preview} />
+          <img src={value} alt={title} className={styles.preview} />
         ) : (
-          <div style={styles.dropContent}>
-            <div style={styles.uploadIcon}>☁</div>
+          <div className={styles.dropContent}>
+            <div className={styles.uploadIcon}>☁</div>
             <strong>Drag & drop foto di sini</strong>
             <span>atau klik untuk pilih file</span>
           </div>
@@ -460,221 +594,9 @@ function UploadBox({
             const file = e.target.files?.[0];
             if (file) onUpload(file);
           }}
-          style={styles.hiddenInput}
+          className={styles.hiddenInput}
         />
       </label>
     </div>
   );
 }
-
-const styles: Record<string, React.CSSProperties> = {
-  page: {
-    minHeight: "100vh",
-    background: "#f6f8fb",
-    padding: "40px",
-    fontFamily: "Arial, Helvetica, sans-serif",
-    color: "#0f172a",
-  },
-
-  card: {
-    maxWidth: "1100px",
-    margin: "0 auto",
-    background: "white",
-    padding: "30px",
-    borderRadius: "20px",
-    boxShadow: "0 12px 30px rgba(0,0,0,.05)",
-  },
-
-  header: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    gap: "20px",
-    marginBottom: "28px",
-  },
-
-  label: {
-    color: "#1167b2",
-    fontWeight: 800,
-    letterSpacing: "2px",
-    fontSize: "12px",
-    margin: 0,
-  },
-
-  title: {
-    margin: "8px 0",
-    fontSize: "36px",
-  },
-
-  subtitle: {
-    color: "#64748b",
-    margin: 0,
-  },
-
-  sectionTitle: {
-    marginTop: "30px",
-    marginBottom: "16px",
-    fontSize: "22px",
-  },
-
-  grid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(2,1fr)",
-    gap: "14px",
-  },
-
-  input: {
-    padding: "14px",
-    borderRadius: "12px",
-    border: "1px solid #cbd5e1",
-    background: "#fff",
-    color: "#0f172a",
-    fontSize: "15px",
-  },
-
-  uploadGrid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(3,1fr)",
-    gap: "16px",
-  },
-
-  uploadBox: {
-    border: "1px solid #e2e8f0",
-    borderRadius: "16px",
-    padding: "16px",
-    background: "#f8fafc",
-    display: "grid",
-    gap: "12px",
-  },
-
-  dropZone: {
-    minHeight: "230px",
-    border: "2px dashed #9bb8dd",
-    borderRadius: "16px",
-    background: "#ffffff",
-    display: "grid",
-    placeItems: "center",
-    cursor: "pointer",
-    overflow: "hidden",
-  },
-
-  dropContent: {
-    display: "grid",
-    placeItems: "center",
-    gap: "10px",
-    textAlign: "center",
-    color: "#334155",
-  },
-
-  uploadIcon: {
-    fontSize: "54px",
-    lineHeight: 1,
-    color: "#1167b2",
-  },
-
-  hiddenInput: {
-    display: "none",
-  },
-
-  preview: {
-    width: "100%",
-    height: "100%",
-    minHeight: "230px",
-    objectFit: "cover",
-    borderRadius: "14px",
-  },
-
-  galleryUploadBox: {
-    border: "1px solid #e2e8f0",
-    borderRadius: "16px",
-    padding: "18px",
-    background: "#f8fafc",
-  },
-
-  helpText: {
-    marginTop: 0,
-    color: "#64748b",
-  },
-
-  galleryDropZone: {
-    minHeight: "160px",
-    border: "2px dashed #9bb8dd",
-    borderRadius: "16px",
-    background: "#ffffff",
-    display: "grid",
-    placeItems: "center",
-    textAlign: "center",
-    gap: "8px",
-    cursor: "pointer",
-    color: "#334155",
-  },
-
-  galleryCounter: {
-    marginTop: "14px",
-    color: "#64748b",
-  },
-
-  galleryGrid: {
-    marginTop: "18px",
-    display: "grid",
-    gridTemplateColumns: "repeat(5,1fr)",
-    gap: "12px",
-  },
-
-  galleryItem: {
-    background: "white",
-    borderRadius: "14px",
-    padding: "10px",
-    display: "grid",
-    gap: "8px",
-    border: "1px solid #e2e8f0",
-  },
-
-  galleryImage: {
-    width: "100%",
-    height: "120px",
-    objectFit: "cover",
-    borderRadius: "10px",
-  },
-
-  emptyGallery: {
-    gridColumn: "1 / -1",
-    height: "120px",
-    borderRadius: "14px",
-    background: "#e2e8f0",
-    display: "grid",
-    placeItems: "center",
-    color: "#64748b",
-  },
-
-  deleteButton: {
-    border: "none",
-    background: "#dc2626",
-    color: "white",
-    padding: "8px",
-    borderRadius: "10px",
-    cursor: "pointer",
-    fontWeight: 700,
-  },
-
-  button: {
-    marginTop: "28px",
-    border: "none",
-    background: "#1167b2",
-    color: "white",
-    padding: "14px 24px",
-    borderRadius: "12px",
-    cursor: "pointer",
-    fontWeight: 700,
-  },
-
-  secondaryButton: {
-    border: "none",
-    background: "#e2e8f0",
-    color: "#0f172a",
-    padding: "12px 18px",
-    borderRadius: "12px",
-    cursor: "pointer",
-    fontWeight: 700,
-  },
-};

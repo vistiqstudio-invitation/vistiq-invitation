@@ -1,43 +1,38 @@
 "use client";
 
+import Reveal from "@/components/Reveal";
+import type { InvitationData } from "@/types/invitation";
 import styles from "./style.module.css";
 
-type Props = {
-  invitation: any;
-};
-
-export default function Hero({ invitation }: Props) {
+export default function Hero({ invitation }: { invitation: InvitationData }) {
   return (
-    <section className={styles.hero}>
-      <div className={styles.heroContainer}>
-        <p className={styles.sectionLabel}>
-          Assalamu'alaikum Warahmatullahi Wabarakatuh
-        </p>
+    <div className={styles.hero}>
+      <Reveal>
+        <p className={styles.heroLabel}>Assalamu'alaikum Warahmatullahi Wabarakatuh</p>
 
         <h2 className={styles.heroTitle}>
           Dengan memohon rahmat dan ridho Allah SWT, kami bermaksud
-          menyelenggarakan acara pernikahan putra-putri kami.
+          menyelenggarakan pernikahan putra-putri kami,{" "}
+          {invitation.groom.name} &amp; {invitation.bride.name}.
         </h2>
 
         <p className={styles.heroDesc}>
           Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila
-          Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu kepada
-          kedua mempelai.
+          Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu
+          kepada kedua mempelai.
         </p>
+      </Reveal>
 
-        <div className={styles.heroDivider}></div>
-
+      <Reveal delay={0.15}>
         <p className={styles.heroVerse}>
           "Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan
           untukmu pasangan hidup dari jenismu sendiri supaya kamu mendapat
           ketenangan hati padanya, dan dijadikan-Nya di antaramu rasa kasih
-          sayang."
+          dan sayang."
         </p>
 
-        <span className={styles.heroVerseSource}>
-          QS. Ar-Rum : 21
-        </span>
-      </div>
-    </section>
+        <span className={styles.heroVerseSource}>QS. Ar-Rum : 21</span>
+      </Reveal>
+    </div>
   );
 }

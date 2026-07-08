@@ -1,40 +1,49 @@
-import LuxuryGold from "@/themes/luxury-gold/LuxuryGold";
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { getInvitationBySlug } from "@/lib/invitation";
+import { themeRegistry } from "@/lib/theme";
 
-export default async function InvitationPage({
-  params,
-}: {
+type Props = {
   params: Promise<{ slug: string }>;
-}) {
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
+  const invitation = await getInvitationBySlug(slug);
 
-  // Nanti ini diganti Supabase
-  const invitation = {
-    slug,
+  if (!invitation) {
+    return { title: "Undangan Tidak Ditemukan | Vistiq Invitation" };
+  }
 
-    groom_name: "Rizky Pratama",
-    bride_name: "Nabila Putri",
+  const title = `${invitation.groom.name} & ${invitation.bride.name} | Wedding Invitation`;
+  const description = `Undangan pernikahan ${invitation.groom.name} & ${invitation.bride.name}. Kami mengundang Bapak/Ibu/Saudara/i untuk turut hadir dan memberikan doa restu.`;
 
-    story:
-      "Kami dipertemukan dalam perjalanan yang indah hingga akhirnya memutuskan menikah.",
-
-    akad_date: "20 September 2026",
-    akad_time: "08.00 WIB",
-
-    resepsi_date: "20 September 2026",
-    resepsi_time: "11.00 WIB",
-
-    location: "Grand Ballroom Vistiq",
-
-    maps: "https://maps.google.com",
-
-    gallery: [],
-
-    video: "",
-
-    bank_name: "BCA",
-    bank_number: "123456789",
-    bank_holder: "Rizky Pratama",
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      images: invitation.coverImage ? [invitation.coverImage] : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: invitation.coverImage ? [invitation.coverImage] : undefined,
+    },
   };
+}
 
-  return <LuxuryGold invitation={invitation} />;
+export default async function InvitationPage({ params }: Props) {
+  const { slug } = await params;
+  const invitation = await getInvitationBySlug(slug);
+
+  if (!invitation || invitation.status === "inactive") {
+    notFound();
+  }
+
+  const Theme = themeRegistry[invitation.theme] || themeRegistry["luxury-gold"];
+
+  return <Theme invitation={invitation} />;
 }

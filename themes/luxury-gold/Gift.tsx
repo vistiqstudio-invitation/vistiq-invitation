@@ -1,37 +1,50 @@
 "use client";
 
+import { useState } from "react";
+import Reveal from "@/components/Reveal";
+import type { InvitationData } from "@/types/invitation";
 import styles from "./style.module.css";
 
-type Props = {
-  invitation: any;
-};
+export default function Gift({ invitation }: { invitation: InvitationData }) {
+  const [copied, setCopied] = useState(false);
 
-export default function Gift({ invitation }: Props) {
+  if (!invitation.gift) return null;
+
+  const { bankName, accountNumber, accountName } = invitation.gift;
+
+  const copyNumber = async () => {
+    if (!accountNumber) return;
+    await navigator.clipboard.writeText(accountNumber);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
-    <section className={styles.section}>
+    <div className={styles.section}>
+      <Reveal>
+        <p className={styles.eyebrow}>Wedding Gift</p>
+        <h2 className={styles.title}>Tanda Kasih</h2>
+        <div className={styles.ornament}><span className={styles.ornamentMark} /></div>
+      </Reveal>
 
-      <p className={styles.sectionLabel}>
-        Wedding Gift
-      </p>
+      <Reveal delay={0.1}>
+        <div className={styles.giftCard}>
+          {bankName && <h3 className={styles.giftBank}>{bankName}</h3>}
+          {accountNumber && (
+            <p className={styles.giftNumber}>{accountNumber}</p>
+          )}
+          {accountName && <p className={styles.giftName}>a.n {accountName}</p>}
 
-      <h2 className={styles.sectionTitle}>
-        Tanda Kasih
-      </h2>
-
-      <div className={styles.card}>
-
-        <h3>{invitation?.bank_name || "BCA"}</h3>
-
-        <p>
-          {invitation?.bank_account || "1234567890"}
-        </p>
-
-        <p>
-          a.n {invitation?.bank_holder || "Rizky Pratama"}
-        </p>
-
-      </div>
-
-    </section>
+          {accountNumber && (
+            <button
+              className={`${styles.button} ${styles.solid}`}
+              onClick={copyNumber}
+            >
+              {copied ? "Tersalin" : "Salin Nomor Rekening"}
+            </button>
+          )}
+        </div>
+      </Reveal>
+    </div>
   );
 }

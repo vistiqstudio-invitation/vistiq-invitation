@@ -1,29 +1,83 @@
 import LuxuryGold from "@/themes/luxury-gold/LuxuryGold";
+import type { InvitationData } from "@/types/invitation";
 
-const invitation = {
-  groom_name: "Rizky Pratama",
-  bride_name: "Nabila Putri",
+const invitation: InvitationData = {
+  id: 0,
+  slug: "demo",
+  theme: "luxury-gold",
+  status: "active",
 
-  story:
-    "Kami dipertemukan dalam sebuah perjalanan yang indah hingga akhirnya memutuskan untuk menikah.",
+  coverImage: "/themes/luxury-gold/cover.png",
+  musicUrl: "/music/wedding2.mp3",
+  videoUrl: null,
 
-  akad_date: "20 September 2026",
-  akad_time: "08.00 WIB",
+  mapsUrl: "https://maps.google.com",
+  mapsEmbedUrl: null,
 
-  resepsi_date: "20 September 2026",
-  resepsi_time: "11.00 WIB",
+  groom: {
+    name: "Rizky Pratama",
+    parents: "Bapak Yusuf & Ibu Fatimah",
+    photo: "/themes/luxury-gold/groom.png",
+    instagram: null,
+  },
 
-  location: "Grand Ballroom Vistiq",
+  bride: {
+    name: "Nabila Putri",
+    parents: "Bapak Ahmad & Ibu Siti",
+    photo: "/themes/luxury-gold/bride.png",
+    instagram: null,
+  },
 
-  maps: "https://maps.google.com",
+  story: [
+    {
+      year: "2021",
+      title: "Pertama Bertemu",
+      description:
+        "Kami dipertemukan dalam sebuah kesempatan yang tidak pernah kami sangka sebelumnya.",
+    },
+    {
+      year: "2023",
+      title: "Menjalin Hubungan",
+      description:
+        "Setelah saling mengenal lebih dekat, kami memutuskan untuk berjalan bersama.",
+    },
+    {
+      year: "2026",
+      title: "Menuju Pernikahan",
+      description:
+        "Dengan restu kedua orang tua, kami memutuskan mengikat janji suci pernikahan.",
+    },
+  ],
 
-  gallery: [],
+  events: [
+    {
+      name: "Akad Nikah",
+      date: "Minggu, 20 September 2026",
+      time: "08.00 WIB",
+      location: "Gedung Serbaguna Vistiq, Jakarta",
+    },
+    {
+      name: "Resepsi",
+      date: "Minggu, 20 September 2026",
+      time: "11.00 WIB",
+      location: "Gedung Serbaguna Vistiq, Jakarta",
+    },
+  ],
 
-  video: "",
+  gallery: [
+    "/gallery/1.jpg",
+    "/gallery/2.jpg",
+    "/gallery/3.jpg",
+    "/gallery/4.jpg",
+    "/gallery/5.jpg",
+    "/gallery/6.jpg",
+  ],
 
-  bank_name: "BCA",
-  bank_number: "123456789",
-  bank_holder: "Rizky Pratama",
+  gift: {
+    bankName: "BCA",
+    accountNumber: "1234567890",
+    accountName: "Rizky Pratama",
+  },
 };
 
 export default function DemoPage() {

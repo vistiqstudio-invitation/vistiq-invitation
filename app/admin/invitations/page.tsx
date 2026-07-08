@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
+import styles from "@/styles/dashboard.module.css";
 
 type Invitation = {
   id: string;
@@ -17,11 +19,9 @@ type Invitation = {
   created_at: string;
 };
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
-const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
-
 export default function InvitationsPage() {
   const router = useRouter();
+  const supabase = createClient();
 
   const [invitations, setInvitations] = useState<Invitation[]>([]);
   const [loading, setLoading] = useState(true);
@@ -38,40 +38,48 @@ export default function InvitationsPage() {
     status: "active",
   });
 
-  const headers = {
-    apikey: SUPABASE_ANON_KEY,
-    Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
-    "Content-Type": "application/json",
-  };
-
   const fetchInvitations = async () => {
-    const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/invitations?select=*&order=created_at.desc`,
-      { headers }
-    );
+    const { data, error } = await supabase
+      .from("invitations")
+      .select("*")
+      .order("created_at", { ascending: false });
 
-    const result = await res.json();
+    if (error) {
+      console.error(error);
+    } else {
+      setInvitations(data ?? []);
+    }
 
-    setInvitations(Array.isArray(result) ? result : []);
     setLoading(false);
   };
 
   useEffect(() => {
-    const savedUser = localStorage.getItem("vistiq_user");
+    const loadUser = async () => {
+      const {
+        data: { user: authUser },
+      } = await supabase.auth.getUser();
 
-    if (!savedUser) {
-      router.push("/admin-login");
-      return;
-    }
+      if (!authUser) {
+        router.push("/login");
+        return;
+      }
 
-    const user = JSON.parse(savedUser);
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", authUser.id)
+        .single();
 
-    if (user.role !== "owner") {
-      router.push("/admin-login");
-      return;
-    }
+      if (!profile || profile.role !== "owner") {
+        router.push("/login");
+        return;
+      }
 
-    fetchInvitations();
+      fetchInvitations();
+    };
+
+    loadUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
   const makeSlug = (text: string) => {
@@ -107,16 +115,9 @@ export default function InvitationsPage() {
       event_date: form.event_date || null,
     };
 
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/invitations`, {
-      method: "POST",
-      headers: {
-        ...headers,
-        Prefer: "return=representation",
-      },
-      body: JSON.stringify(payload),
-    });
+    const { error } = await supabase.from("invitations").insert(payload);
 
-    if (!res.ok) {
+    if (error) {
       alert("Gagal membuat undangan. Pastikan slug belum pernah dipakai.");
       return;
     }
@@ -138,12 +139,7 @@ export default function InvitationsPage() {
   };
 
   const updateStatus = async (id: string, status: string) => {
-    await fetch(`${SUPABASE_URL}/rest/v1/invitations?id=eq.${id}`, {
-      method: "PATCH",
-      headers,
-      body: JSON.stringify({ status }),
-    });
-
+    await supabase.from("invitations").update({ status }).eq("id", id);
     fetchInvitations();
   };
 
@@ -157,73 +153,75 @@ export default function InvitationsPage() {
     window.open(`/${slug}?to=Bapak%20Ahmad`, "_blank");
   };
 
-  const logout = () => {
-    localStorage.removeItem("vistiq_user");
-    localStorage.removeItem("vistiq_admin");
-    router.push("/admin-login");
+  const logout = async () => {
+    await supabase.auth.signOut();
+    router.push("/login");
   };
 
   return (
-    <main style={styles.page}>
-      <aside style={styles.sidebar}>
-        <div>
-          <p style={styles.brandSmall}>VISTIQ</p>
-          <h2 style={styles.brand}>Invitation</h2>
+    <main className={styles.page}>
+      <aside className={styles.sidebar}>
+        <div className={styles.brandBlock}>
+          <p className={styles.brandSmall}>VISTIQ</p>
+          <h2 className={styles.brand}>Invitation</h2>
         </div>
 
-        <nav style={styles.menu}>
-          <button onClick={() => router.push("/admin")} style={styles.menuButton}>
+        <nav className={styles.menu}>
+          <button
+            onClick={() => router.push("/admin")}
+            className={styles.menuButton}
+          >
             Dashboard
           </button>
 
           <button
             onClick={() => router.push("/admin/clients")}
-            style={styles.menuButton}
+            className={styles.menuButton}
           >
             Client
           </button>
 
           <button
             onClick={() => router.push("/admin/resellers")}
-            style={styles.menuButton}
+            className={styles.menuButton}
           >
             Reseller
           </button>
 
-          <button style={styles.menuActive}>Undangan</button>
+          <button className={styles.menuActive}>Undangan</button>
         </nav>
 
-        <button onClick={logout} style={styles.logoutButton}>
+        <button onClick={logout} className={styles.logoutButton}>
           Logout
         </button>
       </aside>
 
-      <section style={styles.content}>
-        <header style={styles.header}>
+      <section className={styles.content}>
+        <header className={styles.header}>
           <div>
-            <p style={styles.label}>OWNER MENU</p>
-            <h1 style={styles.title}>Data Undangan</h1>
-            <p style={styles.subtitle}>
+            <p className={styles.label}>OWNER MENU</p>
+            <h1 className={styles.title}>Data Undangan</h1>
+            <p className={styles.subtitle}>
               Kelola undangan digital client dan generate link undangan.
             </p>
           </div>
 
-          <button onClick={fetchInvitations} style={styles.button}>
+          <button onClick={fetchInvitations} className={styles.button}>
             Refresh
           </button>
         </header>
 
-        <section style={styles.formCard}>
-          <h2 style={styles.sectionTitle}>Tambah Undangan Baru</h2>
+        <section className={styles.formCard}>
+          <h2 className={styles.sectionTitle}>Tambah Undangan Baru</h2>
 
-          <div style={styles.formGrid}>
+          <div className={styles.formGrid}>
             <input
               placeholder="Nama Mempelai Pria"
               value={form.groom_name}
               onChange={(e) =>
                 setForm({ ...form, groom_name: e.target.value })
               }
-              style={styles.input}
+              className={styles.input}
             />
 
             <input
@@ -232,18 +230,18 @@ export default function InvitationsPage() {
               onChange={(e) =>
                 setForm({ ...form, bride_name: e.target.value })
               }
-              style={styles.input}
+              className={styles.input}
             />
 
-            <div style={styles.slugRow}>
+            <div className={styles.slugRow}>
               <input
                 placeholder="Slug, contoh: rizky-nabila"
                 value={form.slug}
                 onChange={(e) => setForm({ ...form, slug: e.target.value })}
-                style={styles.input}
+                className={styles.input}
               />
 
-              <button onClick={autoSlug} style={styles.smallButton}>
+              <button onClick={autoSlug} className={styles.smallButton}>
                 Auto
               </button>
             </div>
@@ -251,7 +249,7 @@ export default function InvitationsPage() {
             <select
               value={form.theme}
               onChange={(e) => setForm({ ...form, theme: e.target.value })}
-              style={styles.input}
+              className={styles.input}
             >
               <option value="luxury-gold">Luxury Gold</option>
               <option value="luxury-white">Luxury White</option>
@@ -266,13 +264,13 @@ export default function InvitationsPage() {
               onChange={(e) =>
                 setForm({ ...form, event_date: e.target.value })
               }
-              style={styles.input}
+              className={styles.input}
             />
 
             <select
               value={form.status}
               onChange={(e) => setForm({ ...form, status: e.target.value })}
-              style={styles.input}
+              className={styles.input}
             >
               <option value="active">Active</option>
               <option value="draft">Draft</option>
@@ -285,7 +283,7 @@ export default function InvitationsPage() {
               onChange={(e) =>
                 setForm({ ...form, akad_location: e.target.value })
               }
-              style={styles.input}
+              className={styles.input}
             />
 
             <input
@@ -294,36 +292,34 @@ export default function InvitationsPage() {
               onChange={(e) =>
                 setForm({ ...form, reception_location: e.target.value })
               }
-              style={styles.input}
+              className={styles.input}
             />
 
             <input
               placeholder="Google Maps URL"
               value={form.maps_url}
               onChange={(e) => setForm({ ...form, maps_url: e.target.value })}
-              style={{
-                ...styles.input,
-                gridColumn: "1 / -1",
-              }}
+              className={styles.input}
+              style={{ gridColumn: "1 / -1" }}
             />
           </div>
 
-          <button onClick={addInvitation} style={styles.button}>
+          <button onClick={addInvitation} className={styles.button}>
             Simpan Undangan
           </button>
         </section>
 
-        <section style={styles.tableWrap}>
-          <h2 style={styles.sectionTitle}>Daftar Undangan</h2>
+        <section className={styles.tableWrap}>
+          <h2 className={styles.sectionTitle}>Daftar Undangan</h2>
 
           {loading ? (
             <p>Memuat data...</p>
           ) : invitations.length === 0 ? (
             <p>Belum ada undangan.</p>
           ) : (
-            <div style={styles.table}>
+            <div className={styles.table}>
               {invitations.map((item) => (
-                <div key={item.id} style={styles.row}>
+                <div key={item.id} className={styles.row}>
                   <div>
                     <strong>
                       {item.groom_name || "-"} & {item.bride_name || "-"}
@@ -331,29 +327,29 @@ export default function InvitationsPage() {
                     <p>/{item.slug}</p>
                   </div>
 
-                  <span style={styles.packageBadge}>{item.theme}</span>
+                  <span className={styles.packageBadge}>{item.theme}</span>
 
                   <select
                     value={item.status || "active"}
                     onChange={(e) => updateStatus(item.id, e.target.value)}
-                    style={styles.statusSelect}
+                    className={styles.statusSelect}
                   >
                     <option value="active">Active</option>
                     <option value="draft">Draft</option>
                     <option value="inactive">Inactive</option>
                   </select>
 
-                  <div style={styles.actions}>
+                  <div className={styles.actions}>
                     <button
                       onClick={() => openPreview(item.slug)}
-                      style={styles.miniButton}
+                      className={styles.miniButton}
                     >
                       Preview
                     </button>
 
                     <button
                       onClick={() => copyLink(item.slug)}
-                      style={styles.miniButtonGreen}
+                      className={styles.miniButtonGreen}
                     >
                       Copy
                     </button>
@@ -367,231 +363,3 @@ export default function InvitationsPage() {
     </main>
   );
 }
-
-const styles: Record<string, React.CSSProperties> = {
-  page: {
-    minHeight: "100vh",
-    display: "grid",
-    gridTemplateColumns: "260px 1fr",
-    background: "#f6f8fb",
-    color: "#0f172a",
-    fontFamily: "Arial, Helvetica, sans-serif",
-  },
-
-  sidebar: {
-    minHeight: "100vh",
-    background: "#0f172a",
-    color: "white",
-    padding: "28px",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    position: "sticky",
-    top: 0,
-  },
-
-  brandSmall: {
-    color: "#60a5fa",
-    fontWeight: 900,
-    letterSpacing: "3px",
-    fontSize: "12px",
-    margin: 0,
-  },
-
-  brand: {
-    margin: "8px 0 0",
-  },
-
-  menu: {
-    display: "grid",
-    gap: "10px",
-    marginTop: "40px",
-  },
-
-  menuActive: {
-    border: "none",
-    background: "#1167b2",
-    color: "white",
-    padding: "13px 16px",
-    borderRadius: "14px",
-    textAlign: "left",
-    cursor: "pointer",
-    fontWeight: 700,
-  },
-
-  menuButton: {
-    border: "none",
-    background: "rgba(255,255,255,.08)",
-    color: "#cbd5e1",
-    padding: "13px 16px",
-    borderRadius: "14px",
-    textAlign: "left",
-    cursor: "pointer",
-    fontWeight: 700,
-  },
-
-  logoutButton: {
-    border: "none",
-    background: "#dc2626",
-    color: "white",
-    padding: "13px 16px",
-    borderRadius: "14px",
-    cursor: "pointer",
-    fontWeight: 700,
-  },
-
-  content: {
-    padding: "34px",
-  },
-
-  header: {
-    maxWidth: "1180px",
-    margin: "0 auto 28px",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    gap: "20px",
-  },
-
-  label: {
-    color: "#1167b2",
-    fontWeight: 800,
-    letterSpacing: "2px",
-    textTransform: "uppercase",
-    fontSize: "12px",
-    marginBottom: "10px",
-  },
-
-  title: {
-    fontSize: "42px",
-    margin: 0,
-  },
-
-  subtitle: {
-    color: "#64748b",
-  },
-
-  button: {
-    border: "none",
-    background: "#1167b2",
-    color: "white",
-    padding: "12px 22px",
-    borderRadius: "999px",
-    cursor: "pointer",
-    fontWeight: 700,
-    marginTop: "18px",
-  },
-
-  smallButton: {
-    border: "none",
-    background: "#1167b2",
-    color: "white",
-    padding: "12px 18px",
-    borderRadius: "12px",
-    cursor: "pointer",
-    fontWeight: 700,
-  },
-
-  formCard: {
-    maxWidth: "1180px",
-    margin: "0 auto 30px",
-    background: "white",
-    padding: "24px",
-    borderRadius: "20px",
-    boxShadow: "0 12px 30px rgba(0,0,0,.05)",
-  },
-
-  sectionTitle: {
-    marginBottom: "20px",
-  },
-
-  formGrid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(2,1fr)",
-    gap: "14px",
-  },
-
-  slugRow: {
-    display: "grid",
-    gridTemplateColumns: "1fr 80px",
-    gap: "10px",
-  },
-
-  input: {
-    padding: "14px 16px",
-    borderRadius: "12px",
-    border: "1px solid #cbd5e1",
-    fontSize: "15px",
-    outline: "none",
-    background: "white",
-    color: "#0f172a",
-  },
-
-  tableWrap: {
-    maxWidth: "1180px",
-    margin: "0 auto",
-    background: "white",
-    padding: "24px",
-    borderRadius: "20px",
-    boxShadow: "0 12px 30px rgba(0,0,0,.05)",
-  },
-
-  table: {
-    display: "grid",
-    gap: "12px",
-  },
-
-  row: {
-    display: "grid",
-    gridTemplateColumns: "1.3fr 180px 160px 220px",
-    gap: "18px",
-    alignItems: "center",
-    padding: "18px",
-    background: "#f8fafc",
-    borderRadius: "16px",
-  },
-
-  packageBadge: {
-    background: "#e0f2fe",
-    color: "#075985",
-    padding: "8px 14px",
-    borderRadius: "999px",
-    width: "fit-content",
-    fontWeight: 700,
-    fontSize: "13px",
-  },
-
-  statusSelect: {
-    padding: "10px 12px",
-    borderRadius: "12px",
-    border: "1px solid #cbd5e1",
-    background: "white",
-    color: "#0f172a",
-  },
-
-  actions: {
-    display: "flex",
-    gap: "8px",
-    flexWrap: "wrap",
-  },
-
-  miniButton: {
-    border: "none",
-    background: "#1167b2",
-    color: "white",
-    padding: "10px 14px",
-    borderRadius: "999px",
-    cursor: "pointer",
-    fontWeight: 700,
-  },
-
-  miniButtonGreen: {
-    border: "none",
-    background: "#16a34a",
-    color: "white",
-    padding: "10px 14px",
-    borderRadius: "999px",
-    cursor: "pointer",
-    fontWeight: 700,
-  },
-};
