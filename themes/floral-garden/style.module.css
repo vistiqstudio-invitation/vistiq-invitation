@@ -14,6 +14,22 @@
   --font-body: var(--font-inter), "Inter", sans-serif;
 
   background: var(--cream);
+  background-image: radial-gradient(
+      ellipse 560px 420px at 8% 6%,
+      rgba(232, 180, 184, 0.16),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 520px 420px at 94% 28%,
+      rgba(138, 154, 126, 0.14),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 560px 460px at 14% 82%,
+      rgba(201, 161, 90, 0.1),
+      transparent 60%
+    );
+  background-attachment: fixed;
   color: var(--ink);
   font-family: var(--font-body);
   overflow-x: hidden;
@@ -185,9 +201,11 @@
   position: relative;
   z-index: 2;
   width: min(92%, 560px);
-  padding: 20px 32px 44px;
+  padding: 28px 32px 44px;
   text-align: center;
   margin-bottom: clamp(24px, 6vh, 56px);
+  border-top: 1px solid var(--gold);
+  border-bottom: 1px solid var(--gold);
 }
 
 .coverTop {
@@ -937,6 +955,30 @@
   bottom: 12px;
   left: 12px;
   transform: rotate(180deg);
+}
+
+.sprayTopLeft {
+  top: 8px;
+  left: 8px;
+}
+
+.sprayBottomRight {
+  bottom: 8px;
+  right: 8px;
+  transform: rotate(180deg) scaleX(-1);
+}
+
+.spraySmall {
+  width: 56px;
+  height: 64px;
+  opacity: 0.8;
+}
+
+@media (max-width: 640px) {
+  .spraySmall {
+    width: 40px;
+    height: 46px;
+  }
 }
 
 /* ---------- Floating blossoms ---------- */

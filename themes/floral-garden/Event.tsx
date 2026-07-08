@@ -2,11 +2,19 @@
 
 import Reveal from "@/components/Reveal";
 import type { InvitationData } from "@/types/invitation";
+import FloralSpray from "./FloralSpray";
 import styles from "./style.module.css";
 
 export default function Event({ invitation }: { invitation: InvitationData }) {
   return (
     <div className={styles.section}>
+      <FloralSpray
+        className={`${styles.spray} ${styles.spraySmall} ${styles.sprayTopLeft}`}
+      />
+      <FloralSpray
+        className={`${styles.spray} ${styles.spraySmall} ${styles.sprayBottomRight}`}
+      />
+
       <Reveal>
         <p className={styles.eyebrow}>Wedding Event</p>
         <h2 className={styles.title}>Save The Date</h2>

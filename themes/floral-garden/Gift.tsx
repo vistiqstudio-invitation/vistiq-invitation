@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Reveal from "@/components/Reveal";
 import type { GiftAccount, InvitationData } from "@/types/invitation";
+import FloralSpray from "./FloralSpray";
 import styles from "./style.module.css";
 
 function GiftCard({ account }: { account: GiftAccount }) {
@@ -40,6 +41,13 @@ export default function Gift({ invitation }: { invitation: InvitationData }) {
 
   return (
     <div className={styles.section}>
+      <FloralSpray
+        className={`${styles.spray} ${styles.spraySmall} ${styles.sprayTopLeft}`}
+      />
+      <FloralSpray
+        className={`${styles.spray} ${styles.spraySmall} ${styles.sprayBottomRight}`}
+      />
+
       <Reveal>
         <p className={styles.eyebrow}>Wedding Gift</p>
         <h2 className={styles.title}>Tanda Kasih</h2>

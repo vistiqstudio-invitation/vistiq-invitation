@@ -34,6 +34,7 @@ export default function Cover({ invitation }: { invitation: InvitationData }) {
       <div className={styles.coverOverlay} />
 
       <FloralSpray className={`${styles.spray} ${styles.sprayBottomLeft}`} />
+      <FloralSpray className={`${styles.spray} ${styles.sprayTopRight}`} />
 
       <motion.div
         className={styles.coverContent}

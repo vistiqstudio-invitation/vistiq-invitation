@@ -2,6 +2,7 @@
 
 import Reveal from "@/components/Reveal";
 import type { InvitationData } from "@/types/invitation";
+import FloralSpray from "./FloralSpray";
 import styles from "./style.module.css";
 
 function Person({
@@ -53,6 +54,13 @@ function Person({
 export default function Couple({ invitation }: { invitation: InvitationData }) {
   return (
     <div className={styles.section}>
+      <FloralSpray
+        className={`${styles.spray} ${styles.spraySmall} ${styles.sprayTopLeft}`}
+      />
+      <FloralSpray
+        className={`${styles.spray} ${styles.spraySmall} ${styles.sprayBottomRight}`}
+      />
+
       <Reveal>
         <p className={styles.eyebrow}>The Bride &amp; Groom</p>
         <h2 className={styles.title}>Bismillahirrahmanirrahim</h2>

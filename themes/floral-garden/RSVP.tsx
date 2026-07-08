@@ -4,6 +4,7 @@ import { useState } from "react";
 import Reveal from "@/components/Reveal";
 import { useRsvpWishes, type Attendance } from "@/hooks/useRsvpWishes";
 import type { InvitationData } from "@/types/invitation";
+import FloralSpray from "./FloralSpray";
 import styles from "./style.module.css";
 
 export default function RSVP({ invitation }: { invitation: InvitationData }) {
@@ -39,6 +40,13 @@ export default function RSVP({ invitation }: { invitation: InvitationData }) {
 
   return (
     <div className={styles.section}>
+      <FloralSpray
+        className={`${styles.spray} ${styles.spraySmall} ${styles.sprayTopLeft}`}
+      />
+      <FloralSpray
+        className={`${styles.spray} ${styles.spraySmall} ${styles.sprayBottomRight}`}
+      />
+
       <Reveal>
         <p className={styles.eyebrow}>RSVP</p>
         <h2 className={styles.title}>Konfirmasi Kehadiran</h2>
