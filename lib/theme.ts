@@ -4,6 +4,7 @@ import MinimalWhite from "@/themes/minimal-white/MinimalWhite";
 import IslamicGreen from "@/themes/islamic-green/IslamicGreen";
 import RoyalBlack from "@/themes/royal-black/RoyalBlack";
 import FloralGarden from "@/themes/floral-garden/FloralGarden";
+import EmeraldLantern from "@/themes/emerald-lantern/EmeraldLantern";
 
 export const themeRegistry: Record<
   string,
@@ -14,6 +15,7 @@ export const themeRegistry: Record<
   "islamic-green": IslamicGreen,
   "royal-black": RoyalBlack,
   "floral-garden": FloralGarden,
+  "emerald-lantern": EmeraldLantern,
 };
 
 export type ThemeMeta = {
@@ -53,5 +55,11 @@ export const themeList: ThemeMeta[] = [
     label: "Floral Garden",
     description: "Krem lembut, sage & blush, motif bunga natural",
     swatch: ["#fdf9f3", "#8a9a7e"],
+  },
+  {
+    key: "emerald-lantern",
+    label: "Emerald Lantern",
+    description: "Nuansa malam taman, awan lembut & lampion hijau jade",
+    swatch: ["#fbfaf6", "#5b8266"],
   },
 ];
