@@ -239,6 +239,7 @@ export default function InvitationsPage() {
               <option value="royal-black">Royal Black</option>
               <option value="floral-garden">Floral Garden</option>
               <option value="emerald-lantern">Emerald Lantern</option>
+              <option value="sakura">Sakura</option>
             </select>
 
             <input

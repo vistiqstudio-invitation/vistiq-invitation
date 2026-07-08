@@ -5,6 +5,7 @@ import IslamicGreen from "@/themes/islamic-green/IslamicGreen";
 import RoyalBlack from "@/themes/royal-black/RoyalBlack";
 import FloralGarden from "@/themes/floral-garden/FloralGarden";
 import EmeraldLantern from "@/themes/emerald-lantern/EmeraldLantern";
+import Sakura from "@/themes/sakura/Sakura";
 
 export const themeRegistry: Record<
   string,
@@ -16,6 +17,7 @@ export const themeRegistry: Record<
   "royal-black": RoyalBlack,
   "floral-garden": FloralGarden,
   "emerald-lantern": EmeraldLantern,
+  sakura: Sakura,
 };
 
 export type ThemeMeta = {
@@ -61,5 +63,11 @@ export const themeList: ThemeMeta[] = [
     label: "Emerald Lantern",
     description: "Nuansa malam taman, awan lembut & lampion hijau jade",
     swatch: ["#fbfaf6", "#5b8266"],
+  },
+  {
+    key: "sakura",
+    label: "Sakura",
+    description: "Pink lembut, bunga sakura melayang, soft & feminin",
+    swatch: ["#fffaf9", "#c2607a"],
   },
 ];
