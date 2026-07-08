@@ -234,10 +234,7 @@ export default function InvitationsPage() {
               className={styles.input}
             >
               <option value="luxury-gold">Luxury Gold</option>
-              <option value="luxury-white">Luxury White</option>
-              <option value="royal-black">Royal Black</option>
-              <option value="islamic-emerald">Islamic Emerald</option>
-              <option value="floral-garden">Floral Garden</option>
+              <option value="minimal-white">Minimal White</option>
             </select>
 
             <input

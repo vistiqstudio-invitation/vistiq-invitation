@@ -7,6 +7,7 @@ export type StoryItem = {
 export type EventItem = {
   name: string;
   date: string;
+  rawDate: string | null;
   time: string;
   location: string;
 };

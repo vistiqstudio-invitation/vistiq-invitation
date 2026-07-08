@@ -32,6 +32,20 @@ function formatDate(value: string | null) {
   }).format(date);
 }
 
+function toRawDate(value: string | null, time: string) {
+  if (!value) return null;
+
+  const isoMatch = value.match(/^\d{4}-\d{2}-\d{2}/);
+  if (!isoMatch) return null;
+
+  const timeMatch = time.match(/(\d{1,2})[.:](\d{2})/);
+  const [hours, minutes] = timeMatch
+    ? [timeMatch[1].padStart(2, "0"), timeMatch[2]]
+    : ["00", "00"];
+
+  return `${isoMatch[0]}T${hours}:${minutes}:00`;
+}
+
 function normalizeInvitation(raw: Record<string, any>): InvitationData {
   const story: StoryItem[] = [1, 2, 3]
     .map((n) => ({
@@ -48,6 +62,7 @@ function normalizeInvitation(raw: Record<string, any>): InvitationData {
     events.push({
       name: "Akad Nikah",
       date: formatDate(akadDate),
+      rawDate: toRawDate(akadDate, raw.akad_time || ""),
       time: raw.akad_time || "",
       location: raw.akad_location || "",
     });
@@ -62,6 +77,7 @@ function normalizeInvitation(raw: Record<string, any>): InvitationData {
     events.push({
       name: "Resepsi",
       date: formatDate(receptionDate),
+      rawDate: toRawDate(receptionDate, raw.reception_time || ""),
       time: raw.reception_time || "",
       location: firstNonEmpty(raw.reception_location, raw.resepsi_location) || "",
     });

@@ -21,10 +21,9 @@ import Wishes from "./Wishes";
 import Footer from "./Footer";
 import MusicPlayer from "./MusicPlayer";
 import FloatingMenu from "./FloatingMenu";
-import Sparkles from "./Sparkles";
 import styles from "./style.module.css";
 
-export default function LuxuryGold({ invitation }: { invitation: InvitationData }) {
+export default function MinimalWhite({ invitation }: { invitation: InvitationData }) {
   const { opened } = useInvitation();
   const [ready, setReady] = useState(false);
 
@@ -43,8 +42,6 @@ export default function LuxuryGold({ invitation }: { invitation: InvitationData 
 
       {ready && opened && (
         <>
-          <Sparkles />
-
           <section id="home">
             <Hero invitation={invitation} />
           </section>

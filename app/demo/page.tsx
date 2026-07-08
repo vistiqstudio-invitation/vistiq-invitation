@@ -53,12 +53,14 @@ const invitation: InvitationData = {
     {
       name: "Akad Nikah",
       date: "Minggu, 20 September 2026",
+      rawDate: "2026-09-20T08:00:00",
       time: "08.00 WIB",
       location: "Gedung Serbaguna Vistiq, Jakarta",
     },
     {
       name: "Resepsi",
       date: "Minggu, 20 September 2026",
+      rawDate: "2026-09-20T11:00:00",
       time: "11.00 WIB",
       location: "Gedung Serbaguna Vistiq, Jakarta",
     },
