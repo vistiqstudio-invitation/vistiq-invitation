@@ -52,6 +52,13 @@
   margin: 0 0 26px;
 }
 
+.titleArabic {
+  font-size: clamp(17px, 4.4vw, 28px);
+  letter-spacing: 0.01em;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
 .ornament {
   display: flex;
   align-items: center;
@@ -327,9 +334,13 @@
   width: 100%;
   max-width: 220px;
   aspect-ratio: 3 / 4;
-  margin: 0 auto 24px;
+  margin: 0 auto 30px;
   overflow: hidden;
   border: 1px solid var(--gold);
+  box-shadow:
+    0 0 0 6px var(--noir),
+    0 0 0 7px var(--gold),
+    0 20px 50px rgba(0, 0, 0, 0.45);
 }
 
 .photoFrame img {

@@ -71,6 +71,13 @@
   margin: 0 0 26px;
 }
 
+.titleArabic {
+  font-size: clamp(17px, 4.4vw, 28px);
+  letter-spacing: 0.01em;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
 .ornament {
   display: flex;
   align-items: center;
@@ -329,11 +336,20 @@
 .photoFrame {
   width: 100%;
   max-width: 220px;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 3 / 3.4;
   margin: 0 auto 24px;
-  border-radius: 140px 140px 20px 20px;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
   overflow: hidden;
-  border: 1px solid var(--gold);
+  position: relative;
+}
+
+.photoFrame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  box-shadow: inset 0 0 0 3px var(--gold);
+  pointer-events: none;
 }
 
 .photoFrame img {

@@ -54,6 +54,13 @@
   margin: 0 0 26px;
 }
 
+.titleArabic {
+  font-size: clamp(17px, 4.4vw, 28px);
+  letter-spacing: 0.01em;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
 .ornament {
   display: flex;
   align-items: center;

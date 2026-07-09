@@ -55,7 +55,7 @@ export default function Couple({ invitation }: { invitation: InvitationData }) {
     <div className={styles.section}>
       <Reveal>
         <p className={styles.eyebrow}>The Bride &amp; Groom</p>
-        <h2 className={styles.title}>Bismillahirrahmanirrahim</h2>
+        <h2 className={`${styles.title} ${styles.titleArabic}`}>Bismillahirrahmanirrahim</h2>
         <div className={styles.ornament}><span className={styles.ornamentMark} /></div>
       </Reveal>
 

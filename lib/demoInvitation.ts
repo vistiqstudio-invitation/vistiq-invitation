@@ -5,13 +5,116 @@ import type { InvitationData } from "@/types/invitation";
 // free-to-use stock photos (Pexels License - free for commercial use, no
 // attribution required); see public/photos/README for sourcing notes.
 const COVER_BY_THEME: Record<string, string> = {
-  "luxury-gold": "/themes/luxury-gold/cover.png",
-  "royal-black": "/themes/luxury-gold/cover.png",
-  "islamic-green": "/themes/luxury-gold/cover.png",
-  "emerald-lantern": "/photos/garden-tree.jpg",
-  "minimal-white": "/photos/garden-carry.jpg",
+  "luxury-gold": "/photos/luxury-bride.jpg",
+  "royal-black": "/photos/black-bride.jpg",
+  "islamic-green": "/photos/green-cover.jpg",
+  "emerald-lantern": "/photos/lantern-cover.jpg",
+  "minimal-white": "/photos/white-cover.jpg",
   "floral-garden": "/photos/garden-tree.jpg",
   sakura: "/photos/garden-carry.jpg",
+  rustic: "/photos/rustic-cover.jpg",
+  bohemian: "/photos/boho-cover.jpg",
+  "modern-elegant": "/photos/modern-bride.jpg",
+};
+
+// Couple portrait photos also vary by theme - the default luxury-gold
+// portraits are dark with a gold ornate frame baked into the image, which
+// clashes with lighter/pastel themes. Themes not listed here fall back to
+// the luxury-gold portraits.
+const GROOM_PHOTO_BY_THEME: Record<string, string> = {
+  sakura: "/photos/sakura-groom.jpg",
+  "luxury-gold": "/photos/luxury-groom.jpg",
+  "islamic-green": "/photos/green-groom.jpg",
+  "royal-black": "/photos/black-groom.jpg",
+  "floral-garden": "/photos/floral-groom.jpg",
+  "emerald-lantern": "/photos/lantern-groom.jpg",
+  "minimal-white": "/photos/white-groom.jpg",
+  rustic: "/photos/rustic-groom.jpg",
+  bohemian: "/photos/boho-groom.jpg",
+  "modern-elegant": "/photos/modern-groom.jpg",
+};
+
+const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
+  sakura: "/photos/sakura-bride.jpg",
+  "luxury-gold": "/photos/luxury-bride.jpg",
+  "islamic-green": "/photos/green-bride.jpg",
+  "royal-black": "/photos/black-bride.jpg",
+  "floral-garden": "/photos/floral-bride.jpg",
+  "emerald-lantern": "/photos/lantern-bride.jpg",
+  "minimal-white": "/photos/white-bride.jpg",
+  rustic: "/photos/rustic-bride.jpg",
+  bohemian: "/photos/boho-bride.jpg",
+  "modern-elegant": "/photos/modern-bride.jpg",
+};
+
+// Gallery photos also vary by theme so the "Our Moments" slider matches each
+// theme's mood instead of showing the same six generic photos everywhere.
+// Themes not listed here fall back to the shared /gallery/*.jpg placeholders.
+const GALLERY_BY_THEME: Record<string, string[]> = {
+  "luxury-gold": [
+    "/photos/luxury-gallery-1.jpg",
+    "/photos/luxury-gallery-2.jpg",
+    "/photos/luxury-gallery-3.jpg",
+    "/photos/luxury-gallery-4.jpg",
+    "/photos/luxury-gallery-5.jpg",
+    "/photos/luxury-gallery-6.jpg",
+  ],
+  "minimal-white": [
+    "/photos/white-gallery-1.jpg",
+    "/photos/white-gallery-2.jpg",
+    "/photos/white-gallery-3.jpg",
+    "/photos/white-gallery-4.jpg",
+    "/photos/white-gallery-5.jpg",
+    "/photos/white-gallery-6.jpg",
+  ],
+  "islamic-green": [
+    "/photos/green-gallery-1.jpg",
+    "/photos/green-gallery-2.jpg",
+    "/photos/green-gallery-3.jpg",
+    "/photos/green-gallery-4.jpg",
+    "/photos/green-gallery-5.jpg",
+    "/photos/green-gallery-6.jpg",
+  ],
+  "royal-black": [
+    "/photos/black-gallery-1.jpg",
+    "/photos/black-gallery-2.jpg",
+    "/photos/black-gallery-3.jpg",
+    "/photos/black-gallery-4.jpg",
+    "/photos/black-gallery-5.jpg",
+    "/photos/black-gallery-6.jpg",
+  ],
+  "floral-garden": [
+    "/photos/floral-gallery-1.jpg",
+    "/photos/floral-gallery-2.jpg",
+    "/photos/floral-gallery-3.jpg",
+    "/photos/floral-gallery-4.jpg",
+    "/photos/floral-gallery-5.jpg",
+    "/photos/floral-gallery-6.jpg",
+  ],
+  "emerald-lantern": [
+    "/photos/lantern-gallery-1.jpg",
+    "/photos/lantern-gallery-2.jpg",
+    "/photos/lantern-gallery-3.jpg",
+    "/photos/lantern-gallery-4.jpg",
+    "/photos/lantern-gallery-5.jpg",
+    "/photos/lantern-gallery-6.jpg",
+  ],
+  sakura: [
+    "/photos/sakura-gallery-1.jpg",
+    "/photos/sakura-gallery-2.jpg",
+    "/photos/sakura-gallery-3.jpg",
+    "/photos/sakura-gallery-4.jpg",
+    "/photos/sakura-gallery-5.jpg",
+    "/photos/sakura-gallery-6.jpg",
+  ],
+  rustic: [
+    "/photos/rustic-gallery-1.jpg",
+    "/photos/rustic-gallery-2.jpg",
+    "/photos/rustic-gallery-3.jpg",
+    "/photos/rustic-gallery-4.jpg",
+    "/photos/rustic-gallery-5.jpg",
+    "/photos/rustic-gallery-6.jpg",
+  ],
 };
 
 // One shared sample invitation used to demo every theme. Only the `theme`,
@@ -35,14 +138,14 @@ export function getDemoInvitation(theme: string): InvitationData {
     groom: {
       name: "Rizky Pratama",
       parents: "Bapak Yusuf & Ibu Fatimah",
-      photo: "/themes/luxury-gold/groom.png",
+      photo: GROOM_PHOTO_BY_THEME[theme] || "/themes/luxury-gold/groom.png",
       instagram: "rizkypratama",
     },
 
     bride: {
       name: "Nabila Putri",
       parents: "Bapak Ahmad & Ibu Siti",
-      photo: "/themes/luxury-gold/bride.png",
+      photo: BRIDE_PHOTO_BY_THEME[theme] || "/themes/luxury-gold/bride.png",
       instagram: "nabilaputri",
     },
 
@@ -84,7 +187,7 @@ export function getDemoInvitation(theme: string): InvitationData {
       },
     ],
 
-    gallery: [
+    gallery: GALLERY_BY_THEME[theme] || [
       "/gallery/1.jpg",
       "/gallery/2.jpg",
       "/gallery/3.jpg",

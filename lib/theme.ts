@@ -6,6 +6,9 @@ import RoyalBlack from "@/themes/royal-black/RoyalBlack";
 import FloralGarden from "@/themes/floral-garden/FloralGarden";
 import EmeraldLantern from "@/themes/emerald-lantern/EmeraldLantern";
 import Sakura from "@/themes/sakura/Sakura";
+import Rustic from "@/themes/rustic/Rustic";
+import Bohemian from "@/themes/bohemian/Bohemian";
+import ModernElegant from "@/themes/modern-elegant/ModernElegant";
 
 export const themeRegistry: Record<
   string,
@@ -18,6 +21,9 @@ export const themeRegistry: Record<
   "floral-garden": FloralGarden,
   "emerald-lantern": EmeraldLantern,
   sakura: Sakura,
+  rustic: Rustic,
+  bohemian: Bohemian,
+  "modern-elegant": ModernElegant,
 };
 
 export type ThemeMeta = {
@@ -69,5 +75,23 @@ export const themeList: ThemeMeta[] = [
     label: "Sakura",
     description: "Pink lembut, bunga sakura melayang, soft & feminin",
     swatch: ["#fffaf9", "#c2607a"],
+  },
+  {
+    key: "rustic",
+    label: "Rustic",
+    description: "Kraft & terracotta, gandum kering, hangat & earthy",
+    swatch: ["#faf3e6", "#c17a54"],
+  },
+  {
+    key: "bohemian",
+    label: "Bohemian",
+    description: "Terracotta & pasir, pampas grass, free-spirited & artsy",
+    swatch: ["#f7ede1", "#b5603a"],
+  },
+  {
+    key: "modern-elegant",
+    label: "Modern Elegant",
+    description: "Split-screen, tipografi bold, layout & animasi editorial modern",
+    swatch: ["#ffffff", "#b5482a"],
   },
 ];
