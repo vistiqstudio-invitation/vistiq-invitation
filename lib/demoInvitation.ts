@@ -15,6 +15,7 @@ const COVER_BY_THEME: Record<string, string> = {
   rustic: "/photos/rustic-cover.jpg",
   bohemian: "/photos/boho-cover.jpg",
   "modern-elegant": "/photos/modern-bride.jpg",
+  "royal-imperial": "/photos/imperial-cover.jpg",
 };
 
 // Couple portrait photos also vary by theme - the default luxury-gold
@@ -32,6 +33,7 @@ const GROOM_PHOTO_BY_THEME: Record<string, string> = {
   rustic: "/photos/rustic-groom.jpg",
   bohemian: "/photos/boho-groom.jpg",
   "modern-elegant": "/photos/modern-groom.jpg",
+  "royal-imperial": "/photos/imperial-groom.jpg",
 };
 
 const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
@@ -45,6 +47,7 @@ const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
   rustic: "/photos/rustic-bride.jpg",
   bohemian: "/photos/boho-bride.jpg",
   "modern-elegant": "/photos/modern-bride.jpg",
+  "royal-imperial": "/photos/imperial-bride.jpg",
 };
 
 // Gallery photos also vary by theme so the "Our Moments" slider matches each

@@ -22,6 +22,7 @@ attribution required - https://www.pexels.com/license/).
 - `boho-bride.jpg` - photo by G star Media, https://www.pexels.com/photo/36097810/
 - `modern-bride.jpg` - photo by O3 Media Production, https://www.pexels.com/photo/20496261/
 - `modern-groom.jpg` - photo by Mustapha Damilola, https://www.pexels.com/photo/30033723/
+- `imperial-cover.jpg` - photo by ONEPROPHOTO PHOTO & CINEMA, https://www.pexels.com/photo/16098078/ (also cropped into `imperial-groom.jpg` / `imperial-bride.jpg`)
 
 Gallery photos (`*-gallery-1.jpg` through `*-gallery-6.jpg`, used in the
 "Our Moments" slider on each demo invitation) are also theme-matched:

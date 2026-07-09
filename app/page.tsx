@@ -1,6 +1,16 @@
 import Link from "next/link";
+import PhoneMockup from "@/components/PhoneMockup";
+import { themeList } from "@/lib/theme";
 
 const WA_NUMBER = "6281371338032";
+
+const HERO_FAN = [
+  { key: "royal-imperial", rotate: -18, x: -108, y: 20, scale: 0.82, z: 1 },
+  { key: "islamic-green", rotate: -9, x: -58, y: 4, scale: 0.9, z: 2 },
+  { key: "luxury-gold", rotate: 0, x: 0, y: -10, scale: 1, z: 3 },
+  { key: "sakura", rotate: 9, x: 58, y: 4, scale: 0.9, z: 2 },
+  { key: "modern-elegant", rotate: 18, x: 108, y: 20, scale: 0.82, z: 1 },
+];
 
 export default function HomePage() {
   const resellerText = encodeURIComponent(
@@ -67,12 +77,19 @@ export default function HomePage() {
         </div>
 
         <div className="heroCard">
-          <div className="mockup">
-            <p>The Wedding Of</p>
-            <h3>Rizky & Nabila</h3>
-            <span>20 September 2026</span>
-            <div className="mockupImage" />
-            <button>Buka Undangan</button>
+          <div className="phoneFan">
+            {HERO_FAN.map((item) => (
+              <PhoneMockup
+                key={item.key}
+                themeKey={item.key}
+                width={128}
+                className="phoneFanItem"
+                style={{
+                  transform: `translate(calc(-50% + ${item.x}px), calc(-50% + ${item.y}px)) rotate(${item.rotate}deg) scale(${item.scale})`,
+                  zIndex: item.z,
+                }}
+              />
+            ))}
           </div>
         </div>
       </section>
@@ -103,17 +120,12 @@ export default function HomePage() {
         <h2>Tema Premium Siap Pakai</h2>
 
         <div className="themeGrid">
-          {[
-            ["Luxury Gold", "Elegan, hitam emas, premium wedding."],
-            ["Royal Black", "Mewah, dark, cinematic, eksklusif."],
-            ["Luxury White", "Clean, modern, soft, dan elegan."],
-            ["Floral Garden", "Romantis, floral, fresh, dan manis."],
-          ].map((item) => (
-            <div className="themeCard" key={item[0]}>
-              <div className="themePreview" />
-              <h3>{item[0]}</h3>
-              <p>{item[1]}</p>
-            </div>
+          {themeList.map((theme) => (
+            <Link href={`/demo/${theme.key}`} className="themeCard" key={theme.key}>
+              <PhoneMockup themeKey={theme.key} width={150} className="themePreview" />
+              <h3>{theme.label}</h3>
+              <p>{theme.description}</p>
+            </Link>
           ))}
         </div>
       </section>
@@ -323,49 +335,19 @@ html, body {
   place-items: center;
 }
 
-.mockup {
-  width: 310px;
-  min-height: 560px;
-  border-radius: 38px;
-  background: linear-gradient(180deg, #050505, #171717);
-  color: white;
-  padding: 28px;
-  box-shadow: 0 30px 80px rgba(15,23,42,.25);
-  text-align: center;
-  border: 1px solid rgba(212,175,55,.35);
+.phoneFan {
+  position: relative;
+  width: 340px;
+  max-width: 100%;
+  height: 320px;
+  margin: 0 auto;
 }
 
-.mockup p {
-  color: #d4af37;
-  letter-spacing: 3px;
-  font-size: 12px;
-  margin-top: 20px;
-}
-
-.mockup h3 {
-  font-size: 28px;
-  margin-bottom: 8px;
-}
-
-.mockup span {
-  color: white;
-}
-
-.mockupImage {
-  height: 240px;
-  border-radius: 26px;
-  background: linear-gradient(135deg, rgba(212,175,55,.2), rgba(255,255,255,.06));
-  margin: 30px 0;
-  border: 1px solid rgba(212,175,55,.25);
-}
-
-.mockup button {
-  border: none;
-  background: linear-gradient(135deg, #a77a16, #f7df84, #c99a24);
-  color: #111;
-  padding: 13px 22px;
-  border-radius: 999px;
-  font-weight: 900;
+.phoneFanItem {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transition: transform 0.4s ease;
 }
 
 .section {
@@ -428,7 +410,7 @@ html, body {
 
 .themeGrid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
   gap: 18px;
 }
 
@@ -437,13 +419,34 @@ html, body {
   padding: 18px;
   border-radius: 22px;
   border: 1px solid rgba(255,255,255,.12);
+  text-decoration: none;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: border-color 0.25s ease, transform 0.25s ease;
+}
+
+.themeCard:hover {
+  border-color: rgba(212,175,55,.5);
+  transform: translateY(-4px);
+}
+
+.themeCard h3 {
+  font-size: 18px;
+  margin: 16px 0 6px;
+}
+
+.themeCard p {
+  color: rgba(255,255,255,.65);
+  font-size: 13.5px;
+  line-height: 1.6;
+  margin: 0;
 }
 
 .themePreview {
-  height: 170px;
-  border-radius: 18px;
-  background: linear-gradient(135deg, #050505, #d4af37);
-  margin-bottom: 16px;
+  margin: 0 auto;
 }
 
 .featured {
@@ -573,13 +576,8 @@ html, body {
     text-align: center;
   }
 
-  .mockup {
-    width: 260px;
-    min-height: 470px;
-  }
-
-  .mockupImage {
-    height: 190px;
+  .phoneFan {
+    height: 280px;
   }
 
   .section,

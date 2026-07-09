@@ -44,7 +44,7 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
   gap: 24px;
 }
 
@@ -57,45 +57,97 @@
   flex-direction: column;
 }
 
-.swatch {
-  height: 140px;
+.cardPreview {
   display: flex;
-}
-
-.swatchHalf {
-  flex: 1;
+  justify-content: center;
+  padding: 28px 0 18px;
+  background: linear-gradient(180deg, #eef4fb, #f6faff);
 }
 
 .cardBody {
-  padding: 24px;
+  padding: 20px 24px 24px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
   flex: 1;
 }
 
+.cardEyebrow {
+  color: #1167b2;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 10.5px;
+  margin: 0;
+}
+
 .cardTitle {
-  font-size: 22px;
+  font-size: 20px;
   margin: 0;
 }
 
 .cardDesc {
   color: #64748b;
-  font-size: 14px;
+  font-size: 13.5px;
   line-height: 1.6;
-  margin: 0;
+  margin: 0 0 4px;
   flex: 1;
 }
 
-.cardButton {
+.priceRow {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 4px 0 10px;
+}
+
+.priceNow {
+  font-size: 20px;
+  font-weight: 800;
+  color: #0f2742;
+}
+
+.priceWas {
+  font-size: 13px;
+  color: #94a3b8;
+  text-decoration: line-through;
+}
+
+.priceBadge {
+  font-size: 11px;
+  font-weight: 800;
+  color: #b45309;
+  background: #fef3c7;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.cardActions {
+  display: flex;
+  gap: 10px;
+}
+
+.cardButton,
+.orderButton {
+  flex: 1;
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  padding: 12px 20px;
+  padding: 11px 16px;
   border-radius: 999px;
-  background: #1167b2;
-  color: white;
   text-decoration: none;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 13.5px;
+  text-align: center;
+}
+
+.cardButton {
+  background: white;
+  color: #1167b2;
+  border: 1px solid #cfe0f2;
+}
+
+.orderButton {
+  background: #1167b2;
+  color: white;
 }

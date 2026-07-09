@@ -1,6 +1,9 @@
 import Link from "next/link";
+import PhoneMockup from "@/components/PhoneMockup";
 import { themeList } from "@/lib/theme";
 import styles from "./demo.module.css";
+
+const WA_NUMBER = "6281371338032";
 
 export default function DemoPickerPage() {
   return (
@@ -18,29 +21,44 @@ export default function DemoPickerPage() {
         </p>
 
         <div className={styles.grid}>
-          {themeList.map((theme) => (
-            <div className={styles.card} key={theme.key}>
-              <div className={styles.swatch}>
-                <span
-                  className={styles.swatchHalf}
-                  style={{ background: theme.swatch[0] }}
-                />
-                <span
-                  className={styles.swatchHalf}
-                  style={{ background: theme.swatch[1] }}
-                />
-              </div>
+          {themeList.map((theme) => {
+            const orderText = encodeURIComponent(
+              `Halo Vistiq Invitation, saya ingin order undangan tema ${theme.label}`
+            );
 
-              <div className={styles.cardBody}>
-                <h2 className={styles.cardTitle}>{theme.label}</h2>
-                <p className={styles.cardDesc}>{theme.description}</p>
+            return (
+              <div className={styles.card} key={theme.key}>
+                <div className={styles.cardPreview}>
+                  <PhoneMockup themeKey={theme.key} width={150} />
+                </div>
 
-                <Link href={`/demo/${theme.key}`} className={styles.cardButton}>
-                  Lihat Demo
-                </Link>
+                <div className={styles.cardBody}>
+                  <p className={styles.cardEyebrow}>Indonesian Wedding</p>
+                  <h2 className={styles.cardTitle}>{theme.label}</h2>
+                  <p className={styles.cardDesc}>{theme.description}</p>
+
+                  <div className={styles.priceRow}>
+                    <span className={styles.priceNow}>Rp 99.000</span>
+                    <span className={styles.priceWas}>Rp 149.000</span>
+                    <span className={styles.priceBadge}>34%</span>
+                  </div>
+
+                  <div className={styles.cardActions}>
+                    <Link href={`/demo/${theme.key}`} className={styles.cardButton}>
+                      Lihat Demo
+                    </Link>
+                    <a
+                      href={`https://wa.me/${WA_NUMBER}?text=${orderText}`}
+                      target="_blank"
+                      className={styles.orderButton}
+                    >
+                      Order
+                    </a>
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </main>

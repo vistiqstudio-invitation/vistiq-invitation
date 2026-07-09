@@ -9,6 +9,7 @@ import Sakura from "@/themes/sakura/Sakura";
 import Rustic from "@/themes/rustic/Rustic";
 import Bohemian from "@/themes/bohemian/Bohemian";
 import ModernElegant from "@/themes/modern-elegant/ModernElegant";
+import RoyalImperial from "@/themes/royal-imperial/RoyalImperial";
 
 export const themeRegistry: Record<
   string,
@@ -24,6 +25,7 @@ export const themeRegistry: Record<
   rustic: Rustic,
   bohemian: Bohemian,
   "modern-elegant": ModernElegant,
+  "royal-imperial": RoyalImperial,
 };
 
 export type ThemeMeta = {
@@ -93,5 +95,11 @@ export const themeList: ThemeMeta[] = [
     label: "Modern Elegant",
     description: "Split-screen, tipografi bold, layout & animasi editorial modern",
     swatch: ["#ffffff", "#b5482a"],
+  },
+  {
+    key: "royal-imperial",
+    label: "Royal Imperial",
+    description: "Maroon & emas keraton, medali foto, dial melingkar",
+    swatch: ["#2a0f0f", "#d4af37"],
   },
 ];
