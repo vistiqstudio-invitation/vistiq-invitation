@@ -154,11 +154,11 @@ export default function HomePage() {
           <div className="priceCard featured">
             <small>Paling Populer</small>
             <h3>Reseller</h3>
-            <strong>Rp 149.000<span>/bulan</span></strong>
+            <strong>Rp 149.000<span>/sekali bayar</span></strong>
             <p>
               Jual undangan digital dengan brand Vistiq Invitation, dapat
               dashboard reseller dan komisi <strong style={{ color: "white" }}>30%</strong> dari
-              setiap penjualan client Anda.
+              setiap penjualan client Anda. Bayar sekali, aktif selamanya.
             </p>
             <a
               href={`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Halo Vistiq Invitation, saya ingin daftar paket Reseller (komisi 30%)")}`}
