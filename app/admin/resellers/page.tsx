@@ -24,6 +24,17 @@ type Reseller = {
   created_at: string;
   brand_name?: string | null;
   brand_active?: boolean;
+  package?: "reseller" | "reseller_brand";
+};
+
+const PACKAGE_LABELS: Record<string, string> = {
+  reseller: "Reseller (30%)",
+  reseller_brand: "Reseller Brand - White Label (100%)",
+};
+
+const PACKAGE_DEFAULT_COMMISSION: Record<string, number> = {
+  reseller: 30,
+  reseller_brand: 100,
 };
 
 export default function ResellersPage() {
@@ -37,7 +48,8 @@ export default function ResellersPage() {
     name: "",
     email: "",
     whatsapp: "",
-    commission_percent: 20,
+    package: "reseller",
+    commission_percent: 30,
     status: "active",
   });
 
@@ -117,7 +129,8 @@ export default function ResellersPage() {
       name: "",
       email: "",
       whatsapp: "",
-      commission_percent: 20,
+      package: "reseller",
+      commission_percent: 30,
       status: "active",
     });
 
@@ -133,6 +146,18 @@ export default function ResellersPage() {
     await supabase
       .from("resellers")
       .update({ commission_percent })
+      .eq("id", id);
+
+    fetchResellers();
+  };
+
+  const updatePackage = async (id: string, pkg: string) => {
+    await supabase
+      .from("resellers")
+      .update({
+        package: pkg,
+        commission_percent: PACKAGE_DEFAULT_COMMISSION[pkg],
+      })
       .eq("id", id);
 
     fetchResellers();
@@ -237,6 +262,21 @@ export default function ResellersPage() {
               className={styles.input}
             />
 
+            <select
+              value={form.package}
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  package: e.target.value,
+                  commission_percent: PACKAGE_DEFAULT_COMMISSION[e.target.value] ?? form.commission_percent,
+                })
+              }
+              className={styles.input}
+            >
+              <option value="reseller">Reseller (Rp 149.000/bulan, komisi 30%)</option>
+              <option value="reseller_brand">Reseller Brand - White Label (Rp 299.000/bulan, 100%)</option>
+            </select>
+
             <input
               type="number"
               placeholder="Komisi (%)"
@@ -281,6 +321,16 @@ export default function ResellersPage() {
                     <strong>{reseller.name}</strong>
                     <p>{reseller.whatsapp || "-"}</p>
                   </div>
+
+                  <select
+                    value={reseller.package || "reseller"}
+                    onChange={(e) => updatePackage(reseller.id, e.target.value)}
+                    className={styles.statusSelect}
+                    style={{ fontSize: 12.5 }}
+                  >
+                    <option value="reseller">{PACKAGE_LABELS.reseller}</option>
+                    <option value="reseller_brand">{PACKAGE_LABELS.reseller_brand}</option>
+                  </select>
 
                   <input
                     type="number"

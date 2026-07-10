@@ -25,9 +25,15 @@ type Reseller = {
   logo_url?: string | null;
   brand_color?: string | null;
   brand_active?: boolean;
+  package?: "reseller" | "reseller_brand";
 };
 
 const LOGO_BUCKET = "invitation-assets";
+
+const PACKAGE_LABELS: Record<string, string> = {
+  reseller: "Reseller",
+  reseller_brand: "Reseller Brand (White Label)",
+};
 
 type Client = {
   id: string;
@@ -269,6 +275,11 @@ export default function ResellerPage() {
               <div className={styles.statCard}>
                 <span>Total Client</span>
                 <strong>{clients.length}</strong>
+              </div>
+
+              <div className={styles.statCard}>
+                <span>Paket</span>
+                <strong>{PACKAGE_LABELS[reseller.package || "reseller"]}</strong>
               </div>
 
               <div className={styles.statCard}>

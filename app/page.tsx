@@ -136,11 +136,14 @@ export default function HomePage() {
 
         <div className="priceGrid">
           <div className="priceCard">
-            <h3>Basic</h3>
+            <h3>Client</h3>
             <strong>Rp 99.000</strong>
-            <p>Untuk undangan sederhana dengan fitur utama.</p>
+            <p>
+              Untuk yang cuma butuh 1 undangan pernikahan sendiri, lengkap
+              dengan RSVP, galeri, dan amplop digital. Bukan reseller.
+            </p>
             <a
-              href={`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Halo Vistiq Invitation, saya ingin order paket Basic")}`}
+              href={`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Halo Vistiq Invitation, saya ingin order paket Client (1 undangan)")}`}
               target="_blank"
               className="priceButton"
             >
@@ -150,15 +153,19 @@ export default function HomePage() {
 
           <div className="priceCard featured">
             <small>Paling Populer</small>
-            <h3>Premium</h3>
-            <strong>Rp 199.000</strong>
-            <p>Untuk undangan profesional dengan fitur lengkap.</p>
+            <h3>Reseller</h3>
+            <strong>Rp 149.000<span>/bulan</span></strong>
+            <p>
+              Jual undangan digital dengan brand Vistiq Invitation, dapat
+              dashboard reseller dan komisi <strong style={{ color: "white" }}>30%</strong> dari
+              setiap penjualan client Anda.
+            </p>
             <a
-              href={`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Halo Vistiq Invitation, saya ingin order paket Premium")}`}
+              href={`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Halo Vistiq Invitation, saya ingin daftar paket Reseller (komisi 30%)")}`}
               target="_blank"
               className="priceButton featuredButton"
             >
-              Order Sekarang
+              Daftar Reseller
             </a>
           </div>
 
@@ -166,11 +173,12 @@ export default function HomePage() {
             <h3>Reseller Brand</h3>
             <strong>Rp 299.000<span>/bulan</span></strong>
             <p>
-              Jualan ulang dengan dashboard reseller, ganti nama & logo jadi
-              brand Anda sendiri di setiap undangan client.
+              Semua fitur Reseller, plus ganti nama & logo jadi brand Anda
+              sendiri (white label) di setiap undangan client - dan keuntungan{" "}
+              <strong>100%</strong> jadi milik Anda.
             </p>
             <a
-              href={`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Halo Vistiq Invitation, saya ingin daftar paket Reseller Brand (white label)")}`}
+              href={`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Halo Vistiq Invitation, saya ingin daftar paket Reseller Brand (white label, 100%)")}`}
               target="_blank"
               className="priceButton"
             >

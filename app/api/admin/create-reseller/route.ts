@@ -39,6 +39,7 @@ export async function POST(request: Request) {
   const name = (body.name || "").trim();
   const email = (body.email || "").trim().toLowerCase();
   const whatsapp = (body.whatsapp || "").trim();
+  const pkg = body.package === "reseller_brand" ? "reseller_brand" : "reseller";
   const commission_percent = Number(body.commission_percent) || 0;
   const status = body.status || "active";
 
@@ -74,6 +75,7 @@ export async function POST(request: Request) {
     user_id: created.user.id,
     name,
     whatsapp,
+    package: pkg,
     commission_percent,
     status,
   });
