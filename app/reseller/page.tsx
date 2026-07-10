@@ -21,7 +21,13 @@ type Reseller = {
   name: string;
   commission_percent?: number;
   status?: string;
+  brand_name?: string | null;
+  logo_url?: string | null;
+  brand_color?: string | null;
+  brand_active?: boolean;
 };
+
+const LOGO_BUCKET = "invitation-assets";
 
 type Client = {
   id: string;
@@ -49,6 +55,10 @@ export default function ResellerPage() {
     status: "active",
   });
 
+  const [brandForm, setBrandForm] = useState({ brand_name: "", brand_color: "#d4af37" });
+  const [savingBrand, setSavingBrand] = useState(false);
+  const [uploadingLogo, setUploadingLogo] = useState(false);
+
   const fetchData = async (currentUser: AppUser) => {
     const { data: resellerData } = await supabase
       .from("resellers")
@@ -63,6 +73,11 @@ export default function ResellerPage() {
       setLoading(false);
       return;
     }
+
+    setBrandForm({
+      brand_name: currentReseller.brand_name || "",
+      brand_color: currentReseller.brand_color || "#d4af37",
+    });
 
     const { data: clientsData } = await supabase
       .from("clients")
@@ -149,6 +164,65 @@ export default function ResellerPage() {
     alert("Client berhasil ditambahkan.");
   };
 
+  const saveBrand = async () => {
+    if (!reseller) return;
+
+    setSavingBrand(true);
+
+    const { error } = await supabase
+      .from("resellers")
+      .update({
+        brand_name: brandForm.brand_name || null,
+        brand_color: brandForm.brand_color || null,
+      })
+      .eq("id", reseller.id);
+
+    setSavingBrand(false);
+
+    if (error) {
+      alert("Gagal menyimpan brand.");
+      return;
+    }
+
+    if (user) fetchData(user);
+    alert("Brand berhasil disimpan.");
+  };
+
+  const uploadLogo = async (file: File) => {
+    if (!reseller) return;
+
+    setUploadingLogo(true);
+
+    const ext = file.name.split(".").pop();
+    const fileName = `resellers/${reseller.id}-logo-${Date.now()}.${ext}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from(LOGO_BUCKET)
+      .upload(fileName, file, { contentType: file.type });
+
+    if (uploadError) {
+      setUploadingLogo(false);
+      alert("Upload logo gagal. Cek policy Storage Supabase.");
+      return;
+    }
+
+    const logoUrl = supabase.storage.from(LOGO_BUCKET).getPublicUrl(fileName).data.publicUrl;
+
+    const { error: updateError } = await supabase
+      .from("resellers")
+      .update({ logo_url: logoUrl })
+      .eq("id", reseller.id);
+
+    setUploadingLogo(false);
+
+    if (updateError) {
+      alert("Logo terupload tapi gagal disimpan ke profil.");
+      return;
+    }
+
+    if (user) fetchData(user);
+  };
+
   const logout = async () => {
     await supabase.auth.signOut();
     router.push("/login");
@@ -206,6 +280,63 @@ export default function ResellerPage() {
                 <span>Status</span>
                 <strong>{reseller.status || "active"}</strong>
               </div>
+            </section>
+
+            <section className={styles.formCard}>
+              <h2 className={styles.sectionTitle}>Brand Saya (White Label)</h2>
+
+              <p style={{ margin: "0 0 16px", fontSize: 13.5, color: reseller.brand_active ? "#15803d" : "#b45309" }}>
+                {reseller.brand_active
+                  ? "Paket brand aktif - nama & logo di bawah tampil di undangan client Anda."
+                  : "Paket brand belum aktif. Lengkapi data di bawah lalu hubungi admin untuk mengaktifkan paket Reseller Brand."}
+              </p>
+
+              <div className={styles.formGrid}>
+                <input
+                  placeholder="Nama Brand (contoh: Elora Invitation)"
+                  value={brandForm.brand_name}
+                  onChange={(e) => setBrandForm({ ...brandForm, brand_name: e.target.value })}
+                  className={styles.input}
+                />
+
+                <input
+                  type="color"
+                  value={brandForm.brand_color}
+                  onChange={(e) => setBrandForm({ ...brandForm, brand_color: e.target.value })}
+                  className={styles.input}
+                  style={{ padding: 4, height: 44 }}
+                />
+              </div>
+
+              <div style={{ display: "flex", alignItems: "center", gap: 16, margin: "16px 0" }}>
+                {reseller.logo_url && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={reseller.logo_url}
+                    alt="Logo brand"
+                    style={{ width: 56, height: 56, objectFit: "contain", borderRadius: 8, border: "1px solid #e2e8f0" }}
+                  />
+                )}
+
+                <label className={styles.button} style={{ cursor: "pointer" }}>
+                  {uploadingLogo ? "Mengunggah..." : "Upload Logo"}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    hidden
+                    disabled={uploadingLogo}
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) uploadLogo(file);
+                      e.target.value = "";
+                    }}
+                  />
+                </label>
+              </div>
+
+              <button onClick={saveBrand} className={styles.button} disabled={savingBrand}>
+                {savingBrand ? "Menyimpan..." : "Simpan Brand"}
+              </button>
             </section>
 
             <section className={styles.formCard}>

@@ -22,6 +22,8 @@ type Reseller = {
   commission_percent?: number;
   status?: string;
   created_at: string;
+  brand_name?: string | null;
+  brand_active?: boolean;
 };
 
 export default function ResellersPage() {
@@ -116,6 +118,20 @@ export default function ResellersPage() {
       .from("resellers")
       .update({ commission_percent })
       .eq("id", id);
+
+    fetchResellers();
+  };
+
+  const toggleBrandActive = async (id: string, brand_active: boolean) => {
+    const { error } = await supabase
+      .from("resellers")
+      .update({ brand_active })
+      .eq("id", id);
+
+    if (error) {
+      alert("Gagal mengubah status paket brand.");
+      return;
+    }
 
     fetchResellers();
   };
@@ -221,6 +237,15 @@ export default function ResellersPage() {
                     }
                     className={styles.smallInput}
                   />
+
+                  <label style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13 }}>
+                    <input
+                      type="checkbox"
+                      checked={Boolean(reseller.brand_active)}
+                      onChange={(e) => toggleBrandActive(reseller.id, e.target.checked)}
+                    />
+                    Brand {reseller.brand_name ? `(${reseller.brand_name})` : ""}
+                  </label>
 
                   <select
                     value={reseller.status || "active"}

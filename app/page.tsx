@@ -139,6 +139,13 @@ export default function HomePage() {
             <h3>Basic</h3>
             <strong>Rp 99.000</strong>
             <p>Untuk undangan sederhana dengan fitur utama.</p>
+            <a
+              href={`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Halo Vistiq Invitation, saya ingin order paket Basic")}`}
+              target="_blank"
+              className="priceButton"
+            >
+              Order Sekarang
+            </a>
           </div>
 
           <div className="priceCard featured">
@@ -146,12 +153,29 @@ export default function HomePage() {
             <h3>Premium</h3>
             <strong>Rp 199.000</strong>
             <p>Untuk undangan profesional dengan fitur lengkap.</p>
+            <a
+              href={`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Halo Vistiq Invitation, saya ingin order paket Premium")}`}
+              target="_blank"
+              className="priceButton featuredButton"
+            >
+              Order Sekarang
+            </a>
           </div>
 
           <div className="priceCard">
-            <h3>Reseller</h3>
-            <strong>Rp 250.000</strong>
-            <p>Untuk jualan ulang dengan dashboard dan brand sendiri.</p>
+            <h3>Reseller Brand</h3>
+            <strong>Rp 299.000<span>/bulan</span></strong>
+            <p>
+              Jualan ulang dengan dashboard reseller, ganti nama & logo jadi
+              brand Anda sendiri di setiap undangan client.
+            </p>
+            <a
+              href={`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Halo Vistiq Invitation, saya ingin daftar paket Reseller Brand (white label)")}`}
+              target="_blank"
+              className="priceButton"
+            >
+              Daftar Reseller Brand
+            </a>
           </div>
         </div>
       </section>
@@ -475,6 +499,45 @@ html, body {
 
 .featured strong {
   color: white;
+}
+
+.priceCard strong span {
+  display: inline;
+  font-size: 14px;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.featured strong span {
+  color: rgba(255,255,255,.75);
+}
+
+.priceCard {
+  display: flex;
+  flex-direction: column;
+}
+
+.priceCard p {
+  flex: 1;
+}
+
+.priceButton {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 18px;
+  padding: 12px 20px;
+  border-radius: 999px;
+  background: #eff6ff;
+  color: #1167b2;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.featuredButton {
+  background: white;
+  color: #1167b2;
 }
 
 .reseller {

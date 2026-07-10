@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { title: "Undangan Tidak Ditemukan | Vistiq Invitation" };
   }
 
-  const title = `${invitation.groom.name} & ${invitation.bride.name} | Wedding Invitation`;
+  const title = `${invitation.groom.name} & ${invitation.bride.name} | ${invitation.brand?.name ?? "Wedding Invitation"}`;
   const description = `Undangan pernikahan ${invitation.groom.name} & ${invitation.bride.name}. Kami mengundang Bapak/Ibu/Saudara/i untuk turut hadir dan memberikan doa restu.`;
 
   return {

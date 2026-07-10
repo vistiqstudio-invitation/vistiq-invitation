@@ -131,6 +131,8 @@ export function getDemoInvitation(theme: string): InvitationData {
     theme,
     status: "active",
 
+    brand: null,
+
     coverImage: COVER_BY_THEME[theme] || "/themes/luxury-gold/cover.png",
     musicUrl: "/music/wedding2.mp3",
     videoUrl: null,

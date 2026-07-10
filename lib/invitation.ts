@@ -2,11 +2,23 @@ import "server-only";
 
 import { createClient } from "@/lib/supabase/server";
 import type {
+  Brand,
   EventItem,
   GiftAccount,
   InvitationData,
   StoryItem,
 } from "@/types/invitation";
+
+function resolveBrand(raw: Record<string, any>): Brand {
+  const reseller = raw.clients?.resellers;
+  if (!reseller || !reseller.brand_active || !reseller.brand_name) return null;
+
+  return {
+    name: reseller.brand_name,
+    logoUrl: reseller.logo_url || null,
+    color: reseller.brand_color || null,
+  };
+}
 
 // The invitations table accumulated a few duplicate/renamed columns across
 // earlier iterations (e.g. gallery1 vs gallery_1, video_url vs youtube_url).
@@ -153,6 +165,8 @@ function normalizeInvitation(raw: Record<string, any>): InvitationData {
     theme: raw.theme || "luxury-gold",
     status: raw.status || (raw.is_active ? "active" : "draft"),
 
+    brand: resolveBrand(raw),
+
     coverImage: firstNonEmpty(raw.cover_image, raw.cover_photo),
     musicUrl: raw.music_url || null,
     videoUrl: firstNonEmpty(raw.video_url, raw.youtube_url),
@@ -199,7 +213,9 @@ export async function getInvitationBySlug(
 
   const { data, error } = await supabase
     .from("invitations")
-    .select("*")
+    .select(
+      "*, clients:client_id(resellers:reseller_id(brand_name, logo_url, brand_color, brand_active))"
+    )
     .eq("slug", slug)
     .single();
 

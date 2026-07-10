@@ -12,11 +12,22 @@ export type EventItem = {
   location: string;
 };
 
+export type Brand = {
+  name: string;
+  logoUrl: string | null;
+  color: string | null;
+} | null;
+
 export type InvitationData = {
   id: number;
   slug: string;
   theme: string;
   status: string;
+
+  // Reseller white-label branding, if this invitation's client belongs to
+  // a reseller with an active branding package. Null means "show the
+  // default Vistiq Invitation branding".
+  brand: Brand;
 
   coverImage: string | null;
   musicUrl: string | null;

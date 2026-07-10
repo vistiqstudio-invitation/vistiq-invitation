@@ -24,7 +24,7 @@ export default function Footer({ invitation }: { invitation: InvitationData }) {
         </h2>
 
         <p className={styles.copyright}>
-          © {new Date().getFullYear()} Vistiq Invitation
+          © {new Date().getFullYear()} {invitation.brand?.name ?? "Vistiq Invitation"}
         </p>
       </Reveal>
     </footer>
