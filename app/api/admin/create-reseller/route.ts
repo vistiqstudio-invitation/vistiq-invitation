@@ -5,14 +5,16 @@ import { createClient as createServiceClient } from "@supabase/supabase-js";
 import crypto from "node:crypto";
 import { getSessionProfile } from "@/lib/supabase/dal";
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
 function generatePassword() {
   return crypto.randomBytes(9).toString("base64url");
 }
 
 export async function POST(request: Request) {
+  // Read these inside the handler (not at module scope) so we always see
+  // the live process.env at request time.
+  const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
   // Only an owner (checked via the caller's own session, anon-key client)
   // may reach the service-role logic below.
   const profile = await getSessionProfile();
@@ -22,8 +24,13 @@ export async function POST(request: Request) {
   }
 
   if (!SUPABASE_URL || !SERVICE_ROLE_KEY) {
+    const missing = [
+      !SUPABASE_URL && "NEXT_PUBLIC_SUPABASE_URL",
+      !SERVICE_ROLE_KEY && "SUPABASE_SERVICE_ROLE_KEY",
+    ].filter(Boolean);
+    console.error("create-reseller: missing env vars:", missing);
     return NextResponse.json(
-      { error: "SUPABASE_SERVICE_ROLE_KEY belum diset di server." },
+      { error: `Env var belum diset di server: ${missing.join(", ")}` },
       { status: 500 }
     );
   }
