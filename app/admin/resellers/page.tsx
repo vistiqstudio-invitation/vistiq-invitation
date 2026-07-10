@@ -35,10 +35,14 @@ export default function ResellersPage() {
 
   const [form, setForm] = useState({
     name: "",
+    email: "",
     whatsapp: "",
     commission_percent: 20,
     status: "active",
   });
+
+  const [creating, setCreating] = useState(false);
+  const [credentials, setCredentials] = useState<{ email: string; password: string } | null>(null);
 
   const fetchResellers = async () => {
     const { data, error } = await supabase
@@ -85,27 +89,39 @@ export default function ResellersPage() {
   }, [router]);
 
   const addReseller = async () => {
-    if (!form.name.trim()) {
-      alert("Nama reseller wajib diisi.");
+    if (!form.name.trim() || !form.email.trim()) {
+      alert("Nama dan email reseller wajib diisi.");
       return;
     }
 
-    const { error } = await supabase.from("resellers").insert(form);
+    setCreating(true);
 
-    if (error) {
-      alert("Gagal menambahkan reseller.");
+    const res = await fetch("/api/admin/create-reseller", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
+    });
+
+    const result = await res.json();
+
+    setCreating(false);
+
+    if (!res.ok) {
+      alert(result.error || "Gagal menambahkan reseller.");
       return;
     }
+
+    setCredentials({ email: result.email, password: result.password });
 
     setForm({
       name: "",
+      email: "",
       whatsapp: "",
       commission_percent: 20,
       status: "active",
     });
 
     fetchResellers();
-    alert("Reseller berhasil ditambahkan.");
   };
 
   const updateStatus = async (id: string, status: string) => {
@@ -168,12 +184,49 @@ export default function ResellersPage() {
 
         <section className={styles.formCard}>
           <h2 className={styles.sectionTitle}>Tambah Reseller Baru</h2>
+          <p style={{ margin: "0 0 16px", fontSize: 13.5, color: "#64748b" }}>
+            Akun login (email + password) dibuat otomatis begitu disimpan.
+          </p>
+
+          {credentials && (
+            <div
+              style={{
+                background: "#f0fdf4",
+                border: "1px solid #bbf7d0",
+                borderRadius: 12,
+                padding: 16,
+                marginBottom: 16,
+                fontSize: 13.5,
+              }}
+            >
+              <strong style={{ display: "block", marginBottom: 6, color: "#15803d" }}>
+                Akun berhasil dibuat - catat sekarang, password tidak ditampilkan lagi:
+              </strong>
+              <p style={{ margin: 0 }}>Email: <code>{credentials.email}</code></p>
+              <p style={{ margin: "4px 0 8px" }}>Password: <code>{credentials.password}</code></p>
+              <button
+                onClick={() => setCredentials(null)}
+                className={styles.button}
+                style={{ padding: "6px 14px", fontSize: 12.5 }}
+              >
+                Tutup
+              </button>
+            </div>
+          )}
 
           <div className={styles.formGrid}>
             <input
               placeholder="Nama Reseller"
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
+              className={styles.input}
+            />
+
+            <input
+              type="email"
+              placeholder="Email Login"
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
               className={styles.input}
             />
 
@@ -208,8 +261,8 @@ export default function ResellersPage() {
             </select>
           </div>
 
-          <button onClick={addReseller} className={styles.button}>
-            Simpan Reseller
+          <button onClick={addReseller} className={styles.button} disabled={creating}>
+            {creating ? "Membuat akun..." : "Simpan Reseller"}
           </button>
         </section>
 

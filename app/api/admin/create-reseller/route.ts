@@ -1,0 +1,85 @@
+import "server-only";
+
+import { NextResponse } from "next/server";
+import { createClient as createServiceClient } from "@supabase/supabase-js";
+import crypto from "node:crypto";
+import { getSessionProfile } from "@/lib/supabase/dal";
+
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+function generatePassword() {
+  return crypto.randomBytes(9).toString("base64url");
+}
+
+export async function POST(request: Request) {
+  // Only an owner (checked via the caller's own session, anon-key client)
+  // may reach the service-role logic below.
+  const profile = await getSessionProfile();
+
+  if (!profile || profile.role !== "owner") {
+    return NextResponse.json({ error: "Tidak diizinkan." }, { status: 403 });
+  }
+
+  if (!SUPABASE_URL || !SERVICE_ROLE_KEY) {
+    return NextResponse.json(
+      { error: "SUPABASE_SERVICE_ROLE_KEY belum diset di server." },
+      { status: 500 }
+    );
+  }
+
+  const body = await request.json();
+  const name = (body.name || "").trim();
+  const email = (body.email || "").trim().toLowerCase();
+  const whatsapp = (body.whatsapp || "").trim();
+  const commission_percent = Number(body.commission_percent) || 0;
+  const status = body.status || "active";
+
+  if (!name || !email) {
+    return NextResponse.json(
+      { error: "Nama dan email wajib diisi." },
+      { status: 400 }
+    );
+  }
+
+  const supabaseAdmin = createServiceClient(SUPABASE_URL, SERVICE_ROLE_KEY, {
+    auth: { autoRefreshToken: false, persistSession: false },
+  });
+
+  const password = generatePassword();
+
+  const { data: created, error: createUserError } =
+    await supabaseAdmin.auth.admin.createUser({
+      email,
+      password,
+      email_confirm: true,
+      user_metadata: { role: "reseller", name, whatsapp },
+    });
+
+  if (createUserError || !created.user) {
+    const message = createUserError?.message.includes("already been registered")
+      ? "Email ini sudah terdaftar."
+      : createUserError?.message || "Gagal membuat akun login.";
+    return NextResponse.json({ error: message }, { status: 400 });
+  }
+
+  const { error: resellerError } = await supabaseAdmin.from("resellers").insert({
+    user_id: created.user.id,
+    name,
+    whatsapp,
+    commission_percent,
+    status,
+  });
+
+  if (resellerError) {
+    // Roll back the auth user so we don't leave an orphaned login with no
+    // matching reseller row.
+    await supabaseAdmin.auth.admin.deleteUser(created.user.id);
+    return NextResponse.json(
+      { error: "Gagal menyimpan data reseller." },
+      { status: 500 }
+    );
+  }
+
+  return NextResponse.json({ email, password });
+}
