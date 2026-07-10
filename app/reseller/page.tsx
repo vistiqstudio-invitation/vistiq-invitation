@@ -194,7 +194,7 @@ export default function ResellerPage() {
     setUploadingLogo(true);
 
     const ext = file.name.split(".").pop();
-    const fileName = `resellers/${reseller.id}-logo-${Date.now()}.${ext}`;
+    const fileName = `resellers/${reseller.id}/logo-${Date.now()}.${ext}`;
 
     const { error: uploadError } = await supabase.storage
       .from(LOGO_BUCKET)
