@@ -202,7 +202,7 @@ export default function ResellerPage() {
 
     if (uploadError) {
       setUploadingLogo(false);
-      alert("Upload logo gagal. Cek policy Storage Supabase.");
+      alert(`Upload logo gagal: ${uploadError.message}`);
       return;
     }
 
