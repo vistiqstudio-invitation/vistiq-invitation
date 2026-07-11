@@ -617,6 +617,21 @@
   overflow: hidden;
 }
 
+.musicDropZone {
+  min-height: 110px;
+  border: 2px dashed #9bb8dd;
+  border-radius: 16px;
+  background: #ffffff;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  padding: 16px;
+}
+
+.musicPlayer {
+  width: 100%;
+}
+
 .dropContent {
   display: grid;
   place-items: center;

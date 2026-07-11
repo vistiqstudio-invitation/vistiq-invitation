@@ -7,7 +7,7 @@ import styles from "@/styles/dashboard.module.css";
 
 const BUCKET = "invitation-assets";
 
-type PhotoField = "cover_photo" | "bride_photo" | "groom_photo";
+type PhotoField = "cover_photo" | "bride_photo" | "groom_photo" | "music_url";
 
 const initialForm = {
   groom_name: "",
@@ -485,17 +485,9 @@ export default function ClientEditPage() {
           />
         </div>
 
-        <h2 className={styles.editSectionTitle}>Musik</h2>
+        <h2 className={styles.editSectionTitle}>Musik Latar (MP3)</h2>
 
-        <div className={styles.formGrid}>
-          <input
-            placeholder="URL Musik MP3"
-            value={form.music_url}
-            onChange={(e) => set("music_url", e.target.value)}
-            className={styles.input}
-            style={{ gridColumn: "1 / -1" }}
-          />
-        </div>
+        <MusicUploadBox value={form.music_url} onUpload={(file) => uploadSingleFile(file, "music_url")} />
 
         <h2 className={styles.editSectionTitle}>Upload Foto Utama</h2>
 
@@ -628,6 +620,40 @@ function UploadBox({
         <input
           type="file"
           accept="image/*"
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (file) onUpload(file);
+          }}
+          className={styles.hiddenInput}
+        />
+      </label>
+    </div>
+  );
+}
+
+function MusicUploadBox({ value, onUpload }: { value: string; onUpload: (file: File) => void }) {
+  const handleDrop = (e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files?.[0];
+    if (file) onUpload(file);
+  };
+
+  return (
+    <div>
+      {value && (
+        <audio controls src={value} className={styles.musicPlayer} style={{ marginBottom: 10 }} />
+      )}
+
+      <label className={styles.musicDropZone} onDragOver={(e) => e.preventDefault()} onDrop={handleDrop}>
+        <div className={styles.dropContent}>
+          <div className={styles.uploadIcon}>♪</div>
+          <strong>{value ? "Ganti file MP3" : "Drag & drop file MP3 di sini"}</strong>
+          <span>atau klik untuk pilih file</span>
+        </div>
+
+        <input
+          type="file"
+          accept="audio/*"
           onChange={(e) => {
             const file = e.target.files?.[0];
             if (file) onUpload(file);
