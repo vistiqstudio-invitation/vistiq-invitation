@@ -7,38 +7,62 @@ export type SidebarItem = {
   key: string;
   label: string;
   href: string;
+  external?: boolean;
 };
 
 export default function DashboardSidebar({
   brandTop,
   brandBottom,
+  logoUrl,
+  accentColor,
   items,
   activeKey,
   onLogout,
 }: {
   brandTop: string;
   brandBottom: string;
+  logoUrl?: string | null;
+  accentColor?: string | null;
   items: SidebarItem[];
   activeKey: string;
   onLogout: () => void;
 }) {
   return (
-    <aside className={styles.sidebar}>
+    <aside
+      className={styles.sidebar}
+      style={accentColor ? ({ "--accent": accentColor } as React.CSSProperties) : undefined}
+    >
       <div className={styles.brandBlock}>
+        {logoUrl && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={logoUrl} alt={brandBottom} className={styles.brandLogo} />
+        )}
         <p className={styles.brandSmall}>{brandTop}</p>
         <h2 className={styles.brand}>{brandBottom}</h2>
       </div>
 
       <nav className={styles.menu}>
-        {items.map((item) => (
-          <Link
-            key={item.key}
-            href={item.href}
-            className={item.key === activeKey ? styles.menuActive : styles.menuButton}
-          >
-            {item.label}
-          </Link>
-        ))}
+        {items.map((item) =>
+          item.external ? (
+            <a
+              key={item.key}
+              href={item.href}
+              target="_blank"
+              rel="noreferrer"
+              className={item.key === activeKey ? styles.menuActive : styles.menuButton}
+            >
+              {item.label}
+            </a>
+          ) : (
+            <Link
+              key={item.key}
+              href={item.href}
+              className={item.key === activeKey ? styles.menuActive : styles.menuButton}
+            >
+              {item.label}
+            </Link>
+          )
+        )}
       </nav>
 
       <button onClick={onLogout} className={styles.logoutButton}>

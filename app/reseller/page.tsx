@@ -6,7 +6,15 @@ import { createClient } from "@/lib/supabase/client";
 import DashboardSidebar from "@/components/admin/DashboardSidebar";
 import styles from "@/styles/dashboard.module.css";
 
-const NAV_ITEMS = [{ key: "dashboard", label: "Dashboard", href: "/reseller" }];
+const NAV_ITEMS = [
+  { key: "dashboard", label: "Dashboard", href: "/reseller" },
+  { key: "invitations", label: "Buat Undangan", href: "/reseller/invitations" },
+  { key: "rsvp", label: "RSVP", href: "/reseller/rsvp" },
+  { key: "transactions", label: "Komisi", href: "/reseller/transactions" },
+  { key: "demo", label: "Demo Tema", href: "/demo", external: true },
+];
+
+const WA_NUMBER = "6281371338032";
 
 type AppUser = {
   id: string;
@@ -45,6 +53,13 @@ type Client = {
   created_at: string;
 };
 
+type Transaction = {
+  id: string;
+  amount: number;
+  commission: number;
+  status?: string;
+};
+
 export default function ResellerPage() {
   const router = useRouter();
   const supabase = createClient();
@@ -52,6 +67,7 @@ export default function ResellerPage() {
   const [user, setUser] = useState<AppUser | null>(null);
   const [reseller, setReseller] = useState<Reseller | null>(null);
   const [clients, setClients] = useState<Client[]>([]);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
 
   const [form, setForm] = useState({
@@ -92,6 +108,13 @@ export default function ResellerPage() {
       .order("created_at", { ascending: false });
 
     setClients(clientsData ?? []);
+
+    const { data: transactionsData } = await supabase
+      .from("transactions")
+      .select("id, amount, commission, status")
+      .eq("reseller_id", currentReseller.id);
+
+    setTransactions(transactionsData ?? []);
     setLoading(false);
   };
 
@@ -234,11 +257,21 @@ export default function ResellerPage() {
     router.push("/login");
   };
 
+  const isBrandPackage = reseller?.package === "reseller_brand";
+  const brandActive = isBrandPackage && Boolean(reseller?.brand_active);
+  const totalCommission = transactions.reduce((sum, item) => sum + Number(item.commission || 0), 0);
+
+  const upgradeText = encodeURIComponent(
+    `Halo Vistiq Invitation, saya ${user?.name || "reseller"} (${user?.email || ""}) ingin upgrade ke paket Reseller Brand (white label, Rp299.000/bulan).`
+  );
+
   return (
     <main className={styles.page}>
       <DashboardSidebar
         brandTop="VISTIQ"
-        brandBottom="Reseller"
+        brandBottom={brandActive && reseller?.brand_name ? reseller.brand_name : "Reseller"}
+        logoUrl={brandActive ? reseller?.logo_url : null}
+        accentColor={brandActive ? reseller?.brand_color : null}
         items={NAV_ITEMS}
         activeKey="dashboard"
         onLogout={logout}
@@ -288,67 +321,90 @@ export default function ResellerPage() {
               </div>
 
               <div className={styles.statCard}>
+                <span>Total Komisi Terkumpul</span>
+                <strong>Rp {totalCommission.toLocaleString("id-ID")}</strong>
+              </div>
+
+              <div className={styles.statCard}>
                 <span>Status</span>
                 <strong>{reseller.status || "active"}</strong>
               </div>
             </section>
 
-            <section className={styles.formCard}>
-              <h2 className={styles.sectionTitle}>Brand Saya (White Label)</h2>
+            {isBrandPackage ? (
+              <section className={styles.formCard}>
+                <h2 className={styles.sectionTitle}>Brand Saya (White Label)</h2>
 
-              <p style={{ margin: "0 0 16px", fontSize: 13.5, color: reseller.brand_active ? "#15803d" : "#b45309" }}>
-                {reseller.brand_active
-                  ? "Paket brand aktif - nama & logo di bawah tampil di undangan client Anda."
-                  : "Paket brand belum aktif. Lengkapi data di bawah lalu hubungi admin untuk mengaktifkan paket Reseller Brand."}
-              </p>
+                <p style={{ margin: "0 0 16px", fontSize: 13.5, color: reseller.brand_active ? "#15803d" : "#b45309" }}>
+                  {reseller.brand_active
+                    ? "Paket brand aktif - nama & logo di bawah tampil di undangan client Anda."
+                    : "Paket brand belum aktif. Lengkapi data di bawah lalu hubungi admin untuk mengaktifkan paket Reseller Brand."}
+                </p>
 
-              <div className={styles.formGrid}>
-                <input
-                  placeholder="Nama Brand (contoh: Elora Invitation)"
-                  value={brandForm.brand_name}
-                  onChange={(e) => setBrandForm({ ...brandForm, brand_name: e.target.value })}
-                  className={styles.input}
-                />
-
-                <input
-                  type="color"
-                  value={brandForm.brand_color}
-                  onChange={(e) => setBrandForm({ ...brandForm, brand_color: e.target.value })}
-                  className={styles.input}
-                  style={{ padding: 4, height: 44 }}
-                />
-              </div>
-
-              <div style={{ display: "flex", alignItems: "center", gap: 16, margin: "16px 0" }}>
-                {reseller.logo_url && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={reseller.logo_url}
-                    alt="Logo brand"
-                    style={{ width: 56, height: 56, objectFit: "contain", borderRadius: 8, border: "1px solid #e2e8f0" }}
-                  />
-                )}
-
-                <label className={styles.button} style={{ cursor: "pointer" }}>
-                  {uploadingLogo ? "Mengunggah..." : "Upload Logo"}
+                <div className={styles.formGrid}>
                   <input
-                    type="file"
-                    accept="image/*"
-                    hidden
-                    disabled={uploadingLogo}
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (file) uploadLogo(file);
-                      e.target.value = "";
-                    }}
+                    placeholder="Nama Brand (contoh: Elora Invitation)"
+                    value={brandForm.brand_name}
+                    onChange={(e) => setBrandForm({ ...brandForm, brand_name: e.target.value })}
+                    className={styles.input}
                   />
-                </label>
-              </div>
 
-              <button onClick={saveBrand} className={styles.button} disabled={savingBrand}>
-                {savingBrand ? "Menyimpan..." : "Simpan Brand"}
-              </button>
-            </section>
+                  <input
+                    type="color"
+                    value={brandForm.brand_color}
+                    onChange={(e) => setBrandForm({ ...brandForm, brand_color: e.target.value })}
+                    className={styles.input}
+                    style={{ padding: 4, height: 44 }}
+                  />
+                </div>
+
+                <div style={{ display: "flex", alignItems: "center", gap: 16, margin: "16px 0" }}>
+                  {reseller.logo_url && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={reseller.logo_url}
+                      alt="Logo brand"
+                      style={{ width: 56, height: 56, objectFit: "contain", borderRadius: 8, border: "1px solid #e2e8f0" }}
+                    />
+                  )}
+
+                  <label className={styles.button} style={{ cursor: "pointer" }}>
+                    {uploadingLogo ? "Mengunggah..." : "Upload Logo"}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      hidden
+                      disabled={uploadingLogo}
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) uploadLogo(file);
+                        e.target.value = "";
+                      }}
+                    />
+                  </label>
+                </div>
+
+                <button onClick={saveBrand} className={styles.button} disabled={savingBrand}>
+                  {savingBrand ? "Menyimpan..." : "Simpan Brand"}
+                </button>
+              </section>
+            ) : (
+              <section className={styles.formCard}>
+                <h2 className={styles.sectionTitle}>Upgrade ke Reseller Brand</h2>
+                <p style={{ margin: "0 0 16px", fontSize: 13.5, color: "#64748b" }}>
+                  Tampilkan nama, logo, dan warna brand Anda sendiri di setiap undangan
+                  client (white label), dan dashboard Anda akan lengkap seperti dashboard
+                  Vistiq Studio. Rp 299.000/bulan, keuntungan 100% jadi milik Anda.
+                </p>
+                <a
+                  href={`https://wa.me/${WA_NUMBER}?text=${upgradeText}`}
+                  target="_blank"
+                  className={styles.button}
+                >
+                  Upgrade ke Reseller Brand
+                </a>
+              </section>
+            )}
 
             <section className={styles.formCard}>
               <h2 className={styles.sectionTitle}>Tambah Client Baru</h2>

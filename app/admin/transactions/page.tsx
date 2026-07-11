@@ -20,7 +20,13 @@ type Transaction = {
   amount: number;
   commission: number;
   status?: string;
+  reseller_id?: string | null;
   created_at: string;
+};
+
+type Reseller = {
+  id: string;
+  name: string;
 };
 
 export default function AdminTransactionsPage() {
@@ -28,6 +34,7 @@ export default function AdminTransactionsPage() {
   const supabase = createClient();
 
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [resellers, setResellers] = useState<Reseller[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetchTransactions = async () => {
@@ -42,8 +49,19 @@ export default function AdminTransactionsPage() {
       setTransactions(data ?? []);
     }
 
+    const { data: resellersData } = await supabase.from("resellers").select("id, name");
+    setResellers(resellersData ?? []);
+
     setLoading(false);
   };
+
+  const updateStatus = async (id: string, status: string) => {
+    await supabase.from("transactions").update({ status }).eq("id", id);
+    fetchTransactions();
+  };
+
+  const resellerName = (resellerId?: string | null) =>
+    resellers.find((r) => r.id === resellerId)?.name || "-";
 
   useEffect(() => {
     const loadUser = async () => {
@@ -144,10 +162,17 @@ export default function AdminTransactionsPage() {
                 <div className={styles.row} key={item.id}>
                   <div>
                     <strong>Rp {Number(item.amount || 0).toLocaleString("id-ID")}</strong>
-                    <p>Komisi Rp {Number(item.commission || 0).toLocaleString("id-ID")}</p>
+                    <p>Komisi Rp {Number(item.commission || 0).toLocaleString("id-ID")} - {resellerName(item.reseller_id)}</p>
                   </div>
 
-                  <span className={styles.badge}>{item.status || "pending"}</span>
+                  <select
+                    value={item.status || "pending"}
+                    onChange={(e) => updateStatus(item.id, e.target.value)}
+                    className={styles.statusSelect}
+                  >
+                    <option value="pending">Menunggu</option>
+                    <option value="paid">Dibayar</option>
+                  </select>
 
                   <p className={styles.date}>
                     {new Date(item.created_at).toLocaleDateString("id-ID")}
