@@ -24,6 +24,10 @@ const COVER_BY_THEME: Record<string, string> = {
   // minimal-white uses as its own cover, so the two don't look identical
   // side by side in the demo grid.
   "pastel-studio": "/photos/white-gallery-1.jpg",
+  // Reuses an existing royal-black gallery shot (not black-bride.jpg,
+  // which royal-black uses as its own cover) so the two dark/gold themes
+  // don't show an identical cover photo side by side in the demo grid.
+  "art-deco-glam": "/photos/black-gallery-1.jpg",
 };
 
 // Couple portrait photos also vary by theme - the default luxury-gold
@@ -44,6 +48,7 @@ const GROOM_PHOTO_BY_THEME: Record<string, string> = {
   "royal-imperial": "/photos/imperial-groom.jpg",
   "vintage-botanical": "/photos/floral-groom.jpg",
   "pastel-studio": "/photos/white-groom.jpg",
+  "art-deco-glam": "/photos/black-groom.jpg",
 };
 
 const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
@@ -60,6 +65,10 @@ const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
   "royal-imperial": "/photos/imperial-bride.jpg",
   "vintage-botanical": "/photos/floral-bride.jpg",
   "pastel-studio": "/photos/white-bride.jpg",
+  // Uses modern-elegant's bride portrait (a moody dark-blazer studio
+  // shot with a gold staircase backdrop) rather than royal-black's, so
+  // the bride/groom pairing isn't visually identical to royal-black's.
+  "art-deco-glam": "/photos/modern-bride.jpg",
 };
 
 // Gallery photos also vary by theme so the "Our Moments" slider matches each
@@ -151,6 +160,17 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
     "/photos/white-gallery-4.jpg",
     "/photos/white-gallery-5.jpg",
     "/photos/white-gallery-6.jpg",
+  ],
+  // Reuses royal-black's gallery shots (skipping #1, used as this
+  // theme's cover above) plus one luxury-gold gallery shot standing in
+  // for black-bride.jpg, same reuse pattern as the themes above.
+  "art-deco-glam": [
+    "/photos/black-gallery-2.jpg",
+    "/photos/luxury-gallery-1.jpg",
+    "/photos/black-gallery-3.jpg",
+    "/photos/black-gallery-4.jpg",
+    "/photos/black-gallery-5.jpg",
+    "/photos/black-gallery-6.jpg",
   ],
 };
 

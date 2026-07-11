@@ -13,6 +13,7 @@ import RoyalImperial from "@/themes/royal-imperial/RoyalImperial";
 import AdatJawa from "@/themes/adat-jawa/AdatJawa";
 import VintageBotanical from "@/themes/vintage-botanical/VintageBotanical";
 import PastelStudio from "@/themes/pastel-studio/PastelStudio";
+import ArtDecoGlam from "@/themes/art-deco-glam/ArtDecoGlam";
 
 export const themeRegistry: Record<
   string,
@@ -32,6 +33,7 @@ export const themeRegistry: Record<
   "adat-jawa": AdatJawa,
   "vintage-botanical": VintageBotanical,
   "pastel-studio": PastelStudio,
+  "art-deco-glam": ArtDecoGlam,
 };
 
 export type ThemeMeta = {
@@ -125,5 +127,11 @@ export const themeList: ThemeMeta[] = [
     label: "Pastel Studio",
     description: "Lilac, peach & mint, ala studio foto Korea, minim ornamen",
     swatch: ["#faf7f2", "#d998a0"],
+  },
+  {
+    key: "art-deco-glam",
+    label: "Art Deco Glam",
+    description: "Onyx, emerald & emas geometris ala 1920-an, bingkai heksagon",
+    swatch: ["#0d0d0f", "#c9a648"],
   },
 ];
