@@ -12,6 +12,7 @@ import ModernElegant from "@/themes/modern-elegant/ModernElegant";
 import RoyalImperial from "@/themes/royal-imperial/RoyalImperial";
 import AdatJawa from "@/themes/adat-jawa/AdatJawa";
 import VintageBotanical from "@/themes/vintage-botanical/VintageBotanical";
+import PastelStudio from "@/themes/pastel-studio/PastelStudio";
 
 export const themeRegistry: Record<
   string,
@@ -30,6 +31,7 @@ export const themeRegistry: Record<
   "royal-imperial": RoyalImperial,
   "adat-jawa": AdatJawa,
   "vintage-botanical": VintageBotanical,
+  "pastel-studio": PastelStudio,
 };
 
 export type ThemeMeta = {
@@ -117,5 +119,11 @@ export const themeList: ThemeMeta[] = [
     label: "Vintage Botanical",
     description: "Kertas usang, sage & maroon pudar, plakat botani, galeri masonry",
     swatch: ["#f6efe0", "#7d3f3a"],
+  },
+  {
+    key: "pastel-studio",
+    label: "Pastel Studio",
+    description: "Lilac, peach & mint, ala studio foto Korea, minim ornamen",
+    swatch: ["#faf7f2", "#d998a0"],
   },
 ];

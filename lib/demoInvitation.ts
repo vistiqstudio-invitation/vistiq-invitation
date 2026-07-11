@@ -20,6 +20,10 @@ const COVER_BY_THEME: Record<string, string> = {
   // which floral-garden already uses as its own cover) so the two themes
   // don't show an identical cover photo side by side in the demo grid.
   "vintage-botanical": "/photos/floral-gallery-1.jpg",
+  // Reuses an existing minimal-white shot, different from the one
+  // minimal-white uses as its own cover, so the two don't look identical
+  // side by side in the demo grid.
+  "pastel-studio": "/photos/white-gallery-1.jpg",
 };
 
 // Couple portrait photos also vary by theme - the default luxury-gold
@@ -39,6 +43,7 @@ const GROOM_PHOTO_BY_THEME: Record<string, string> = {
   "modern-elegant": "/photos/modern-groom.jpg",
   "royal-imperial": "/photos/imperial-groom.jpg",
   "vintage-botanical": "/photos/floral-groom.jpg",
+  "pastel-studio": "/photos/white-groom.jpg",
 };
 
 const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
@@ -54,6 +59,7 @@ const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
   "modern-elegant": "/photos/modern-bride.jpg",
   "royal-imperial": "/photos/imperial-bride.jpg",
   "vintage-botanical": "/photos/floral-bride.jpg",
+  "pastel-studio": "/photos/white-bride.jpg",
 };
 
 // Gallery photos also vary by theme so the "Our Moments" slider matches each
@@ -134,6 +140,17 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
     "/photos/floral-gallery-4.jpg",
     "/photos/floral-gallery-5.jpg",
     "/photos/floral-gallery-6.jpg",
+  ],
+  // Reuses minimal-white's gallery shots (skipping #1, used as this
+  // theme's cover above) plus its white-cover photo, same reuse pattern
+  // as vintage-botanical above.
+  "pastel-studio": [
+    "/photos/white-gallery-2.jpg",
+    "/photos/white-cover.jpg",
+    "/photos/white-gallery-3.jpg",
+    "/photos/white-gallery-4.jpg",
+    "/photos/white-gallery-5.jpg",
+    "/photos/white-gallery-6.jpg",
   ],
 };
 
