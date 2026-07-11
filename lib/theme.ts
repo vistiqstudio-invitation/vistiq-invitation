@@ -10,6 +10,7 @@ import Rustic from "@/themes/rustic/Rustic";
 import Bohemian from "@/themes/bohemian/Bohemian";
 import ModernElegant from "@/themes/modern-elegant/ModernElegant";
 import RoyalImperial from "@/themes/royal-imperial/RoyalImperial";
+import AdatJawa from "@/themes/adat-jawa/AdatJawa";
 
 export const themeRegistry: Record<
   string,
@@ -26,6 +27,7 @@ export const themeRegistry: Record<
   bohemian: Bohemian,
   "modern-elegant": ModernElegant,
   "royal-imperial": RoyalImperial,
+  "adat-jawa": AdatJawa,
 };
 
 export type ThemeMeta = {
@@ -101,5 +103,11 @@ export const themeList: ThemeMeta[] = [
     label: "Royal Imperial",
     description: "Maroon & emas keraton, medali foto, dial melingkar",
     swatch: ["#2a0f0f", "#d4af37"],
+  },
+  {
+    key: "adat-jawa",
+    label: "Adat Jawa",
+    description: "Soga & emas antik, motif batik, timeline zigzag, foto bersusun",
+    swatch: ["#241811", "#c9a24a"],
   },
 ];
