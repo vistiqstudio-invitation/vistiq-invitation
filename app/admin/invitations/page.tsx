@@ -41,7 +41,6 @@ export default function InvitationsPage() {
 
   const [invitations, setInvitations] = useState<Invitation[]>([]);
   const [clientsById, setClientsById] = useState<Record<string, ClientInfo>>({});
-  const [paymentByClientId, setPaymentByClientId] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
 
   const [form, setForm] = useState({
@@ -82,21 +81,6 @@ export default function InvitationsPage() {
       clientMap[c.id] = { name: c.name, resellerName: reseller?.name ?? null };
     }
     setClientsById(clientMap);
-
-    const { data: transactionsData } = await supabase
-      .from("transactions")
-      .select("client_id, status, created_at")
-      .order("created_at", { ascending: false });
-
-    const paymentMap: Record<string, string> = {};
-    for (const t of transactionsData ?? []) {
-      // Most recent transaction per client wins - rows are already sorted
-      // newest first, and a client normally only ever has one anyway.
-      if (t.client_id && !(t.client_id in paymentMap)) {
-        paymentMap[t.client_id] = t.status || "pending";
-      }
-    }
-    setPaymentByClientId(paymentMap);
 
     setLoading(false);
   };
@@ -341,7 +325,6 @@ export default function InvitationsPage() {
             <div className={styles.table}>
               {invitations.map((item) => {
                 const client = item.client_id ? clientsById[item.client_id] : null;
-                const paymentStatus = item.client_id ? paymentByClientId[item.client_id] : null;
 
                 return (
                 <div key={item.id} className={styles.row}>
@@ -362,12 +345,11 @@ export default function InvitationsPage() {
 
                   <span className={styles.packageBadge}>{item.theme}</span>
 
+                  {/* Tied 1:1 to is_active (not the separate transaction
+                      record) so this label can never drift out of sync
+                      with the Active/Inactive dropdown next to it. */}
                   <span className={styles.status}>
-                    {paymentStatus === "paid"
-                      ? "Sudah Dibayar"
-                      : paymentStatus
-                        ? "Menunggu Pembayaran"
-                        : "-"}
+                    {item.is_active === false ? "Menunggu Pembayaran" : "Aktif"}
                   </span>
 
                   <select
