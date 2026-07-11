@@ -72,10 +72,17 @@ export default function ResellerPage() {
 
   const [form, setForm] = useState({
     name: "",
+    email: "",
     whatsapp: "",
     package_name: "Luxury Gold",
     status: "active",
   });
+  const [addingClient, setAddingClient] = useState(false);
+  const [newClientCredentials, setNewClientCredentials] = useState<{
+    name: string;
+    email: string;
+    password: string;
+  } | null>(null);
 
   const [brandForm, setBrandForm] = useState({ brand_name: "", brand_color: "#d4af37" });
   const [savingBrand, setSavingBrand] = useState(false);
@@ -161,36 +168,48 @@ export default function ResellerPage() {
       return;
     }
 
-    if (!form.name.trim()) {
-      alert("Nama client wajib diisi.");
+    if (!form.name.trim() || !form.email.trim()) {
+      alert("Nama dan email client wajib diisi (email dipakai untuk login client).");
       return;
     }
 
-    const payload = {
-      reseller_id: reseller.id,
-      name: form.name,
-      whatsapp: form.whatsapp,
-      package_name: form.package_name,
-      status: form.status,
-    };
+    setAddingClient(true);
 
-    const { error } = await supabase.from("clients").insert(payload);
+    const response = await fetch("/api/create-client", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
+    });
 
-    if (error) {
-      alert("Gagal menambahkan client.");
+    const result = await response.json();
+
+    setAddingClient(false);
+
+    if (!response.ok) {
+      alert(`Gagal menambahkan client: ${result.error}`);
       return;
     }
+
+    setNewClientCredentials({ name: form.name, email: result.email, password: result.password });
 
     setForm({
       name: "",
+      email: "",
       whatsapp: "",
       package_name: "Luxury Gold",
       status: "active",
     });
 
     if (user) fetchData(user);
+  };
 
-    alert("Client berhasil ditambahkan.");
+  const copyClientCredentials = async () => {
+    if (!newClientCredentials) return;
+
+    const text = `Halo ${newClientCredentials.name}, berikut akun login dashboard undangan Anda di Vistiq Invitation:\n\nLink: ${window.location.origin}/login\nEmail: ${newClientCredentials.email}\nPassword: ${newClientCredentials.password}\n\nLewat dashboard ini Anda bisa generate link undangan per nama tamu, lihat RSVP, dan edit undangan.`;
+
+    await navigator.clipboard.writeText(text);
+    alert("Pesan berhasil disalin, tinggal paste ke WhatsApp client.");
   };
 
   const saveBrand = async () => {
@@ -408,12 +427,25 @@ export default function ResellerPage() {
 
             <section className={styles.formCard}>
               <h2 className={styles.sectionTitle}>Tambah Client Baru</h2>
+              <p style={{ marginTop: -8, marginBottom: 16, fontSize: 13, opacity: 0.75 }}>
+                Email dipakai untuk membuatkan akun login dashboard client secara
+                otomatis - client bisa generate link tamu, lihat RSVP, dan edit
+                undangan sendiri.
+              </p>
 
               <div className={styles.formGrid}>
                 <input
                   placeholder="Nama Client / Nama Pasangan"
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  className={styles.input}
+                />
+
+                <input
+                  type="email"
+                  placeholder="Email Client (untuk login dashboard)"
+                  value={form.email}
+                  onChange={(e) => setForm({ ...form, email: e.target.value })}
                   className={styles.input}
                 />
 
@@ -453,9 +485,22 @@ export default function ResellerPage() {
                 </select>
               </div>
 
-              <button onClick={addClient} className={styles.button}>
-                Simpan Client
+              <button onClick={addClient} className={styles.button} disabled={addingClient}>
+                {addingClient ? "Menyimpan..." : "Simpan Client"}
               </button>
+
+              {newClientCredentials && (
+                <div className={styles.linkBox} style={{ marginTop: 16 }}>
+                  <p style={{ margin: "0 0 8px", fontWeight: 600 }}>
+                    Akun login {newClientCredentials.name} berhasil dibuat:
+                  </p>
+                  <p style={{ margin: 0 }}>Email: {newClientCredentials.email}</p>
+                  <p style={{ margin: "0 0 12px" }}>Password: {newClientCredentials.password}</p>
+                  <button onClick={copyClientCredentials} className={styles.exportButton}>
+                    Copy Pesan untuk Dikirim ke Client
+                  </button>
+                </div>
+              )}
             </section>
 
             <section className={styles.tableWrap}>
