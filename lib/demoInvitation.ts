@@ -16,6 +16,10 @@ const COVER_BY_THEME: Record<string, string> = {
   bohemian: "/photos/boho-cover.jpg",
   "modern-elegant": "/photos/modern-bride.jpg",
   "royal-imperial": "/photos/imperial-cover.jpg",
+  // Reuses an existing floral-garden gallery shot (not garden-tree.jpg,
+  // which floral-garden already uses as its own cover) so the two themes
+  // don't show an identical cover photo side by side in the demo grid.
+  "vintage-botanical": "/photos/floral-gallery-1.jpg",
 };
 
 // Couple portrait photos also vary by theme - the default luxury-gold
@@ -34,6 +38,7 @@ const GROOM_PHOTO_BY_THEME: Record<string, string> = {
   bohemian: "/photos/boho-groom.jpg",
   "modern-elegant": "/photos/modern-groom.jpg",
   "royal-imperial": "/photos/imperial-groom.jpg",
+  "vintage-botanical": "/photos/floral-groom.jpg",
 };
 
 const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
@@ -48,6 +53,7 @@ const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
   bohemian: "/photos/boho-bride.jpg",
   "modern-elegant": "/photos/modern-bride.jpg",
   "royal-imperial": "/photos/imperial-bride.jpg",
+  "vintage-botanical": "/photos/floral-bride.jpg",
 };
 
 // Gallery photos also vary by theme so the "Our Moments" slider matches each
@@ -117,6 +123,17 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
     "/photos/rustic-gallery-4.jpg",
     "/photos/rustic-gallery-5.jpg",
     "/photos/rustic-gallery-6.jpg",
+  ],
+  // Reuses floral-garden's gallery shots (skipping #1, used as this
+  // theme's cover above) plus its garden-tree cover photo, so no photo
+  // is sourced newly - just reused in a different combination/order.
+  "vintage-botanical": [
+    "/photos/floral-gallery-2.jpg",
+    "/photos/garden-tree.jpg",
+    "/photos/floral-gallery-3.jpg",
+    "/photos/floral-gallery-4.jpg",
+    "/photos/floral-gallery-5.jpg",
+    "/photos/floral-gallery-6.jpg",
   ],
 };
 

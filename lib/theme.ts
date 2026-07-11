@@ -11,6 +11,7 @@ import Bohemian from "@/themes/bohemian/Bohemian";
 import ModernElegant from "@/themes/modern-elegant/ModernElegant";
 import RoyalImperial from "@/themes/royal-imperial/RoyalImperial";
 import AdatJawa from "@/themes/adat-jawa/AdatJawa";
+import VintageBotanical from "@/themes/vintage-botanical/VintageBotanical";
 
 export const themeRegistry: Record<
   string,
@@ -28,6 +29,7 @@ export const themeRegistry: Record<
   "modern-elegant": ModernElegant,
   "royal-imperial": RoyalImperial,
   "adat-jawa": AdatJawa,
+  "vintage-botanical": VintageBotanical,
 };
 
 export type ThemeMeta = {
@@ -109,5 +111,11 @@ export const themeList: ThemeMeta[] = [
     label: "Adat Jawa",
     description: "Soga & emas antik, motif batik, timeline zigzag, foto bersusun",
     swatch: ["#241811", "#c9a24a"],
+  },
+  {
+    key: "vintage-botanical",
+    label: "Vintage Botanical",
+    description: "Kertas usang, sage & maroon pudar, plakat botani, galeri masonry",
+    swatch: ["#f6efe0", "#7d3f3a"],
   },
 ];
