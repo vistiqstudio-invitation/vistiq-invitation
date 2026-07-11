@@ -1,5 +1,6 @@
 import Link from "next/link";
 import PhoneMockup from "@/components/PhoneMockup";
+import SiteNavbar from "@/components/SiteNavbar";
 import { themeList } from "@/lib/theme";
 
 const WA_NUMBER = "6281371338032";
@@ -25,30 +26,7 @@ export default function HomePage() {
     <main className="page">
       <style>{css}</style>
 
-      <nav className="navbar">
-        <Link href="/" className="brand">
-          <div>
-            <p>VISTIQ</p>
-            <h1>Invitation</h1>
-          </div>
-        </Link>
-
-        <div className="navMenu">
-          <a href="/">Home</a>
-          <a href="#fitur">Fitur</a>
-          <a href="#tema">Tema</a>
-          <a href="#harga">Harga</a>
-          <a href="#reseller">Reseller</a>
-          <Link href="/login">Login</Link>
-          <a
-            href={`https://wa.me/${WA_NUMBER}?text=${resellerText}`}
-            target="_blank"
-            className="navButton"
-          >
-            Daftar Reseller
-          </a>
-        </div>
-      </nav>
+      <SiteNavbar />
 
       <section className="hero">
         <div className="heroText">
@@ -251,12 +229,17 @@ html, body {
 }
 
 .navbar {
+  position: relative;
   max-width: 1180px;
   margin: 0 auto;
   padding: 22px 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.menuToggle {
+  display: none;
 }
 
 .brand {
@@ -593,32 +576,68 @@ html, body {
 
 @media (max-width: 768px) {
   .navbar {
-    padding: 18px 24px;
-    display: block;
-  }
-
-  .brand {
-    display: block;
-    margin-bottom: 14px;
+    padding: 16px 24px;
   }
 
   .brand h1 {
-    font-size: 24px;
+    font-size: 22px;
+  }
+
+  .menuToggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #1167b2;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-weight: 800;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  .navBackdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.35);
+    z-index: 40;
   }
 
   .navMenu {
-    overflow-x: auto;
-    gap: 18px;
-    padding-bottom: 8px;
+    display: none;
   }
 
-  .navMenu a {
-    font-size: 14px;
-    flex-shrink: 0;
+  .navMenu.navMenuOpen {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 24px;
+    right: 24px;
+    background: white;
+    border-radius: 18px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+    padding: 12px;
+    z-index: 50;
   }
 
-  .navButton {
-    padding: 10px 16px;
+  .navMenu.navMenuOpen a {
+    padding: 13px 14px;
+    border-radius: 12px;
+    font-size: 15px;
+  }
+
+  .navMenu.navMenuOpen a:active {
+    background: #f1f5f9;
+  }
+
+  .navMenu.navMenuOpen .navButton {
+    margin-top: 6px;
+    text-align: center;
+    justify-content: center;
   }
 
   .hero {
