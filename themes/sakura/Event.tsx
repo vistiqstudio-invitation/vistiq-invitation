@@ -13,7 +13,7 @@ export default function Event({ invitation }: { invitation: InvitationData }) {
 
       <Reveal>
         <p className={styles.eyebrow}>Wedding Event</p>
-        <h2 className={styles.title}>Save The Date</h2>
+        <h2 className={styles.title}>Rangkaian Acara</h2>
         <div className={styles.ornament}><span className={styles.ornamentMark} /></div>
       </Reveal>
 

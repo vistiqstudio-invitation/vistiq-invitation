@@ -9,7 +9,7 @@ export default function Event({ invitation }: { invitation: InvitationData }) {
     <div className={styles.section}>
       <Reveal>
         <p className={styles.eyebrow}>Wedding Event</p>
-        <h2 className={styles.title}>Save The Date</h2>
+        <h2 className={styles.title}>Rangkaian Acara</h2>
         <div className={styles.ornament}>
           <span className={styles.ornamentDiamond} />
         </div>
