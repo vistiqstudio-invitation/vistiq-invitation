@@ -44,6 +44,13 @@ type Invitation = {
   created_at: string;
 };
 
+type Transaction = {
+  id: string;
+  client_id: string;
+  status?: string;
+  reseller_confirmed_at?: string | null;
+};
+
 const initialForm = {
   client_id: "",
   slug: "",
@@ -103,8 +110,10 @@ export default function ResellerInvitationsPage() {
   const [reseller, setReseller] = useState<Reseller | null>(null);
   const [clients, setClients] = useState<Client[]>([]);
   const [invitations, setInvitations] = useState<Invitation[]>([]);
+  const [transactionsByClientId, setTransactionsByClientId] = useState<Record<string, Transaction>>({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [confirmingId, setConfirmingId] = useState<string | null>(null);
 
   const [form, setForm] = useState<FormState>(initialForm);
 
@@ -132,6 +141,23 @@ export default function ResellerInvitationsPage() {
       .order("created_at", { ascending: false });
 
     setInvitations(invitationsData ?? []);
+
+    const { data: transactionsData } = await supabase
+      .from("transactions")
+      .select("id, client_id, status, reseller_confirmed_at")
+      .in("client_id", clientIds)
+      .order("created_at", { ascending: false });
+
+    const transactionMap: Record<string, Transaction> = {};
+    for (const t of transactionsData ?? []) {
+      // Most recent transaction per client wins - a client normally only
+      // ever has one anyway (see the 012 trigger).
+      if (!(t.client_id in transactionMap)) {
+        transactionMap[t.client_id] = t;
+      }
+    }
+    setTransactionsByClientId(transactionMap);
+
     setLoading(false);
   };
 
@@ -286,6 +312,24 @@ export default function ResellerInvitationsPage() {
     setForm(initialForm);
     if (reseller) fetchData(reseller.id);
     alert("Undangan berhasil dibuat dan siap dibagikan ke tamu.");
+  };
+
+  const confirmPayment = async (transactionId: string) => {
+    setConfirmingId(transactionId);
+
+    const { error } = await supabase.rpc("confirm_payment_notification", {
+      p_transaction_id: transactionId,
+    });
+
+    setConfirmingId(null);
+
+    if (error) {
+      alert(`Gagal mengirim konfirmasi: ${error.message}`);
+      return;
+    }
+
+    if (reseller) fetchData(reseller.id);
+    alert("Konfirmasi terkirim. Admin akan memverifikasi pembayaran dan mengaktifkan undangan.");
   };
 
   const copyLink = async (slug: string) => {
@@ -679,7 +723,11 @@ export default function ResellerInvitationsPage() {
                 <p>Belum ada undangan.</p>
               ) : (
                 <div className={styles.table}>
-                  {invitations.map((item) => (
+                  {invitations.map((item) => {
+                    const transaction = item.client_id ? transactionsByClientId[item.client_id] : null;
+                    const alreadyConfirmed = Boolean(transaction?.reseller_confirmed_at);
+
+                    return (
                     <div key={item.id} className={styles.row}>
                       <div>
                         <strong>
@@ -693,6 +741,22 @@ export default function ResellerInvitationsPage() {
                       <span className={styles.status}>
                         {item.is_active === false ? "Menunggu Pembayaran" : "Aktif"}
                       </span>
+
+                      {item.is_active === false && transaction && transaction.status !== "paid" && (
+                        alreadyConfirmed ? (
+                          <span style={{ fontSize: 12, color: "#0369a1" }}>
+                            Menunggu verifikasi admin
+                          </span>
+                        ) : (
+                          <button
+                            onClick={() => confirmPayment(transaction.id)}
+                            disabled={confirmingId === transaction.id}
+                            className={styles.miniButtonGreen}
+                          >
+                            {confirmingId === transaction.id ? "Mengirim..." : "Konfirmasi Sudah Bayar"}
+                          </button>
+                        )
+                      )}
 
                       <div className={styles.actions}>
                         <button
@@ -711,7 +775,8 @@ export default function ResellerInvitationsPage() {
                         </button>
                       </div>
                     </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </section>

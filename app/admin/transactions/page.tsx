@@ -21,6 +21,7 @@ type Transaction = {
   commission: number;
   status?: string;
   reseller_id?: string | null;
+  reseller_confirmed_at?: string | null;
   created_at: string;
 };
 
@@ -163,6 +164,11 @@ export default function AdminTransactionsPage() {
                   <div>
                     <strong>Rp {Number(item.amount || 0).toLocaleString("id-ID")}</strong>
                     <p>Komisi Rp {Number(item.commission || 0).toLocaleString("id-ID")} - {resellerName(item.reseller_id)}</p>
+                    {item.status !== "paid" && item.reseller_confirmed_at && (
+                      <p style={{ color: "#0369a1", fontSize: 13 }}>
+                        ✓ Reseller konfirmasi sudah bayar - {new Date(item.reseller_confirmed_at).toLocaleString("id-ID")}
+                      </p>
+                    )}
                   </div>
 
                   <select
