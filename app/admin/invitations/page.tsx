@@ -26,7 +26,13 @@ type Invitation = {
   reception_location?: string;
   maps_url?: string;
   is_active?: boolean;
+  client_id?: string | null;
   created_at: string;
+};
+
+type ClientInfo = {
+  name: string;
+  resellerName: string | null;
 };
 
 export default function InvitationsPage() {
@@ -34,6 +40,8 @@ export default function InvitationsPage() {
   const supabase = createClient();
 
   const [invitations, setInvitations] = useState<Invitation[]>([]);
+  const [clientsById, setClientsById] = useState<Record<string, ClientInfo>>({});
+  const [paymentByClientId, setPaymentByClientId] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
 
   const [form, setForm] = useState({
@@ -59,6 +67,36 @@ export default function InvitationsPage() {
     } else {
       setInvitations(data ?? []);
     }
+
+    // Owner sees every client/reseller regardless of who created what, so
+    // this doubles as the "who does this invitation belong to" lookup -
+    // the point being every invitation's origin is visible in one place,
+    // not scattered across the clients/resellers/transactions pages.
+    const { data: clientsData } = await supabase
+      .from("clients")
+      .select("id, name, resellers:reseller_id(name)");
+
+    const clientMap: Record<string, ClientInfo> = {};
+    for (const c of clientsData ?? []) {
+      const reseller = c.resellers as unknown as { name: string } | null;
+      clientMap[c.id] = { name: c.name, resellerName: reseller?.name ?? null };
+    }
+    setClientsById(clientMap);
+
+    const { data: transactionsData } = await supabase
+      .from("transactions")
+      .select("client_id, status, created_at")
+      .order("created_at", { ascending: false });
+
+    const paymentMap: Record<string, string> = {};
+    for (const t of transactionsData ?? []) {
+      // Most recent transaction per client wins - rows are already sorted
+      // newest first, and a client normally only ever has one anyway.
+      if (t.client_id && !(t.client_id in paymentMap)) {
+        paymentMap[t.client_id] = t.status || "pending";
+      }
+    }
+    setPaymentByClientId(paymentMap);
 
     setLoading(false);
   };
@@ -160,7 +198,7 @@ export default function InvitationsPage() {
   };
 
   const openPreview = (slug: string) => {
-    window.open(`/${slug}?to=Bapak%20Ahmad`, "_blank");
+    window.open(`/preview/${slug}`, "_blank");
   };
 
   const logout = async () => {
@@ -301,16 +339,36 @@ export default function InvitationsPage() {
             <p>Belum ada undangan.</p>
           ) : (
             <div className={styles.table}>
-              {invitations.map((item) => (
+              {invitations.map((item) => {
+                const client = item.client_id ? clientsById[item.client_id] : null;
+                const paymentStatus = item.client_id ? paymentByClientId[item.client_id] : null;
+
+                return (
                 <div key={item.id} className={styles.row}>
                   <div>
                     <strong>
                       {item.groom_name || "-"} & {item.bride_name || "-"}
                     </strong>
                     <p>/{item.slug}</p>
+                    {client ? (
+                      <p style={{ fontSize: 12, opacity: 0.75 }}>
+                        Client: {client.name}
+                        {client.resellerName ? ` · Reseller: ${client.resellerName}` : " · Direct (Owner)"}
+                      </p>
+                    ) : (
+                      <p style={{ fontSize: 12, opacity: 0.75 }}>Tanpa client (dibuat manual)</p>
+                    )}
                   </div>
 
                   <span className={styles.packageBadge}>{item.theme}</span>
+
+                  <span className={styles.status}>
+                    {paymentStatus === "paid"
+                      ? "Sudah Dibayar"
+                      : paymentStatus
+                        ? "Menunggu Pembayaran"
+                        : "-"}
+                  </span>
 
                   <select
                     value={item.is_active === false ? "inactive" : "active"}
@@ -337,7 +395,8 @@ export default function InvitationsPage() {
                     </button>
                   </div>
                 </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </section>

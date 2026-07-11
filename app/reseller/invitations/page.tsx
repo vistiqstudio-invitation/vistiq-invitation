@@ -48,7 +48,10 @@ const initialForm = {
   client_id: "",
   slug: "",
   theme: "luxury-gold",
-  is_active: true,
+  // Resellers can no longer flip this themselves - a new invitation stays
+  // inactive until the owner confirms payment (admin/transactions) or
+  // manually activates it (admin/invitations).
+  is_active: false,
 
   groom_name: "",
   bride_name: "",
@@ -292,7 +295,7 @@ export default function ResellerInvitationsPage() {
   };
 
   const openPreview = (slug: string) => {
-    window.open(`/${slug}?to=Bapak%20Ahmad`, "_blank");
+    window.open(`/preview/${slug}`, "_blank");
   };
 
   const logout = async () => {
@@ -380,14 +383,9 @@ export default function ResellerInvitationsPage() {
                   </button>
                 </div>
 
-                <select
-                  value={form.is_active ? "active" : "inactive"}
-                  onChange={(e) => setForm({ ...form, is_active: e.target.value === "active" })}
-                  className={styles.input}
-                >
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
-                </select>
+                <div className={styles.input} style={{ display: "flex", alignItems: "center", color: "#92400e" }}>
+                  Menunggu Pembayaran - diaktifkan otomatis setelah dikonfirmasi admin
+                </div>
               </div>
 
               <h2 className={styles.editSectionTitle}>Data Mempelai</h2>
@@ -693,7 +691,7 @@ export default function ResellerInvitationsPage() {
                       <span className={styles.packageBadge}>{item.theme}</span>
 
                       <span className={styles.status}>
-                        {item.is_active === false ? "inactive" : "active"}
+                        {item.is_active === false ? "Menunggu Pembayaran" : "Aktif"}
                       </span>
 
                       <div className={styles.actions}>

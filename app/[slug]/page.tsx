@@ -39,7 +39,7 @@ export default async function InvitationPage({ params }: Props) {
   const { slug } = await params;
   const invitation = await getInvitationBySlug(slug);
 
-  if (!invitation || invitation.status === "inactive") {
+  if (!invitation || invitation.status !== "active") {
     notFound();
   }
 
