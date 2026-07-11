@@ -163,9 +163,13 @@ export default function ResellerInvitationsPage() {
 
     const payload = { ...form, event_date: form.event_date || null };
 
-    const { error } = await supabase.from("invitations").insert(payload);
+    const { data: created, error } = await supabase
+      .from("invitations")
+      .insert(payload)
+      .select("id")
+      .single();
 
-    if (error) {
+    if (error || !created) {
       alert("Gagal membuat undangan. Pastikan slug belum pernah dipakai.");
       return;
     }
@@ -183,8 +187,8 @@ export default function ResellerInvitationsPage() {
       status: "active",
     });
 
-    if (reseller) fetchData(reseller.id);
-    alert("Undangan berhasil dibuat.");
+    alert("Undangan berhasil dibuat. Lanjutkan mengisi foto, love story, dan amplop digital.");
+    router.push(`/reseller/invitations/${created.id}`);
   };
 
   const copyLink = async (slug: string) => {
@@ -356,6 +360,13 @@ export default function ResellerInvitationsPage() {
                       <span className={styles.status}>{item.status}</span>
 
                       <div className={styles.actions}>
+                        <button
+                          onClick={() => router.push(`/reseller/invitations/${item.id}`)}
+                          className={styles.miniButton}
+                        >
+                          Lengkapi Data
+                        </button>
+
                         <button onClick={() => openPreview(item.slug)} className={styles.miniButton}>
                           Preview
                         </button>
