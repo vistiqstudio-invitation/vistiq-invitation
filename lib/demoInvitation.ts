@@ -28,6 +28,12 @@ const COVER_BY_THEME: Record<string, string> = {
   // which royal-black uses as its own cover) so the two dark/gold themes
   // don't show an identical cover photo side by side in the demo grid.
   "art-deco-glam": "/photos/black-gallery-1.jpg",
+  // Reuses bohemian's groom portrait (a solo golden-hour field shot) as
+  // the cover instead of bohemian's own boho-cover.jpg, so the two
+  // golden-hour themes don't show an identical cover photo in the demo
+  // grid. Matches the existing convention (several themes already reuse
+  // their own bride/groom portrait as the cover image).
+  "golden-romance": "/photos/boho-groom.jpg",
 };
 
 // Couple portrait photos also vary by theme - the default luxury-gold
@@ -49,6 +55,7 @@ const GROOM_PHOTO_BY_THEME: Record<string, string> = {
   "vintage-botanical": "/photos/floral-groom.jpg",
   "pastel-studio": "/photos/white-groom.jpg",
   "art-deco-glam": "/photos/black-groom.jpg",
+  "golden-romance": "/photos/boho-groom.jpg",
 };
 
 const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
@@ -69,6 +76,7 @@ const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
   // shot with a gold staircase backdrop) rather than royal-black's, so
   // the bride/groom pairing isn't visually identical to royal-black's.
   "art-deco-glam": "/photos/modern-bride.jpg",
+  "golden-romance": "/photos/boho-bride.jpg",
 };
 
 // Gallery photos also vary by theme so the "Our Moments" slider matches each
@@ -171,6 +179,18 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
     "/photos/black-gallery-4.jpg",
     "/photos/black-gallery-5.jpg",
     "/photos/black-gallery-6.jpg",
+  ],
+  // Bohemian has no dedicated gallery set of its own (falls back to the
+  // generic placeholders), so this reuses rustic's warm-toned gallery
+  // shots instead - a still-unused-as-a-donor set that fits the same
+  // golden-hour warmth without duplicating any other theme's gallery.
+  "golden-romance": [
+    "/photos/rustic-gallery-1.jpg",
+    "/photos/rustic-gallery-2.jpg",
+    "/photos/rustic-gallery-3.jpg",
+    "/photos/rustic-gallery-4.jpg",
+    "/photos/rustic-gallery-5.jpg",
+    "/photos/rustic-gallery-6.jpg",
   ],
 };
 

@@ -14,6 +14,7 @@ import AdatJawa from "@/themes/adat-jawa/AdatJawa";
 import VintageBotanical from "@/themes/vintage-botanical/VintageBotanical";
 import PastelStudio from "@/themes/pastel-studio/PastelStudio";
 import ArtDecoGlam from "@/themes/art-deco-glam/ArtDecoGlam";
+import GoldenRomance from "@/themes/golden-romance/GoldenRomance";
 
 export const themeRegistry: Record<
   string,
@@ -34,6 +35,7 @@ export const themeRegistry: Record<
   "vintage-botanical": VintageBotanical,
   "pastel-studio": PastelStudio,
   "art-deco-glam": ArtDecoGlam,
+  "golden-romance": GoldenRomance,
 };
 
 export type ThemeMeta = {
@@ -133,5 +135,11 @@ export const themeList: ThemeMeta[] = [
     label: "Art Deco Glam",
     description: "Onyx, emerald & emas geometris ala 1920-an, bingkai heksagon",
     swatch: ["#0d0d0f", "#c9a648"],
+  },
+  {
+    key: "golden-romance",
+    label: "Golden Romance",
+    description: "Blush & emas senja keemasan, bingkai bulat glow, carousel galeri",
+    swatch: ["#fbf5ee", "#c9a15a"],
   },
 ];
