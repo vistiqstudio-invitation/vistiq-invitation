@@ -61,8 +61,9 @@ export default function ClientPage() {
   const [rsvps, setRsvps] = useState<Rsvp[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const [guestName, setGuestName] = useState("");
-  const [generatedLink, setGeneratedLink] = useState("");
+  const [guestNamesInput, setGuestNamesInput] = useState("");
+  const [selectedInvitationId, setSelectedInvitationId] = useState("");
+  const [generatedLinks, setGeneratedLinks] = useState<{ name: string; url: string }[]>([]);
 
   const fetchData = async (currentUser: AppUser) => {
     const { data: clientData } = await supabase
@@ -145,30 +146,44 @@ export default function ClientPage() {
     router.push("/login");
   };
 
-  const generateLink = () => {
-    if (!guestName.trim()) {
-      alert("Masukkan nama tamu.");
+  const generateLinks = () => {
+    const names = guestNamesInput
+      .split("\n")
+      .map((line) => line.trim())
+      .filter(Boolean);
+
+    if (names.length === 0) {
+      alert("Masukkan minimal satu nama tamu (satu nama per baris).");
       return;
     }
 
-    const firstInvitation = invitations[0];
+    const invitation =
+      invitations.find((inv) => inv.id === selectedInvitationId) || invitations[0];
 
-    if (!firstInvitation) {
+    if (!invitation) {
       alert("Belum ada undangan untuk akun client ini.");
       return;
     }
 
-    const url = `${window.location.origin}/${firstInvitation.slug}?to=${encodeURIComponent(
-      guestName
-    )}`;
+    const links = names.map((name) => ({
+      name,
+      url: `${window.location.origin}/${invitation.slug}?to=${encodeURIComponent(name)}`,
+    }));
 
-    setGeneratedLink(url);
+    setGeneratedLinks(links);
   };
 
-  const copyLink = async () => {
-    if (!generatedLink) return;
-    await navigator.clipboard.writeText(generatedLink);
+  const copyLink = async (url: string) => {
+    await navigator.clipboard.writeText(url);
     alert("Link berhasil disalin.");
+  };
+
+  const copyAllLinks = async () => {
+    if (generatedLinks.length === 0) return;
+
+    const text = generatedLinks.map(({ name, url }) => `${name}: ${url}`).join("\n");
+    await navigator.clipboard.writeText(text);
+    alert(`${generatedLinks.length} link berhasil disalin.`);
   };
 
   const exportCSV = () => {
@@ -257,26 +272,64 @@ export default function ClientPage() {
 
             <section className={styles.generatorCard}>
               <h2 className={styles.sectionTitle}>Generator Link Tamu</h2>
+              <p style={{ marginTop: -8, marginBottom: 16, fontSize: 13, opacity: 0.75 }}>
+                Isi satu nama tamu per baris (bisa paste banyak nama sekaligus dari Excel/WA),
+                lalu klik Generate untuk membuat link undangan personal untuk semua tamu itu.
+              </p>
+
+              {invitations.length > 1 && (
+                <select
+                  value={selectedInvitationId || invitations[0].id}
+                  onChange={(e) => setSelectedInvitationId(e.target.value)}
+                  className={styles.input}
+                  style={{ marginBottom: 12 }}
+                >
+                  {invitations.map((inv) => (
+                    <option key={inv.id} value={inv.id}>
+                      {inv.groom_name} & {inv.bride_name} (/{inv.slug})
+                    </option>
+                  ))}
+                </select>
+              )}
 
               <div className={styles.generatorWrap}>
-                <input
-                  value={guestName}
-                  onChange={(e) => setGuestName(e.target.value)}
-                  placeholder="Contoh: Bapak Ahmad"
+                <textarea
+                  value={guestNamesInput}
+                  onChange={(e) => setGuestNamesInput(e.target.value)}
+                  placeholder={"Contoh:\nBapak Ahmad\nIbu Siti\nKeluarga Budi"}
                   className={styles.input}
+                  rows={4}
+                  style={{ resize: "vertical", fontFamily: "inherit" }}
                 />
 
-                <button onClick={generateLink} className={styles.button}>
-                  Generate
+                <button onClick={generateLinks} className={styles.button}>
+                  Generate Semua Link
                 </button>
               </div>
 
-              {generatedLink && (
+              {generatedLinks.length > 0 && (
                 <>
-                  <div className={styles.linkBox}>{generatedLink}</div>
+                  <div className={styles.table} style={{ marginTop: 16 }}>
+                    {generatedLinks.map(({ name, url }) => (
+                      <div key={name + url} className={styles.row}>
+                        <div>
+                          <strong>{name}</strong>
+                          <div className={styles.linkBox}>{url}</div>
+                        </div>
 
-                  <button onClick={copyLink} className={styles.exportButton}>
-                    Copy Link
+                        <button onClick={() => copyLink(url)} className={styles.exportButton}>
+                          Copy
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+
+                  <button
+                    onClick={copyAllLinks}
+                    className={styles.exportButton}
+                    style={{ marginTop: 12 }}
+                  >
+                    Copy Semua ({generatedLinks.length} link)
                   </button>
                 </>
               )}
