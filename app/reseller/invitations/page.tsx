@@ -40,7 +40,7 @@ type Invitation = {
   groom_name?: string;
   bride_name?: string;
   client_id?: string;
-  status?: string;
+  is_active?: boolean;
   created_at: string;
 };
 
@@ -48,7 +48,7 @@ const initialForm = {
   client_id: "",
   slug: "",
   theme: "luxury-gold",
-  status: "active",
+  is_active: true,
 
   groom_name: "",
   bride_name: "",
@@ -124,7 +124,7 @@ export default function ResellerInvitationsPage() {
 
     const { data: invitationsData } = await supabase
       .from("invitations")
-      .select("id, slug, theme, groom_name, bride_name, client_id, status, created_at")
+      .select("id, slug, theme, groom_name, bride_name, client_id, is_active, created_at")
       .in("client_id", clientIds)
       .order("created_at", { ascending: false });
 
@@ -276,7 +276,7 @@ export default function ResellerInvitationsPage() {
     setSaving(false);
 
     if (error) {
-      alert("Gagal membuat undangan. Pastikan slug belum pernah dipakai.");
+      alert(`Gagal membuat undangan: ${error.message}`);
       return;
     }
 
@@ -380,9 +380,12 @@ export default function ResellerInvitationsPage() {
                   </button>
                 </div>
 
-                <select value={form.status} onChange={(e) => set("status", e.target.value)} className={styles.input}>
+                <select
+                  value={form.is_active ? "active" : "inactive"}
+                  onChange={(e) => setForm({ ...form, is_active: e.target.value === "active" })}
+                  className={styles.input}
+                >
                   <option value="active">Active</option>
-                  <option value="draft">Draft</option>
                   <option value="inactive">Inactive</option>
                 </select>
               </div>
@@ -689,7 +692,9 @@ export default function ResellerInvitationsPage() {
 
                       <span className={styles.packageBadge}>{item.theme}</span>
 
-                      <span className={styles.status}>{item.status}</span>
+                      <span className={styles.status}>
+                        {item.is_active === false ? "inactive" : "active"}
+                      </span>
 
                       <div className={styles.actions}>
                         <button

@@ -25,7 +25,7 @@ type Invitation = {
   akad_location?: string;
   reception_location?: string;
   maps_url?: string;
-  status?: string;
+  is_active?: boolean;
   created_at: string;
 };
 
@@ -45,7 +45,7 @@ export default function InvitationsPage() {
     akad_location: "",
     reception_location: "",
     maps_url: "",
-    status: "active",
+    is_active: true,
   });
 
   const fetchInvitations = async () => {
@@ -128,7 +128,7 @@ export default function InvitationsPage() {
     const { error } = await supabase.from("invitations").insert(payload);
 
     if (error) {
-      alert("Gagal membuat undangan. Pastikan slug belum pernah dipakai.");
+      alert(`Gagal membuat undangan: ${error.message}`);
       return;
     }
 
@@ -141,15 +141,15 @@ export default function InvitationsPage() {
       akad_location: "",
       reception_location: "",
       maps_url: "",
-      status: "active",
+      is_active: true,
     });
 
     fetchInvitations();
     alert("Undangan berhasil dibuat.");
   };
 
-  const updateStatus = async (id: string, status: string) => {
-    await supabase.from("invitations").update({ status }).eq("id", id);
+  const updateActive = async (id: string, is_active: boolean) => {
+    await supabase.from("invitations").update({ is_active }).eq("id", id);
     fetchInvitations();
   };
 
@@ -252,12 +252,11 @@ export default function InvitationsPage() {
             />
 
             <select
-              value={form.status}
-              onChange={(e) => setForm({ ...form, status: e.target.value })}
+              value={form.is_active ? "active" : "inactive"}
+              onChange={(e) => setForm({ ...form, is_active: e.target.value === "active" })}
               className={styles.input}
             >
               <option value="active">Active</option>
-              <option value="draft">Draft</option>
               <option value="inactive">Inactive</option>
             </select>
 
@@ -314,12 +313,11 @@ export default function InvitationsPage() {
                   <span className={styles.packageBadge}>{item.theme}</span>
 
                   <select
-                    value={item.status || "active"}
-                    onChange={(e) => updateStatus(item.id, e.target.value)}
+                    value={item.is_active === false ? "inactive" : "active"}
+                    onChange={(e) => updateActive(item.id, e.target.value === "active")}
                     className={styles.statusSelect}
                   >
                     <option value="active">Active</option>
-                    <option value="draft">Draft</option>
                     <option value="inactive">Inactive</option>
                   </select>
 

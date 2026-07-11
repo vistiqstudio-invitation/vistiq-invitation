@@ -12,7 +12,7 @@ type PhotoField = "cover_photo" | "bride_photo" | "groom_photo" | "music_url";
 
 const initialForm = {
   theme: "luxury-gold",
-  status: "active",
+  is_active: true,
 
   groom_name: "",
   bride_name: "",
@@ -130,7 +130,7 @@ export default function ResellerInvitationEditPage() {
 
       setForm({
         theme: invitation.theme || "luxury-gold",
-        status: invitation.status || "active",
+        is_active: invitation.is_active !== false,
 
         groom_name: invitation.groom_name || "",
         bride_name: invitation.bride_name || "",
@@ -254,7 +254,7 @@ export default function ResellerInvitationEditPage() {
     setSaving(false);
 
     if (error) {
-      alert("Gagal menyimpan data.");
+      alert(`Gagal menyimpan data: ${error.message}`);
       return;
     }
 
@@ -324,12 +324,11 @@ export default function ResellerInvitationEditPage() {
           </select>
 
           <select
-            value={form.status}
-            onChange={(e) => set("status", e.target.value)}
+            value={form.is_active ? "active" : "inactive"}
+            onChange={(e) => setForm({ ...form, is_active: e.target.value === "active" })}
             className={styles.input}
           >
             <option value="active">Active</option>
-            <option value="draft">Draft</option>
             <option value="inactive">Inactive</option>
           </select>
         </div>
@@ -448,14 +447,14 @@ export default function ResellerInvitationEditPage() {
               <div className={styles.storyGrid}>
                 <input
                   placeholder="Tahun / Label, contoh: 2021"
-                  value={form[yearKey]}
+                  value={form[yearKey] as string}
                   onChange={(e) => set(yearKey, e.target.value)}
                   className={styles.input}
                 />
 
                 <input
                   placeholder="Judul momen, contoh: Pertama Bertemu"
-                  value={form[titleKey]}
+                  value={form[titleKey] as string}
                   onChange={(e) => set(titleKey, e.target.value)}
                   className={styles.input}
                 />
@@ -463,7 +462,7 @@ export default function ResellerInvitationEditPage() {
 
               <textarea
                 placeholder="Ceritakan momen ini..."
-                value={form[descKey]}
+                value={form[descKey] as string}
                 onChange={(e) => set(descKey, e.target.value)}
                 className={styles.textarea}
               />
