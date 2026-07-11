@@ -38,9 +38,7 @@ export default function DemoPickerPage() {
                   <p className={styles.cardDesc}>{theme.description}</p>
 
                   <div className={styles.priceRow}>
-                    <span className={styles.priceNow}>Rp 99.000</span>
-                    <span className={styles.priceWas}>Rp 149.000</span>
-                    <span className={styles.priceBadge}>34%</span>
+                    <span className={styles.priceNow}>Rp 149.000</span>
                   </div>
 
                   <div className={styles.cardActions}>

@@ -115,7 +115,7 @@ export default function HomePage() {
         <div className="priceGrid">
           <div className="priceCard">
             <h3>Client</h3>
-            <strong>Rp 99.000</strong>
+            <strong>Rp 149.000</strong>
             <p>
               Untuk yang cuma butuh 1 undangan pernikahan sendiri, lengkap
               dengan RSVP, galeri, dan amplop digital. Bukan reseller.
