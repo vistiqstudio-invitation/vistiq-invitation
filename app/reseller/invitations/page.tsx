@@ -15,6 +15,10 @@ const NAV_ITEMS = [
   { key: "demo", label: "Demo Tema", href: "/demo", external: true },
 ];
 
+const BUCKET = "invitation-assets";
+
+type PhotoField = "cover_photo" | "bride_photo" | "groom_photo";
+
 type Reseller = {
   id: string;
   brand_name?: string | null;
@@ -40,6 +44,55 @@ type Invitation = {
   created_at: string;
 };
 
+const initialForm = {
+  client_id: "",
+  slug: "",
+  theme: "luxury-gold",
+  status: "active",
+
+  groom_name: "",
+  bride_name: "",
+  groom_parent: "",
+  bride_parent: "",
+  groom_instagram: "",
+  bride_instagram: "",
+
+  akad_date: "",
+  akad_time: "",
+  akad_location: "",
+  resepsi_date: "",
+  reception_time: "",
+  reception_location: "",
+  maps_url: "",
+
+  youtube_url: "",
+
+  story_1_year: "",
+  story_1_title: "",
+  story_1_desc: "",
+  story_2_year: "",
+  story_2_title: "",
+  story_2_desc: "",
+  story_3_year: "",
+  story_3_title: "",
+  story_3_desc: "",
+
+  groom_bank_name: "",
+  groom_bank_account: "",
+  groom_bank_holder: "",
+  bride_bank_name: "",
+  bride_bank_account: "",
+  bride_bank_holder: "",
+  music_url: "",
+
+  cover_photo: "",
+  bride_photo: "",
+  groom_photo: "",
+  gallery_photos: [] as string[],
+};
+
+type FormState = typeof initialForm;
+
 export default function ResellerInvitationsPage() {
   const router = useRouter();
   const supabase = createClient();
@@ -48,19 +101,9 @@ export default function ResellerInvitationsPage() {
   const [clients, setClients] = useState<Client[]>([]);
   const [invitations, setInvitations] = useState<Invitation[]>([]);
   const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
 
-  const [form, setForm] = useState({
-    client_id: "",
-    slug: "",
-    theme: "luxury-gold",
-    groom_name: "",
-    bride_name: "",
-    event_date: "",
-    akad_location: "",
-    reception_location: "",
-    maps_url: "",
-    status: "active",
-  });
+  const [form, setForm] = useState<FormState>(initialForm);
 
   const fetchData = async (resellerId: string) => {
     const { data: clientsData } = await supabase
@@ -131,6 +174,10 @@ export default function ResellerInvitationsPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
+  const set = (field: keyof FormState, value: string) => {
+    setForm((prev) => ({ ...prev, [field]: value }));
+  };
+
   const makeSlug = (text: string) => {
     return text
       .toLowerCase()
@@ -142,7 +189,68 @@ export default function ResellerInvitationsPage() {
 
   const autoSlug = () => {
     const text = `${form.groom_name}-${form.bride_name}`;
-    setForm({ ...form, slug: makeSlug(text) });
+    set("slug", makeSlug(text));
+  };
+
+  // Uploaded before the invitation row exists, so photos live under the
+  // reseller's own storage folder (already writable per migration 010)
+  // instead of an invitation-id folder. The public URL still works fine
+  // once saved into the new invitation row.
+  const uploadToStorage = async (file: File, folder: string) => {
+    if (!reseller) return "";
+
+    const ext = file.name.split(".").pop();
+    const fileName = `resellers/${reseller.id}/drafts/${folder}-${Date.now()}-${Math.random()
+      .toString(36)
+      .slice(2)}.${ext}`;
+
+    const { error } = await supabase.storage
+      .from(BUCKET)
+      .upload(fileName, file, { contentType: file.type });
+
+    if (error) {
+      alert(`Upload gagal: ${error.message}`);
+      return "";
+    }
+
+    return supabase.storage.from(BUCKET).getPublicUrl(fileName).data.publicUrl;
+  };
+
+  const uploadSingleFile = async (file: File, field: PhotoField) => {
+    const publicUrl = await uploadToStorage(file, field);
+    if (!publicUrl) return;
+
+    set(field, publicUrl);
+  };
+
+  const uploadGalleryFiles = async (files: FileList | null) => {
+    if (!files || files.length === 0) return;
+
+    const selectedFiles = Array.from(files);
+
+    if (form.gallery_photos.length + selectedFiles.length > 10) {
+      alert("Maksimal 10 foto galeri.");
+      return;
+    }
+
+    const uploadedUrls: string[] = [];
+
+    for (const file of selectedFiles) {
+      const url = await uploadToStorage(file, "gallery");
+      if (url) uploadedUrls.push(url);
+    }
+
+    setForm((prev) => ({
+      ...prev,
+      gallery_photos: [...prev.gallery_photos, ...uploadedUrls],
+    }));
+  };
+
+  const removeGalleryPhoto = (index: number) => {
+    setForm((prev) => ({
+      ...prev,
+      gallery_photos: prev.gallery_photos.filter((_, i) => i !== index),
+    }));
   };
 
   const addInvitation = async () => {
@@ -161,34 +269,20 @@ export default function ResellerInvitationsPage() {
       return;
     }
 
-    const payload = { ...form, event_date: form.event_date || null };
+    setSaving(true);
 
-    const { data: created, error } = await supabase
-      .from("invitations")
-      .insert(payload)
-      .select("id")
-      .single();
+    const { error } = await supabase.from("invitations").insert(form);
 
-    if (error || !created) {
+    setSaving(false);
+
+    if (error) {
       alert("Gagal membuat undangan. Pastikan slug belum pernah dipakai.");
       return;
     }
 
-    setForm({
-      client_id: "",
-      slug: "",
-      theme: "luxury-gold",
-      groom_name: "",
-      bride_name: "",
-      event_date: "",
-      akad_location: "",
-      reception_location: "",
-      maps_url: "",
-      status: "active",
-    });
-
-    alert("Undangan berhasil dibuat. Lanjutkan mengisi foto, love story, dan amplop digital.");
-    router.push(`/reseller/invitations/${created.id}`);
+    setForm(initialForm);
+    if (reseller) fetchData(reseller.id);
+    alert("Undangan berhasil dibuat dan siap dibagikan ke tamu.");
   };
 
   const copyLink = async (slug: string) => {
@@ -226,7 +320,7 @@ export default function ResellerInvitationsPage() {
             <p className={styles.label}>RESELLER DASHBOARD</p>
             <h1 className={styles.title}>Buat Undangan</h1>
             <p className={styles.subtitle}>
-              Buatkan undangan digital untuk client Anda sesuai tema pilihan mereka.
+              Buatkan undangan digital lengkap untuk client Anda, langsung siap dibagikan.
             </p>
           </div>
 
@@ -249,12 +343,12 @@ export default function ResellerInvitationsPage() {
         ) : (
           <>
             <section className={styles.formCard}>
-              <h2 className={styles.sectionTitle}>Buat Undangan Baru</h2>
+              <h2 className={styles.sectionTitle}>Client &amp; Tema</h2>
 
               <div className={styles.formGrid}>
                 <select
                   value={form.client_id}
-                  onChange={(e) => setForm({ ...form, client_id: e.target.value })}
+                  onChange={(e) => set("client_id", e.target.value)}
                   className={styles.input}
                 >
                   <option value="">Pilih Client</option>
@@ -265,11 +359,7 @@ export default function ResellerInvitationsPage() {
                   ))}
                 </select>
 
-                <select
-                  value={form.theme}
-                  onChange={(e) => setForm({ ...form, theme: e.target.value })}
-                  className={styles.input}
-                >
+                <select value={form.theme} onChange={(e) => set("theme", e.target.value)} className={styles.input}>
                   {themeList.map((theme) => (
                     <option key={theme.key} value={theme.key}>
                       {theme.label}
@@ -277,25 +367,11 @@ export default function ResellerInvitationsPage() {
                   ))}
                 </select>
 
-                <input
-                  placeholder="Nama Mempelai Pria"
-                  value={form.groom_name}
-                  onChange={(e) => setForm({ ...form, groom_name: e.target.value })}
-                  className={styles.input}
-                />
-
-                <input
-                  placeholder="Nama Mempelai Wanita"
-                  value={form.bride_name}
-                  onChange={(e) => setForm({ ...form, bride_name: e.target.value })}
-                  className={styles.input}
-                />
-
                 <div className={styles.slugRow}>
                   <input
                     placeholder="Slug, contoh: rizky-nabila"
                     value={form.slug}
-                    onChange={(e) => setForm({ ...form, slug: e.target.value })}
+                    onChange={(e) => set("slug", e.target.value)}
                     className={styles.input}
                   />
 
@@ -304,38 +380,302 @@ export default function ResellerInvitationsPage() {
                   </button>
                 </div>
 
+                <select value={form.status} onChange={(e) => set("status", e.target.value)} className={styles.input}>
+                  <option value="active">Active</option>
+                  <option value="draft">Draft</option>
+                  <option value="inactive">Inactive</option>
+                </select>
+              </div>
+
+              <h2 className={styles.editSectionTitle}>Data Mempelai</h2>
+
+              <div className={styles.formGrid}>
+                <input
+                  placeholder="Nama Mempelai Pria"
+                  value={form.groom_name}
+                  onChange={(e) => set("groom_name", e.target.value)}
+                  className={styles.input}
+                />
+
+                <input
+                  placeholder="Nama Mempelai Wanita"
+                  value={form.bride_name}
+                  onChange={(e) => set("bride_name", e.target.value)}
+                  className={styles.input}
+                />
+
+                <input
+                  placeholder="Putra dari (nama orang tua pria)"
+                  value={form.groom_parent}
+                  onChange={(e) => set("groom_parent", e.target.value)}
+                  className={styles.input}
+                />
+
+                <input
+                  placeholder="Putri dari (nama orang tua wanita)"
+                  value={form.bride_parent}
+                  onChange={(e) => set("bride_parent", e.target.value)}
+                  className={styles.input}
+                />
+
+                <input
+                  placeholder="Instagram Mempelai Pria (opsional)"
+                  value={form.groom_instagram}
+                  onChange={(e) => set("groom_instagram", e.target.value)}
+                  className={styles.input}
+                />
+
+                <input
+                  placeholder="Instagram Mempelai Wanita (opsional)"
+                  value={form.bride_instagram}
+                  onChange={(e) => set("bride_instagram", e.target.value)}
+                  className={styles.input}
+                />
+              </div>
+
+              <h2 className={styles.editSectionTitle}>Jadwal &amp; Lokasi Acara</h2>
+
+              <div className={styles.formGrid}>
                 <input
                   type="date"
-                  value={form.event_date}
-                  onChange={(e) => setForm({ ...form, event_date: e.target.value })}
+                  value={form.akad_date}
+                  onChange={(e) => set("akad_date", e.target.value)}
+                  className={styles.input}
+                />
+
+                <input
+                  placeholder="Jam Akad, contoh: 08.00 WIB"
+                  value={form.akad_time}
+                  onChange={(e) => set("akad_time", e.target.value)}
                   className={styles.input}
                 />
 
                 <input
                   placeholder="Lokasi Akad"
                   value={form.akad_location}
-                  onChange={(e) => setForm({ ...form, akad_location: e.target.value })}
+                  onChange={(e) => set("akad_location", e.target.value)}
+                  className={styles.input}
+                  style={{ gridColumn: "1 / -1" }}
+                />
+
+                <input
+                  type="date"
+                  value={form.resepsi_date}
+                  onChange={(e) => set("resepsi_date", e.target.value)}
+                  className={styles.input}
+                />
+
+                <input
+                  placeholder="Jam Resepsi, contoh: 11.00 WIB"
+                  value={form.reception_time}
+                  onChange={(e) => set("reception_time", e.target.value)}
                   className={styles.input}
                 />
 
                 <input
                   placeholder="Lokasi Resepsi"
                   value={form.reception_location}
-                  onChange={(e) => setForm({ ...form, reception_location: e.target.value })}
+                  onChange={(e) => set("reception_location", e.target.value)}
                   className={styles.input}
+                  style={{ gridColumn: "1 / -1" }}
                 />
 
                 <input
                   placeholder="Google Maps URL"
                   value={form.maps_url}
-                  onChange={(e) => setForm({ ...form, maps_url: e.target.value })}
+                  onChange={(e) => set("maps_url", e.target.value)}
                   className={styles.input}
                   style={{ gridColumn: "1 / -1" }}
                 />
               </div>
 
-              <button onClick={addInvitation} className={styles.button}>
-                Simpan Undangan
+              <h2 className={styles.editSectionTitle}>Love Story</h2>
+
+              {[1, 2, 3].map((n) => {
+                const yearKey = `story_${n}_year` as keyof FormState;
+                const titleKey = `story_${n}_title` as keyof FormState;
+                const descKey = `story_${n}_desc` as keyof FormState;
+
+                return (
+                  <div key={n} className={styles.storyBlock}>
+                    <div className={styles.storyGrid}>
+                      <input
+                        placeholder="Tahun / Label, contoh: 2021"
+                        value={form[yearKey] as string}
+                        onChange={(e) => set(yearKey, e.target.value)}
+                        className={styles.input}
+                      />
+
+                      <input
+                        placeholder="Judul momen, contoh: Pertama Bertemu"
+                        value={form[titleKey] as string}
+                        onChange={(e) => set(titleKey, e.target.value)}
+                        className={styles.input}
+                      />
+                    </div>
+
+                    <textarea
+                      placeholder="Ceritakan momen ini..."
+                      value={form[descKey] as string}
+                      onChange={(e) => set(descKey, e.target.value)}
+                      className={styles.textarea}
+                    />
+                  </div>
+                );
+              })}
+
+              <h2 className={styles.editSectionTitle}>Video Pre-Wedding</h2>
+
+              <div className={styles.formGrid}>
+                <input
+                  placeholder="Link YouTube (opsional)"
+                  value={form.youtube_url}
+                  onChange={(e) => set("youtube_url", e.target.value)}
+                  className={styles.input}
+                  style={{ gridColumn: "1 / -1" }}
+                />
+              </div>
+
+              <h2 className={styles.editSectionTitle}>Amplop Digital - Mempelai Pria</h2>
+
+              <div className={styles.formGrid}>
+                <input
+                  placeholder="Nama Bank"
+                  value={form.groom_bank_name}
+                  onChange={(e) => set("groom_bank_name", e.target.value)}
+                  className={styles.input}
+                />
+
+                <input
+                  placeholder="Nomor Rekening"
+                  value={form.groom_bank_account}
+                  onChange={(e) => set("groom_bank_account", e.target.value)}
+                  className={styles.input}
+                />
+
+                <input
+                  placeholder="Atas Nama"
+                  value={form.groom_bank_holder}
+                  onChange={(e) => set("groom_bank_holder", e.target.value)}
+                  className={styles.input}
+                  style={{ gridColumn: "1 / -1" }}
+                />
+              </div>
+
+              <h2 className={styles.editSectionTitle}>Amplop Digital - Mempelai Wanita</h2>
+
+              <div className={styles.formGrid}>
+                <input
+                  placeholder="Nama Bank"
+                  value={form.bride_bank_name}
+                  onChange={(e) => set("bride_bank_name", e.target.value)}
+                  className={styles.input}
+                />
+
+                <input
+                  placeholder="Nomor Rekening"
+                  value={form.bride_bank_account}
+                  onChange={(e) => set("bride_bank_account", e.target.value)}
+                  className={styles.input}
+                />
+
+                <input
+                  placeholder="Atas Nama"
+                  value={form.bride_bank_holder}
+                  onChange={(e) => set("bride_bank_holder", e.target.value)}
+                  className={styles.input}
+                  style={{ gridColumn: "1 / -1" }}
+                />
+              </div>
+
+              <h2 className={styles.editSectionTitle}>Musik</h2>
+
+              <div className={styles.formGrid}>
+                <input
+                  placeholder="URL Musik MP3"
+                  value={form.music_url}
+                  onChange={(e) => set("music_url", e.target.value)}
+                  className={styles.input}
+                  style={{ gridColumn: "1 / -1" }}
+                />
+              </div>
+
+              <h2 className={styles.editSectionTitle}>Upload Foto Utama</h2>
+
+              <div className={styles.uploadGrid}>
+                <UploadBox
+                  title="Foto Cover"
+                  value={form.cover_photo}
+                  onUpload={(file) => uploadSingleFile(file, "cover_photo")}
+                />
+
+                <UploadBox
+                  title="Foto Mempelai Wanita"
+                  value={form.bride_photo}
+                  onUpload={(file) => uploadSingleFile(file, "bride_photo")}
+                />
+
+                <UploadBox
+                  title="Foto Mempelai Pria"
+                  value={form.groom_photo}
+                  onUpload={(file) => uploadSingleFile(file, "groom_photo")}
+                />
+              </div>
+
+              <h2 className={styles.editSectionTitle}>Galeri Foto</h2>
+
+              <div className={styles.galleryUploadBox}>
+                <p className={styles.helpText}>Upload maksimal 10 foto galeri.</p>
+
+                <label
+                  className={styles.galleryDropZone}
+                  onDragOver={(e) => e.preventDefault()}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    uploadGalleryFiles(e.dataTransfer.files);
+                  }}
+                >
+                  <div className={styles.uploadIcon}>☁</div>
+                  <strong>Drag &amp; drop foto galeri di sini</strong>
+                  <span>atau klik untuk pilih file</span>
+
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    disabled={form.gallery_photos.length >= 10}
+                    onChange={(e) => uploadGalleryFiles(e.target.files)}
+                    className={styles.hiddenInput}
+                  />
+                </label>
+
+                <p className={styles.galleryCounter}>
+                  Maksimal 10 foto - Saat ini: {form.gallery_photos.length}/10 foto
+                </p>
+
+                <div className={styles.galleryGrid}>
+                  {form.gallery_photos.length === 0 ? (
+                    <div className={styles.emptyGallery}>Belum ada foto galeri</div>
+                  ) : (
+                    form.gallery_photos.map((photo, index) => (
+                      <div key={photo} className={styles.galleryItem}>
+                        <img src={photo} alt={`Gallery ${index + 1}`} className={styles.galleryImage} />
+
+                        <button
+                          type="button"
+                          onClick={() => removeGalleryPhoto(index)}
+                          className={styles.deleteButton}
+                        >
+                          Hapus
+                        </button>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+
+              <button onClick={addInvitation} className={styles.button} disabled={saving} style={{ marginTop: 24 }}>
+                {saving ? "Menyimpan..." : "Simpan Undangan"}
               </button>
             </section>
 
@@ -364,7 +704,7 @@ export default function ResellerInvitationsPage() {
                           onClick={() => router.push(`/reseller/invitations/${item.id}`)}
                           className={styles.miniButton}
                         >
-                          Lengkapi Data
+                          Edit
                         </button>
 
                         <button onClick={() => openPreview(item.slug)} className={styles.miniButton}>
@@ -384,5 +724,49 @@ export default function ResellerInvitationsPage() {
         )}
       </section>
     </main>
+  );
+}
+
+function UploadBox({
+  title,
+  value,
+  onUpload,
+}: {
+  title: string;
+  value: string;
+  onUpload: (file: File) => void;
+}) {
+  const handleDrop = (e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files?.[0];
+    if (file) onUpload(file);
+  };
+
+  return (
+    <div className={styles.uploadBox}>
+      <strong>{title}</strong>
+
+      <label className={styles.dropZone} onDragOver={(e) => e.preventDefault()} onDrop={handleDrop}>
+        {value ? (
+          <img src={value} alt={title} className={styles.preview} />
+        ) : (
+          <div className={styles.dropContent}>
+            <div className={styles.uploadIcon}>☁</div>
+            <strong>Drag &amp; drop foto di sini</strong>
+            <span>atau klik untuk pilih file</span>
+          </div>
+        )}
+
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (file) onUpload(file);
+          }}
+          className={styles.hiddenInput}
+        />
+      </label>
+    </div>
   );
 }
