@@ -10,15 +10,16 @@ const COVER_BY_THEME: Record<string, string> = {
   "islamic-green": "/photos/green-cover.png",
   "emerald-lantern": "/photos/lantern-cover.jpg",
   "minimal-white": "/photos/white-cover.png",
-  "floral-garden": "/photos/garden-tree.jpg",
+  "floral-garden": "/photos/floral-cover.png",
   sakura: "/photos/garden-carry.jpg",
   rustic: "/photos/rustic-cover.jpg",
   bohemian: "/photos/boho-cover.jpg",
   "modern-elegant": "/photos/modern-bride.jpg",
   "royal-imperial": "/photos/imperial-cover.jpg",
-  // Reuses an existing floral-garden gallery shot (not garden-tree.jpg,
-  // which floral-garden already uses as its own cover) so the two themes
-  // don't show an identical cover photo side by side in the demo grid.
+  // Reuses an existing floral-garden gallery shot (still the old stock
+  // floral-gallery-1.jpg, untouched - floral-garden itself now uses a
+  // dedicated floral-cover.png) so the two themes don't show an identical
+  // cover photo side by side in the demo grid.
   "vintage-botanical": "/photos/floral-gallery-1.jpg",
   // Reuses an existing minimal-white shot, different from the one
   // minimal-white uses as its own cover, so the two don't look identical
@@ -45,14 +46,14 @@ const GROOM_PHOTO_BY_THEME: Record<string, string> = {
   "luxury-gold": "/photos/luxury-groom.png",
   "islamic-green": "/photos/green-groom.png",
   "royal-black": "/photos/black-groom.png",
-  "floral-garden": "/photos/floral-groom.jpg",
+  "floral-garden": "/photos/floral-groom.png",
   "emerald-lantern": "/photos/lantern-groom.jpg",
   "minimal-white": "/photos/white-groom.png",
   rustic: "/photos/rustic-groom.jpg",
   bohemian: "/photos/boho-groom.jpg",
   "modern-elegant": "/photos/modern-groom.jpg",
   "royal-imperial": "/photos/imperial-groom.jpg",
-  "vintage-botanical": "/photos/floral-groom.jpg",
+  "vintage-botanical": "/photos/floral-groom.png",
   "pastel-studio": "/photos/white-groom.png",
   "art-deco-glam": "/photos/black-groom.png",
   "golden-romance": "/photos/boho-groom.jpg",
@@ -63,14 +64,14 @@ const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
   "luxury-gold": "/photos/luxury-bride.png",
   "islamic-green": "/photos/green-bride.png",
   "royal-black": "/photos/black-bride.png",
-  "floral-garden": "/photos/floral-bride.jpg",
+  "floral-garden": "/photos/floral-bride.png",
   "emerald-lantern": "/photos/lantern-bride.jpg",
   "minimal-white": "/photos/white-bride.png",
   rustic: "/photos/rustic-bride.jpg",
   bohemian: "/photos/boho-bride.jpg",
   "modern-elegant": "/photos/modern-bride.jpg",
   "royal-imperial": "/photos/imperial-bride.jpg",
-  "vintage-botanical": "/photos/floral-bride.jpg",
+  "vintage-botanical": "/photos/floral-bride.png",
   "pastel-studio": "/photos/white-bride.png",
   // Uses modern-elegant's bride portrait (a moody dark-blazer studio
   // shot with a gold staircase backdrop) rather than royal-black's, so
@@ -117,13 +118,16 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
     "/photos/black-gallery-10.png",
     "/photos/black-gallery-11.png",
   ],
+  // Numbered 7-12 (not 1-6) to avoid colliding with the old
+  // floral-gallery-1..6.jpg stock set, which vintage-botanical below
+  // still depends on.
   "floral-garden": [
-    "/photos/floral-gallery-1.jpg",
-    "/photos/floral-gallery-2.jpg",
-    "/photos/floral-gallery-3.jpg",
-    "/photos/floral-gallery-4.jpg",
-    "/photos/floral-gallery-5.jpg",
-    "/photos/floral-gallery-6.jpg",
+    "/photos/floral-gallery-7.png",
+    "/photos/floral-gallery-8.png",
+    "/photos/floral-gallery-9.png",
+    "/photos/floral-gallery-10.png",
+    "/photos/floral-gallery-11.png",
+    "/photos/floral-gallery-12.png",
   ],
   "emerald-lantern": [
     "/photos/lantern-gallery-1.jpg",
