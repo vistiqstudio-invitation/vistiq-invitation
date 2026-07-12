@@ -7,7 +7,7 @@ import type { InvitationData } from "@/types/invitation";
 const COVER_BY_THEME: Record<string, string> = {
   "luxury-gold": "/photos/luxury-cover.png",
   "royal-black": "/photos/black-bride.jpg",
-  "islamic-green": "/photos/green-cover.jpg",
+  "islamic-green": "/photos/green-cover.png",
   "emerald-lantern": "/photos/lantern-cover.jpg",
   "minimal-white": "/photos/white-cover.jpg",
   "floral-garden": "/photos/garden-tree.jpg",
@@ -43,7 +43,7 @@ const COVER_BY_THEME: Record<string, string> = {
 const GROOM_PHOTO_BY_THEME: Record<string, string> = {
   sakura: "/photos/sakura-groom.jpg",
   "luxury-gold": "/photos/luxury-groom.png",
-  "islamic-green": "/photos/green-groom.jpg",
+  "islamic-green": "/photos/green-groom.png",
   "royal-black": "/photos/black-groom.jpg",
   "floral-garden": "/photos/floral-groom.jpg",
   "emerald-lantern": "/photos/lantern-groom.jpg",
@@ -61,7 +61,7 @@ const GROOM_PHOTO_BY_THEME: Record<string, string> = {
 const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
   sakura: "/photos/sakura-bride.jpg",
   "luxury-gold": "/photos/luxury-bride.png",
-  "islamic-green": "/photos/green-bride.jpg",
+  "islamic-green": "/photos/green-bride.png",
   "royal-black": "/photos/black-bride.jpg",
   "floral-garden": "/photos/floral-bride.jpg",
   "emerald-lantern": "/photos/lantern-bride.jpg",
@@ -100,12 +100,12 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
     "/photos/white-gallery-6.jpg",
   ],
   "islamic-green": [
-    "/photos/green-gallery-1.jpg",
-    "/photos/green-gallery-2.jpg",
-    "/photos/green-gallery-3.jpg",
-    "/photos/green-gallery-4.jpg",
-    "/photos/green-gallery-5.jpg",
-    "/photos/green-gallery-6.jpg",
+    "/photos/green-gallery-1.png",
+    "/photos/green-gallery-2.png",
+    "/photos/green-gallery-3.png",
+    "/photos/green-gallery-4.png",
+    "/photos/green-gallery-5.png",
+    "/photos/green-gallery-6.png",
   ],
   "royal-black": [
     "/photos/black-gallery-1.jpg",
