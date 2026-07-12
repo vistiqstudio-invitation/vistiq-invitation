@@ -43,6 +43,12 @@ const COVER_BY_THEME: Record<string, string> = {
   // theme even though luxury-gold itself is styled as a generic glam
   // theme rather than an adat one.
   "adat-minang": "/photos/luxury-gallery-1.png",
+  // Placeholder only - no owner-supplied Bugis photography yet. Reuses
+  // emerald-lantern's cool jade-toned night garden shots (not yet a
+  // donor for any other theme) since they're a reasonable palette match
+  // for this theme's teal-and-gold colors. Replace once real Adat Bugis
+  // photos are supplied.
+  "adat-bugis": "/photos/lantern-cover.jpg",
 };
 
 // Couple portrait photos also vary by theme - the default luxury-gold
@@ -66,6 +72,7 @@ const GROOM_PHOTO_BY_THEME: Record<string, string> = {
   "art-deco-glam": "/photos/black-groom.png",
   "golden-romance": "/photos/boho-groom.jpg",
   "adat-minang": "/photos/luxury-groom.png",
+  "adat-bugis": "/photos/lantern-groom.jpg",
 };
 
 const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
@@ -88,6 +95,7 @@ const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
   "art-deco-glam": "/photos/modern-bride.jpg",
   "golden-romance": "/photos/boho-bride.jpg",
   "adat-minang": "/photos/luxury-bride.png",
+  "adat-bugis": "/photos/lantern-bride.jpg",
 };
 
 // Gallery photos also vary by theme so the "Our Moments" slider matches each
@@ -221,6 +229,16 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
     "/photos/luxury-gallery-4.png",
     "/photos/luxury-gallery-5.png",
     "/photos/luxury-gallery-6.png",
+  ],
+  // Placeholder only, same as the cover/groom/bride entries above -
+  // reuses emerald-lantern's gallery until real Adat Bugis photos exist.
+  "adat-bugis": [
+    "/photos/lantern-gallery-1.jpg",
+    "/photos/lantern-gallery-2.jpg",
+    "/photos/lantern-gallery-3.jpg",
+    "/photos/lantern-gallery-4.jpg",
+    "/photos/lantern-gallery-5.jpg",
+    "/photos/lantern-gallery-6.jpg",
   ],
 };
 

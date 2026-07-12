@@ -12,6 +12,7 @@ import ModernElegant from "@/themes/modern-elegant/ModernElegant";
 import RoyalImperial from "@/themes/royal-imperial/RoyalImperial";
 import AdatJawa from "@/themes/adat-jawa/AdatJawa";
 import AdatMinang from "@/themes/adat-minang/AdatMinang";
+import AdatBugis from "@/themes/adat-bugis/AdatBugis";
 import VintageBotanical from "@/themes/vintage-botanical/VintageBotanical";
 import PastelStudio from "@/themes/pastel-studio/PastelStudio";
 import ArtDecoGlam from "@/themes/art-deco-glam/ArtDecoGlam";
@@ -34,6 +35,7 @@ export const themeRegistry: Record<
   "royal-imperial": RoyalImperial,
   "adat-jawa": AdatJawa,
   "adat-minang": AdatMinang,
+  "adat-bugis": AdatBugis,
   "vintage-botanical": VintageBotanical,
   "pastel-studio": PastelStudio,
   "art-deco-glam": ArtDecoGlam,
@@ -125,6 +127,12 @@ export const themeList: ThemeMeta[] = [
     label: "Adat Minang",
     description: "Marun & emas songket, motif gonjong rumah gadang, suntiang",
     swatch: ["#4a0e14", "#d1a13a"],
+  },
+  {
+    key: "adat-bugis",
+    label: "Adat Bugis",
+    description: "Teal & emas, motif atap timpalaja, ombak Bugis-Makassar",
+    swatch: ["#0d3438", "#cfa23c"],
   },
   {
     key: "vintage-botanical",
