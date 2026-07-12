@@ -6,7 +6,7 @@ import type { InvitationData } from "@/types/invitation";
 // attribution required); see public/photos/README for sourcing notes.
 const COVER_BY_THEME: Record<string, string> = {
   "luxury-gold": "/photos/luxury-cover.png",
-  "royal-black": "/photos/black-bride.jpg",
+  "royal-black": "/photos/black-cover.png",
   "islamic-green": "/photos/green-cover.png",
   "emerald-lantern": "/photos/lantern-cover.jpg",
   "minimal-white": "/photos/white-cover.png",
@@ -24,8 +24,8 @@ const COVER_BY_THEME: Record<string, string> = {
   // minimal-white uses as its own cover, so the two don't look identical
   // side by side in the demo grid.
   "pastel-studio": "/photos/white-gallery-1.jpg",
-  // Reuses an existing royal-black gallery shot (not black-bride.jpg,
-  // which royal-black uses as its own cover) so the two dark/gold themes
+  // Reuses royal-black's old stock cover shot (royal-black itself now
+  // uses its own dedicated black-cover.png) so the two dark/gold themes
   // don't show an identical cover photo side by side in the demo grid.
   "art-deco-glam": "/photos/black-gallery-1.jpg",
   // Reuses bohemian's groom portrait (a solo golden-hour field shot) as
@@ -44,7 +44,7 @@ const GROOM_PHOTO_BY_THEME: Record<string, string> = {
   sakura: "/photos/sakura-groom.jpg",
   "luxury-gold": "/photos/luxury-groom.png",
   "islamic-green": "/photos/green-groom.png",
-  "royal-black": "/photos/black-groom.jpg",
+  "royal-black": "/photos/black-groom.png",
   "floral-garden": "/photos/floral-groom.jpg",
   "emerald-lantern": "/photos/lantern-groom.jpg",
   "minimal-white": "/photos/white-groom.png",
@@ -54,7 +54,7 @@ const GROOM_PHOTO_BY_THEME: Record<string, string> = {
   "royal-imperial": "/photos/imperial-groom.jpg",
   "vintage-botanical": "/photos/floral-groom.jpg",
   "pastel-studio": "/photos/white-groom.png",
-  "art-deco-glam": "/photos/black-groom.jpg",
+  "art-deco-glam": "/photos/black-groom.png",
   "golden-romance": "/photos/boho-groom.jpg",
 };
 
@@ -62,7 +62,7 @@ const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
   sakura: "/photos/sakura-bride.jpg",
   "luxury-gold": "/photos/luxury-bride.png",
   "islamic-green": "/photos/green-bride.png",
-  "royal-black": "/photos/black-bride.jpg",
+  "royal-black": "/photos/black-bride.png",
   "floral-garden": "/photos/floral-bride.jpg",
   "emerald-lantern": "/photos/lantern-bride.jpg",
   "minimal-white": "/photos/white-bride.png",
@@ -107,13 +107,15 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
     "/photos/green-gallery-5.png",
     "/photos/green-gallery-6.png",
   ],
+  // Only 5 real photos were supplied for this theme's gallery (not the
+  // usual 6) - numbered 7-11 to avoid colliding with black-gallery-1..6.jpg,
+  // which art-deco-glam below still depends on.
   "royal-black": [
-    "/photos/black-gallery-1.jpg",
-    "/photos/black-gallery-2.jpg",
-    "/photos/black-gallery-3.jpg",
-    "/photos/black-gallery-4.jpg",
-    "/photos/black-gallery-5.jpg",
-    "/photos/black-gallery-6.jpg",
+    "/photos/black-gallery-7.png",
+    "/photos/black-gallery-8.png",
+    "/photos/black-gallery-9.png",
+    "/photos/black-gallery-10.png",
+    "/photos/black-gallery-11.png",
   ],
   "floral-garden": [
     "/photos/floral-gallery-1.jpg",
@@ -170,13 +172,13 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
     "/photos/white-gallery-5.jpg",
     "/photos/white-gallery-6.jpg",
   ],
-  // Reuses royal-black's gallery shots (skipping #1, used as this
-  // theme's cover above) plus royal-black's own cover/bride shot
-  // standing in for the 6th slot, same reuse pattern as the themes
-  // above.
+  // Reuses royal-black's old stock gallery shots (skipping #1, used as
+  // this theme's cover above) plus royal-black's bride shot (now the
+  // owner's real photo) standing in for the 6th slot, same reuse
+  // pattern as the themes above.
   "art-deco-glam": [
     "/photos/black-gallery-2.jpg",
-    "/photos/black-bride.jpg",
+    "/photos/black-bride.png",
     "/photos/black-gallery-3.jpg",
     "/photos/black-gallery-4.jpg",
     "/photos/black-gallery-5.jpg",

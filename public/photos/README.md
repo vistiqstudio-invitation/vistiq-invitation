@@ -8,8 +8,6 @@ attribution required - https://www.pexels.com/license/).
 - `garden-carry.jpg` - photo by Mahmoud Elbakstani, https://www.pexels.com/photo/31619536/ (also cropped into `floral-groom.jpg` / `floral-bride.jpg`)
 - `sakura-bride.jpg` - photo by Murat Işık, https://www.pexels.com/photo/18654266/
 - `sakura-groom.jpg` - photo by Pegah Sharifi, https://www.pexels.com/photo/14049871/
-- `black-bride.jpg` - photo by Kaybee Photography, https://www.pexels.com/photo/31002630/
-- `black-groom.jpg` - photo by Mohamed Abdelghaffar, https://www.pexels.com/photo/33290984/
 - `lantern-cover.jpg` - photo by Abiy Fikru, https://www.pexels.com/photo/18573869/ (also cropped into `lantern-groom.jpg` / `lantern-bride.jpg`)
 - `rustic-cover.jpg` - photo by Uzer Othman, https://www.pexels.com/photo/19781687/ (also cropped into `rustic-groom.jpg` / `rustic-bride.jpg`)
 - `boho-cover.jpg` - photo by Orhan Pergel, https://www.pexels.com/photo/17057196/ (also cropped into `boho-groom.jpg`)
@@ -51,3 +49,13 @@ photos were supplied for this theme, saved as `white-gallery-7..9.png`
 (kept separate from the pre-existing `white-gallery-1..6.jpg` stock,
 which pastel-studio still depends on) - minimal-white's own gallery is
 shorter (3 photos) until more are supplied.
+
+`black-cover.png`, `black-bride.png`, and `black-groom.png` are the
+owner's own photography (black and gold ballroom bridal attire,
+candelabras and ornate mirrors) and replace the old Pexels
+`black-bride/groom.jpg` files - `art-deco-glam` above still points at
+the old `black-gallery-1..6.jpg` stock set (unaffected) plus the new
+`black-bride.png`. Only 5 gallery photos were supplied for this theme,
+saved as `black-gallery-7..11.png` (kept separate from the
+pre-existing `black-gallery-1..6.jpg` stock, which art-deco-glam still
+depends on).
