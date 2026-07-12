@@ -8,7 +8,7 @@ const COVER_BY_THEME: Record<string, string> = {
   "luxury-gold": "/photos/luxury-cover.png",
   "royal-black": "/photos/black-cover.png",
   "islamic-green": "/photos/green-cover.png",
-  "emerald-lantern": "/photos/lantern-cover.jpg",
+  "emerald-lantern": "/photos/lantern-cover.png",
   "minimal-white": "/photos/white-cover.png",
   "floral-garden": "/photos/floral-cover.png",
   sakura: "/photos/garden-carry.jpg",
@@ -44,11 +44,10 @@ const COVER_BY_THEME: Record<string, string> = {
   // theme rather than an adat one.
   "adat-minang": "/photos/luxury-gallery-1.png",
   // Placeholder only - no owner-supplied Bugis photography yet. Reuses
-  // emerald-lantern's cool jade-toned night garden shots (not yet a
-  // donor for any other theme) since they're a reasonable palette match
-  // for this theme's teal-and-gold colors. Replace once real Adat Bugis
-  // photos are supplied.
-  "adat-bugis": "/photos/lantern-cover.jpg",
+  // emerald-lantern's real jade-and-gold night garden photoshoot since
+  // it's a reasonable palette match for this theme's teal-and-gold
+  // colors. Replace once real Adat Bugis photos are supplied.
+  "adat-bugis": "/photos/lantern-cover.png",
   // Placeholder only - no owner-supplied photography for this theme
   // yet. Reuses royal-imperial's cover shot (not yet a donor for any
   // other theme) since its formal dark-and-gold mood is a reasonable
@@ -71,7 +70,7 @@ const GROOM_PHOTO_BY_THEME: Record<string, string> = {
   "islamic-green": "/photos/green-groom.png",
   "royal-black": "/photos/black-groom.png",
   "floral-garden": "/photos/floral-groom.png",
-  "emerald-lantern": "/photos/lantern-groom.jpg",
+  "emerald-lantern": "/photos/lantern-groom.png",
   "minimal-white": "/photos/white-groom.png",
   rustic: "/photos/rustic-groom.jpg",
   bohemian: "/photos/boho-groom.jpg",
@@ -82,7 +81,7 @@ const GROOM_PHOTO_BY_THEME: Record<string, string> = {
   "art-deco-glam": "/photos/black-groom.png",
   "golden-romance": "/photos/boho-groom.jpg",
   "adat-minang": "/photos/luxury-groom.png",
-  "adat-bugis": "/photos/lantern-groom.jpg",
+  "adat-bugis": "/photos/lantern-groom.png",
   "menara-cahaya": "/photos/imperial-groom.jpg",
   santorini: "/photos/white-groom.png",
 };
@@ -93,7 +92,7 @@ const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
   "islamic-green": "/photos/green-bride.png",
   "royal-black": "/photos/black-bride.png",
   "floral-garden": "/photos/floral-bride.png",
-  "emerald-lantern": "/photos/lantern-bride.jpg",
+  "emerald-lantern": "/photos/lantern-bride.png",
   "minimal-white": "/photos/white-bride.png",
   rustic: "/photos/rustic-bride.jpg",
   bohemian: "/photos/boho-bride.jpg",
@@ -107,7 +106,7 @@ const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
   "art-deco-glam": "/photos/modern-bride.jpg",
   "golden-romance": "/photos/boho-bride.jpg",
   "adat-minang": "/photos/luxury-bride.png",
-  "adat-bugis": "/photos/lantern-bride.jpg",
+  "adat-bugis": "/photos/lantern-bride.png",
   "menara-cahaya": "/photos/imperial-bride.jpg",
   santorini: "/photos/white-bride.png",
 };
@@ -162,12 +161,12 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
     "/photos/floral-gallery-12.png",
   ],
   "emerald-lantern": [
-    "/photos/lantern-gallery-1.jpg",
-    "/photos/lantern-gallery-2.jpg",
-    "/photos/lantern-gallery-3.jpg",
-    "/photos/lantern-gallery-4.jpg",
-    "/photos/lantern-gallery-5.jpg",
-    "/photos/lantern-gallery-6.jpg",
+    "/photos/lantern-gallery-1.png",
+    "/photos/lantern-gallery-2.png",
+    "/photos/lantern-gallery-3.png",
+    "/photos/lantern-gallery-4.png",
+    "/photos/lantern-gallery-5.png",
+    "/photos/lantern-gallery-6.png",
   ],
   sakura: [
     "/photos/sakura-gallery-1.jpg",
@@ -247,12 +246,12 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
   // Placeholder only, same as the cover/groom/bride entries above -
   // reuses emerald-lantern's gallery until real Adat Bugis photos exist.
   "adat-bugis": [
-    "/photos/lantern-gallery-1.jpg",
-    "/photos/lantern-gallery-2.jpg",
-    "/photos/lantern-gallery-3.jpg",
-    "/photos/lantern-gallery-4.jpg",
-    "/photos/lantern-gallery-5.jpg",
-    "/photos/lantern-gallery-6.jpg",
+    "/photos/lantern-gallery-1.png",
+    "/photos/lantern-gallery-2.png",
+    "/photos/lantern-gallery-3.png",
+    "/photos/lantern-gallery-4.png",
+    "/photos/lantern-gallery-5.png",
+    "/photos/lantern-gallery-6.png",
   ],
   // Placeholder only, same as the cover/groom/bride entries above.
   // Reuses royal-black's 5 real gallery photos (dark-and-gold ballroom,
