@@ -31,7 +31,7 @@ export default function Cover({ invitation }: { invitation: InvitationData }) {
 
         <div className={styles.coverOverlay} />
 
-        <div className={styles.coverContent}>
+        <div className={styles.coverHeader}>
           <p className={styles.coverTop}>The Wedding Of</p>
 
           <h1 className={styles.coverTitle}>
@@ -43,7 +43,9 @@ export default function Cover({ invitation }: { invitation: InvitationData }) {
           {invitation.events[0]?.date && (
             <p className={styles.coverDate}>{invitation.events[0].date}</p>
           )}
+        </div>
 
+        <div className={styles.coverContent}>
           <div className={styles.line} />
 
           <p className={styles.guestLabel}>Kepada Yth.</p>

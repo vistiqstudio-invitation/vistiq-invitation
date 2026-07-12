@@ -42,10 +42,10 @@ export default function Cover({ invitation }: { invitation: InvitationData }) {
       </motion.div>
 
       <motion.div
-        className={styles.coverContent}
-        initial={{ opacity: 0, y: 36 }}
+        className={styles.coverHeader}
+        initial={{ opacity: 0, y: -16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9, delay: 0.35, ease: "easeOut" }}
+        transition={{ duration: 0.9, delay: 0.4, ease: "easeOut" }}
       >
         <p className={styles.coverTop}>The Wedding Of</p>
 
@@ -58,7 +58,14 @@ export default function Cover({ invitation }: { invitation: InvitationData }) {
         {invitation.events[0]?.date && (
           <p className={styles.coverDate}>{invitation.events[0].date}</p>
         )}
+      </motion.div>
 
+      <motion.div
+        className={styles.coverContent}
+        initial={{ opacity: 0, y: 36 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.9, delay: 0.35, ease: "easeOut" }}
+      >
         <div className={styles.line} />
 
         <p className={styles.guestLabel}>Kepada Yth.</p>

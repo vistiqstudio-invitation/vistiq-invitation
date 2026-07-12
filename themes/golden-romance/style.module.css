@@ -139,8 +139,9 @@
   position: relative;
   min-height: 100svh;
   display: flex;
-  align-items: flex-end;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
   overflow: hidden;
   background: var(--blush);
 }
@@ -159,10 +160,24 @@
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(246, 223, 216, 0.05) 0%,
-    rgba(251, 245, 238, 0.55) 60%,
+    rgba(251, 245, 238, 0.8) 0%,
+    rgba(251, 245, 238, 0.15) 20%,
+    rgba(246, 223, 216, 0.05) 45%,
+    rgba(251, 245, 238, 0.22) 62%,
+    rgba(251, 245, 238, 0.7) 82%,
     rgba(251, 245, 238, 0.98) 100%
   );
+}
+
+.coverHeader {
+  composes: card;
+  position: relative;
+  z-index: 2;
+  width: min(92%, 540px);
+  border-radius: 50% 50% 24px 24px / 60px 60px 24px 24px;
+  padding: 36px 32px 26px;
+  text-align: center;
+  margin-top: clamp(20px, 5vh, 48px);
 }
 
 .coverContent {
@@ -170,8 +185,8 @@
   position: relative;
   z-index: 2;
   width: min(92%, 540px);
-  border-radius: 50% 50% 24px 24px / 60px 60px 24px 24px;
-  padding: 56px 32px 44px;
+  border-radius: 24px 24px 50% 50% / 24px 24px 60px 60px;
+  padding: 26px 32px 44px;
   text-align: center;
   margin-bottom: clamp(20px, 5vh, 48px);
 }

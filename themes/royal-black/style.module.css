@@ -164,8 +164,9 @@
   position: relative;
   min-height: 100svh;
   display: flex;
-  align-items: flex-end;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
   overflow: hidden;
   background: var(--noir);
 }
@@ -184,17 +185,28 @@
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(0, 0, 0, 0.3) 0%,
-    rgba(0, 0, 0, 0.65) 55%,
+    rgba(0, 0, 0, 0.75) 0%,
+    rgba(0, 0, 0, 0.12) 22%,
+    rgba(0, 0, 0, 0.05) 45%,
+    rgba(0, 0, 0, 0.25) 62%,
+    rgba(0, 0, 0, 0.6) 80%,
     rgba(0, 0, 0, 0.97) 100%
   );
+}
+
+.coverHeader {
+  position: relative;
+  z-index: 2;
+  width: min(92%, 560px);
+  padding: 48px 32px 0;
+  text-align: center;
 }
 
 .coverContent {
   position: relative;
   z-index: 2;
   width: min(92%, 560px);
-  padding: 56px 32px 44px;
+  padding: 20px 32px 44px;
   text-align: center;
   margin-bottom: clamp(24px, 6vh, 56px);
   border: 1px solid rgba(212, 175, 55, 0.5);

@@ -38,13 +38,14 @@ export default function Cover({ invitation }: { invitation: InvitationData }) {
       <BatikCorner className={`${styles.corner} ${styles.cornerBottomRight}`} />
 
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
+        className={styles.coverHeader}
+        initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.4, delay: 0.5, ease: "easeOut" }}
+        transition={{ duration: 1.2, delay: 0.4, ease: "easeOut" }}
       >
         <MeruRoof className={styles.coverRoof} />
 
-        <div className={styles.coverContent}>
+        <div className={styles.coverHeaderCard}>
           <p className={styles.coverTop}>Manten Kagungan Damel</p>
 
           <h1 className={styles.coverTitle}>{invitation.groom.name}</h1>
@@ -54,19 +55,26 @@ export default function Cover({ invitation }: { invitation: InvitationData }) {
           {invitation.events[0]?.date && (
             <p className={styles.coverDate}>{invitation.events[0].date}</p>
           )}
-
-          <div className={styles.line} />
-
-          <p className={styles.guestLabel}>Kepada Yth.</p>
-          <h2 className={styles.guestName}>{guestName}</h2>
-
-          <button
-            className={`${styles.button} ${styles.solid}`}
-            onClick={() => setOpened(true)}
-          >
-            Bikak Uleman
-          </button>
         </div>
+      </motion.div>
+
+      <motion.div
+        className={styles.coverContent}
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1.4, delay: 0.55, ease: "easeOut" }}
+      >
+        <div className={styles.line} />
+
+        <p className={styles.guestLabel}>Kepada Yth.</p>
+        <h2 className={styles.guestName}>{guestName}</h2>
+
+        <button
+          className={`${styles.button} ${styles.solid}`}
+          onClick={() => setOpened(true)}
+        >
+          Bikak Uleman
+        </button>
       </motion.div>
     </motion.section>
   );

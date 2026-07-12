@@ -39,10 +39,10 @@ export default function Cover({ invitation }: { invitation: InvitationData }) {
       <RoyalCrest className={`${styles.crest} ${styles.crestBottomRight}`} />
 
       <motion.div
-        className={styles.coverContent}
-        initial={{ opacity: 0, y: 40 }}
+        className={styles.coverHeader}
+        initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
+        transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
       >
         <p className={styles.coverTop}>The Wedding Of</p>
 
@@ -55,7 +55,14 @@ export default function Cover({ invitation }: { invitation: InvitationData }) {
         {invitation.events[0]?.date && (
           <p className={styles.coverDate}>{invitation.events[0].date}</p>
         )}
+      </motion.div>
 
+      <motion.div
+        className={styles.coverContent}
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
+      >
         <div className={styles.line} />
 
         <p className={styles.guestLabel}>Kepada Yth.</p>
