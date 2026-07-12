@@ -5,7 +5,7 @@ import type { InvitationData } from "@/types/invitation";
 // free-to-use stock photos (Pexels License - free for commercial use, no
 // attribution required); see public/photos/README for sourcing notes.
 const COVER_BY_THEME: Record<string, string> = {
-  "luxury-gold": "/photos/luxury-bride.jpg",
+  "luxury-gold": "/photos/luxury-cover.png",
   "royal-black": "/photos/black-bride.jpg",
   "islamic-green": "/photos/green-cover.jpg",
   "emerald-lantern": "/photos/lantern-cover.jpg",
@@ -42,7 +42,7 @@ const COVER_BY_THEME: Record<string, string> = {
 // the luxury-gold portraits.
 const GROOM_PHOTO_BY_THEME: Record<string, string> = {
   sakura: "/photos/sakura-groom.jpg",
-  "luxury-gold": "/photos/luxury-groom.jpg",
+  "luxury-gold": "/photos/luxury-groom.png",
   "islamic-green": "/photos/green-groom.jpg",
   "royal-black": "/photos/black-groom.jpg",
   "floral-garden": "/photos/floral-groom.jpg",
@@ -60,7 +60,7 @@ const GROOM_PHOTO_BY_THEME: Record<string, string> = {
 
 const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
   sakura: "/photos/sakura-bride.jpg",
-  "luxury-gold": "/photos/luxury-bride.jpg",
+  "luxury-gold": "/photos/luxury-bride.png",
   "islamic-green": "/photos/green-bride.jpg",
   "royal-black": "/photos/black-bride.jpg",
   "floral-garden": "/photos/floral-bride.jpg",
@@ -84,12 +84,12 @@ const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
 // Themes not listed here fall back to the shared /gallery/*.jpg placeholders.
 const GALLERY_BY_THEME: Record<string, string[]> = {
   "luxury-gold": [
-    "/photos/luxury-gallery-1.jpg",
-    "/photos/luxury-gallery-2.jpg",
-    "/photos/luxury-gallery-3.jpg",
-    "/photos/luxury-gallery-4.jpg",
-    "/photos/luxury-gallery-5.jpg",
-    "/photos/luxury-gallery-6.jpg",
+    "/photos/luxury-gallery-1.png",
+    "/photos/luxury-gallery-2.png",
+    "/photos/luxury-gallery-3.png",
+    "/photos/luxury-gallery-4.png",
+    "/photos/luxury-gallery-5.png",
+    "/photos/luxury-gallery-6.png",
   ],
   "minimal-white": [
     "/photos/white-gallery-1.jpg",
@@ -170,11 +170,12 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
     "/photos/white-gallery-6.jpg",
   ],
   // Reuses royal-black's gallery shots (skipping #1, used as this
-  // theme's cover above) plus one luxury-gold gallery shot standing in
-  // for black-bride.jpg, same reuse pattern as the themes above.
+  // theme's cover above) plus royal-black's own cover/bride shot
+  // standing in for the 6th slot, same reuse pattern as the themes
+  // above.
   "art-deco-glam": [
     "/photos/black-gallery-2.jpg",
-    "/photos/luxury-gallery-1.jpg",
+    "/photos/black-bride.jpg",
     "/photos/black-gallery-3.jpg",
     "/photos/black-gallery-4.jpg",
     "/photos/black-gallery-5.jpg",
