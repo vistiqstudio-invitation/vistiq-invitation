@@ -35,6 +35,14 @@ const COVER_BY_THEME: Record<string, string> = {
   // grid. Matches the existing convention (several themes already reuse
   // their own bride/groom portrait as the cover image).
   "golden-romance": "/photos/boho-groom.jpg",
+  // Reuses one of luxury-gold's own gallery shots (not luxury-cover.png,
+  // which luxury-gold already uses as its own cover) so the two themes
+  // don't show an identical cover photo side by side in the demo grid.
+  // The luxury-* photos happen to be genuine Minang wedding photography
+  // (suntiang headdress, marun-gold songket), a perfect match for this
+  // theme even though luxury-gold itself is styled as a generic glam
+  // theme rather than an adat one.
+  "adat-minang": "/photos/luxury-gallery-1.png",
 };
 
 // Couple portrait photos also vary by theme - the default luxury-gold
@@ -57,6 +65,7 @@ const GROOM_PHOTO_BY_THEME: Record<string, string> = {
   "pastel-studio": "/photos/white-groom.png",
   "art-deco-glam": "/photos/black-groom.png",
   "golden-romance": "/photos/boho-groom.jpg",
+  "adat-minang": "/photos/luxury-groom.png",
 };
 
 const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
@@ -78,6 +87,7 @@ const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
   // the bride/groom pairing isn't visually identical to royal-black's.
   "art-deco-glam": "/photos/modern-bride.jpg",
   "golden-romance": "/photos/boho-bride.jpg",
+  "adat-minang": "/photos/luxury-bride.png",
 };
 
 // Gallery photos also vary by theme so the "Our Moments" slider matches each
@@ -199,6 +209,18 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
     "/photos/rustic-gallery-4.jpg",
     "/photos/rustic-gallery-5.jpg",
     "/photos/rustic-gallery-6.jpg",
+  ],
+  // Reuses luxury-gold's gallery shots (skipping #1, used as this theme's
+  // cover above) plus luxury-gold's own cover photo, so no photo is
+  // sourced newly - just the same real Minang photoshoot in a different
+  // combination/order.
+  "adat-minang": [
+    "/photos/luxury-gallery-2.png",
+    "/photos/luxury-cover.png",
+    "/photos/luxury-gallery-3.png",
+    "/photos/luxury-gallery-4.png",
+    "/photos/luxury-gallery-5.png",
+    "/photos/luxury-gallery-6.png",
   ],
 };
 

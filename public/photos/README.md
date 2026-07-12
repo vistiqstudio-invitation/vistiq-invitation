@@ -33,7 +33,9 @@ to make the theme picker's demo previews look distinct from one another.
 
 `luxury-cover.png`, `luxury-bride.png`, `luxury-groom.png`, and
 `luxury-gallery-1..6.png` are the owner's own photography (Minang
-traditional bridal attire), not Pexels stock - replace freely.
+traditional bridal attire), not Pexels stock - replace freely. Also
+reused wholesale by the `adat-minang` theme (see its own section below),
+since the same photoshoot is a direct cultural match for that theme.
 
 `green-cover.png`, `green-bride.png`, `green-groom.png`, and
 `green-gallery-1..6.png` are also the owner's own photography (emerald
@@ -70,3 +72,8 @@ gallery/cover (both left untouched) plus the new `floral-bride.png` /
 `floral-groom.png` portraits. A full 6 gallery photos were supplied for
 this theme, saved as `floral-gallery-7..12.png` (kept separate from the
 pre-existing `floral-gallery-1..6.jpg` stock).
+
+`adat-minang` sources no new photos of its own - its cover, bride,
+groom, and gallery all point at the existing `luxury-*.png` files
+(see the luxury-gold entry above), since that photoshoot already is
+genuine Minang wedding photography.

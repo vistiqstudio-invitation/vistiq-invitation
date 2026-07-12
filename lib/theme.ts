@@ -11,6 +11,7 @@ import Bohemian from "@/themes/bohemian/Bohemian";
 import ModernElegant from "@/themes/modern-elegant/ModernElegant";
 import RoyalImperial from "@/themes/royal-imperial/RoyalImperial";
 import AdatJawa from "@/themes/adat-jawa/AdatJawa";
+import AdatMinang from "@/themes/adat-minang/AdatMinang";
 import VintageBotanical from "@/themes/vintage-botanical/VintageBotanical";
 import PastelStudio from "@/themes/pastel-studio/PastelStudio";
 import ArtDecoGlam from "@/themes/art-deco-glam/ArtDecoGlam";
@@ -32,6 +33,7 @@ export const themeRegistry: Record<
   "modern-elegant": ModernElegant,
   "royal-imperial": RoyalImperial,
   "adat-jawa": AdatJawa,
+  "adat-minang": AdatMinang,
   "vintage-botanical": VintageBotanical,
   "pastel-studio": PastelStudio,
   "art-deco-glam": ArtDecoGlam,
@@ -117,6 +119,12 @@ export const themeList: ThemeMeta[] = [
     label: "Adat Jawa",
     description: "Soga & emas antik, motif batik, timeline zigzag, foto bersusun",
     swatch: ["#241811", "#c9a24a"],
+  },
+  {
+    key: "adat-minang",
+    label: "Adat Minang",
+    description: "Marun & emas songket, motif gonjong rumah gadang, suntiang",
+    swatch: ["#4a0e14", "#d1a13a"],
   },
   {
     key: "vintage-botanical",
