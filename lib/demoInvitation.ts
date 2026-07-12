@@ -12,7 +12,7 @@ const COVER_BY_THEME: Record<string, string> = {
   "minimal-white": "/photos/white-cover.png",
   "floral-garden": "/photos/floral-cover.png",
   sakura: "/photos/sakura-cover.png",
-  rustic: "/photos/rustic-cover.jpg",
+  rustic: "/photos/rustic-cover.png",
   bohemian: "/photos/boho-cover.jpg",
   "modern-elegant": "/photos/modern-bride.jpg",
   "royal-imperial": "/photos/imperial-cover.jpg",
@@ -72,7 +72,7 @@ const GROOM_PHOTO_BY_THEME: Record<string, string> = {
   "floral-garden": "/photos/floral-groom.png",
   "emerald-lantern": "/photos/lantern-groom.png",
   "minimal-white": "/photos/white-groom.png",
-  rustic: "/photos/rustic-groom.jpg",
+  rustic: "/photos/rustic-groom.png",
   bohemian: "/photos/boho-groom.jpg",
   "modern-elegant": "/photos/modern-groom.jpg",
   "royal-imperial": "/photos/imperial-groom.jpg",
@@ -94,7 +94,7 @@ const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
   "floral-garden": "/photos/floral-bride.png",
   "emerald-lantern": "/photos/lantern-bride.png",
   "minimal-white": "/photos/white-bride.png",
-  rustic: "/photos/rustic-bride.jpg",
+  rustic: "/photos/rustic-bride.png",
   bohemian: "/photos/boho-bride.jpg",
   "modern-elegant": "/photos/modern-bride.jpg",
   "royal-imperial": "/photos/imperial-bride.jpg",
@@ -176,13 +176,16 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
     "/photos/sakura-gallery-5.png",
     "/photos/sakura-gallery-6.png",
   ],
+  // Numbered 7-12 (not 1-6) to avoid colliding with the old
+  // rustic-gallery-1..6.jpg stock set, which golden-romance below
+  // still depends on.
   rustic: [
-    "/photos/rustic-gallery-1.jpg",
-    "/photos/rustic-gallery-2.jpg",
-    "/photos/rustic-gallery-3.jpg",
-    "/photos/rustic-gallery-4.jpg",
-    "/photos/rustic-gallery-5.jpg",
-    "/photos/rustic-gallery-6.jpg",
+    "/photos/rustic-gallery-7.png",
+    "/photos/rustic-gallery-8.png",
+    "/photos/rustic-gallery-9.png",
+    "/photos/rustic-gallery-10.png",
+    "/photos/rustic-gallery-11.png",
+    "/photos/rustic-gallery-12.png",
   ],
   // Reuses floral-garden's gallery shots (skipping #1, used as this
   // theme's cover above) plus its garden-tree cover photo, so no photo
@@ -220,9 +223,11 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
     "/photos/black-gallery-6.jpg",
   ],
   // Bohemian has no dedicated gallery set of its own (falls back to the
-  // generic placeholders), so this reuses rustic's warm-toned gallery
-  // shots instead - a still-unused-as-a-donor set that fits the same
-  // golden-hour warmth without duplicating any other theme's gallery.
+  // generic placeholders), so this reuses rustic's old stock gallery
+  // shots instead (still the original Pexels set, untouched - rustic
+  // itself now uses its own real photography, numbered 7-12 above) -
+  // fits the same golden-hour warmth without duplicating another
+  // theme's gallery.
   "golden-romance": [
     "/photos/rustic-gallery-1.jpg",
     "/photos/rustic-gallery-2.jpg",

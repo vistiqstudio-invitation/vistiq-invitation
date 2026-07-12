@@ -5,7 +5,6 @@ Pexels (Pexels License: free for commercial and personal use, no
 attribution required - https://www.pexels.com/license/).
 
 - `garden-tree.jpg` - photo by Rowida Abdelaziem, https://www.pexels.com/photo/34000755/ (still used by `vintage-botanical`'s gallery only - no longer floral-garden's cover, see Owner-supplied section below)
-- `rustic-cover.jpg` - photo by Uzer Othman, https://www.pexels.com/photo/19781687/ (also cropped into `rustic-groom.jpg` / `rustic-bride.jpg`)
 - `boho-cover.jpg` - photo by Orhan Pergel, https://www.pexels.com/photo/17057196/ (also cropped into `boho-groom.jpg`)
 - `boho-bride.jpg` - photo by G star Media, https://www.pexels.com/photo/36097810/
 - `modern-bride.jpg` - photo by O3 Media Production, https://www.pexels.com/photo/20496261/
@@ -18,7 +17,7 @@ Gallery photos (`*-gallery-1.jpg` through `*-gallery-6.jpg`, used in the
 - `white-gallery-1..6.jpg` - photos by cottonbro (https://www.pexels.com/photo/7289125/), davegarcia (https://www.pexels.com/photo/29507888/), Fidel (https://www.pexels.com/photo/2814807/), Jonathan Borba (https://www.pexels.com/photo/19869796/), thecactusena (https://www.pexels.com/photo/30312512/), esma atak (https://www.pexels.com/photo/18479900/)
 - `black-gallery-1..6.jpg` - photos by Batuhan Kocabas (https://www.pexels.com/photo/17697795/), DrewRae (https://www.pexels.com/photo/883362/), Dilara Dogar (https://www.pexels.com/photo/34488992/), Luis Becerra Fotógrafo (https://www.pexels.com/photo/6032062/), Andrea Prochilo (https://www.pexels.com/photo/34241958/), Alirezamani Wedding Team (https://www.pexels.com/photo/35505716/)
 - `floral-gallery-1..6.jpg` - photos by Breno Cardoso (https://www.pexels.com/photo/18322558/), Matthew (https://www.pexels.com/photo/30298624/), Bertelli Fotografia (https://www.pexels.com/photo/17206082/), Valeriya (https://www.pexels.com/photo/595452/), Maison Lighthouse (https://www.pexels.com/photo/38438339/), Alina Skazka (https://www.pexels.com/photo/27739574/) - kept only for `vintage-botanical`, which still depends on this exact numbering; floral-garden itself now uses the owner's own photography (see below)
-- `rustic-gallery-1..6.jpg` - photos by Westernsydneyweddings (https://www.pexels.com/photo/3082781/), Svet Svet (https://www.pexels.com/photo/35353070/), Amaria (https://www.pexels.com/photo/16377875/), Daka (https://www.pexels.com/photo/17266462/), Dumitru B (https://www.pexels.com/photo/29500108/), Quang Nguyen Vinh (https://www.pexels.com/photo/2131929/)
+- `rustic-gallery-1..6.jpg` - photos by Westernsydneyweddings (https://www.pexels.com/photo/3082781/), Svet Svet (https://www.pexels.com/photo/35353070/), Amaria (https://www.pexels.com/photo/16377875/), Daka (https://www.pexels.com/photo/17266462/), Dumitru B (https://www.pexels.com/photo/29500108/), Quang Nguyen Vinh (https://www.pexels.com/photo/2131929/) - kept only for `golden-romance`, which still depends on this exact numbering; rustic itself now uses the owner's own photography (see below)
 
 Replace these if you'd rather use your own photography - they exist only
 to make the theme picker's demo previews look distinct from one another.
@@ -88,3 +87,12 @@ replace the old Pexels `garden-carry.jpg` cover and `sakura-bride/
 groom.jpg` and `sakura-gallery-1..6.jpg` files entirely - no other
 theme depended on any of the old stock, so it was deleted rather than
 kept alongside.
+
+`rustic-cover.png`, `rustic-bride.png`, and `rustic-groom.png` are the
+owner's own photography (golden wheat field at sunset, linen suit,
+wooden barn) and replace the old Pexels `rustic-cover/bride/groom.jpg`
+files. `golden-romance` above still points at the old
+`rustic-gallery-1..6.jpg` stock set (unaffected). A full 6 gallery
+photos were supplied for this theme, saved as `rustic-gallery-7..12.png`
+(kept separate from the pre-existing `rustic-gallery-1..6.jpg` stock,
+which golden-romance still depends on).
