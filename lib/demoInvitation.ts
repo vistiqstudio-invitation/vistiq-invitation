@@ -9,7 +9,7 @@ const COVER_BY_THEME: Record<string, string> = {
   "royal-black": "/photos/black-bride.jpg",
   "islamic-green": "/photos/green-cover.png",
   "emerald-lantern": "/photos/lantern-cover.jpg",
-  "minimal-white": "/photos/white-cover.jpg",
+  "minimal-white": "/photos/white-cover.png",
   "floral-garden": "/photos/garden-tree.jpg",
   sakura: "/photos/garden-carry.jpg",
   rustic: "/photos/rustic-cover.jpg",
@@ -47,13 +47,13 @@ const GROOM_PHOTO_BY_THEME: Record<string, string> = {
   "royal-black": "/photos/black-groom.jpg",
   "floral-garden": "/photos/floral-groom.jpg",
   "emerald-lantern": "/photos/lantern-groom.jpg",
-  "minimal-white": "/photos/white-groom.jpg",
+  "minimal-white": "/photos/white-groom.png",
   rustic: "/photos/rustic-groom.jpg",
   bohemian: "/photos/boho-groom.jpg",
   "modern-elegant": "/photos/modern-groom.jpg",
   "royal-imperial": "/photos/imperial-groom.jpg",
   "vintage-botanical": "/photos/floral-groom.jpg",
-  "pastel-studio": "/photos/white-groom.jpg",
+  "pastel-studio": "/photos/white-groom.png",
   "art-deco-glam": "/photos/black-groom.jpg",
   "golden-romance": "/photos/boho-groom.jpg",
 };
@@ -65,13 +65,13 @@ const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
   "royal-black": "/photos/black-bride.jpg",
   "floral-garden": "/photos/floral-bride.jpg",
   "emerald-lantern": "/photos/lantern-bride.jpg",
-  "minimal-white": "/photos/white-bride.jpg",
+  "minimal-white": "/photos/white-bride.png",
   rustic: "/photos/rustic-bride.jpg",
   bohemian: "/photos/boho-bride.jpg",
   "modern-elegant": "/photos/modern-bride.jpg",
   "royal-imperial": "/photos/imperial-bride.jpg",
   "vintage-botanical": "/photos/floral-bride.jpg",
-  "pastel-studio": "/photos/white-bride.jpg",
+  "pastel-studio": "/photos/white-bride.png",
   // Uses modern-elegant's bride portrait (a moody dark-blazer studio
   // shot with a gold staircase backdrop) rather than royal-black's, so
   // the bride/groom pairing isn't visually identical to royal-black's.
@@ -91,13 +91,13 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
     "/photos/luxury-gallery-5.png",
     "/photos/luxury-gallery-6.png",
   ],
+  // Only 3 real photos were supplied for this theme's gallery (not the
+  // usual 6) - numbered 7-9 to avoid colliding with white-gallery-1..6.jpg,
+  // which pastel-studio below still depends on.
   "minimal-white": [
-    "/photos/white-gallery-1.jpg",
-    "/photos/white-gallery-2.jpg",
-    "/photos/white-gallery-3.jpg",
-    "/photos/white-gallery-4.jpg",
-    "/photos/white-gallery-5.jpg",
-    "/photos/white-gallery-6.jpg",
+    "/photos/white-gallery-7.png",
+    "/photos/white-gallery-8.png",
+    "/photos/white-gallery-9.png",
   ],
   "islamic-green": [
     "/photos/green-gallery-1.png",
@@ -158,12 +158,13 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
     "/photos/floral-gallery-5.jpg",
     "/photos/floral-gallery-6.jpg",
   ],
-  // Reuses minimal-white's gallery shots (skipping #1, used as this
-  // theme's cover above) plus its white-cover photo, same reuse pattern
-  // as vintage-botanical above.
+  // Reuses minimal-white's old stock gallery shots (skipping #1, used as
+  // this theme's cover above) plus its cover photo (now the owner's real
+  // photo, since white-cover.jpg was replaced), same reuse pattern as
+  // vintage-botanical above.
   "pastel-studio": [
     "/photos/white-gallery-2.jpg",
-    "/photos/white-cover.jpg",
+    "/photos/white-cover.png",
     "/photos/white-gallery-3.jpg",
     "/photos/white-gallery-4.jpg",
     "/photos/white-gallery-5.jpg",

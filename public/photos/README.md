@@ -11,9 +11,6 @@ attribution required - https://www.pexels.com/license/).
 - `black-bride.jpg` - photo by Kaybee Photography, https://www.pexels.com/photo/31002630/
 - `black-groom.jpg` - photo by Mohamed Abdelghaffar, https://www.pexels.com/photo/33290984/
 - `lantern-cover.jpg` - photo by Abiy Fikru, https://www.pexels.com/photo/18573869/ (also cropped into `lantern-groom.jpg` / `lantern-bride.jpg`)
-- `white-cover.jpg` - photo by Dio Helmy Ardham, https://www.pexels.com/photo/19035591/
-- `white-bride.jpg` - photo by Polina Tankilevitch, https://www.pexels.com/photo/4728705/
-- `white-groom.jpg` - photo by Becca Correia, https://www.pexels.com/photo/36700225/
 - `rustic-cover.jpg` - photo by Uzer Othman, https://www.pexels.com/photo/19781687/ (also cropped into `rustic-groom.jpg` / `rustic-bride.jpg`)
 - `boho-cover.jpg` - photo by Orhan Pergel, https://www.pexels.com/photo/17057196/ (also cropped into `boho-groom.jpg`)
 - `boho-bride.jpg` - photo by G star Media, https://www.pexels.com/photo/36097810/
@@ -44,3 +41,13 @@ traditional bridal attire), not Pexels stock - replace freely.
 `green-gallery-1..6.png` are also the owner's own photography (emerald
 and gold Islamic bridal attire, arabesque architecture), not Pexels
 stock.
+
+`white-cover.png`, `white-bride.png`, and `white-groom.png` are the
+owner's own photography (black formal attire, white studio backdrop)
+and replace the old Pexels `white-cover/bride/groom.jpg` files -
+`pastel-studio` above still points at the old `white-gallery-*.jpg`
+stock set (unaffected) plus the new `white-cover.png`. Only 3 gallery
+photos were supplied for this theme, saved as `white-gallery-7..9.png`
+(kept separate from the pre-existing `white-gallery-1..6.jpg` stock,
+which pastel-studio still depends on) - minimal-white's own gallery is
+shorter (3 photos) until more are supplied.
