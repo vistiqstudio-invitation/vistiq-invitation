@@ -13,6 +13,7 @@ import RoyalImperial from "@/themes/royal-imperial/RoyalImperial";
 import AdatJawa from "@/themes/adat-jawa/AdatJawa";
 import AdatMinang from "@/themes/adat-minang/AdatMinang";
 import AdatBugis from "@/themes/adat-bugis/AdatBugis";
+import MenaraCahaya from "@/themes/menara-cahaya/MenaraCahaya";
 import VintageBotanical from "@/themes/vintage-botanical/VintageBotanical";
 import PastelStudio from "@/themes/pastel-studio/PastelStudio";
 import ArtDecoGlam from "@/themes/art-deco-glam/ArtDecoGlam";
@@ -36,6 +37,7 @@ export const themeRegistry: Record<
   "adat-jawa": AdatJawa,
   "adat-minang": AdatMinang,
   "adat-bugis": AdatBugis,
+  "menara-cahaya": MenaraCahaya,
   "vintage-botanical": VintageBotanical,
   "pastel-studio": PastelStudio,
   "art-deco-glam": ArtDecoGlam,
@@ -133,6 +135,12 @@ export const themeList: ThemeMeta[] = [
     label: "Adat Bugis",
     description: "Teal & emas, motif atap timpalaja, ombak Bugis-Makassar",
     swatch: ["#0d3438", "#cfa23c"],
+  },
+  {
+    key: "menara-cahaya",
+    label: "Menara Cahaya",
+    description: "Navy malam & emas, siluet kubah-menara masjid, bintang islami",
+    swatch: ["#0d1b3d", "#cda15a"],
   },
   {
     key: "vintage-botanical",

@@ -49,6 +49,11 @@ const COVER_BY_THEME: Record<string, string> = {
   // for this theme's teal-and-gold colors. Replace once real Adat Bugis
   // photos are supplied.
   "adat-bugis": "/photos/lantern-cover.jpg",
+  // Placeholder only - no owner-supplied photography for this theme
+  // yet. Reuses royal-imperial's cover shot (not yet a donor for any
+  // other theme) since its formal dark-and-gold mood is a reasonable
+  // match. Replace once real photos are supplied.
+  "menara-cahaya": "/photos/imperial-cover.jpg",
 };
 
 // Couple portrait photos also vary by theme - the default luxury-gold
@@ -73,6 +78,7 @@ const GROOM_PHOTO_BY_THEME: Record<string, string> = {
   "golden-romance": "/photos/boho-groom.jpg",
   "adat-minang": "/photos/luxury-groom.png",
   "adat-bugis": "/photos/lantern-groom.jpg",
+  "menara-cahaya": "/photos/imperial-groom.jpg",
 };
 
 const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
@@ -96,6 +102,7 @@ const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
   "golden-romance": "/photos/boho-bride.jpg",
   "adat-minang": "/photos/luxury-bride.png",
   "adat-bugis": "/photos/lantern-bride.jpg",
+  "menara-cahaya": "/photos/imperial-bride.jpg",
 };
 
 // Gallery photos also vary by theme so the "Our Moments" slider matches each
@@ -239,6 +246,18 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
     "/photos/lantern-gallery-4.jpg",
     "/photos/lantern-gallery-5.jpg",
     "/photos/lantern-gallery-6.jpg",
+  ],
+  // Placeholder only, same as the cover/groom/bride entries above.
+  // Reuses royal-black's 5 real gallery photos (dark-and-gold ballroom,
+  // a reasonable mood match) plus royal-imperial's bride shot as a 6th
+  // slot, until real photos are supplied for this theme.
+  "menara-cahaya": [
+    "/photos/black-gallery-7.png",
+    "/photos/black-gallery-8.png",
+    "/photos/black-gallery-9.png",
+    "/photos/black-gallery-10.png",
+    "/photos/black-gallery-11.png",
+    "/photos/imperial-bride.jpg",
   ],
 };
 
