@@ -11,7 +11,7 @@ const COVER_BY_THEME: Record<string, string> = {
   "emerald-lantern": "/photos/lantern-cover.png",
   "minimal-white": "/photos/white-cover.png",
   "floral-garden": "/photos/floral-cover.png",
-  sakura: "/photos/garden-carry.jpg",
+  sakura: "/photos/sakura-cover.png",
   rustic: "/photos/rustic-cover.jpg",
   bohemian: "/photos/boho-cover.jpg",
   "modern-elegant": "/photos/modern-bride.jpg",
@@ -65,7 +65,7 @@ const COVER_BY_THEME: Record<string, string> = {
 // clashes with lighter/pastel themes. Themes not listed here fall back to
 // the luxury-gold portraits.
 const GROOM_PHOTO_BY_THEME: Record<string, string> = {
-  sakura: "/photos/sakura-groom.jpg",
+  sakura: "/photos/sakura-groom.png",
   "luxury-gold": "/photos/luxury-groom.png",
   "islamic-green": "/photos/green-groom.png",
   "royal-black": "/photos/black-groom.png",
@@ -87,7 +87,7 @@ const GROOM_PHOTO_BY_THEME: Record<string, string> = {
 };
 
 const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
-  sakura: "/photos/sakura-bride.jpg",
+  sakura: "/photos/sakura-bride.png",
   "luxury-gold": "/photos/luxury-bride.png",
   "islamic-green": "/photos/green-bride.png",
   "royal-black": "/photos/black-bride.png",
@@ -169,12 +169,12 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
     "/photos/lantern-gallery-6.png",
   ],
   sakura: [
-    "/photos/sakura-gallery-1.jpg",
-    "/photos/sakura-gallery-2.jpg",
-    "/photos/sakura-gallery-3.jpg",
-    "/photos/sakura-gallery-4.jpg",
-    "/photos/sakura-gallery-5.jpg",
-    "/photos/sakura-gallery-6.jpg",
+    "/photos/sakura-gallery-1.png",
+    "/photos/sakura-gallery-2.png",
+    "/photos/sakura-gallery-3.png",
+    "/photos/sakura-gallery-4.png",
+    "/photos/sakura-gallery-5.png",
+    "/photos/sakura-gallery-6.png",
   ],
   rustic: [
     "/photos/rustic-gallery-1.jpg",
