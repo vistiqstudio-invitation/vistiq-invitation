@@ -54,6 +54,11 @@ const COVER_BY_THEME: Record<string, string> = {
   // other theme) since its formal dark-and-gold mood is a reasonable
   // match. Replace once real photos are supplied.
   "menara-cahaya": "/photos/imperial-cover.jpg",
+  // Placeholder only - no owner-supplied photography for this theme
+  // yet. Reuses minimal-white's cover (white studio backdrop) since its
+  // light, airy tone is the closest match to this theme's white-and-blue
+  // palette among the current photo set. Replace once real photos exist.
+  santorini: "/photos/white-cover.png",
 };
 
 // Couple portrait photos also vary by theme - the default luxury-gold
@@ -79,6 +84,7 @@ const GROOM_PHOTO_BY_THEME: Record<string, string> = {
   "adat-minang": "/photos/luxury-groom.png",
   "adat-bugis": "/photos/lantern-groom.jpg",
   "menara-cahaya": "/photos/imperial-groom.jpg",
+  santorini: "/photos/white-groom.png",
 };
 
 const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
@@ -103,6 +109,7 @@ const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
   "adat-minang": "/photos/luxury-bride.png",
   "adat-bugis": "/photos/lantern-bride.jpg",
   "menara-cahaya": "/photos/imperial-bride.jpg",
+  santorini: "/photos/white-bride.png",
 };
 
 // Gallery photos also vary by theme so the "Our Moments" slider matches each
@@ -258,6 +265,17 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
     "/photos/black-gallery-10.png",
     "/photos/black-gallery-11.png",
     "/photos/imperial-bride.jpg",
+  ],
+  // Placeholder only, same as the cover/groom/bride entries above -
+  // reuses the old white-gallery-1..6.jpg stock (also used by
+  // pastel-studio) until real photos are supplied for this theme.
+  santorini: [
+    "/photos/white-gallery-1.jpg",
+    "/photos/white-gallery-2.jpg",
+    "/photos/white-gallery-3.jpg",
+    "/photos/white-gallery-4.jpg",
+    "/photos/white-gallery-5.jpg",
+    "/photos/white-gallery-6.jpg",
   ],
 };
 

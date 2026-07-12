@@ -14,6 +14,7 @@ import AdatJawa from "@/themes/adat-jawa/AdatJawa";
 import AdatMinang from "@/themes/adat-minang/AdatMinang";
 import AdatBugis from "@/themes/adat-bugis/AdatBugis";
 import MenaraCahaya from "@/themes/menara-cahaya/MenaraCahaya";
+import Santorini from "@/themes/santorini/Santorini";
 import VintageBotanical from "@/themes/vintage-botanical/VintageBotanical";
 import PastelStudio from "@/themes/pastel-studio/PastelStudio";
 import ArtDecoGlam from "@/themes/art-deco-glam/ArtDecoGlam";
@@ -38,6 +39,7 @@ export const themeRegistry: Record<
   "adat-minang": AdatMinang,
   "adat-bugis": AdatBugis,
   "menara-cahaya": MenaraCahaya,
+  santorini: Santorini,
   "vintage-botanical": VintageBotanical,
   "pastel-studio": PastelStudio,
   "art-deco-glam": ArtDecoGlam,
@@ -141,6 +143,12 @@ export const themeList: ThemeMeta[] = [
     label: "Menara Cahaya",
     description: "Navy malam & emas, siluet kubah-menara masjid, bintang islami",
     swatch: ["#0d1b3d", "#cda15a"],
+  },
+  {
+    key: "santorini",
+    label: "Santorini",
+    description: "Biru Aegean & putih, pintu lengkung Cyclades, editorial minimalis",
+    swatch: ["#f6fafc", "#1c5583"],
   },
   {
     key: "vintage-botanical",
