@@ -293,6 +293,26 @@
   max-width: 720px;
   margin: 0 auto;
   text-align: center;
+  overflow: hidden;
+}
+
+.heroCornerTL,
+.heroCornerTR {
+  position: absolute;
+  top: 0;
+  z-index: 0;
+  width: min(40vw, 170px);
+  height: auto;
+  pointer-events: none;
+}
+
+.heroCornerTL {
+  left: 0;
+}
+
+.heroCornerTR {
+  right: 0;
+  transform: scaleX(-1);
 }
 
 .heroLabel {
@@ -355,6 +375,19 @@
   height: auto;
   transform: rotate(-8deg);
   pointer-events: none;
+  z-index: 2;
+}
+
+.heroSpray {
+  position: absolute;
+  bottom: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(96%, 480px);
+  height: auto;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.95;
 }
 
 .heroVerse {
@@ -394,11 +427,12 @@
 
 .profileAccent {
   position: absolute;
-  bottom: -18px;
-  right: -14px;
-  width: 84px;
+  bottom: -22px;
+  right: -20px;
+  width: clamp(90px, 26vw, 130px);
   height: auto;
   pointer-events: none;
+  z-index: 2;
 }
 
 .profilePhoto {

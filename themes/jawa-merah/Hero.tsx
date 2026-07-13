@@ -13,6 +13,19 @@ function hideOnError(e: React.SyntheticEvent<HTMLImageElement>) {
 export default function Hero({ invitation }: { invitation: InvitationData }) {
   return (
     <div className={styles.hero}>
+      <img
+        className={styles.heroCornerTL}
+        src="/decor/jawa-merah/corner-foliage.png"
+        alt=""
+        onError={hideOnError}
+      />
+      <img
+        className={styles.heroCornerTR}
+        src="/decor/jawa-merah/corner-foliage.png"
+        alt=""
+        onError={hideOnError}
+      />
+
       <Reveal>
         <p className={styles.heroLabel}>Assalamu'alaikum Warahmatullahi Wabarakatuh</p>
 
@@ -37,6 +50,13 @@ export default function Hero({ invitation }: { invitation: InvitationData }) {
           <img
             className={styles.heroButterfly}
             src="/decor/jawa-merah/butterfly.png"
+            alt=""
+            onError={hideOnError}
+          />
+
+          <img
+            className={styles.heroSpray}
+            src="/decor/jawa-merah/floral-spray.png"
             alt=""
             onError={hideOnError}
           />

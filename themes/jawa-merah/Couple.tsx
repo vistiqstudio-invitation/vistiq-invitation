@@ -27,7 +27,7 @@ export default function Couple({ invitation }: { invitation: InvitationData }) {
           <div className={styles.profileBlock}>
             <img
               className={styles.profileAccent}
-              src="/decor/jawa-merah/floral-spray.png"
+              src="/decor/jawa-merah/corner-foliage.png"
               alt=""
               onError={hideOnError}
             />
@@ -66,7 +66,7 @@ export default function Couple({ invitation }: { invitation: InvitationData }) {
           <div className={styles.profileBlock}>
             <img
               className={styles.profileAccent}
-              src="/decor/jawa-merah/floral-spray.png"
+              src="/decor/jawa-merah/corner-foliage.png"
               alt=""
               onError={hideOnError}
             />
