@@ -1,7 +1,7 @@
 import Link from "next/link";
 import PhoneMockup from "@/components/PhoneMockup";
 import SiteNavbar from "@/components/SiteNavbar";
-import { themeList } from "@/lib/theme";
+import ThemeGrid from "@/components/ThemeGrid";
 
 const WA_NUMBER = "6281371338032";
 
@@ -97,15 +97,7 @@ export default function HomePage() {
         <p className="label">Pilihan Tema</p>
         <h2>Tema Premium Siap Pakai</h2>
 
-        <div className="themeGrid">
-          {themeList.map((theme) => (
-            <Link href={`/demo/${theme.key}`} className="themeCard" key={theme.key}>
-              <PhoneMockup themeKey={theme.key} width={150} className="themePreview" />
-              <h3>{theme.label}</h3>
-              <p>{theme.description}</p>
-            </Link>
-          ))}
-        </div>
+        <ThemeGrid />
       </section>
 
       <section id="harga" className="section">
@@ -684,9 +676,28 @@ html, body {
   }
 
   .grid,
-  .priceGrid,
-  .themeGrid {
+  .priceGrid {
     grid-template-columns: 1fr;
+  }
+
+  .themeGrid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .themeCard {
+    padding: 8px 4px 10px;
+    border-radius: 12px;
+  }
+
+  .themeCard h3 {
+    font-size: 10.5px;
+    line-height: 1.25;
+    margin: 8px 0 0;
+  }
+
+  .themeCard p {
+    display: none;
   }
 
   .featured {
