@@ -681,9 +681,7 @@
 }
 
 .countdownPlaque {
-  composes: card archTopSmall;
-  width: clamp(70px, 19vw, 92px);
-  padding: 16px 4px 12px;
+  width: clamp(60px, 17vw, 82px);
   text-align: center;
 }
 
