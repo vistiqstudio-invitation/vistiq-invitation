@@ -1,98 +1,60 @@
 # Demo photos
 
-Stock photos used only for theme demo pages (`/demo/*`), sourced from
-Pexels (Pexels License: free for commercial and personal use, no
-attribution required - https://www.pexels.com/license/).
+Photos used only for theme demo pages (`/demo/*`). Nearly all of them are
+the owner's own photography now - see below. The lone exception:
 
-- `garden-tree.jpg` - photo by Rowida Abdelaziem, https://www.pexels.com/photo/34000755/ (still used by `vintage-botanical`'s gallery only - no longer floral-garden's cover, see Owner-supplied section below)
-- `boho-cover.jpg` - photo by Orhan Pergel, https://www.pexels.com/photo/17057196/ (also cropped into `boho-groom.jpg`)
-- `boho-bride.jpg` - photo by G star Media, https://www.pexels.com/photo/36097810/
-- `modern-bride.jpg` - photo by O3 Media Production, https://www.pexels.com/photo/20496261/
-- `modern-groom.jpg` - photo by Mustapha Damilola, https://www.pexels.com/photo/30033723/
-- `imperial-cover.jpg` - photo by ONEPROPHOTO PHOTO & CINEMA, https://www.pexels.com/photo/16098078/ (also cropped into `imperial-groom.jpg` / `imperial-bride.jpg`)
-
-Gallery photos (`*-gallery-1.jpg` through `*-gallery-6.jpg`, used in the
-"Our Moments" slider on each demo invitation) are also theme-matched:
-
-- `white-gallery-1..6.jpg` - photos by cottonbro (https://www.pexels.com/photo/7289125/), davegarcia (https://www.pexels.com/photo/29507888/), Fidel (https://www.pexels.com/photo/2814807/), Jonathan Borba (https://www.pexels.com/photo/19869796/), thecactusena (https://www.pexels.com/photo/30312512/), esma atak (https://www.pexels.com/photo/18479900/)
-- `black-gallery-1..6.jpg` - photos by Batuhan Kocabas (https://www.pexels.com/photo/17697795/), DrewRae (https://www.pexels.com/photo/883362/), Dilara Dogar (https://www.pexels.com/photo/34488992/), Luis Becerra Fotógrafo (https://www.pexels.com/photo/6032062/), Andrea Prochilo (https://www.pexels.com/photo/34241958/), Alirezamani Wedding Team (https://www.pexels.com/photo/35505716/)
-- `floral-gallery-1..6.jpg` - photos by Breno Cardoso (https://www.pexels.com/photo/18322558/), Matthew (https://www.pexels.com/photo/30298624/), Bertelli Fotografia (https://www.pexels.com/photo/17206082/), Valeriya (https://www.pexels.com/photo/595452/), Maison Lighthouse (https://www.pexels.com/photo/38438339/), Alina Skazka (https://www.pexels.com/photo/27739574/) - kept only for `vintage-botanical`, which still depends on this exact numbering; floral-garden itself now uses the owner's own photography (see below)
-- `rustic-gallery-1..6.jpg` - photos by Westernsydneyweddings (https://www.pexels.com/photo/3082781/), Svet Svet (https://www.pexels.com/photo/35353070/), Amaria (https://www.pexels.com/photo/16377875/), Daka (https://www.pexels.com/photo/17266462/), Dumitru B (https://www.pexels.com/photo/29500108/), Quang Nguyen Vinh (https://www.pexels.com/photo/2131929/) - kept only for `golden-romance`, which still depends on this exact numbering; rustic itself now uses the owner's own photography (see below)
-
-Replace these if you'd rather use your own photography - they exist only
-to make the theme picker's demo previews look distinct from one another.
+- `white-gallery-1..6.jpg` - Pexels stock (Pexels License: free for
+  commercial and personal use, no attribution required -
+  https://www.pexels.com/license/), photos by cottonbro
+  (https://www.pexels.com/photo/7289125/), davegarcia
+  (https://www.pexels.com/photo/29507888/), Fidel
+  (https://www.pexels.com/photo/2814807/), Jonathan Borba
+  (https://www.pexels.com/photo/19869796/), thecactusena
+  (https://www.pexels.com/photo/30312512/), esma atak
+  (https://www.pexels.com/photo/18479900/). Only `santorini` still points
+  at this set, as a placeholder until real destination photos exist.
+  Replace freely.
 
 ## Owner-supplied photography
 
-`luxury-cover.png`, `luxury-bride.png`, `luxury-groom.png`, and
-`luxury-gallery-1..6.png` are the owner's own photography (Minang
-traditional bridal attire), not Pexels stock - replace freely. Also
-reused wholesale by the `adat-minang` theme (see its own section below),
-since the same photoshoot is a direct cultural match for that theme.
+Each theme below has its own `{prefix}-cover.png`, `{prefix}-bride.png`,
+`{prefix}-groom.png`, and `{prefix}-gallery-1..6.png` (or a shorter
+gallery where noted) - all real photography, not stock.
 
-`green-cover.png`, `green-bride.png`, `green-groom.png`, and
-`green-gallery-1..6.png` are also the owner's own photography (emerald
-and gold Islamic bridal attire, arabesque architecture), not Pexels
-stock.
+| Theme | File prefix | Mood |
+| --- | --- | --- |
+| Luxury Gold | `luxury-` | Minang traditional bridal attire (suntiang, marun-gold songket) |
+| Islamic Green | `green-` | Emerald and gold Islamic bridal attire, arabesque architecture |
+| Minimal White | `white-` | Black formal attire, white studio backdrop |
+| Royal Black | `black-` | Black and gold ballroom bridal attire, candelabras and mirrors |
+| Floral Garden | `floral-` | Cream/beige garden attire, rose arch and pergola |
+| Emerald Lantern | `lantern-` | Emerald ball gown and suit, jade-green paper lanterns, night garden |
+| Sakura | `sakura-` | Blush pink hanbok-style gown, cherry blossom garden, stone lantern |
+| Rustic | `rustic-` | Golden wheat field at sunset, linen suit, wooden barn |
+| Bohemian | `boho-` | Pampas grass, golden desert sunset, flower crown, boho lace |
+| Modern Elegant | `modern-` | Black-and-white, sharp architectural studio, minimalist gown |
+| Royal Imperial | `imperial-` | Maroon and gold palace court attire, ornate palace architecture |
+| Adat Jawa | `jawa-` | Batik and beskap, joglo house, melati garland |
+| Vintage Botanical | `botanical-` | Overgrown greenhouse, sage-green foliage, muted maroon suit |
+| Pastel Studio | `pastel-` | Lilac/peach/mint studio backdrop, minimal styling |
+| Art Deco Glam | `deco-` | Emerald beaded flapper gown, black tux, geometric gold ballroom |
+| Golden Romance | `romance-` | Golden-hour backlight, blush and beige tones, blossoming branches |
 
-`white-cover.png`, `white-bride.png`, and `white-groom.png` are the
-owner's own photography (black formal attire, white studio backdrop)
-and replace the old Pexels `white-cover/bride/groom.jpg` files -
-`pastel-studio` above still points at the old `white-gallery-*.jpg`
-stock set (unaffected) plus the new `white-cover.png`. Only 3 gallery
-photos were supplied for this theme, saved as `white-gallery-7..9.png`
-(kept separate from the pre-existing `white-gallery-1..6.jpg` stock,
-which pastel-studio still depends on) - minimal-white's own gallery is
-shorter (3 photos) until more are supplied.
+Notes on gallery length and reuse:
 
-`black-cover.png`, `black-bride.png`, and `black-groom.png` are the
-owner's own photography (black and gold ballroom bridal attire,
-candelabras and ornate mirrors) and replace the old Pexels
-`black-bride/groom.jpg` files - `art-deco-glam` above still points at
-the old `black-gallery-1..6.jpg` stock set (unaffected) plus the new
-`black-bride.png`. Only 5 gallery photos were supplied for this theme,
-saved as `black-gallery-7..11.png` (kept separate from the
-pre-existing `black-gallery-1..6.jpg` stock, which art-deco-glam still
-depends on).
-
-`floral-cover.png`, `floral-bride.png`, `floral-groom.png`, and
-`floral-gallery-7..12.png` are the owner's own photography (cream/beige
-garden attire, rose arch and pergola) and replace the old Pexels
-`floral-cover` (previously `garden-tree.jpg`), `floral-bride.jpg`, and
-`floral-groom.jpg` files. `vintage-botanical` above still points at the
-old `floral-gallery-1..6.jpg` stock set and `garden-tree.jpg` for its own
-gallery/cover (both left untouched) plus the new `floral-bride.png` /
-`floral-groom.png` portraits. A full 6 gallery photos were supplied for
-this theme, saved as `floral-gallery-7..12.png` (kept separate from the
-pre-existing `floral-gallery-1..6.jpg` stock).
-
-`adat-minang` sources no new photos of its own - its cover, bride,
-groom, and gallery all point at the existing `luxury-*.png` files
-(see the luxury-gold entry above), since that photoshoot already is
-genuine Minang wedding photography.
-
-`lantern-cover.png`, `lantern-bride.png`, `lantern-groom.png`, and
-`lantern-gallery-1..6.png` are the owner's own photography (emerald
-ball gown and suit, jade-green paper lanterns strung through a night
-garden) and replace the old Pexels `lantern-cover/groom/bride.jpg` and
-`lantern-gallery-1..6.jpg` files entirely - no theme depended on the
-old stock under different numbering, so all of it was deleted rather
-than kept alongside. `adat-bugis` above also points at this same set
-as its placeholder (see its own entry above).
-
-`sakura-cover.png`, `sakura-bride.png`, `sakura-groom.png`, and
-`sakura-gallery-1..6.png` are the owner's own photography (blush pink
-hanbok-style gown, cherry blossom garden with a stone lantern) and
-replace the old Pexels `garden-carry.jpg` cover and `sakura-bride/
-groom.jpg` and `sakura-gallery-1..6.jpg` files entirely - no other
-theme depended on any of the old stock, so it was deleted rather than
-kept alongside.
-
-`rustic-cover.png`, `rustic-bride.png`, and `rustic-groom.png` are the
-owner's own photography (golden wheat field at sunset, linen suit,
-wooden barn) and replace the old Pexels `rustic-cover/bride/groom.jpg`
-files. `golden-romance` above still points at the old
-`rustic-gallery-1..6.jpg` stock set (unaffected). A full 6 gallery
-photos were supplied for this theme, saved as `rustic-gallery-7..12.png`
-(kept separate from the pre-existing `rustic-gallery-1..6.jpg` stock,
-which golden-romance still depends on).
+- `minimal-white`'s own gallery is only 3 photos (`white-gallery-7..9.png`)
+  - fewer were supplied for this theme.
+- `royal-black`'s own gallery is only 5 photos (`black-gallery-7..11.png`)
+  - fewer were supplied for this theme.
+- `floral-garden` and `rustic` gallery files are numbered 7-12 rather than
+  1-6, a leftover from when other themes still borrowed their original
+  1-6 stock set. Nothing depends on that old numbering anymore.
+- `adat-minang` sources no new photos of its own - its cover, bride,
+  groom, and gallery all point at the `luxury-*.png` files, since that
+  photoshoot already is genuine Minang wedding photography.
+- `adat-bugis` and `menara-cahaya` have no owner-supplied photography yet
+  and use `lantern-*.png` and `imperial-*.png` respectively as
+  placeholders (palette-matched borrows from other themes) until real
+  photos are supplied.
+- `santorini` has no owner-supplied photography yet and uses
+  `white-*.png`/`white-gallery-*.jpg` as a placeholder.

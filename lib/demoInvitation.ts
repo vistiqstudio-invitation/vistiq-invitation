@@ -13,28 +13,14 @@ const COVER_BY_THEME: Record<string, string> = {
   "floral-garden": "/photos/floral-cover.png",
   sakura: "/photos/sakura-cover.png",
   rustic: "/photos/rustic-cover.png",
-  bohemian: "/photos/boho-cover.jpg",
-  "modern-elegant": "/photos/modern-bride.jpg",
-  "royal-imperial": "/photos/imperial-cover.jpg",
-  // Reuses an existing floral-garden gallery shot (still the old stock
-  // floral-gallery-1.jpg, untouched - floral-garden itself now uses a
-  // dedicated floral-cover.png) so the two themes don't show an identical
-  // cover photo side by side in the demo grid.
-  "vintage-botanical": "/photos/floral-gallery-1.jpg",
-  // Reuses an existing minimal-white shot, different from the one
-  // minimal-white uses as its own cover, so the two don't look identical
-  // side by side in the demo grid.
-  "pastel-studio": "/photos/white-gallery-1.jpg",
-  // Reuses royal-black's old stock cover shot (royal-black itself now
-  // uses its own dedicated black-cover.png) so the two dark/gold themes
-  // don't show an identical cover photo side by side in the demo grid.
-  "art-deco-glam": "/photos/black-gallery-1.jpg",
-  // Reuses bohemian's groom portrait (a solo golden-hour field shot) as
-  // the cover instead of bohemian's own boho-cover.jpg, so the two
-  // golden-hour themes don't show an identical cover photo in the demo
-  // grid. Matches the existing convention (several themes already reuse
-  // their own bride/groom portrait as the cover image).
-  "golden-romance": "/photos/boho-groom.jpg",
+  bohemian: "/photos/boho-cover.png",
+  "modern-elegant": "/photos/modern-cover.png",
+  "royal-imperial": "/photos/imperial-cover.png",
+  "vintage-botanical": "/photos/botanical-cover.png",
+  "pastel-studio": "/photos/pastel-cover.png",
+  "art-deco-glam": "/photos/deco-cover.png",
+  "golden-romance": "/photos/romance-cover.png",
+  "adat-jawa": "/photos/jawa-cover.png",
   // Reuses one of luxury-gold's own gallery shots (not luxury-cover.png,
   // which luxury-gold already uses as its own cover) so the two themes
   // don't show an identical cover photo side by side in the demo grid.
@@ -48,11 +34,11 @@ const COVER_BY_THEME: Record<string, string> = {
   // it's a reasonable palette match for this theme's teal-and-gold
   // colors. Replace once real Adat Bugis photos are supplied.
   "adat-bugis": "/photos/lantern-cover.png",
-  // Placeholder only - no owner-supplied photography for this theme
-  // yet. Reuses royal-imperial's cover shot (not yet a donor for any
-  // other theme) since its formal dark-and-gold mood is a reasonable
-  // match. Replace once real photos are supplied.
-  "menara-cahaya": "/photos/imperial-cover.jpg",
+  // Reuses royal-imperial's real cover shot (maroon-and-gold palace
+  // court attire) since its formal dark-and-gold mood is a reasonable
+  // match for this theme too - no dedicated mosque-architecture photos
+  // supplied yet.
+  "menara-cahaya": "/photos/imperial-cover.png",
   // Placeholder only - no owner-supplied photography for this theme
   // yet. Reuses minimal-white's cover (white studio backdrop) since its
   // light, airy tone is the closest match to this theme's white-and-blue
@@ -73,16 +59,17 @@ const GROOM_PHOTO_BY_THEME: Record<string, string> = {
   "emerald-lantern": "/photos/lantern-groom.png",
   "minimal-white": "/photos/white-groom.png",
   rustic: "/photos/rustic-groom.png",
-  bohemian: "/photos/boho-groom.jpg",
-  "modern-elegant": "/photos/modern-groom.jpg",
-  "royal-imperial": "/photos/imperial-groom.jpg",
-  "vintage-botanical": "/photos/floral-groom.png",
-  "pastel-studio": "/photos/white-groom.png",
-  "art-deco-glam": "/photos/black-groom.png",
-  "golden-romance": "/photos/boho-groom.jpg",
+  bohemian: "/photos/boho-groom.png",
+  "modern-elegant": "/photos/modern-groom.png",
+  "royal-imperial": "/photos/imperial-groom.png",
+  "vintage-botanical": "/photos/botanical-groom.png",
+  "pastel-studio": "/photos/pastel-groom.png",
+  "art-deco-glam": "/photos/deco-groom.png",
+  "golden-romance": "/photos/romance-groom.png",
+  "adat-jawa": "/photos/jawa-groom.png",
   "adat-minang": "/photos/luxury-groom.png",
   "adat-bugis": "/photos/lantern-groom.png",
-  "menara-cahaya": "/photos/imperial-groom.jpg",
+  "menara-cahaya": "/photos/imperial-groom.png",
   santorini: "/photos/white-groom.png",
 };
 
@@ -95,19 +82,17 @@ const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
   "emerald-lantern": "/photos/lantern-bride.png",
   "minimal-white": "/photos/white-bride.png",
   rustic: "/photos/rustic-bride.png",
-  bohemian: "/photos/boho-bride.jpg",
-  "modern-elegant": "/photos/modern-bride.jpg",
-  "royal-imperial": "/photos/imperial-bride.jpg",
-  "vintage-botanical": "/photos/floral-bride.png",
-  "pastel-studio": "/photos/white-bride.png",
-  // Uses modern-elegant's bride portrait (a moody dark-blazer studio
-  // shot with a gold staircase backdrop) rather than royal-black's, so
-  // the bride/groom pairing isn't visually identical to royal-black's.
-  "art-deco-glam": "/photos/modern-bride.jpg",
-  "golden-romance": "/photos/boho-bride.jpg",
+  bohemian: "/photos/boho-bride.png",
+  "modern-elegant": "/photos/modern-bride.png",
+  "royal-imperial": "/photos/imperial-bride.png",
+  "vintage-botanical": "/photos/botanical-bride.png",
+  "pastel-studio": "/photos/pastel-bride.png",
+  "art-deco-glam": "/photos/deco-bride.png",
+  "golden-romance": "/photos/romance-bride.png",
+  "adat-jawa": "/photos/jawa-bride.png",
   "adat-minang": "/photos/luxury-bride.png",
   "adat-bugis": "/photos/lantern-bride.png",
-  "menara-cahaya": "/photos/imperial-bride.jpg",
+  "menara-cahaya": "/photos/imperial-bride.png",
   santorini: "/photos/white-bride.png",
 };
 
@@ -125,7 +110,7 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
   ],
   // Only 3 real photos were supplied for this theme's gallery (not the
   // usual 6) - numbered 7-9 to avoid colliding with white-gallery-1..6.jpg,
-  // which pastel-studio below still depends on.
+  // which santorini below still depends on as a placeholder.
   "minimal-white": [
     "/photos/white-gallery-7.png",
     "/photos/white-gallery-8.png",
@@ -140,8 +125,8 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
     "/photos/green-gallery-6.png",
   ],
   // Only 5 real photos were supplied for this theme's gallery (not the
-  // usual 6) - numbered 7-11 to avoid colliding with black-gallery-1..6.jpg,
-  // which art-deco-glam below still depends on.
+  // usual 6) - numbered 7-11. menara-cahaya below still uses the first 5
+  // of these as its own placeholder gallery.
   "royal-black": [
     "/photos/black-gallery-7.png",
     "/photos/black-gallery-8.png",
@@ -149,9 +134,8 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
     "/photos/black-gallery-10.png",
     "/photos/black-gallery-11.png",
   ],
-  // Numbered 7-12 (not 1-6) to avoid colliding with the old
-  // floral-gallery-1..6.jpg stock set, which vintage-botanical below
-  // still depends on.
+  // Numbered 7-12 (not 1-6) - the old floral-gallery-1..6.jpg stock set
+  // was deleted once vintage-botanical moved to its own real photography.
   "floral-garden": [
     "/photos/floral-gallery-7.png",
     "/photos/floral-gallery-8.png",
@@ -176,9 +160,8 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
     "/photos/sakura-gallery-5.png",
     "/photos/sakura-gallery-6.png",
   ],
-  // Numbered 7-12 (not 1-6) to avoid colliding with the old
-  // rustic-gallery-1..6.jpg stock set, which golden-romance below
-  // still depends on.
+  // Numbered 7-12 (not 1-6) - the old rustic-gallery-1..6.jpg stock set
+  // was deleted once golden-romance moved to its own real photography.
   rustic: [
     "/photos/rustic-gallery-7.png",
     "/photos/rustic-gallery-8.png",
@@ -187,54 +170,69 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
     "/photos/rustic-gallery-11.png",
     "/photos/rustic-gallery-12.png",
   ],
-  // Reuses floral-garden's gallery shots (skipping #1, used as this
-  // theme's cover above) plus its garden-tree cover photo, so no photo
-  // is sourced newly - just reused in a different combination/order.
+  bohemian: [
+    "/photos/boho-gallery-1.png",
+    "/photos/boho-gallery-2.png",
+    "/photos/boho-gallery-3.png",
+    "/photos/boho-gallery-4.png",
+    "/photos/boho-gallery-5.png",
+    "/photos/boho-gallery-6.png",
+  ],
+  "modern-elegant": [
+    "/photos/modern-gallery-1.png",
+    "/photos/modern-gallery-2.png",
+    "/photos/modern-gallery-3.png",
+    "/photos/modern-gallery-4.png",
+    "/photos/modern-gallery-5.png",
+    "/photos/modern-gallery-6.png",
+  ],
+  "royal-imperial": [
+    "/photos/imperial-gallery-1.png",
+    "/photos/imperial-gallery-2.png",
+    "/photos/imperial-gallery-3.png",
+    "/photos/imperial-gallery-4.png",
+    "/photos/imperial-gallery-5.png",
+    "/photos/imperial-gallery-6.png",
+  ],
+  "adat-jawa": [
+    "/photos/jawa-gallery-1.png",
+    "/photos/jawa-gallery-2.png",
+    "/photos/jawa-gallery-3.png",
+    "/photos/jawa-gallery-4.png",
+    "/photos/jawa-gallery-5.png",
+    "/photos/jawa-gallery-6.png",
+  ],
   "vintage-botanical": [
-    "/photos/floral-gallery-2.jpg",
-    "/photos/garden-tree.jpg",
-    "/photos/floral-gallery-3.jpg",
-    "/photos/floral-gallery-4.jpg",
-    "/photos/floral-gallery-5.jpg",
-    "/photos/floral-gallery-6.jpg",
+    "/photos/botanical-gallery-1.png",
+    "/photos/botanical-gallery-2.png",
+    "/photos/botanical-gallery-3.png",
+    "/photos/botanical-gallery-4.png",
+    "/photos/botanical-gallery-5.png",
+    "/photos/botanical-gallery-6.png",
   ],
-  // Reuses minimal-white's old stock gallery shots (skipping #1, used as
-  // this theme's cover above) plus its cover photo (now the owner's real
-  // photo, since white-cover.jpg was replaced), same reuse pattern as
-  // vintage-botanical above.
   "pastel-studio": [
-    "/photos/white-gallery-2.jpg",
-    "/photos/white-cover.png",
-    "/photos/white-gallery-3.jpg",
-    "/photos/white-gallery-4.jpg",
-    "/photos/white-gallery-5.jpg",
-    "/photos/white-gallery-6.jpg",
+    "/photos/pastel-gallery-1.png",
+    "/photos/pastel-gallery-2.png",
+    "/photos/pastel-gallery-3.png",
+    "/photos/pastel-gallery-4.png",
+    "/photos/pastel-gallery-5.png",
+    "/photos/pastel-gallery-6.png",
   ],
-  // Reuses royal-black's old stock gallery shots (skipping #1, used as
-  // this theme's cover above) plus royal-black's bride shot (now the
-  // owner's real photo) standing in for the 6th slot, same reuse
-  // pattern as the themes above.
   "art-deco-glam": [
-    "/photos/black-gallery-2.jpg",
-    "/photos/black-bride.png",
-    "/photos/black-gallery-3.jpg",
-    "/photos/black-gallery-4.jpg",
-    "/photos/black-gallery-5.jpg",
-    "/photos/black-gallery-6.jpg",
+    "/photos/deco-gallery-1.png",
+    "/photos/deco-gallery-2.png",
+    "/photos/deco-gallery-3.png",
+    "/photos/deco-gallery-4.png",
+    "/photos/deco-gallery-5.png",
+    "/photos/deco-gallery-6.png",
   ],
-  // Bohemian has no dedicated gallery set of its own (falls back to the
-  // generic placeholders), so this reuses rustic's old stock gallery
-  // shots instead (still the original Pexels set, untouched - rustic
-  // itself now uses its own real photography, numbered 7-12 above) -
-  // fits the same golden-hour warmth without duplicating another
-  // theme's gallery.
   "golden-romance": [
-    "/photos/rustic-gallery-1.jpg",
-    "/photos/rustic-gallery-2.jpg",
-    "/photos/rustic-gallery-3.jpg",
-    "/photos/rustic-gallery-4.jpg",
-    "/photos/rustic-gallery-5.jpg",
-    "/photos/rustic-gallery-6.jpg",
+    "/photos/romance-gallery-1.png",
+    "/photos/romance-gallery-2.png",
+    "/photos/romance-gallery-3.png",
+    "/photos/romance-gallery-4.png",
+    "/photos/romance-gallery-5.png",
+    "/photos/romance-gallery-6.png",
   ],
   // Reuses luxury-gold's gallery shots (skipping #1, used as this theme's
   // cover above) plus luxury-gold's own cover photo, so no photo is
@@ -258,17 +256,16 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
     "/photos/lantern-gallery-5.png",
     "/photos/lantern-gallery-6.png",
   ],
-  // Placeholder only, same as the cover/groom/bride entries above.
-  // Reuses royal-black's 5 real gallery photos (dark-and-gold ballroom,
-  // a reasonable mood match) plus royal-imperial's bride shot as a 6th
-  // slot, until real photos are supplied for this theme.
+  // Reuses royal-imperial's real gallery wholesale, same as the
+  // cover/groom/bride entries above - no dedicated mosque-architecture
+  // photos supplied yet.
   "menara-cahaya": [
-    "/photos/black-gallery-7.png",
-    "/photos/black-gallery-8.png",
-    "/photos/black-gallery-9.png",
-    "/photos/black-gallery-10.png",
-    "/photos/black-gallery-11.png",
-    "/photos/imperial-bride.jpg",
+    "/photos/imperial-gallery-1.png",
+    "/photos/imperial-gallery-2.png",
+    "/photos/imperial-gallery-3.png",
+    "/photos/imperial-gallery-4.png",
+    "/photos/imperial-gallery-5.png",
+    "/photos/imperial-gallery-6.png",
   ],
   // Placeholder only, same as the cover/groom/bride entries above -
   // reuses the old white-gallery-1..6.jpg stock (also used by
