@@ -5,6 +5,7 @@ import Reveal from "@/components/Reveal";
 import { useRsvpWishes, type Attendance } from "@/hooks/useRsvpWishes";
 import type { InvitationData } from "@/types/invitation";
 import LotusMark from "./LotusMark";
+import FloralAccent from "./FloralAccent";
 import styles from "./style.module.css";
 
 export default function RSVP({ invitation }: { invitation: InvitationData }) {
@@ -40,6 +41,8 @@ export default function RSVP({ invitation }: { invitation: InvitationData }) {
 
   return (
     <div className={styles.section}>
+      <FloralAccent variant="spray" className={styles.rsvpSpray} />
+
       <Reveal>
         <p className={styles.eyebrow}>RSVP</p>
         <h2 className={styles.title}>Konfirmasi Kehadiran</h2>

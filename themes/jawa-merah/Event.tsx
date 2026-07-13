@@ -3,11 +3,14 @@
 import Reveal from "@/components/Reveal";
 import type { InvitationData } from "@/types/invitation";
 import LotusMark from "./LotusMark";
+import FloralAccent from "./FloralAccent";
 import styles from "./style.module.css";
 
 export default function Event({ invitation }: { invitation: InvitationData }) {
   return (
     <div className={styles.section}>
+      <FloralAccent variant="corner" className={styles.sectionCornerTR} />
+
       <Reveal>
         <p className={styles.eyebrow}>Waktu &amp; Tempat</p>
         <h2 className={styles.title}>Wedding Event</h2>

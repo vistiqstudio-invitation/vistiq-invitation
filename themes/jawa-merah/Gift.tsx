@@ -4,6 +4,7 @@ import { useState } from "react";
 import Reveal from "@/components/Reveal";
 import type { GiftAccount, InvitationData } from "@/types/invitation";
 import LotusMark from "./LotusMark";
+import FloralAccent from "./FloralAccent";
 import styles from "./style.module.css";
 
 function GiftCard({ account }: { account: GiftAccount }) {
@@ -41,6 +42,8 @@ export default function Gift({ invitation }: { invitation: InvitationData }) {
 
   return (
     <div className={styles.section}>
+      <FloralAccent variant="corner" className={styles.sectionCornerTL} />
+
       <Reveal>
         <p className={styles.eyebrow}>Tanda Kasih</p>
         <h2 className={styles.title}>Kirim Hadiah</h2>
