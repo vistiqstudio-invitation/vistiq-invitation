@@ -59,7 +59,7 @@ export default function Couple({ invitation }: { invitation: InvitationData }) {
         </Reveal>
 
         <div className={styles.profileDivider}>
-          <LotusMark style={{ width: 90, height: 22 }} />
+          <span className={styles.profileAmpersand}>&amp;</span>
         </div>
 
         <Reveal delay={0.2}>

@@ -47,9 +47,11 @@ function buildCalendarLinks(invitation: InvitationData, rawDate: string) {
 export default function Countdown({
   invitation,
   targetDate,
+  embedded = false,
 }: {
   invitation: InvitationData;
   targetDate: string;
+  embedded?: boolean;
 }) {
   const time = useCountdown(targetDate);
 
@@ -64,6 +66,42 @@ export default function Countdown({
 
   const { google, outlook } = buildCalendarLinks(invitation, targetDate);
 
+  const body = (
+    <>
+      <div className={styles.countdownRow}>
+        {items.map((item) => (
+          <div className={styles.countdownPlaque} key={item.label}>
+            <span className={styles.countdownValue}>{pad(item.value)}</span>
+            <span className={styles.countdownLabel}>{item.label}</span>
+          </div>
+        ))}
+      </div>
+
+      <div className={styles.saveDateRow}>
+        <a
+          className={styles.saveDateButton}
+          href={google}
+          target="_blank"
+          rel="noreferrer"
+        >
+          Simpan ke Google Calendar
+        </a>
+        <a
+          className={styles.saveDateButton}
+          href={outlook}
+          target="_blank"
+          rel="noreferrer"
+        >
+          Simpan ke Outlook
+        </a>
+      </div>
+    </>
+  );
+
+  if (embedded) {
+    return <div className={styles.countdownEmbedded}>{body}</div>;
+  }
+
   return (
     <div className={styles.section}>
       <Reveal>
@@ -72,37 +110,7 @@ export default function Countdown({
         <LotusMark className={styles.ornament} />
       </Reveal>
 
-      <Reveal delay={0.1}>
-        <div className={styles.countdownRow}>
-          {items.map((item) => (
-            <div className={styles.countdownPlaque} key={item.label}>
-              <span className={styles.countdownValue}>{pad(item.value)}</span>
-              <span className={styles.countdownLabel}>{item.label}</span>
-            </div>
-          ))}
-        </div>
-      </Reveal>
-
-      <Reveal delay={0.2}>
-        <div className={styles.saveDateRow}>
-          <a
-            className={styles.saveDateButton}
-            href={google}
-            target="_blank"
-            rel="noreferrer"
-          >
-            Simpan ke Google Calendar
-          </a>
-          <a
-            className={styles.saveDateButton}
-            href={outlook}
-            target="_blank"
-            rel="noreferrer"
-          >
-            Simpan ke Outlook
-          </a>
-        </div>
-      </Reveal>
+      <Reveal delay={0.1}>{body}</Reveal>
     </div>
   );
 }

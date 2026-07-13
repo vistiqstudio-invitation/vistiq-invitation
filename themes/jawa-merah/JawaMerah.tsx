@@ -10,11 +10,9 @@ import Cover from "./Cover";
 import Hero from "./Hero";
 import Couple from "./Couple";
 import Story from "./Story";
-import Countdown from "./Countdown";
 import Event from "./Event";
 import Gallery from "./Gallery";
 import Video from "./Video";
-import Maps from "./Maps";
 import Gift from "./Gift";
 import RSVP from "./RSVP";
 import Wishes from "./Wishes";
@@ -32,8 +30,6 @@ export default function JawaMerah({ invitation }: { invitation: InvitationData }
     return () => clearTimeout(timer);
   }, []);
 
-  const weddingDate = invitation.events[0]?.rawDate || null;
-
   return (
     <div className={styles.root}>
       <AnimatePresence>{!ready && <Loading key="loading" />}</AnimatePresence>
@@ -50,21 +46,11 @@ export default function JawaMerah({ invitation }: { invitation: InvitationData }
             <Couple invitation={invitation} />
           </section>
 
-          {invitation.story.length > 0 && (
-            <section id="story">
-              <Story invitation={invitation} />
-            </section>
-          )}
-
-          {weddingDate && (
-            <section id="countdown">
-              <Countdown invitation={invitation} targetDate={weddingDate} />
-            </section>
-          )}
-
           <section id="event">
             <Event invitation={invitation} />
           </section>
+
+          <Video invitation={invitation} />
 
           {invitation.gallery.length > 0 && (
             <section id="gallery">
@@ -72,11 +58,11 @@ export default function JawaMerah({ invitation }: { invitation: InvitationData }
             </section>
           )}
 
-          <Video invitation={invitation} />
-
-          <section id="maps">
-            <Maps invitation={invitation} />
-          </section>
+          {invitation.story.length > 0 && (
+            <section id="story">
+              <Story invitation={invitation} />
+            </section>
+          )}
 
           {invitation.gifts.length > 0 && (
             <section id="gift">

@@ -10,8 +10,13 @@ export default function Event({ invitation }: { invitation: InvitationData }) {
     <div className={styles.section}>
       <Reveal>
         <p className={styles.eyebrow}>Waktu &amp; Tempat</p>
-        <h2 className={styles.title}>Susunan Acara</h2>
+        <h2 className={styles.title}>Wedding Event</h2>
         <LotusMark className={styles.ornament} />
+        <p className={styles.eventIntro}>
+          Dengan mengucap syukur kepada Tuhan Yang Maha Esa, kami bermaksud
+          mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara pernikahan
+          kami yang akan dilaksanakan pada:
+        </p>
       </Reveal>
 
       <div className={styles.eventGrid}>

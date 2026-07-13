@@ -64,6 +64,7 @@ export default function Cover({ invitation }: { invitation: InvitationData }) {
           <div className={styles.coverLine} />
           <p className={styles.coverGuestLabel}>Kepada Bapak/Ibu/Saudara/i</p>
           <h2 className={styles.coverGuestName}>{guestName}</h2>
+          <p className={styles.coverPlace}>Di Tempat</p>
 
           <button
             className={`${styles.button} ${styles.solid}`}
