@@ -1159,7 +1159,6 @@
   max-width: 640px;
   margin: 0 auto;
   text-align: center;
-  overflow: hidden;
 }
 
 .footerCornerTL,
@@ -1239,9 +1238,10 @@
 
 .footerSpray {
   display: block;
-  width: min(90%, 400px);
+  width: 100vw;
+  max-width: none;
   height: auto;
-  margin: -14px auto 26px;
+  margin: -14px calc(50% - 50vw) 26px;
   pointer-events: none;
 }
 
