@@ -30,8 +30,17 @@ export default function JawaMerah({ invitation }: { invitation: InvitationData }
     return () => clearTimeout(timer);
   }, []);
 
+  const backdropPhoto = invitation.coverImage || invitation.groom.photo || invitation.bride.photo;
+
   return (
     <div className={styles.root}>
+      {backdropPhoto && (
+        <div
+          className={styles.photoBackdrop}
+          style={{ backgroundImage: `url(${backdropPhoto})` }}
+        />
+      )}
+
       <AnimatePresence>{!ready && <Loading key="loading" />}</AnimatePresence>
 
       {ready && !opened && <Cover invitation={invitation} />}

@@ -25,18 +25,20 @@ export default function Couple({ invitation }: { invitation: InvitationData }) {
       <div className={styles.profileStack}>
         <Reveal delay={0.1}>
           <div className={styles.profileBlock}>
-            <img
-              className={styles.profileAccent}
-              src="/decor/jawa-merah/corner-foliage.png"
-              alt=""
-              onError={hideOnError}
-            />
+            <div className={styles.profilePhotoWrap}>
+              {invitation.bride.photo && (
+                <div className={styles.profilePhoto}>
+                  <img src={invitation.bride.photo} alt={invitation.bride.name} />
+                </div>
+              )}
 
-            {invitation.bride.photo && (
-              <div className={styles.profilePhoto}>
-                <img src={invitation.bride.photo} alt={invitation.bride.name} />
-              </div>
-            )}
+              <img
+                className={styles.profileAccent}
+                src="/decor/jawa-merah/corner-foliage.png"
+                alt=""
+                onError={hideOnError}
+              />
+            </div>
 
             <h3 className={styles.profileNickname}>{firstName(invitation.bride.name)}</h3>
             <p className={styles.profileName}>{invitation.bride.name}</p>
@@ -64,18 +66,20 @@ export default function Couple({ invitation }: { invitation: InvitationData }) {
 
         <Reveal delay={0.2}>
           <div className={styles.profileBlock}>
-            <img
-              className={styles.profileAccent}
-              src="/decor/jawa-merah/corner-foliage.png"
-              alt=""
-              onError={hideOnError}
-            />
+            <div className={styles.profilePhotoWrap}>
+              {invitation.groom.photo && (
+                <div className={styles.profilePhoto}>
+                  <img src={invitation.groom.photo} alt={invitation.groom.name} />
+                </div>
+              )}
 
-            {invitation.groom.photo && (
-              <div className={styles.profilePhoto}>
-                <img src={invitation.groom.photo} alt={invitation.groom.name} />
-              </div>
-            )}
+              <img
+                className={styles.profileAccent}
+                src="/decor/jawa-merah/corner-foliage.png"
+                alt=""
+                onError={hideOnError}
+              />
+            </div>
 
             <h3 className={styles.profileNickname}>{firstName(invitation.groom.name)}</h3>
             <p className={styles.profileName}>{invitation.groom.name}</p>

@@ -67,7 +67,7 @@ export default function Cover({ invitation }: { invitation: InvitationData }) {
           <p className={styles.coverPlace}>Di Tempat</p>
 
           <button
-            className={`${styles.button} ${styles.solid}`}
+            className={`${styles.button} ${styles.solid} ${styles.coverButton}`}
             onClick={() => setOpened(true)}
           >
             Buka Undangan
