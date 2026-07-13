@@ -39,8 +39,13 @@ export default function RSVP({ invitation }: { invitation: InvitationData }) {
     setMessage("");
   };
 
+  const bgPhoto = invitation.coverImage || invitation.bride.photo || invitation.groom.photo;
+
   return (
-    <div className={styles.section}>
+    <div
+      className={`${styles.section} ${styles.darkSection}`}
+      style={bgPhoto ? { backgroundImage: `url(${bgPhoto})` } : undefined}
+    >
       <FloralAccent variant="spray" className={styles.rsvpSpray} />
 
       <Reveal>

@@ -6,8 +6,13 @@ import LotusMark from "./LotusMark";
 import styles from "./style.module.css";
 
 export default function Story({ invitation }: { invitation: InvitationData }) {
+  const bgPhoto = invitation.groom.photo || invitation.coverImage || invitation.bride.photo;
+
   return (
-    <div className={styles.section}>
+    <div
+      className={`${styles.section} ${styles.darkSection}`}
+      style={bgPhoto ? { backgroundImage: `url(${bgPhoto})` } : undefined}
+    >
       <Reveal>
         <p className={styles.eyebrow}>Kisah Kami</p>
         <h2 className={styles.title}>Perjalanan Cinta</h2>

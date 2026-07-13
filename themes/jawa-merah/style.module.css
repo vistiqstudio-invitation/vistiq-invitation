@@ -122,6 +122,39 @@
   color: var(--gold);
 }
 
+/* ---------- Dark photo sections (Event, Live Streaming, Story, RSVP -
+   the reference alternates light cream sections with dark photo-backed
+   ones; measured white text + ~33% black overlay on their site) ---------- */
+
+.darkSection {
+  position: relative;
+  isolation: isolate;
+  background-color: #241612;
+  background-size: cover;
+  background-position: center 30%;
+  color: #f3e9dd;
+}
+
+.darkSection::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: rgba(20, 10, 8, 0.62);
+}
+
+.darkSection .eyebrow {
+  color: var(--gold);
+}
+
+.darkSection .title {
+  color: #ffffff;
+}
+
+.darkSection .ornament {
+  color: var(--gold);
+}
+
 /* ---------- Section corner/spray accents (reused across text-heavy
    sections so the floral treatment isn't limited to Cover/Hero) ---------- */
 
@@ -728,6 +761,10 @@
   margin: -20px auto 40px;
 }
 
+.darkSection .eventIntro {
+  color: rgba(243, 233, 221, 0.75);
+}
+
 /* ---------- Event (arch ticket cards) ---------- */
 
 .eventGrid {
@@ -855,6 +892,10 @@
 
 .liveBlock {
   text-align: center;
+}
+
+.darkSection .liveDesc {
+  color: rgba(243, 233, 221, 0.75);
 }
 
 .liveDesc {
@@ -1038,6 +1079,10 @@
   font-size: 14px;
   color: var(--crimson);
   margin: 0;
+}
+
+.darkSection .formMessage {
+  color: #ffffff;
 }
 
 .formError {

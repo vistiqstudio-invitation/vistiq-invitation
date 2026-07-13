@@ -8,8 +8,13 @@ import styles from "./style.module.css";
 export default function Video({ invitation }: { invitation: InvitationData }) {
   if (!invitation.videoUrl) return null;
 
+  const bgPhoto = invitation.bride.photo || invitation.coverImage || invitation.groom.photo;
+
   return (
-    <div className={styles.section}>
+    <div
+      className={`${styles.section} ${styles.darkSection}`}
+      style={bgPhoto ? { backgroundImage: `url(${bgPhoto})` } : undefined}
+    >
       <Reveal className={styles.liveBlock}>
         <p className={styles.eyebrow}>Live Streaming</p>
         <h2 className={styles.title}>Saksikan Bersama Kami</h2>

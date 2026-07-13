@@ -7,8 +7,13 @@ import FloralAccent from "./FloralAccent";
 import styles from "./style.module.css";
 
 export default function Event({ invitation }: { invitation: InvitationData }) {
+  const bgPhoto = invitation.coverImage || invitation.groom.photo || invitation.bride.photo;
+
   return (
-    <div className={styles.section}>
+    <div
+      className={`${styles.section} ${styles.darkSection}`}
+      style={bgPhoto ? { backgroundImage: `url(${bgPhoto})` } : undefined}
+    >
       <FloralAccent variant="corner" className={styles.sectionCornerTR} />
 
       <Reveal>
