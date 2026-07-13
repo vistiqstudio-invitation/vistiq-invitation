@@ -109,7 +109,7 @@ export default function RSVP({ invitation }: { invitation: InvitationData }) {
             />
 
             <button
-              className={`${styles.button} ${styles.solid}`}
+              className={styles.button}
               type="submit"
               disabled={submitting}
             >

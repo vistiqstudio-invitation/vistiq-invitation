@@ -27,7 +27,7 @@ function GiftCard({ account }: { account: GiftAccount }) {
 
       {accountNumber && (
         <button
-          className={`${styles.button} ${styles.solid}`}
+          className={`${styles.button} ${styles.pill}`}
           onClick={copyNumber}
         >
           {copied ? "Tersalin" : "Salin Nomor Rekening"}

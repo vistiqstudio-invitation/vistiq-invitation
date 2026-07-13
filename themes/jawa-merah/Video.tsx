@@ -21,7 +21,7 @@ export default function Video({ invitation }: { invitation: InvitationData }) {
         </p>
 
         <a
-          className={`${styles.button} ${styles.solid}`}
+          className={styles.button}
           href={invitation.videoUrl}
           target="_blank"
           rel="noreferrer"
