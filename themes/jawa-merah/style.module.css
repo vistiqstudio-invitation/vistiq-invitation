@@ -1224,16 +1224,29 @@
 }
 
 .footerNames {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: clamp(24px, 4vw, 34px);
+  font-size: clamp(21px, 4.4vw, 30px);
+  line-height: 1.3;
   color: var(--crimson-deep);
   margin: 0;
 }
 
-.footerNames span {
-  margin: 0 12px;
+.footerNameLine {
+  max-width: 100%;
+}
+
+.footerAmpersand {
+  display: block;
+  font-family: var(--font-script);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 0.7em;
   color: var(--gold);
+  margin: 2px 0;
 }
 
 .footerSpray {
