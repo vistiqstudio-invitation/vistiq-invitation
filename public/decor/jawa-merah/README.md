@@ -11,6 +11,7 @@ never breaks even if one of these is replaced or removed.
 | `floral-spray.png` | Cover.tsx (bottom), Couple.tsx (profile accent) | Mixed colorful floral spray - background removed with a flood-fill trim since the source came back on a flat white background |
 | `oval-garland.png` | (future) Gift Confirm form arch | Curved garland variant - background removed the same way |
 | `butterfly.png` | Hero.tsx (small accent near the joglo stage) | Background removed the same way |
+| `paper-texture.jpg` | `style.module.css` `.root::after`, site-wide fixed background | AI-generated aged paper + gold batik lattice texture, resized/compressed from a 3MB PNG to a 272KB JPEG. Applied as one fixed `background-size: cover` layer (not tiled - AI tools don't reliably produce seamless tiles, so this is used as a single large image instead) |
 
 Only `corner-foliage.png` came back from the generator with genuine PNG
 alpha; the other three were flattened onto solid white/near-white despite
