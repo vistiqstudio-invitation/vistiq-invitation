@@ -799,12 +799,12 @@
 }
 
 .galleryItem {
-  composes: archTopSmall;
   position: relative;
-  aspect-ratio: 0.82 / 1;
+  aspect-ratio: 0.66 / 1;
   overflow: hidden;
   cursor: zoom-in;
-  border: 1px solid var(--gold-line);
+  border: 2px solid var(--cream);
+  outline: 1px solid var(--gold-line);
 }
 
 .galleryItem:nth-child(even) {
