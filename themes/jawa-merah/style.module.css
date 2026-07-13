@@ -637,9 +637,8 @@
 }
 
 .storyCard {
-  composes: card;
-  padding: 22px 26px;
-  border-radius: 4px 18px 4px 18px;
+  background: var(--card-solid);
+  padding: 16px 4px;
 }
 
 .storyYear {
@@ -1058,10 +1057,13 @@
 }
 
 .wishCard {
-  composes: card;
   text-align: left;
-  padding: 20px 24px;
-  border-radius: 4px 16px 4px 16px;
+  padding: 14px 0 18px;
+  border-bottom: 1px solid var(--gold-line);
+}
+
+.wishCard:last-child {
+  border-bottom: none;
 }
 
 .wishHeader {
