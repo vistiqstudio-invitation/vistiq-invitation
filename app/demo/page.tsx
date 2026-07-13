@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import PhoneMockup from "@/components/PhoneMockup";
 import { themeList } from "@/lib/theme";
@@ -5,7 +8,23 @@ import styles from "./demo.module.css";
 
 const WA_NUMBER = "6281371338032";
 
+function useMockupWidth() {
+  const [width, setWidth] = useState(150);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 640px)");
+    const apply = () => setWidth(mq.matches ? 84 : 150);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
+
+  return width;
+}
+
 export default function DemoPickerPage() {
+  const mockupWidth = useMockupWidth();
+
   return (
     <main className={styles.page}>
       <div className={styles.inner}>
@@ -29,7 +48,7 @@ export default function DemoPickerPage() {
             return (
               <div className={styles.card} key={theme.key}>
                 <div className={styles.cardPreview}>
-                  <PhoneMockup themeKey={theme.key} width={150} />
+                  <PhoneMockup themeKey={theme.key} width={mockupWidth} />
                 </div>
 
                 <div className={styles.cardBody}>
