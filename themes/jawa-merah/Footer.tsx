@@ -2,26 +2,41 @@
 
 import Reveal from "@/components/Reveal";
 import type { InvitationData } from "@/types/invitation";
-import JogloSilhouette from "./JogloSilhouette";
+import FloralAccent from "./FloralAccent";
 import styles from "./style.module.css";
 
 export default function Footer({ invitation }: { invitation: InvitationData }) {
+  const photo = invitation.coverImage || invitation.groom.photo || invitation.bride.photo;
+
   return (
     <footer className={styles.footer}>
-      <JogloSilhouette className={styles.footerJoglo} />
+      <FloralAccent variant="corner" className={styles.footerCornerTL} />
+      <FloralAccent variant="corner" className={styles.footerCornerTR} />
 
       <Reveal>
-        <p className={styles.footerQuote}>
-          "Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila
-          Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu. Atas
-          kehadiran dan doa restunya kami ucapkan terima kasih."
-        </p>
+        <div className={styles.footerCard}>
+          {photo && (
+            <div className={styles.footerPhoto}>
+              <img src={photo} alt="" />
+            </div>
+          )}
 
-        <h2 className={styles.footerNames}>
-          {invitation.groom.name}
-          <span>&amp;</span>
-          {invitation.bride.name}
-        </h2>
+          <p className={styles.footerThanks}>Terima Kasih</p>
+
+          <h2 className={styles.footerNames}>
+            {invitation.groom.name}
+            <span>&amp;</span>
+            {invitation.bride.name}
+          </h2>
+
+          <p className={styles.footerQuote}>
+            "Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila
+            Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu. Atas
+            kehadiran dan doa restunya kami ucapkan terima kasih."
+          </p>
+        </div>
+
+        <FloralAccent variant="spray" className={styles.footerSpray} />
 
         <p className={styles.copyright}>
           © {new Date().getFullYear()} {invitation.brand?.name ?? "Vistiq Invitation"}
