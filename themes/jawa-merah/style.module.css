@@ -178,18 +178,6 @@
   transform: scaleX(-1);
 }
 
-.rsvpSpray {
-  position: absolute;
-  bottom: -8px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(90%, 380px);
-  height: auto;
-  z-index: -1;
-  pointer-events: none;
-  opacity: 0.5;
-}
-
 .card {
   position: relative;
   background: var(--card);
