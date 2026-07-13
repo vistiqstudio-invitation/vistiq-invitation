@@ -49,6 +49,13 @@ const COVER_BY_THEME: Record<string, string> = {
   // which adat-jawa already uses as its own cover) since both themes
   // share a Javanese setting. Replace once real photos exist.
   "jawa-merah": "/photos/jawa-gallery-1.png",
+  // Placeholder only - no owner-supplied photography for this theme yet.
+  // Same Javanese photoshoot as jawa-merah above (it's the only
+  // Javanese-styled real photography in the set), just a different
+  // gallery shot as the cover so the two don't show an identical
+  // thumbnail side by side in the demo picker. Replace once real
+  // photos exist.
+  "jawa-coklat": "/photos/jawa-gallery-4.png",
 };
 
 // Couple portrait photos also vary by theme - the default luxury-gold
@@ -77,6 +84,7 @@ const GROOM_PHOTO_BY_THEME: Record<string, string> = {
   "menara-cahaya": "/photos/imperial-groom.png",
   santorini: "/photos/white-groom.png",
   "jawa-merah": "/photos/jawa-groom.png",
+  "jawa-coklat": "/photos/jawa-groom.png",
 };
 
 const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
@@ -101,6 +109,7 @@ const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
   "menara-cahaya": "/photos/imperial-bride.png",
   santorini: "/photos/white-bride.png",
   "jawa-merah": "/photos/jawa-bride.png",
+  "jawa-coklat": "/photos/jawa-bride.png",
 };
 
 // Gallery photos also vary by theme so the "Our Moments" slider matches each
@@ -295,6 +304,18 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
     "/photos/jawa-cover.png",
     "/photos/jawa-gallery-3.png",
     "/photos/jawa-gallery-4.png",
+    "/photos/jawa-gallery-5.png",
+    "/photos/jawa-gallery-6.png",
+  ],
+  // Placeholder only, same reasoning as jawa-merah above - same
+  // Javanese photoshoot, different ordering (skips gallery-4, used as
+  // this theme's own cover above) so the picker thumbnails don't match
+  // exactly. Replace once real photos exist.
+  "jawa-coklat": [
+    "/photos/jawa-gallery-1.png",
+    "/photos/jawa-gallery-2.png",
+    "/photos/jawa-cover.png",
+    "/photos/jawa-gallery-3.png",
     "/photos/jawa-gallery-5.png",
     "/photos/jawa-gallery-6.png",
   ],
