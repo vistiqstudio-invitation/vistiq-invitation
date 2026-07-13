@@ -6,6 +6,10 @@ import JogloSilhouette from "./JogloSilhouette";
 import BananaLeaf from "./BananaLeaf";
 import styles from "./style.module.css";
 
+function hideOnError(e: React.SyntheticEvent<HTMLImageElement>) {
+  e.currentTarget.style.display = "none";
+}
+
 export default function Hero({ invitation }: { invitation: InvitationData }) {
   return (
     <div className={styles.hero}>
@@ -29,6 +33,13 @@ export default function Hero({ invitation }: { invitation: InvitationData }) {
           <BananaLeaf className={styles.heroLeaf} />
           <JogloSilhouette className={styles.heroJoglo} />
           <BananaLeaf className={styles.heroLeafRight} />
+
+          <img
+            className={styles.heroButterfly}
+            src="/decor/jawa-merah/butterfly.png"
+            alt=""
+            onError={hideOnError}
+          />
         </div>
       </Reveal>
 

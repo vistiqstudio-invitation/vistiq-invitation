@@ -347,6 +347,16 @@
   transform: scaleX(-1);
 }
 
+.heroButterfly {
+  position: absolute;
+  top: -6px;
+  right: 14%;
+  width: clamp(30px, 6vw, 44px);
+  height: auto;
+  transform: rotate(-8deg);
+  pointer-events: none;
+}
+
 .heroVerse {
   font-family: var(--font-script);
   font-style: italic;
