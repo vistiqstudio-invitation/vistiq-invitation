@@ -58,3 +58,7 @@ Notes on gallery length and reuse:
   photos are supplied.
 - `santorini` has no owner-supplied photography yet and uses
   `white-*.png`/`white-gallery-*.jpg` as a placeholder.
+- `jawa-merah` has no owner-supplied photography yet and reuses
+  `adat-jawa`'s `jawa-*.png` set as a placeholder (both themes share a
+  Javanese setting). Its decorative floral/foliage assets are a separate,
+  still-pending set under `public/decor/jawa-merah/` (see that folder).

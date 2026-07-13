@@ -19,6 +19,7 @@ import VintageBotanical from "@/themes/vintage-botanical/VintageBotanical";
 import PastelStudio from "@/themes/pastel-studio/PastelStudio";
 import ArtDecoGlam from "@/themes/art-deco-glam/ArtDecoGlam";
 import GoldenRomance from "@/themes/golden-romance/GoldenRomance";
+import JawaMerah from "@/themes/jawa-merah/JawaMerah";
 
 export const themeRegistry: Record<
   string,
@@ -44,6 +45,7 @@ export const themeRegistry: Record<
   "pastel-studio": PastelStudio,
   "art-deco-glam": ArtDecoGlam,
   "golden-romance": GoldenRomance,
+  "jawa-merah": JawaMerah,
 };
 
 export type ThemeMeta = {
@@ -173,5 +175,11 @@ export const themeList: ThemeMeta[] = [
     label: "Golden Romance",
     description: "Blush & emas senja keemasan, bingkai bulat glow, carousel galeri",
     swatch: ["#fbf5ee", "#c9a15a"],
+  },
+  {
+    key: "jawa-merah",
+    label: "Jawa Merah Premium",
+    description: "Krem & merah crimson, kartu lengkung arch, motif batik lattice, joglo",
+    swatch: ["#fffbf4", "#ad2940"],
   },
 ];

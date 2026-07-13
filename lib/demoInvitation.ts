@@ -44,6 +44,11 @@ const COVER_BY_THEME: Record<string, string> = {
   // light, airy tone is the closest match to this theme's white-and-blue
   // palette among the current photo set. Replace once real photos exist.
   santorini: "/photos/white-cover.png",
+  // Placeholder only - no owner-supplied photography for this theme yet.
+  // Reuses one of adat-jawa's own gallery shots (not jawa-cover.png,
+  // which adat-jawa already uses as its own cover) since both themes
+  // share a Javanese setting. Replace once real photos exist.
+  "jawa-merah": "/photos/jawa-gallery-1.png",
 };
 
 // Couple portrait photos also vary by theme - the default luxury-gold
@@ -71,6 +76,7 @@ const GROOM_PHOTO_BY_THEME: Record<string, string> = {
   "adat-bugis": "/photos/lantern-groom.png",
   "menara-cahaya": "/photos/imperial-groom.png",
   santorini: "/photos/white-groom.png",
+  "jawa-merah": "/photos/jawa-groom.png",
 };
 
 const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
@@ -94,6 +100,7 @@ const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
   "adat-bugis": "/photos/lantern-bride.png",
   "menara-cahaya": "/photos/imperial-bride.png",
   santorini: "/photos/white-bride.png",
+  "jawa-merah": "/photos/jawa-bride.png",
 };
 
 // Gallery photos also vary by theme so the "Our Moments" slider matches each
@@ -277,6 +284,19 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
     "/photos/white-gallery-4.jpg",
     "/photos/white-gallery-5.jpg",
     "/photos/white-gallery-6.jpg",
+  ],
+  // Placeholder only, same as the cover/groom/bride entries above -
+  // reuses adat-jawa's real gallery (skipping #1, used as this theme's
+  // cover above) plus adat-jawa's own cover photo, so no photo is
+  // sourced newly - just the same Javanese photoshoot in a different
+  // combination/order. Replace once real photos exist.
+  "jawa-merah": [
+    "/photos/jawa-gallery-2.png",
+    "/photos/jawa-cover.png",
+    "/photos/jawa-gallery-3.png",
+    "/photos/jawa-gallery-4.png",
+    "/photos/jawa-gallery-5.png",
+    "/photos/jawa-gallery-6.png",
   ],
 };
 
