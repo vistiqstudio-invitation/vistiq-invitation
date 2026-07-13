@@ -2,7 +2,7 @@ import styles from "./PhoneMockup.module.css";
 
 const DESIGN_WIDTH = 375;
 const DESIGN_HEIGHT = 812;
-const BEZEL = 10;
+const DESIGN_BEZEL = 5;
 const OUTER_RADIUS = 52;
 const SCREEN_RADIUS = 42;
 const ISLAND_WIDTH = 96;
@@ -29,11 +29,12 @@ export default function PhoneMockup({ themeKey, width = 220, className, style }:
   const outerRadius = OUTER_RADIUS * scale;
   const screenRadius = SCREEN_RADIUS * scale;
   const buttonRadius = 2.5 * scale;
+  const bezel = Math.max(DESIGN_BEZEL * scale, 1.5);
 
   return (
     <div
       className={`${styles.phone} ${className ?? ""}`}
-      style={{ ...style, width: width + BEZEL * 2, padding: BEZEL, borderRadius: outerRadius }}
+      style={{ ...style, width: width + bezel * 2, padding: bezel, borderRadius: outerRadius }}
     >
       <div className={styles.edgeHighlight} style={{ borderRadius: outerRadius }} />
 
