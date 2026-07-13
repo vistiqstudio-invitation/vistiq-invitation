@@ -5,6 +5,8 @@
   --crimson: #ad2940;
   --crimson-deep: #79110e;
   --crimson-bright: #c8395a;
+  --crimson-border: #a50a18;
+  --wood: #564438;
   --ink: #3a1013;
   --muted: rgba(58, 16, 19, 0.62);
   --gold: #b08a3f;
@@ -503,18 +505,17 @@
 /* ---------- Couple (two arch profile blocks) ---------- */
 
 .profileStack {
-  display: grid;
-  gap: 40px;
-  max-width: 320px;
+  composes: card;
+  border-radius: 25px;
+  border: 3px solid var(--crimson-border);
+  max-width: 340px;
   margin: 0 auto;
+  padding: 34px 20px 40px;
 }
 
 .profileBlock {
-  composes: card pillCard;
   position: relative;
-  padding: 60px 22px 44px;
   text-align: center;
-  overflow: visible;
 }
 
 .profilePhotoWrap {
@@ -525,9 +526,9 @@
 
 .profileAccent {
   position: absolute;
-  bottom: -14px;
-  right: -18px;
-  width: clamp(46px, 14vw, 64px);
+  bottom: -10px;
+  right: -22px;
+  width: clamp(46px, 14vw, 60px);
   height: auto;
   pointer-events: none;
   z-index: 2;
@@ -535,9 +536,9 @@
 }
 
 .profilePhoto {
-  composes: archTopSmall;
-  width: clamp(140px, 38vw, 172px);
-  aspect-ratio: 0.9 / 1;
+  border-radius: 500px;
+  width: clamp(120px, 34vw, 148px);
+  aspect-ratio: 0.58 / 1;
   overflow: hidden;
   border: 3px solid var(--cream);
   outline: 1px solid var(--gold-line);
@@ -586,6 +587,7 @@
   align-items: center;
   justify-content: center;
   color: var(--gold);
+  margin: 22px 0;
 }
 
 .profileAmpersand {
@@ -747,6 +749,7 @@
 
 .eventCard {
   composes: card pillCard;
+  border: 3px solid var(--wood);
   width: min(100%, 300px);
   padding: 44px 22px 36px;
   text-align: center;
@@ -1003,10 +1006,10 @@
 .select,
 .textarea {
   width: 100%;
-  padding: 14px 16px;
-  border-radius: 10px;
-  border: 1px solid var(--gold-line);
-  background: var(--card-solid);
+  padding: 10px 16px;
+  border-radius: 3px;
+  border: 1px solid #69727d;
+  background: #ffffff;
   color: var(--ink);
   font-family: var(--font-body);
   font-size: 15px;
