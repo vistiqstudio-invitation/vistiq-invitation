@@ -80,8 +80,15 @@ export default function LoginPage() {
 
     // Always show the same success message regardless of whether the email
     // exists, so this can't be used to probe which emails have accounts.
+    // The detailed reason is still surfaced below since it's a Supabase-side
+    // failure (rate limit, SMTP, redirect URL not whitelisted) that's useful
+    // to see immediately rather than digging through dashboard logs.
     if (error) {
-      alert("Gagal mengirim email reset. Coba lagi beberapa saat lagi.");
+      alert(
+        `Gagal mengirim email reset.\n\nDetail: ${error.message}${
+          error.status ? ` (status ${error.status})` : ""
+        }\n\nCoba lagi beberapa saat lagi, atau cek Authentication > Logs di Supabase Dashboard.`
+      );
       return;
     }
 
