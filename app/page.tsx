@@ -141,11 +141,12 @@ export default function HomePage() {
 
           <div className="priceCard">
             <h3>Reseller Brand</h3>
-            <strong>Rp 299.000<span>/bulan</span></strong>
+            <strong>Rp 299.000<span>/sekali bayar</span></strong>
             <p>
               Semua fitur Reseller, plus ganti nama & logo jadi brand Anda
               sendiri (white label) di setiap undangan client - dan keuntungan{" "}
-              <strong>100%</strong> jadi milik Anda.
+              <strong>100%</strong> jadi milik Anda. Bayar sekali, aktif
+              selamanya.
             </p>
             <a
               href={`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Halo Vistiq Invitation, saya ingin daftar paket Reseller Brand (white label, 100%)")}`}

@@ -1,11 +1,12 @@
 -- Tracks which of the two paid reseller tiers a reseller is on:
 -- 'reseller'       - Rp 149.000 one-time, sells under the Vistiq Invitation
 --                    brand, earns commission_percent (30%) per sale.
--- 'reseller_brand' - Rp 299.000/bulan (recurring), white-label (own
---                    brand_name/logo/color, gated by brand_active - see
---                    009), keeps 100% of what they charge their own clients.
+-- 'reseller_brand' - Rp 299.000 one-time (lifetime access), white-label
+--                    (own brand_name/logo/color, gated by brand_active -
+--                    see 009), keeps 100% of what they charge their own
+--                    clients.
 --
--- The Rp 99.000 "Client" package (someone who just wants one invitation,
+-- The Rp 149.000 "Client" package (someone who just wants one invitation,
 -- not a reseller) has no reseller row at all - it's a plain clients row
 -- created directly by the owner, so it isn't represented here.
 
