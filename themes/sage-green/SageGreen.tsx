@@ -46,8 +46,18 @@ export default function SageGreen({ invitation }: { invitation: InvitationData }
             <Hero invitation={invitation} />
           </section>
 
+          {weddingDate && (
+            <section id="countdown">
+              <Countdown targetDate={weddingDate} coverImage={invitation.coverImage} />
+            </section>
+          )}
+
           <section id="couple">
             <Couple invitation={invitation} />
+          </section>
+
+          <section id="event">
+            <Event invitation={invitation} />
           </section>
 
           {invitation.story.length > 0 && (
@@ -55,16 +65,6 @@ export default function SageGreen({ invitation }: { invitation: InvitationData }
               <Story invitation={invitation} />
             </section>
           )}
-
-          {weddingDate && (
-            <section id="countdown">
-              <Countdown targetDate={weddingDate} />
-            </section>
-          )}
-
-          <section id="event">
-            <Event invitation={invitation} />
-          </section>
 
           {invitation.gallery.length > 0 && (
             <section id="gallery">
@@ -78,15 +78,15 @@ export default function SageGreen({ invitation }: { invitation: InvitationData }
             <Maps invitation={invitation} />
           </section>
 
+          <section id="rsvp">
+            <RSVP invitation={invitation} />
+          </section>
+
           {invitation.gifts.length > 0 && (
             <section id="gift">
               <Gift invitation={invitation} />
             </section>
           )}
-
-          <section id="rsvp">
-            <RSVP invitation={invitation} />
-          </section>
 
           <Wishes invitation={invitation} />
 

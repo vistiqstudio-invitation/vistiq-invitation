@@ -4,7 +4,12 @@ import Reveal from "@/components/Reveal";
 import { useCountdown } from "@/hooks/useCountdown";
 import styles from "./style.module.css";
 
-export default function Countdown({ targetDate }: { targetDate: string }) {
+type Props = {
+  targetDate: string;
+  coverImage?: string | null;
+};
+
+export default function Countdown({ targetDate, coverImage }: Props) {
   const time = useCountdown(targetDate);
 
   if (time.isPast) return null;
@@ -17,10 +22,21 @@ export default function Countdown({ targetDate }: { targetDate: string }) {
   ];
 
   return (
-    <div className={styles.section}>
+    <div className={`${styles.section} ${styles.countdownSection}`}>
+      {coverImage && (
+        <>
+          <img className={styles.countdownBackdrop} src={coverImage} alt="" />
+          <div className={styles.countdownOverlay} />
+        </>
+      )}
+
       <Reveal>
-        <p className={styles.eyebrow}>Menuju Hari Bahagia</p>
-        <h2 className={styles.title}>Countdown</h2>
+        <p className={styles.eyebrow} style={coverImage ? { color: "#fff" } : undefined}>
+          Menuju Hari Bahagia
+        </p>
+        <h2 className={styles.title} style={coverImage ? { color: "#fff" } : undefined}>
+          Countdown
+        </h2>
       </Reveal>
 
       <Reveal delay={0.1}>
