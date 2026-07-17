@@ -2,6 +2,7 @@ import Link from "next/link";
 import PhoneMockup from "@/components/PhoneMockup";
 import SiteNavbar from "@/components/SiteNavbar";
 import ThemeGrid from "@/components/ThemeGrid";
+import AqiqahThemeGrid from "@/components/AqiqahThemeGrid";
 
 const WA_NUMBER = "6281371338032";
 
@@ -98,6 +99,13 @@ export default function HomePage() {
         <h2>Tema Premium Siap Pakai</h2>
 
         <ThemeGrid />
+      </section>
+
+      <section id="tema-akikah" className="sectionDark">
+        <p className="label">Tema Akikah</p>
+        <h2>Undangan Aqiqah Digital</h2>
+
+        <AqiqahThemeGrid />
       </section>
 
       <section id="harga" className="section">
