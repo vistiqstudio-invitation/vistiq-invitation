@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import DashboardSidebar from "@/components/admin/DashboardSidebar";
-import { themeList } from "@/lib/theme";
+import { themeList, aqiqahThemeList } from "@/lib/theme";
 import styles from "@/styles/dashboard.module.css";
 
 const NAV_ITEMS = [
@@ -37,8 +37,10 @@ type Invitation = {
   id: number;
   slug: string;
   theme?: string;
+  category?: "wedding" | "aqiqah";
   groom_name?: string;
   bride_name?: string;
+  baby_name?: string;
   client_id?: string;
   is_active?: boolean;
   created_at: string;
@@ -53,6 +55,7 @@ type Transaction = {
 
 const initialForm = {
   client_id: "",
+  category: "wedding" as "wedding" | "aqiqah",
   slug: "",
   theme: "luxury-gold",
   // Resellers can no longer flip this themselves - a new invitation stays
@@ -99,6 +102,21 @@ const initialForm = {
   bride_photo: "",
   groom_photo: "",
   gallery_photos: [] as string[],
+
+  // Aqiqah-only fields - a separate, much smaller field set for the
+  // "aqiqah" category (see supabase/sql/019_add_aqiqah_category.sql).
+  baby_name: "",
+  baby_gender: "",
+  father_name: "",
+  mother_name: "",
+  birth_date: "",
+  birth_place: "",
+  aqiqah_date: "",
+  aqiqah_time: "",
+  aqiqah_location: "",
+  gift_bank_name: "",
+  gift_account_number: "",
+  gift_account_name: "",
 };
 
 type FormState = typeof initialForm;
@@ -136,7 +154,7 @@ export default function ResellerInvitationsPage() {
 
     const { data: invitationsData } = await supabase
       .from("invitations")
-      .select("id, slug, theme, groom_name, bride_name, client_id, is_active, created_at")
+      .select("id, slug, theme, category, groom_name, bride_name, baby_name, client_id, is_active, created_at")
       .in("client_id", clientIds)
       .order("created_at", { ascending: false });
 
@@ -217,8 +235,17 @@ export default function ResellerInvitationsPage() {
   };
 
   const autoSlug = () => {
-    const text = `${form.groom_name}-${form.bride_name}`;
+    const text =
+      form.category === "aqiqah" ? `akikah-${form.baby_name}` : `${form.groom_name}-${form.bride_name}`;
     set("slug", makeSlug(text));
+  };
+
+  const setCategory = (category: "wedding" | "aqiqah") => {
+    setForm((prev) => ({
+      ...prev,
+      category,
+      theme: category === "aqiqah" ? aqiqahThemeList[0]?.key || "" : "luxury-gold",
+    }));
   };
 
   // Uploaded before the invitation row exists, so photos live under the
@@ -288,7 +315,12 @@ export default function ResellerInvitationsPage() {
       return;
     }
 
-    if (!form.groom_name.trim() || !form.bride_name.trim()) {
+    if (form.category === "aqiqah") {
+      if (!form.baby_name.trim()) {
+        alert("Nama bayi wajib diisi.");
+        return;
+      }
+    } else if (!form.groom_name.trim() || !form.bride_name.trim()) {
       alert("Nama mempelai pria dan wanita wajib diisi.");
       return;
     }
@@ -406,8 +438,17 @@ export default function ResellerInvitationsPage() {
                   ))}
                 </select>
 
+                <select
+                  value={form.category}
+                  onChange={(e) => setCategory(e.target.value as "wedding" | "aqiqah")}
+                  className={styles.input}
+                >
+                  <option value="wedding">Pernikahan</option>
+                  <option value="aqiqah">Aqiqah</option>
+                </select>
+
                 <select value={form.theme} onChange={(e) => set("theme", e.target.value)} className={styles.input}>
-                  {themeList.map((theme) => (
+                  {(form.category === "aqiqah" ? aqiqahThemeList : themeList).map((theme) => (
                     <option key={theme.key} value={theme.key}>
                       {theme.label}
                     </option>
@@ -432,6 +473,132 @@ export default function ResellerInvitationsPage() {
                 </div>
               </div>
 
+              {form.category === "aqiqah" ? (
+                <>
+                  <h2 className={styles.editSectionTitle}>Data Bayi &amp; Orang Tua</h2>
+
+                  <div className={styles.formGrid}>
+                    <input
+                      placeholder="Nama Bayi"
+                      value={form.baby_name}
+                      onChange={(e) => set("baby_name", e.target.value)}
+                      className={styles.input}
+                    />
+
+                    <select
+                      value={form.baby_gender}
+                      onChange={(e) => set("baby_gender", e.target.value)}
+                      className={styles.input}
+                    >
+                      <option value="">Jenis Kelamin</option>
+                      <option value="L">Laki-laki</option>
+                      <option value="P">Perempuan</option>
+                    </select>
+
+                    <input
+                      type="date"
+                      placeholder="Tanggal Lahir"
+                      value={form.birth_date}
+                      onChange={(e) => set("birth_date", e.target.value)}
+                      className={styles.input}
+                    />
+
+                    <input
+                      placeholder="Tempat Lahir"
+                      value={form.birth_place}
+                      onChange={(e) => set("birth_place", e.target.value)}
+                      className={styles.input}
+                    />
+
+                    <input
+                      placeholder="Nama Ayah"
+                      value={form.father_name}
+                      onChange={(e) => set("father_name", e.target.value)}
+                      className={styles.input}
+                    />
+
+                    <input
+                      placeholder="Nama Ibu"
+                      value={form.mother_name}
+                      onChange={(e) => set("mother_name", e.target.value)}
+                      className={styles.input}
+                    />
+                  </div>
+
+                  <h2 className={styles.editSectionTitle}>Jadwal &amp; Lokasi Acara Aqiqah</h2>
+
+                  <div className={styles.formGrid}>
+                    <input
+                      type="date"
+                      value={form.aqiqah_date}
+                      onChange={(e) => set("aqiqah_date", e.target.value)}
+                      className={styles.input}
+                    />
+
+                    <input
+                      placeholder="Jam Acara, contoh: 10.00 WIB"
+                      value={form.aqiqah_time}
+                      onChange={(e) => set("aqiqah_time", e.target.value)}
+                      className={styles.input}
+                    />
+
+                    <input
+                      placeholder="Lokasi Acara"
+                      value={form.aqiqah_location}
+                      onChange={(e) => set("aqiqah_location", e.target.value)}
+                      className={styles.input}
+                      style={{ gridColumn: "1 / -1" }}
+                    />
+
+                    <input
+                      placeholder="Google Maps URL"
+                      value={form.maps_url}
+                      onChange={(e) => set("maps_url", e.target.value)}
+                      className={styles.input}
+                      style={{ gridColumn: "1 / -1" }}
+                    />
+                  </div>
+
+                  <h2 className={styles.editSectionTitle}>Video (opsional)</h2>
+
+                  <div className={styles.formGrid}>
+                    <input
+                      placeholder="Link YouTube (opsional)"
+                      value={form.youtube_url}
+                      onChange={(e) => set("youtube_url", e.target.value)}
+                      className={styles.input}
+                      style={{ gridColumn: "1 / -1" }}
+                    />
+                  </div>
+
+                  <h2 className={styles.editSectionTitle}>Amplop Digital - Kado untuk Buah Hati</h2>
+
+                  <div className={styles.formGrid}>
+                    <input
+                      placeholder="Nama Bank"
+                      value={form.gift_bank_name}
+                      onChange={(e) => set("gift_bank_name", e.target.value)}
+                      className={styles.input}
+                    />
+
+                    <input
+                      placeholder="Nomor Rekening"
+                      value={form.gift_account_number}
+                      onChange={(e) => set("gift_account_number", e.target.value)}
+                      className={styles.input}
+                    />
+
+                    <input
+                      placeholder="Atas Nama"
+                      value={form.gift_account_name}
+                      onChange={(e) => set("gift_account_name", e.target.value)}
+                      className={styles.input}
+                      style={{ gridColumn: "1 / -1" }}
+                    />
+                  </div>
+                </>
+              ) : (
+              <>
               <h2 className={styles.editSectionTitle}>Data Mempelai</h2>
 
               <div className={styles.formGrid}>
@@ -632,6 +799,8 @@ export default function ResellerInvitationsPage() {
                   style={{ gridColumn: "1 / -1" }}
                 />
               </div>
+              </>
+              )}
 
               <h2 className={styles.editSectionTitle}>Musik Latar (MP3)</h2>
 
@@ -641,22 +810,26 @@ export default function ResellerInvitationsPage() {
 
               <div className={styles.uploadGrid}>
                 <UploadBox
-                  title="Foto Cover"
+                  title={form.category === "aqiqah" ? "Foto Bayi" : "Foto Cover"}
                   value={form.cover_photo}
                   onUpload={(file) => uploadSingleFile(file, "cover_photo")}
                 />
 
-                <UploadBox
-                  title="Foto Mempelai Wanita"
-                  value={form.bride_photo}
-                  onUpload={(file) => uploadSingleFile(file, "bride_photo")}
-                />
+                {form.category === "wedding" && (
+                  <>
+                    <UploadBox
+                      title="Foto Mempelai Wanita"
+                      value={form.bride_photo}
+                      onUpload={(file) => uploadSingleFile(file, "bride_photo")}
+                    />
 
-                <UploadBox
-                  title="Foto Mempelai Pria"
-                  value={form.groom_photo}
-                  onUpload={(file) => uploadSingleFile(file, "groom_photo")}
-                />
+                    <UploadBox
+                      title="Foto Mempelai Pria"
+                      value={form.groom_photo}
+                      onUpload={(file) => uploadSingleFile(file, "groom_photo")}
+                    />
+                  </>
+                )}
               </div>
 
               <h2 className={styles.editSectionTitle}>Galeri Foto</h2>
@@ -731,7 +904,9 @@ export default function ResellerInvitationsPage() {
                     <div key={item.id} className={styles.row}>
                       <div>
                         <strong>
-                          {item.groom_name || "-"} &amp; {item.bride_name || "-"}
+                          {item.category === "aqiqah"
+                            ? item.baby_name || "-"
+                            : `${item.groom_name || "-"} & ${item.bride_name || "-"}`}
                         </strong>
                         <p>/{item.slug}</p>
                       </div>

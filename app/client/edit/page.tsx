@@ -10,6 +10,7 @@ const BUCKET = "invitation-assets";
 type PhotoField = "cover_photo" | "bride_photo" | "groom_photo" | "music_url";
 
 const initialForm = {
+  category: "wedding" as "wedding" | "aqiqah",
   groom_name: "",
   bride_name: "",
   groom_parent: "",
@@ -49,6 +50,19 @@ const initialForm = {
   bride_photo: "",
   groom_photo: "",
   gallery_photos: [] as string[],
+
+  baby_name: "",
+  baby_gender: "",
+  father_name: "",
+  mother_name: "",
+  birth_date: "",
+  birth_place: "",
+  aqiqah_date: "",
+  aqiqah_time: "",
+  aqiqah_location: "",
+  gift_bank_name: "",
+  gift_account_number: "",
+  gift_account_name: "",
 };
 
 type FormState = typeof initialForm;
@@ -114,6 +128,7 @@ export default function ClientEditPage() {
       setInvitationId(invitation.id);
 
       setForm({
+        category: invitation.category === "aqiqah" ? "aqiqah" : "wedding",
         groom_name: invitation.groom_name || "",
         bride_name: invitation.bride_name || "",
         groom_parent: invitation.groom_parent || "",
@@ -155,6 +170,19 @@ export default function ClientEditPage() {
         gallery_photos: Array.isArray(invitation.gallery_photos)
           ? invitation.gallery_photos
           : [],
+
+        baby_name: invitation.baby_name || "",
+        baby_gender: invitation.baby_gender || "",
+        father_name: invitation.father_name || "",
+        mother_name: invitation.mother_name || "",
+        birth_date: invitation.birth_date || "",
+        birth_place: invitation.birth_place || "",
+        aqiqah_date: invitation.aqiqah_date || "",
+        aqiqah_time: invitation.aqiqah_time || "",
+        aqiqah_location: invitation.aqiqah_location || "",
+        gift_bank_name: invitation.gift_bank_name || "",
+        gift_account_number: invitation.gift_account_number || "",
+        gift_account_name: invitation.gift_account_name || "",
       });
     } catch (err) {
       console.error(err);
@@ -284,6 +312,132 @@ export default function ClientEditPage() {
           </button>
         </div>
 
+        {form.category === "aqiqah" ? (
+          <>
+            <h2 className={styles.editSectionTitle}>Data Bayi &amp; Orang Tua</h2>
+
+            <div className={styles.formGrid}>
+              <input
+                placeholder="Nama Bayi"
+                value={form.baby_name}
+                onChange={(e) => set("baby_name", e.target.value)}
+                className={styles.input}
+              />
+
+              <select
+                value={form.baby_gender}
+                onChange={(e) => set("baby_gender", e.target.value)}
+                className={styles.input}
+              >
+                <option value="">Jenis Kelamin</option>
+                <option value="L">Laki-laki</option>
+                <option value="P">Perempuan</option>
+              </select>
+
+              <input
+                type="date"
+                placeholder="Tanggal Lahir"
+                value={form.birth_date}
+                onChange={(e) => set("birth_date", e.target.value)}
+                className={styles.input}
+              />
+
+              <input
+                placeholder="Tempat Lahir"
+                value={form.birth_place}
+                onChange={(e) => set("birth_place", e.target.value)}
+                className={styles.input}
+              />
+
+              <input
+                placeholder="Nama Ayah"
+                value={form.father_name}
+                onChange={(e) => set("father_name", e.target.value)}
+                className={styles.input}
+              />
+
+              <input
+                placeholder="Nama Ibu"
+                value={form.mother_name}
+                onChange={(e) => set("mother_name", e.target.value)}
+                className={styles.input}
+              />
+            </div>
+
+            <h2 className={styles.editSectionTitle}>Jadwal &amp; Lokasi Acara Aqiqah</h2>
+
+            <div className={styles.formGrid}>
+              <input
+                type="date"
+                value={form.aqiqah_date}
+                onChange={(e) => set("aqiqah_date", e.target.value)}
+                className={styles.input}
+              />
+
+              <input
+                placeholder="Jam Acara, contoh: 10.00 WIB"
+                value={form.aqiqah_time}
+                onChange={(e) => set("aqiqah_time", e.target.value)}
+                className={styles.input}
+              />
+
+              <input
+                placeholder="Lokasi Acara"
+                value={form.aqiqah_location}
+                onChange={(e) => set("aqiqah_location", e.target.value)}
+                className={styles.input}
+                style={{ gridColumn: "1 / -1" }}
+              />
+
+              <input
+                placeholder="Google Maps URL"
+                value={form.maps_url}
+                onChange={(e) => set("maps_url", e.target.value)}
+                className={styles.input}
+                style={{ gridColumn: "1 / -1" }}
+              />
+            </div>
+
+            <h2 className={styles.editSectionTitle}>Video (opsional)</h2>
+
+            <div className={styles.formGrid}>
+              <input
+                placeholder="Link YouTube (opsional)"
+                value={form.youtube_url}
+                onChange={(e) => set("youtube_url", e.target.value)}
+                className={styles.input}
+                style={{ gridColumn: "1 / -1" }}
+              />
+            </div>
+
+            <h2 className={styles.editSectionTitle}>Amplop Digital - Kado untuk Buah Hati</h2>
+
+            <div className={styles.formGrid}>
+              <input
+                placeholder="Nama Bank"
+                value={form.gift_bank_name}
+                onChange={(e) => set("gift_bank_name", e.target.value)}
+                className={styles.input}
+              />
+
+              <input
+                placeholder="Nomor Rekening"
+                value={form.gift_account_number}
+                onChange={(e) => set("gift_account_number", e.target.value)}
+                className={styles.input}
+              />
+
+              <input
+                placeholder="Atas Nama"
+                value={form.gift_account_name}
+                onChange={(e) => set("gift_account_name", e.target.value)}
+                className={styles.input}
+                style={{ gridColumn: "1 / -1" }}
+              />
+            </div>
+          </>
+        ) : (
+        <>
         <h2 className={styles.editSectionTitle}>Data Mempelai</h2>
 
         <div className={styles.formGrid}>
@@ -484,6 +638,8 @@ export default function ClientEditPage() {
             style={{ gridColumn: "1 / -1" }}
           />
         </div>
+        </>
+        )}
 
         <h2 className={styles.editSectionTitle}>Musik Latar (MP3)</h2>
 
@@ -493,22 +649,26 @@ export default function ClientEditPage() {
 
         <div className={styles.uploadGrid}>
           <UploadBox
-            title="Foto Cover"
+            title={form.category === "aqiqah" ? "Foto Bayi" : "Foto Cover"}
             value={form.cover_photo}
             onUpload={(file) => uploadSingleFile(file, "cover_photo")}
           />
 
-          <UploadBox
-            title="Foto Mempelai Wanita"
-            value={form.bride_photo}
-            onUpload={(file) => uploadSingleFile(file, "bride_photo")}
-          />
+          {form.category === "wedding" && (
+            <>
+              <UploadBox
+                title="Foto Mempelai Wanita"
+                value={form.bride_photo}
+                onUpload={(file) => uploadSingleFile(file, "bride_photo")}
+              />
 
-          <UploadBox
-            title="Foto Mempelai Pria"
-            value={form.groom_photo}
-            onUpload={(file) => uploadSingleFile(file, "groom_photo")}
-          />
+              <UploadBox
+                title="Foto Mempelai Pria"
+                value={form.groom_photo}
+                onUpload={(file) => uploadSingleFile(file, "groom_photo")}
+              />
+            </>
+          )}
         </div>
 
         <h2 className={styles.editSectionTitle}>Galeri Foto</h2>

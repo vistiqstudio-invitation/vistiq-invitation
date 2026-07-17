@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import DashboardSidebar from "@/components/admin/DashboardSidebar";
+import { themeList, aqiqahThemeList } from "@/lib/theme";
 import styles from "@/styles/dashboard.module.css";
 
 const NAV_ITEMS = [
@@ -19,11 +20,14 @@ type Invitation = {
   id: string;
   slug: string;
   theme?: string;
+  category?: "wedding" | "aqiqah";
   groom_name?: string;
   bride_name?: string;
+  baby_name?: string;
   event_date?: string;
   akad_location?: string;
   reception_location?: string;
+  aqiqah_location?: string;
   maps_url?: string;
   is_active?: boolean;
   client_id?: string | null;
@@ -43,17 +47,22 @@ export default function InvitationsPage() {
   const [clientsById, setClientsById] = useState<Record<string, ClientInfo>>({});
   const [loading, setLoading] = useState(true);
 
-  const [form, setForm] = useState({
+  const initialForm = {
+    category: "wedding" as "wedding" | "aqiqah",
     slug: "",
     theme: "luxury-gold",
     groom_name: "",
     bride_name: "",
+    baby_name: "",
     event_date: "",
     akad_location: "",
     reception_location: "",
+    aqiqah_location: "",
     maps_url: "",
     is_active: true,
-  });
+  };
+
+  const [form, setForm] = useState(initialForm);
 
   const fetchInvitations = async () => {
     const { data, error } = await supabase
@@ -124,15 +133,29 @@ export default function InvitationsPage() {
   };
 
   const autoSlug = () => {
-    const text = `${form.groom_name}-${form.bride_name}`;
+    const text =
+      form.category === "aqiqah" ? `akikah-${form.baby_name}` : `${form.groom_name}-${form.bride_name}`;
     setForm({
       ...form,
       slug: makeSlug(text),
     });
   };
 
+  const setCategory = (category: "wedding" | "aqiqah") => {
+    setForm((prev) => ({
+      ...prev,
+      category,
+      theme: category === "aqiqah" ? aqiqahThemeList[0]?.key || "" : "luxury-gold",
+    }));
+  };
+
   const addInvitation = async () => {
-    if (!form.groom_name.trim() || !form.bride_name.trim()) {
+    if (form.category === "aqiqah") {
+      if (!form.baby_name.trim()) {
+        alert("Nama bayi wajib diisi.");
+        return;
+      }
+    } else if (!form.groom_name.trim() || !form.bride_name.trim()) {
       alert("Nama mempelai pria dan wanita wajib diisi.");
       return;
     }
@@ -154,17 +177,7 @@ export default function InvitationsPage() {
       return;
     }
 
-    setForm({
-      slug: "",
-      theme: "luxury-gold",
-      groom_name: "",
-      bride_name: "",
-      event_date: "",
-      akad_location: "",
-      reception_location: "",
-      maps_url: "",
-      is_active: true,
-    });
+    setForm(initialForm);
 
     fetchInvitations();
     alert("Undangan berhasil dibuat.");
@@ -219,23 +232,44 @@ export default function InvitationsPage() {
           <h2 className={styles.sectionTitle}>Tambah Undangan Baru</h2>
 
           <div className={styles.formGrid}>
-            <input
-              placeholder="Nama Mempelai Pria"
-              value={form.groom_name}
-              onChange={(e) =>
-                setForm({ ...form, groom_name: e.target.value })
-              }
+            <select
+              value={form.category}
+              onChange={(e) => setCategory(e.target.value as "wedding" | "aqiqah")}
               className={styles.input}
-            />
+            >
+              <option value="wedding">Pernikahan</option>
+              <option value="aqiqah">Aqiqah</option>
+            </select>
 
-            <input
-              placeholder="Nama Mempelai Wanita"
-              value={form.bride_name}
-              onChange={(e) =>
-                setForm({ ...form, bride_name: e.target.value })
-              }
-              className={styles.input}
-            />
+            {form.category === "aqiqah" ? (
+              <input
+                placeholder="Nama Bayi"
+                value={form.baby_name}
+                onChange={(e) => setForm({ ...form, baby_name: e.target.value })}
+                className={styles.input}
+                style={{ gridColumn: "span 2" }}
+              />
+            ) : (
+              <>
+                <input
+                  placeholder="Nama Mempelai Pria"
+                  value={form.groom_name}
+                  onChange={(e) =>
+                    setForm({ ...form, groom_name: e.target.value })
+                  }
+                  className={styles.input}
+                />
+
+                <input
+                  placeholder="Nama Mempelai Wanita"
+                  value={form.bride_name}
+                  onChange={(e) =>
+                    setForm({ ...form, bride_name: e.target.value })
+                  }
+                  className={styles.input}
+                />
+              </>
+            )}
 
             <div className={styles.slugRow}>
               <input
@@ -255,13 +289,11 @@ export default function InvitationsPage() {
               onChange={(e) => setForm({ ...form, theme: e.target.value })}
               className={styles.input}
             >
-              <option value="luxury-gold">Luxury Gold</option>
-              <option value="minimal-white">Minimal White</option>
-              <option value="islamic-green">Islamic Green</option>
-              <option value="royal-black">Royal Black</option>
-              <option value="floral-garden">Floral Garden</option>
-              <option value="emerald-lantern">Emerald Lantern</option>
-              <option value="sakura">Sakura</option>
+              {(form.category === "aqiqah" ? aqiqahThemeList : themeList).map((theme) => (
+                <option key={theme.key} value={theme.key}>
+                  {theme.label}
+                </option>
+              ))}
             </select>
 
             <input
@@ -282,23 +314,37 @@ export default function InvitationsPage() {
               <option value="inactive">Inactive</option>
             </select>
 
-            <input
-              placeholder="Lokasi Akad"
-              value={form.akad_location}
-              onChange={(e) =>
-                setForm({ ...form, akad_location: e.target.value })
-              }
-              className={styles.input}
-            />
+            {form.category === "aqiqah" ? (
+              <input
+                placeholder="Lokasi Acara Aqiqah"
+                value={form.aqiqah_location}
+                onChange={(e) =>
+                  setForm({ ...form, aqiqah_location: e.target.value })
+                }
+                className={styles.input}
+                style={{ gridColumn: "1 / -1" }}
+              />
+            ) : (
+              <>
+                <input
+                  placeholder="Lokasi Akad"
+                  value={form.akad_location}
+                  onChange={(e) =>
+                    setForm({ ...form, akad_location: e.target.value })
+                  }
+                  className={styles.input}
+                />
 
-            <input
-              placeholder="Lokasi Resepsi"
-              value={form.reception_location}
-              onChange={(e) =>
-                setForm({ ...form, reception_location: e.target.value })
-              }
-              className={styles.input}
-            />
+                <input
+                  placeholder="Lokasi Resepsi"
+                  value={form.reception_location}
+                  onChange={(e) =>
+                    setForm({ ...form, reception_location: e.target.value })
+                  }
+                  className={styles.input}
+                />
+              </>
+            )}
 
             <input
               placeholder="Google Maps URL"
@@ -330,7 +376,9 @@ export default function InvitationsPage() {
                 <div key={item.id} className={styles.row}>
                   <div>
                     <strong>
-                      {item.groom_name || "-"} & {item.bride_name || "-"}
+                      {item.category === "aqiqah"
+                        ? item.baby_name || "-"
+                        : `${item.groom_name || "-"} & ${item.bride_name || "-"}`}
                     </strong>
                     <p>/{item.slug}</p>
                     {client ? (
