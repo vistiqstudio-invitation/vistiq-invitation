@@ -2,6 +2,7 @@
 
 import Reveal from "@/components/Reveal";
 import type { AqiqahInvitationData } from "@/types/aqiqah";
+import FloralCorner from "./FloralCorner";
 import styles from "./style.module.css";
 
 export default function Event({ invitation }: { invitation: AqiqahInvitationData }) {
@@ -11,6 +12,9 @@ export default function Event({ invitation }: { invitation: AqiqahInvitationData
 
   return (
     <div className={styles.section}>
+      <FloralCorner className={styles.eventCornerTL} />
+      <FloralCorner className={styles.eventCornerBR} />
+
       <Reveal>
         <div className={styles.eventCard}>
           <h3 className={styles.eventName}>Acara</h3>
