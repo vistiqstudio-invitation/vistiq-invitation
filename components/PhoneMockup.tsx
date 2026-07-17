@@ -17,13 +17,15 @@ type Props = {
   width?: number;
   className?: string;
   style?: React.CSSProperties;
+  /** Base demo route the iframe points at - "/demo" for wedding themes, "/demo-akikah" for aqiqah themes. */
+  demoPath?: string;
 };
 
 // A phone-shaped frame with a live (non-interactive) iframe of the actual
 // theme demo inside, scaled down to fit. Used anywhere we want to show real
 // theme screens instead of a flat color placeholder - homepage hero, theme
 // section, and the /demo picker cards.
-export default function PhoneMockup({ themeKey, width = 220, className, style }: Props) {
+export default function PhoneMockup({ themeKey, width = 220, className, style, demoPath = "/demo" }: Props) {
   const scale = width / DESIGN_WIDTH;
   const screenHeight = DESIGN_HEIGHT * scale;
   const outerRadius = OUTER_RADIUS * scale;
@@ -57,7 +59,7 @@ export default function PhoneMockup({ themeKey, width = 220, className, style }:
 
       <div className={styles.screen} style={{ width, height: screenHeight, borderRadius: screenRadius }}>
         <iframe
-          src={`/demo/${themeKey}`}
+          src={`${demoPath}/${themeKey}`}
           className={styles.frame}
           style={{
             width: DESIGN_WIDTH,

@@ -23,6 +23,7 @@ export type InvitationData = {
   slug: string;
   theme: string;
   status: string;
+  category: "wedding";
 
   // Reseller white-label branding, if this invitation's client belongs to
   // a reseller with an active branding package. Null means "show the
@@ -58,7 +59,10 @@ export type InvitationData = {
 };
 
 export type GiftAccount = {
-  owner: "Mempelai Pria" | "Mempelai Wanita";
+  // "Mempelai Pria"/"Mempelai Wanita" for wedding invitations, "Orang Tua
+  // Bayi" for aqiqah - kept as a plain string since gift accounts are
+  // shared across both invitation categories.
+  owner: string;
   bankName: string | null;
   accountNumber: string | null;
   accountName: string | null;

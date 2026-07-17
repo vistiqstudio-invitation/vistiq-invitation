@@ -8,6 +8,7 @@ import type {
   InvitationData,
   StoryItem,
 } from "@/types/invitation";
+import type { AqiqahInvitationData } from "@/types/aqiqah";
 
 function resolveBrand(raw: Record<string, any>): Brand {
   const reseller = raw.clients?.resellers;
@@ -164,6 +165,7 @@ function normalizeInvitation(raw: Record<string, any>): InvitationData {
     slug: raw.slug,
     theme: raw.theme || "luxury-gold",
     status: raw.status || (raw.is_active ? "active" : "draft"),
+    category: "wedding",
 
     brand: resolveBrand(raw),
 
@@ -206,9 +208,85 @@ function normalizeInvitation(raw: Record<string, any>): InvitationData {
   };
 }
 
+function normalizeAqiqahInvitation(raw: Record<string, any>): AqiqahInvitationData {
+  const event: AqiqahInvitationData["event"] =
+    raw.aqiqah_date || raw.aqiqah_location || raw.aqiqah_time
+      ? {
+          date: formatDate(raw.aqiqah_date),
+          rawDate: toRawDate(raw.aqiqah_date, raw.aqiqah_time || ""),
+          time: raw.aqiqah_time || "",
+          location: raw.aqiqah_location || "",
+        }
+      : null;
+
+  const gallery = [
+    raw.gallery_1,
+    raw.gallery_2,
+    raw.gallery_3,
+    raw.gallery_4,
+    raw.gallery1,
+    raw.gallery2,
+    raw.gallery3,
+    raw.gallery4,
+    raw.gallery5,
+    raw.gallery6,
+    ...(Array.isArray(raw.gallery_photos) ? raw.gallery_photos : []),
+  ].filter((url): url is string => Boolean(url));
+
+  const giftBankName = firstNonEmpty(raw.gift_bank_name, raw.bank_name);
+  const giftAccountNumber = firstNonEmpty(raw.gift_account_number, raw.bank_account);
+  const giftAccountName = firstNonEmpty(raw.gift_account_name, raw.bank_holder);
+
+  const gifts: GiftAccount[] = [];
+  if (giftBankName || giftAccountNumber) {
+    gifts.push({
+      owner: "Orang Tua Bayi",
+      bankName: giftBankName,
+      accountNumber: giftAccountNumber,
+      accountName: giftAccountName,
+    });
+  }
+
+  return {
+    id: raw.id,
+    slug: raw.slug,
+    theme: raw.theme || "akikah-langit",
+    status: raw.status || (raw.is_active ? "active" : "draft"),
+    category: "aqiqah",
+
+    brand: resolveBrand(raw),
+
+    coverImage: firstNonEmpty(raw.cover_image, raw.cover_photo),
+    musicUrl: raw.music_url || null,
+    videoUrl: firstNonEmpty(raw.video_url, raw.youtube_url),
+
+    mapsUrl: firstNonEmpty(raw.maps_url, raw.location, raw.map_link),
+    mapsEmbedUrl: firstNonEmpty(raw.maps_embed, raw.map_embed),
+
+    baby: {
+      name: raw.baby_name || "",
+      gender: raw.baby_gender === "L" || raw.baby_gender === "P" ? raw.baby_gender : null,
+      photo: firstNonEmpty(raw.cover_image, raw.cover_photo),
+      birthDate: raw.birth_date ? formatDate(raw.birth_date) : null,
+      birthPlace: raw.birth_place || null,
+    },
+
+    parents: {
+      father: raw.father_name || "",
+      mother: raw.mother_name || "",
+    },
+
+    event,
+
+    gallery,
+
+    gifts,
+  };
+}
+
 export async function getInvitationBySlug(
   slug: string
-): Promise<InvitationData | null> {
+): Promise<InvitationData | AqiqahInvitationData | null> {
   const supabase = await createClient();
 
   const { data, error } = await supabase
@@ -221,5 +299,5 @@ export async function getInvitationBySlug(
 
   if (error || !data) return null;
 
-  return normalizeInvitation(data);
+  return data.category === "aqiqah" ? normalizeAqiqahInvitation(data) : normalizeInvitation(data);
 }

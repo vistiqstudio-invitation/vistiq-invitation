@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { requireRole } from "@/lib/supabase/dal";
 import { createClient } from "@/lib/supabase/server";
 import { getInvitationBySlug } from "@/lib/invitation";
-import { themeRegistry } from "@/lib/theme";
+import { themeRegistry, aqiqahThemeRegistry } from "@/lib/theme";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -44,6 +44,11 @@ export default async function PreviewPage({ params }: Props) {
 
   const invitation = await getInvitationBySlug(slug);
   if (!invitation) notFound();
+
+  if (invitation.category === "aqiqah") {
+    const Theme = aqiqahThemeRegistry[invitation.theme] || aqiqahThemeRegistry["akikah-nur"];
+    return <Theme invitation={invitation} />;
+  }
 
   const Theme = themeRegistry[invitation.theme] || themeRegistry["luxury-gold"];
 

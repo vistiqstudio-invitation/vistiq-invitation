@@ -1,4 +1,6 @@
 import type { InvitationData } from "@/types/invitation";
+import type { AqiqahInvitationData } from "@/types/aqiqah";
+import AkikahNur from "@/themes/akikah-nur/AkikahNur";
 import LuxuryGold from "@/themes/luxury-gold/LuxuryGold";
 import MinimalWhite from "@/themes/minimal-white/MinimalWhite";
 import IslamicGreen from "@/themes/islamic-green/IslamicGreen";
@@ -205,5 +207,25 @@ export const themeList: ThemeMeta[] = [
     label: "Sahara",
     description: "Krem & terracotta pasir, foto arch tinggi, galeri grid lightbox, story dua kolom",
     swatch: ["#fffdf9", "#ae8f7a"],
+  },
+];
+
+// Separate registry/list for aqiqah invitations - a different occasion
+// category with its own data shape (baby/parents/single event, not
+// groom/bride/story/two-events), so these themes take AqiqahInvitationData
+// instead of InvitationData and can't share the wedding registry above.
+export const aqiqahThemeRegistry: Record<
+  string,
+  (props: { invitation: AqiqahInvitationData }) => React.JSX.Element
+> = {
+  "akikah-nur": AkikahNur,
+};
+
+export const aqiqahThemeList: ThemeMeta[] = [
+  {
+    key: "akikah-nur",
+    label: "Akikah Nur",
+    description: "Biru langit lembut, krem & emas madu, medali foto bayi, kartu doa",
+    swatch: ["#f7fafc", "#5b8bb0"],
   },
 ];

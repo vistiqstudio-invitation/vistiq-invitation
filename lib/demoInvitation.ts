@@ -398,6 +398,7 @@ export function getDemoInvitation(theme: string): InvitationData {
     slug: `demo-${theme}`,
     theme,
     status: "active",
+    category: "wedding",
 
     brand: null,
 
