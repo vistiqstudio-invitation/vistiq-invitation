@@ -339,10 +339,40 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
   ],
 };
 
+// Background music also varies by theme so the picker doesn't play the same
+// track for all 23 themes. Each file is a distinct ~60s wedding song (no
+// mood-matching intended - just variety); source: user-supplied MP3 batch,
+// not AI-generated or scraped.
+const MUSIC_BY_THEME: Record<string, string> = {
+  "luxury-gold": "/music/luxury-gold.mp3",
+  "minimal-white": "/music/minimal-white.mp3",
+  "islamic-green": "/music/islamic-green.mp3",
+  "royal-black": "/music/royal-black.mp3",
+  "floral-garden": "/music/floral-garden.mp3",
+  "emerald-lantern": "/music/emerald-lantern.mp3",
+  sakura: "/music/sakura.mp3",
+  rustic: "/music/rustic.mp3",
+  bohemian: "/music/bohemian.mp3",
+  "modern-elegant": "/music/modern-elegant.mp3",
+  "royal-imperial": "/music/royal-imperial.mp3",
+  "adat-jawa": "/music/adat-jawa.mp3",
+  "adat-minang": "/music/adat-minang.mp3",
+  "adat-bugis": "/music/adat-bugis.mp3",
+  "menara-cahaya": "/music/menara-cahaya.mp3",
+  santorini: "/music/santorini.mp3",
+  "vintage-botanical": "/music/vintage-botanical.mp3",
+  "pastel-studio": "/music/pastel-studio.mp3",
+  "art-deco-glam": "/music/art-deco-glam.mp3",
+  "golden-romance": "/music/golden-romance.mp3",
+  "jawa-merah": "/music/jawa-merah.mp3",
+  "jawa-coklat": "/music/jawa-coklat.mp3",
+  "sage-green": "/music/sage-green.mp3",
+};
+
 // One shared sample invitation used to demo every theme. Only the `theme`,
-// `slug`, and `coverImage` fields change per theme - the rest is identical
-// on purpose, so switching themes in the picker is an apples-to-apples
-// comparison.
+// `slug`, `coverImage`, and `musicUrl` fields change per theme - the rest is
+// identical on purpose, so switching themes in the picker is an
+// apples-to-apples comparison.
 export function getDemoInvitation(theme: string): InvitationData {
   return {
     id: 0,
@@ -353,7 +383,7 @@ export function getDemoInvitation(theme: string): InvitationData {
     brand: null,
 
     coverImage: COVER_BY_THEME[theme] || "/themes/luxury-gold/cover.png",
-    musicUrl: "/music/wedding2.mp3",
+    musicUrl: MUSIC_BY_THEME[theme] || "/music/wedding2.mp3",
     videoUrl: null,
 
     mapsUrl: "https://maps.google.com",
