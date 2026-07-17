@@ -1,4 +1,4 @@
-import { Cormorant_Garamond, Playfair_Display, Inter, Alex_Brush, Suranna } from "next/font/google";
+import { Cormorant_Garamond, Playfair_Display, Inter, Alex_Brush, Suranna, Readex_Pro } from "next/font/google";
 
 export const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -33,5 +33,12 @@ export const suranna = Suranna({
   variable: "--font-suranna",
   subsets: ["latin"],
   weight: ["400"],
+  display: "swap",
+});
+
+export const readexPro = Readex_Pro({
+  variable: "--font-readex-pro",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
   display: "swap",
 });

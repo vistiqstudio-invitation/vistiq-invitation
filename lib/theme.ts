@@ -1,6 +1,7 @@
 import type { InvitationData } from "@/types/invitation";
 import type { AqiqahInvitationData } from "@/types/aqiqah";
 import AkikahNur from "@/themes/akikah-nur/AkikahNur";
+import AkikahZaitun from "@/themes/akikah-zaitun/AkikahZaitun";
 import LuxuryGold from "@/themes/luxury-gold/LuxuryGold";
 import MinimalWhite from "@/themes/minimal-white/MinimalWhite";
 import IslamicGreen from "@/themes/islamic-green/IslamicGreen";
@@ -219,6 +220,7 @@ export const aqiqahThemeRegistry: Record<
   (props: { invitation: AqiqahInvitationData }) => React.JSX.Element
 > = {
   "akikah-nur": AkikahNur,
+  "akikah-zaitun": AkikahZaitun,
 };
 
 export const aqiqahThemeList: ThemeMeta[] = [
@@ -227,5 +229,11 @@ export const aqiqahThemeList: ThemeMeta[] = [
     label: "Akikah Nur",
     description: "Biru langit lembut, krem & emas madu, medali foto bayi, kartu doa",
     swatch: ["#f7fafc", "#5b8bb0"],
+  },
+  {
+    key: "akikah-zaitun",
+    label: "Akikah Zaitun",
+    description: "Sage & krem lime, medali foto bulat, kartu acara arch, galeri grid olive",
+    swatch: ["#f7ffdc", "#6c7e2f"],
   },
 ];
