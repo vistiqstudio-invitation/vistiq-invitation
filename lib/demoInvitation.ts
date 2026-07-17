@@ -56,6 +56,11 @@ const COVER_BY_THEME: Record<string, string> = {
   // thumbnail side by side in the demo picker. Replace once real
   // photos exist.
   "jawa-coklat": "/photos/jawa-gallery-4.png",
+  // Placeholder only - no owner-supplied photography for this theme yet.
+  // Reuses floral-garden's real cover shot since its soft, natural sage
+  // tones are the closest mood match among the current photo set.
+  // Replace once real photos exist.
+  "sage-green": "/photos/floral-cover.png",
 };
 
 // Couple portrait photos also vary by theme - the default luxury-gold
@@ -85,6 +90,7 @@ const GROOM_PHOTO_BY_THEME: Record<string, string> = {
   santorini: "/photos/white-groom.png",
   "jawa-merah": "/photos/jawa-groom.png",
   "jawa-coklat": "/photos/jawa-groom.png",
+  "sage-green": "/photos/floral-groom.png",
 };
 
 const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
@@ -110,6 +116,7 @@ const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
   santorini: "/photos/white-bride.png",
   "jawa-merah": "/photos/jawa-bride.png",
   "jawa-coklat": "/photos/jawa-bride.png",
+  "sage-green": "/photos/floral-bride.png",
 };
 
 // Gallery photos also vary by theme so the "Our Moments" slider matches each
@@ -318,6 +325,17 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
     "/photos/jawa-gallery-3.png",
     "/photos/jawa-gallery-5.png",
     "/photos/jawa-gallery-6.png",
+  ],
+  // Placeholder only, same reasoning as the cover/groom/bride entries
+  // above - reuses floral-garden's real gallery wholesale until real
+  // sage-green photos are supplied.
+  "sage-green": [
+    "/photos/floral-gallery-7.png",
+    "/photos/floral-gallery-8.png",
+    "/photos/floral-gallery-9.png",
+    "/photos/floral-gallery-10.png",
+    "/photos/floral-gallery-11.png",
+    "/photos/floral-gallery-12.png",
   ],
 };
 
