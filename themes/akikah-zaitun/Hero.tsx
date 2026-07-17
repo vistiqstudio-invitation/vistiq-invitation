@@ -20,6 +20,8 @@ export default function Hero({ invitation }: { invitation: AqiqahInvitationData 
   return (
     <div className={styles.hero}>
       <Reveal>
+        <img className={styles.heroOrnament} src="/photos/akikah-zaitun-bismillah.png" alt="Bismillahirrahmanirrahim" />
+
         <h2 className={styles.heroTitle}>
           Assalamu'alaikum Warahmatullahi Wabarakatuh, sebagai rasa syukur,
           kami mengundang Bapak/Ibu/Saudara/i pada acara tasyakuran atas

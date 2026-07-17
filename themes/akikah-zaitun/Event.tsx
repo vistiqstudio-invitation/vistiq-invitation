@@ -2,7 +2,6 @@
 
 import Reveal from "@/components/Reveal";
 import type { AqiqahInvitationData } from "@/types/aqiqah";
-import FloralCorner from "./FloralCorner";
 import styles from "./style.module.css";
 
 export default function Event({ invitation }: { invitation: AqiqahInvitationData }) {
@@ -12,8 +11,8 @@ export default function Event({ invitation }: { invitation: AqiqahInvitationData
 
   return (
     <div className={styles.section}>
-      <FloralCorner className={styles.eventCornerTL} />
-      <FloralCorner className={styles.eventCornerBR} />
+      <img className={styles.eventCornerTL} src="/photos/akikah-zaitun-floral-b.png" alt="" aria-hidden="true" />
+      <img className={styles.eventCornerBR} src="/photos/akikah-zaitun-floral-b.png" alt="" aria-hidden="true" />
 
       <Reveal>
         <div className={styles.eventCard}>

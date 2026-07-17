@@ -124,11 +124,11 @@
 .coverCornerBL,
 .coverCornerBR {
   position: absolute;
-  width: clamp(90px, 24vw, 150px);
-  height: clamp(90px, 24vw, 150px);
+  width: clamp(110px, 30vw, 190px);
+  height: auto;
+  object-fit: contain;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.9;
 }
 
 .coverCornerTL {
@@ -219,6 +219,13 @@
 .hero {
   composes: section;
   text-align: center;
+}
+
+.heroOrnament {
+  display: block;
+  width: clamp(140px, 30vw, 200px);
+  height: auto;
+  margin: 0 auto 24px;
 }
 
 .heroTitle {
@@ -336,23 +343,22 @@
 .eventCornerTL,
 .eventCornerBR {
   position: absolute;
-  width: clamp(80px, 20vw, 130px);
-  height: clamp(80px, 20vw, 130px);
+  width: clamp(100px, 26vw, 170px);
+  height: auto;
+  object-fit: contain;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.85;
 }
 
 .eventCornerTL {
-  top: 20px;
-  left: 4px;
-  transform: scaleY(-1) rotate(20deg);
+  top: -20px;
+  left: -10px;
 }
 
 .eventCornerBR {
-  bottom: 20px;
-  right: 4px;
-  transform: scaleX(-1);
+  bottom: -20px;
+  right: -10px;
+  transform: scaleX(-1) scaleY(-1);
 }
 
 .eventCard {

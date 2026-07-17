@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { useSearchParams } from "next/navigation";
 import { useInvitation } from "@/components/InvitationProvider";
 import type { AqiqahInvitationData } from "@/types/aqiqah";
-import FloralCorner from "./FloralCorner";
 import styles from "./style.module.css";
 
 export default function Cover({ invitation }: { invitation: AqiqahInvitationData }) {
@@ -20,9 +19,9 @@ export default function Cover({ invitation }: { invitation: AqiqahInvitationData
       exit={{ opacity: 0 }}
       transition={{ duration: 1 }}
     >
-      <FloralCorner className={styles.coverCornerTL} />
-      <FloralCorner className={styles.coverCornerBL} />
-      <FloralCorner className={styles.coverCornerBR} />
+      <img className={styles.coverCornerTL} src="/photos/akikah-zaitun-floral-a.png" alt="" aria-hidden="true" />
+      <img className={styles.coverCornerBL} src="/photos/akikah-zaitun-floral-a.png" alt="" aria-hidden="true" />
+      <img className={styles.coverCornerBR} src="/photos/akikah-zaitun-floral-a.png" alt="" aria-hidden="true" />
 
       <motion.h1
         className={styles.coverTitle}
