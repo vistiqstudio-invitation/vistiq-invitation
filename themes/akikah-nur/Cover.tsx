@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useSearchParams } from "next/navigation";
 import { useInvitation } from "@/components/InvitationProvider";
 import type { AqiqahInvitationData } from "@/types/aqiqah";
+import MoonStar from "./MoonStar";
 import styles from "./style.module.css";
 
 export default function Cover({ invitation }: { invitation: AqiqahInvitationData }) {
@@ -19,22 +20,15 @@ export default function Cover({ invitation }: { invitation: AqiqahInvitationData
       exit={{ opacity: 0 }}
       transition={{ duration: 1 }}
     >
-      <motion.svg
-        className={styles.coverOrnament}
-        viewBox="0 0 40 40"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
+      <div className={styles.coverGlow} aria-hidden="true" />
+
+      <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, delay: 0.15 }}
       >
-        <path
-          d="M25 6a12 12 0 1 0 9 20 10 10 0 0 1-9-20Z"
-          fill="currentColor"
-        />
-        <circle cx="33" cy="10" r="1.6" fill="currentColor" />
-        <circle cx="30" cy="6" r="1" fill="currentColor" />
-      </motion.svg>
+        <MoonStar className={styles.coverOrnament} />
+      </motion.div>
 
       <motion.p
         className={styles.coverTop}
@@ -45,16 +39,20 @@ export default function Cover({ invitation }: { invitation: AqiqahInvitationData
         Aqiqah &amp; Tasyakuran
       </motion.p>
 
-      {invitation.baby.photo && (
-        <motion.div
-          className={styles.coverMedal}
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, delay: 0.45, ease: "easeOut" }}
-        >
+      <motion.div
+        className={styles.coverMedal}
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1, delay: 0.45, ease: "easeOut" }}
+      >
+        {invitation.baby.photo ? (
           <img src={invitation.baby.photo} alt={invitation.baby.name} />
-        </motion.div>
-      )}
+        ) : (
+          <div className={styles.coverMedalFallback}>
+            <MoonStar className={styles.coverMedalIcon} />
+          </div>
+        )}
+      </motion.div>
 
       <motion.h1
         className={styles.coverTitle}

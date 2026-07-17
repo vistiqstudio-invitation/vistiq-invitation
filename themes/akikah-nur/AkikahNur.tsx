@@ -7,6 +7,7 @@ import type { AqiqahInvitationData } from "@/types/aqiqah";
 
 import Loading from "./Loading";
 import Cover from "./Cover";
+import FloatingStars from "./FloatingStars";
 import Hero from "./Hero";
 import Baby from "./Baby";
 import Event from "./Event";
@@ -38,6 +39,8 @@ export default function AkikahNur({ invitation }: { invitation: AqiqahInvitation
 
       {ready && opened && (
         <>
+          <FloatingStars />
+
           <section id="home">
             <Hero invitation={invitation} />
           </section>

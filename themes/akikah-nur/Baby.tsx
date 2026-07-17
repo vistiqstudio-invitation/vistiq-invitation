@@ -2,6 +2,7 @@
 
 import Reveal from "@/components/Reveal";
 import type { AqiqahInvitationData } from "@/types/aqiqah";
+import MoonStar from "./MoonStar";
 import styles from "./style.module.css";
 
 export default function Baby({ invitation }: { invitation: AqiqahInvitationData }) {
@@ -18,6 +19,8 @@ export default function Baby({ invitation }: { invitation: AqiqahInvitationData 
 
       <Reveal delay={0.1}>
         <div className={styles.babyCard}>
+          <MoonStar className={styles.cornerOrnament} />
+
           <h3 className={styles.babyName}>{baby.name}</h3>
 
           {baby.birthDate && (

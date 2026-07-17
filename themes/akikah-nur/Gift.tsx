@@ -4,6 +4,7 @@ import { useState } from "react";
 import Reveal from "@/components/Reveal";
 import type { AqiqahInvitationData } from "@/types/aqiqah";
 import type { GiftAccount } from "@/types/invitation";
+import MoonStar from "./MoonStar";
 import styles from "./style.module.css";
 
 function GiftCard({ account }: { account: GiftAccount }) {
@@ -19,6 +20,8 @@ function GiftCard({ account }: { account: GiftAccount }) {
 
   return (
     <div className={styles.giftCard}>
+      <MoonStar className={styles.cornerOrnament} />
+
       <p className={styles.giftOwner}>Kado untuk Buah Hati</p>
       {bankName && <h3 className={styles.giftBank}>{bankName}</h3>}
       {accountNumber && <p className={styles.giftNumber}>{accountNumber}</p>}
