@@ -2,6 +2,7 @@ import type { InvitationData } from "@/types/invitation";
 import type { AqiqahInvitationData } from "@/types/aqiqah";
 import AkikahNur from "@/themes/akikah-nur/AkikahNur";
 import AkikahZaitun from "@/themes/akikah-zaitun/AkikahZaitun";
+import AkikahCeria from "@/themes/akikah-ceria/AkikahCeria";
 import LuxuryGold from "@/themes/luxury-gold/LuxuryGold";
 import MinimalWhite from "@/themes/minimal-white/MinimalWhite";
 import IslamicGreen from "@/themes/islamic-green/IslamicGreen";
@@ -221,6 +222,7 @@ export const aqiqahThemeRegistry: Record<
 > = {
   "akikah-nur": AkikahNur,
   "akikah-zaitun": AkikahZaitun,
+  "akikah-ceria": AkikahCeria,
 };
 
 export const aqiqahThemeList: ThemeMeta[] = [
@@ -235,5 +237,11 @@ export const aqiqahThemeList: ThemeMeta[] = [
     label: "Akikah Zaitun",
     description: "Sage & krem lime, medali foto bulat, kartu acara arch, galeri grid olive",
     swatch: ["#f7ffdc", "#6c7e2f"],
+  },
+  {
+    key: "akikah-ceria",
+    label: "Akikah Ceria",
+    description: "Krem, coral & sage ceria, garland bunting, balon, medali foto organik",
+    swatch: ["#fff8f0", "#e8927c"],
   },
 ];
