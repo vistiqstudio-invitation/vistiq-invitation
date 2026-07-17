@@ -61,6 +61,11 @@ const COVER_BY_THEME: Record<string, string> = {
   // tones are the closest mood match among the current photo set.
   // Replace once real photos exist.
   "sage-green": "/photos/floral-cover.png",
+  // Placeholder only - no owner-supplied photography for this theme yet.
+  // Reuses rustic's real cover shot since its terracotta/earthy tones are
+  // the closest mood match to this desert-inspired theme among the
+  // current photo set. Replace once real photos exist.
+  sahara: "/photos/rustic-cover.png",
 };
 
 // Couple portrait photos also vary by theme - the default luxury-gold
@@ -91,6 +96,7 @@ const GROOM_PHOTO_BY_THEME: Record<string, string> = {
   "jawa-merah": "/photos/jawa-groom.png",
   "jawa-coklat": "/photos/jawa-groom.png",
   "sage-green": "/photos/floral-groom.png",
+  sahara: "/photos/rustic-groom.png",
 };
 
 const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
@@ -117,6 +123,7 @@ const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
   "jawa-merah": "/photos/jawa-bride.png",
   "jawa-coklat": "/photos/jawa-bride.png",
   "sage-green": "/photos/floral-bride.png",
+  sahara: "/photos/rustic-bride.png",
 };
 
 // Gallery photos also vary by theme so the "Our Moments" slider matches each
@@ -337,6 +344,17 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
     "/photos/floral-gallery-11.png",
     "/photos/floral-gallery-12.png",
   ],
+  // Placeholder only, same reasoning as the cover/groom/bride entries
+  // above - reuses rustic's real gallery wholesale until real sahara
+  // photos are supplied.
+  sahara: [
+    "/photos/rustic-gallery-7.png",
+    "/photos/rustic-gallery-8.png",
+    "/photos/rustic-gallery-9.png",
+    "/photos/rustic-gallery-10.png",
+    "/photos/rustic-gallery-11.png",
+    "/photos/rustic-gallery-12.png",
+  ],
 };
 
 // Background music also varies by theme so the picker doesn't play the same
@@ -367,6 +385,7 @@ const MUSIC_BY_THEME: Record<string, string> = {
   "jawa-merah": "/music/jawa-merah.mp3",
   "jawa-coklat": "/music/jawa-coklat.mp3",
   "sage-green": "/music/sage-green.mp3",
+  sahara: "/music/sahara.mp3",
 };
 
 // One shared sample invitation used to demo every theme. Only the `theme`,

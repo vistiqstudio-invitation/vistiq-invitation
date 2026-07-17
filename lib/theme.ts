@@ -22,6 +22,7 @@ import GoldenRomance from "@/themes/golden-romance/GoldenRomance";
 import JawaMerah from "@/themes/jawa-merah/JawaMerah";
 import JawaCoklat from "@/themes/jawa-coklat/JawaCoklat";
 import SageGreen from "@/themes/sage-green/SageGreen";
+import Sahara from "@/themes/sahara/Sahara";
 
 export const themeRegistry: Record<
   string,
@@ -50,6 +51,7 @@ export const themeRegistry: Record<
   "jawa-merah": JawaMerah,
   "jawa-coklat": JawaCoklat,
   "sage-green": SageGreen,
+  sahara: Sahara,
 };
 
 export type ThemeMeta = {
@@ -197,5 +199,11 @@ export const themeList: ThemeMeta[] = [
     label: "Sage Green",
     description: "Krem & sage-olive, ring foto ganda, galeri marquee arch, timeline stem",
     swatch: ["#f6f4e9", "#464e2e"],
+  },
+  {
+    key: "sahara",
+    label: "Sahara",
+    description: "Krem & terracotta pasir, foto arch tinggi, galeri grid lightbox, story dua kolom",
+    swatch: ["#fffdf9", "#ae8f7a"],
   },
 ];

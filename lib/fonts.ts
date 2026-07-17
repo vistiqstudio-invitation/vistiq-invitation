@@ -1,4 +1,4 @@
-import { Cormorant_Garamond, Playfair_Display, Inter, Alex_Brush } from "next/font/google";
+import { Cormorant_Garamond, Playfair_Display, Inter, Alex_Brush, Suranna } from "next/font/google";
 
 export const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -24,6 +24,13 @@ export const inter = Inter({
 
 export const alexBrush = Alex_Brush({
   variable: "--font-alex-brush",
+  subsets: ["latin"],
+  weight: ["400"],
+  display: "swap",
+});
+
+export const suranna = Suranna({
+  variable: "--font-suranna",
   subsets: ["latin"],
   weight: ["400"],
   display: "swap",
