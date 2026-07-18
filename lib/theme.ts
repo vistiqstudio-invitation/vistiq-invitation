@@ -1,8 +1,10 @@
 import type { InvitationData } from "@/types/invitation";
 import type { AqiqahInvitationData } from "@/types/aqiqah";
+import type { KhitanInvitationData } from "@/types/khitan";
 import AkikahNur from "@/themes/akikah-nur/AkikahNur";
 import AkikahZaitun from "@/themes/akikah-zaitun/AkikahZaitun";
 import AkikahCeria from "@/themes/akikah-ceria/AkikahCeria";
+import KhitanWarna from "@/themes/khitan-warna/KhitanWarna";
 import LuxuryGold from "@/themes/luxury-gold/LuxuryGold";
 import MinimalWhite from "@/themes/minimal-white/MinimalWhite";
 import IslamicGreen from "@/themes/islamic-green/IslamicGreen";
@@ -243,5 +245,26 @@ export const aqiqahThemeList: ThemeMeta[] = [
     label: "Akikah Ceria",
     description: "Krem, coral & sage ceria, garland bunting, balon, medali foto organik",
     swatch: ["#fff8f0", "#e8927c"],
+  },
+];
+
+// Third occasion category - khitan (circumcision celebration). Reuses the
+// exact same data columns as aqiqah under the hood (see 020_add_khitan_
+// category.sql) but gets its own type/registry since "baby" framing (with
+// a gender field) doesn't fit a khitan child, and mixing categories into
+// one registry would break the discriminated-union props contract.
+export const khitanThemeRegistry: Record<
+  string,
+  (props: { invitation: KhitanInvitationData }) => React.JSX.Element
+> = {
+  "khitan-warna": KhitanWarna,
+};
+
+export const khitanThemeList: ThemeMeta[] = [
+  {
+    key: "khitan-warna",
+    label: "Khitan Warna",
+    description: "Biru dusty & krem, medali foto bulat, motif daun emas, galeri grid",
+    swatch: ["#eef3f9", "#5b89aa"],
   },
 ];

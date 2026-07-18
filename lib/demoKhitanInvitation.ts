@@ -1,0 +1,75 @@
+import type { KhitanInvitationData } from "@/types/khitan";
+
+const MUSIC_BY_THEME: Record<string, string> = {
+  "khitan-warna": "/music/khitan-warna.mp3",
+};
+
+const COVER_BY_THEME: Record<string, string> = {
+  "khitan-warna": "/photos/khitan-warna-cover.jpg",
+};
+
+const CHILD_PHOTO_BY_THEME: Record<string, string> = {
+  "khitan-warna": "/photos/khitan-warna-child.jpg",
+};
+
+const GALLERY_BY_THEME: Record<string, string[]> = {
+  "khitan-warna": [
+    "/photos/khitan-warna-gallery-1.jpg",
+    "/photos/khitan-warna-gallery-2.jpg",
+    "/photos/khitan-warna-gallery-3.jpg",
+    "/photos/khitan-warna-gallery-4.jpg",
+    "/photos/khitan-warna-gallery-5.jpg",
+    "/photos/khitan-warna-gallery-6.jpg",
+  ],
+};
+
+// One shared sample khitan invitation used to demo every khitan theme, same
+// pattern as getDemoInvitation()/getDemoAqiqahInvitation().
+export function getDemoKhitanInvitation(theme: string): KhitanInvitationData {
+  return {
+    id: 0,
+    slug: `demo-khitan-${theme}`,
+    theme,
+    status: "active",
+    category: "khitan",
+
+    brand: null,
+
+    coverImage: COVER_BY_THEME[theme] || null,
+    musicUrl: MUSIC_BY_THEME[theme] || null,
+    videoUrl: null,
+
+    mapsUrl: "https://maps.google.com",
+    mapsEmbedUrl: "https://www.google.com/maps?q=Jakarta&output=embed",
+
+    child: {
+      name: "Muhammad Rayyan Athallah",
+      photo: CHILD_PHOTO_BY_THEME[theme] || null,
+      birthDate: "Senin, 12 Mei 2018",
+      birthPlace: "Jakarta",
+    },
+
+    parents: {
+      father: "Rizky Pratama",
+      mother: "Nabila Putri",
+    },
+
+    event: {
+      date: "Minggu, 20 September 2026",
+      rawDate: "2026-09-20T10:00:00",
+      time: "10.00 WIB",
+      location: "Kediaman Keluarga, Jl. Melati No. 12, Jakarta",
+    },
+
+    gallery: GALLERY_BY_THEME[theme] || [],
+
+    gifts: [
+      {
+        owner: "Orang Tua",
+        bankName: "BCA",
+        accountNumber: "1234567890",
+        accountName: "Rizky Pratama",
+      },
+    ],
+  };
+}

@@ -10,7 +10,7 @@ const BUCKET = "invitation-assets";
 type PhotoField = "cover_photo" | "bride_photo" | "groom_photo" | "music_url";
 
 const initialForm = {
-  category: "wedding" as "wedding" | "aqiqah",
+  category: "wedding" as "wedding" | "aqiqah" | "khitan",
   groom_name: "",
   bride_name: "",
   groom_parent: "",
@@ -128,7 +128,8 @@ export default function ClientEditPage() {
       setInvitationId(invitation.id);
 
       setForm({
-        category: invitation.category === "aqiqah" ? "aqiqah" : "wedding",
+        category:
+          invitation.category === "aqiqah" ? "aqiqah" : invitation.category === "khitan" ? "khitan" : "wedding",
         groom_name: invitation.groom_name || "",
         bride_name: invitation.bride_name || "",
         groom_parent: invitation.groom_parent || "",
@@ -312,27 +313,31 @@ export default function ClientEditPage() {
           </button>
         </div>
 
-        {form.category === "aqiqah" ? (
+        {form.category === "aqiqah" || form.category === "khitan" ? (
           <>
-            <h2 className={styles.editSectionTitle}>Data Bayi &amp; Orang Tua</h2>
+            <h2 className={styles.editSectionTitle}>
+              {form.category === "khitan" ? "Data Anak & Orang Tua" : "Data Bayi & Orang Tua"}
+            </h2>
 
             <div className={styles.formGrid}>
               <input
-                placeholder="Nama Bayi"
+                placeholder={form.category === "khitan" ? "Nama Anak" : "Nama Bayi"}
                 value={form.baby_name}
                 onChange={(e) => set("baby_name", e.target.value)}
                 className={styles.input}
               />
 
-              <select
-                value={form.baby_gender}
-                onChange={(e) => set("baby_gender", e.target.value)}
-                className={styles.input}
-              >
-                <option value="">Jenis Kelamin</option>
-                <option value="L">Laki-laki</option>
-                <option value="P">Perempuan</option>
-              </select>
+              {form.category === "aqiqah" && (
+                <select
+                  value={form.baby_gender}
+                  onChange={(e) => set("baby_gender", e.target.value)}
+                  className={styles.input}
+                >
+                  <option value="">Jenis Kelamin</option>
+                  <option value="L">Laki-laki</option>
+                  <option value="P">Perempuan</option>
+                </select>
+              )}
 
               <input
                 type="date"
@@ -364,7 +369,9 @@ export default function ClientEditPage() {
               />
             </div>
 
-            <h2 className={styles.editSectionTitle}>Jadwal &amp; Lokasi Acara Aqiqah</h2>
+            <h2 className={styles.editSectionTitle}>
+              Jadwal &amp; Lokasi Acara {form.category === "khitan" ? "Khitan" : "Aqiqah"}
+            </h2>
 
             <div className={styles.formGrid}>
               <input
@@ -410,7 +417,9 @@ export default function ClientEditPage() {
               />
             </div>
 
-            <h2 className={styles.editSectionTitle}>Amplop Digital - Kado untuk Buah Hati</h2>
+            <h2 className={styles.editSectionTitle}>
+              Amplop Digital - {form.category === "khitan" ? "Kado untuk Ananda" : "Kado untuk Buah Hati"}
+            </h2>
 
             <div className={styles.formGrid}>
               <input
@@ -649,7 +658,9 @@ export default function ClientEditPage() {
 
         <div className={styles.uploadGrid}>
           <UploadBox
-            title={form.category === "aqiqah" ? "Foto Bayi" : "Foto Cover"}
+            title={
+              form.category === "aqiqah" ? "Foto Bayi" : form.category === "khitan" ? "Foto Anak" : "Foto Cover"
+            }
             value={form.cover_photo}
             onUpload={(file) => uploadSingleFile(file, "cover_photo")}
           />

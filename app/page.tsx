@@ -3,6 +3,7 @@ import PhoneMockup from "@/components/PhoneMockup";
 import SiteNavbar from "@/components/SiteNavbar";
 import ThemeGrid from "@/components/ThemeGrid";
 import AqiqahThemeGrid from "@/components/AqiqahThemeGrid";
+import KhitanThemeGrid from "@/components/KhitanThemeGrid";
 
 const WA_NUMBER = "6281371338032";
 
@@ -106,6 +107,13 @@ export default function HomePage() {
         <h2>Undangan Aqiqah Digital</h2>
 
         <AqiqahThemeGrid />
+      </section>
+
+      <section id="tema-khitan" className="sectionDark">
+        <p className="label">Tema Khitan</p>
+        <h2>Undangan Khitan Digital</h2>
+
+        <KhitanThemeGrid />
       </section>
 
       <section id="harga" className="section">

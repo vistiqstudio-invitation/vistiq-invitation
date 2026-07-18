@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getInvitationBySlug } from "@/lib/invitation";
-import { themeRegistry, aqiqahThemeRegistry } from "@/lib/theme";
+import { themeRegistry, aqiqahThemeRegistry, khitanThemeRegistry } from "@/lib/theme";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -18,6 +18,27 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (invitation.category === "aqiqah") {
     const title = `Aqiqah ${invitation.baby.name} | ${invitation.brand?.name ?? "Vistiq Invitation"}`;
     const description = `Undangan aqiqah ${invitation.baby.name}. Kami mengundang Bapak/Ibu/Saudara/i untuk turut hadir dan memberikan doa restu.`;
+
+    return {
+      title,
+      description,
+      openGraph: {
+        title,
+        description,
+        images: invitation.coverImage ? [invitation.coverImage] : undefined,
+      },
+      twitter: {
+        card: "summary_large_image",
+        title,
+        description,
+        images: invitation.coverImage ? [invitation.coverImage] : undefined,
+      },
+    };
+  }
+
+  if (invitation.category === "khitan") {
+    const title = `Khitan ${invitation.child.name} | ${invitation.brand?.name ?? "Vistiq Invitation"}`;
+    const description = `Undangan khitan ${invitation.child.name}. Kami mengundang Bapak/Ibu/Saudara/i untuk turut hadir dan memberikan doa restu.`;
 
     return {
       title,
@@ -66,6 +87,11 @@ export default async function InvitationPage({ params }: Props) {
 
   if (invitation.category === "aqiqah") {
     const Theme = aqiqahThemeRegistry[invitation.theme] || aqiqahThemeRegistry["akikah-nur"];
+    return <Theme invitation={invitation} />;
+  }
+
+  if (invitation.category === "khitan") {
+    const Theme = khitanThemeRegistry[invitation.theme] || khitanThemeRegistry["khitan-warna"];
     return <Theme invitation={invitation} />;
   }
 

@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { requireRole } from "@/lib/supabase/dal";
 import { createClient } from "@/lib/supabase/server";
 import { getInvitationBySlug } from "@/lib/invitation";
-import { themeRegistry, aqiqahThemeRegistry } from "@/lib/theme";
+import { themeRegistry, aqiqahThemeRegistry, khitanThemeRegistry } from "@/lib/theme";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -47,6 +47,11 @@ export default async function PreviewPage({ params }: Props) {
 
   if (invitation.category === "aqiqah") {
     const Theme = aqiqahThemeRegistry[invitation.theme] || aqiqahThemeRegistry["akikah-nur"];
+    return <Theme invitation={invitation} />;
+  }
+
+  if (invitation.category === "khitan") {
+    const Theme = khitanThemeRegistry[invitation.theme] || khitanThemeRegistry["khitan-warna"];
     return <Theme invitation={invitation} />;
   }
 
