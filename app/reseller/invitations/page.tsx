@@ -341,7 +341,17 @@ export default function ResellerInvitationsPage() {
 
     setSaving(true);
 
-    const { error } = await supabase.from("invitations").insert(form);
+    // Date-type columns reject an empty string ("" from an untouched
+    // <input type="date">) - null is the correct "not set" value.
+    const payload = {
+      ...form,
+      akad_date: form.akad_date || null,
+      resepsi_date: form.resepsi_date || null,
+      aqiqah_date: form.aqiqah_date || null,
+      birth_date: form.birth_date || null,
+    };
+
+    const { error } = await supabase.from("invitations").insert(payload);
 
     setSaving(false);
 
