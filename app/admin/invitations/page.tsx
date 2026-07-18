@@ -426,6 +426,13 @@ export default function InvitationsPage() {
 
                   <div className={styles.actions}>
                     <button
+                      onClick={() => router.push(`/admin/invitations/${item.id}`)}
+                      className={styles.miniButton}
+                    >
+                      Edit
+                    </button>
+
+                    <button
                       onClick={() => openPreview(item.slug)}
                       className={styles.miniButton}
                     >
