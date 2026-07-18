@@ -342,13 +342,16 @@ export default function ResellerInvitationsPage() {
     setSaving(true);
 
     // Date-type columns reject an empty string ("" from an untouched
-    // <input type="date">) - null is the correct "not set" value.
+    // <input type="date">), and baby_gender's check constraint only
+    // allows 'L'/'P' or null, never "" - null is the correct "not set"
+    // value for all of these.
     const payload = {
       ...form,
       akad_date: form.akad_date || null,
       resepsi_date: form.resepsi_date || null,
       aqiqah_date: form.aqiqah_date || null,
       birth_date: form.birth_date || null,
+      baby_gender: form.baby_gender || null,
     };
 
     const { error } = await supabase.from("invitations").insert(payload);
