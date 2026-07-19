@@ -17,9 +17,10 @@ type Props = {
   packageId: PaymentPackageId;
   label?: string;
   featured?: boolean;
+  production?: boolean;
 };
 
-export default function CheckoutButton({ packageId, label = "Bayar Sekarang", featured = false }: Props) {
+export default function CheckoutButton({ packageId, label = "Bayar Sekarang", featured = false, production = false }: Props) {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -27,7 +28,6 @@ export default function CheckoutButton({ packageId, label = "Bayar Sekarang", fe
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const clientKey = process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY ?? "";
-  const production = Boolean(clientKey) && !clientKey.startsWith("SB-");
   const scriptUrl = production
     ? "https://app.midtrans.com/snap/snap.js"
     : "https://app.sandbox.midtrans.com/snap/snap.js";

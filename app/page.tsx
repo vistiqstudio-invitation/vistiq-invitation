@@ -17,6 +17,7 @@ const HERO_FAN = [
 ];
 
 export default function HomePage() {
+  const midtransProduction = process.env.MIDTRANS_IS_PRODUCTION === "true";
   const resellerText = encodeURIComponent(
     "Halo Vistiq Invitation, saya ingin daftar reseller undangan digital"
   );
@@ -129,7 +130,7 @@ export default function HomePage() {
               Untuk yang cuma butuh 1 undangan pernikahan sendiri, lengkap
               dengan RSVP, galeri, dan amplop digital. Bukan reseller.
             </p>
-            <CheckoutButton packageId="client" />
+            <CheckoutButton packageId="client" production={midtransProduction} />
             <span className="paymentMethods">QRIS · Virtual Account · E-Wallet</span>
           </div>
 
@@ -142,7 +143,7 @@ export default function HomePage() {
               dashboard reseller dan komisi <strong style={{ color: "white" }}>30%</strong> dari
               setiap penjualan client Anda. Bayar sekali, aktif selamanya.
             </p>
-            <CheckoutButton packageId="reseller" label="Bayar & Daftar Reseller" featured />
+            <CheckoutButton packageId="reseller" label="Bayar & Daftar Reseller" featured production={midtransProduction} />
             <span className="paymentMethods light">QRIS · Virtual Account · E-Wallet</span>
           </div>
 
@@ -155,7 +156,7 @@ export default function HomePage() {
               <strong>100%</strong> jadi milik Anda. Bayar sekali, aktif
               selamanya.
             </p>
-            <CheckoutButton packageId="reseller-brand" label="Bayar Reseller Brand" />
+            <CheckoutButton packageId="reseller-brand" label="Bayar Reseller Brand" production={midtransProduction} />
             <span className="paymentMethods">QRIS · Virtual Account · E-Wallet</span>
           </div>
         </div>
