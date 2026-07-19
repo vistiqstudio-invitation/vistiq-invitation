@@ -38,6 +38,7 @@ import PorcelainBloom from "@/themes/porcelain-bloom/PorcelainBloom";
 import LoveChronicle from "@/themes/love-chronicle/LoveChronicle";
 import VelvetCinema from "@/themes/velvet-cinema/VelvetCinema";
 import PrismaticVows from "@/themes/prismatic-vows/PrismaticVows";
+import PearlTide from "@/themes/pearl-tide/PearlTide";
 
 export const themeRegistry: Record<
   string,
@@ -72,6 +73,7 @@ export const themeRegistry: Record<
   "love-chronicle": LoveChronicle,
   "velvet-cinema": VelvetCinema,
   "prismatic-vows": PrismaticVows,
+  "pearl-tide": PearlTide,
 };
 
 export type ThemeMeta = {
@@ -255,6 +257,12 @@ export const themeList: ThemeMeta[] = [
     label: "Prismatic Vows",
     description: "Indigo, lilac & cyan, kaca holografik, prisma cahaya & galeri refraksi",
     swatch: ["#0c0b1d", "#76e7ef"],
+  },
+  {
+    key: "pearl-tide",
+    label: "Pearl Tide",
+    description: "Deep ocean & seafoam, kerang, mutiara, riak air & bingkai pesisir organik",
+    swatch: ["#071f29", "#dcebea"],
   },
 ];
 
