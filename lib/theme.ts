@@ -37,6 +37,7 @@ import MidnightAurora from "@/themes/midnight-aurora/MidnightAurora";
 import PorcelainBloom from "@/themes/porcelain-bloom/PorcelainBloom";
 import LoveChronicle from "@/themes/love-chronicle/LoveChronicle";
 import VelvetCinema from "@/themes/velvet-cinema/VelvetCinema";
+import PrismaticVows from "@/themes/prismatic-vows/PrismaticVows";
 
 export const themeRegistry: Record<
   string,
@@ -70,6 +71,7 @@ export const themeRegistry: Record<
   "porcelain-bloom": PorcelainBloom,
   "love-chronicle": LoveChronicle,
   "velvet-cinema": VelvetCinema,
+  "prismatic-vows": PrismaticVows,
 };
 
 export type ThemeMeta = {
@@ -247,6 +249,12 @@ export const themeList: ThemeMeta[] = [
     label: "Velvet Cinema",
     description: "Merah beludru & hitam, premiere film, marquee lights, tiket VIP & filmstrip",
     swatch: ["#0a0909", "#761423"],
+  },
+  {
+    key: "prismatic-vows",
+    label: "Prismatic Vows",
+    description: "Indigo, lilac & cyan, kaca holografik, prisma cahaya & galeri refraksi",
+    swatch: ["#0c0b1d", "#76e7ef"],
   },
 ];
 
