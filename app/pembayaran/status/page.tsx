@@ -4,11 +4,11 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 
-type PaymentStatus = { orderId:string;status:string;paymentType:string|null;grossAmount:string };
+type PaymentStatus = { orderId:string;status:string;paymentType:string|null;grossAmount:string;accountStatus:string|null };
 
 const LABELS:Record<string,{title:string;copy:string;color:string}>={
-  settlement:{title:"Pembayaran Berhasil",copy:"Pembayaran Anda sudah diterima. Tim Vistiq akan memproses pesanan Anda.",color:"#139b52"},
-  capture:{title:"Pembayaran Berhasil",copy:"Pembayaran Anda sudah diterima dan sedang diverifikasi.",color:"#139b52"},
+  settlement:{title:"Selamat, Pembayaran Berhasil!",copy:"Pembayaran Anda sudah diterima.",color:"#139b52"},
+  capture:{title:"Selamat, Pembayaran Berhasil!",copy:"Pembayaran Anda sudah diterima.",color:"#139b52"},
   pending:{title:"Menunggu Pembayaran",copy:"Selesaikan pembayaran sesuai metode yang Anda pilih di Midtrans.",color:"#d18a11"},
   expire:{title:"Pembayaran Kedaluwarsa",copy:"Waktu pembayaran telah habis. Silakan buat checkout baru.",color:"#c2413b"},
   cancel:{title:"Pembayaran Dibatalkan",copy:"Transaksi telah dibatalkan. Anda dapat mencoba kembali.",color:"#c2413b"},
@@ -21,7 +21,15 @@ function StatusContent(){
   useEffect(()=>{if(!orderId)return;const controller=new AbortController();fetch(`/api/payments/status?order_id=${encodeURIComponent(orderId)}`,{cache:"no-store",signal:controller.signal}).then(async(r)=>{const j=await r.json();if(!r.ok)throw new Error(j.error||"Status belum tersedia.");setData(j);setError("")}).catch(e=>{if(e instanceof Error&&e.name!=="AbortError")setError(e.message||"Status belum tersedia.")}).finally(()=>setLoading(false));return()=>controller.abort()},[orderId,refresh]);
   const check=()=>{setLoading(true);setRefresh(value=>value+1)};
   const meta=LABELS[data?.status??""]??{title:"Status Pembayaran",copy:"Status transaksi sedang diperiksa.",color:"#1167b2"};
-  return <main className="paymentStatus"><div className="statusCard"><div className="statusIcon" style={{background:meta.color}}>{data&&["settlement","capture"].includes(data.status)?"✓":"⌛"}</div><p className="statusLabel">VISTIQ INVITATION · MIDTRANS</p><h1>{loading?"Memeriksa Pembayaran...":error?"Status Belum Tersedia":meta.title}</h1><p className="statusCopy">{loading?"Mohon tunggu sebentar.":error||meta.copy}</p>{data&&<div className="statusDetails"><span>Nomor pesanan<b>{data.orderId}</b></span><span>Total<b>Rp {Number(data.grossAmount).toLocaleString("id-ID")}</b></span><span>Metode<b>{data.paymentType||"Belum dipilih"}</b></span></div>}<div className="statusActions"><button onClick={check} disabled={loading}>Periksa Lagi</button><Link href="/#harga">Kembali ke Paket</Link></div><small>Butuh bantuan? Gunakan tombol WhatsApp di sudut halaman.</small></div><style>{css}</style></main>
+  const paid=Boolean(data&&["settlement","capture"].includes(data.status));
+  const accountCopy=data?.accountStatus==="completed"
+    ? "Akun Anda sudah dibuat. Silakan cek email untuk membuat password dan login ke dashboard."
+    : data?.accountStatus==="email_failed"
+      ? "Akun sudah dibuat, tetapi email belum terkirim. Silakan hubungi admin melalui WhatsApp."
+      : data?.accountStatus==="failed"
+        ? "Pembayaran berhasil, tetapi akun perlu dibantu admin. Silakan hubungi kami melalui WhatsApp."
+        : "Akun Anda sedang dibuat. Silakan cek email beberapa saat lagi.";
+  return <main className="paymentStatus"><div className="statusCard"><div className="statusIcon" style={{background:meta.color}}>{paid?"✓":"⌛"}</div><p className="statusLabel">VISTIQ INVITATION · MIDTRANS</p><h1>{loading?"Memeriksa Pembayaran...":error?"Status Belum Tersedia":meta.title}</h1><p className="statusCopy">{loading?"Mohon tunggu sebentar.":error||(paid?accountCopy:meta.copy)}</p>{data&&<div className="statusDetails"><span>Nomor pesanan<b>{data.orderId}</b></span><span>Total<b>Rp {Number(data.grossAmount).toLocaleString("id-ID")}</b></span><span>Metode<b>{data.paymentType||"Belum dipilih"}</b></span></div>}<div className="statusActions"><button onClick={check} disabled={loading}>Periksa Lagi</button>{data?.accountStatus==="completed"?<Link href="/login">Login Dashboard</Link>:<Link href="/#harga">Kembali ke Paket</Link>}</div><small>Butuh bantuan? Gunakan tombol WhatsApp di sudut halaman.</small></div><style>{css}</style></main>
 }
 
 export default function PaymentStatusPage(){return <Suspense fallback={<main className="paymentStatus">Memuat...</main>}><StatusContent/></Suspense>}

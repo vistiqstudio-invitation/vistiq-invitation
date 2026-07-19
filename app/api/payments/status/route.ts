@@ -1,6 +1,7 @@
 import "server-only";
 
 import { NextResponse } from "next/server";
+import { createClient as createServiceClient } from "@supabase/supabase-js";
 
 export async function GET(request: Request) {
   const serverKey = process.env.MIDTRANS_SERVER_KEY;
@@ -31,6 +32,21 @@ export async function GET(request: Request) {
     );
   }
 
+  let accountStatus: string | null = null;
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (supabaseUrl && serviceRoleKey) {
+    const supabase = createServiceClient(supabaseUrl, serviceRoleKey, {
+      auth: { autoRefreshToken: false, persistSession: false },
+    });
+    const { data: order } = await supabase
+      .from("checkout_orders")
+      .select("provision_status")
+      .eq("order_id", orderId)
+      .maybeSingle();
+    accountStatus = order?.provision_status ?? null;
+  }
+
   return NextResponse.json({
     orderId: data.order_id,
     status: data.transaction_status,
@@ -38,5 +54,6 @@ export async function GET(request: Request) {
     grossAmount: data.gross_amount,
     transactionTime: data.transaction_time ?? null,
     settlementTime: data.settlement_time ?? null,
+    accountStatus,
   });
 }

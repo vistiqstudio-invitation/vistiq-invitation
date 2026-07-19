@@ -4,6 +4,7 @@ import crypto from "node:crypto";
 import { NextResponse } from "next/server";
 import { createClient as createServiceClient } from "@supabase/supabase-js";
 import { packageFromOrderId } from "@/lib/paymentPackages";
+import { provisionPaidOrder } from "@/lib/provisionPaidOrder";
 
 export async function POST(request: Request) {
   const serverKey = process.env.MIDTRANS_SERVER_KEY;
@@ -55,6 +56,14 @@ export async function POST(request: Request) {
       })
       .eq("order_id", orderId);
     if (error) console.warn("checkout_orders notification skipped:", error.message);
+
+    if (!error && paid) {
+      try {
+        await provisionPaidOrder(supabase, orderId, new URL(request.url).origin);
+      } catch (provisionError) {
+        console.error("checkout account provisioning failed:", provisionError);
+      }
+    }
   }
 
   return NextResponse.json({ received: true });
