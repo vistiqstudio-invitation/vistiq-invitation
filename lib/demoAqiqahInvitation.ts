@@ -7,6 +7,7 @@ const MUSIC_BY_THEME: Record<string, string> = {
   // the next unused numbered wedding track (see reference_wedding_music_bank
   // memory), same as any new wedding theme would.
   "akikah-ceria": "/music/akikah-ceria.mp3",
+  "akikah-anugerah": "/music/akikah-anugerah.mp3",
 };
 
 // akikah-nur has no owner-supplied baby photography yet - unlike the

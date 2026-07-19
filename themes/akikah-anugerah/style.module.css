@@ -1,0 +1,860 @@
+.root {
+  --cream: #faf6f1;
+  --blush: #f3ded6;
+  --blush-deep: #e6bcae;
+  --charcoal: #2b2622;
+  --muted: rgba(43, 38, 34, 0.62);
+  --gold: #a9835a;
+  --gold-soft: rgba(169, 131, 90, 0.35);
+
+  --font-display: var(--font-cormorant), serif;
+  --font-script: var(--font-alex-brush), cursive;
+  --font-body: var(--font-inter), sans-serif;
+
+  position: relative;
+  background: var(--cream);
+  color: var(--charcoal);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  width: 100%;
+}
+
+.root :global(*) {
+  box-sizing: border-box;
+}
+
+/* ---------- Layout primitives ---------- */
+
+.section {
+  position: relative;
+  padding: clamp(64px, 10vw, 128px) 24px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.eyebrow {
+  display: block;
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 0 0 18px;
+}
+
+.title {
+  text-align: center;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(34px, 5.4vw, 48px);
+  letter-spacing: 0.01em;
+  color: var(--charcoal);
+  margin: 0 0 40px;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 30px;
+  border: 1px solid var(--charcoal);
+  background: transparent;
+  color: var(--charcoal);
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.35s ease, color 0.35s ease;
+}
+
+.button:hover {
+  background: var(--charcoal);
+  color: var(--cream);
+}
+
+.solid {
+  background: var(--charcoal);
+  color: var(--cream);
+}
+
+.solid:hover {
+  background: var(--gold);
+  border-color: var(--gold);
+}
+
+/* Fine double-line "gallery label" frame, reused for photos, the event
+   card, and the gift card - a thin border with an offset outer rule
+   instead of the circular medallions / colored blobs the other three
+   aqiqah themes use for framing. */
+.frame {
+  position: relative;
+  border: 1px solid var(--charcoal);
+}
+
+.frame::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px solid var(--gold-soft);
+  pointer-events: none;
+}
+
+/* ---------- Loading ---------- */
+
+.loading {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: grid;
+  place-items: center;
+  background: var(--charcoal);
+  color: var(--cream);
+}
+
+.loadingMark {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 30px;
+}
+
+/* ---------- Cover ---------- */
+
+.cover {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--cream);
+  padding: clamp(32px, 6vh, 60px) 24px;
+  text-align: center;
+}
+
+.coverWreath {
+  width: clamp(70px, 14vw, 96px);
+  height: auto;
+  color: var(--gold);
+  margin: 0 0 18px;
+}
+
+.coverEyebrow {
+  composes: eyebrow;
+  margin-bottom: 22px;
+}
+
+.coverPhoto {
+  composes: frame;
+  width: min(52vw, 210px);
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  margin: 0 0 28px;
+}
+
+.coverPhoto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.coverTitle {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(30px, 6.4vw, 46px);
+  color: var(--charcoal);
+  margin: 0 0 10px;
+}
+
+.coverSub {
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  margin: 0 0 32px;
+}
+
+.coverFoot {
+  width: 100%;
+}
+
+.coverLine {
+  width: 1px;
+  height: 30px;
+  background: linear-gradient(180deg, transparent, var(--gold));
+  margin: 0 auto 20px;
+}
+
+.guestLabel {
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 8px;
+}
+
+.guestName {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(18px, 3.4vw, 22px);
+  color: var(--charcoal);
+  margin: 0 0 26px;
+}
+
+/* ---------- Hero + countdown ---------- */
+
+.hero {
+  composes: section;
+  text-align: center;
+}
+
+.heroTitle {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: clamp(15px, 2vw, 17px);
+  line-height: 1.9;
+  color: var(--muted);
+  max-width: 600px;
+  margin: 0 auto 44px;
+}
+
+.badgeRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0px, 1vw, 4px);
+}
+
+.badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: clamp(64px, 16vw, 82px);
+}
+
+.badgeValue {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(30px, 5vw, 40px);
+  color: var(--charcoal);
+  line-height: 1;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.badgeLabel {
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-top: 8px;
+}
+
+.badgeDivider {
+  color: var(--gold-soft);
+  font-family: var(--font-display);
+  font-size: 22px;
+  padding-bottom: 18px;
+}
+
+/* ---------- Baby profile ---------- */
+
+.babyPhoto {
+  composes: frame;
+  width: min(56vw, 240px);
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  margin: 0 auto 28px;
+}
+
+.babyPhoto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.babyNickname {
+  font-family: var(--font-script);
+  font-size: clamp(38px, 6.6vw, 54px);
+  color: var(--gold);
+  text-align: center;
+  margin: 0 0 6px;
+  line-height: 1;
+}
+
+.babyFullName {
+  text-align: center;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 19px;
+  color: var(--charcoal);
+  margin: 0 0 22px;
+}
+
+.babyDetails {
+  max-width: 380px;
+  margin: 0 auto;
+  display: grid;
+  gap: 7px;
+  text-align: center;
+}
+
+.babyDetails p {
+  font-size: 13.5px;
+  color: var(--muted);
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+
+.babyDetails strong {
+  color: var(--charcoal);
+  font-weight: 600;
+}
+
+.babyParents {
+  margin-top: 16px !important;
+  font-family: var(--font-display) !important;
+  font-style: italic !important;
+  font-size: 16px !important;
+  color: var(--charcoal) !important;
+}
+
+/* ---------- Event ---------- */
+
+.eventCard {
+  composes: frame;
+  max-width: 440px;
+  margin: 0 auto;
+  padding: 48px 34px 40px;
+  text-align: center;
+  background: var(--cream);
+}
+
+.eventName {
+  font-family: var(--font-script);
+  font-size: 34px;
+  color: var(--gold);
+  margin: 0 0 16px;
+}
+
+.eventDate {
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.03em;
+  margin: 0 0 26px;
+}
+
+.eventSub {
+  font-family: var(--font-body);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 22px 0 8px;
+}
+
+.eventDetail {
+  font-weight: 400;
+  font-size: 13.5px;
+  line-height: 1.85;
+  color: var(--muted);
+  margin: 0 0 24px;
+}
+
+/* ---------- Gallery (masonry, not grid/filmstrip) ---------- */
+
+.galleryGrid {
+  column-count: 2;
+  column-gap: 12px;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.galleryItem {
+  composes: frame;
+  break-inside: avoid;
+  margin-bottom: 12px;
+  overflow: hidden;
+  cursor: zoom-in;
+}
+
+.galleryItem img {
+  width: 100%;
+  display: block;
+}
+
+.galleryItem:nth-child(3n + 1) img {
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+}
+
+.galleryItem:nth-child(3n + 2) img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.galleryItem:nth-child(3n) img {
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background: rgba(43, 38, 34, 0.94);
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.lightboxImage {
+  max-width: min(92vw, 620px);
+  max-height: 80vh;
+  object-fit: contain;
+  border: 1px solid var(--gold-soft);
+}
+
+.lightboxClose {
+  position: fixed;
+  top: 22px;
+  right: 22px;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--cream);
+  background: transparent;
+  color: var(--cream);
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.lightboxNav {
+  position: fixed;
+  bottom: 26px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 14px;
+}
+
+.lightboxArrow {
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(250, 246, 241, 0.4);
+  background: transparent;
+  color: var(--cream);
+  font-size: 15px;
+  cursor: pointer;
+}
+
+/* ---------- Video / Maps ---------- */
+
+.mediaBox {
+  composes: frame;
+  max-width: 800px;
+  margin: 0 auto 28px;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.mediaBox iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.mapCard {
+  composes: frame;
+  max-width: 540px;
+  margin: 0 auto;
+  padding: 40px 32px;
+  text-align: center;
+}
+
+.mapCard p {
+  font-weight: 400;
+  color: var(--muted);
+  line-height: 1.9;
+  margin: 0 0 24px;
+}
+
+/* ---------- RSVP ---------- */
+
+.rsvpCounts {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  margin: 0 auto 44px;
+  border: 1px solid var(--charcoal);
+  max-width: 420px;
+}
+
+.rsvpCount {
+  flex: 1;
+  padding: 18px 10px;
+  text-align: center;
+  border-right: 1px solid var(--charcoal);
+}
+
+.rsvpCount:last-child {
+  border-right: none;
+}
+
+.rsvpCountValue {
+  display: block;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 24px;
+  color: var(--gold);
+}
+
+.rsvpCountLabel {
+  display: block;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 6px;
+}
+
+.form {
+  composes: frame;
+  display: grid;
+  gap: 14px;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 36px 30px;
+}
+
+.input,
+.select,
+.textarea {
+  width: 100%;
+  padding: 13px 15px;
+  border: 1px solid rgba(43, 38, 34, 0.2);
+  border-radius: 0;
+  background: transparent;
+  color: var(--charcoal);
+  font-family: var(--font-body);
+  font-size: 14px;
+  outline: none;
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  border-color: var(--gold);
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: rgba(43, 38, 34, 0.4);
+}
+
+.select option {
+  background: var(--cream);
+  color: var(--charcoal);
+}
+
+.textarea {
+  min-height: 96px;
+  resize: vertical;
+}
+
+.formMessage {
+  text-align: center;
+  font-size: 14px;
+  color: var(--gold);
+  margin: 0;
+}
+
+.formError {
+  composes: formMessage;
+  color: #a8462c;
+}
+
+/* ---------- Doa quote ---------- */
+
+.doaSection {
+  composes: section;
+  text-align: center;
+  background: var(--charcoal);
+  color: var(--cream);
+  max-width: 100%;
+}
+
+.doaQuote {
+  max-width: 600px;
+  margin: 0 auto;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(17px, 2.4vw, 20px);
+  line-height: 1.9;
+}
+
+/* ---------- Gift ---------- */
+
+.giftGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.giftCard {
+  composes: frame;
+  padding: 36px 28px;
+  text-align: center;
+}
+
+.giftOwner {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 0 0 16px;
+}
+
+.giftBank {
+  font-family: var(--font-script);
+  font-size: 30px;
+  color: var(--charcoal);
+  margin: 0 0 14px;
+}
+
+.giftNumber {
+  font-size: 19px;
+  letter-spacing: 0.06em;
+  color: var(--charcoal);
+  margin: 0 0 6px;
+}
+
+.giftName {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 0 0 24px;
+}
+
+/* ---------- Wishes ---------- */
+
+.wishesList {
+  display: grid;
+  gap: 0;
+  max-width: 600px;
+  margin: 0 auto 24px;
+  border-top: 1px solid rgba(43, 38, 34, 0.15);
+}
+
+.wishCard {
+  text-align: left;
+  padding: 20px 4px;
+  border-bottom: 1px solid rgba(43, 38, 34, 0.15);
+}
+
+.wishHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin: 0 0 8px;
+}
+
+.wishName {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 18px;
+  color: var(--charcoal);
+}
+
+.wishAttendance {
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.wishMessage {
+  font-weight: 400;
+  font-size: 13.5px;
+  line-height: 1.8;
+  color: var(--muted);
+  margin: 0;
+}
+
+.wishEmpty {
+  text-align: center;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.loadMore {
+  composes: button;
+  display: flex;
+  margin: 0 auto;
+}
+
+/* ---------- Footer ---------- */
+
+.footer {
+  composes: section;
+  text-align: center;
+  padding-bottom: clamp(120px, 16vw, 160px);
+}
+
+.footerQuote {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.9;
+  color: var(--muted);
+  max-width: 540px;
+  margin: 0 auto 28px;
+}
+
+.footerName {
+  font-family: var(--font-script);
+  font-size: clamp(32px, 5.2vw, 46px);
+  color: var(--gold);
+  margin: 0 0 24px;
+}
+
+.copyright {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+/* ---------- Music player ---------- */
+
+.musicButton {
+  position: fixed;
+  right: 20px;
+  bottom: 92px;
+  z-index: 999;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid var(--charcoal);
+  background: var(--cream);
+  color: var(--charcoal);
+  font-size: 15px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: 0 12px 26px rgba(43, 38, 34, 0.18);
+}
+
+.spinning {
+  animation: spin 6s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---------- Floating menu ---------- */
+
+.floatingMenu {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 998;
+  display: flex;
+  gap: 2px;
+  padding: 6px;
+  background: var(--cream);
+  border: 1px solid var(--charcoal);
+  max-width: calc(100% - 32px);
+  overflow-x: auto;
+}
+
+.floatingMenuItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 9px 14px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.3s ease;
+}
+
+.floatingMenuItem:hover {
+  color: var(--gold);
+}
+
+.floatingMenuIcon {
+  font-size: 13px;
+}
+
+.monogramLetter {
+  font-family: var(--font-script);
+  font-size: 44px;
+}
+
+/* ---------- Line-art ornament helpers ---------- */
+
+.divider {
+  display: block;
+  width: clamp(120px, 22vw, 180px);
+  height: auto;
+  color: var(--gold);
+  margin: 0 auto 28px;
+}
+
+.cornerTL,
+.cornerTR,
+.cornerBL,
+.cornerBR {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  color: var(--gold);
+  pointer-events: none;
+}
+
+.cornerTL {
+  top: -1px;
+  left: -1px;
+}
+
+.cornerTR {
+  top: -1px;
+  right: -1px;
+  transform: scaleX(-1);
+}
+
+.cornerBL {
+  bottom: -1px;
+  left: -1px;
+  transform: scaleY(-1);
+}
+
+.cornerBR {
+  bottom: -1px;
+  right: -1px;
+  transform: scale(-1, -1);
+}
