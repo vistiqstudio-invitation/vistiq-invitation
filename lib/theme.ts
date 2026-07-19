@@ -8,6 +8,7 @@ import AkikahAnugerah from "@/themes/akikah-anugerah/AkikahAnugerah";
 import AkikahSafir from "@/themes/akikah-safir/AkikahSafir";
 import AkikahKasih from "@/themes/akikah-kasih/AkikahKasih";
 import KhitanWarna from "@/themes/khitan-warna/KhitanWarna";
+import KhitanKsatria from "@/themes/khitan-ksatria/KhitanKsatria";
 import LuxuryGold from "@/themes/luxury-gold/LuxuryGold";
 import MinimalWhite from "@/themes/minimal-white/MinimalWhite";
 import IslamicGreen from "@/themes/islamic-green/IslamicGreen";
@@ -282,6 +283,7 @@ export const khitanThemeRegistry: Record<
   (props: { invitation: KhitanInvitationData }) => React.JSX.Element
 > = {
   "khitan-warna": KhitanWarna,
+  "khitan-ksatria": KhitanKsatria,
 };
 
 export const khitanThemeList: ThemeMeta[] = [
@@ -290,5 +292,11 @@ export const khitanThemeList: ThemeMeta[] = [
     label: "Khitan Warna",
     description: "Biru dusty & krem, medali foto bulat, motif daun emas, galeri grid",
     swatch: ["#eef3f9", "#5b89aa"],
+  },
+  {
+    key: "khitan-ksatria",
+    label: "Khitan Ksatria",
+    description: "Hijau hutan & emas, bingkai foto perisai heraldik, crest laurel, tema ksatria cilik",
+    swatch: ["#f7f4ec", "#24402f"],
   },
 ];

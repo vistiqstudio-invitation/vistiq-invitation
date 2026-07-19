@@ -2,6 +2,7 @@ import type { KhitanInvitationData } from "@/types/khitan";
 
 const MUSIC_BY_THEME: Record<string, string> = {
   "khitan-warna": "/music/khitan-warna.mp3",
+  "khitan-ksatria": "/music/khitan-ksatria.mp3",
 };
 
 const COVER_BY_THEME: Record<string, string> = {
