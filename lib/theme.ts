@@ -34,6 +34,7 @@ import JawaCoklat from "@/themes/jawa-coklat/JawaCoklat";
 import SageGreen from "@/themes/sage-green/SageGreen";
 import Sahara from "@/themes/sahara/Sahara";
 import MidnightAurora from "@/themes/midnight-aurora/MidnightAurora";
+import PorcelainBloom from "@/themes/porcelain-bloom/PorcelainBloom";
 
 export const themeRegistry: Record<
   string,
@@ -64,6 +65,7 @@ export const themeRegistry: Record<
   "sage-green": SageGreen,
   sahara: Sahara,
   "midnight-aurora": MidnightAurora,
+  "porcelain-bloom": PorcelainBloom,
 };
 
 export type ThemeMeta = {
@@ -223,6 +225,12 @@ export const themeList: ThemeMeta[] = [
     label: "Midnight Aurora",
     description: "Navy-ungu malam, aurora bergerak, orbit perak & aksen konstelasi",
     swatch: ["#071126", "#a88bff"],
+  },
+  {
+    key: "porcelain-bloom",
+    label: "Porcelain Bloom",
+    description: "Ivory & powder blue, porselen klasik, mutiara, pita satin & floral biru",
+    swatch: ["#fbfaf6", "#2d638f"],
   },
 ];
 
