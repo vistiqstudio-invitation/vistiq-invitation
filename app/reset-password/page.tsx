@@ -15,9 +15,9 @@ export default function ResetPasswordPage() {
   const router = useRouter();
   const supabase = createClient();
 
-  // The recovery link lands here with a token in the URL that the
-  // Supabase client parses automatically; until that finishes, we can't
-  // tell yet whether this is a valid recovery session.
+  // Only a recovery token from the email may authorize this page. Never
+  // reuse an unrelated session that was already open in the same browser
+  // (for example the owner's dashboard session).
   const [ready, setReady] = useState(false);
   const [validSession, setValidSession] = useState(false);
 
@@ -27,21 +27,40 @@ export default function ResetPasswordPage() {
   const [done, setDone] = useState(false);
 
   useEffect(() => {
-    const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "PASSWORD_RECOVERY" || (event === "SIGNED_IN" && session)) {
-        setValidSession(true);
-        setReady(true);
+    let active = true;
+
+    const verifyRecoveryLink = async () => {
+      const hash = new URLSearchParams(window.location.hash.slice(1));
+      const accessToken = hash.get("access_token");
+      const refreshToken = hash.get("refresh_token");
+      const type = hash.get("type");
+      const code = new URLSearchParams(window.location.search).get("code");
+
+      let valid = false;
+
+      if (type === "recovery" && accessToken && refreshToken) {
+        const { data, error } = await supabase.auth.setSession({
+          access_token: accessToken,
+          refresh_token: refreshToken,
+        });
+        valid = !error && Boolean(data.session);
+      } else if (code) {
+        const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+        valid = !error && Boolean(data.session);
       }
-    });
 
-    // If the recovery token was already parsed before this listener
-    // attached, there won't be a fresh event - check the current session too.
-    supabase.auth.getSession().then(({ data }) => {
-      if (data.session) setValidSession(true);
+      if (!active) return;
+
+      if (valid) {
+        window.history.replaceState({}, "", window.location.pathname);
+      }
+      setValidSession(valid);
       setReady(true);
-    });
+    };
 
-    return () => listener.subscription.unsubscribe();
+    void verifyRecoveryLink();
+
+    return () => { active = false; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
