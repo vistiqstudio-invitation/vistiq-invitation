@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { themeRegistry } from "@/lib/theme";
 import { getDemoInvitation } from "@/lib/demoInvitation";
 import { withPorcelainBloomDemoAssets } from "@/lib/porcelainBloomDemo";
+import { withLoveChronicleDemoAssets } from "@/lib/loveChronicleDemo";
 
 export default async function DemoThemePage({
   params,
@@ -13,10 +14,10 @@ export default async function DemoThemePage({
 
   if (!Theme) notFound();
 
-  const invitation = withPorcelainBloomDemoAssets(
+  const invitation = withLoveChronicleDemoAssets(theme, withPorcelainBloomDemoAssets(
     theme,
     getDemoInvitation(theme),
-  );
+  ));
 
   return <Theme invitation={invitation} />;
 }

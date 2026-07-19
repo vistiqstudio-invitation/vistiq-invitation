@@ -35,6 +35,7 @@ import SageGreen from "@/themes/sage-green/SageGreen";
 import Sahara from "@/themes/sahara/Sahara";
 import MidnightAurora from "@/themes/midnight-aurora/MidnightAurora";
 import PorcelainBloom from "@/themes/porcelain-bloom/PorcelainBloom";
+import LoveChronicle from "@/themes/love-chronicle/LoveChronicle";
 
 export const themeRegistry: Record<
   string,
@@ -66,6 +67,7 @@ export const themeRegistry: Record<
   sahara: Sahara,
   "midnight-aurora": MidnightAurora,
   "porcelain-bloom": PorcelainBloom,
+  "love-chronicle": LoveChronicle,
 };
 
 export type ThemeMeta = {
@@ -231,6 +233,12 @@ export const themeList: ThemeMeta[] = [
     label: "Porcelain Bloom",
     description: "Ivory & powder blue, porselen klasik, mutiara, pita satin & floral biru",
     swatch: ["#fbfaf6", "#2d638f"],
+  },
+  {
+    key: "love-chronicle",
+    label: "Love Chronicle",
+    description: "Champagne & burgundy, wedding newspaper, cap pos, perangko & wax seal",
+    swatch: ["#f4eddf", "#7a2433"],
   },
 ];
 
