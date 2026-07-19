@@ -30,12 +30,26 @@ type Reseller = {
   name: string;
 };
 
+type CheckoutOrder = {
+  id: string;
+  order_id: string;
+  package_name: string;
+  amount: number;
+  customer_name: string;
+  customer_email: string;
+  customer_phone: string;
+  status: string;
+  payment_type?: string | null;
+  created_at: string;
+};
+
 export default function AdminTransactionsPage() {
   const router = useRouter();
   const supabase = createClient();
 
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [resellers, setResellers] = useState<Reseller[]>([]);
+  const [checkoutOrders, setCheckoutOrders] = useState<CheckoutOrder[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetchTransactions = async () => {
@@ -52,6 +66,12 @@ export default function AdminTransactionsPage() {
 
     const { data: resellersData } = await supabase.from("resellers").select("id, name");
     setResellers(resellersData ?? []);
+
+    const { data: checkoutData, error: checkoutError } = await supabase
+      .from("checkout_orders")
+      .select("id, order_id, package_name, amount, customer_name, customer_email, customer_phone, status, payment_type, created_at")
+      .order("created_at", { ascending: false });
+    if (!checkoutError) setCheckoutOrders(checkoutData ?? []);
 
     setLoading(false);
   };
@@ -183,6 +203,30 @@ export default function AdminTransactionsPage() {
                   <p className={styles.date}>
                     {new Date(item.created_at).toLocaleDateString("id-ID")}
                   </p>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+
+        <section className={styles.tableWrap}>
+          <h2 className={styles.sectionTitle}>Pembayaran dari Landing Page</h2>
+          {checkoutOrders.length === 0 ? (
+            <p>Belum ada checkout Midtrans atau tabel checkout belum diaktifkan.</p>
+          ) : (
+            <div className={styles.table}>
+              {checkoutOrders.map((item) => (
+                <div className={styles.row} key={item.id}>
+                  <div>
+                    <strong>{item.package_name} · Rp {Number(item.amount).toLocaleString("id-ID")}</strong>
+                    <p>{item.customer_name} · {item.customer_email} · {item.customer_phone}</p>
+                    <p style={{ color: "#64748b", fontSize: 12 }}>{item.order_id}</p>
+                  </div>
+                  <strong style={{ color: item.status === "paid" ? "#15803d" : "#b45309" }}>
+                    {item.status === "paid" ? "Dibayar" : item.status}
+                    {item.payment_type ? ` · ${item.payment_type}` : ""}
+                  </strong>
+                  <p className={styles.date}>{new Date(item.created_at).toLocaleDateString("id-ID")}</p>
                 </div>
               ))}
             </div>

@@ -4,6 +4,7 @@ import SiteNavbar from "@/components/SiteNavbar";
 import ThemeGrid from "@/components/ThemeGrid";
 import AqiqahThemeGrid from "@/components/AqiqahThemeGrid";
 import KhitanThemeGrid from "@/components/KhitanThemeGrid";
+import CheckoutButton from "@/components/CheckoutButton";
 
 const WA_NUMBER = "6281371338032";
 
@@ -128,13 +129,8 @@ export default function HomePage() {
               Untuk yang cuma butuh 1 undangan pernikahan sendiri, lengkap
               dengan RSVP, galeri, dan amplop digital. Bukan reseller.
             </p>
-            <a
-              href={`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Halo Vistiq Invitation, saya ingin order paket Client (1 undangan)")}`}
-              target="_blank"
-              className="priceButton"
-            >
-              Order Sekarang
-            </a>
+            <CheckoutButton packageId="client" />
+            <span className="paymentMethods">QRIS · Virtual Account · E-Wallet</span>
           </div>
 
           <div className="priceCard featured">
@@ -146,13 +142,8 @@ export default function HomePage() {
               dashboard reseller dan komisi <strong style={{ color: "white" }}>30%</strong> dari
               setiap penjualan client Anda. Bayar sekali, aktif selamanya.
             </p>
-            <a
-              href={`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Halo Vistiq Invitation, saya ingin daftar paket Reseller (komisi 30%)")}`}
-              target="_blank"
-              className="priceButton featuredButton"
-            >
-              Daftar Reseller
-            </a>
+            <CheckoutButton packageId="reseller" label="Bayar & Daftar Reseller" featured />
+            <span className="paymentMethods light">QRIS · Virtual Account · E-Wallet</span>
           </div>
 
           <div className="priceCard">
@@ -164,13 +155,8 @@ export default function HomePage() {
               <strong>100%</strong> jadi milik Anda. Bayar sekali, aktif
               selamanya.
             </p>
-            <a
-              href={`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Halo Vistiq Invitation, saya ingin daftar paket Reseller Brand (white label, 100%)")}`}
-              target="_blank"
-              className="priceButton"
-            >
-              Daftar Reseller Brand
-            </a>
+            <CheckoutButton packageId="reseller-brand" label="Bayar Reseller Brand" />
+            <span className="paymentMethods">QRIS · Virtual Account · E-Wallet</span>
           </div>
         </div>
       </section>
@@ -527,12 +513,28 @@ html, body {
   align-items: center;
   margin-top: 18px;
   padding: 12px 20px;
+  border: 0;
   border-radius: 999px;
   background: #eff6ff;
   color: #1167b2;
   text-decoration: none;
   font-weight: 800;
   font-size: 14px;
+  cursor: pointer;
+}
+
+.paymentMethods {
+  display: block;
+  margin-top: 9px;
+  color: #7890a8;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-align: center;
+}
+
+.paymentMethods.light {
+  color: rgba(255,255,255,.72);
 }
 
 .featuredButton {

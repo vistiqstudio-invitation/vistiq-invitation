@@ -9,6 +9,7 @@ function isMarketingPage(pathname: string) {
   return (
     pathname === "/" ||
     pathname.startsWith("/demo") ||
+    pathname.startsWith("/pembayaran") ||
     pathname === "/gabung-reseller" ||
     pathname === "/reseller-brand"
   );
