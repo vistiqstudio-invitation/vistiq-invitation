@@ -9,6 +9,7 @@ const MUSIC_BY_THEME: Record<string, string> = {
   "akikah-ceria": "/music/akikah-ceria.mp3",
   "akikah-anugerah": "/music/akikah-anugerah.mp3",
   "akikah-safir": "/music/akikah-safir.mp3",
+  "akikah-kasih": "/music/akikah-kasih.mp3",
 };
 
 // akikah-nur has no owner-supplied baby photography yet - unlike the
