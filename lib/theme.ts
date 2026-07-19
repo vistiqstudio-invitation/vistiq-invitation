@@ -33,6 +33,7 @@ import JawaMerah from "@/themes/jawa-merah/JawaMerah";
 import JawaCoklat from "@/themes/jawa-coklat/JawaCoklat";
 import SageGreen from "@/themes/sage-green/SageGreen";
 import Sahara from "@/themes/sahara/Sahara";
+import MidnightAurora from "@/themes/midnight-aurora/MidnightAurora";
 
 export const themeRegistry: Record<
   string,
@@ -62,6 +63,7 @@ export const themeRegistry: Record<
   "jawa-coklat": JawaCoklat,
   "sage-green": SageGreen,
   sahara: Sahara,
+  "midnight-aurora": MidnightAurora,
 };
 
 export type ThemeMeta = {
@@ -215,6 +217,12 @@ export const themeList: ThemeMeta[] = [
     label: "Sahara",
     description: "Krem & terracotta pasir, foto arch tinggi, galeri grid lightbox, story dua kolom",
     swatch: ["#fffdf9", "#ae8f7a"],
+  },
+  {
+    key: "midnight-aurora",
+    label: "Midnight Aurora",
+    description: "Navy-ungu malam, aurora bergerak, orbit perak & aksen konstelasi",
+    swatch: ["#071126", "#a88bff"],
   },
 ];
 
