@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 import { InvitationProvider } from "@/components/InvitationProvider";
+import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import { cormorant, playfair, inter, alexBrush, suranna, readexPro, chelseaMarket } from "@/lib/fonts";
 
 const geistSans = Geist({
@@ -32,6 +33,7 @@ export default function RootLayout({
       >
         <InvitationProvider>
           {children}
+          <FloatingWhatsApp />
         </InvitationProvider>
       </body>
     </html>
