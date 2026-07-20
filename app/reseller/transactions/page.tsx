@@ -118,6 +118,7 @@ export default function ResellerTransactionsPage() {
         accentColor={brandActive ? reseller?.brand_color : null}
         items={NAV_ITEMS}
         activeKey="transactions"
+        notificationRole="reseller"
         onLogout={logout}
       />
 

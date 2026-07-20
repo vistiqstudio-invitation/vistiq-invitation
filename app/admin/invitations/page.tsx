@@ -219,6 +219,7 @@ export default function InvitationsPage() {
         brandBottom="Invitation"
         items={NAV_ITEMS}
         activeKey="invitations"
+        notificationRole="owner"
         onLogout={logout}
       />
 

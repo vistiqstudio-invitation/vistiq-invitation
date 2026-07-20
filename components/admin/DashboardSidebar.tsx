@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import OrderNotifications from "@/components/admin/OrderNotifications";
 import styles from "@/styles/dashboard.module.css";
 
 export type SidebarItem = {
@@ -18,6 +19,7 @@ export default function DashboardSidebar({
   items,
   activeKey,
   onLogout,
+  notificationRole,
 }: {
   brandTop: string;
   brandBottom: string;
@@ -26,6 +28,7 @@ export default function DashboardSidebar({
   items: SidebarItem[];
   activeKey: string;
   onLogout: () => void;
+  notificationRole?: "owner" | "reseller";
 }) {
   return (
     <aside
@@ -33,6 +36,7 @@ export default function DashboardSidebar({
       style={accentColor ? ({ "--accent": accentColor } as React.CSSProperties) : undefined}
     >
       <div className={styles.brandBlock}>
+        {notificationRole && <OrderNotifications role={notificationRole} />}
         {logoUrl && (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={logoUrl} alt={brandBottom} className={styles.brandLogo} />

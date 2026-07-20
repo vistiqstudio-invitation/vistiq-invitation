@@ -300,6 +300,7 @@ export default function ResellerPage() {
         accentColor={brandActive ? reseller?.brand_color : null}
         items={NAV_ITEMS}
         activeKey="dashboard"
+        notificationRole="reseller"
         onLogout={logout}
       />
 

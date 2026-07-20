@@ -135,6 +135,7 @@ export default function AdminTransactionsPage() {
         brandBottom="Invitation"
         items={NAV_ITEMS}
         activeKey="transactions"
+        notificationRole="owner"
         onLogout={logout}
       />
 

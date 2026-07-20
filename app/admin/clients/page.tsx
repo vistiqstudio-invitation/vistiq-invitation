@@ -160,6 +160,7 @@ export default function ClientsPage() {
         brandBottom="Invitation"
         items={NAV_ITEMS}
         activeKey="clients"
+        notificationRole="owner"
         onLogout={logout}
       />
 

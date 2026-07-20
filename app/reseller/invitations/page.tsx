@@ -416,6 +416,7 @@ export default function ResellerInvitationsPage() {
         accentColor={brandActive ? reseller?.brand_color : null}
         items={NAV_ITEMS}
         activeKey="invitations"
+        notificationRole="reseller"
         onLogout={logout}
       />
 

@@ -128,6 +128,7 @@ export default function AdminRsvpPage() {
         brandBottom="Invitation"
         items={NAV_ITEMS}
         activeKey="rsvp"
+        notificationRole="owner"
         onLogout={logout}
       />
 
