@@ -59,7 +59,7 @@
 }
 
 .brandSmall {
-  color: #60a5fa;
+  color: var(--accent, #60a5fa);
   font-weight: 900;
   letter-spacing: 3px;
   font-size: 12px;
@@ -172,7 +172,7 @@
 }
 
 .label {
-  color: #1167b2;
+  color: var(--accent, #1167b2);
   font-weight: 800;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -207,7 +207,7 @@
 
 .button {
   border: none;
-  background: #1167b2;
+  background: var(--accent, #1167b2);
   color: white;
   padding: 12px 22px;
   border-radius: 999px;
@@ -362,7 +362,7 @@
 
 .smallButton {
   border: none;
-  background: #1167b2;
+  background: var(--accent, #1167b2);
   color: white;
   padding: 12px 18px;
   border-radius: 12px;
@@ -462,7 +462,7 @@
 
 .miniButton {
   border: none;
-  background: #1167b2;
+  background: var(--accent, #1167b2);
   color: white;
   padding: 10px 14px;
   border-radius: 999px;
@@ -643,7 +643,7 @@
 .uploadIcon {
   font-size: 54px;
   line-height: 1;
-  color: #1167b2;
+  color: var(--accent, #1167b2);
 }
 
 .hiddenInput {
