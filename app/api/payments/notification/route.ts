@@ -10,8 +10,22 @@ export async function POST(request: Request) {
   const serverKey = process.env.MIDTRANS_SERVER_KEY;
   if (!serverKey) return NextResponse.json({ error: "Missing configuration" }, { status: 503 });
 
-  const body = await request.json();
+  let body: Record<string, unknown>;
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+  }
+
   const orderId = String(body.order_id ?? "");
+
+  // Midtrans' Sandbox dashboard sends a synthetic notification with an
+  // order id such as SANDBOX-M123... when the merchant clicks "Test".
+  // Acknowledge that connectivity check without changing any real order.
+  if (/^SANDBOX-M/i.test(orderId)) {
+    return NextResponse.json({ received: true, test: true });
+  }
+
   const grossAmount = String(body.gross_amount ?? "");
   const expectedSignature = crypto
     .createHash("sha512")
