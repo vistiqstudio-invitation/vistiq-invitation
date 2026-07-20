@@ -9,6 +9,7 @@ import AkikahSafir from "@/themes/akikah-safir/AkikahSafir";
 import AkikahKasih from "@/themes/akikah-kasih/AkikahKasih";
 import KhitanWarna from "@/themes/khitan-warna/KhitanWarna";
 import KhitanKsatria from "@/themes/khitan-ksatria/KhitanKsatria";
+import KhitanRaja from "@/themes/khitan-raja/KhitanRaja";
 import LuxuryGold from "@/themes/luxury-gold/LuxuryGold";
 import MinimalWhite from "@/themes/minimal-white/MinimalWhite";
 import IslamicGreen from "@/themes/islamic-green/IslamicGreen";
@@ -284,6 +285,7 @@ export const khitanThemeRegistry: Record<
 > = {
   "khitan-warna": KhitanWarna,
   "khitan-ksatria": KhitanKsatria,
+  "khitan-raja": KhitanRaja,
 };
 
 export const khitanThemeList: ThemeMeta[] = [
@@ -298,5 +300,11 @@ export const khitanThemeList: ThemeMeta[] = [
     label: "Khitan Ksatria",
     description: "Hijau hutan & emas, bingkai foto perisai heraldik, crest laurel, tema ksatria cilik",
     swatch: ["#f7f4ec", "#24402f"],
+  },
+  {
+    key: "khitan-raja",
+    label: "Khitan Raja",
+    description: "Merah marun & emas, bingkai foto arch istana, motif mahkota, tema raja sehari",
+    swatch: ["#f8f2e9", "#5c1a2b"],
   },
 ];
