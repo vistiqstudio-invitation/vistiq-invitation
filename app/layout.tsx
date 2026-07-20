@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 import { InvitationProvider } from "@/components/InvitationProvider";
+import MetaPixel from "@/components/MetaPixel";
+import LeadTracker from "@/components/LeadTracker";
 import { cormorant, playfair, inter, alexBrush, suranna, readexPro, chelseaMarket } from "@/lib/fonts";
 
 const geistSans = Geist({
@@ -30,6 +32,8 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${cormorant.variable} ${playfair.variable} ${inter.variable} ${alexBrush.variable} ${suranna.variable} ${readexPro.variable} ${chelseaMarket.variable}`}
       >
+        <MetaPixel />
+        <LeadTracker />
         <InvitationProvider>
           {children}
         </InvitationProvider>
