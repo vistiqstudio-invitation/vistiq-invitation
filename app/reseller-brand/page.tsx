@@ -1,6 +1,7 @@
 import Link from "next/link";
 import PhoneMockup from "@/components/PhoneMockup";
 import SiteNavbar from "@/components/SiteNavbar";
+import PromoCountdown from "@/components/PromoCountdown";
 
 const WA_NUMBER = "6281371338032";
 
@@ -107,6 +108,8 @@ export default function ResellerBrandPage() {
               Lihat Demo Tema
             </Link>
           </div>
+
+          <PromoCountdown className="promoCountdown" />
 
           <div className="statBar">
             <div>
@@ -294,6 +297,7 @@ export default function ResellerBrandPage() {
           >
             Aktifkan Brand Saya
           </a>
+          <PromoCountdown className="promoCountdown light" />
           <p className="priceNote">
             Sudah punya akun Reseller biasa? Hubungi kami untuk upgrade
             langsung.
@@ -841,6 +845,31 @@ html, body {
   font-size: 18px;
   font-weight: 600;
   margin: 14px 0 0;
+}
+
+.promoCountdown {
+  display: inline-block;
+  margin: 22px auto 0;
+  padding: 9px 16px;
+  border-radius: 10px;
+  background: #fef2f2;
+  color: #c2413b;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.promoCountdown strong {
+  font-variant-numeric: tabular-nums;
+  color: #c2413b;
+}
+
+.promoCountdown.light {
+  background: rgba(255,255,255,.16);
+  color: #f5dc8a;
+}
+
+.promoCountdown.light strong {
+  color: #f5dc8a;
 }
 
 .priceHighlight h2 {

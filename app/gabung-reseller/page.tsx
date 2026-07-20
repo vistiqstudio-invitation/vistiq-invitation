@@ -2,6 +2,7 @@ import Link from "next/link";
 import PhoneMockup from "@/components/PhoneMockup";
 import SiteNavbar from "@/components/SiteNavbar";
 import ThemeGrid from "@/components/ThemeGrid";
+import PromoCountdown from "@/components/PromoCountdown";
 
 const WA_NUMBER = "6281371338032";
 
@@ -250,13 +251,16 @@ export default function GabungResellerPage() {
               bayar, aktif selamanya.
             </p>
           </div>
-          <a
-            href={`https://wa.me/${WA_NUMBER}?text=${ctaText("upgrade-brand")}`}
-            target="_blank"
-            className="priceButton featuredButton"
-          >
-            Tanya Reseller Brand
-          </a>
+          <div>
+            <a
+              href={`https://wa.me/${WA_NUMBER}?text=${ctaText("upgrade-brand")}`}
+              target="_blank"
+              className="priceButton featuredButton"
+            >
+              Tanya Reseller Brand
+            </a>
+            <PromoCountdown className="promoCountdown" />
+          </div>
         </div>
       </section>
 
@@ -336,6 +340,7 @@ export default function GabungResellerPage() {
             >
               Daftar Reseller Brand
             </a>
+            <PromoCountdown className="promoCountdown" />
           </div>
         </div>
       </section>
@@ -910,6 +915,32 @@ html, body {
   font-size: 15px;
   font-weight: 600;
   margin-top: 10px;
+}
+
+.promoCountdown {
+  margin: 12px 0 0;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: #fef2f2;
+  color: #c2413b;
+  font-size: 12.5px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.promoCountdown strong {
+  font-variant-numeric: tabular-nums;
+  color: #c2413b;
+}
+
+.upgradeBox .promoCountdown {
+  background: rgba(255,255,255,.16);
+  color: #fde68a;
+  text-align: left;
+}
+
+.upgradeBox .promoCountdown strong {
+  color: #fde68a;
 }
 
 .priceCard strong {

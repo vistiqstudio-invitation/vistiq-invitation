@@ -5,6 +5,7 @@ import ThemeGrid from "@/components/ThemeGrid";
 import AqiqahThemeGrid from "@/components/AqiqahThemeGrid";
 import KhitanThemeGrid from "@/components/KhitanThemeGrid";
 import CheckoutButton from "@/components/CheckoutButton";
+import PromoCountdown from "@/components/PromoCountdown";
 
 const WA_NUMBER = "6281371338032";
 
@@ -160,6 +161,7 @@ export default function HomePage() {
             </p>
             <CheckoutButton packageId="reseller-brand" label="Bayar Reseller Brand" production={midtransProduction} />
             <span className="paymentMethods">QRIS · Virtual Account · E-Wallet</span>
+            <PromoCountdown className="promoCountdown" />
           </div>
         </div>
       </section>
@@ -528,6 +530,22 @@ html, body {
   font-size: 15px;
   font-weight: 600;
   margin-top: 10px;
+}
+
+.promoCountdown {
+  margin: 10px 0 0;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: #fef2f2;
+  color: #c2413b;
+  font-size: 12.5px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.promoCountdown strong {
+  font-variant-numeric: tabular-nums;
+  color: #c2413b;
 }
 
 .priceButton {
