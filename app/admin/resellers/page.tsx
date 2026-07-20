@@ -189,6 +189,7 @@ export default function ResellersPage() {
         brandBottom="Invitation"
         items={NAV_ITEMS}
         activeKey="resellers"
+        notificationRole="owner"
         onLogout={logout}
       />
 
