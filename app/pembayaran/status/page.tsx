@@ -2,7 +2,13 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
+
+declare global {
+  interface Window {
+    fbq?: (...args: unknown[]) => void;
+  }
+}
 
 type PaymentStatus = { orderId:string;status:string;paymentType:string|null;grossAmount:string;accountStatus:string|null };
 
@@ -22,6 +28,18 @@ function StatusContent(){
   const check=()=>{setLoading(true);setRefresh(value=>value+1)};
   const meta=LABELS[data?.status??""]??{title:"Status Pembayaran",copy:"Status transaksi sedang diperiksa.",color:"#1167b2"};
   const paid=Boolean(data&&["settlement","capture"].includes(data.status));
+  // Fires once per order - this status is server-verified (queried fresh
+  // from /api/payments/status, which reflects Midtrans's own record), so
+  // it's a trustworthy Purchase signal for the Pixel, not a client-side
+  // guess. The firedFor ref keys on orderId to survive the "Periksa Lagi"
+  // refresh loop without double-counting the same order.
+  const firedFor=useRef<string|null>(null);
+  useEffect(()=>{
+    if(paid&&data&&firedFor.current!==data.orderId){
+      firedFor.current=data.orderId;
+      window.fbq?.("track","Purchase",{value:Number(data.grossAmount),currency:"IDR",content_name:data.orderId});
+    }
+  },[paid,data]);
   const accountCopy=data?.accountStatus==="completed"
     ? "Akun Anda sudah dibuat. Silakan cek email untuk membuat password dan login ke dashboard."
     : data?.accountStatus==="email_failed"
