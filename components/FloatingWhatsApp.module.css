@@ -1,0 +1,104 @@
+.button {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-height: 58px;
+  padding: 9px 18px 9px 11px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+  color: #fff;
+  text-decoration: none;
+  background: linear-gradient(135deg, #2dd66f, #18a94f);
+  box-shadow: 0 14px 34px rgba(12, 96, 47, 0.3), 0 3px 10px rgba(0, 0, 0, 0.15);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+  isolation: isolate;
+}
+
+.button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 40px rgba(12, 96, 47, 0.38), 0 4px 12px rgba(0, 0, 0, 0.16);
+}
+
+.button:focus-visible {
+  outline: 3px solid rgba(37, 211, 102, 0.35);
+  outline-offset: 4px;
+}
+
+.button svg {
+  width: 39px;
+  height: 39px;
+  flex: 0 0 auto;
+  fill: currentColor;
+}
+
+.copy {
+  display: grid;
+  gap: 1px;
+  line-height: 1.15;
+}
+
+.copy small {
+  font-size: 10px;
+  opacity: 0.82;
+}
+
+.copy strong {
+  font-size: 13px;
+  font-weight: 750;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.pulse {
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  border-radius: inherit;
+  border: 1px solid rgba(37, 211, 102, 0.72);
+  animation: whatsappPulse 2.4s ease-out infinite;
+}
+
+.themeDemo {
+  bottom: 154px;
+}
+
+@keyframes whatsappPulse {
+  0%, 38% { opacity: 0; transform: scale(1); }
+  45% { opacity: 0.55; }
+  82%, 100% { opacity: 0; transform: scale(1.16, 1.28); }
+}
+
+@media (max-width: 640px) {
+  .button {
+    right: 14px;
+    bottom: 16px;
+    width: 56px;
+    min-height: 56px;
+    padding: 9px;
+    justify-content: center;
+  }
+
+  .button svg {
+    width: 37px;
+    height: 37px;
+  }
+
+  .copy {
+    display: none;
+  }
+
+  .themeDemo {
+    right: auto;
+    left: 14px;
+    bottom: 78px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button { transition: none; }
+  .pulse { animation: none; }
+}

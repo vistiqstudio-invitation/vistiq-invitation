@@ -5,6 +5,7 @@ import "./globals.css";
 import { InvitationProvider } from "@/components/InvitationProvider";
 import MetaPixel from "@/components/MetaPixel";
 import LeadTracker from "@/components/LeadTracker";
+import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import { cormorant, playfair, inter, alexBrush, suranna, readexPro, chelseaMarket } from "@/lib/fonts";
 
 const geistSans = Geist({
@@ -36,6 +37,7 @@ export default function RootLayout({
         <LeadTracker />
         <InvitationProvider>
           {children}
+          <FloatingWhatsApp />
         </InvitationProvider>
       </body>
     </html>

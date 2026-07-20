@@ -47,6 +47,140 @@
 .brandBlock {
   display: flex;
   flex-direction: column;
+  position: relative;
+}
+
+.notificationWrap {
+  position: absolute;
+  top: -6px;
+  right: 0;
+  z-index: 30;
+}
+
+.notificationBell {
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  cursor: pointer;
+  font-size: 18px;
+  position: relative;
+}
+
+.notificationCount {
+  position: absolute;
+  top: -5px;
+  right: -6px;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: #ef4444;
+  color: white;
+  border: 2px solid #0f172a;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.notificationPanel {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  width: min(370px, calc(100vw - 32px));
+  max-height: 520px;
+  overflow: hidden;
+  border-radius: 16px;
+  background: white;
+  color: #0f172a;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.25);
+}
+
+.notificationHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.notificationHeader p {
+  margin: 4px 0 0;
+  color: #64748b;
+  font-size: 12px;
+}
+
+.notificationHeader button {
+  border: 0;
+  background: transparent;
+  color: var(--accent, #1167b2);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.notificationList {
+  max-height: 430px;
+  overflow-y: auto;
+}
+
+.notificationItem {
+  display: grid;
+  grid-template-columns: 9px 1fr;
+  gap: 10px;
+  padding: 14px 16px;
+  color: #0f172a;
+  text-decoration: none;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.notificationItem:hover,
+.notificationUnread {
+  background: #eff6ff;
+}
+
+.notificationDot {
+  width: 8px;
+  height: 8px;
+  margin-top: 5px;
+  border-radius: 50%;
+  background: #cbd5e1;
+}
+
+.notificationUnread .notificationDot {
+  background: var(--accent, #1167b2);
+}
+
+.notificationItem strong {
+  display: block;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.notificationItem p {
+  margin: 4px 0;
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.notificationItem time {
+  color: #94a3b8;
+  font-size: 11px;
+}
+
+.notificationEmpty {
+  margin: 0;
+  padding: 28px 16px;
+  color: #64748b;
+  text-align: center;
+  font-size: 13px;
 }
 
 .brandLogo {
@@ -59,7 +193,7 @@
 }
 
 .brandSmall {
-  color: #60a5fa;
+  color: var(--accent, #60a5fa);
   font-weight: 900;
   letter-spacing: 3px;
   font-size: 12px;
@@ -104,6 +238,22 @@
 
   .brandBlock {
     flex-shrink: 0;
+  }
+
+  .notificationWrap {
+    position: relative;
+    top: auto;
+    right: auto;
+    order: -1;
+    margin-bottom: 6px;
+  }
+
+  .notificationPanel {
+    position: fixed;
+    top: 76px;
+    left: 16px;
+    right: 16px;
+    width: auto;
   }
 
   .logoutButton {
@@ -172,7 +322,7 @@
 }
 
 .label {
-  color: #1167b2;
+  color: var(--accent, #1167b2);
   font-weight: 800;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -207,7 +357,7 @@
 
 .button {
   border: none;
-  background: #1167b2;
+  background: var(--accent, #1167b2);
   color: white;
   padding: 12px 22px;
   border-radius: 999px;
@@ -362,7 +512,7 @@
 
 .smallButton {
   border: none;
-  background: #1167b2;
+  background: var(--accent, #1167b2);
   color: white;
   padding: 12px 18px;
   border-radius: 12px;
@@ -462,7 +612,7 @@
 
 .miniButton {
   border: none;
-  background: #1167b2;
+  background: var(--accent, #1167b2);
   color: white;
   padding: 10px 14px;
   border-radius: 999px;
@@ -643,7 +793,7 @@
 .uploadIcon {
   font-size: 54px;
   line-height: 1;
-  color: #1167b2;
+  color: var(--accent, #1167b2);
 }
 
 .hiddenInput {

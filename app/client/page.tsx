@@ -30,6 +30,12 @@ type Client = {
   created_at: string;
 };
 
+type DashboardBrand = {
+  brand_name: string;
+  logo_url: string | null;
+  brand_color: string | null;
+};
+
 type Invitation = {
   id: string;
   client_id?: string;
@@ -57,6 +63,7 @@ export default function ClientPage() {
 
   const [user, setUser] = useState<AppUser | null>(null);
   const [client, setClient] = useState<Client | null>(null);
+  const [brand, setBrand] = useState<DashboardBrand | null>(null);
   const [invitations, setInvitations] = useState<Invitation[]>([]);
   const [rsvps, setRsvps] = useState<Rsvp[]>([]);
   const [loading, setLoading] = useState(true);
@@ -134,6 +141,8 @@ export default function ClientPage() {
       };
 
       setUser(parsedUser);
+      const { data: brandData } = await supabase.rpc("get_my_client_brand");
+      setBrand((brandData?.[0] as DashboardBrand | undefined) || null);
       fetchData(parsedUser);
     };
 
@@ -223,11 +232,17 @@ export default function ClientPage() {
     URL.revokeObjectURL(url);
   };
 
+  const brandStyle = brand?.brand_color
+    ? ({ "--accent": brand.brand_color } as React.CSSProperties)
+    : undefined;
+
   return (
-    <main className={styles.page}>
+    <main className={styles.page} style={brandStyle}>
       <DashboardSidebar
-        brandTop="VISTIQ"
-        brandBottom="Client"
+        brandTop={brand?.brand_name ? brand.brand_name.toUpperCase() : "VISTIQ"}
+        brandBottom={brand?.brand_name ? "Client Dashboard" : "Client"}
+        logoUrl={brand?.logo_url}
+        accentColor={brand?.brand_color}
         items={NAV_ITEMS}
         activeKey="dashboard"
         onLogout={logout}
@@ -236,7 +251,7 @@ export default function ClientPage() {
       <section className={styles.content}>
         <header className={styles.header}>
           <div>
-            <p className={styles.label}>CLIENT DASHBOARD</p>
+            <p className={styles.label}>{brand?.brand_name ? `${brand.brand_name} DASHBOARD` : "CLIENT DASHBOARD"}</p>
             <h1 className={styles.title}>Halo, {user?.name || "Client"}</h1>
             <p className={styles.subtitle}>
               Pantau undangan, RSVP, dan generate link tamu.

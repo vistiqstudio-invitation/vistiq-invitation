@@ -1,6 +1,11 @@
 import { notFound } from "next/navigation";
 import { themeRegistry } from "@/lib/theme";
 import { getDemoInvitation } from "@/lib/demoInvitation";
+import { withPorcelainBloomDemoAssets } from "@/lib/porcelainBloomDemo";
+import { withLoveChronicleDemoAssets } from "@/lib/loveChronicleDemo";
+import { withVelvetCinemaDemoAssets } from "@/lib/velvetCinemaDemo";
+import { withPrismaticVowsDemoAssets } from "@/lib/prismaticVowsDemo";
+import { withPearlTideDemoAssets } from "@/lib/pearlTideDemo";
 
 export default async function DemoThemePage({
   params,
@@ -12,5 +17,10 @@ export default async function DemoThemePage({
 
   if (!Theme) notFound();
 
-  return <Theme invitation={getDemoInvitation(theme)} />;
+  const invitation = withPearlTideDemoAssets(theme, withPrismaticVowsDemoAssets(theme, withVelvetCinemaDemoAssets(theme, withLoveChronicleDemoAssets(theme, withPorcelainBloomDemoAssets(
+    theme,
+    getDemoInvitation(theme),
+  )))));
+
+  return <Theme invitation={invitation} />;
 }

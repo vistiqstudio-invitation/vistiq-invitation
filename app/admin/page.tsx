@@ -241,6 +241,7 @@ export default function AdminPage() {
         brandBottom="Invitation"
         items={NAV_ITEMS}
         activeKey="dashboard"
+        notificationRole="owner"
         onLogout={logout}
       />
 

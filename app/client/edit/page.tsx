@@ -67,6 +67,12 @@ const initialForm = {
 
 type FormState = typeof initialForm;
 
+type DashboardBrand = {
+  brand_name: string;
+  logo_url: string | null;
+  brand_color: string | null;
+};
+
 export default function ClientEditPage() {
   const router = useRouter();
   const supabase = createClient();
@@ -75,6 +81,7 @@ export default function ClientEditPage() {
   const [saving, setSaving] = useState(false);
   const [invitationId, setInvitationId] = useState("");
   const [form, setForm] = useState<FormState>(initialForm);
+  const [brand, setBrand] = useState<DashboardBrand | null>(null);
 
   useEffect(() => {
     loadInvitation();
@@ -102,6 +109,9 @@ export default function ClientEditPage() {
         router.push("/login");
         return;
       }
+
+      const { data: brandData } = await supabase.rpc("get_my_client_brand");
+      setBrand((brandData?.[0] as DashboardBrand | undefined) || null);
 
       const { data: clients } = await supabase
         .from("clients")
@@ -304,12 +314,20 @@ export default function ClientEditPage() {
     );
   }
 
+  const brandStyle = brand?.brand_color
+    ? ({ "--accent": brand.brand_color } as React.CSSProperties)
+    : undefined;
+
   return (
-    <main className={styles.editPage}>
+    <main className={styles.editPage} style={brandStyle}>
       <div className={styles.editCard}>
         <div className={styles.editHeader}>
           <div>
-            <p className={styles.label}>CLIENT DASHBOARD</p>
+            {brand?.logo_url && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={brand.logo_url} alt={brand.brand_name} className={styles.brandLogo} />
+            )}
+            <p className={styles.label}>{brand?.brand_name ? `${brand.brand_name} DASHBOARD` : "CLIENT DASHBOARD"}</p>
             <h1 className={styles.title} style={{ fontSize: 36 }}>
               Edit Undangan
             </h1>

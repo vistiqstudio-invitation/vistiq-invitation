@@ -34,6 +34,12 @@ import JawaMerah from "@/themes/jawa-merah/JawaMerah";
 import JawaCoklat from "@/themes/jawa-coklat/JawaCoklat";
 import SageGreen from "@/themes/sage-green/SageGreen";
 import Sahara from "@/themes/sahara/Sahara";
+import MidnightAurora from "@/themes/midnight-aurora/MidnightAurora";
+import PorcelainBloom from "@/themes/porcelain-bloom/PorcelainBloom";
+import LoveChronicle from "@/themes/love-chronicle/LoveChronicle";
+import VelvetCinema from "@/themes/velvet-cinema/VelvetCinema";
+import PrismaticVows from "@/themes/prismatic-vows/PrismaticVows";
+import PearlTide from "@/themes/pearl-tide/PearlTide";
 
 export const themeRegistry: Record<
   string,
@@ -63,6 +69,12 @@ export const themeRegistry: Record<
   "jawa-coklat": JawaCoklat,
   "sage-green": SageGreen,
   sahara: Sahara,
+  "midnight-aurora": MidnightAurora,
+  "porcelain-bloom": PorcelainBloom,
+  "love-chronicle": LoveChronicle,
+  "velvet-cinema": VelvetCinema,
+  "prismatic-vows": PrismaticVows,
+  "pearl-tide": PearlTide,
 };
 
 export type ThemeMeta = {
@@ -216,6 +228,42 @@ export const themeList: ThemeMeta[] = [
     label: "Sahara",
     description: "Krem & terracotta pasir, foto arch tinggi, galeri grid lightbox, story dua kolom",
     swatch: ["#fffdf9", "#ae8f7a"],
+  },
+  {
+    key: "midnight-aurora",
+    label: "Midnight Aurora",
+    description: "Navy-ungu malam, aurora bergerak, orbit perak & aksen konstelasi",
+    swatch: ["#071126", "#a88bff"],
+  },
+  {
+    key: "porcelain-bloom",
+    label: "Porcelain Bloom",
+    description: "Ivory & powder blue, porselen klasik, mutiara, pita satin & floral biru",
+    swatch: ["#fbfaf6", "#2d638f"],
+  },
+  {
+    key: "love-chronicle",
+    label: "Love Chronicle",
+    description: "Champagne & burgundy, wedding newspaper, cap pos, perangko & wax seal",
+    swatch: ["#f4eddf", "#7a2433"],
+  },
+  {
+    key: "velvet-cinema",
+    label: "Velvet Cinema",
+    description: "Merah beludru & hitam, premiere film, marquee lights, tiket VIP & filmstrip",
+    swatch: ["#0a0909", "#761423"],
+  },
+  {
+    key: "prismatic-vows",
+    label: "Prismatic Vows",
+    description: "Indigo, lilac & cyan, kaca holografik, prisma cahaya & galeri refraksi",
+    swatch: ["#0c0b1d", "#76e7ef"],
+  },
+  {
+    key: "pearl-tide",
+    label: "Pearl Tide",
+    description: "Deep ocean & seafoam, kerang, mutiara, riak air & bingkai pesisir organik",
+    swatch: ["#071f29", "#dcebea"],
   },
 ];
 

@@ -1,0 +1,5 @@
+export function MarqueeStars({className}:{className?:string}){return <div className={className} aria-hidden="true">{Array.from({length:20},(_,i)=><i key={i}/>)}</div>}
+
+export function Clapperboard({className}:{className?:string}){return <svg className={className} viewBox="0 0 180 150" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path className="clapBody" d="M24 126C25 61 48 17 90 13c42 4 65 48 66 113z"/><path className="clapLines" d="M90 14v112M48 33l24 93M132 33l-24 93M28 79l125 47M152 79L27 126"/><circle className="clapTop" cx="90" cy="126" r="12"/><path className="clapHeart" d="M90 111c-20-13-20-25-11-30 6-3 11 1 11 6 0-5 6-9 12-6 9 5 9 17-12 30z"/><text x="90" y="146" textAnchor="middle">PEARL TIDE</text></svg>}
+
+export function FilmReel({className}:{className?:string}){return <svg className={className} viewBox="0 0 130 130" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M8 59c15-18 30-18 45 0s30 18 45 0 24-12 28-7M8 78c15-18 30-18 45 0s30 18 45 0 24-12 28-7"/><circle cx="28" cy="33" r="8"/><circle cx="54" cy="23" r="5"/><circle cx="76" cy="30" r="9"/><circle cx="103" cy="18" r="6"/></svg>}
