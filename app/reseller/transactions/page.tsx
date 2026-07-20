@@ -104,12 +104,16 @@ export default function ResellerTransactionsPage() {
     .reduce((sum, item) => sum + Number(item.commission || 0), 0);
 
   const brandActive = reseller?.package === "reseller_brand" && Boolean(reseller?.brand_active);
+  const brandName = brandActive && reseller?.brand_name ? reseller.brand_name : null;
+  const brandStyle = brandActive && reseller?.brand_color
+    ? ({ "--accent": reseller.brand_color } as React.CSSProperties)
+    : undefined;
 
   return (
-    <main className={styles.page}>
+    <main className={styles.page} style={brandStyle}>
       <DashboardSidebar
-        brandTop="VISTIQ"
-        brandBottom={brandActive && reseller?.brand_name ? reseller.brand_name : "Reseller"}
+        brandTop={brandName ? brandName.toUpperCase() : "VISTIQ"}
+        brandBottom={brandName ? "Reseller Brand" : "Reseller"}
         logoUrl={brandActive ? reseller?.logo_url : null}
         accentColor={brandActive ? reseller?.brand_color : null}
         items={NAV_ITEMS}
@@ -120,7 +124,7 @@ export default function ResellerTransactionsPage() {
       <section className={styles.content}>
         <header className={styles.header}>
           <div>
-            <p className={styles.label}>RESELLER DASHBOARD</p>
+            <p className={styles.label}>{brandName ? `${brandName} DASHBOARD` : "RESELLER DASHBOARD"}</p>
             <h1 className={styles.title}>Komisi Saya</h1>
             <p className={styles.subtitle}>
               Komisi tercatat otomatis setiap kali Anda menambahkan client baru.

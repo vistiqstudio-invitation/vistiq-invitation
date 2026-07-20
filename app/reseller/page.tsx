@@ -206,7 +206,10 @@ export default function ResellerPage() {
   const copyClientCredentials = async () => {
     if (!newClientCredentials) return;
 
-    const text = `Halo ${newClientCredentials.name}, berikut akun login dashboard undangan Anda di Vistiq Invitation:\n\nLink: ${window.location.origin}/login\nEmail: ${newClientCredentials.email}\nPassword: ${newClientCredentials.password}\n\nLewat dashboard ini Anda bisa generate link undangan per nama tamu, lihat RSVP, dan edit undangan.`;
+    const dashboardBrand = reseller?.package === "reseller_brand" && reseller.brand_active && reseller.brand_name
+      ? reseller.brand_name
+      : "Vistiq Invitation";
+    const text = `Halo ${newClientCredentials.name}, berikut akun login dashboard undangan Anda di ${dashboardBrand}:\n\nLink: ${window.location.origin}/login\nEmail: ${newClientCredentials.email}\nPassword: ${newClientCredentials.password}\n\nLewat dashboard ini Anda bisa generate link undangan per nama tamu, lihat RSVP, dan edit undangan.`;
 
     await navigator.clipboard.writeText(text);
     alert("Pesan berhasil disalin, tinggal paste ke WhatsApp client.");
@@ -278,6 +281,10 @@ export default function ResellerPage() {
 
   const isBrandPackage = reseller?.package === "reseller_brand";
   const brandActive = isBrandPackage && Boolean(reseller?.brand_active);
+  const brandName = brandActive && reseller?.brand_name ? reseller.brand_name : null;
+  const brandStyle = brandActive && reseller?.brand_color
+    ? ({ "--accent": reseller.brand_color } as React.CSSProperties)
+    : undefined;
   const totalCommission = transactions.reduce((sum, item) => sum + Number(item.commission || 0), 0);
 
   const upgradeText = encodeURIComponent(
@@ -285,10 +292,10 @@ export default function ResellerPage() {
   );
 
   return (
-    <main className={styles.page}>
+    <main className={styles.page} style={brandStyle}>
       <DashboardSidebar
-        brandTop="VISTIQ"
-        brandBottom={brandActive && reseller?.brand_name ? reseller.brand_name : "Reseller"}
+        brandTop={brandName ? brandName.toUpperCase() : "VISTIQ"}
+        brandBottom={brandName ? "Reseller Brand" : "Reseller"}
         logoUrl={brandActive ? reseller?.logo_url : null}
         accentColor={brandActive ? reseller?.brand_color : null}
         items={NAV_ITEMS}
@@ -299,7 +306,7 @@ export default function ResellerPage() {
       <section className={styles.content}>
         <header className={styles.header}>
           <div>
-            <p className={styles.label}>RESELLER DASHBOARD</p>
+            <p className={styles.label}>{brandName ? `${brandName} DASHBOARD` : "RESELLER DASHBOARD"}</p>
             <h1 className={styles.title}>Halo, {user?.name || "Reseller"}</h1>
             <p className={styles.subtitle}>
               Tambah client dan pantau client milik Anda.
