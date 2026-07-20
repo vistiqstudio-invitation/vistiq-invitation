@@ -1345,19 +1345,143 @@
 
 /* ---------- Javanese Sepia Motion identity ---------- */
 .root {
-  --cream: #1b110c;
-  --card: rgba(42, 27, 18, 0.88);
-  --card-solid: #2a1b12;
-  --crimson: #c7a46a;
-  --crimson-deep: #f2dfb7;
-  --crimson-bright: #dfc38f;
+  --cream: #d9b86f;
+  --card: rgba(255, 248, 229, 0.94);
+  --card-solid: #fff8e9;
+  --crimson: #6d3e20;
+  --crimson-deep: #2c170e;
+  --crimson-bright: #85502d;
   --crimson-border: #9b7846;
   --wood: #160d09;
-  --ink: #f4e7ce;
-  --muted: rgba(244, 231, 206, 0.68);
+  --ink: #28160f;
+  --muted: rgba(40, 22, 15, 0.76);
   --gold: #c7a46a;
   --gold-line: rgba(199, 164, 106, 0.38);
   background: #160e0a;
+}
+
+/* The paper texture is intentionally bright. All ordinary sections use
+   dark cocoa copy, while photographic sections keep their light type. */
+.section:not(.darkSection),
+.hero {
+  color: #28160f;
+}
+
+.section:not(.darkSection) .title,
+.section:not(.darkSection) .profileName,
+.hero .title {
+  color: #2c170e;
+  text-shadow: 0 1px 0 rgba(255, 248, 229, 0.45);
+}
+
+.section:not(.darkSection) .eyebrow,
+.section:not(.darkSection) .profileNickname {
+  color: #65391f;
+}
+
+.heroVerse,
+.heroDesc {
+  color: #2c170e;
+  text-shadow: 0 1px 0 rgba(255, 248, 229, 0.5);
+}
+
+.heroVerseSource,
+.countdownLabel {
+  color: #52311f;
+}
+
+.countdownValue {
+  color: #5c321b;
+}
+
+.darkSection {
+  --card: rgba(35, 21, 14, 0.9);
+  --card-solid: rgba(35, 21, 14, 0.94);
+  --crimson: #d7b77d;
+  --crimson-deep: #fff5df;
+  --ink: #fff5df;
+  --muted: rgba(255, 245, 223, 0.78);
+}
+
+/* Cleaner editorial timeline: one continuous gold line and clearly
+   separated ivory story cards with generous mobile spacing. */
+.storyVine {
+  max-width: 680px;
+  padding-left: 54px;
+}
+
+.storyVine::before {
+  left: 19px;
+  width: 2px;
+  background: linear-gradient(180deg, transparent, #c7a46a 5%, #c7a46a 95%, transparent);
+}
+
+.storyItem,
+.storyEven {
+  margin-left: 0;
+  padding: 0 0 28px;
+}
+
+.storyDot {
+  top: 22px;
+  left: -50px;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 2px solid #ead5aa;
+  background: #6b3d22;
+  color: #fff7e7;
+  font: 700 11px/1 var(--font-body);
+  box-shadow: 0 0 0 5px rgba(199, 164, 106, 0.16), 0 8px 18px rgba(0, 0, 0, 0.28);
+}
+
+.storyCard {
+  position: relative;
+  padding: 24px 24px 25px;
+  border: 1px solid rgba(199, 164, 106, 0.58);
+  border-radius: 4px 22px 4px 22px;
+  background: linear-gradient(145deg, rgba(255, 249, 233, 0.98), rgba(236, 217, 179, 0.96));
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.25);
+}
+
+.storyCard::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  pointer-events: none;
+  border: 1px solid rgba(109, 62, 32, 0.14);
+  border-radius: 2px 15px 2px 15px;
+}
+
+.storyYear {
+  position: relative;
+  display: inline-flex;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: #6b3d22;
+  color: #fff5df;
+  font-weight: 700;
+}
+
+.storyTitle {
+  position: relative;
+  margin-top: 12px;
+  color: #321b10;
+  font-size: clamp(21px, 4vw, 26px);
+}
+
+.storyDesc {
+  position: relative;
+  color: rgba(45, 25, 16, 0.82);
+  line-height: 1.75;
+}
+
+@media (max-width: 560px) {
+  .storyVine { padding-left: 43px; }
+  .storyVine::before { left: 14px; }
+  .storyDot { left: -42px; width: 30px; height: 30px; }
+  .storyCard { padding: 21px 19px 22px; }
 }
 
 .photoBackdrop {

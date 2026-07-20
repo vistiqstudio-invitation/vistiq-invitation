@@ -15,7 +15,7 @@ export default function Story({ invitation }: { invitation: InvitationData }) {
     >
       <Reveal>
         <p className={styles.eyebrow}>Kisah Kami</p>
-        <h2 className={styles.title}>Perjalanan Cinta</h2>
+        <h2 className={styles.title}>Perjalanan Cinta Kami</h2>
         <LotusMark className={styles.ornament} />
       </Reveal>
 
@@ -27,9 +27,9 @@ export default function Story({ invitation }: { invitation: InvitationData }) {
                 index % 2 === 1 ? styles.storyEven : ""
               }`}
             >
-              <span className={styles.storyDot} />
+              <span className={styles.storyDot}>{index + 1}</span>
               <div className={styles.storyCard}>
-                {item.year && <p className={styles.storyYear}>{item.year}</p>}
+                {item.year && <span className={styles.storyYear}>{item.year}</span>}
                 <h3 className={styles.storyTitle}>{item.title}</h3>
                 <p className={styles.storyDesc}>{item.description}</p>
               </div>
