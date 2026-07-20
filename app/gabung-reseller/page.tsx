@@ -245,8 +245,9 @@ export default function GabungResellerPage() {
             <p>
               Pakai nama & logo sendiri di setiap undangan client (white
               label), dan profit <strong>100%</strong> jadi milikmu — bukan
-              lagi bagi hasil 30%. Cukup Rp299.000 sekali bayar, aktif
-              selamanya.
+              lagi bagi hasil 30%. Normal Rp299.000, promo launching{" "}
+              <strong>Rp149.000</strong> untuk 10 orang pertama, sekali
+              bayar, aktif selamanya.
             </p>
           </div>
           <a
@@ -316,9 +317,11 @@ export default function GabungResellerPage() {
           </div>
 
           <div className="priceCard">
+            <small className="promoBadge">Promo Launching · 10 Orang Pertama</small>
             <h3>Reseller Brand</h3>
+            <span className="oldPrice">Rp 299.000</span>
             <strong>
-              Rp 299.000<span>/sekali bayar</span>
+              Rp 149.000<span>/sekali bayar</span>
             </strong>
             <p>
               Semua fitur Reseller, plus ganti nama & logo jadi brand Anda
@@ -887,6 +890,26 @@ html, body {
   padding: 8px 12px;
   border-radius: 999px;
   font-weight: 800;
+}
+
+.promoBadge {
+  display: inline-block;
+  align-self: flex-start;
+  background: #fdf3d9;
+  color: #92700f;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.oldPrice {
+  color: #94a3b8;
+  text-decoration: line-through;
+  font-size: 15px;
+  font-weight: 600;
+  margin-top: 10px;
 }
 
 .priceCard strong {

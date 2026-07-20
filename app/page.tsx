@@ -148,8 +148,10 @@ export default function HomePage() {
           </div>
 
           <div className="priceCard">
+            <small className="promoBadge">Promo Launching · 10 Orang Pertama</small>
             <h3>Reseller Brand</h3>
-            <strong>Rp 299.000<span>/sekali bayar</span></strong>
+            <span className="oldPrice">Rp 299.000</span>
+            <strong>Rp 149.000<span>/sekali bayar</span></strong>
             <p>
               Semua fitur Reseller, plus ganti nama & logo jadi brand Anda
               sendiri (white label) di setiap undangan client - dan keuntungan{" "}
@@ -506,6 +508,26 @@ html, body {
 
 .priceCard p {
   flex: 1;
+}
+
+.promoBadge {
+  display: inline-block;
+  align-self: flex-start;
+  background: #fdf3d9;
+  color: #92700f;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.oldPrice {
+  color: #94a3b8;
+  text-decoration: line-through;
+  font-size: 15px;
+  font-weight: 600;
+  margin-top: 10px;
 }
 
 .priceButton {

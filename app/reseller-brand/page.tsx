@@ -33,7 +33,7 @@ const STEPS = [
 const COMPARISON = [
   ["Nama yang tampil ke client", "Vistiq Invitation", "Brand kamu sendiri"],
   ["Profit per penjualan", "30% komisi", "100% milik sendiri"],
-  ["Biaya aktivasi", "Rp149.000 sekali bayar", "Rp299.000 sekali bayar"],
+  ["Biaya aktivasi", "Rp149.000 sekali bayar", "Rp149.000 (promo, normal Rp299.000)"],
   ["Biaya bulanan", "Tidak ada", "Tidak ada"],
   ["Dashboard", "Dashboard reseller standar", "Dashboard full branding sendiri"],
 ];
@@ -63,7 +63,7 @@ const FAQS = [
   },
   {
     q: "Apakah ada biaya bulanan?",
-    a: "Tidak ada. Rp299.000 sekali bayar dan aktif selamanya, tanpa tagihan bulanan atau perpanjangan.",
+    a: "Tidak ada. Harga normal Rp299.000, tapi sekarang promo launching Rp149.000 untuk 10 orang pertama - sekali bayar, aktif selamanya, tanpa tagihan bulanan.",
   },
   {
     q: "Kalau saya bingung pas setup brand, ada yang bantu?",
@@ -83,14 +83,15 @@ export default function ResellerBrandPage() {
 
       <section className="hero">
         <div className="heroText">
-          <p className="badge">White Label · Profit 100%</p>
+          <p className="badge">🔥 Promo Launching · 10 Orang Pertama</p>
 
           <h1>Punya Bisnis Undangan Digital dengan Nama Kamu Sendiri</h1>
 
           <p>
             Reseller Brand: logo, nama, dan warna brand kamu tampil di setiap
-            undangan yang kamu jual. Sekali bayar Rp299.000, aktif selamanya,
-            dan 100% keuntungan jadi milikmu.
+            undangan yang kamu jual. Sekali bayar, normal Rp299.000, promo
+            launching <strong>Rp149.000</strong> untuk 10 orang pertama -
+            aktif selamanya, dan 100% keuntungan jadi milikmu.
           </p>
 
           <div className="heroActions">
@@ -113,8 +114,8 @@ export default function ResellerBrandPage() {
               <span>Profit Milikmu</span>
             </div>
             <div>
-              <strong>Rp299rb</strong>
-              <span>Sekali Bayar</span>
+              <strong>Rp149rb</strong>
+              <span>Promo, Normal Rp299rb</span>
             </div>
             <div>
               <strong>Selamanya</strong>
@@ -277,8 +278,10 @@ export default function ResellerBrandPage() {
       <section className="section">
         <div className="priceHighlight">
           <p className="label white">Reseller Brand</p>
+          <p className="promoBadge">Promo Launching · 10 Orang Pertama</p>
+          <p className="oldPrice">Rp 299.000</p>
           <h2>
-            Rp 299.000<span>/sekali bayar</span>
+            Rp 149.000<span>/sekali bayar</span>
           </h2>
           <p>
             White label penuh, profit 100%, aktif selamanya. Tanpa biaya
@@ -821,9 +824,28 @@ html, body {
   color: rgba(255,255,255,.7);
 }
 
+.priceHighlight .promoBadge {
+  display: inline-block;
+  background: rgba(255,255,255,.16);
+  color: #f5dc8a;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 13px;
+  margin: 10px 0 0;
+}
+
+.priceHighlight .oldPrice {
+  color: rgba(255,255,255,.55);
+  text-decoration: line-through;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 14px 0 0;
+}
+
 .priceHighlight h2 {
   font-size: 46px;
-  margin: 10px 0 14px;
+  margin: 6px 0 14px;
 }
 
 .priceHighlight h2 span {

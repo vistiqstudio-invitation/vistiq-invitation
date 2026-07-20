@@ -288,7 +288,7 @@ export default function ResellerPage() {
   const totalCommission = transactions.reduce((sum, item) => sum + Number(item.commission || 0), 0);
 
   const upgradeText = encodeURIComponent(
-    `Halo Vistiq Invitation, saya ${user?.name || "reseller"} (${user?.email || ""}) ingin upgrade ke paket Reseller Brand (white label, Rp299.000 sekali bayar).`
+    `Halo Vistiq Invitation, saya ${user?.name || "reseller"} (${user?.email || ""}) ingin upgrade ke paket Reseller Brand (white label, promo launching Rp149.000, normal Rp299.000).`
   );
 
   return (
@@ -421,7 +421,9 @@ export default function ResellerPage() {
                 <p style={{ margin: "0 0 16px", fontSize: 13.5, color: "#64748b" }}>
                   Tampilkan nama, logo, dan warna brand Anda sendiri di setiap undangan
                   client (white label), dan dashboard Anda akan lengkap seperti dashboard
-                  Vistiq Studio. Rp 299.000 sekali bayar, aktif selamanya, keuntungan 100% jadi milik Anda.
+                  Vistiq Studio. Normal Rp299.000, promo launching{" "}
+                  <strong>Rp149.000</strong> untuk 10 orang pertama, sekali bayar, aktif
+                  selamanya, keuntungan 100% jadi milik Anda.
                 </p>
                 <a
                   href={`https://wa.me/${WA_NUMBER}?text=${upgradeText}`}

@@ -15,7 +15,9 @@ export const PAYMENT_PACKAGES = {
     code: "RB",
     name: "Paket Reseller Brand",
     description: "Dashboard reseller white label selamanya",
-    amount: 299000,
+    // Launch promo: normal price is Rp299.000, discounted to Rp149.000 for
+    // the first 10 buyers. Revert to 299000 once the promo ends.
+    amount: 149000,
   },
 } as const;
 
