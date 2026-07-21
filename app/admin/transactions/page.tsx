@@ -51,6 +51,7 @@ export default function AdminTransactionsPage() {
   const [resellers, setResellers] = useState<Reseller[]>([]);
   const [checkoutOrders, setCheckoutOrders] = useState<CheckoutOrder[]>([]);
   const [loading, setLoading] = useState(true);
+  const [syncingId, setSyncingId] = useState<string | null>(null);
 
   const fetchTransactions = async () => {
     const { data, error } = await supabase
@@ -83,6 +84,16 @@ export default function AdminTransactionsPage() {
 
   const resellerName = (resellerId?: string | null) =>
     resellers.find((r) => r.id === resellerId)?.name || "-";
+
+  const syncOrder = async (orderId: string) => {
+    setSyncingId(orderId);
+    try {
+      await fetch(`/api/payments/status?order_id=${encodeURIComponent(orderId)}`, { cache: "no-store" });
+      await fetchTransactions();
+    } finally {
+      setSyncingId(null);
+    }
+  };
 
   useEffect(() => {
     const loadUser = async () => {
@@ -223,10 +234,22 @@ export default function AdminTransactionsPage() {
                     <p>{item.customer_name} · {item.customer_email} · {item.customer_phone}</p>
                     <p style={{ color: "#64748b", fontSize: 12 }}>{item.order_id}</p>
                   </div>
-                  <strong style={{ color: item.status === "paid" ? "#15803d" : "#b45309" }}>
-                    {item.status === "paid" ? "Dibayar" : item.status}
-                    {item.payment_type ? ` · ${item.payment_type}` : ""}
-                  </strong>
+                  <div>
+                    <strong style={{ color: item.status === "paid" ? "#15803d" : "#b45309" }}>
+                      {item.status === "paid" ? "Dibayar" : item.status}
+                      {item.payment_type ? ` · ${item.payment_type}` : ""}
+                    </strong>
+                    {item.status !== "paid" && (
+                      <button
+                        onClick={() => syncOrder(item.order_id)}
+                        disabled={syncingId === item.order_id}
+                        className={styles.button}
+                        style={{ display: "block", marginTop: 6, fontSize: 11, padding: "4px 10px" }}
+                      >
+                        {syncingId === item.order_id ? "Mengecek..." : "Cek ke Midtrans"}
+                      </button>
+                    )}
+                  </div>
                   <p className={styles.date}>{new Date(item.created_at).toLocaleDateString("id-ID")}</p>
                 </div>
               ))}

@@ -2,6 +2,7 @@ import "server-only";
 
 import { NextResponse } from "next/server";
 import { createClient as createServiceClient } from "@supabase/supabase-js";
+import { provisionPaidOrder } from "@/lib/provisionPaidOrder";
 
 export async function GET(request: Request) {
   const serverKey = process.env.MIDTRANS_SERVER_KEY;
@@ -41,10 +42,42 @@ export async function GET(request: Request) {
     });
     const { data: order } = await supabase
       .from("checkout_orders")
-      .select("provision_status")
+      .select("status, provision_status")
       .eq("order_id", orderId)
       .maybeSingle();
     accountStatus = order?.provision_status ?? null;
+
+    // Safety net: Midtrans's webhook notification can fail to arrive (wrong
+    // notification URL, downtime, etc). This status check talks to Midtrans
+    // directly with our own server key, so if it says paid but our own
+    // record is still pending, self-heal by replaying what the webhook does.
+    const paid = data.transaction_status === "settlement" || (data.transaction_status === "capture" && data.fraud_status === "accept");
+    if (order && paid && order.status !== "paid") {
+      const { error: updateError } = await supabase
+        .from("checkout_orders")
+        .update({
+          status: "paid",
+          payment_type: data.payment_type ?? null,
+          transaction_id: data.transaction_id ?? null,
+          paid_at: new Date().toISOString(),
+          raw_notification: data,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("order_id", orderId);
+      if (!updateError) {
+        try {
+          await provisionPaidOrder(supabase, orderId, new URL(request.url).origin);
+        } catch (provisionError) {
+          console.error("checkout account provisioning failed (status sync):", provisionError);
+        }
+        const { data: refreshed } = await supabase
+          .from("checkout_orders")
+          .select("provision_status")
+          .eq("order_id", orderId)
+          .maybeSingle();
+        accountStatus = refreshed?.provision_status ?? accountStatus;
+      }
+    }
   }
 
   return NextResponse.json({
