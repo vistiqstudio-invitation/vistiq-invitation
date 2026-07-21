@@ -26,26 +26,20 @@ const STEPS = [
   },
   {
     n: "3",
-    title: "Kirim Link, Terima Bayaran",
-    desc: "Bagikan link undangan ke client, client bayar, komisi kamu tercatat otomatis.",
+    title: "Kirim Link, Profit 100% Masuk",
+    desc: "Bagikan link undangan dengan brand kamu sendiri ke client — seluruh hasil penjualan jadi milikmu.",
   },
 ];
 
 const BENEFITS = [
-  ["Akses dashboard reseller selamanya", "Sekali daftar, tidak ada biaya bulanan untuk paket Reseller."],
+  ["Brand & logo sendiri di setiap undangan", "White label penuh — client lihat bisnismu, bukan Vistiq."],
+  ["Profit 100% dari setiap penjualan", "Kamu yang tentukan harga jual, seluruh hasilnya masuk ke kamu."],
+  ["Akses dashboard reseller selamanya", "Sekali bayar, tidak ada biaya bulanan."],
   ["Bikin undangan tanpa batas jumlah", "Jual ke sebanyak mungkin client, tidak ada limit."],
   ["22+ tema premium siap pakai", "Terus bertambah, dari adat Nusantara sampai gaya internasional."],
-  ["Link katalog demo yang bisa dibagikan", "Kirim langsung ke calon client sebagai etalase jualan kamu."],
-  ["Komisi 30% tercatat otomatis", "Real-time di dashboard \"Komisi Saya\", lengkap status pembayarannya."],
+  ["Link katalog demo dengan brand kamu", "Kirim langsung ke calon client sebagai etalase jualan sendiri."],
   ["Panel client mandiri", "Client bisa edit data & upload foto sendiri, kamu tidak perlu bolak-balik revisi."],
-  ["RSVP online otomatis", "Data kehadiran dan ucapan tamu masuk langsung ke dashboard."],
   ["Support teknis langsung dari tim Vistiq", "Ada kendala tinggal chat, dibantu sampai selesai."],
-];
-
-const SIMULATIONS = [
-  { price: 150000, label: "Harga hemat" },
-  { price: 200000, label: "Harga umum" },
-  { price: 300000, label: "Harga premium" },
 ];
 
 const FAQS = [
@@ -55,15 +49,15 @@ const FAQS = [
   },
   {
     q: "Berapa modal awal yang dibutuhkan?",
-    a: "Rp149.000 sekali bayar untuk paket Reseller. Setelah aktif, kamu bisa langsung mulai jualan tanpa batas jumlah client.",
+    a: "Rp149.000 sekali bayar — promo launching untuk 10 orang pertama, normal Rp299.000. Setelah aktif, kamu bisa langsung jualan tanpa batas dengan brand sendiri.",
   },
   {
-    q: "Bagaimana cara terima komisi?",
-    a: "Setiap client yang kamu tambahkan tercatat otomatis di halaman \"Komisi Saya\" di dashboard, lengkap dengan status sudah dibayar atau belum.",
+    q: "Keuntungan penjualan saya berapa persen?",
+    a: "100% milikmu. Kamu yang tentukan harga jual ke client, dan seluruh hasilnya masuk ke kamu — tidak ada potongan ke Vistiq.",
   },
   {
     q: "Apakah ada biaya bulanan?",
-    a: "Tidak. Baik paket Reseller maupun Reseller Brand sekali bayar dan aktif selamanya — tidak ada tagihan bulanan sama sekali.",
+    a: "Tidak. Sekali bayar dan aktif selamanya — tidak ada tagihan bulanan sama sekali.",
   },
   {
     q: "Kalau saya bingung pas mulai jualan, ada yang bantu?",
@@ -82,22 +76,26 @@ export default function GabungResellerPage() {
 
       <section className="hero">
         <div className="heroText">
-          <p className="badge">Peluang Bisnis Digital</p>
+          <p className="badge">🔥 Promo Launching · 10 Orang Pertama</p>
 
-          <h1>
-            Hasilkan Cuan dari Bisnis Undangan Digital, Modal Kecil dari HP Sendiri
-          </h1>
+          <h1>Jadi Reseller dengan Brand Sendiri, Profit 100% Milikmu</h1>
 
           <p>
-            Jadi reseller Vistiq Invitation. Jual undangan pernikahan digital
-            premium tanpa perlu bisa desain atau ngoding — tinggal pilih tema,
-            edit lewat dashboard, kirim link ke client.
+            Jual undangan digital pernikahan, aqiqah, dan khitan pakai nama &
+            logo bisnismu sendiri — bukan brand Vistiq. Tanpa bagi hasil,
+            semua keuntungan penjualan masuk kantongmu sepenuhnya.
           </p>
+
+          <div className="heroPrice">
+            <span className="oldPrice">Rp 299.000</span>
+            <strong>Rp 149.000</strong>
+            <span className="priceHint">sekali bayar, aktif selamanya</span>
+          </div>
 
           <div className="heroActions">
             <CheckoutButton
-              packageId="reseller"
-              label="Daftar Jadi Reseller"
+              packageId="reseller-brand"
+              label="Daftar Reseller Brand Sekarang"
               production={midtransProduction}
             />
 
@@ -106,14 +104,16 @@ export default function GabungResellerPage() {
             </Link>
           </div>
 
+          <PromoCountdown className="promoCountdown" />
+
           <div className="statBar">
             <div>
               <strong>22+</strong>
               <span>Tema Premium</span>
             </div>
             <div>
-              <strong>30%</strong>
-              <span>Komisi Otomatis</span>
+              <strong>100%</strong>
+              <span>Profit Milikmu</span>
             </div>
             <div>
               <strong>1x</strong>
@@ -147,7 +147,7 @@ export default function GabungResellerPage() {
           Undangan digital makin diminati karena lebih murah dan praktis
           dibanding cetak — tapi sebagian besar calon pengantin belum tahu ke
           mana harus pesan. Di situlah peluangnya: kamu jadi jembatan antara
-          produk siap pakai dan orang yang butuh.
+          produk siap pakai dan orang yang butuh, dengan brand milikmu sendiri.
         </p>
 
         <p className="revealTitle">Rahasianya: kamu nggak perlu jadi desainer.</p>
@@ -177,7 +177,7 @@ export default function GabungResellerPage() {
 
       <section className="section">
         <p className="label">Yang Kamu Dapatkan</p>
-        <h2>Sekali Daftar, Ini Semua Milikmu</h2>
+        <h2>Sekali Bayar, Ini Semua Milikmu</h2>
 
         <div className="benefitGrid">
           {BENEFITS.map((item) => (
@@ -202,63 +202,6 @@ export default function GabungResellerPage() {
         </div>
       </section>
 
-      <section className="sectionDark">
-        <p className="label">Simulasi Penghasilan</p>
-        <h2>Hitung-Hitungan Simpel Komisi Reseller</h2>
-        <p className="darkIntro">
-          Kamu yang tentukan harga jual ke client sendiri. Dari harga itu,
-          30% otomatis jadi komisi kamu.
-        </p>
-
-        <div className="simGrid">
-          {SIMULATIONS.map((sim) => (
-            <div className="simCard" key={sim.price}>
-              <small>{sim.label}</small>
-              <p className="simPrice">Rp {sim.price.toLocaleString("id-ID")}</p>
-              <p className="simArrow">Komisi 30% per undangan</p>
-              <strong>Rp {(sim.price * 0.3).toLocaleString("id-ID")}</strong>
-            </div>
-          ))}
-        </div>
-
-        <div className="simTotal">
-          <p>
-            Contoh: jual ke <strong>10 client</strong> dalam sebulan di harga
-            Rp200.000 =
-          </p>
-          <strong>Rp 600.000</strong>
-          <p className="simDisclaimer">
-            *Simulasi ilustratif berdasarkan komisi 30%, hasil nyata
-            tergantung usaha pemasaran masing-masing reseller.
-          </p>
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="upgradeBox">
-          <div>
-            <p className="label">Sudah Jalan?</p>
-            <h2>Upgrade ke Reseller Brand</h2>
-            <p>
-              Pakai nama & logo sendiri di setiap undangan client (white
-              label), dan profit <strong>100%</strong> jadi milikmu — bukan
-              lagi bagi hasil 30%. Normal Rp299.000, promo launching{" "}
-              <strong>Rp149.000</strong> untuk 10 orang pertama, sekali
-              bayar, aktif selamanya.
-            </p>
-          </div>
-          <div>
-            <CheckoutButton
-              packageId="reseller-brand"
-              label="Daftar Reseller Brand"
-              featured
-              production={midtransProduction}
-            />
-            <PromoCountdown className="promoCountdown" />
-          </div>
-        </div>
-      </section>
-
       <section className="section">
         <p className="label">Pertanyaan Umum</p>
         <h2>Masih Ragu? Ini Jawabannya</h2>
@@ -274,41 +217,11 @@ export default function GabungResellerPage() {
       </section>
 
       <section id="harga" className="section">
-        <p className="label">Paket Harga</p>
-        <h2>Pilih Paket Sesuai Kebutuhanmu</h2>
+        <p className="label">Investasi Sekali Bayar</p>
+        <h2>Mulai Jadi Reseller Brand Sekarang</h2>
 
-        <div className="priceGrid">
-          <div className="priceCard">
-            <h3>Client</h3>
-            <strong>Rp 149.000</strong>
-            <p>
-              Untuk yang cuma butuh 1 undangan pernikahan sendiri, lengkap
-              dengan RSVP, galeri, dan amplop digital. Bukan reseller.
-            </p>
-            <CheckoutButton packageId="client" label="Order Sekarang" production={midtransProduction} />
-          </div>
-
-          <div className="priceCard featured">
-            <small>Paling Populer</small>
-            <h3>Reseller</h3>
-            <strong>
-              Rp 149.000<span>/sekali bayar</span>
-            </strong>
-            <p>
-              Jual undangan digital dengan brand Vistiq Invitation, dapat
-              dashboard reseller dan komisi{" "}
-              <strong style={{ color: "white" }}>30%</strong> dari setiap
-              penjualan client Anda. Bayar sekali, aktif selamanya.
-            </p>
-            <CheckoutButton
-              packageId="reseller"
-              label="Daftar Reseller"
-              featured
-              production={midtransProduction}
-            />
-          </div>
-
-          <div className="priceCard">
+        <div className="singleOffer">
+          <div className="priceCard featured offerCard">
             <small className="promoBadge">Promo Launching · 10 Orang Pertama</small>
             <h3>Reseller Brand</h3>
             <span className="oldPrice">Rp 299.000</span>
@@ -316,28 +229,34 @@ export default function GabungResellerPage() {
               Rp 149.000<span>/sekali bayar</span>
             </strong>
             <p>
-              Semua fitur Reseller, plus ganti nama & logo jadi brand Anda
-              sendiri (white label) di setiap undangan client — dan
-              keuntungan <strong>100%</strong> jadi milik Anda. Bayar sekali,
-              aktif selamanya.
+              Brand & logo sendiri di setiap undangan client, profit{" "}
+              <strong style={{ color: "white" }}>100%</strong> jadi milikmu,
+              dan akses dashboard reseller selamanya. Bayar sekali, tanpa
+              biaya bulanan.
             </p>
-            <CheckoutButton packageId="reseller-brand" label="Daftar Reseller Brand" production={midtransProduction} />
+            <CheckoutButton
+              packageId="reseller-brand"
+              label="Daftar Reseller Brand Sekarang"
+              featured
+              production={midtransProduction}
+            />
             <PromoCountdown className="promoCountdown" />
+            <span className="paymentMethods">QRIS · Virtual Account · E-Wallet</span>
           </div>
         </div>
       </section>
 
       <section className="cta">
-        <h2>Siap Mulai Bisnis Undangan Digital Kamu?</h2>
+        <h2>Siap Jadi Reseller dengan Brand Sendiri?</h2>
         <p>
-          Daftar sekali, akses dashboard reseller selamanya selama Vistiq
-          Invitation berjalan.
+          Promo Rp149.000 cuma untuk 10 orang pertama. Daftar sekarang, akses
+          dashboard selamanya.
         </p>
 
         <div className="heroActions center">
           <CheckoutButton
-            packageId="reseller"
-            label="Daftar Jadi Reseller Sekarang"
+            packageId="reseller-brand"
+            label="Daftar Reseller Brand Sekarang"
             production={midtransProduction}
           />
 
@@ -345,6 +264,8 @@ export default function GabungResellerPage() {
             Lihat Demo Tema
           </Link>
         </div>
+
+        <PromoCountdown className="promoCountdown" />
       </section>
 
       <footer className="footer">
@@ -459,11 +380,35 @@ html, body {
   max-width: 620px;
 }
 
+.heroPrice {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 26px;
+}
+
+.heroPrice .oldPrice {
+  font-size: 18px;
+  margin-top: 0;
+}
+
+.heroPrice strong {
+  font-size: 40px;
+  color: #0f4e8a;
+}
+
+.priceHint {
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 700;
+}
+
 .heroActions {
   display: flex;
   gap: 14px;
   flex-wrap: wrap;
-  margin-top: 28px;
+  margin-top: 20px;
 }
 
 .heroActions.center {
@@ -493,7 +438,7 @@ html, body {
 .statBar {
   display: flex;
   gap: 30px;
-  margin-top: 40px;
+  margin-top: 30px;
   flex-wrap: wrap;
 }
 
@@ -616,21 +561,10 @@ html, body {
 .sectionDark > p,
 .sectionDark > h2,
 .sectionDark > .darkNote,
-.sectionDark > .darkIntro,
-.sectionDark > .simGrid,
-.sectionDark > .simTotal,
 .themeGrid {
   max-width: 1180px;
   margin-left: auto;
   margin-right: auto;
-}
-
-.darkIntro {
-  color: rgba(255,255,255,.7);
-  font-size: 17px;
-  line-height: 1.8;
-  max-width: 640px;
-  margin: 0 0 40px;
 }
 
 .darkNote {
@@ -723,98 +657,6 @@ html, body {
   line-height: 1.6;
 }
 
-.simGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
-}
-
-.simCard {
-  background: rgba(255,255,255,.06);
-  border: 1px solid rgba(255,255,255,.12);
-  border-radius: 22px;
-  padding: 26px;
-  text-align: center;
-}
-
-.simCard small {
-  color: rgba(255,255,255,.55);
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-size: 11px;
-}
-
-.simPrice {
-  font-size: 24px;
-  font-weight: 900;
-  margin: 10px 0 4px;
-}
-
-.simArrow {
-  color: rgba(255,255,255,.55);
-  font-size: 13px;
-  margin: 0 0 10px;
-}
-
-.simCard strong {
-  display: block;
-  font-size: 28px;
-  color: #7fc4ff;
-}
-
-.simTotal {
-  margin-top: 30px;
-  background: rgba(17,103,178,.25);
-  border: 1px solid rgba(127,196,255,.3);
-  border-radius: 22px;
-  padding: 30px;
-  text-align: center;
-}
-
-.simTotal p {
-  margin: 0 0 8px;
-  font-size: 16px;
-}
-
-.simTotal strong {
-  font-size: 36px;
-  color: #7fc4ff;
-}
-
-.simDisclaimer {
-  margin-top: 14px !important;
-  font-size: 12.5px !important;
-  color: rgba(255,255,255,.45) !important;
-}
-
-.upgradeBox {
-  background: linear-gradient(120deg, #0f4e8a, #1167b2);
-  color: white;
-  border-radius: 28px;
-  padding: 44px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 30px;
-}
-
-.upgradeBox .label {
-  color: rgba(255,255,255,.7);
-}
-
-.upgradeBox h2 {
-  font-size: 30px;
-  margin: 8px 0 14px;
-}
-
-.upgradeBox p {
-  color: rgba(255,255,255,.85);
-  line-height: 1.7;
-  max-width: 520px;
-  margin: 0;
-}
-
 .faqList {
   display: flex;
   flex-direction: column;
@@ -839,10 +681,9 @@ html, body {
   line-height: 1.7;
 }
 
-.priceGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
+.singleOffer {
+  display: flex;
+  justify-content: center;
 }
 
 .priceCard {
@@ -863,7 +704,6 @@ html, body {
 .featured {
   background: #1167b2;
   color: white;
-  transform: translateY(-12px);
 }
 
 .featured p {
@@ -875,6 +715,29 @@ html, body {
   padding: 8px 12px;
   border-radius: 999px;
   font-weight: 800;
+}
+
+.offerCard {
+  max-width: 440px;
+  width: 100%;
+}
+
+.offerCard .promoCountdown {
+  background: rgba(255,255,255,.16);
+  color: #fde68a;
+}
+
+.offerCard .promoCountdown strong {
+  color: #fde68a;
+}
+
+.paymentMethods {
+  display: block;
+  margin-top: 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .05em;
+  color: rgba(255,255,255,.7);
 }
 
 .promoBadge {
@@ -911,16 +774,6 @@ html, body {
 .promoCountdown strong {
   font-variant-numeric: tabular-nums;
   color: #c2413b;
-}
-
-.upgradeBox .promoCountdown {
-  background: rgba(255,255,255,.16);
-  color: #fde68a;
-  text-align: left;
-}
-
-.upgradeBox .promoCountdown strong {
-  color: #fde68a;
 }
 
 .priceCard strong {
@@ -979,6 +832,11 @@ html, body {
 .cta {
   text-align: center;
   padding: 90px 24px;
+}
+
+.cta .promoCountdown {
+  display: inline-block;
+  margin-top: 24px;
 }
 
 .footer {
@@ -1100,9 +958,7 @@ html, body {
   }
 
   .stepsGrid,
-  .benefitGrid,
-  .simGrid,
-  .priceGrid {
+  .benefitGrid {
     grid-template-columns: 1fr;
   }
 
@@ -1124,20 +980,6 @@ html, body {
 
   .themeCard p {
     display: none;
-  }
-
-  .featured {
-    transform: none;
-  }
-
-  .upgradeBox {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 32px 26px;
-  }
-
-  .simTotal strong {
-    font-size: 28px;
   }
 }
 `;
