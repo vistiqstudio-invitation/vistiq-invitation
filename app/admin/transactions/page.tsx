@@ -40,6 +40,8 @@ type CheckoutOrder = {
   customer_phone: string;
   status: string;
   payment_type?: string | null;
+  provision_status?: string | null;
+  provision_error?: string | null;
   created_at: string;
 };
 
@@ -70,7 +72,7 @@ export default function AdminTransactionsPage() {
 
     const { data: checkoutData, error: checkoutError } = await supabase
       .from("checkout_orders")
-      .select("id, order_id, package_name, amount, customer_name, customer_email, customer_phone, status, payment_type, created_at")
+      .select("id, order_id, package_name, amount, customer_name, customer_email, customer_phone, status, payment_type, provision_status, provision_error, created_at")
       .order("created_at", { ascending: false });
     if (!checkoutError) setCheckoutOrders(checkoutData ?? []);
 
@@ -248,6 +250,12 @@ export default function AdminTransactionsPage() {
                       >
                         {syncingId === item.order_id ? "Mengecek..." : "Cek ke Midtrans"}
                       </button>
+                    )}
+                    {item.status === "paid" && item.provision_status && item.provision_status !== "completed" && (
+                      <p style={{ color: "#b45309", fontSize: 12, marginTop: 4 }}>
+                        Akun: {item.provision_status}
+                        {item.provision_error ? ` — ${item.provision_error}` : ""}
+                      </p>
                     )}
                   </div>
                   <p className={styles.date}>{new Date(item.created_at).toLocaleDateString("id-ID")}</p>
