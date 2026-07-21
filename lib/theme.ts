@@ -12,6 +12,7 @@ import KhitanKsatria from "@/themes/khitan-ksatria/KhitanKsatria";
 import KhitanRaja from "@/themes/khitan-raja/KhitanRaja";
 import KhitanBerani from "@/themes/khitan-berani/KhitanBerani";
 import KhitanPetualang from "@/themes/khitan-petualang/KhitanPetualang";
+import KhitanElang from "@/themes/khitan-elang/KhitanElang";
 import LuxuryGold from "@/themes/luxury-gold/LuxuryGold";
 import MinimalWhite from "@/themes/minimal-white/MinimalWhite";
 import IslamicGreen from "@/themes/islamic-green/IslamicGreen";
@@ -346,6 +347,7 @@ export const khitanThemeRegistry: Record<
   "khitan-raja": KhitanRaja,
   "khitan-berani": KhitanBerani,
   "khitan-petualang": KhitanPetualang,
+  "khitan-elang": KhitanElang,
 };
 
 export const khitanThemeList: ThemeMeta[] = [
@@ -378,5 +380,11 @@ export const khitanThemeList: ThemeMeta[] = [
     label: "Khitan Petualang",
     description: "Khaki olive & terracotta, bingkai foto oktagon, motif kompas si kecil petualang",
     swatch: ["#f7f2e7", "#5c6b3f"],
+  },
+  {
+    key: "khitan-elang",
+    label: "Khitan Elang",
+    description: "Arang & krem minimalis modern, bingkai foto diamond, motif garis elang, tipografi sans-serif",
+    swatch: ["#faf9f5", "#2b2b2b"],
   },
 ];

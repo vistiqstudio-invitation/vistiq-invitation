@@ -6,6 +6,7 @@ const MUSIC_BY_THEME: Record<string, string> = {
   "khitan-raja": "/music/khitan-raja.mp3",
   "khitan-berani": "/music/khitan-berani.mp3",
   "khitan-petualang": "/music/khitan-petualang.mp3",
+  "khitan-elang": "/music/khitan-elang.mp3",
 };
 
 const COVER_BY_THEME: Record<string, string> = {
