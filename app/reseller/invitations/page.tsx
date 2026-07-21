@@ -43,6 +43,7 @@ type Invitation = {
   baby_name?: string;
   client_id?: string;
   is_active?: boolean;
+  client_price?: number | null;
   created_at: string;
 };
 
@@ -58,6 +59,9 @@ const initialForm = {
   category: "wedding" as "wedding" | "aqiqah" | "khitan",
   slug: "",
   theme: "luxury-gold",
+  // Only used/shown for reseller_brand package resellers - they keep 100%
+  // of this, no commission tracked. Empty string = not set yet.
+  client_price: "",
   // Resellers can no longer flip this themselves - a new invitation stays
   // inactive until the owner confirms payment (admin/transactions) or
   // manually activates it (admin/invitations).
@@ -154,7 +158,7 @@ export default function ResellerInvitationsPage() {
 
     const { data: invitationsData } = await supabase
       .from("invitations")
-      .select("id, slug, theme, category, groom_name, bride_name, baby_name, client_id, is_active, created_at")
+      .select("id, slug, theme, category, groom_name, bride_name, baby_name, client_id, is_active, client_price, created_at")
       .in("client_id", clientIds)
       .order("created_at", { ascending: false });
 
@@ -352,6 +356,7 @@ export default function ResellerInvitationsPage() {
       aqiqah_date: form.aqiqah_date || null,
       birth_date: form.birth_date || null,
       baby_gender: form.baby_gender || null,
+      client_price: form.client_price ? Number(form.client_price) : null,
     };
 
     const { error } = await supabase.from("invitations").insert(payload);
@@ -504,7 +509,25 @@ export default function ResellerInvitationsPage() {
                 <div className={styles.input} style={{ display: "flex", alignItems: "center", color: "#92400e" }}>
                   Menunggu Pembayaran - diaktifkan otomatis setelah dikonfirmasi admin
                 </div>
+
+                {reseller?.package === "reseller_brand" && (
+                  <input
+                    type="number"
+                    min="0"
+                    step="1000"
+                    placeholder="Harga ke client Anda, contoh: 200000"
+                    value={form.client_price}
+                    onChange={(e) => set("client_price", e.target.value)}
+                    className={styles.input}
+                  />
+                )}
               </div>
+
+              {reseller?.package === "reseller_brand" && (
+                <p className={styles.helpText} style={{ marginTop: -8 }}>
+                  Harga ini sepenuhnya Anda yang tentukan - tidak ada potongan komisi ke Vistiq, 100% milik Anda.
+                </p>
+              )}
 
               {form.category === "aqiqah" || form.category === "khitan" ? (
                 <>
@@ -955,6 +978,14 @@ export default function ResellerInvitationsPage() {
                       </div>
 
                       <span className={styles.packageBadge}>{item.theme}</span>
+
+                      {reseller?.package === "reseller_brand" && (
+                        <span className={styles.packageBadge}>
+                          {item.client_price
+                            ? `Rp ${item.client_price.toLocaleString("id-ID")}`
+                            : "Harga belum ditetapkan"}
+                        </span>
+                      )}
 
                       <span className={styles.status}>
                         {item.is_active === false ? "Menunggu Pembayaran" : "Aktif"}

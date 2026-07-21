@@ -14,6 +14,9 @@ const initialForm = {
   category: "wedding" as "wedding" | "aqiqah" | "khitan",
   theme: "luxury-gold",
   is_active: true,
+  // Only used/shown for reseller_brand package resellers - they keep 100%
+  // of this, no commission tracked. Empty string = not set yet.
+  client_price: "",
 
   groom_name: "",
   bride_name: "",
@@ -80,6 +83,7 @@ export default function ResellerInvitationEditPage() {
   const [saving, setSaving] = useState(false);
   const [notFound, setNotFound] = useState(false);
   const [slug, setSlug] = useState("");
+  const [resellerPackage, setResellerPackage] = useState<"reseller" | "reseller_brand" | null>(null);
   const [form, setForm] = useState<FormState>(initialForm);
 
   useEffect(() => {
@@ -111,7 +115,7 @@ export default function ResellerInvitationEditPage() {
 
       const { data: resellerData } = await supabase
         .from("resellers")
-        .select("id")
+        .select("id, package")
         .eq("user_id", authUser.id);
 
       const reseller = resellerData?.[0];
@@ -120,6 +124,8 @@ export default function ResellerInvitationEditPage() {
         setLoading(false);
         return;
       }
+
+      setResellerPackage(reseller.package ?? "reseller");
 
       const { data: ownClients } = await supabase
         .from("clients")
@@ -153,6 +159,7 @@ export default function ResellerInvitationEditPage() {
             ? "khitan-warna"
             : "luxury-gold"),
         is_active: invitation.is_active !== false,
+        client_price: invitation.client_price != null ? String(invitation.client_price) : "",
 
         groom_name: invitation.groom_name || "",
         bride_name: invitation.bride_name || "",
@@ -292,6 +299,7 @@ export default function ResellerInvitationEditPage() {
       aqiqah_date: form.aqiqah_date || null,
       birth_date: form.birth_date || null,
       baby_gender: form.baby_gender || null,
+      client_price: form.client_price ? Number(form.client_price) : null,
     };
 
     const { error } = await supabase
@@ -384,7 +392,25 @@ export default function ResellerInvitationEditPage() {
             <option value="active">Active</option>
             <option value="inactive">Inactive</option>
           </select>
+
+          {resellerPackage === "reseller_brand" && (
+            <input
+              type="number"
+              min="0"
+              step="1000"
+              placeholder="Harga ke client Anda, contoh: 200000"
+              value={form.client_price}
+              onChange={(e) => set("client_price", e.target.value)}
+              className={styles.input}
+            />
+          )}
         </div>
+
+        {resellerPackage === "reseller_brand" && (
+          <p className={styles.helpText} style={{ marginTop: -8 }}>
+            Harga ini sepenuhnya Anda yang tentukan - tidak ada potongan komisi ke Vistiq, 100% milik Anda.
+          </p>
+        )}
 
         {form.category === "aqiqah" || form.category === "khitan" ? (
           <>
