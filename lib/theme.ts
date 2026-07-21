@@ -7,6 +7,7 @@ import AkikahCeria from "@/themes/akikah-ceria/AkikahCeria";
 import AkikahAnugerah from "@/themes/akikah-anugerah/AkikahAnugerah";
 import AkikahSafir from "@/themes/akikah-safir/AkikahSafir";
 import AkikahKasih from "@/themes/akikah-kasih/AkikahKasih";
+import AkikahDamai from "@/themes/akikah-damai/AkikahDamai";
 import KhitanWarna from "@/themes/khitan-warna/KhitanWarna";
 import KhitanKsatria from "@/themes/khitan-ksatria/KhitanKsatria";
 import KhitanRaja from "@/themes/khitan-raja/KhitanRaja";
@@ -292,6 +293,7 @@ export const aqiqahThemeRegistry: Record<
   "akikah-anugerah": AkikahAnugerah,
   "akikah-safir": AkikahSafir,
   "akikah-kasih": AkikahKasih,
+  "akikah-damai": AkikahDamai,
 };
 
 export const aqiqahThemeList: ThemeMeta[] = [
@@ -330,6 +332,12 @@ export const aqiqahThemeList: ThemeMeta[] = [
     label: "Akikah Kasih",
     description: "Pastel mint, peach & lavender, ilustrasi beruang & awan, bingkai foto scallop, galeri polaroid",
     swatch: ["#fffaf4", "#e8a795"],
+  },
+  {
+    key: "akikah-damai",
+    label: "Akikah Damai",
+    description: "Terracotta & teal boho, motif gajah & bunting, bingkai foto teepee, foto asli bertema nursery",
+    swatch: ["#faf6f0", "#c17a52"],
   },
 ];
 

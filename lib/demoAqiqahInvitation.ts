@@ -10,6 +10,7 @@ const MUSIC_BY_THEME: Record<string, string> = {
   "akikah-anugerah": "/music/akikah-anugerah.mp3",
   "akikah-safir": "/music/akikah-safir.mp3",
   "akikah-kasih": "/music/akikah-kasih.mp3",
+  "akikah-damai": "/music/akikah-damai.mp3",
 };
 
 // akikah-nur has no owner-supplied baby photography yet - unlike the
@@ -21,10 +22,12 @@ const MUSIC_BY_THEME: Record<string, string> = {
 // sourcing notes).
 const COVER_BY_THEME: Record<string, string> = {
   "akikah-zaitun": "/photos/akikah-zaitun-cover.jpg",
+  "akikah-damai": "/photos/akikah-damai-cover.jpg",
 };
 
 const BABY_PHOTO_BY_THEME: Record<string, string> = {
   "akikah-zaitun": "/photos/akikah-zaitun-baby.jpg",
+  "akikah-damai": "/photos/akikah-damai-baby.jpg",
 };
 
 const GALLERY_BY_THEME: Record<string, string[]> = {
@@ -35,6 +38,14 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
     "/photos/akikah-zaitun-gallery-4.jpg",
     "/photos/akikah-zaitun-gallery-5.jpg",
     "/photos/akikah-zaitun-gallery-6.jpg",
+  ],
+  "akikah-damai": [
+    "/photos/akikah-damai-gallery-1.jpg",
+    "/photos/akikah-damai-gallery-2.jpg",
+    "/photos/akikah-damai-gallery-3.jpg",
+    "/photos/akikah-damai-gallery-4.jpg",
+    "/photos/akikah-damai-gallery-5.jpg",
+    "/photos/akikah-damai-gallery-6.jpg",
   ],
 };
 
