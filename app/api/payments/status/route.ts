@@ -34,6 +34,7 @@ export async function GET(request: Request) {
   }
 
   let accountStatus: string | null = null;
+  let accountError: string | null = null;
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (supabaseUrl && serviceRoleKey) {
@@ -42,10 +43,11 @@ export async function GET(request: Request) {
     });
     const { data: order } = await supabase
       .from("checkout_orders")
-      .select("status, provision_status")
+      .select("status, provision_status, provision_error")
       .eq("order_id", orderId)
       .maybeSingle();
     accountStatus = order?.provision_status ?? null;
+    accountError = order?.provision_error ?? null;
 
     // Safety net: Midtrans's webhook notification can fail to arrive (wrong
     // notification URL, downtime, etc). This status check talks to Midtrans
@@ -72,10 +74,11 @@ export async function GET(request: Request) {
         }
         const { data: refreshed } = await supabase
           .from("checkout_orders")
-          .select("provision_status")
+          .select("provision_status, provision_error")
           .eq("order_id", orderId)
           .maybeSingle();
         accountStatus = refreshed?.provision_status ?? accountStatus;
+        accountError = refreshed?.provision_error ?? accountError;
       }
     }
   }
@@ -88,5 +91,6 @@ export async function GET(request: Request) {
     transactionTime: data.transaction_time ?? null,
     settlementTime: data.settlement_time ?? null,
     accountStatus,
+    accountError,
   });
 }
