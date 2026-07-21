@@ -3,8 +3,7 @@ import PhoneMockup from "@/components/PhoneMockup";
 import SiteNavbar from "@/components/SiteNavbar";
 import ThemeGrid from "@/components/ThemeGrid";
 import PromoCountdown from "@/components/PromoCountdown";
-
-const WA_NUMBER = "6281371338032";
+import CheckoutButton from "@/components/CheckoutButton";
 
 const HERO_FAN = [
   { key: "jawa-merah", rotate: -18, x: -108, y: 20, scale: 0.82, z: 1 },
@@ -73,8 +72,7 @@ const FAQS = [
 ];
 
 export default function GabungResellerPage() {
-  const ctaText = (context: string) =>
-    encodeURIComponent(`Halo Vistiq Invitation, saya ingin daftar reseller (dari landing page ${context})`);
+  const midtransProduction = process.env.MIDTRANS_IS_PRODUCTION === "true";
 
   return (
     <main className="page">
@@ -97,13 +95,11 @@ export default function GabungResellerPage() {
           </p>
 
           <div className="heroActions">
-            <a
-              href={`https://wa.me/${WA_NUMBER}?text=${ctaText("hero")}`}
-              target="_blank"
-              className="primaryButton"
-            >
-              Daftar Jadi Reseller
-            </a>
+            <CheckoutButton
+              packageId="reseller"
+              label="Daftar Jadi Reseller"
+              production={midtransProduction}
+            />
 
             <Link href="/demo" className="secondaryButton">
               Lihat Demo Tema
@@ -252,13 +248,12 @@ export default function GabungResellerPage() {
             </p>
           </div>
           <div>
-            <a
-              href={`https://wa.me/${WA_NUMBER}?text=${ctaText("upgrade-brand")}`}
-              target="_blank"
-              className="priceButton featuredButton"
-            >
-              Tanya Reseller Brand
-            </a>
+            <CheckoutButton
+              packageId="reseller-brand"
+              label="Daftar Reseller Brand"
+              featured
+              production={midtransProduction}
+            />
             <PromoCountdown className="promoCountdown" />
           </div>
         </div>
@@ -290,13 +285,7 @@ export default function GabungResellerPage() {
               Untuk yang cuma butuh 1 undangan pernikahan sendiri, lengkap
               dengan RSVP, galeri, dan amplop digital. Bukan reseller.
             </p>
-            <a
-              href={`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Halo Vistiq Invitation, saya ingin order paket Client (1 undangan)")}`}
-              target="_blank"
-              className="priceButton"
-            >
-              Order Sekarang
-            </a>
+            <CheckoutButton packageId="client" label="Order Sekarang" production={midtransProduction} />
           </div>
 
           <div className="priceCard featured">
@@ -311,13 +300,12 @@ export default function GabungResellerPage() {
               <strong style={{ color: "white" }}>30%</strong> dari setiap
               penjualan client Anda. Bayar sekali, aktif selamanya.
             </p>
-            <a
-              href={`https://wa.me/${WA_NUMBER}?text=${ctaText("paket-reseller")}`}
-              target="_blank"
-              className="priceButton featuredButton"
-            >
-              Daftar Reseller
-            </a>
+            <CheckoutButton
+              packageId="reseller"
+              label="Daftar Reseller"
+              featured
+              production={midtransProduction}
+            />
           </div>
 
           <div className="priceCard">
@@ -333,13 +321,7 @@ export default function GabungResellerPage() {
               keuntungan <strong>100%</strong> jadi milik Anda. Bayar sekali,
               aktif selamanya.
             </p>
-            <a
-              href={`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Halo Vistiq Invitation, saya ingin daftar paket Reseller Brand (white label, 100%)")}`}
-              target="_blank"
-              className="priceButton"
-            >
-              Daftar Reseller Brand
-            </a>
+            <CheckoutButton packageId="reseller-brand" label="Daftar Reseller Brand" production={midtransProduction} />
             <PromoCountdown className="promoCountdown" />
           </div>
         </div>
@@ -353,13 +335,11 @@ export default function GabungResellerPage() {
         </p>
 
         <div className="heroActions center">
-          <a
-            href={`https://wa.me/${WA_NUMBER}?text=${ctaText("final-cta")}`}
-            target="_blank"
-            className="primaryButton"
-          >
-            Daftar Jadi Reseller Sekarang
-          </a>
+          <CheckoutButton
+            packageId="reseller"
+            label="Daftar Jadi Reseller Sekarang"
+            production={midtransProduction}
+          />
 
           <Link href="/demo" className="secondaryButton">
             Lihat Demo Tema
@@ -971,17 +951,29 @@ html, body {
   align-items: center;
   margin-top: 18px;
   padding: 12px 20px;
+  border: 0;
   border-radius: 999px;
   background: #eff6ff;
   color: #1167b2;
   text-decoration: none;
   font-weight: 800;
   font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
 }
 
 .featuredButton {
   background: white;
   color: #1167b2;
+}
+
+.heroActions .priceButton,
+.cta .priceButton {
+  margin-top: 0;
+  padding: 14px 24px;
+  background: #1167b2;
+  color: white;
+  font-size: 16px;
 }
 
 .cta {
