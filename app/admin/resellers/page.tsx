@@ -17,6 +17,7 @@ const NAV_ITEMS = [
 
 type Reseller = {
   id: string;
+  user_id: string;
   name: string;
   whatsapp?: string;
   commission_percent?: number;
@@ -55,6 +56,7 @@ export default function ResellersPage() {
 
   const [creating, setCreating] = useState(false);
   const [credentials, setCredentials] = useState<{ email: string; password: string } | null>(null);
+  const [resettingId, setResettingId] = useState<string | null>(null);
 
   const fetchResellers = async () => {
     const { data, error } = await supabase
@@ -163,6 +165,26 @@ export default function ResellersPage() {
     fetchResellers();
   };
 
+  const resetPassword = async (userId: string) => {
+    if (!confirm("Buat password baru untuk reseller ini? Password lama akan langsung tidak berlaku.")) return;
+
+    setResettingId(userId);
+    const res = await fetch("/api/admin/reset-password", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId }),
+    });
+    const result = await res.json();
+    setResettingId(null);
+
+    if (!res.ok) {
+      alert(result.error || "Gagal mengubah password.");
+      return;
+    }
+
+    setCredentials({ email: result.email, password: result.password });
+  };
+
   const toggleBrandActive = async (id: string, brand_active: boolean) => {
     const { error } = await supabase
       .from("resellers")
@@ -226,7 +248,7 @@ export default function ResellersPage() {
               }}
             >
               <strong style={{ display: "block", marginBottom: 6, color: "#15803d" }}>
-                Akun berhasil dibuat - catat sekarang, password tidak ditampilkan lagi:
+                Password siap - catat/kirim sekarang, tidak akan ditampilkan lagi:
               </strong>
               <p style={{ margin: 0 }}>Email: <code>{credentials.email}</code></p>
               <p style={{ margin: "4px 0 8px" }}>Password: <code>{credentials.password}</code></p>
@@ -364,6 +386,15 @@ export default function ResellersPage() {
                   <p className={styles.date}>
                     {new Date(reseller.created_at).toLocaleDateString("id-ID")}
                   </p>
+
+                  <button
+                    onClick={() => resetPassword(reseller.user_id)}
+                    disabled={resettingId === reseller.user_id}
+                    className={styles.button}
+                    style={{ fontSize: 11, padding: "6px 10px" }}
+                  >
+                    {resettingId === reseller.user_id ? "Membuat..." : "Reset Password"}
+                  </button>
                 </div>
               ))}
             </div>
