@@ -6,13 +6,7 @@ import styles from "./FloatingWhatsApp.module.css";
 const WA_NUMBER = "6281371338032";
 
 function isMarketingPage(pathname: string) {
-  return (
-    pathname === "/" ||
-    pathname.startsWith("/demo") ||
-    pathname.startsWith("/pembayaran") ||
-    pathname === "/gabung-reseller" ||
-    pathname === "/reseller-brand"
-  );
+  return pathname === "/";
 }
 
 function getMessage(pathname: string) {
@@ -36,11 +30,9 @@ export default function FloatingWhatsApp() {
   if (!isMarketingPage(pathname)) return null;
 
   const href = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(getMessage(pathname))}`;
-  const isThemeDemo = /^\/demo(?:-akikah|-khitan)?\/[^/]+$/.test(pathname);
-
   return (
     <a
-      className={`${styles.button} ${isThemeDemo ? styles.themeDemo : ""}`}
+      className={styles.button}
       href={href}
       target="_blank"
       rel="noreferrer"

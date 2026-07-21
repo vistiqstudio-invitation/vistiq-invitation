@@ -132,11 +132,9 @@
 
 .notificationItem {
   display: grid;
-  grid-template-columns: 9px 1fr;
+  grid-template-columns: 9px minmax(0, 1fr) 30px;
   gap: 10px;
   padding: 14px 16px;
-  color: #0f172a;
-  text-decoration: none;
   border-bottom: 1px solid #f1f5f9;
 }
 
@@ -155,6 +153,30 @@
 
 .notificationUnread .notificationDot {
   background: var(--accent, #1167b2);
+}
+
+.notificationItemLink {
+  min-width: 0;
+  color: #0f172a;
+  text-decoration: none;
+}
+
+.notificationDelete {
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #94a3b8;
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+  align-self: start;
+}
+
+.notificationDelete:hover {
+  background: #fee2e2;
+  color: #dc2626;
 }
 
 .notificationItem strong {

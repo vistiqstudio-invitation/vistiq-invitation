@@ -41,6 +41,7 @@ import LoveChronicle from "@/themes/love-chronicle/LoveChronicle";
 import VelvetCinema from "@/themes/velvet-cinema/VelvetCinema";
 import PrismaticVows from "@/themes/prismatic-vows/PrismaticVows";
 import PearlTide from "@/themes/pearl-tide/PearlTide";
+import JawaSepia from "@/themes/jawa-sepia/JawaSepia";
 
 export const themeRegistry: Record<
   string,
@@ -76,6 +77,7 @@ export const themeRegistry: Record<
   "velvet-cinema": VelvetCinema,
   "prismatic-vows": PrismaticVows,
   "pearl-tide": PearlTide,
+  "jawa-sepia": JawaSepia,
 };
 
 export type ThemeMeta = {
@@ -217,6 +219,12 @@ export const themeList: ThemeMeta[] = [
     label: "Jawa Coklat Premium",
     description: "Krem & coklat tan hangat, kartu pill & arch, motif batik lattice, joglo",
     swatch: ["#fffbf4", "#ac9271"],
+  },
+  {
+    key: "jawa-sepia",
+    label: "Javanese Sepia Motion",
+    description: "Coklat sepia sinematik, bingkai ukir Jawa, grain film, Ken Burns & reveal berlapis",
+    swatch: ["#160e0a", "#c7a46a"],
   },
   {
     key: "sage-green",

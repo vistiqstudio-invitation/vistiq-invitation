@@ -56,6 +56,7 @@ const COVER_BY_THEME: Record<string, string> = {
   // thumbnail side by side in the demo picker. Replace once real
   // photos exist.
   "jawa-coklat": "/photos/jawa-gallery-4.png",
+  "jawa-sepia": "/photos/jawa-cover.png",
   // Placeholder only - no owner-supplied photography for this theme yet.
   // Reuses floral-garden's real cover shot since its soft, natural sage
   // tones are the closest mood match among the current photo set.
@@ -95,6 +96,7 @@ const GROOM_PHOTO_BY_THEME: Record<string, string> = {
   santorini: "/photos/white-groom.png",
   "jawa-merah": "/photos/jawa-groom.png",
   "jawa-coklat": "/photos/jawa-groom.png",
+  "jawa-sepia": "/photos/jawa-groom.png",
   "sage-green": "/photos/floral-groom.png",
   sahara: "/photos/rustic-groom.png",
 };
@@ -122,6 +124,7 @@ const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
   santorini: "/photos/white-bride.png",
   "jawa-merah": "/photos/jawa-bride.png",
   "jawa-coklat": "/photos/jawa-bride.png",
+  "jawa-sepia": "/photos/jawa-bride.png",
   "sage-green": "/photos/floral-bride.png",
   sahara: "/photos/rustic-bride.png",
 };
@@ -333,6 +336,14 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
     "/photos/jawa-gallery-5.png",
     "/photos/jawa-gallery-6.png",
   ],
+  "jawa-sepia": [
+    "/photos/jawa-gallery-1.png",
+    "/photos/jawa-gallery-2.png",
+    "/photos/jawa-gallery-3.png",
+    "/photos/jawa-gallery-4.png",
+    "/photos/jawa-gallery-5.png",
+    "/photos/jawa-gallery-6.png",
+  ],
   // Placeholder only, same reasoning as the cover/groom/bride entries
   // above - reuses floral-garden's real gallery wholesale until real
   // sage-green photos are supplied.
@@ -384,6 +395,7 @@ const MUSIC_BY_THEME: Record<string, string> = {
   "golden-romance": "/music/golden-romance.mp3",
   "jawa-merah": "/music/jawa-merah.mp3",
   "jawa-coklat": "/music/jawa-coklat.mp3",
+  "jawa-sepia": "/music/jawa-coklat.mp3",
   "sage-green": "/music/sage-green.mp3",
   sahara: "/music/sahara.mp3",
 };

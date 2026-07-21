@@ -16,6 +16,7 @@ type OrderNotice = {
 };
 
 const LAST_SEEN_PREFIX = "vistiq-order-notifications-seen";
+const DISMISSED_PREFIX = "vistiq-order-notifications-dismissed";
 
 function formatDate(value: string) {
   return new Intl.DateTimeFormat("id-ID", {
@@ -33,6 +34,7 @@ export default function OrderNotifications({ role }: { role: NotificationRole })
   const [notices, setNotices] = useState<OrderNotice[]>([]);
   const [lastSeen, setLastSeen] = useState(0);
   const [storageKey, setStorageKey] = useState("");
+  const [dismissedKey, setDismissedKey] = useState("");
 
   const loadNotifications = useCallback(async () => {
     const {
@@ -42,7 +44,16 @@ export default function OrderNotifications({ role }: { role: NotificationRole })
     if (!user) return;
 
     const key = `${LAST_SEEN_PREFIX}:${role}:${user.id}`;
+    const hiddenKey = `${DISMISSED_PREFIX}:${role}:${user.id}`;
     setStorageKey(key);
+    setDismissedKey(hiddenKey);
+
+    let dismissed = new Set<string>();
+    try {
+      dismissed = new Set(JSON.parse(window.localStorage.getItem(hiddenKey) || "[]"));
+    } catch {
+      window.localStorage.removeItem(hiddenKey);
+    }
 
     const saved = window.localStorage.getItem(key);
     const initialSeen = saved ? Number(saved) : Date.now() - 24 * 60 * 60 * 1000;
@@ -82,6 +93,7 @@ export default function OrderNotifications({ role }: { role: NotificationRole })
       setNotices(
         [...checkoutNotices, ...resellerNotices]
           .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt))
+          .filter((notice) => !dismissed.has(notice.id))
           .slice(0, 15)
       );
       return;
@@ -112,7 +124,7 @@ export default function OrderNotifications({ role }: { role: NotificationRole })
         detail: `${client.package_name || "Paket undangan"} · ${client.status || "active"}`,
         createdAt: client.created_at,
         href: "/reseller/invitations",
-      }))
+      })).filter((notice) => !dismissed.has(notice.id))
     );
   }, [role, supabase]);
 
@@ -139,6 +151,21 @@ export default function OrderNotifications({ role }: { role: NotificationRole })
     const now = Date.now();
     setLastSeen(now);
     if (storageKey) window.localStorage.setItem(storageKey, String(now));
+  };
+
+  const dismissNotice = (id: string) => {
+    if (!dismissedKey) return;
+
+    let dismissed: string[] = [];
+    try {
+      dismissed = JSON.parse(window.localStorage.getItem(dismissedKey) || "[]");
+    } catch {
+      dismissed = [];
+    }
+
+    const nextDismissed = [id, ...dismissed.filter((item) => item !== id)].slice(0, 200);
+    window.localStorage.setItem(dismissedKey, JSON.stringify(nextDismissed));
+    setNotices((current) => current.filter((notice) => notice.id !== id));
   };
 
   return (
@@ -172,19 +199,30 @@ export default function OrderNotifications({ role }: { role: NotificationRole })
               notices.map((notice) => {
                 const isUnread = Date.parse(notice.createdAt) > lastSeen;
                 return (
-                  <Link
-                    href={notice.href}
+                  <div
                     key={notice.id}
                     className={`${styles.notificationItem} ${isUnread ? styles.notificationUnread : ""}`}
-                    onClick={markAllRead}
                   >
                     <span className={styles.notificationDot} />
-                    <div>
+                    <Link
+                      href={notice.href}
+                      className={styles.notificationItemLink}
+                      onClick={markAllRead}
+                    >
                       <strong>{notice.title}</strong>
                       <p>{notice.detail}</p>
                       <time>{formatDate(notice.createdAt)}</time>
-                    </div>
-                  </Link>
+                    </Link>
+                    <button
+                      type="button"
+                      className={styles.notificationDelete}
+                      onClick={() => dismissNotice(notice.id)}
+                      aria-label={`Hapus notifikasi ${notice.title}`}
+                      title="Hapus notifikasi"
+                    >
+                      ×
+                    </button>
+                  </div>
                 );
               })
             )}
