@@ -50,6 +50,7 @@ export default function ResellerPromoPage() {
   const supabase = createClient();
   const mockupWidth = useMockupWidth();
   const [store, setStore] = useState<Storefront | null | undefined>(undefined);
+  const [activeSection, setActiveSection] = useState(SECTIONS[0].key);
 
   useEffect(() => {
     const load = async () => {
@@ -114,11 +115,30 @@ export default function ResellerPromoPage() {
           Lihat langsung tampilan setiap tema undangan digital, lalu order langsung via WhatsApp.
         </p>
 
-        {SECTIONS.map((section) => (
-          <div key={section.key}>
-            <h2 style={{ fontSize: 24, margin: "44px 0 20px" }}>{section.title}</h2>
+        <div style={{ display: "flex", gap: 8, margin: "32px 0 8px", flexWrap: "wrap" }}>
+          {SECTIONS.map((section) => (
+            <button
+              key={section.key}
+              onClick={() => setActiveSection(section.key)}
+              style={{
+                padding: "9px 18px",
+                borderRadius: 999,
+                border: "1px solid var(--accent, #1167b2)",
+                background: activeSection === section.key ? "var(--accent, #1167b2)" : "white",
+                color: activeSection === section.key ? "white" : "var(--accent, #1167b2)",
+                fontWeight: 700,
+                fontSize: 13.5,
+                cursor: "pointer",
+              }}
+            >
+              {section.title}
+            </button>
+          ))}
+        </div>
 
-            <div className={styles.grid}>
+        {SECTIONS.filter((section) => section.key === activeSection).map((section) => (
+          <div key={section.key}>
+            <div className={styles.grid} style={{ marginTop: 20 }}>
               {section.themes.map((theme) => {
                 const orderText = encodeURIComponent(
                   `Halo ${brandName}, saya ingin order undangan tema ${theme.label}`
