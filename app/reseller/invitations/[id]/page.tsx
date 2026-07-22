@@ -33,6 +33,12 @@ const initialForm = {
   reception_location: "",
   maps_url: "",
 
+  opening_greeting: "",
+  opening_title: "",
+  opening_description: "",
+  opening_quote: "",
+  opening_quote_source: "",
+
   youtube_url: "",
 
   story_1_year: "",
@@ -175,6 +181,12 @@ export default function ResellerInvitationEditPage() {
         reception_time: invitation.reception_time || "",
         reception_location: invitation.reception_location || "",
         maps_url: invitation.maps_url || "",
+
+        opening_greeting: invitation.opening_greeting || "",
+        opening_title: invitation.opening_title || "",
+        opening_description: invitation.opening_description || "",
+        opening_quote: invitation.opening_quote || "",
+        opening_quote_source: invitation.opening_quote_source || "",
 
         youtube_url: invitation.youtube_url || "",
 
@@ -504,6 +516,53 @@ export default function ResellerInvitationEditPage() {
               />
             </div>
 
+            <h2 className={styles.editSectionTitle}>Kata Pembuka (opsional)</h2>
+            <p className={styles.helpText} style={{ marginTop: -8 }}>
+              Kosongkan untuk memakai teks bawaan tema ini.
+            </p>
+
+            <div className={styles.formGrid}>
+              <input
+                placeholder="Ucapan pembuka, contoh: Assalamu'alaikum Warahmatullahi Wabarakatuh"
+                value={form.opening_greeting}
+                onChange={(e) => set("opening_greeting", e.target.value)}
+                className={styles.input}
+                style={{ gridColumn: "1 / -1" }}
+              />
+
+              <textarea
+                placeholder="Kalimat pembuka utama"
+                value={form.opening_title}
+                onChange={(e) => set("opening_title", e.target.value)}
+                className={styles.textarea}
+                style={{ gridColumn: "1 / -1" }}
+              />
+
+              <textarea
+                placeholder="Kalimat ajakan/kehormatan"
+                value={form.opening_description}
+                onChange={(e) => set("opening_description", e.target.value)}
+                className={styles.textarea}
+                style={{ gridColumn: "1 / -1" }}
+              />
+
+              <textarea
+                placeholder="Kutipan/ayat (opsional)"
+                value={form.opening_quote}
+                onChange={(e) => set("opening_quote", e.target.value)}
+                className={styles.textarea}
+                style={{ gridColumn: "1 / -1" }}
+              />
+
+              <input
+                placeholder="Sumber kutipan, contoh: QS. Ar-Rum : 21"
+                value={form.opening_quote_source}
+                onChange={(e) => set("opening_quote_source", e.target.value)}
+                className={styles.input}
+                style={{ gridColumn: "1 / -1" }}
+              />
+            </div>
+
             <h2 className={styles.editSectionTitle}>Video (opsional)</h2>
 
             <div className={styles.formGrid}>
@@ -643,6 +702,53 @@ export default function ResellerInvitationEditPage() {
             placeholder="Google Maps URL"
             value={form.maps_url}
             onChange={(e) => set("maps_url", e.target.value)}
+            className={styles.input}
+            style={{ gridColumn: "1 / -1" }}
+          />
+        </div>
+
+        <h2 className={styles.editSectionTitle}>Kata Pembuka (opsional)</h2>
+        <p className={styles.helpText} style={{ marginTop: -8 }}>
+          Kosongkan untuk memakai teks bawaan tema ini.
+        </p>
+
+        <div className={styles.formGrid}>
+          <input
+            placeholder="Ucapan pembuka, contoh: Assalamu'alaikum Warahmatullahi Wabarakatuh"
+            value={form.opening_greeting}
+            onChange={(e) => set("opening_greeting", e.target.value)}
+            className={styles.input}
+            style={{ gridColumn: "1 / -1" }}
+          />
+
+          <textarea
+            placeholder="Kalimat pembuka utama"
+            value={form.opening_title}
+            onChange={(e) => set("opening_title", e.target.value)}
+            className={styles.textarea}
+            style={{ gridColumn: "1 / -1" }}
+          />
+
+          <textarea
+            placeholder="Kalimat ajakan/kehormatan"
+            value={form.opening_description}
+            onChange={(e) => set("opening_description", e.target.value)}
+            className={styles.textarea}
+            style={{ gridColumn: "1 / -1" }}
+          />
+
+          <textarea
+            placeholder="Kutipan/ayat (opsional)"
+            value={form.opening_quote}
+            onChange={(e) => set("opening_quote", e.target.value)}
+            className={styles.textarea}
+            style={{ gridColumn: "1 / -1" }}
+          />
+
+          <input
+            placeholder="Sumber kutipan, contoh: QS. Ar-Rum : 21"
+            value={form.opening_quote_source}
+            onChange={(e) => set("opening_quote_source", e.target.value)}
             className={styles.input}
             style={{ gridColumn: "1 / -1" }}
           />

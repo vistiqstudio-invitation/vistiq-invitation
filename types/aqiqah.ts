@@ -1,4 +1,4 @@
-import type { Brand, GiftAccount } from "@/types/invitation";
+import type { Brand, GiftAccount, OpeningText } from "@/types/invitation";
 
 export type AqiqahInvitationData = {
   id: number;
@@ -15,6 +15,8 @@ export type AqiqahInvitationData = {
 
   mapsUrl: string | null;
   mapsEmbedUrl: string | null;
+
+  opening: OpeningText;
 
   baby: {
     name: string;

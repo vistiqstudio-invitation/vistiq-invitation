@@ -7,6 +7,7 @@ import Cloud from "./Cloud";
 import styles from "./style.module.css";
 
 export default function Hero({ invitation }: { invitation: AqiqahInvitationData }) {
+  const opening = invitation.opening;
   const targetDate = invitation.event?.rawDate || null;
   const time = useCountdown(targetDate);
   const showCountdown = targetDate && !time.isPast;
@@ -22,9 +23,8 @@ export default function Hero({ invitation }: { invitation: AqiqahInvitationData 
     <div className={styles.hero}>
       <Reveal>
         <h2 className={styles.heroTitle}>
-          Assalamu'alaikum Warahmatullahi Wabarakatuh, dengan penuh syukur
-          kami mengundang Bapak/Ibu/Saudara/i untuk turut merayakan dan
-          mendoakan buah hati kami.
+          {opening?.title ||
+            "Assalamu'alaikum Warahmatullahi Wabarakatuh, dengan penuh syukur kami mengundang Bapak/Ibu/Saudara/i untuk turut merayakan dan mendoakan buah hati kami."}
         </h2>
       </Reveal>
 

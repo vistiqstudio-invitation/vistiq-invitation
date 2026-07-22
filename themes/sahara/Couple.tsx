@@ -5,16 +5,25 @@ import type { InvitationData } from "@/types/invitation";
 import styles from "./style.module.css";
 
 export default function Couple({ invitation }: { invitation: InvitationData }) {
+  const opening = invitation.opening;
+
   return (
     <div className={styles.section}>
       <Reveal>
         <div className={styles.coupleIntro}>
-          <h2 className={styles.coupleGreeting}>Assalamu'alaikum Wr. Wb.</h2>
-          <p className={styles.coupleDesc}>
-            Dengan memohon rahmat dan ridho Allah SWT, insyaaAllah kami akan
-            menyelenggarakan acara pernikahan {invitation.groom.name} &amp;{" "}
-            {invitation.bride.name}.
-          </p>
+          <h2 className={styles.coupleGreeting}>
+            {opening?.greeting || "Assalamu'alaikum Wr. Wb."}
+          </h2>
+
+          {opening?.title ? (
+            <p className={styles.coupleDesc}>{opening.title}</p>
+          ) : (
+            <p className={styles.coupleDesc}>
+              Dengan memohon rahmat dan ridho Allah SWT, insyaaAllah kami akan
+              menyelenggarakan acara pernikahan {invitation.groom.name} &amp;{" "}
+              {invitation.bride.name}.
+            </p>
+          )}
         </div>
       </Reveal>
 

@@ -46,6 +46,7 @@ export default function InvitationsPage() {
   const [invitations, setInvitations] = useState<Invitation[]>([]);
   const [clientsById, setClientsById] = useState<Record<string, ClientInfo>>({});
   const [loading, setLoading] = useState(true);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const initialForm = {
     category: "wedding" as "wedding" | "aqiqah" | "khitan",
@@ -205,6 +206,25 @@ export default function InvitationsPage() {
 
   const openPreview = (slug: string) => {
     window.open(`/preview/${slug}`, "_blank");
+  };
+
+  const deleteInvitation = async (id: string, label: string) => {
+    if (!confirm(`Hapus undangan "${label}"? Data RSVP dan wishes yang menyertainya juga akan ikut terhapus. Tindakan ini tidak bisa dibatalkan.`)) {
+      return;
+    }
+
+    setDeletingId(id);
+
+    const { error } = await supabase.from("invitations").delete().eq("id", id);
+
+    setDeletingId(null);
+
+    if (error) {
+      alert(`Gagal menghapus undangan: ${error.message}`);
+      return;
+    }
+
+    fetchInvitations();
   };
 
   const logout = async () => {
@@ -445,6 +465,21 @@ export default function InvitationsPage() {
                       className={styles.miniButtonGreen}
                     >
                       Copy
+                    </button>
+
+                    <button
+                      onClick={() =>
+                        deleteInvitation(
+                          item.id,
+                          item.category === "aqiqah" || item.category === "khitan"
+                            ? item.baby_name || item.slug
+                            : `${item.groom_name || "-"} & ${item.bride_name || "-"}`
+                        )
+                      }
+                      disabled={deletingId === item.id}
+                      className={styles.miniButtonRed}
+                    >
+                      {deletingId === item.id ? "Menghapus..." : "Hapus"}
                     </button>
                   </div>
                 </div>

@@ -6,6 +6,7 @@ import type { KhitanInvitationData } from "@/types/khitan";
 import styles from "./style.module.css";
 
 export default function Hero({ invitation }: { invitation: KhitanInvitationData }) {
+  const opening = invitation.opening;
   const targetDate = invitation.event?.rawDate || null;
   const time = useCountdown(targetDate);
   const showCountdown = targetDate && !time.isPast;
@@ -21,9 +22,8 @@ export default function Hero({ invitation }: { invitation: KhitanInvitationData 
     <div className={styles.hero}>
       <Reveal>
         <h2 className={styles.heroTitle}>
-          Assalamu'alaikum Warahmatullahi Wabarakatuh, dengan penuh syukur
-          kami mengundang Bapak/Ibu/Saudara/i untuk hadir pada acara
-          Walimatul Khitan putra kami, si anak pemberani.
+          {opening?.title ||
+            "Assalamu'alaikum Warahmatullahi Wabarakatuh, dengan penuh syukur kami mengundang Bapak/Ibu/Saudara/i untuk hadir pada acara Walimatul Khitan putra kami, si anak pemberani."}
         </h2>
       </Reveal>
 

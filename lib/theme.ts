@@ -28,6 +28,7 @@ import RoyalImperial from "@/themes/royal-imperial/RoyalImperial";
 import AdatJawa from "@/themes/adat-jawa/AdatJawa";
 import AdatMinang from "@/themes/adat-minang/AdatMinang";
 import AdatBugis from "@/themes/adat-bugis/AdatBugis";
+import AdatBali from "@/themes/adat-bali/AdatBali";
 import MenaraCahaya from "@/themes/menara-cahaya/MenaraCahaya";
 import Santorini from "@/themes/santorini/Santorini";
 import VintageBotanical from "@/themes/vintage-botanical/VintageBotanical";
@@ -64,6 +65,7 @@ export const themeRegistry: Record<
   "adat-jawa": AdatJawa,
   "adat-minang": AdatMinang,
   "adat-bugis": AdatBugis,
+  "adat-bali": AdatBali,
   "menara-cahaya": MenaraCahaya,
   santorini: Santorini,
   "vintage-botanical": VintageBotanical,
@@ -174,6 +176,12 @@ export const themeList: ThemeMeta[] = [
     label: "Adat Bugis",
     description: "Teal & emas, motif atap timpalaja, ombak Bugis-Makassar",
     swatch: ["#0d3438", "#cfa23c"],
+  },
+  {
+    key: "adat-bali",
+    label: "Adat Bali",
+    description: "Hitam batu & emas prada, gapura candi bentar, medali foto bulat, aksara Bali",
+    swatch: ["#16110d", "#c9a227"],
   },
   {
     key: "menara-cahaya",

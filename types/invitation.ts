@@ -18,6 +18,18 @@ export type Brand = {
   color: string | null;
 } | null;
 
+// The opening greeting block (eyebrow, title paragraph, courtesy text,
+// verse/quote+citation) shown near the top of most themes. Every field is
+// nullable - null means "use this theme's own hardcoded default text".
+// Shared across all 3 categories since it's the same editable block.
+export type OpeningText = {
+  greeting: string | null;
+  title: string | null;
+  description: string | null;
+  quote: string | null;
+  quoteSource: string | null;
+};
+
 export type InvitationData = {
   id: number;
   slug: string;
@@ -36,6 +48,8 @@ export type InvitationData = {
 
   mapsUrl: string | null;
   mapsEmbedUrl: string | null;
+
+  opening: OpeningText;
 
   groom: {
     name: string;

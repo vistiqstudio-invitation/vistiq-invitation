@@ -7,6 +7,7 @@ import styles from "./style.module.css";
 import Crest from "./Crest";
 
 export default function Hero({ invitation }: { invitation: KhitanInvitationData }) {
+  const opening = invitation.opening;
   const targetDate = invitation.event?.rawDate || null;
   const time = useCountdown(targetDate);
   const showCountdown = targetDate && !time.isPast;
@@ -24,9 +25,8 @@ export default function Hero({ invitation }: { invitation: KhitanInvitationData 
         <Crest className={styles.heroCrest} />
 
         <h2 className={styles.heroTitle}>
-          Assalamu'alaikum Warahmatullahi Wabarakatuh, dengan penuh syukur
-          kami mengundang Bapak/Ibu/Saudara/i untuk hadir pada acara
-          Walimatul Khitan putra kami.
+          {opening?.title ||
+            "Assalamu'alaikum Warahmatullahi Wabarakatuh, dengan penuh syukur kami mengundang Bapak/Ibu/Saudara/i untuk hadir pada acara Walimatul Khitan putra kami."}
         </h2>
       </Reveal>
 

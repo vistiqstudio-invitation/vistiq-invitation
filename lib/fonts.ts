@@ -1,4 +1,4 @@
-import { Cormorant_Garamond, Playfair_Display, Inter, Alex_Brush, Suranna, Readex_Pro, Chelsea_Market } from "next/font/google";
+import { Cormorant_Garamond, Playfair_Display, Inter, Alex_Brush, Suranna, Readex_Pro, Chelsea_Market, Noto_Sans_Balinese } from "next/font/google";
 
 export const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -47,5 +47,15 @@ export const chelseaMarket = Chelsea_Market({
   variable: "--font-chelsea-market",
   subsets: ["latin"],
   weight: ["400"],
+  display: "swap",
+});
+
+// Renders genuine Aksara Bali script (used by adat-bali for the Om
+// Swastyastu / Om Shanti Shanti Shanti Om ceremonial flourishes) instead
+// of falling back to tofu boxes on devices without the script installed.
+export const notoBalinese = Noto_Sans_Balinese({
+  variable: "--font-noto-bali",
+  subsets: ["balinese", "latin"],
+  weight: ["400", "600", "700"],
   display: "swap",
 });

@@ -69,6 +69,8 @@ export function getDemoAqiqahInvitation(theme: string): AqiqahInvitationData {
     mapsUrl: "https://maps.google.com",
     mapsEmbedUrl: "https://www.google.com/maps?q=Jakarta&output=embed",
 
+    opening: { greeting: null, title: null, description: null, quote: null, quoteSource: null },
+
     baby: {
       name: "Muhammad Rayyan Athallah",
       gender: "L",

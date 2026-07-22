@@ -6,6 +6,7 @@ import type { AqiqahInvitationData } from "@/types/aqiqah";
 import styles from "./style.module.css";
 
 export default function Hero({ invitation }: { invitation: AqiqahInvitationData }) {
+  const opening = invitation.opening;
   const targetDate = invitation.event?.rawDate || null;
   const time = useCountdown(targetDate);
   const showCountdown = targetDate && !time.isPast;
@@ -23,9 +24,8 @@ export default function Hero({ invitation }: { invitation: AqiqahInvitationData 
         <img className={styles.heroOrnament} src="/photos/akikah-zaitun-bismillah.png" alt="Bismillahirrahmanirrahim" />
 
         <h2 className={styles.heroTitle}>
-          Assalamu'alaikum Warahmatullahi Wabarakatuh, sebagai rasa syukur,
-          kami mengundang Bapak/Ibu/Saudara/i pada acara tasyakuran atas
-          kelahiran putra/putri kami.
+          {opening?.title ||
+            "Assalamu'alaikum Warahmatullahi Wabarakatuh, sebagai rasa syukur, kami mengundang Bapak/Ibu/Saudara/i pada acara tasyakuran atas kelahiran putra/putri kami."}
         </h2>
       </Reveal>
 

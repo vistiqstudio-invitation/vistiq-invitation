@@ -12,6 +12,7 @@ function hideOnError(e: React.SyntheticEvent<HTMLImageElement>) {
 }
 
 export default function Hero({ invitation }: { invitation: InvitationData }) {
+  const opening = invitation.opening;
   const weddingDate = invitation.events[0]?.rawDate || null;
 
   return (
@@ -31,13 +32,11 @@ export default function Hero({ invitation }: { invitation: InvitationData }) {
 
       <Reveal>
         <p className={styles.heroVerse}>
-          "Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan
-          untukmu pasangan hidup dari jenismu sendiri supaya kamu mendapat
-          ketenangan hati padanya, dan dijadikan-Nya di antaramu rasa kasih
-          dan sayang."
+          {opening?.quote ||
+            `"Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu pasangan hidup dari jenismu sendiri supaya kamu mendapat ketenangan hati padanya, dan dijadikan-Nya di antaramu rasa kasih dan sayang."`}
         </p>
 
-        <span className={styles.heroVerseSource}>QS. Ar-Rum : 21</span>
+        <span className={styles.heroVerseSource}>{opening?.quoteSource || "QS. Ar-Rum : 21"}</span>
       </Reveal>
 
       {weddingDate && (
@@ -69,11 +68,15 @@ export default function Hero({ invitation }: { invitation: InvitationData }) {
       </Reveal>
 
       <Reveal delay={0.3}>
-        <p className={styles.heroDesc}>
-          Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila
-          Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu
-          kepada {invitation.groom.name} &amp; {invitation.bride.name}.
-        </p>
+        {opening?.description ? (
+          <p className={styles.heroDesc}>{opening.description}</p>
+        ) : (
+          <p className={styles.heroDesc}>
+            Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila
+            Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu
+            kepada {invitation.groom.name} &amp; {invitation.bride.name}.
+          </p>
+        )}
       </Reveal>
     </div>
   );

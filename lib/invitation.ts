@@ -6,6 +6,7 @@ import type {
   EventItem,
   GiftAccount,
   InvitationData,
+  OpeningText,
   StoryItem,
 } from "@/types/invitation";
 import type { AqiqahInvitationData } from "@/types/aqiqah";
@@ -19,6 +20,16 @@ function resolveBrand(raw: Record<string, any>): Brand {
     name: reseller.brand_name,
     logoUrl: reseller.logo_url || null,
     color: reseller.brand_color || null,
+  };
+}
+
+function resolveOpening(raw: Record<string, any>): OpeningText {
+  return {
+    greeting: raw.opening_greeting || null,
+    title: raw.opening_title || null,
+    description: raw.opening_description || null,
+    quote: raw.opening_quote || null,
+    quoteSource: raw.opening_quote_source || null,
   };
 }
 
@@ -177,6 +188,8 @@ function normalizeInvitation(raw: Record<string, any>): InvitationData {
     mapsUrl: firstNonEmpty(raw.maps_url, raw.location, raw.map_link),
     mapsEmbedUrl: firstNonEmpty(raw.maps_embed, raw.map_embed),
 
+    opening: resolveOpening(raw),
+
     groom: {
       name: raw.groom_name || "",
       parents: firstNonEmpty(
@@ -264,6 +277,8 @@ function normalizeAqiqahInvitation(raw: Record<string, any>): AqiqahInvitationDa
     mapsUrl: firstNonEmpty(raw.maps_url, raw.location, raw.map_link),
     mapsEmbedUrl: firstNonEmpty(raw.maps_embed, raw.map_embed),
 
+    opening: resolveOpening(raw),
+
     baby: {
       name: raw.baby_name || "",
       gender: raw.baby_gender === "L" || raw.baby_gender === "P" ? raw.baby_gender : null,
@@ -339,6 +354,8 @@ function normalizeKhitanInvitation(raw: Record<string, any>): KhitanInvitationDa
 
     mapsUrl: firstNonEmpty(raw.maps_url, raw.location, raw.map_link),
     mapsEmbedUrl: firstNonEmpty(raw.maps_embed, raw.map_embed),
+
+    opening: resolveOpening(raw),
 
     child: {
       name: raw.baby_name || "",
