@@ -34,6 +34,12 @@ type Props = {
   swatch?: [string, string];
   /** Theme label shown on the static fallback card. */
   label?: string;
+  /** Cover-screen text overlay (name, date, "Buka Undangan" button) drawn on top of the static image/card. */
+  overlay?: {
+    eyebrow: string;
+    title: string;
+    date?: string;
+  };
 };
 
 // A phone-shaped frame showing either a live (non-interactive) iframe of the
@@ -48,6 +54,7 @@ export default function PhoneMockup({
   coverImage,
   swatch,
   label,
+  overlay,
 }: Props) {
   const scale = width / DESIGN_WIDTH;
   const screenHeight = DESIGN_HEIGHT * scale;
@@ -116,6 +123,55 @@ export default function PhoneMockup({
             loading="lazy"
             scrolling="no"
           />
+        )}
+
+        {mode === "static" && overlay && (
+          <>
+            <div className={styles.staticScrim} />
+            <div
+              className={styles.staticOverlay}
+              style={{ padding: `0 ${8 * scale}px ${22 * scale}px` }}
+            >
+              <p
+                className={styles.staticEyebrow}
+                style={{ fontSize: Math.max(width * 0.032, 7), letterSpacing: 2 * scale, marginBottom: 4 * scale }}
+              >
+                {overlay.eyebrow}
+              </p>
+              <p
+                className={styles.staticTitle}
+                style={{ fontSize: Math.max(width * 0.072, 12), marginBottom: 6 * scale }}
+              >
+                {overlay.title}
+              </p>
+              {overlay.date && (
+                <p
+                  className={styles.staticEyebrow}
+                  style={{ fontSize: Math.max(width * 0.03, 6.5), marginBottom: 10 * scale, letterSpacing: 0.5 }}
+                >
+                  {overlay.date}
+                </p>
+              )}
+              <p
+                className={styles.staticInvite}
+                style={{ fontSize: Math.max(width * 0.032, 7), marginBottom: 10 * scale }}
+              >
+                Kepada Yth.
+                <b style={{ fontSize: Math.max(width * 0.036, 7.5) }}>Bapak/Ibu/Saudara/i</b>
+              </p>
+              <span
+                className={styles.staticButton}
+                style={{
+                  fontSize: Math.max(width * 0.034, 7.5),
+                  padding: `${8 * scale}px ${20 * scale}px`,
+                  borderRadius: 999,
+                  background: swatch?.[1] || "#1167b2",
+                }}
+              >
+                Buka Undangan
+              </span>
+            </div>
+          </>
         )}
 
         <div className={styles.screenGloss} />

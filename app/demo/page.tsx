@@ -56,6 +56,7 @@ export default function DemoPickerPage() {
                     coverImage={COVER_BY_THEME[theme.key]}
                     swatch={theme.swatch}
                     label={theme.label}
+                    overlay={{ eyebrow: "The Wedding Of", title: "Rizky Pratama & Nabila Putri", date: "Minggu, 20 September 2026" }}
                   />
                 </div>
 

@@ -57,6 +57,7 @@ export default function DemoKhitanPickerPage() {
                     coverImage={COVER_BY_THEME[theme.key]}
                     swatch={theme.swatch}
                     label={theme.label}
+                    overlay={{ eyebrow: "Khitanan", title: "Muhammad Rayyan Athallah", date: "Minggu, 20 September 2026" }}
                   />
                 </div>
 

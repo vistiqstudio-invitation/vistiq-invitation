@@ -44,9 +44,33 @@ type Storefront = {
 };
 
 const SECTIONS = [
-  { key: "wedding", title: "Undangan Pernikahan", eyebrow: "Indonesian Wedding", themes: themeList, demoPath: "/demo", covers: WEDDING_COVERS },
-  { key: "aqiqah", title: "Undangan Aqiqah", eyebrow: "Indonesian Aqiqah", themes: aqiqahThemeList, demoPath: "/demo-akikah", covers: AQIQAH_COVERS },
-  { key: "khitan", title: "Undangan Khitan", eyebrow: "Indonesian Khitan", themes: khitanThemeList, demoPath: "/demo-khitan", covers: KHITAN_COVERS },
+  {
+    key: "wedding",
+    title: "Undangan Pernikahan",
+    eyebrow: "Indonesian Wedding",
+    themes: themeList,
+    demoPath: "/demo",
+    covers: WEDDING_COVERS,
+    overlay: { eyebrow: "The Wedding Of", title: "Rizky Pratama & Nabila Putri", date: "Minggu, 20 September 2026" },
+  },
+  {
+    key: "aqiqah",
+    title: "Undangan Aqiqah",
+    eyebrow: "Indonesian Aqiqah",
+    themes: aqiqahThemeList,
+    demoPath: "/demo-akikah",
+    covers: AQIQAH_COVERS,
+    overlay: { eyebrow: "Aqiqah & Tasyakuran", title: "Muhammad Rayyan Athallah", date: "Minggu, 20 September 2026" },
+  },
+  {
+    key: "khitan",
+    title: "Undangan Khitan",
+    eyebrow: "Indonesian Khitan",
+    themes: khitanThemeList,
+    demoPath: "/demo-khitan",
+    covers: KHITAN_COVERS,
+    overlay: { eyebrow: "Khitanan", title: "Muhammad Rayyan Athallah", date: "Minggu, 20 September 2026" },
+  },
 ];
 
 export default function ResellerPromoPage() {
@@ -177,6 +201,7 @@ export default function ResellerPromoPage() {
                         coverImage={section.covers[theme.key]}
                         swatch={theme.swatch}
                         label={theme.label}
+                        overlay={section.overlay}
                       />
                     </div>
 
