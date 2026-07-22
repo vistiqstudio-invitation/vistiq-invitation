@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import DashboardSidebar from "@/components/admin/DashboardSidebar";
+import { themeList, aqiqahThemeList, khitanThemeList } from "@/lib/theme";
 import styles from "@/styles/dashboard.module.css";
 
 const NAV_ITEMS = [
@@ -217,11 +218,21 @@ export default function ClientsPage() {
               }
               className={styles.input}
             >
-              <option>Luxury Gold</option>
-              <option>Luxury White</option>
-              <option>Royal Black</option>
-              <option>Islamic Emerald</option>
-              <option>Floral Garden</option>
+              <optgroup label="Pernikahan">
+                {themeList.map((theme) => (
+                  <option key={theme.key} value={theme.label}>{theme.label}</option>
+                ))}
+              </optgroup>
+              <optgroup label="Aqiqah">
+                {aqiqahThemeList.map((theme) => (
+                  <option key={theme.key} value={theme.label}>{theme.label}</option>
+                ))}
+              </optgroup>
+              <optgroup label="Khitan">
+                {khitanThemeList.map((theme) => (
+                  <option key={theme.key} value={theme.label}>{theme.label}</option>
+                ))}
+              </optgroup>
             </select>
 
             <select

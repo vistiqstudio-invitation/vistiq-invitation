@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import DashboardSidebar from "@/components/admin/DashboardSidebar";
 import { getResellerNavItems } from "@/components/reseller/navItems";
+import { themeList, aqiqahThemeList, khitanThemeList } from "@/lib/theme";
 import styles from "@/styles/dashboard.module.css";
 
 type AppUser = {
@@ -318,11 +319,21 @@ export default function ResellerClientsPage() {
                   onChange={(e) => setForm({ ...form, package_name: e.target.value })}
                   className={styles.input}
                 >
-                  <option>Luxury Gold</option>
-                  <option>Luxury White</option>
-                  <option>Royal Black</option>
-                  <option>Islamic Emerald</option>
-                  <option>Floral Garden</option>
+                  <optgroup label="Pernikahan">
+                    {themeList.map((theme) => (
+                      <option key={theme.key} value={theme.label}>{theme.label}</option>
+                    ))}
+                  </optgroup>
+                  <optgroup label="Aqiqah">
+                    {aqiqahThemeList.map((theme) => (
+                      <option key={theme.key} value={theme.label}>{theme.label}</option>
+                    ))}
+                  </optgroup>
+                  <optgroup label="Khitan">
+                    {khitanThemeList.map((theme) => (
+                      <option key={theme.key} value={theme.label}>{theme.label}</option>
+                    ))}
+                  </optgroup>
                 </select>
 
                 <select
