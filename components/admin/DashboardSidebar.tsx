@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import OrderNotifications from "@/components/admin/OrderNotifications";
 import styles from "@/styles/dashboard.module.css";
@@ -31,6 +32,9 @@ export default function DashboardSidebar({
   onLogout: () => void;
   notificationRole?: "owner" | "reseller";
 }) {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const closeMobile = () => setMobileOpen(false);
+
   return (
     <aside
       className={styles.sidebar}
@@ -46,7 +50,17 @@ export default function DashboardSidebar({
         <h2 className={styles.brand}>{brandBottom}</h2>
       </div>
 
-      <nav className={styles.menu}>
+      <button
+        type="button"
+        className={styles.menuToggle}
+        onClick={() => setMobileOpen((v) => !v)}
+        aria-expanded={mobileOpen}
+        aria-label={mobileOpen ? "Tutup menu" : "Buka menu"}
+      >
+        {mobileOpen ? "✕" : "☰"}
+      </button>
+
+      <nav className={mobileOpen ? `${styles.menu} ${styles.menuOpen}` : styles.menu}>
         {items.map((item) =>
           item.external ? (
             <a
@@ -55,6 +69,7 @@ export default function DashboardSidebar({
               target="_blank"
               rel="noreferrer"
               className={item.key === activeKey ? styles.menuActive : styles.menuButton}
+              onClick={closeMobile}
             >
               {item.icon && <span className={styles.menuIcon}>{item.icon}</span>}
               {item.label}
@@ -64,6 +79,7 @@ export default function DashboardSidebar({
               key={item.key}
               href={item.href}
               className={item.key === activeKey ? styles.menuActive : styles.menuButton}
+              onClick={closeMobile}
             >
               {item.icon && <span className={styles.menuIcon}>{item.icon}</span>}
               {item.label}
