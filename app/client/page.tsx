@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import DashboardSidebar from "@/components/admin/DashboardSidebar";
+import ChangePasswordCard from "@/components/dashboard/ChangePasswordCard";
 import styles from "@/styles/dashboard.module.css";
 
 const NAV_ITEMS = [
@@ -426,6 +427,8 @@ export default function ClientPage() {
                 </div>
               )}
             </section>
+
+            <ChangePasswordCard />
           </>
         )}
       </section>
