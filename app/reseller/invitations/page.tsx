@@ -4,16 +4,9 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import DashboardSidebar from "@/components/admin/DashboardSidebar";
+import { getResellerNavItems } from "@/components/reseller/navItems";
 import { themeList, aqiqahThemeList, khitanThemeList } from "@/lib/theme";
 import styles from "@/styles/dashboard.module.css";
-
-const NAV_ITEMS = [
-  { key: "dashboard", label: "Dashboard", href: "/reseller" },
-  { key: "invitations", label: "Buat Undangan", href: "/reseller/invitations" },
-  { key: "rsvp", label: "RSVP", href: "/reseller/rsvp" },
-  { key: "transactions", label: "Komisi", href: "/reseller/transactions" },
-  { key: "demo", label: "Demo Tema", href: "/demo", external: true },
-];
 
 const BUCKET = "invitation-assets";
 
@@ -419,7 +412,7 @@ export default function ResellerInvitationsPage() {
         brandBottom={brandName ? "Reseller Brand" : "Reseller"}
         logoUrl={brandActive ? reseller?.logo_url : null}
         accentColor={brandActive ? reseller?.brand_color : null}
-        items={NAV_ITEMS}
+        items={getResellerNavItems(reseller?.package)}
         activeKey="invitations"
         notificationRole="reseller"
         onLogout={logout}
@@ -449,7 +442,7 @@ export default function ResellerInvitationsPage() {
         ) : clients.length === 0 ? (
           <section className={styles.warningBox}>
             <h2>Belum ada client.</h2>
-            <p>Tambahkan client dulu di halaman Dashboard sebelum membuat undangan.</p>
+            <p>Tambahkan client dulu di halaman Daftar Client sebelum membuat undangan.</p>
           </section>
         ) : (
           <>

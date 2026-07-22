@@ -1,18 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import DashboardSidebar from "@/components/admin/DashboardSidebar";
+import { getResellerNavItems } from "@/components/reseller/navItems";
 import styles from "@/styles/dashboard.module.css";
-
-const NAV_ITEMS = [
-  { key: "dashboard", label: "Dashboard", href: "/reseller" },
-  { key: "invitations", label: "Buat Undangan", href: "/reseller/invitations" },
-  { key: "rsvp", label: "RSVP", href: "/reseller/rsvp" },
-  { key: "transactions", label: "Komisi", href: "/reseller/transactions" },
-  { key: "demo", label: "Demo Tema", href: "/demo", external: true },
-];
 
 type Reseller = {
   id: string;
@@ -33,9 +27,10 @@ type Rsvp = {
   created_at: string;
 };
 
-export default function ResellerRsvpPage() {
+function RsvpContent() {
   const router = useRouter();
   const supabase = createClient();
+  const clientId = useSearchParams().get("client_id");
 
   const [reseller, setReseller] = useState<Reseller | null>(null);
   const [rsvps, setRsvps] = useState<Rsvp[]>([]);
@@ -48,7 +43,8 @@ export default function ResellerRsvpPage() {
       .select("id")
       .eq("reseller_id", resellerId);
 
-    const clientIds = (clientsData ?? []).map((c) => c.id);
+    const allClientIds = (clientsData ?? []).map((c) => c.id);
+    const clientIds = clientId ? allClientIds.filter((id) => id === clientId) : allClientIds;
     setHasClients(clientIds.length > 0);
 
     if (clientIds.length === 0) {
@@ -178,7 +174,7 @@ export default function ResellerRsvpPage() {
         brandBottom={brandName ? "Reseller Brand" : "Reseller"}
         logoUrl={brandActive ? reseller?.logo_url : null}
         accentColor={brandActive ? reseller?.brand_color : null}
-        items={NAV_ITEMS}
+        items={getResellerNavItems(reseller?.package)}
         activeKey="rsvp"
         notificationRole="reseller"
         onLogout={logout}
@@ -190,8 +186,15 @@ export default function ResellerRsvpPage() {
             <p className={styles.label}>{brandName ? `${brandName} DASHBOARD` : "RESELLER DASHBOARD"}</p>
             <h1 className={styles.title}>RSVP &amp; Ucapan</h1>
             <p className={styles.subtitle}>
-              Konfirmasi kehadiran dan ucapan dari undangan client Anda.
+              {clientId
+                ? "Konfirmasi kehadiran dan ucapan untuk client ini."
+                : "Konfirmasi kehadiran dan ucapan dari undangan client Anda."}
             </p>
+            {clientId && (
+              <Link href="/reseller/clients" style={{ fontSize: 12.5, color: "#1167b2", fontWeight: 700 }}>
+                ← Kembali ke Daftar Client
+              </Link>
+            )}
           </div>
 
           <div className={styles.actions}>
@@ -265,5 +268,13 @@ export default function ResellerRsvpPage() {
         )}
       </section>
     </main>
+  );
+}
+
+export default function ResellerRsvpPage() {
+  return (
+    <Suspense fallback={<main className={styles.page}>Memuat...</main>}>
+      <RsvpContent />
+    </Suspense>
   );
 }

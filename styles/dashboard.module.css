@@ -283,9 +283,16 @@
   }
 }
 
+.menuIcon {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
 .menuActive,
 .menuButton {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   border: none;
   padding: 10px 14px;
   border-radius: 10px;
@@ -669,6 +676,62 @@
 .dangerButton:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+.clientRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 18px;
+  background: #f8fafc;
+  border-radius: 16px;
+}
+
+.clientInfo {
+  flex: 1 1 190px;
+  min-width: 170px;
+}
+
+.clientInfo p {
+  margin: 2px 0 0;
+  font-size: 12.5px;
+  color: #64748b;
+}
+
+.clientInvitations {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1 1 160px;
+}
+
+.clientInvitations a {
+  font-size: 12.5px;
+  color: #1167b2;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.clientInvitations a:hover {
+  text-decoration: underline;
+}
+
+.clientEmpty {
+  font-size: 12.5px;
+  color: #94a3b8;
+}
+
+.clientStatus {
+  flex: 0 0 130px;
+}
+
+.clientActions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+  flex: 0 0 auto;
+  align-items: center;
 }
 
 .badge,

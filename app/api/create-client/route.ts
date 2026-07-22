@@ -102,6 +102,7 @@ export async function POST(request: Request) {
     user_id: created.user.id,
     reseller_id,
     name,
+    email,
     whatsapp,
     package_name,
     status,

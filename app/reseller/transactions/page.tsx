@@ -4,15 +4,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import DashboardSidebar from "@/components/admin/DashboardSidebar";
+import { getResellerNavItems } from "@/components/reseller/navItems";
 import styles from "@/styles/dashboard.module.css";
-
-const NAV_ITEMS = [
-  { key: "dashboard", label: "Dashboard", href: "/reseller" },
-  { key: "invitations", label: "Buat Undangan", href: "/reseller/invitations" },
-  { key: "rsvp", label: "RSVP", href: "/reseller/rsvp" },
-  { key: "transactions", label: "Komisi", href: "/reseller/transactions" },
-  { key: "demo", label: "Demo Tema", href: "/demo", external: true },
-];
 
 type Reseller = {
   id: string;
@@ -116,7 +109,7 @@ export default function ResellerTransactionsPage() {
         brandBottom={brandName ? "Reseller Brand" : "Reseller"}
         logoUrl={brandActive ? reseller?.logo_url : null}
         accentColor={brandActive ? reseller?.brand_color : null}
-        items={NAV_ITEMS}
+        items={getResellerNavItems(reseller?.package)}
         activeKey="transactions"
         notificationRole="reseller"
         onLogout={logout}

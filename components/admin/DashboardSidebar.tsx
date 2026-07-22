@@ -9,6 +9,7 @@ export type SidebarItem = {
   label: string;
   href: string;
   external?: boolean;
+  icon?: React.ReactNode;
 };
 
 export default function DashboardSidebar({
@@ -55,6 +56,7 @@ export default function DashboardSidebar({
               rel="noreferrer"
               className={item.key === activeKey ? styles.menuActive : styles.menuButton}
             >
+              {item.icon && <span className={styles.menuIcon}>{item.icon}</span>}
               {item.label}
             </a>
           ) : (
@@ -63,6 +65,7 @@ export default function DashboardSidebar({
               href={item.href}
               className={item.key === activeKey ? styles.menuActive : styles.menuButton}
             >
+              {item.icon && <span className={styles.menuIcon}>{item.icon}</span>}
               {item.label}
             </Link>
           )

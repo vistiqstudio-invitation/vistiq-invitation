@@ -5,15 +5,8 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import DashboardSidebar from "@/components/admin/DashboardSidebar";
 import ChangePasswordCard from "@/components/dashboard/ChangePasswordCard";
+import { getResellerNavItems } from "@/components/reseller/navItems";
 import styles from "@/styles/dashboard.module.css";
-
-const NAV_ITEMS = [
-  { key: "dashboard", label: "Dashboard", href: "/reseller" },
-  { key: "invitations", label: "Buat Undangan", href: "/reseller/invitations" },
-  { key: "rsvp", label: "RSVP", href: "/reseller/rsvp" },
-  { key: "transactions", label: "Komisi", href: "/reseller/transactions" },
-  { key: "demo", label: "Demo Tema", href: "/demo", external: true },
-];
 
 const WA_NUMBER = "6281371338032";
 
@@ -44,46 +37,14 @@ const PACKAGE_LABELS: Record<string, string> = {
   reseller_brand: "Reseller Brand (White Label)",
 };
 
-type Client = {
-  id: string;
-  reseller_id?: string;
-  name: string;
-  whatsapp?: string;
-  package_name?: string;
-  status?: string;
-  created_at: string;
-};
-
-type Transaction = {
-  id: string;
-  amount: number;
-  commission: number;
-  status?: string;
-};
-
 export default function ResellerPage() {
   const router = useRouter();
   const supabase = createClient();
 
   const [user, setUser] = useState<AppUser | null>(null);
   const [reseller, setReseller] = useState<Reseller | null>(null);
-  const [clients, setClients] = useState<Client[]>([]);
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [clientCount, setClientCount] = useState(0);
   const [loading, setLoading] = useState(true);
-
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    whatsapp: "",
-    package_name: "Luxury Gold",
-    status: "active",
-  });
-  const [addingClient, setAddingClient] = useState(false);
-  const [newClientCredentials, setNewClientCredentials] = useState<{
-    name: string;
-    email: string;
-    password: string;
-  } | null>(null);
 
   const [brandForm, setBrandForm] = useState({ brand_name: "", brand_color: "#d4af37" });
   const [savingBrand, setSavingBrand] = useState(false);
@@ -109,20 +70,12 @@ export default function ResellerPage() {
       brand_color: currentReseller.brand_color || "#d4af37",
     });
 
-    const { data: clientsData } = await supabase
+    const { count } = await supabase
       .from("clients")
-      .select("*")
-      .eq("reseller_id", currentReseller.id)
-      .order("created_at", { ascending: false });
-
-    setClients(clientsData ?? []);
-
-    const { data: transactionsData } = await supabase
-      .from("transactions")
-      .select("id, amount, commission, status")
+      .select("id", { count: "exact", head: true })
       .eq("reseller_id", currentReseller.id);
 
-    setTransactions(transactionsData ?? []);
+    setClientCount(count ?? 0);
     setLoading(false);
   };
 
@@ -162,59 +115,6 @@ export default function ResellerPage() {
     loadUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
-
-  const addClient = async () => {
-    if (!reseller) {
-      alert("Akun reseller belum terhubung.");
-      return;
-    }
-
-    if (!form.name.trim() || !form.email.trim()) {
-      alert("Nama dan email client wajib diisi (email dipakai untuk login client).");
-      return;
-    }
-
-    setAddingClient(true);
-
-    const response = await fetch("/api/create-client", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    });
-
-    const result = await response.json();
-
-    setAddingClient(false);
-
-    if (!response.ok) {
-      alert(`Gagal menambahkan client: ${result.error}`);
-      return;
-    }
-
-    setNewClientCredentials({ name: form.name, email: result.email, password: result.password });
-
-    setForm({
-      name: "",
-      email: "",
-      whatsapp: "",
-      package_name: "Luxury Gold",
-      status: "active",
-    });
-
-    if (user) fetchData(user);
-  };
-
-  const copyClientCredentials = async () => {
-    if (!newClientCredentials) return;
-
-    const dashboardBrand = reseller?.package === "reseller_brand" && reseller.brand_active && reseller.brand_name
-      ? reseller.brand_name
-      : "Vistiq Invitation";
-    const text = `Halo ${newClientCredentials.name}, berikut akun login dashboard undangan Anda di ${dashboardBrand}:\n\nLink: ${window.location.origin}/login\nEmail: ${newClientCredentials.email}\nPassword: ${newClientCredentials.password}\n\nLewat dashboard ini Anda bisa generate link undangan per nama tamu, lihat RSVP, dan edit undangan.`;
-
-    await navigator.clipboard.writeText(text);
-    alert("Pesan berhasil disalin, tinggal paste ke WhatsApp client.");
-  };
 
   const saveBrand = async () => {
     if (!reseller) return;
@@ -286,7 +186,6 @@ export default function ResellerPage() {
   const brandStyle = brandActive && reseller?.brand_color
     ? ({ "--accent": reseller.brand_color } as React.CSSProperties)
     : undefined;
-  const totalCommission = transactions.reduce((sum, item) => sum + Number(item.commission || 0), 0);
 
   const upgradeText = encodeURIComponent(
     `Halo Vistiq Invitation, saya ${user?.name || "reseller"} (${user?.email || ""}) ingin upgrade ke paket Reseller Brand (white label, promo launching Rp149.000, normal Rp299.000).`
@@ -299,7 +198,7 @@ export default function ResellerPage() {
         brandBottom={brandName ? "Reseller Brand" : "Reseller"}
         logoUrl={brandActive ? reseller?.logo_url : null}
         accentColor={brandActive ? reseller?.brand_color : null}
-        items={NAV_ITEMS}
+        items={getResellerNavItems(reseller?.package)}
         activeKey="dashboard"
         notificationRole="reseller"
         onLogout={logout}
@@ -335,7 +234,7 @@ export default function ResellerPage() {
             <section className={styles.stats}>
               <div className={styles.statCard}>
                 <span>Total Client</span>
-                <strong>{clients.length}</strong>
+                <strong>{clientCount}</strong>
               </div>
 
               <div className={styles.statCard}>
@@ -343,15 +242,12 @@ export default function ResellerPage() {
                 <strong>{PACKAGE_LABELS[reseller.package || "reseller"]}</strong>
               </div>
 
-              <div className={styles.statCard}>
-                <span>Komisi</span>
-                <strong>{reseller.commission_percent || 0}%</strong>
-              </div>
-
-              <div className={styles.statCard}>
-                <span>Total Komisi Terkumpul</span>
-                <strong>Rp {totalCommission.toLocaleString("id-ID")}</strong>
-              </div>
+              {!isBrandPackage && (
+                <div className={styles.statCard}>
+                  <span>Komisi</span>
+                  <strong>{reseller.commission_percent || 0}%</strong>
+                </div>
+              )}
 
               <div className={styles.statCard}>
                 <span>Status</span>
@@ -435,115 +331,6 @@ export default function ResellerPage() {
                 </a>
               </section>
             )}
-
-            <section className={styles.formCard}>
-              <h2 className={styles.sectionTitle}>Tambah Client Baru</h2>
-              <p style={{ marginTop: -8, marginBottom: 16, fontSize: 13, opacity: 0.75 }}>
-                Email dipakai untuk membuatkan akun login dashboard client secara
-                otomatis - client bisa generate link tamu, lihat RSVP, dan edit
-                undangan sendiri.
-              </p>
-
-              <div className={styles.formGrid}>
-                <input
-                  placeholder="Nama Client / Nama Pasangan"
-                  value={form.name}
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  className={styles.input}
-                />
-
-                <input
-                  type="email"
-                  placeholder="Email Client (untuk login dashboard)"
-                  value={form.email}
-                  onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  className={styles.input}
-                />
-
-                <input
-                  placeholder="Nomor WhatsApp"
-                  value={form.whatsapp}
-                  onChange={(e) =>
-                    setForm({ ...form, whatsapp: e.target.value })
-                  }
-                  className={styles.input}
-                />
-
-                <select
-                  value={form.package_name}
-                  onChange={(e) =>
-                    setForm({ ...form, package_name: e.target.value })
-                  }
-                  className={styles.input}
-                >
-                  <option>Luxury Gold</option>
-                  <option>Luxury White</option>
-                  <option>Royal Black</option>
-                  <option>Islamic Emerald</option>
-                  <option>Floral Garden</option>
-                </select>
-
-                <select
-                  value={form.status}
-                  onChange={(e) =>
-                    setForm({ ...form, status: e.target.value })
-                  }
-                  className={styles.input}
-                >
-                  <option value="active">Active</option>
-                  <option value="pending">Pending</option>
-                  <option value="inactive">Inactive</option>
-                </select>
-              </div>
-
-              <button onClick={addClient} className={styles.button} disabled={addingClient}>
-                {addingClient ? "Menyimpan..." : "Simpan Client"}
-              </button>
-
-              {newClientCredentials && (
-                <div className={styles.linkBox} style={{ marginTop: 16 }}>
-                  <p style={{ margin: "0 0 8px", fontWeight: 600 }}>
-                    Akun login {newClientCredentials.name} berhasil dibuat:
-                  </p>
-                  <p style={{ margin: 0 }}>Email: {newClientCredentials.email}</p>
-                  <p style={{ margin: "0 0 12px" }}>Password: {newClientCredentials.password}</p>
-                  <button onClick={copyClientCredentials} className={styles.exportButton}>
-                    Copy Pesan untuk Dikirim ke Client
-                  </button>
-                </div>
-              )}
-            </section>
-
-            <section className={styles.tableWrap}>
-              <h2 className={styles.sectionTitle}>Client Saya</h2>
-
-              {clients.length === 0 ? (
-                <p>Belum ada client.</p>
-              ) : (
-                <div className={styles.table}>
-                  {clients.map((client) => (
-                    <div key={client.id} className={styles.row}>
-                      <div>
-                        <strong>{client.name}</strong>
-                        <p>{client.whatsapp || "-"}</p>
-                      </div>
-
-                      <span className={styles.badge}>
-                        {client.package_name || "-"}
-                      </span>
-
-                      <span className={styles.status}>{client.status}</span>
-
-                      <p className={styles.date}>
-                        {new Date(client.created_at).toLocaleDateString(
-                          "id-ID"
-                        )}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </section>
 
             <ChangePasswordCard />
           </>
