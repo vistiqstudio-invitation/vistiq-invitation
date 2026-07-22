@@ -25,6 +25,7 @@ type Reseller = {
 
 type Client = {
   id: string;
+  user_id?: string | null;
   name: string;
   email?: string | null;
   whatsapp?: string;
@@ -66,11 +67,12 @@ export default function ResellerClientsPage() {
     email: string;
     password: string;
   } | null>(null);
+  const [resettingId, setResettingId] = useState<string | null>(null);
 
   const fetchData = async (resellerId: string) => {
     const { data: clientsData } = await supabase
       .from("clients")
-      .select("id, name, email, whatsapp, package_name, status, created_at")
+      .select("id, user_id, name, email, whatsapp, package_name, status, created_at")
       .eq("reseller_id", resellerId)
       .order("created_at", { ascending: false });
 
@@ -195,6 +197,26 @@ export default function ResellerClientsPage() {
     if (reseller) fetchData(reseller.id);
   };
 
+  const resetClientPassword = async (client: Client) => {
+    if (!confirm(`Buat password baru untuk ${client.name}? Password lama akan langsung tidak berlaku.`)) return;
+
+    setResettingId(client.id);
+    const res = await fetch("/api/reseller/reset-client-password", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ clientId: client.id }),
+    });
+    const result = await res.json();
+    setResettingId(null);
+
+    if (!res.ok) {
+      alert(result.error || "Gagal mengganti password.");
+      return;
+    }
+
+    setNewClientCredentials({ name: client.name, email: result.email, password: result.password });
+  };
+
   const invitationLabel = (item: Invitation) =>
     item.category === "aqiqah" || item.category === "khitan"
       ? item.baby_name || "-"
@@ -258,7 +280,7 @@ export default function ResellerClientsPage() {
               {newClientCredentials && (
                 <div className={styles.linkBox} style={{ marginBottom: 16 }}>
                   <p style={{ margin: "0 0 8px", fontWeight: 600 }}>
-                    Akun login {newClientCredentials.name} berhasil dibuat:
+                    Kirim akun login ini ke {newClientCredentials.name}:
                   </p>
                   <p style={{ margin: 0 }}>Email: {newClientCredentials.email}</p>
                   <p style={{ margin: "0 0 12px" }}>Password: {newClientCredentials.password}</p>
@@ -368,6 +390,21 @@ export default function ResellerClientsPage() {
                         <p className={styles.date}>
                           {new Date(client.created_at).toLocaleDateString("id-ID")}
                         </p>
+
+                        <div className={styles.clientActions}>
+                          {client.user_id ? (
+                            <button
+                              onClick={() => resetClientPassword(client)}
+                              disabled={resettingId === client.id}
+                              className={styles.button}
+                              style={{ fontSize: 11, padding: "6px 10px" }}
+                            >
+                              {resettingId === client.id ? "Membuat..." : "Reset Password"}
+                            </button>
+                          ) : (
+                            <span className={styles.clientEmpty}>Belum ada akun login</span>
+                          )}
+                        </div>
                       </div>
                     );
                   })}
