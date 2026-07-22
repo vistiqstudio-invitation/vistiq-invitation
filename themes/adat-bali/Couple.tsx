@@ -10,6 +10,8 @@ export default function Couple({ invitation }: { invitation: InvitationData }) {
       <Reveal>
         <p className={styles.eyebrow}>Mempelai</p>
         <h2 className={styles.title}>Kedua Mempelai</h2>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img className={styles.divider} src="/decor/adat-bali/divider.png" alt="" aria-hidden="true" />
       </Reveal>
 
       <div className={styles.coupleStack}>

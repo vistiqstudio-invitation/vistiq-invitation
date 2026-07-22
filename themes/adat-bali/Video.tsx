@@ -22,6 +22,8 @@ export default function Video({ invitation }: { invitation: InvitationData }) {
       <Reveal>
         <p className={styles.eyebrow}>Pre Wedding</p>
         <h2 className={styles.title}>Video Kenangan</h2>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img className={styles.divider} src="/decor/adat-bali/divider.png" alt="" aria-hidden="true" />
       </Reveal>
 
       <Reveal delay={0.1}>

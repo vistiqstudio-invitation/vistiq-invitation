@@ -40,6 +40,8 @@ export default function Gift({ invitation }: { invitation: InvitationData }) {
       <Reveal>
         <p className={styles.eyebrow}>Tanda Kasih</p>
         <h2 className={styles.title}>Wedding Gift</h2>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img className={styles.divider} src="/decor/adat-bali/divider.png" alt="" aria-hidden="true" />
       </Reveal>
 
       <div className={styles.giftGrid}>

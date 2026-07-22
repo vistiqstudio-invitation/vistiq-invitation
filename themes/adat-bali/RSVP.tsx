@@ -42,6 +42,8 @@ export default function RSVP({ invitation }: { invitation: InvitationData }) {
       <Reveal>
         <p className={styles.eyebrow}>RSVP</p>
         <h2 className={styles.title}>Konfirmasi Kehadiran</h2>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img className={styles.divider} src="/decor/adat-bali/divider.png" alt="" aria-hidden="true" />
       </Reveal>
 
       <Reveal delay={0.1}>

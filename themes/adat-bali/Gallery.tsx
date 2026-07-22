@@ -26,6 +26,8 @@ export default function Gallery({ invitation }: { invitation: InvitationData }) 
       <Reveal>
         <p className={styles.eyebrow}>Kenangan</p>
         <h2 className={styles.title}>Moment Bahagia</h2>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img className={styles.divider} src="/decor/adat-bali/divider.png" alt="" aria-hidden="true" />
       </Reveal>
 
       <Reveal delay={0.1}>

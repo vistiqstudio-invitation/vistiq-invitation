@@ -42,6 +42,11 @@ export default function AdatBali({ invitation }: { invitation: InvitationData })
 
       {ready && opened && (
         <>
+          {invitation.coverImage && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img className={styles.bgPhoto} src={invitation.coverImage} alt="" aria-hidden="true" />
+          )}
+
           <section id="home">
             <Hero invitation={invitation} />
           </section>

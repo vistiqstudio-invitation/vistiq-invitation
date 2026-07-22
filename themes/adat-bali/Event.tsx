@@ -56,6 +56,8 @@ export default function Event({ invitation }: { invitation: InvitationData }) {
       <Reveal>
         <p className={styles.eyebrow}>Waktu &amp; Tempat</p>
         <h2 className={styles.title}>Rangkaian Upacara</h2>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img className={styles.divider} src="/decor/adat-bali/divider.png" alt="" aria-hidden="true" />
       </Reveal>
 
       <div className={styles.eventGrid}>

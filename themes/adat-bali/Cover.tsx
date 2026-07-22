@@ -46,6 +46,15 @@ export default function Cover({ invitation }: { invitation: InvitationData }) {
 
       <div className={styles.coverOverlay} />
 
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img className={`${styles.coverCorner} ${styles.coverCornerTL}`} src="/decor/adat-bali/corner-top-left.png" alt="" aria-hidden="true" />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img className={`${styles.coverCorner} ${styles.coverCornerTR}`} src="/decor/adat-bali/corner-top-right.png" alt="" aria-hidden="true" />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img className={`${styles.coverCorner} ${styles.coverCornerBL}`} src="/decor/adat-bali/corner-bottom-left.png" alt="" aria-hidden="true" />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img className={`${styles.coverCorner} ${styles.coverCornerBR}`} src="/decor/adat-bali/corner-bottom-right.png" alt="" aria-hidden="true" />
+
       <motion.div
         className={styles.coverContent}
         initial={{ opacity: 0, y: 24 }}

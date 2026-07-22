@@ -13,6 +13,8 @@ export default function Wishes({ invitation }: { invitation: InvitationData }) {
       <Reveal>
         <p className={styles.eyebrow}>Doa Restu</p>
         <h2 className={styles.title}>Ucapan &amp; Doa</h2>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img className={styles.divider} src="/decor/adat-bali/divider.png" alt="" aria-hidden="true" />
       </Reveal>
 
       {totalCount === 0 ? (

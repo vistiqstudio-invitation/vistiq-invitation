@@ -29,6 +29,21 @@
   z-index: 1;
 }
 
+/* A single low-opacity photo held fixed behind every section after the
+   cover, echoing the reference site's continuous per-section background
+   imagery - one shared watermark rather than a repeated per-section
+   asset, since only one real photo set is available. */
+.bgPhoto {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.16;
+  pointer-events: none;
+}
+
 /* ---------- Layout primitives ---------- */
 
 .section {
@@ -57,7 +72,15 @@
   font-size: clamp(40px, 8vw, 66px);
   line-height: 1.15;
   color: var(--cream);
-  margin: 0 0 36px;
+  margin: 0 0 6px;
+}
+
+.divider {
+  display: block;
+  width: clamp(140px, 30vw, 220px);
+  height: auto;
+  margin: 0 auto 30px;
+  opacity: 0.95;
 }
 
 .button {
@@ -126,6 +149,35 @@
   overflow: hidden;
   padding: clamp(40px, 10vh, 90px) 20px 40px;
   text-align: center;
+}
+
+.coverCorner {
+  position: absolute;
+  z-index: 3;
+  width: clamp(84px, 20vw, 160px);
+  height: auto;
+  pointer-events: none;
+  opacity: 0.92;
+}
+
+.coverCornerTL {
+  top: 10px;
+  left: 6px;
+}
+
+.coverCornerTR {
+  top: 10px;
+  right: 6px;
+}
+
+.coverCornerBL {
+  bottom: 10px;
+  left: 6px;
+}
+
+.coverCornerBR {
+  bottom: 10px;
+  right: 6px;
 }
 
 .coverImage {
