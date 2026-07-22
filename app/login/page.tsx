@@ -11,6 +11,8 @@ const roleHome: Record<string, string> = {
   client: "/client",
 };
 
+const WA_NUMBER = "6281371338032";
+
 export default function LoginPage() {
   const router = useRouter();
   const supabase = createClient();
@@ -148,10 +150,21 @@ export default function LoginPage() {
           </>
         ) : resetSent ? (
           <div>
-            <p style={{ color: "#334155", lineHeight: 1.7, marginBottom: 20 }}>
+            <p style={{ color: "#334155", lineHeight: 1.7, marginBottom: 16 }}>
               Kalau email <strong>{resetEmail}</strong> terdaftar, link untuk
               atur ulang password sudah dikirim ke inbox tersebut. Buka email
-              itu dan klik link-nya.
+              itu dan klik link-nya secepatnya.
+            </p>
+
+            <p style={{ color: "#64748b", fontSize: 13, lineHeight: 1.7, marginBottom: 20 }}>
+              Kalau linknya langsung bilang &quot;kedaluwarsa&quot; padahal baru
+              dibuka (sering terjadi di Gmail karena link dipindai otomatis
+              sebelum sempat diklik), tidak perlu diulang - langsung hubungi
+              admin lewat{" "}
+              <a href={`https://wa.me/${WA_NUMBER}`} target="_blank" style={{ color: "#1167b2", fontWeight: 700 }}>
+                WhatsApp
+              </a>{" "}
+              untuk dibantu reset langsung.
             </p>
 
             <button

@@ -11,6 +11,8 @@ const roleHome: Record<string, string> = {
   client: "/client",
 };
 
+const WA_NUMBER = "6281371338032";
+
 export default function ResetPasswordPage() {
   const router = useRouter();
   const supabase = createClient();
@@ -118,10 +120,20 @@ export default function ResetPasswordPage() {
         {!ready ? (
           <p style={{ color: "#64748b" }}>Memverifikasi link...</p>
         ) : !validSession ? (
-          <p style={{ color: "#334155", lineHeight: 1.7 }}>
-            Link ini sudah tidak berlaku atau kedaluwarsa. Silakan kembali ke
-            halaman login dan minta link reset baru.
-          </p>
+          <div>
+            <p style={{ color: "#334155", lineHeight: 1.7, marginBottom: 12 }}>
+              Link ini sudah tidak berlaku atau kedaluwarsa.
+            </p>
+            <p style={{ color: "#64748b", fontSize: 13, lineHeight: 1.7 }}>
+              Ini sering terjadi di Gmail karena link dipindai otomatis
+              sebelum sempat diklik, jadi minta link baru kemungkinan akan
+              berulang lagi. Cara paling pasti: hubungi admin lewat{" "}
+              <a href={`https://wa.me/${WA_NUMBER}`} target="_blank" style={{ color: "#1167b2", fontWeight: 700 }}>
+                WhatsApp
+              </a>{" "}
+              untuk dibantu reset password langsung.
+            </p>
+          </div>
         ) : done ? (
           <p style={{ color: "#15803d", lineHeight: 1.7 }}>
             Password berhasil diganti. Mengalihkan ke dashboard...
