@@ -7,9 +7,9 @@ import DashboardSidebar from "@/components/admin/DashboardSidebar";
 import ChangePasswordCard from "@/components/dashboard/ChangePasswordCard";
 import styles from "@/styles/dashboard.module.css";
 
-const NAV_ITEMS = [
+const navItems = (hasInvitation: boolean) => [
   { key: "dashboard", label: "Dashboard", href: "/client" },
-  { key: "edit", label: "Edit Undangan", href: "/client/edit" },
+  { key: "edit", label: hasInvitation ? "Edit Undangan" : "Buat Undangan", href: "/client/edit" },
 ];
 
 type AppUser = {
@@ -244,7 +244,7 @@ export default function ClientPage() {
         brandBottom={brand?.brand_name ? "Client Dashboard" : "Client"}
         logoUrl={brand?.logo_url}
         accentColor={brand?.brand_color}
-        items={NAV_ITEMS}
+        items={navItems(invitations.length > 0)}
         activeKey="dashboard"
         onLogout={logout}
       />

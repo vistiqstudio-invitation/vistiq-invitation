@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { themeList, aqiqahThemeList, khitanThemeList } from "@/lib/theme";
 import styles from "@/styles/dashboard.module.css";
 
 const BUCKET = "invitation-assets";
@@ -11,6 +12,8 @@ type PhotoField = "cover_photo" | "bride_photo" | "groom_photo" | "music_url";
 
 const initialForm = {
   category: "wedding" as "wedding" | "aqiqah" | "khitan",
+  slug: "",
+  theme: "luxury-gold",
   groom_name: "",
   bride_name: "",
   groom_parent: "",
@@ -80,6 +83,7 @@ export default function ClientEditPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [invitationId, setInvitationId] = useState("");
+  const [clientId, setClientId] = useState("");
   const [form, setForm] = useState<FormState>(initialForm);
   const [brand, setBrand] = useState<DashboardBrand | null>(null);
 
@@ -123,6 +127,8 @@ export default function ClientEditPage() {
         return;
       }
 
+      setClientId(clients[0].id);
+
       const { data: invitations } = await supabase
         .from("invitations")
         .select("*")
@@ -140,6 +146,8 @@ export default function ClientEditPage() {
       setForm({
         category:
           invitation.category === "aqiqah" ? "aqiqah" : invitation.category === "khitan" ? "khitan" : "wedding",
+        slug: invitation.slug || "",
+        theme: invitation.theme || "",
         groom_name: invitation.groom_name || "",
         bride_name: invitation.bride_name || "",
         groom_parent: invitation.groom_parent || "",
@@ -206,14 +214,49 @@ export default function ClientEditPage() {
     setForm((prev) => ({ ...prev, [field]: value }));
   };
 
+  const setCategory = (category: "wedding" | "aqiqah" | "khitan") => {
+    setForm((prev) => ({
+      ...prev,
+      category,
+      theme:
+        category === "aqiqah"
+          ? aqiqahThemeList[0]?.key || ""
+          : category === "khitan"
+          ? khitanThemeList[0]?.key || ""
+          : "luxury-gold",
+    }));
+  };
+
+  const makeSlug = (text: string) =>
+    text
+      .toLowerCase()
+      .trim()
+      .replace(/&/g, "dan")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+
+  const autoSlug = () => {
+    const text =
+      form.category === "aqiqah"
+        ? `akikah-${form.baby_name}`
+        : form.category === "khitan"
+        ? `khitan-${form.baby_name}`
+        : `${form.groom_name}-${form.bride_name}`;
+    set("slug", makeSlug(text));
+  };
+
+  // Before the invitation row exists (client is creating, not editing yet)
+  // there's no invitation id to scope the upload path to - draft photos
+  // land under the client's own folder instead (see migration 029).
   const uploadToStorage = async (file: File, folder: string) => {
-    if (!invitationId) {
-      alert("Undangan tidak ditemukan.");
+    if (!invitationId && !clientId) {
+      alert("Akun client belum terhubung.");
       return "";
     }
 
     const ext = file.name.split(".").pop();
-    const fileName = `${invitationId}/${folder}-${Date.now()}-${Math.random()
+    const pathPrefix = invitationId ? invitationId : `clients/${clientId}/drafts`;
+    const fileName = `${pathPrefix}/${folder}-${Date.now()}-${Math.random()
       .toString(36)
       .slice(2)}.${ext}`;
 
@@ -271,19 +314,11 @@ export default function ClientEditPage() {
   };
 
   const saveData = async () => {
-    if (!invitationId) {
-      alert("Undangan tidak ditemukan.");
-      return;
-    }
-
-    setSaving(true);
-
     // Date-type columns reject an empty string ("" from an untouched
     // <input type="date">), and baby_gender's check constraint only
     // allows 'L'/'P' or null, never "" - null is the correct "not set"
     // value for all of these.
-    const payload = {
-      ...form,
+    const cleanDates = {
       akad_date: form.akad_date || null,
       resepsi_date: form.resepsi_date || null,
       aqiqah_date: form.aqiqah_date || null,
@@ -291,19 +326,63 @@ export default function ClientEditPage() {
       baby_gender: form.baby_gender || null,
     };
 
-    const { error } = await supabase
+    if (invitationId) {
+      setSaving(true);
+
+      const { error } = await supabase
+        .from("invitations")
+        .update({ ...form, ...cleanDates })
+        .eq("id", invitationId);
+
+      setSaving(false);
+
+      if (error) {
+        alert("Gagal menyimpan data.");
+        return;
+      }
+
+      alert("Data undangan berhasil disimpan.");
+      return;
+    }
+
+    // Creating for the first time - a client only ever gets one invitation.
+    if (!clientId) {
+      alert("Akun client belum terhubung.");
+      return;
+    }
+
+    if (form.category === "aqiqah" || form.category === "khitan") {
+      if (!form.baby_name.trim()) {
+        alert(form.category === "khitan" ? "Nama anak wajib diisi." : "Nama bayi wajib diisi.");
+        return;
+      }
+    } else if (!form.groom_name.trim() || !form.bride_name.trim()) {
+      alert("Nama mempelai pria dan wanita wajib diisi.");
+      return;
+    }
+
+    if (!form.slug.trim()) {
+      alert("Slug wajib diisi.");
+      return;
+    }
+
+    setSaving(true);
+
+    const { data: inserted, error } = await supabase
       .from("invitations")
-      .update(payload)
-      .eq("id", invitationId);
+      .insert({ ...form, ...cleanDates, client_id: clientId, is_active: true })
+      .select("id")
+      .single();
 
     setSaving(false);
 
     if (error) {
-      alert("Gagal menyimpan data.");
+      alert(`Gagal membuat undangan: ${error.message}`);
       return;
     }
 
-    alert("Data undangan berhasil disimpan.");
+    setInvitationId(inserted.id);
+    alert("Undangan berhasil dibuat! Bisa terus dilengkapi/diubah kapan saja.");
   };
 
   if (loading) {
@@ -329,10 +408,12 @@ export default function ClientEditPage() {
             )}
             <p className={styles.label}>{brand?.brand_name ? `${brand.brand_name} DASHBOARD` : "CLIENT DASHBOARD"}</p>
             <h1 className={styles.title} style={{ fontSize: 36 }}>
-              Edit Undangan
+              {invitationId ? "Edit Undangan" : "Buat Undangan"}
             </h1>
             <p className={styles.subtitle}>
-              Ubah data undangan dan upload foto langsung dari dashboard.
+              {invitationId
+                ? "Ubah data undangan dan upload foto langsung dari dashboard."
+                : "Lengkapi data di bawah untuk membuat undangan Anda. Setiap client hanya bisa punya satu undangan."}
             </p>
           </div>
 
@@ -343,6 +424,40 @@ export default function ClientEditPage() {
             Kembali
           </button>
         </div>
+
+        {!invitationId && (
+          <>
+            <h2 className={styles.editSectionTitle}>Kategori, Tema &amp; Slug</h2>
+
+            <div className={styles.formGrid}>
+              <select value={form.category} onChange={(e) => setCategory(e.target.value as "wedding" | "aqiqah" | "khitan")} className={styles.input}>
+                <option value="wedding">Pernikahan</option>
+                <option value="aqiqah">Aqiqah</option>
+                <option value="khitan">Khitan</option>
+              </select>
+
+              <select value={form.theme} onChange={(e) => set("theme", e.target.value)} className={styles.input}>
+                {(form.category === "aqiqah" ? aqiqahThemeList : form.category === "khitan" ? khitanThemeList : themeList).map((theme) => (
+                  <option key={theme.key} value={theme.key}>{theme.label}</option>
+                ))}
+              </select>
+
+              <div className={styles.slugRow}>
+                <input
+                  placeholder="Slug, contoh: rizky-nabila"
+                  value={form.slug}
+                  onChange={(e) => set("slug", e.target.value)}
+                  className={styles.input}
+                />
+                <button onClick={autoSlug} className={styles.smallButton}>Auto</button>
+              </div>
+            </div>
+
+            <p className={styles.helpText} style={{ marginTop: -8 }}>
+              Slug ini jadi bagian link undangan Anda, contoh: vistiqinvitation.com/{form.slug || "nama-anda"}
+            </p>
+          </>
+        )}
 
         {form.category === "aqiqah" || form.category === "khitan" ? (
           <>
@@ -778,7 +893,7 @@ export default function ClientEditPage() {
           disabled={saving}
           style={{ marginTop: 28 }}
         >
-          {saving ? "Menyimpan..." : "Simpan Perubahan"}
+          {saving ? "Menyimpan..." : invitationId ? "Simpan Perubahan" : "Buat Undangan"}
         </button>
       </div>
     </main>
