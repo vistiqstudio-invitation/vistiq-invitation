@@ -606,6 +606,71 @@
   }
 }
 
+.resellerRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 18px;
+  background: #f8fafc;
+  border-radius: 16px;
+}
+
+.resellerName {
+  flex: 1 1 170px;
+  min-width: 150px;
+}
+
+.resellerPackage {
+  flex: 0 0 210px;
+}
+
+.resellerCommission {
+  flex: 0 0 70px;
+}
+
+.resellerBrand {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.resellerStatus {
+  flex: 0 0 130px;
+}
+
+.resellerDate {
+  flex: 0 0 auto;
+  color: #64748b;
+  margin: 0;
+  font-size: 13px;
+}
+
+.resellerActions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+  flex: 0 0 auto;
+}
+
+.dangerButton {
+  border: none;
+  background: #dc2626;
+  color: white;
+  padding: 12px 22px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.dangerButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .badge,
 .packageBadge {
   background: #dbeafe;

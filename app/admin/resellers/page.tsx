@@ -57,6 +57,7 @@ export default function ResellersPage() {
   const [creating, setCreating] = useState(false);
   const [credentials, setCredentials] = useState<{ email: string; password: string } | null>(null);
   const [resettingId, setResettingId] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const fetchResellers = async () => {
     const { data, error } = await supabase
@@ -183,6 +184,26 @@ export default function ResellersPage() {
     }
 
     setCredentials({ email: result.email, password: result.password });
+  };
+
+  const deleteReseller = async (id: string, name: string) => {
+    if (!confirm(`Hapus akun reseller "${name}" secara permanen? Login-nya akan langsung tidak bisa dipakai lagi. Tindakan ini tidak bisa dibatalkan.`)) return;
+
+    setDeletingId(id);
+    const res = await fetch("/api/admin/delete-reseller", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ resellerId: id }),
+    });
+    const result = await res.json();
+    setDeletingId(null);
+
+    if (!res.ok) {
+      alert(result.error || "Gagal menghapus reseller.");
+      return;
+    }
+
+    fetchResellers();
   };
 
   const toggleBrandActive = async (id: string, brand_active: boolean) => {
@@ -339,8 +360,8 @@ export default function ResellersPage() {
           ) : (
             <div className={styles.table}>
               {resellers.map((reseller) => (
-                <div key={reseller.id} className={styles.row}>
-                  <div>
+                <div key={reseller.id} className={styles.resellerRow}>
+                  <div className={styles.resellerName}>
                     <strong>{reseller.name}</strong>
                     <p>{reseller.whatsapp || "-"}</p>
                   </div>
@@ -348,7 +369,7 @@ export default function ResellersPage() {
                   <select
                     value={reseller.package || "reseller"}
                     onChange={(e) => updatePackage(reseller.id, e.target.value)}
-                    className={styles.statusSelect}
+                    className={`${styles.statusSelect} ${styles.resellerPackage}`}
                     style={{ fontSize: 12.5 }}
                   >
                     <option value="reseller">{PACKAGE_LABELS.reseller}</option>
@@ -361,10 +382,10 @@ export default function ResellersPage() {
                     onChange={(e) =>
                       updateCommission(reseller.id, Number(e.target.value))
                     }
-                    className={styles.smallInput}
+                    className={`${styles.smallInput} ${styles.resellerCommission}`}
                   />
 
-                  <label style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13 }}>
+                  <label className={styles.resellerBrand}>
                     <input
                       type="checkbox"
                       checked={Boolean(reseller.brand_active)}
@@ -376,25 +397,36 @@ export default function ResellersPage() {
                   <select
                     value={reseller.status || "active"}
                     onChange={(e) => updateStatus(reseller.id, e.target.value)}
-                    className={styles.statusSelect}
+                    className={`${styles.statusSelect} ${styles.resellerStatus}`}
                   >
                     <option value="active">Active</option>
                     <option value="pending">Pending</option>
                     <option value="inactive">Inactive</option>
                   </select>
 
-                  <p className={styles.date}>
+                  <p className={styles.resellerDate}>
                     {new Date(reseller.created_at).toLocaleDateString("id-ID")}
                   </p>
 
-                  <button
-                    onClick={() => resetPassword(reseller.user_id)}
-                    disabled={resettingId === reseller.user_id}
-                    className={styles.button}
-                    style={{ fontSize: 11, padding: "6px 10px" }}
-                  >
-                    {resettingId === reseller.user_id ? "Membuat..." : "Reset Password"}
-                  </button>
+                  <div className={styles.resellerActions}>
+                    <button
+                      onClick={() => resetPassword(reseller.user_id)}
+                      disabled={resettingId === reseller.user_id}
+                      className={styles.button}
+                      style={{ fontSize: 11, padding: "6px 10px" }}
+                    >
+                      {resettingId === reseller.user_id ? "Membuat..." : "Reset Password"}
+                    </button>
+
+                    <button
+                      onClick={() => deleteReseller(reseller.id, reseller.name)}
+                      disabled={deletingId === reseller.id}
+                      className={styles.dangerButton}
+                      style={{ fontSize: 11, padding: "6px 10px" }}
+                    >
+                      {deletingId === reseller.id ? "Menghapus..." : "Hapus"}
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
