@@ -7,8 +7,6 @@ import KhitanThemeGrid from "@/components/KhitanThemeGrid";
 import CheckoutButton from "@/components/CheckoutButton";
 import PromoCountdown from "@/components/PromoCountdown";
 
-const WA_NUMBER = "6281371338032";
-
 const HERO_FAN = [
   { key: "royal-imperial", rotate: -18, x: -108, y: 20, scale: 0.82, z: 1 },
   { key: "islamic-green", rotate: -9, x: -58, y: 4, scale: 0.9, z: 2 },
@@ -19,10 +17,6 @@ const HERO_FAN = [
 
 export default function HomePage() {
   const midtransProduction = process.env.MIDTRANS_IS_PRODUCTION === "true";
-
-  const orderText = encodeURIComponent(
-    "Halo Vistiq Invitation, saya ingin order undangan digital"
-  );
 
   return (
     <main className="page">
@@ -46,13 +40,7 @@ export default function HomePage() {
               Lihat Demo
             </Link>
 
-            <a
-              href={`https://wa.me/${WA_NUMBER}?text=${orderText}`}
-              target="_blank"
-              className="secondaryButton"
-            >
-              Order Sekarang
-            </a>
+            <CheckoutButton packageId="client" label="Order Sekarang" production={midtransProduction} />
           </div>
         </div>
 
@@ -336,6 +324,19 @@ html, body {
   background: white;
   color: #1167b2;
   border: 1px solid #dbeafe;
+}
+
+.heroActions .priceButton {
+  padding: 14px 24px;
+  border-radius: 999px;
+  font-weight: 800;
+  display: inline-block;
+  background: white;
+  color: #1167b2;
+  border: 1px solid #dbeafe;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
 }
 
 .heroCard {
