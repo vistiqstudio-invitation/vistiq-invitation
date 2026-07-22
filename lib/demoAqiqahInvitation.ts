@@ -20,7 +20,7 @@ const MUSIC_BY_THEME: Record<string, string> = {
 // relies on its theme's illustrated fallback. akikah-zaitun's photos are
 // real, user-supplied newborn photography (see themes/akikah-zaitun for
 // sourcing notes).
-const COVER_BY_THEME: Record<string, string> = {
+export const COVER_BY_THEME: Record<string, string> = {
   "akikah-zaitun": "/photos/akikah-zaitun-cover.jpg",
   "akikah-damai": "/photos/akikah-damai-cover.jpg",
 };

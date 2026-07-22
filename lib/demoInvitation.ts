@@ -4,7 +4,7 @@ import type { InvitationData } from "@/types/invitation";
 // image eight times over. All photos are either original theme assets or
 // free-to-use stock photos (Pexels License - free for commercial use, no
 // attribution required); see public/photos/README for sourcing notes.
-const COVER_BY_THEME: Record<string, string> = {
+export const COVER_BY_THEME: Record<string, string> = {
   "luxury-gold": "/photos/luxury-cover.png",
   "royal-black": "/photos/black-cover.png",
   "islamic-green": "/photos/green-cover.png",

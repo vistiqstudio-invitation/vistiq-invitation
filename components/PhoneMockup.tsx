@@ -19,13 +19,36 @@ type Props = {
   style?: React.CSSProperties;
   /** Base demo route the iframe points at - "/demo" for wedding themes, "/demo-akikah" for aqiqah themes. */
   demoPath?: string;
+  /**
+   * "live" (default) embeds the actual theme page in an iframe - fine for a
+   * handful of mockups (hero fans), but a full catalog grid means dozens of
+   * simultaneously-running React apps, animations and all, which is what
+   * made those pages heavy to scroll on phones. "static" swaps the screen
+   * for a single cover image (or a gradient card using the theme's own
+   * swatch colors, when no cover photo exists) - no iframe, no motion.
+   */
+  mode?: "live" | "static";
+  /** Cover photo to show in static mode. Falls back to a swatch-colored card with the label when omitted. */
+  coverImage?: string | null;
+  /** Two-color gradient used for the static fallback card when there's no coverImage. */
+  swatch?: [string, string];
+  /** Theme label shown on the static fallback card. */
+  label?: string;
 };
 
-// A phone-shaped frame with a live (non-interactive) iframe of the actual
-// theme demo inside, scaled down to fit. Used anywhere we want to show real
-// theme screens instead of a flat color placeholder - homepage hero, theme
-// section, and the /demo picker cards.
-export default function PhoneMockup({ themeKey, width = 220, className, style, demoPath = "/demo" }: Props) {
+// A phone-shaped frame showing either a live (non-interactive) iframe of the
+// actual theme demo, or a static cover image/color card - see `mode` above.
+export default function PhoneMockup({
+  themeKey,
+  width = 220,
+  className,
+  style,
+  demoPath = "/demo",
+  mode = "live",
+  coverImage,
+  swatch,
+  label,
+}: Props) {
   const scale = width / DESIGN_WIDTH;
   const screenHeight = DESIGN_HEIGHT * scale;
   const outerRadius = OUTER_RADIUS * scale;
@@ -58,19 +81,42 @@ export default function PhoneMockup({ themeKey, width = 220, className, style, d
       />
 
       <div className={styles.screen} style={{ width, height: screenHeight, borderRadius: screenRadius }}>
-        <iframe
-          src={`${demoPath}/${themeKey}`}
-          className={styles.frame}
-          style={{
-            width: DESIGN_WIDTH,
-            height: DESIGN_HEIGHT,
-            transform: `scale(${scale})`,
-          }}
-          tabIndex={-1}
-          aria-hidden="true"
-          loading="lazy"
-          scrolling="no"
-        />
+        {mode === "static" ? (
+          coverImage ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={coverImage} alt={label || themeKey} className={styles.staticImage} loading="lazy" />
+          ) : (
+            <div
+              className={styles.staticFallback}
+              style={{
+                background: swatch
+                  ? `linear-gradient(155deg, ${swatch[0]}, ${swatch[1]})`
+                  : "#1c1c1e",
+              }}
+            >
+              <span
+                className={styles.staticFallbackLabel}
+                style={{ fontSize: Math.max(width * 0.09, 13), color: swatch ? swatch[1] : "#fff" }}
+              >
+                {label || themeKey}
+              </span>
+            </div>
+          )
+        ) : (
+          <iframe
+            src={`${demoPath}/${themeKey}`}
+            className={styles.frame}
+            style={{
+              width: DESIGN_WIDTH,
+              height: DESIGN_HEIGHT,
+              transform: `scale(${scale})`,
+            }}
+            tabIndex={-1}
+            aria-hidden="true"
+            loading="lazy"
+            scrolling="no"
+          />
+        )}
 
         <div className={styles.screenGloss} />
 

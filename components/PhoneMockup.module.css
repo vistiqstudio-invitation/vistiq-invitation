@@ -89,3 +89,28 @@
   inset: 0;
   z-index: 3;
 }
+
+.staticImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.staticFallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  padding: 14% 10%;
+}
+
+.staticFallbackLabel {
+  font-family: Georgia, serif;
+  font-weight: 700;
+  line-height: 1.25;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.25);
+}

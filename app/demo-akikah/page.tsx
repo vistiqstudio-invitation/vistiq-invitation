@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import PhoneMockup from "@/components/PhoneMockup";
 import { aqiqahThemeList } from "@/lib/theme";
+import { COVER_BY_THEME } from "@/lib/demoAqiqahInvitation";
 import styles from "../demo/demo.module.css";
 
 const WA_NUMBER = "6281371338032";
@@ -48,7 +49,15 @@ export default function DemoAkikahPickerPage() {
             return (
               <div className={styles.card} key={theme.key}>
                 <div className={styles.cardPreview}>
-                  <PhoneMockup themeKey={theme.key} width={mockupWidth} demoPath="/demo-akikah" />
+                  <PhoneMockup
+                    themeKey={theme.key}
+                    width={mockupWidth}
+                    demoPath="/demo-akikah"
+                    mode="static"
+                    coverImage={COVER_BY_THEME[theme.key]}
+                    swatch={theme.swatch}
+                    label={theme.label}
+                  />
                 </div>
 
                 <div className={styles.cardBody}>

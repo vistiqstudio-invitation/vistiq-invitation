@@ -6,6 +6,9 @@ import { useParams } from "next/navigation";
 import PhoneMockup from "@/components/PhoneMockup";
 import { createClient } from "@/lib/supabase/client";
 import { themeList, aqiqahThemeList, khitanThemeList } from "@/lib/theme";
+import { COVER_BY_THEME as WEDDING_COVERS } from "@/lib/demoInvitation";
+import { COVER_BY_THEME as AQIQAH_COVERS } from "@/lib/demoAqiqahInvitation";
+import { COVER_BY_THEME as KHITAN_COVERS } from "@/lib/demoKhitanInvitation";
 import styles from "../../demo/demo.module.css";
 import hero from "./landing.module.css";
 
@@ -41,9 +44,9 @@ type Storefront = {
 };
 
 const SECTIONS = [
-  { key: "wedding", title: "Undangan Pernikahan", eyebrow: "Indonesian Wedding", themes: themeList, demoPath: "/demo" },
-  { key: "aqiqah", title: "Undangan Aqiqah", eyebrow: "Indonesian Aqiqah", themes: aqiqahThemeList, demoPath: "/demo-akikah" },
-  { key: "khitan", title: "Undangan Khitan", eyebrow: "Indonesian Khitan", themes: khitanThemeList, demoPath: "/demo-khitan" },
+  { key: "wedding", title: "Undangan Pernikahan", eyebrow: "Indonesian Wedding", themes: themeList, demoPath: "/demo", covers: WEDDING_COVERS },
+  { key: "aqiqah", title: "Undangan Aqiqah", eyebrow: "Indonesian Aqiqah", themes: aqiqahThemeList, demoPath: "/demo-akikah", covers: AQIQAH_COVERS },
+  { key: "khitan", title: "Undangan Khitan", eyebrow: "Indonesian Khitan", themes: khitanThemeList, demoPath: "/demo-khitan", covers: KHITAN_COVERS },
 ];
 
 export default function ResellerPromoPage() {
@@ -166,7 +169,15 @@ export default function ResellerPromoPage() {
                 return (
                   <div className={styles.card} key={theme.key}>
                     <div className={styles.cardPreview}>
-                      <PhoneMockup themeKey={theme.key} width={mockupWidth} demoPath={section.demoPath} />
+                      <PhoneMockup
+                        themeKey={theme.key}
+                        width={mockupWidth}
+                        demoPath={section.demoPath}
+                        mode="static"
+                        coverImage={section.covers[theme.key]}
+                        swatch={theme.swatch}
+                        label={theme.label}
+                      />
                     </div>
 
                     <div className={styles.cardBody}>

@@ -9,7 +9,7 @@ const MUSIC_BY_THEME: Record<string, string> = {
   "khitan-elang": "/music/khitan-elang.mp3",
 };
 
-const COVER_BY_THEME: Record<string, string> = {
+export const COVER_BY_THEME: Record<string, string> = {
   "khitan-warna": "/photos/khitan-warna-cover.jpg",
 };
 
