@@ -333,11 +333,11 @@ export default function ResellerPage() {
 
             {isBrandPackage && reseller.brand_active && (
               <section className={styles.formCard}>
-                <h2 className={styles.sectionTitle}>Bagikan Katalog Tema</h2>
+                <h2 className={styles.sectionTitle}>Landing Page Anda</h2>
                 <p style={{ margin: "0 0 16px", fontSize: 13.5, color: "#64748b" }}>
-                  Ini halaman katalog tema khusus brand Anda - harga yang tampil sesuai
-                  yang Anda tentukan di atas, dan tombol Order akan chat langsung ke
-                  WhatsApp Anda, bukan ke Vistiq. Bagikan link ini ke calon client Anda.
+                  Halaman promosi lengkap dengan nama, logo, dan harga Anda sendiri - tombol
+                  Order akan chat langsung ke WhatsApp Anda, bukan ke Vistiq. Ini juga bisa
+                  dibuka lewat menu "Landing Page" di samping. Bagikan link ini ke calon client Anda.
                 </p>
 
                 <div className={styles.linkBox}>
@@ -347,12 +347,12 @@ export default function ResellerPage() {
                 <button
                   onClick={async () => {
                     await navigator.clipboard.writeText(`${window.location.origin}/promo/${reseller.id}`);
-                    alert("Link katalog berhasil disalin.");
+                    alert("Link landing page berhasil disalin.");
                   }}
                   className={styles.button}
                   style={{ marginTop: 12 }}
                 >
-                  Copy Link Katalog
+                  Copy Link Landing Page
                 </button>
               </section>
             )}

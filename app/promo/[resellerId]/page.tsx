@@ -7,6 +7,7 @@ import PhoneMockup from "@/components/PhoneMockup";
 import { createClient } from "@/lib/supabase/client";
 import { themeList, aqiqahThemeList, khitanThemeList } from "@/lib/theme";
 import styles from "../../demo/demo.module.css";
+import hero from "./landing.module.css";
 
 function useMockupWidth() {
   const [width, setWidth] = useState(150);
@@ -94,28 +95,46 @@ export default function ResellerPromoPage() {
       style={store.brand_color ? ({ "--accent": store.brand_color } as React.CSSProperties) : undefined}
     >
       <div className={styles.inner}>
-        <Link href="/" className={styles.back}>
-          ← Kembali ke Beranda
-        </Link>
+        <section className={hero.hero}>
+          <div className={hero.heroTop}>
+            {store.logo_url && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={store.logo_url} alt={brandName} className={hero.heroLogo} />
+            )}
+            <div>
+              <p className={hero.heroEyebrow}>Undangan Digital Premium</p>
+              <p className={hero.heroBrand}>{brandName}</p>
+            </div>
+          </div>
 
-        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
-          {store.logo_url && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={store.logo_url}
-              alt={brandName}
-              style={{ width: 36, height: 36, objectFit: "contain", borderRadius: 8 }}
-            />
-          )}
-          <p className={styles.eyebrow} style={{ margin: 0 }}>{brandName}</p>
-        </div>
+          <h1 className={hero.heroHeadline}>Undangan digital yang bikin acara Anda diingat tamu</h1>
+          <p className={hero.heroCopy}>
+            Pernikahan, aqiqah, atau khitan — pilih dari puluhan tema siap pakai, lihat tampilan aslinya
+            langsung, lalu konsultasikan kebutuhan Anda ke {brandName} lewat WhatsApp.
+          </p>
 
-        <h1 className={styles.title}>Pilih Tema Undangan</h1>
-        <p className={styles.subtitle}>
-          Lihat langsung tampilan setiap tema undangan digital, lalu order langsung via WhatsApp.
-        </p>
+          <ul className={hero.heroTrust}>
+            <li>40+ pilihan tema</li>
+            <li>Proses cepat</li>
+            <li>Bisa request desain khusus</li>
+          </ul>
 
-        <div style={{ display: "flex", gap: 8, margin: "32px 0 8px", flexWrap: "wrap" }}>
+          <div className={hero.heroActions}>
+            <a
+              href={`https://wa.me/${waNumber}?text=${encodeURIComponent(`Halo ${brandName}, saya ingin tanya-tanya soal undangan digital.`)}`}
+              target="_blank"
+              className={hero.heroCta}
+            >
+              Chat Sekarang via WhatsApp
+            </a>
+            <span className={hero.heroPrice}>Harga <strong>{priceLabel}</strong></span>
+          </div>
+        </section>
+
+        <p className={hero.sectionLabel}>Pilih Tema Undangan</p>
+        <p className={hero.sectionSub}>Lihat langsung tampilan setiap tema, lalu order dari tema yang Anda suka.</p>
+
+        <div style={{ display: "flex", gap: 8, margin: "20px 0 8px", flexWrap: "wrap" }}>
           {SECTIONS.map((section) => (
             <button
               key={section.key}

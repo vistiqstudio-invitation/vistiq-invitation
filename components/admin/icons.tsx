@@ -67,6 +67,16 @@ export function IconPalette() {
   );
 }
 
+export function IconGlobe() {
+  return (
+    <svg {...base}>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M3.5 12h17" />
+      <path d="M12 3.5c2.6 2.3 4 5.3 4 8.5s-1.4 6.2-4 8.5c-2.6-2.3-4-5.3-4-8.5s1.4-6.2 4-8.5z" />
+    </svg>
+  );
+}
+
 export function IconRsvp() {
   return (
     <svg {...base}>
