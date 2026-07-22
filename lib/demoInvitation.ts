@@ -67,12 +67,7 @@ export const COVER_BY_THEME: Record<string, string> = {
   // the closest mood match to this desert-inspired theme among the
   // current photo set. Replace once real photos exist.
   sahara: "/photos/rustic-cover.png",
-  // Placeholder only - no owner-supplied Balinese photography yet. Reuses
-  // royal-imperial's real cover shot (maroon-and-gold ceremonial attire)
-  // since its formal dark-and-gold court mood is the closest match among
-  // the current photo set. Replace with real adat Bali payas agung
-  // photography once supplied - see the asset spec given to the user.
-  "adat-bali": "/photos/imperial-cover.png",
+  "adat-bali": "/photos/adat-bali-cover.png",
 };
 
 // Couple portrait photos also vary by theme - the default luxury-gold
@@ -105,7 +100,7 @@ const GROOM_PHOTO_BY_THEME: Record<string, string> = {
   "jawa-sepia": "/photos/jawa-groom.png",
   "sage-green": "/photos/floral-groom.png",
   sahara: "/photos/rustic-groom.png",
-  "adat-bali": "/photos/imperial-groom.png",
+  "adat-bali": "/photos/adat-bali-groom.png",
 };
 
 const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
@@ -125,7 +120,7 @@ const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
   "art-deco-glam": "/photos/deco-bride.png",
   "golden-romance": "/photos/romance-bride.png",
   "adat-jawa": "/photos/jawa-bride.png",
-  "adat-bali": "/photos/imperial-bride.png",
+  "adat-bali": "/photos/adat-bali-bride.png",
   "adat-minang": "/photos/luxury-bride.png",
   "adat-bugis": "/photos/lantern-bride.png",
   "menara-cahaya": "/photos/imperial-bride.png",
@@ -374,16 +369,13 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
     "/photos/rustic-gallery-11.png",
     "/photos/rustic-gallery-12.png",
   ],
-  // Placeholder only, same reasoning as the cover/groom/bride entries
-  // above - reuses royal-imperial's real gallery wholesale until real
-  // adat Bali photos are supplied.
   "adat-bali": [
-    "/photos/imperial-gallery-1.png",
-    "/photos/imperial-gallery-2.png",
-    "/photos/imperial-gallery-3.png",
-    "/photos/imperial-gallery-4.png",
-    "/photos/imperial-gallery-5.png",
-    "/photos/imperial-gallery-6.png",
+    "/photos/adat-bali-gallery-1.png",
+    "/photos/adat-bali-gallery-2.png",
+    "/photos/adat-bali-gallery-3.png",
+    "/photos/adat-bali-gallery-4.png",
+    "/photos/adat-bali-gallery-5.png",
+    "/photos/adat-bali-gallery-6.png",
   ],
 };
 
