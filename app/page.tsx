@@ -19,9 +19,6 @@ const HERO_FAN = [
 
 export default function HomePage() {
   const midtransProduction = process.env.MIDTRANS_IS_PRODUCTION === "true";
-  const resellerText = encodeURIComponent(
-    "Halo Vistiq Invitation, saya ingin daftar reseller undangan digital"
-  );
 
   const orderText = encodeURIComponent(
     "Halo Vistiq Invitation, saya ingin order undangan digital"
@@ -176,13 +173,9 @@ export default function HomePage() {
           </p>
         </div>
 
-        <a
-          href={`https://wa.me/${WA_NUMBER}?text=${resellerText}`}
-          target="_blank"
-          className="whiteButton"
-        >
+        <Link href="/gabung-reseller#harga" className="whiteButton">
           Daftar Reseller
-        </a>
+        </Link>
       </section>
 
       <section className="cta">

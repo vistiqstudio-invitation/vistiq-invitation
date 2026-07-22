@@ -3,14 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 
-const WA_NUMBER = "6281371338032";
-
 export default function SiteNavbar() {
   const [open, setOpen] = useState(false);
-
-  const resellerText = encodeURIComponent(
-    "Halo Vistiq Invitation, saya ingin daftar reseller undangan digital"
-  );
 
   const close = () => setOpen(false);
 
@@ -43,14 +37,9 @@ export default function SiteNavbar() {
         <a href="#harga" onClick={close}>Harga</a>
         <a href="#reseller" onClick={close}>Reseller</a>
         <Link href="/login" onClick={close}>Login</Link>
-        <a
-          href={`https://wa.me/${WA_NUMBER}?text=${resellerText}`}
-          target="_blank"
-          className="navButton"
-          onClick={close}
-        >
+        <Link href="/gabung-reseller#harga" className="navButton" onClick={close}>
           Daftar Reseller
-        </a>
+        </Link>
       </div>
     </nav>
   );
