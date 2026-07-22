@@ -412,7 +412,7 @@ export default function ResellerInvitationsPage() {
         brandBottom={brandName ? "Reseller Brand" : "Reseller"}
         logoUrl={brandActive ? reseller?.logo_url : null}
         accentColor={brandActive ? reseller?.brand_color : null}
-        items={getResellerNavItems(reseller?.package)}
+        items={getResellerNavItems(reseller?.package, reseller?.id)}
         activeKey="invitations"
         notificationRole="reseller"
         onLogout={logout}

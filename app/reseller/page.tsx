@@ -28,6 +28,7 @@ type Reseller = {
   brand_color?: string | null;
   brand_active?: boolean;
   package?: "reseller" | "reseller_brand";
+  starting_price?: number | null;
 };
 
 const LOGO_BUCKET = "invitation-assets";
@@ -46,7 +47,7 @@ export default function ResellerPage() {
   const [clientCount, setClientCount] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  const [brandForm, setBrandForm] = useState({ brand_name: "", brand_color: "#d4af37" });
+  const [brandForm, setBrandForm] = useState({ brand_name: "", brand_color: "#d4af37", starting_price: "" });
   const [savingBrand, setSavingBrand] = useState(false);
   const [uploadingLogo, setUploadingLogo] = useState(false);
 
@@ -68,6 +69,7 @@ export default function ResellerPage() {
     setBrandForm({
       brand_name: currentReseller.brand_name || "",
       brand_color: currentReseller.brand_color || "#d4af37",
+      starting_price: currentReseller.starting_price != null ? String(currentReseller.starting_price) : "",
     });
 
     const { count } = await supabase
@@ -126,6 +128,7 @@ export default function ResellerPage() {
       .update({
         brand_name: brandForm.brand_name || null,
         brand_color: brandForm.brand_color || null,
+        starting_price: brandForm.starting_price ? Number(brandForm.starting_price) : null,
       })
       .eq("id", reseller.id);
 
@@ -198,7 +201,7 @@ export default function ResellerPage() {
         brandBottom={brandName ? "Reseller Brand" : "Reseller"}
         logoUrl={brandActive ? reseller?.logo_url : null}
         accentColor={brandActive ? reseller?.brand_color : null}
-        items={getResellerNavItems(reseller?.package)}
+        items={getResellerNavItems(reseller?.package, reseller?.id)}
         activeKey="dashboard"
         notificationRole="reseller"
         onLogout={logout}
@@ -280,7 +283,21 @@ export default function ResellerPage() {
                     className={styles.input}
                     style={{ padding: 4, height: 44 }}
                   />
+
+                  <input
+                    type="number"
+                    min="0"
+                    step="1000"
+                    placeholder="Harga Mulai Dari, contoh: 59000"
+                    value={brandForm.starting_price}
+                    onChange={(e) => setBrandForm({ ...brandForm, starting_price: e.target.value })}
+                    className={styles.input}
+                  />
                 </div>
+
+                <p className={styles.helpText} style={{ marginTop: -8 }}>
+                  Harga ini yang tampil di halaman katalog Anda (di bawah) - bebas Anda tentukan sendiri, tidak terikat harga Vistiq.
+                </p>
 
                 <div style={{ display: "flex", alignItems: "center", gap: 16, margin: "16px 0" }}>
                   {reseller.logo_url && (
@@ -312,7 +329,35 @@ export default function ResellerPage() {
                   {savingBrand ? "Menyimpan..." : "Simpan Brand"}
                 </button>
               </section>
-            ) : (
+            ) : null}
+
+            {isBrandPackage && reseller.brand_active && (
+              <section className={styles.formCard}>
+                <h2 className={styles.sectionTitle}>Bagikan Katalog Tema</h2>
+                <p style={{ margin: "0 0 16px", fontSize: 13.5, color: "#64748b" }}>
+                  Ini halaman katalog tema khusus brand Anda - harga yang tampil sesuai
+                  yang Anda tentukan di atas, dan tombol Order akan chat langsung ke
+                  WhatsApp Anda, bukan ke Vistiq. Bagikan link ini ke calon client Anda.
+                </p>
+
+                <div className={styles.linkBox}>
+                  {typeof window !== "undefined" ? `${window.location.origin}/promo/${reseller.id}` : `/promo/${reseller.id}`}
+                </div>
+
+                <button
+                  onClick={async () => {
+                    await navigator.clipboard.writeText(`${window.location.origin}/promo/${reseller.id}`);
+                    alert("Link katalog berhasil disalin.");
+                  }}
+                  className={styles.button}
+                  style={{ marginTop: 12 }}
+                >
+                  Copy Link Katalog
+                </button>
+              </section>
+            )}
+
+            {!isBrandPackage && (
               <section className={styles.formCard}>
                 <h2 className={styles.sectionTitle}>Upgrade ke Reseller Brand</h2>
                 <p style={{ margin: "0 0 16px", fontSize: 13.5, color: "#64748b" }}>

@@ -150,12 +150,12 @@
 
 .cardButton {
   background: white;
-  color: #1167b2;
+  color: var(--accent, #1167b2);
   border: 1px solid #cfe0f2;
 }
 
 .orderButton {
-  background: #1167b2;
+  background: var(--accent, #1167b2);
   color: white;
 }
 
