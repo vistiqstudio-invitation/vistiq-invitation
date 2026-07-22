@@ -6,7 +6,7 @@ import { InvitationProvider } from "@/components/InvitationProvider";
 import MetaPixel from "@/components/MetaPixel";
 import LeadTracker from "@/components/LeadTracker";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
-import { cormorant, playfair, inter, alexBrush, suranna, readexPro, chelseaMarket, notoBalinese } from "@/lib/fonts";
+import { cormorant, playfair, inter, alexBrush, suranna, readexPro, chelseaMarket, notoBalinese, notoSerifDisplay, raleway } from "@/lib/fonts";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="id">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${cormorant.variable} ${playfair.variable} ${inter.variable} ${alexBrush.variable} ${suranna.variable} ${readexPro.variable} ${chelseaMarket.variable} ${notoBalinese.variable}`}
+        className={`${geistSans.variable} ${geistMono.variable} ${cormorant.variable} ${playfair.variable} ${inter.variable} ${alexBrush.variable} ${suranna.variable} ${readexPro.variable} ${chelseaMarket.variable} ${notoBalinese.variable} ${notoSerifDisplay.variable} ${raleway.variable}`}
       >
         <MetaPixel />
         <LeadTracker />

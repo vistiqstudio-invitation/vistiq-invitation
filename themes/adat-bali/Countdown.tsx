@@ -3,7 +3,6 @@
 import { Fragment } from "react";
 import Reveal from "@/components/Reveal";
 import { useCountdown } from "@/hooks/useCountdown";
-import PolengTrim from "./PolengTrim";
 import styles from "./style.module.css";
 
 export default function Countdown({ targetDate }: { targetDate: string }) {
@@ -23,15 +22,14 @@ export default function Countdown({ targetDate }: { targetDate: string }) {
       <Reveal>
         <p className={styles.eyebrow}>Manuju Pawiwahan</p>
         <h2 className={styles.title}>Hitung Mundur</h2>
-        <PolengTrim className={styles.ornament} />
       </Reveal>
 
       <Reveal delay={0.1}>
         <div className={styles.countdownRow}>
           {items.map((item, index) => (
             <Fragment key={item.label}>
-              {index > 0 && <span className={styles.countdownBead} />}
-              <div className={styles.countdownRing}>
+              {index > 0 && <span className={styles.countdownDash}>·</span>}
+              <div className={styles.countdownItem}>
                 <span className={styles.countdownValue}>
                   {String(item.value).padStart(2, "0")}
                 </span>

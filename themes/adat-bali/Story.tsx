@@ -2,16 +2,14 @@
 
 import Reveal from "@/components/Reveal";
 import type { InvitationData } from "@/types/invitation";
-import PolengTrim from "./PolengTrim";
 import styles from "./style.module.css";
 
 export default function Story({ invitation }: { invitation: InvitationData }) {
   return (
     <div className={styles.section}>
       <Reveal>
-        <p className={styles.eyebrow}>Kisah Kami</p>
-        <h2 className={styles.title}>Perjalanan Cinta</h2>
-        <PolengTrim className={styles.ornament} />
+        <p className={styles.eyebrow}>Cerita Cinta</p>
+        <h2 className={styles.title}>Kisah Kami</h2>
       </Reveal>
 
       <div className={styles.storyTimeline}>

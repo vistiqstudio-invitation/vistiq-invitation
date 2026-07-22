@@ -1,16 +1,27 @@
 "use client";
 
+import { Fragment } from "react";
 import { motion } from "framer-motion";
 import { useSearchParams } from "next/navigation";
 import { useInvitation } from "@/components/InvitationProvider";
+import { useCountdown } from "@/hooks/useCountdown";
 import type { InvitationData } from "@/types/invitation";
-import CandiBentar from "./CandiBentar";
 import styles from "./style.module.css";
 
 export default function Cover({ invitation }: { invitation: InvitationData }) {
   const { setOpened } = useInvitation();
   const searchParams = useSearchParams();
   const guestName = searchParams.get("to") || "Bapak/Ibu/Saudara/i";
+
+  const weddingDate = invitation.events[0]?.rawDate || null;
+  const time = useCountdown(weddingDate);
+
+  const items = [
+    { label: "Hari", value: time.days },
+    { label: "Jam", value: time.hours },
+    { label: "Menit", value: time.minutes },
+    { label: "Detik", value: time.seconds },
+  ];
 
   return (
     <motion.section
@@ -20,80 +31,66 @@ export default function Cover({ invitation }: { invitation: InvitationData }) {
       exit={{ opacity: 0 }}
       transition={{ duration: 1 }}
     >
+      {invitation.coverImage ? (
+        <motion.img
+          className={styles.coverImage}
+          src={invitation.coverImage}
+          alt=""
+          initial={{ scale: 1.1, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 2.6, ease: [0.16, 1, 0.3, 1] }}
+        />
+      ) : (
+        <div className={styles.coverFallback} />
+      )}
+
+      <div className={styles.coverOverlay} />
+
       <motion.div
-        className={styles.coverGlow}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 2.2, delay: 0.3 }}
-      />
+        className={styles.coverContent}
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
+      >
+        <p className={styles.coverTop}>Pawiwahan</p>
 
-      <div className={styles.coverStage}>
-        <div className={styles.gateRow}>
-          <motion.div
-            className={`${styles.gateHalf} ${styles.gateLeft}`}
-            initial={{ x: 0, opacity: 0 }}
-            animate={{ x: "-8%", opacity: 1 }}
-            transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
-          >
-            <CandiBentar />
-          </motion.div>
+        <h1 className={styles.coverTitle}>
+          {invitation.groom.name}
+          <span>&amp;</span>
+          {invitation.bride.name}
+        </h1>
 
-          <motion.div
-            className={`${styles.gateHalf} ${styles.gateRight}`}
-            initial={{ x: 0, opacity: 0 }}
-            animate={{ x: "8%", opacity: 1 }}
-            transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
-          >
-            <CandiBentar />
-          </motion.div>
+        {invitation.events[0]?.date && (
+          <p className={styles.coverDate}>{invitation.events[0].date}</p>
+        )}
 
-          {invitation.coverImage ? (
-            <motion.div
-              className={styles.coverPhoto}
-              initial={{ opacity: 0, scale: 1.1 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1.8, delay: 0.6, ease: "easeOut" }}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={invitation.coverImage} alt="" />
-            </motion.div>
-          ) : (
-            <div className={styles.coverPhotoFallback} />
-          )}
-        </div>
+        {weddingDate && !time.isPast && (
+          <>
+            <p className={styles.coverCountdownLabel}>Hitung Mundur Acara</p>
 
-        <motion.div
-          className={styles.coverContent}
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, delay: 0.9, ease: "easeOut" }}
-        >
-          <p className={styles.coverTop}>Pawiwahan</p>
+            <div className={styles.coverCountdownRow}>
+              {items.map((item, index) => (
+                <Fragment key={item.label}>
+                  {index > 0 && <span className={styles.coverCountdownDash}>·</span>}
+                  <div className={styles.coverCountdownItem}>
+                    <span className={styles.coverCountdownValue}>
+                      {String(item.value).padStart(2, "0")}
+                    </span>
+                    <span className={styles.coverCountdownUnit}>{item.label}</span>
+                  </div>
+                </Fragment>
+              ))}
+            </div>
+          </>
+        )}
 
-          <h1 className={styles.coverTitle}>
-            {invitation.groom.name}
-            <span>lan</span>
-            {invitation.bride.name}
-          </h1>
+        <p className={styles.guestLabel}>Kepada Yth.</p>
+        <h2 className={styles.guestName}>{guestName}</h2>
 
-          {invitation.events[0]?.date && (
-            <p className={styles.coverDate}>{invitation.events[0].date}</p>
-          )}
-
-          <div className={styles.guestBlock}>
-            <div className={styles.line} />
-            <p className={styles.guestLabel}>Kepada Yth.</p>
-            <h2 className={styles.guestName}>{guestName}</h2>
-
-            <button
-              className={`${styles.button} ${styles.solid}`}
-              onClick={() => setOpened(true)}
-            >
-              Buka Undangan
-            </button>
-          </div>
-        </motion.div>
-      </div>
+        <button className={styles.button} onClick={() => setOpened(true)}>
+          Buka Undangan
+        </button>
+      </motion.div>
     </motion.section>
   );
 }

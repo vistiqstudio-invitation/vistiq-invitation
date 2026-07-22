@@ -2,7 +2,6 @@
 
 import Reveal from "@/components/Reveal";
 import type { InvitationData } from "@/types/invitation";
-import PolengTrim from "./PolengTrim";
 import styles from "./style.module.css";
 
 export default function Couple({ invitation }: { invitation: InvitationData }) {
@@ -11,70 +10,69 @@ export default function Couple({ invitation }: { invitation: InvitationData }) {
       <Reveal>
         <p className={styles.eyebrow}>Mempelai</p>
         <h2 className={styles.title}>Kedua Mempelai</h2>
-        <PolengTrim className={styles.ornament} />
       </Reveal>
 
-      <Reveal delay={0.15}>
-        <div className={styles.coupleStack}>
-          <div className={styles.coupleRow}>
+      <div className={styles.coupleStack}>
+        <Reveal delay={0.1}>
+          <div className={styles.coupleBlock}>
+            {invitation.groom.photo && (
+              <div className={styles.couplePhoto}>
+                <img src={invitation.groom.photo} alt={invitation.groom.name} />
+              </div>
+            )}
+
+            <h3 className={styles.coupleName}>{invitation.groom.name}</h3>
+
+            {invitation.groom.parents && (
+              <p className={styles.coupleMeta}>Putra dari {invitation.groom.parents}</p>
+            )}
+
+            {invitation.groom.instagram && (
+              <p className={styles.coupleMeta}>
+                <a
+                  href={`https://instagram.com/${invitation.groom.instagram.replace("@", "")}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  @{invitation.groom.instagram.replace("@", "")}
+                </a>
+              </p>
+            )}
+          </div>
+        </Reveal>
+
+        <Reveal delay={0.2}>
+          <p className={styles.coupleDivider}>dengan</p>
+        </Reveal>
+
+        <Reveal delay={0.3}>
+          <div className={styles.coupleBlock}>
             {invitation.bride.photo && (
-              <div className={`${styles.roundFrame} ${styles.roundFrameBride}`}>
+              <div className={styles.couplePhoto}>
                 <img src={invitation.bride.photo} alt={invitation.bride.name} />
               </div>
             )}
 
-            <span className={styles.coupleDivider}>lan</span>
+            <h3 className={styles.coupleName}>{invitation.bride.name}</h3>
 
-            {invitation.groom.photo && (
-              <div className={`${styles.roundFrame} ${styles.roundFrameGroom}`}>
-                <img src={invitation.groom.photo} alt={invitation.groom.name} />
-              </div>
+            {invitation.bride.parents && (
+              <p className={styles.coupleMeta}>Putri dari {invitation.bride.parents}</p>
+            )}
+
+            {invitation.bride.instagram && (
+              <p className={styles.coupleMeta}>
+                <a
+                  href={`https://instagram.com/${invitation.bride.instagram.replace("@", "")}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  @{invitation.bride.instagram.replace("@", "")}
+                </a>
+              </p>
             )}
           </div>
-
-          <div className={styles.coupleNames}>
-            <div className={styles.coupleCol}>
-              <h3 className={styles.coupleName}>{invitation.bride.name}</h3>
-
-              {invitation.bride.parents && (
-                <p className={styles.coupleMeta}>Putri dari {invitation.bride.parents}</p>
-              )}
-
-              {invitation.bride.instagram && (
-                <p className={styles.coupleMeta}>
-                  <a
-                    href={`https://instagram.com/${invitation.bride.instagram.replace("@", "")}`}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    @{invitation.bride.instagram.replace("@", "")}
-                  </a>
-                </p>
-              )}
-            </div>
-
-            <div className={styles.coupleCol}>
-              <h3 className={styles.coupleName}>{invitation.groom.name}</h3>
-
-              {invitation.groom.parents && (
-                <p className={styles.coupleMeta}>Putra dari {invitation.groom.parents}</p>
-              )}
-
-              {invitation.groom.instagram && (
-                <p className={styles.coupleMeta}>
-                  <a
-                    href={`https://instagram.com/${invitation.groom.instagram.replace("@", "")}`}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    @{invitation.groom.instagram.replace("@", "")}
-                  </a>
-                </p>
-              )}
-            </div>
-          </div>
-        </div>
-      </Reveal>
+        </Reveal>
+      </div>
     </div>
   );
 }

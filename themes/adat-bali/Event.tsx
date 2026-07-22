@@ -2,8 +2,18 @@
 
 import Reveal from "@/components/Reveal";
 import type { InvitationData } from "@/types/invitation";
-import PolengTrim from "./PolengTrim";
 import styles from "./style.module.css";
+
+const MONTHS = [
+  "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+  "Juli", "Agustus", "September", "Oktober", "November", "Desember",
+];
+
+function dateParts(rawDate: string) {
+  const [datePart] = rawDate.split("T");
+  const [y, m, d] = datePart.split("-").map(Number);
+  return { day: String(d).padStart(2, "0"), month: MONTHS[m - 1] || "", year: y };
+}
 
 // rawDate is a naive "YYYY-MM-DDTHH:mm:00" local string with no timezone
 // (see toRawDate() in lib/invitation.ts) - stamps are built by direct
@@ -44,43 +54,54 @@ export default function Event({ invitation }: { invitation: InvitationData }) {
   return (
     <div className={styles.section}>
       <Reveal>
-        <p className={styles.eyebrow}>Acara</p>
+        <p className={styles.eyebrow}>Waktu &amp; Tempat</p>
         <h2 className={styles.title}>Rangkaian Upacara</h2>
-        <PolengTrim className={styles.ornament} />
       </Reveal>
 
       <div className={styles.eventGrid}>
-        {invitation.events.map((event, index) => (
-          <Reveal key={event.name} delay={index * 0.15}>
-            <div className={styles.eventCard}>
-              <div className={styles.eventPoleng} />
+        {invitation.events.map((event, index) => {
+          const parts = event.rawDate ? dateParts(event.rawDate) : null;
 
-              <h3 className={styles.eventName}>{event.name}</h3>
-              {event.date && <p className={styles.eventDate}>{event.date}</p>}
+          return (
+            <Reveal key={event.name} delay={index * 0.15}>
+              <div className={styles.eventCard}>
+                <p className={styles.eventEyebrow}>Pawiwahan</p>
 
-              <div className={styles.eventDash} />
+                {parts && (
+                  <>
+                    <p className={styles.eventNumeral}>{parts.day}</p>
+                    <p className={styles.eventMonthYear}>
+                      {parts.month} {parts.year}
+                    </p>
+                  </>
+                )}
 
-              {event.time && (
-                <p className={styles.eventDetail}>
-                  Pukul <strong>{event.time}</strong>
-                </p>
-              )}
+                <h3 className={styles.eventName}>{event.name}</h3>
 
-              {event.location && <p className={styles.eventDetail}>{event.location}</p>}
+                {event.time && (
+                  <p className={styles.eventDetail}>
+                    Pukul <strong>{event.time}</strong>
+                  </p>
+                )}
 
-              {event.rawDate && (
-                <a
-                  className={styles.eventCalendar}
-                  href={calendarUrl(event.name, event.rawDate, event.location)}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Simpan Tanggal
-                </a>
-              )}
-            </div>
-          </Reveal>
-        ))}
+                {event.location && <p className={styles.eventDetail}>{event.location}</p>}
+
+                <p className={styles.eventHint}>*Silakan klik tombol untuk membuka lokasi acara</p>
+
+                {event.rawDate && (
+                  <a
+                    className={styles.eventCalendar}
+                    href={calendarUrl(event.name, event.rawDate, event.location)}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Simpan Tanggal
+                  </a>
+                )}
+              </div>
+            </Reveal>
+          );
+        })}
       </div>
     </div>
   );

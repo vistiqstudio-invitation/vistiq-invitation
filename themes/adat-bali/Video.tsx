@@ -2,7 +2,6 @@
 
 import Reveal from "@/components/Reveal";
 import type { InvitationData } from "@/types/invitation";
-import PolengTrim from "./PolengTrim";
 import styles from "./style.module.css";
 
 function toEmbedUrl(url: string) {
@@ -23,7 +22,6 @@ export default function Video({ invitation }: { invitation: InvitationData }) {
       <Reveal>
         <p className={styles.eyebrow}>Pre Wedding</p>
         <h2 className={styles.title}>Video Kenangan</h2>
-        <PolengTrim className={styles.ornament} />
       </Reveal>
 
       <Reveal delay={0.1}>

@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Reveal from "@/components/Reveal";
 import type { InvitationData } from "@/types/invitation";
-import PolengTrim from "./PolengTrim";
 import styles from "./style.module.css";
 
 export default function Gallery({ invitation }: { invitation: InvitationData }) {
@@ -26,8 +25,7 @@ export default function Gallery({ invitation }: { invitation: InvitationData }) 
     <div className={styles.section}>
       <Reveal>
         <p className={styles.eyebrow}>Kenangan</p>
-        <h2 className={styles.title}>Kenangan Bahagia</h2>
-        <PolengTrim className={styles.ornament} />
+        <h2 className={styles.title}>Moment Bahagia</h2>
       </Reveal>
 
       <Reveal delay={0.1}>

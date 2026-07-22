@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Reveal from "@/components/Reveal";
 import type { GiftAccount, InvitationData } from "@/types/invitation";
-import PolengTrim from "./PolengTrim";
 import styles from "./style.module.css";
 
 function GiftCard({ account }: { account: GiftAccount }) {
@@ -25,7 +24,7 @@ function GiftCard({ account }: { account: GiftAccount }) {
       {accountName && <p className={styles.giftName}>a.n {accountName}</p>}
 
       {accountNumber && (
-        <button className={`${styles.button} ${styles.solid}`} onClick={copyNumber}>
+        <button className={styles.button} onClick={copyNumber}>
           {copied ? "Tersalin" : "Salin Nomor Rekening"}
         </button>
       )}
@@ -40,8 +39,7 @@ export default function Gift({ invitation }: { invitation: InvitationData }) {
     <div className={styles.section}>
       <Reveal>
         <p className={styles.eyebrow}>Tanda Kasih</p>
-        <h2 className={styles.title}>Kado Pernikahan</h2>
-        <PolengTrim className={styles.ornament} />
+        <h2 className={styles.title}>Wedding Gift</h2>
       </Reveal>
 
       <div className={styles.giftGrid}>

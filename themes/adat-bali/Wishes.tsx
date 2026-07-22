@@ -3,7 +3,6 @@
 import Reveal from "@/components/Reveal";
 import { useRsvpWishes } from "@/hooks/useRsvpWishes";
 import type { InvitationData } from "@/types/invitation";
-import PolengTrim from "./PolengTrim";
 import styles from "./style.module.css";
 
 export default function Wishes({ invitation }: { invitation: InvitationData }) {
@@ -14,7 +13,6 @@ export default function Wishes({ invitation }: { invitation: InvitationData }) {
       <Reveal>
         <p className={styles.eyebrow}>Doa Restu</p>
         <h2 className={styles.title}>Ucapan &amp; Doa</h2>
-        <PolengTrim className={styles.ornament} />
       </Reveal>
 
       {totalCount === 0 ? (

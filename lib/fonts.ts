@@ -1,4 +1,4 @@
-import { Cormorant_Garamond, Playfair_Display, Inter, Alex_Brush, Suranna, Readex_Pro, Chelsea_Market, Noto_Sans_Balinese } from "next/font/google";
+import { Cormorant_Garamond, Playfair_Display, Inter, Alex_Brush, Suranna, Readex_Pro, Chelsea_Market, Noto_Sans_Balinese, Noto_Serif_Display, Raleway } from "next/font/google";
 
 export const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -57,5 +57,21 @@ export const notoBalinese = Noto_Sans_Balinese({
   variable: "--font-noto-bali",
   subsets: ["balinese", "latin"],
   weight: ["400", "600", "700"],
+  display: "swap",
+});
+
+// Matches the label/body serif used across the adat-bali reference site
+// (nauhin.com/adat-bali-premium-template).
+export const notoSerifDisplay = Noto_Serif_Display({
+  variable: "--font-noto-serif-display",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
+export const raleway = Raleway({
+  variable: "--font-raleway",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
   display: "swap",
 });

@@ -2,7 +2,6 @@
 
 import Reveal from "@/components/Reveal";
 import type { InvitationData } from "@/types/invitation";
-import PolengTrim from "./PolengTrim";
 import styles from "./style.module.css";
 
 export default function Maps({ invitation }: { invitation: InvitationData }) {
@@ -13,7 +12,6 @@ export default function Maps({ invitation }: { invitation: InvitationData }) {
       <Reveal>
         <p className={styles.eyebrow}>Genah</p>
         <h2 className={styles.title}>Lokasi Upacara</h2>
-        <PolengTrim className={styles.ornament} />
       </Reveal>
 
       <Reveal delay={0.1}>
