@@ -980,9 +980,19 @@ export default function ClientEditPage() {
             const storageCheck = await supabase.rpc("debug_storage_check", {
               p_invitation_id: invitationId,
             });
+            const insertTest = await supabase.rpc("debug_storage_insert_test", {
+              p_invitation_id: invitationId,
+            });
             alert(
               JSON.stringify(
-                { context: context.data, contextError: context.error, storageCheck: storageCheck.data, storageCheckError: storageCheck.error },
+                {
+                  context: context.data,
+                  contextError: context.error,
+                  storageCheck: storageCheck.data,
+                  storageCheckError: storageCheck.error,
+                  insertTest: insertTest.data,
+                  insertTestError: insertTest.error,
+                },
                 null,
                 2
               )
