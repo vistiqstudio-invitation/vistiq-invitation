@@ -968,6 +968,17 @@ export default function ClientEditPage() {
         </>
         )}
 
+        <button
+          type="button"
+          onClick={async () => {
+            const { data, error } = await supabase.rpc("debug_my_context");
+            alert(JSON.stringify({ data, error }, null, 2));
+          }}
+          style={{ marginBottom: 16, padding: "8px 14px", background: "#eee", border: "1px solid #ccc", borderRadius: 8 }}
+        >
+          DEBUG: Cek Konteks Login
+        </button>
+
         <h2 className={styles.editSectionTitle}>Musik Latar (MP3)</h2>
 
         <MusicUploadBox value={form.music_url} onUpload={(file) => uploadSingleFile(file, "music_url")} />
