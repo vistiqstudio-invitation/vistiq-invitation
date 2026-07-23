@@ -297,7 +297,7 @@ export default function ClientEditPage() {
       .upload(fileName, file, { contentType: file.type });
 
     if (error) {
-      alert(`Upload gagal: ${error.message}`);
+      alert(`Upload gagal: ${JSON.stringify(error, Object.getOwnPropertyNames(error))}`);
       return "";
     }
 
