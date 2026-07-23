@@ -973,19 +973,6 @@ export default function ClientEditPage() {
         </>
         )}
 
-        <button
-          type="button"
-          onClick={async () => {
-            const full = await supabase.rpc("debug_full_insert_context", {
-              p_invitation_id: invitationId,
-            });
-            alert(JSON.stringify({ data: full.data, error: full.error }, null, 2));
-          }}
-          style={{ marginBottom: 16, padding: "8px 14px", background: "#eee", border: "1px solid #ccc", borderRadius: 8 }}
-        >
-          DEBUG: Cek Konteks Login
-        </button>
-
         <h2 className={styles.editSectionTitle}>Musik Latar (MP3)</h2>
 
         <MusicUploadBox value={form.music_url} onUpload={(file) => uploadSingleFile(file, "music_url")} />
