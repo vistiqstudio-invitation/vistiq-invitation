@@ -7,6 +7,7 @@ import MetaPixel from "@/components/MetaPixel";
 import LeadTracker from "@/components/LeadTracker";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import PwaRegister from "@/components/PwaRegister";
+import InstallAppButton from "@/components/InstallAppButton";
 import { cormorant, playfair, inter, alexBrush, suranna, readexPro, chelseaMarket, notoBalinese, notoSerifDisplay, raleway } from "@/lib/fonts";
 
 const geistSans = Geist({
@@ -57,6 +58,7 @@ export default function RootLayout({
         <InvitationProvider>
           {children}
           <FloatingWhatsApp />
+          <InstallAppButton />
         </InvitationProvider>
       </body>
     </html>
