@@ -976,27 +976,10 @@ export default function ClientEditPage() {
         <button
           type="button"
           onClick={async () => {
-            const context = await supabase.rpc("debug_my_context");
-            const storageCheck = await supabase.rpc("debug_storage_check", {
+            const full = await supabase.rpc("debug_full_insert_context", {
               p_invitation_id: invitationId,
             });
-            const insertTest = await supabase.rpc("debug_storage_insert_test", {
-              p_invitation_id: invitationId,
-            });
-            alert(
-              JSON.stringify(
-                {
-                  context: context.data,
-                  contextError: context.error,
-                  storageCheck: storageCheck.data,
-                  storageCheckError: storageCheck.error,
-                  insertTest: insertTest.data,
-                  insertTestError: insertTest.error,
-                },
-                null,
-                2
-              )
-            );
+            alert(JSON.stringify({ data: full.data, error: full.error }, null, 2));
           }}
           style={{ marginBottom: 16, padding: "8px 14px", background: "#eee", border: "1px solid #ccc", borderRadius: 8 }}
         >
