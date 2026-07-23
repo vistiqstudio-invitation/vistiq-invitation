@@ -41,7 +41,7 @@ function StatusContent(){
     }
   },[paid,data]);
   const accountCopy=data?.accountStatus==="completed"
-    ? "Akun Anda sudah dibuat. Silakan cek email untuk membuat password dan login ke dashboard."
+    ? "Akun Anda sudah dibuat. Silakan cek email untuk membuat password dan login ke dashboard. Catatan: link di email hanya bisa dipakai sekali - kalau dibuka aplikasi email (mis. pratinjau Gmail) sebelum Anda klik, link bisa langsung dianggap terpakai dan muncul \"link kedaluwarsa\". Kalau itu terjadi, langsung hubungi kami via WhatsApp di bawah, tidak perlu coba klik link yang sama berulang kali."
     : data?.accountStatus==="email_failed"
       ? "Akun sudah dibuat, tetapi email belum terkirim. Silakan hubungi admin melalui WhatsApp."
       : data?.accountStatus==="failed"

@@ -380,9 +380,33 @@ export default function ClientEditPage() {
 
     setSaving(true);
 
+    // Only auto-activate if this client's own account was actually born
+    // from a completed Midtrans payment (checkout_orders.provision_status
+    // only ever becomes "completed" after provisionPaidOrder verifies real
+    // payment - a client can't fake this row themselves, see migration
+    // 032). A client added manually by a reseller via the bank-transfer
+    // flow has no such row and isn't necessarily paid yet, so their
+    // invitation is created inactive and waits for the owner/reseller to
+    // confirm payment and activate it, same as every other creation path.
+    const {
+      data: { user: authUser },
+    } = await supabase.auth.getUser();
+
+    const { data: paidOrder } = authUser
+      ? await supabase
+          .from("checkout_orders")
+          .select("id")
+          .eq("auth_user_id", authUser.id)
+          .eq("provision_status", "completed")
+          .limit(1)
+          .maybeSingle()
+      : { data: null };
+
+    const shouldAutoActivate = Boolean(paidOrder);
+
     const { data: inserted, error } = await supabase
       .from("invitations")
-      .insert({ ...form, ...cleanDates, client_id: clientId, is_active: true })
+      .insert({ ...form, ...cleanDates, client_id: clientId, is_active: shouldAutoActivate })
       .select("id")
       .single();
 
@@ -394,7 +418,11 @@ export default function ClientEditPage() {
     }
 
     setInvitationId(inserted.id);
-    alert("Undangan berhasil dibuat! Bisa terus dilengkapi/diubah kapan saja.");
+    alert(
+      shouldAutoActivate
+        ? "Undangan berhasil dibuat! Bisa terus dilengkapi/diubah kapan saja."
+        : "Undangan berhasil dibuat dan sudah bisa dilengkapi. Link undangan akan aktif setelah pembayaran dikonfirmasi oleh admin/reseller Anda."
+    );
   };
 
   if (loading) {
