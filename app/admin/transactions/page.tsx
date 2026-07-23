@@ -80,7 +80,13 @@ export default function AdminTransactionsPage() {
   };
 
   const updateStatus = async (id: string, status: string) => {
-    await supabase.from("transactions").update({ status }).eq("id", id);
+    const { error } = await supabase.from("transactions").update({ status }).eq("id", id);
+
+    if (error) {
+      alert(`Gagal mengubah status transaksi: ${error.message}`);
+      return;
+    }
+
     fetchTransactions();
   };
 

@@ -194,7 +194,13 @@ export default function ResellerClientsPage() {
   };
 
   const updateClientStatus = async (id: string, status: string) => {
-    await supabase.from("clients").update({ status }).eq("id", id);
+    const { error } = await supabase.from("clients").update({ status }).eq("id", id);
+
+    if (error) {
+      alert(`Gagal mengubah status client: ${error.message}`);
+      return;
+    }
+
     if (reseller) fetchData(reseller.id);
   };
 

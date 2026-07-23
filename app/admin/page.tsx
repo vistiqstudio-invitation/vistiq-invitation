@@ -84,6 +84,7 @@ export default function AdminPage() {
 
   const [guestName, setGuestName] = useState("");
   const [generatedLink, setGeneratedLink] = useState("");
+  const [dashboardError, setDashboardError] = useState(false);
 
   const supabaseFetch = async (table: string) => {
     const { data, error } = await supabase
@@ -93,6 +94,7 @@ export default function AdminPage() {
 
     if (error) {
       console.error(error);
+      setDashboardError(true);
       return [];
     }
 
@@ -100,6 +102,8 @@ export default function AdminPage() {
   };
 
   const fetchDashboard = async () => {
+    setDashboardError(false);
+
     try {
       const [
         clientsData,
@@ -122,6 +126,7 @@ export default function AdminPage() {
       setRsvps(rsvpData);
     } catch (err) {
       console.error(err);
+      setDashboardError(true);
     }
 
     setLoading(false);
@@ -271,6 +276,17 @@ export default function AdminPage() {
           <p>Memuat dashboard...</p>
         ) : (
           <>
+            {dashboardError && (
+              <section className={styles.warningBox}>
+                <h2>Sebagian data gagal dimuat.</h2>
+                <p>
+                  Terjadi gangguan koneksi ke server, jadi data di bawah ini
+                  bisa jadi tidak lengkap. Klik tombol Refresh di atas untuk
+                  mencoba lagi.
+                </p>
+              </section>
+            )}
+
             <section className={styles.stats}>
               <StatCard title="Total Client" value={clients.length} />
               <StatCard title="Total Reseller" value={resellers.length} />

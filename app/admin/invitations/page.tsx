@@ -194,7 +194,13 @@ export default function InvitationsPage() {
   };
 
   const updateActive = async (id: string, is_active: boolean) => {
-    await supabase.from("invitations").update({ is_active }).eq("id", id);
+    const { error } = await supabase.from("invitations").update({ is_active }).eq("id", id);
+
+    if (error) {
+      alert(`Gagal mengubah status undangan: ${error.message}`);
+      return;
+    }
+
     fetchInvitations();
   };
 

@@ -87,6 +87,7 @@ export default function ClientEditPage() {
   const supabase = createClient();
 
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
   const [saving, setSaving] = useState(false);
   const [invitationId, setInvitationId] = useState("");
   const [clientId, setClientId] = useState("");
@@ -99,6 +100,8 @@ export default function ClientEditPage() {
   }, []);
 
   const loadInvitation = async () => {
+    setLoadError(false);
+
     try {
       const {
         data: { user: authUser },
@@ -123,10 +126,21 @@ export default function ClientEditPage() {
       const { data: brandData } = await supabase.rpc("get_my_client_brand");
       setBrand((brandData?.[0] as DashboardBrand | undefined) || null);
 
-      const { data: clients } = await supabase
+      const { data: clients, error: clientsError } = await supabase
         .from("clients")
         .select("*")
         .eq("user_id", authUser.id);
+
+      // A real fetch failure (network blip, RLS edge case) must NOT fall
+      // through to the "no client account yet" branch below - that branch
+      // renders the create-invitation form, and since creation has no
+      // dedupe check, a client who already has an invitation could end up
+      // submitting a second one.
+      if (clientsError) {
+        setLoadError(true);
+        setLoading(false);
+        return;
+      }
 
       if (!clients || clients.length === 0) {
         setLoading(false);
@@ -135,10 +149,16 @@ export default function ClientEditPage() {
 
       setClientId(clients[0].id);
 
-      const { data: invitations } = await supabase
+      const { data: invitations, error: invitationsError } = await supabase
         .from("invitations")
         .select("*")
         .eq("client_id", clients[0].id);
+
+      if (invitationsError) {
+        setLoadError(true);
+        setLoading(false);
+        return;
+      }
 
       if (!invitations || invitations.length === 0) {
         setLoading(false);
@@ -429,6 +449,24 @@ export default function ClientEditPage() {
     return (
       <main className={styles.editPage}>
         <h2>Memuat data...</h2>
+      </main>
+    );
+  }
+
+  if (loadError) {
+    return (
+      <main className={styles.editPage}>
+        <h2>Gagal memuat data undangan Anda.</h2>
+        <p>Terjadi gangguan koneksi ke server. Silakan coba lagi.</p>
+        <button
+          onClick={() => {
+            setLoading(true);
+            loadInvitation();
+          }}
+          className={styles.button}
+        >
+          Coba Lagi
+        </button>
       </main>
     );
   }

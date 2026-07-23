@@ -141,27 +141,43 @@ export default function ResellersPage() {
   };
 
   const updateStatus = async (id: string, status: string) => {
-    await supabase.from("resellers").update({ status }).eq("id", id);
+    const { error } = await supabase.from("resellers").update({ status }).eq("id", id);
+
+    if (error) {
+      alert(`Gagal mengubah status reseller: ${error.message}`);
+      return;
+    }
+
     fetchResellers();
   };
 
   const updateCommission = async (id: string, commission_percent: number) => {
-    await supabase
+    const { error } = await supabase
       .from("resellers")
       .update({ commission_percent })
       .eq("id", id);
+
+    if (error) {
+      alert(`Gagal mengubah komisi: ${error.message}`);
+      return;
+    }
 
     fetchResellers();
   };
 
   const updatePackage = async (id: string, pkg: string) => {
-    await supabase
+    const { error } = await supabase
       .from("resellers")
       .update({
         package: pkg,
         commission_percent: PACKAGE_DEFAULT_COMMISSION[pkg],
       })
       .eq("id", id);
+
+    if (error) {
+      alert(`Gagal mengubah paket: ${error.message}`);
+      return;
+    }
 
     fetchResellers();
   };

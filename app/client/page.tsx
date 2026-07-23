@@ -72,12 +72,21 @@ export default function ClientPage() {
   const [guestNamesInput, setGuestNamesInput] = useState("");
   const [selectedInvitationId, setSelectedInvitationId] = useState("");
   const [generatedLinks, setGeneratedLinks] = useState<{ name: string; url: string }[]>([]);
+  const [fetchError, setFetchError] = useState(false);
 
   const fetchData = async (currentUser: AppUser) => {
-    const { data: clientData } = await supabase
+    setFetchError(false);
+
+    const { data: clientData, error: clientError } = await supabase
       .from("clients")
       .select("*")
       .eq("user_id", currentUser.id);
+
+    if (clientError) {
+      setFetchError(true);
+      setLoading(false);
+      return;
+    }
 
     const currentClient = clientData?.[0];
 
@@ -269,6 +278,14 @@ export default function ClientPage() {
 
         {loading ? (
           <p>Memuat dashboard...</p>
+        ) : fetchError ? (
+          <section className={styles.warningBox}>
+            <h2>Gagal memuat data dashboard.</h2>
+            <p>
+              Terjadi gangguan koneksi ke server. Klik tombol Refresh di atas
+              untuk mencoba lagi.
+            </p>
+          </section>
         ) : !client ? (
           <section className={styles.warningBox}>
             <h2>Akun client belum terhubung.</h2>

@@ -142,7 +142,7 @@ export default function ClientsPage() {
       .eq("id", id);
 
     if (error) {
-      console.error(error);
+      alert(`Gagal mengubah status client: ${error.message}`);
       return;
     }
 
