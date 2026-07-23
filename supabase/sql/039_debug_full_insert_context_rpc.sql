@@ -14,6 +14,7 @@ declare
   v_folder text;
   v_exists boolean;
   v_insert_error text;
+  v_simple_insert_error text;
 begin
   v_uid := auth.uid();
   v_folder := (storage.foldername(test_name))[1];
@@ -37,12 +38,25 @@ begin
       end if;
   end;
 
+  begin
+    insert into storage.objects (bucket_id, name)
+    values ('invitation-assets', 'debug-test-only/manual-check-' || floor(random() * 100000)::text || '.txt');
+    v_simple_insert_error := 'SUCCEEDED';
+    raise exception 'ROLLBACK_TEST_INSERT_SUCCEEDED';
+  exception
+    when others then
+      if v_simple_insert_error is null then
+        v_simple_insert_error := sqlerrm;
+      end if;
+  end;
+
   return jsonb_build_object(
     'test_name', test_name,
     'uid', v_uid,
     'folder', v_folder,
     'exists_check', v_exists,
     'insert_result', v_insert_error,
+    'simple_insert_result', v_simple_insert_error,
     'current_user', current_user,
     'session_user', session_user,
     'current_role_setting', current_setting('role', true)
