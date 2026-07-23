@@ -297,7 +297,7 @@ export default function ClientEditPage() {
       .upload(fileName, file, { contentType: file.type });
 
     if (error) {
-      alert("Upload gagal. Cek policy Storage Supabase.");
+      alert(`Upload gagal: ${error.message}`);
       return "";
     }
 
