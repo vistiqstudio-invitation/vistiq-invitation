@@ -42,7 +42,10 @@ begin
     'uid', v_uid,
     'folder', v_folder,
     'exists_check', v_exists,
-    'insert_result', v_insert_error
+    'insert_result', v_insert_error,
+    'current_user', current_user,
+    'session_user', session_user,
+    'current_role_setting', current_setting('role', true)
   );
 end;
 $$;
