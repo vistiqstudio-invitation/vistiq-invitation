@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { themeList, aqiqahThemeList, khitanThemeList } from "@/lib/theme";
+import SmartCoverEditor from "@/components/SmartCoverEditor";
 import styles from "@/styles/dashboard.module.css";
 
 const BUCKET = "invitation-assets";
@@ -843,6 +844,21 @@ export default function AdminInvitationEditPage() {
             </>
           )}
         </div>
+
+        {form.category === "wedding" && form.cover_photo && (
+
+          <SmartCoverEditor
+
+            value={form.cover_photo}
+
+            onChange={(value) => set("cover_photo", value)}
+
+            names={[form.groom_name, form.bride_name].filter(Boolean).join(" & ")}
+
+          />
+
+        )}
+
 
         <h2 className={styles.editSectionTitle}>Galeri Foto</h2>
 
