@@ -9,6 +9,7 @@ const roleHome: Record<string, string> = {
   owner: "/admin",
   reseller: "/reseller",
   client: "/client",
+  affiliate: "/affiliate",
 };
 
 const WA_NUMBER = "6281371338032";
