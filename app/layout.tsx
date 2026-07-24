@@ -1,10 +1,12 @@
 import type { Metadata, Viewport } from "next";
+import { Suspense } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 import { InvitationProvider } from "@/components/InvitationProvider";
 import MetaPixel from "@/components/MetaPixel";
 import LeadTracker from "@/components/LeadTracker";
+import AffiliateReferralTracker from "@/components/AffiliateReferralTracker";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import PwaRegister from "@/components/PwaRegister";
 import InstallAppButton from "@/components/InstallAppButton";
@@ -54,6 +56,7 @@ export default function RootLayout({
       >
         <MetaPixel />
         <LeadTracker />
+        <Suspense fallback={null}><AffiliateReferralTracker /></Suspense>
         <PwaRegister />
         <InvitationProvider>
           {children}
