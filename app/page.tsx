@@ -41,6 +41,10 @@ export default function HomePage() {
             </Link>
 
             <CheckoutButton packageId="client" label="Order Sekarang" production={midtransProduction} />
+
+            <Link href="/gabung-affiliate" className="affiliateButton">
+              Gabung Affiliate
+            </Link>
           </div>
         </div>
 
@@ -331,10 +335,19 @@ html, body {
   color: white;
 }
 
-.secondaryButton {
+.secondaryButton,
+.affiliateButton {
   background: white;
   color: #1167b2;
   border: 1px solid #dbeafe;
+}
+
+.affiliateButton {
+  padding: 14px 24px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 800;
+  display: inline-block;
 }
 
 .heroActions .priceButton {
@@ -718,7 +731,8 @@ html, body {
   }
 
   .primaryButton,
-  .secondaryButton {
+  .secondaryButton,
+  .affiliateButton {
     width: 100%;
     text-align: center;
   }
