@@ -258,14 +258,14 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! ðŸš
     fetchResellers();
   };
 
-  const resetPassword = async (userId: string) => {
+  const resetPassword = async (reseller: Reseller) => {
     if (!confirm("Buat password baru untuk reseller ini? Password lama akan langsung tidak berlaku.")) return;
 
-    setResettingId(userId);
+    setResettingId(reseller.user_id);
     const res = await fetch("/api/admin/reset-password", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId }),
+      body: JSON.stringify({ userId: reseller.user_id }),
     });
     const result = await res.json();
     setResettingId(null);
@@ -275,7 +275,14 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! ðŸš
       return;
     }
 
-    setCredentials({ email: result.email, password: result.password });
+    setCredentials({
+      name: reseller.name,
+      email: result.email,
+      password: result.password,
+      whatsapp: reseller.whatsapp || "",
+      package: reseller.package === "reseller_brand" ? "reseller_brand" : "reseller",
+    });
+    setMessageCopied(false);
   };
 
   const deleteReseller = async (id: string, name: string) => {
@@ -555,7 +562,7 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! ðŸš
 
                   <div className={styles.resellerActions}>
                     <button
-                      onClick={() => resetPassword(reseller.user_id)}
+                      onClick={() => resetPassword(reseller)}
                       disabled={resettingId === reseller.user_id}
                       className={styles.button}
                       style={{ fontSize: 11, padding: "6px 10px" }}
