@@ -363,6 +363,22 @@ html, body {
   font-size: inherit;
 }
 
+.heroText .heroActions > .primaryButton,
+.heroText .heroActions > .affiliateButton,
+.heroText .heroActions > .priceButton {
+  width: 185px;
+  min-height: 54px;
+  margin-top: 0;
+  padding: 14px 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 185px;
+  font-size: 16px;
+  line-height: 1.2;
+  text-align: center;
+}
+
 .heroCard {
   display: grid;
   place-items: center;
@@ -728,6 +744,15 @@ html, body {
 
   .heroActions {
     flex-direction: column;
+  }
+
+  .heroText .heroActions > .primaryButton,
+  .heroText .heroActions > .affiliateButton,
+  .heroText .heroActions > .priceButton {
+    width: 100%;
+    max-width: none;
+    flex-basis: auto;
+    text-align: center;
   }
 
   .primaryButton,
