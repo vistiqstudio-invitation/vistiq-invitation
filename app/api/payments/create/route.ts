@@ -35,6 +35,7 @@ export async function POST(request: Request) {
   const name = clean(body.name, 50);
   const email = clean(body.email, 100).toLowerCase();
   const phone = clean(body.phone, 24).replace(/[^0-9+]/g, "");
+  const referralCode = clean(body.referralCode, 32).toUpperCase().replace(/[^A-Z0-9]/g, "");
 
   if (name.length < 2 || !validEmail(email) || phone.replace(/\D/g, "").length < 9) {
     return NextResponse.json(
@@ -86,6 +87,11 @@ export async function POST(request: Request) {
     const supabase = createServiceClient(supabaseUrl, serviceRoleKey, {
       auth: { autoRefreshToken: false, persistSession: false },
     });
+    let affiliateId: string | null = null;
+    if (referralCode) {
+      const { data: affiliate } = await supabase.from("affiliates").select("id").eq("referral_code", referralCode).eq("status", "active").maybeSingle();
+      affiliateId = affiliate?.id ?? null;
+    }
     const { error } = await supabase.from("checkout_orders").insert({
       order_id: orderId,
       package_id: body.packageId,
@@ -95,6 +101,8 @@ export async function POST(request: Request) {
       customer_email: email,
       customer_phone: phone,
       status: "pending",
+      affiliate_id: affiliateId,
+      referral_code: affiliateId ? referralCode : null,
     });
     if (error) console.warn("checkout_orders insert skipped:", error.message);
   }
