@@ -4,7 +4,7 @@ import { createServerClient } from "@supabase/ssr";
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-const protectedPrefixes = ["/admin", "/reseller", "/client"];
+const protectedPrefixes = ["/admin", "/reseller", "/client", "/affiliate"];
 const loginPath = "/login";
 
 export async function proxy(request: NextRequest) {
@@ -55,5 +55,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/reseller/:path*", "/client/:path*"],
+  matcher: ["/admin/:path*", "/reseller/:path*", "/client/:path*", "/affiliate/:path*"],
 };
