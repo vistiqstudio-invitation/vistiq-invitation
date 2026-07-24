@@ -42,10 +42,11 @@ export default function CheckoutButton({ packageId, label = "Bayar Sekarang", fe
     setError("");
 
     try {
+      const referralCode = document.cookie.split("; ").find((row) => row.startsWith("vistiq_ref="))?.split("=")[1];
       const response = await fetch("/api/payments/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ packageId, name, email, phone }),
+        body: JSON.stringify({ packageId, name, email, phone, referralCode: referralCode ? decodeURIComponent(referralCode) : "" }),
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Checkout gagal dibuat.");

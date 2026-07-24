@@ -166,6 +166,17 @@ export default function HomePage() {
         </Link>
       </section>
 
+      <section className="section">
+        <p className="label">Program Affiliate</p>
+        <h2>Promosikan Vistiq, Dapatkan Komisi 30%</h2>
+        <p style={{ maxWidth: 680, margin: "0 auto 24px", textAlign: "center", color: "#64748b", lineHeight: 1.8 }}>
+          Gratis bergabung. Komisi berlaku untuk paket Client, Reseller, dan Reseller Brand.
+        </p>
+        <div style={{ textAlign: "center" }}>
+          <Link href="/gabung-affiliate" className="primaryButton">Gabung Affiliate</Link>
+        </div>
+      </section>
+
       <section className="cta">
         <h2>Siap Membuat Undangan Digital Premium?</h2>
         <p>
