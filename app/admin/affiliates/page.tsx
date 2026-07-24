@@ -27,6 +27,7 @@ export default function AdminAffiliatesPage() {
   const [withdrawals,setWithdrawals]=useState<Withdrawal[]>([]);
   const [processing,setProcessing]=useState<string|null>(null);
   const [credentials,setCredentials]=useState<{name:string;email:string;password:string;referralCode:string;whatsapp:string}|null>(null);
+  const [copyStatus,setCopyStatus]=useState<"idle"|"success"|"error">("idle");
 
   const load = async () => {
     const [a,b,c]=await Promise.all([
@@ -66,7 +67,8 @@ Silakan login, ganti password, lalu salin link referral dari dashboard Affiliate
     <DashboardSidebar brandTop="VISTIQ" brandBottom="Invitation" items={NAV_ITEMS} activeKey="affiliates" notificationRole="owner" onLogout={logout}/>
     <section className={styles.content}>
       <header className={styles.header}><div><p className={styles.label}>OWNER MENU</p><h1 className={styles.title}>Program Affiliate</h1><p className={styles.subtitle}>Setujui pendaftaran, pantau affiliate, dan proses pencairan.</p></div><button className={styles.button} onClick={load}>Refresh</button></header>
-      {credentials&&<section className={styles.formCard}><h2 className={styles.sectionTitle}>Akun Affiliate Berhasil Dibuat</h2><div className={styles.linkBox} style={{whiteSpace:"pre-wrap"}}>{message}</div><div className={styles.actions}><button className={styles.button} onClick={()=>navigator.clipboard.writeText(message)}>Salin Pesan</button><button className={styles.exportButton} onClick={sendWa}>Kirim ke WhatsApp</button><button className={styles.exportButton} onClick={()=>setCredentials(null)}>Tutup</button></div></section>}
+      {credentials&&<section className={styles.formCard}><h2 className={styles.sectionTitle}>Akun Affiliate Berhasil Dibuat</h2><div className={styles.linkBox} style={{whiteSpace:"pre-wrap"}}>{message}</div><div className={styles.actions}><button className={styles.button} onClick={copyMessage} disabled={copyStatus==="success"}>{copyStatus==="success"?"✓ Berhasil Disalin":"Salin Pesan"}</button><button className={styles.exportButton} onClick={sendWa}>Kirim ke WhatsApp</button><button className={styles.exportButton} onClick={()=>{setCredentials(null);setCopyStatus("idle");}}>Tutup</button></div></section>}
+      {copyStatus!=="idle"&&<div role="status" aria-live="polite" style={toastStyle}>{copyStatus==="success"?"✓ Pesan berhasil disalin":"Pesan gagal disalin. Silakan coba lagi."}</div>}
       <section className={styles.formCard}><h2 className={styles.sectionTitle}>Pendaftaran Menunggu Persetujuan</h2>
         {applications.filter(x=>x.status==="pending").length===0?<p>Belum ada pendaftaran baru.</p>:applications.filter(x=>x.status==="pending").map(item=><div key={item.id} style={row}><div><b>{item.name}</b><p style={meta}>{item.email} · {item.whatsapp}<br/>{item.promotion_channel||"Media promosi belum diisi"}</p></div><div className={styles.actions}><button disabled={processing===item.id} className={styles.button} onClick={()=>review(item,"approve")}>Setujui</button><button disabled={processing===item.id} className={styles.deleteButton} onClick={()=>review(item,"reject")}>Tolak</button></div></div>)}
       </section>
@@ -81,3 +83,4 @@ Silakan login, ganti password, lalu salin link referral dari dashboard Affiliate
 }
 const row:React.CSSProperties={display:"flex",justifyContent:"space-between",alignItems:"center",gap:16,padding:"16px 0",borderBottom:"1px solid #e2e8f0",flexWrap:"wrap"};
 const meta:React.CSSProperties={margin:"6px 0 0",color:"#64748b",fontSize:13,lineHeight:1.6};
+const toastStyle:React.CSSProperties={position:"fixed",right:24,bottom:24,zIndex:1000,padding:"12px 18px",borderRadius:10,background:"#163a69",color:"#fff",fontWeight:700,boxShadow:"0 12px 30px rgba(15,23,42,.22)"};
