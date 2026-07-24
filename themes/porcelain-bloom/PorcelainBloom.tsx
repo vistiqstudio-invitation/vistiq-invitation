@@ -650,7 +650,7 @@ function Footer({ invitation }: { invitation: InvitationData }) {
           <span>&amp;</span>
           {invitation.bride.name}
         </h2>
-        <small>© {new Date().getFullYear()} {invitation.brand?.name ?? "Vistiq Invitation"}</small>
+        <small>{invitation.brand?.logoUrl && <img src={invitation.brand.logoUrl} alt="" style={{height:16,verticalAlign:"middle",marginRight:6,display:"inline-block"}}/>}© {new Date().getFullYear()} {invitation.brand?.name ?? "Vistiq Invitation"}</small>
       </Reveal>
     </footer>
   );
