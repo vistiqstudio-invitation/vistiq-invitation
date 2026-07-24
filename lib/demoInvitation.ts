@@ -68,6 +68,7 @@ export const COVER_BY_THEME: Record<string, string> = {
   // current photo set. Replace once real photos exist.
   sahara: "/photos/rustic-cover.png",
   "adat-bali": "/photos/adat-bali-cover.png",
+  "adat-sunda": "/photos/floral-cover.png",
 };
 
 // Couple portrait photos also vary by theme - the default luxury-gold
@@ -101,6 +102,7 @@ const GROOM_PHOTO_BY_THEME: Record<string, string> = {
   "sage-green": "/photos/floral-groom.png",
   sahara: "/photos/rustic-groom.png",
   "adat-bali": "/photos/adat-bali-groom.png",
+  "adat-sunda": "/photos/floral-groom.png",
 };
 
 const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
@@ -121,6 +123,7 @@ const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
   "golden-romance": "/photos/romance-bride.png",
   "adat-jawa": "/photos/jawa-bride.png",
   "adat-bali": "/photos/adat-bali-bride.png",
+  "adat-sunda": "/photos/floral-bride.png",
   "adat-minang": "/photos/luxury-bride.png",
   "adat-bugis": "/photos/lantern-bride.png",
   "menara-cahaya": "/photos/imperial-bride.png",
@@ -377,6 +380,14 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
     "/photos/adat-bali-gallery-5.png",
     "/photos/adat-bali-gallery-6.png",
   ],
+  "adat-sunda": [
+    "/photos/floral-gallery-7.png",
+    "/photos/floral-gallery-8.png",
+    "/photos/floral-gallery-9.png",
+    "/photos/floral-gallery-10.png",
+    "/photos/floral-gallery-11.png",
+    "/photos/floral-gallery-12.png",
+  ],
 };
 
 // Background music also varies by theme so the picker doesn't play the same
@@ -397,6 +408,7 @@ const MUSIC_BY_THEME: Record<string, string> = {
   "royal-imperial": "/music/royal-imperial.mp3",
   "adat-jawa": "/music/adat-jawa.mp3",
   "adat-bali": "/music/adat-bali.mp3",
+  "adat-sunda": "/music/adat-sunda.mp3",
   "adat-minang": "/music/adat-minang.mp3",
   "adat-bugis": "/music/adat-bugis.mp3",
   "menara-cahaya": "/music/menara-cahaya.mp3",

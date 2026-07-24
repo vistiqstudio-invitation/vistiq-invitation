@@ -29,6 +29,7 @@ import AdatJawa from "@/themes/adat-jawa/AdatJawa";
 import AdatMinang from "@/themes/adat-minang/AdatMinang";
 import AdatBugis from "@/themes/adat-bugis/AdatBugis";
 import AdatBali from "@/themes/adat-bali/AdatBali";
+import AdatSunda from "@/themes/adat-sunda/AdatSunda";
 import MenaraCahaya from "@/themes/menara-cahaya/MenaraCahaya";
 import Santorini from "@/themes/santorini/Santorini";
 import VintageBotanical from "@/themes/vintage-botanical/VintageBotanical";
@@ -66,6 +67,7 @@ export const themeRegistry: Record<
   "adat-minang": AdatMinang,
   "adat-bugis": AdatBugis,
   "adat-bali": AdatBali,
+  "adat-sunda": AdatSunda,
   "menara-cahaya": MenaraCahaya,
   santorini: Santorini,
   "vintage-botanical": VintageBotanical,
@@ -198,6 +200,13 @@ export const themeList: ThemeMeta[] = [
     label: "Adat Bali",
     description: "Hitam batu & emas prada, gapura candi bentar, medali foto bulat, aksara Bali",
     swatch: ["#16110d", "#c9a227"],
+    tags: ["adat"],
+  },
+  {
+    key: "adat-sunda",
+    label: "Adat Sunda",
+    description: "Hijau hutan Parahyangan & emas antik, motif awan Mega Mendung, bingkai foto arch, kartu Akad & Resepsi berdampingan",
+    swatch: ["#1a3626", "#c9a24a"],
     tags: ["adat"],
   },
   {

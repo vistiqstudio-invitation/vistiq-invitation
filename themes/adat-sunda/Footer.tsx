@@ -1,0 +1,33 @@
+"use client";
+
+import Reveal from "@/components/Reveal";
+import type { InvitationData } from "@/types/invitation";
+import styles from "./style.module.css";
+
+export default function Footer({ invitation }: { invitation: InvitationData }) {
+  return (
+    <footer className={styles.footer}>
+      <Reveal>
+        <span className={styles.footerGreeting}>Nuhun</span>
+
+        <p className={styles.footerQuote}>
+          "Terima kasih atas waktu, doa, dan restu yang telah Bapak/Ibu/
+          Saudara/i berikan. Kehadiran dan doa Anda adalah kebahagiaan
+          tersendiri bagi kami."
+        </p>
+
+        <p className={styles.footerLabel}>Kami yang berbahagia,</p>
+
+        <h2 className={styles.footerNames}>
+          {invitation.groom.name}
+          <span>&amp;</span>
+          {invitation.bride.name}
+        </h2>
+
+        <p className={styles.copyright}>
+          {invitation.brand?.logoUrl && <img src={invitation.brand.logoUrl} alt="" style={{height:16,verticalAlign:"middle",marginRight:6,display:"inline-block"}}/>}© {new Date().getFullYear()} {invitation.brand?.name ?? "Vistiq Invitation"}
+        </p>
+      </Reveal>
+    </footer>
+  );
+}
