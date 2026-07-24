@@ -42,6 +42,95 @@
   line-height: 1.7;
 }
 
+.filterRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 0 0 40px;
+}
+
+.filterButton {
+  padding: 13px 16px;
+  border-radius: 999px;
+  border: 1px solid #cfe0f2;
+  background: white;
+  color: #1167b2;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 150ms ease, box-shadow 150ms ease, background 150ms ease;
+}
+
+.filterButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(17, 103, 178, 0.14);
+}
+
+.filterButtonActive {
+  background: #1167b2;
+  border-color: #1167b2;
+  color: white;
+}
+
+@media (max-width: 640px) {
+  .filterRow {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  .filterButton {
+    padding: 10px 8px;
+    font-size: 10.5px;
+  }
+}
+
+.emptyState {
+  background: white;
+  border-radius: 20px;
+  padding: 56px 24px;
+  text-align: center;
+  box-shadow: 0 16px 40px rgba(15, 39, 66, 0.08);
+}
+
+.emptyStateTitle {
+  font-size: 20px;
+  font-weight: 800;
+  color: #1167b2;
+  margin: 0 0 8px;
+}
+
+.emptyStateDesc {
+  color: #64748b;
+  font-size: 14px;
+  max-width: 420px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.cardComingSoon {
+  opacity: 0.7;
+}
+
+.cardComingSoon .cardPreview {
+  min-height: 140px;
+  align-items: center;
+}
+
+.comingSoonBadge {
+  align-self: center;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #94a3b8;
+  background: #eef2f6;
+  padding: 6px 14px;
+  border-radius: 999px;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
