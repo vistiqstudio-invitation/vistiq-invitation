@@ -135,6 +135,7 @@ export default function ResellerInvitationsPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [confirmingId, setConfirmingId] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
 
   const [form, setForm] = useState<FormState>(initialForm);
 
@@ -398,6 +399,35 @@ export default function ResellerInvitationsPage() {
 
   const openPreview = (slug: string) => {
     window.open(`/preview/${slug}`, "_blank");
+  };
+
+  // Reseller Brand (white-label, paid-in-full) only - see migration 042.
+  // Ordinary resellers still go through owner confirmation and never hit
+  // this (the dropdown that calls it isn't rendered for them).
+  const updateActive = async (id: number, is_active: boolean) => {
+    const { error } = await supabase.from("invitations").update({ is_active }).eq("id", id);
+
+    if (error) {
+      alert(`Gagal mengubah status undangan: ${error.message}`);
+      return;
+    }
+
+    if (reseller) fetchData(reseller.id);
+  };
+
+  const deleteInvitation = async (id: number, name: string) => {
+    if (!confirm(`Hapus undangan "${name}" secara permanen? Tindakan ini tidak bisa dibatalkan.`)) return;
+
+    setDeletingId(id);
+    const { error } = await supabase.from("invitations").delete().eq("id", id);
+    setDeletingId(null);
+
+    if (error) {
+      alert(`Gagal menghapus undangan: ${error.message}`);
+      return;
+    }
+
+    if (reseller) fetchData(reseller.id);
   };
 
   const logout = async () => {
@@ -1080,24 +1110,37 @@ export default function ResellerInvitationsPage() {
                         </span>
                       )}
 
-                      <span className={styles.status}>
-                        {item.is_active === false ? "Menunggu Pembayaran" : "Aktif"}
-                      </span>
-
-                      {item.is_active === false && transaction && transaction.status !== "paid" && (
-                        alreadyConfirmed ? (
-                          <span style={{ fontSize: 12, color: "#0369a1" }}>
-                            Menunggu verifikasi admin
+                      {brandActive ? (
+                        <select
+                          value={item.is_active === false ? "inactive" : "active"}
+                          onChange={(e) => updateActive(item.id, e.target.value === "active")}
+                          className={styles.statusSelect}
+                        >
+                          <option value="active">Active</option>
+                          <option value="inactive">Inactive</option>
+                        </select>
+                      ) : (
+                        <>
+                          <span className={styles.status}>
+                            {item.is_active === false ? "Menunggu Pembayaran" : "Aktif"}
                           </span>
-                        ) : (
-                          <button
-                            onClick={() => confirmPayment(transaction.id)}
-                            disabled={confirmingId === transaction.id}
-                            className={styles.miniButtonGreen}
-                          >
-                            {confirmingId === transaction.id ? "Mengirim..." : "Konfirmasi Sudah Bayar"}
-                          </button>
-                        )
+
+                          {item.is_active === false && transaction && transaction.status !== "paid" && (
+                            alreadyConfirmed ? (
+                              <span style={{ fontSize: 12, color: "#0369a1" }}>
+                                Menunggu verifikasi admin
+                              </span>
+                            ) : (
+                              <button
+                                onClick={() => confirmPayment(transaction.id)}
+                                disabled={confirmingId === transaction.id}
+                                className={styles.miniButtonGreen}
+                              >
+                                {confirmingId === transaction.id ? "Mengirim..." : "Konfirmasi Sudah Bayar"}
+                              </button>
+                            )
+                          )}
+                        </>
                       )}
 
                       <div className={styles.actions}>
@@ -1115,6 +1158,23 @@ export default function ResellerInvitationsPage() {
                         <button onClick={() => copyLink(item.slug)} className={styles.miniButtonGreen}>
                           Copy
                         </button>
+
+                        {brandActive && (
+                          <button
+                            onClick={() =>
+                              deleteInvitation(
+                                item.id,
+                                item.category === "aqiqah" || item.category === "khitan"
+                                  ? item.baby_name || item.slug
+                                  : `${item.groom_name || "-"} & ${item.bride_name || "-"}`
+                              )
+                            }
+                            disabled={deletingId === item.id}
+                            className={styles.miniButtonRed}
+                          >
+                            {deletingId === item.id ? "Menghapus..." : "Hapus"}
+                          </button>
+                        )}
                       </div>
                     </div>
                     );
