@@ -97,31 +97,10 @@ export default function AffiliatePage() {
     ? [
         {
           key: "all",
-          title: "Link Semua Paket",
+          title: "Link Referral Utama",
           description:
-            "Calon pembeli memilih Client, Reseller, atau Reseller Brand.",
+            "Berisi pilihan paket Client, Reseller, dan Reseller Brand.",
           url: `https://www.vistiqinvitation.com/pilih-paket?ref=${code}`,
-        },
-        {
-          key: "client",
-          title: "Link Bikin Undangan",
-          description:
-            "Langsung membuka checkout paket Client untuk satu undangan.",
-          url: `https://www.vistiqinvitation.com/pilih-paket?paket=client&ref=${code}`,
-        },
-        {
-          key: "reseller",
-          title: "Link Reseller",
-          description:
-            "Langsung membuka checkout paket Reseller Vistiq.",
-          url: `https://www.vistiqinvitation.com/pilih-paket?paket=reseller&ref=${code}`,
-        },
-        {
-          key: "reseller-brand",
-          title: "Link Reseller Brand",
-          description:
-            "Langsung membuka checkout paket white label.",
-          url: `https://www.vistiqinvitation.com/pilih-paket?paket=reseller-brand&ref=${code}`,
         },
       ]
     : [];
@@ -193,7 +172,7 @@ export default function AffiliatePage() {
               Halo, {affiliate?.name || "Affiliate"}
             </h1>
             <p className={styles.subtitle}>
-              Bagikan link yang sesuai dan pantau komisi 30%.
+              Bagikan satu link referral dan pantau komisi 30%.
             </p>
           </div>
           <button className={styles.button} onClick={load}>
@@ -204,8 +183,8 @@ export default function AffiliatePage() {
         <section className={styles.formCard}>
           <h2 className={styles.sectionTitle}>Link Referral Anda</h2>
           <p className={styles.subtitle}>
-            Gunakan link semua paket untuk promosi umum, atau pilih link
-            khusus sesuai materi promosi Anda.
+            Bagikan link ini kepada calon pembeli. Mereka akan memilih satu
+            dari tiga paket yang tersedia.
           </p>
           <div style={{ display: "grid", gap: 14, marginTop: 20 }}>
             {referralLinks.map((item) => (
