@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import PhoneMockup from "@/components/PhoneMockup";
-import { themeList, aqiqahThemeList, khitanThemeList, type ThemeMeta } from "@/lib/theme";
+import { themeList, aqiqahThemeList, khitanThemeList, isThemeNew, type ThemeMeta } from "@/lib/theme";
 import { COVER_BY_THEME as WEDDING_COVER_BY_THEME } from "@/lib/demoInvitation";
 import { COVER_BY_THEME as AQIQAH_COVER_BY_THEME } from "@/lib/demoAqiqahInvitation";
 import { COVER_BY_THEME as KHITAN_COVER_BY_THEME } from "@/lib/demoKhitanInvitation";
@@ -60,6 +60,8 @@ function ThemeCard({
 }) {
   return (
     <div className={styles.card}>
+      {isThemeNew(theme) && <span className={styles.newBadge}>Baru</span>}
+
       <div className={styles.cardPreview}>
         <PhoneMockup
           themeKey={theme.key}

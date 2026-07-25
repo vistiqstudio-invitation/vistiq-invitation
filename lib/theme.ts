@@ -94,7 +94,19 @@ export type ThemeMeta = {
   swatch: [string, string];
   // Picker-page filter category (wedding themes only). "reguler" | "premium" | "adat".
   tags?: string[];
+  // ISO date ("YYYY-MM-DD") a theme was added - set this when adding a new
+  // theme and isThemeNew() below will show a "Baru" badge for it on every
+  // picker page automatically, no manual cleanup needed later.
+  addedAt?: string;
 };
+
+const NEW_BADGE_WINDOW_DAYS = 30;
+
+export function isThemeNew(theme: ThemeMeta): boolean {
+  if (!theme.addedAt) return false;
+  const days = (Date.now() - new Date(theme.addedAt).getTime()) / 86400000;
+  return days >= 0 && days <= NEW_BADGE_WINDOW_DAYS;
+}
 
 export const themeList: ThemeMeta[] = [
   {
@@ -208,6 +220,7 @@ export const themeList: ThemeMeta[] = [
     description: "Hijau hutan Parahyangan & emas antik, motif awan Mega Mendung, bingkai foto arch, kartu Akad & Resepsi berdampingan",
     swatch: ["#1a3626", "#c9a24a"],
     tags: ["adat"],
+    addedAt: "2026-07-25",
   },
   {
     key: "menara-cahaya",

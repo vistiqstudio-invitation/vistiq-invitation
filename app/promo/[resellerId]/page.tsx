@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import PhoneMockup from "@/components/PhoneMockup";
 import { createClient } from "@/lib/supabase/client";
-import { themeList, aqiqahThemeList, khitanThemeList } from "@/lib/theme";
+import { themeList, aqiqahThemeList, khitanThemeList, isThemeNew } from "@/lib/theme";
 import { COVER_BY_THEME as WEDDING_COVERS } from "@/lib/demoInvitation";
 import { COVER_BY_THEME as AQIQAH_COVERS } from "@/lib/demoAqiqahInvitation";
 import { COVER_BY_THEME as KHITAN_COVERS } from "@/lib/demoKhitanInvitation";
@@ -192,6 +192,8 @@ export default function ResellerPromoPage() {
 
                 return (
                   <div className={styles.card} key={theme.key}>
+                    {isThemeNew(theme) && <span className={styles.newBadge}>Baru</span>}
+
                     <div className={styles.cardPreview}>
                       <PhoneMockup
                         themeKey={theme.key}
