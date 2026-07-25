@@ -3,6 +3,7 @@ import { requireRole } from "@/lib/supabase/dal";
 import { createClient } from "@/lib/supabase/server";
 import { getInvitationBySlug } from "@/lib/invitation";
 import { themeRegistry, aqiqahThemeRegistry, khitanThemeRegistry } from "@/lib/theme";
+import SmartCoverRuntime from "@/components/SmartCoverRuntime";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -47,15 +48,30 @@ export default async function PreviewPage({ params }: Props) {
 
   if (invitation.category === "aqiqah") {
     const Theme = aqiqahThemeRegistry[invitation.theme] || aqiqahThemeRegistry["akikah-nur"];
-    return <Theme invitation={invitation} />;
+    return (
+      <SmartCoverRuntime coverImage={invitation.coverImage} title={invitation.baby.name}>
+        <Theme invitation={invitation} />
+      </SmartCoverRuntime>
+    );
   }
 
   if (invitation.category === "khitan") {
     const Theme = khitanThemeRegistry[invitation.theme] || khitanThemeRegistry["khitan-warna"];
-    return <Theme invitation={invitation} />;
+    return (
+      <SmartCoverRuntime coverImage={invitation.coverImage} title={invitation.child.name}>
+        <Theme invitation={invitation} />
+      </SmartCoverRuntime>
+    );
   }
 
   const Theme = themeRegistry[invitation.theme] || themeRegistry["luxury-gold"];
 
-  return <Theme invitation={invitation} />;
+  return (
+    <SmartCoverRuntime
+      coverImage={invitation.coverImage}
+      title={`${invitation.groom.name} & ${invitation.bride.name}`}
+    >
+      <Theme invitation={invitation} />
+    </SmartCoverRuntime>
+  );
 }

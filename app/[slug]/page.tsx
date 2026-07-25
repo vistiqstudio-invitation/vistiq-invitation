@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { getInvitationBySlug } from "@/lib/invitation";
 import { themeRegistry, aqiqahThemeRegistry, khitanThemeRegistry } from "@/lib/theme";
 import WhiteLabelFrame from "@/components/WhiteLabelFrame";
+import SmartCoverRuntime from "@/components/SmartCoverRuntime";
+import { stripSmartCoverConfig } from "@/lib/smartCover";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -16,6 +18,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { title: "Undangan Tidak Ditemukan | Vistiq Invitation" };
   }
 
+  const coverImage = stripSmartCoverConfig(invitation.coverImage);
+
   if (invitation.category === "aqiqah") {
     const title = `Aqiqah ${invitation.baby.name} | ${invitation.brand?.name ?? "Vistiq Invitation"}`;
     const description = `Undangan aqiqah ${invitation.baby.name}. Kami mengundang Bapak/Ibu/Saudara/i untuk turut hadir dan memberikan doa restu.`;
@@ -26,13 +30,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       openGraph: {
         title,
         description,
-        images: invitation.coverImage ? [invitation.coverImage] : undefined,
+        images: coverImage ? [coverImage] : undefined,
       },
       twitter: {
         card: "summary_large_image",
         title,
         description,
-        images: invitation.coverImage ? [invitation.coverImage] : undefined,
+        images: coverImage ? [coverImage] : undefined,
       },
     };
   }
@@ -47,13 +51,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       openGraph: {
         title,
         description,
-        images: invitation.coverImage ? [invitation.coverImage] : undefined,
+        images: coverImage ? [coverImage] : undefined,
       },
       twitter: {
         card: "summary_large_image",
         title,
         description,
-        images: invitation.coverImage ? [invitation.coverImage] : undefined,
+        images: coverImage ? [coverImage] : undefined,
       },
     };
   }
@@ -67,13 +71,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title,
       description,
-      images: invitation.coverImage ? [invitation.coverImage] : undefined,
+      images: coverImage ? [coverImage] : undefined,
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: invitation.coverImage ? [invitation.coverImage] : undefined,
+      images: coverImage ? [coverImage] : undefined,
     },
   };
 }
@@ -88,14 +92,35 @@ export default async function InvitationPage({ params }: Props) {
 
   if (invitation.category === "aqiqah") {
     const Theme = aqiqahThemeRegistry[invitation.theme] || aqiqahThemeRegistry["akikah-nur"];
-    return <WhiteLabelFrame brand={invitation.brand}><Theme invitation={invitation} /></WhiteLabelFrame>;
+    return (
+      <WhiteLabelFrame brand={invitation.brand}>
+        <SmartCoverRuntime coverImage={invitation.coverImage} title={invitation.baby.name}>
+          <Theme invitation={invitation} />
+        </SmartCoverRuntime>
+      </WhiteLabelFrame>
+    );
   }
 
   if (invitation.category === "khitan") {
     const Theme = khitanThemeRegistry[invitation.theme] || khitanThemeRegistry["khitan-warna"];
-    return <WhiteLabelFrame brand={invitation.brand}><Theme invitation={invitation} /></WhiteLabelFrame>;
+    return (
+      <WhiteLabelFrame brand={invitation.brand}>
+        <SmartCoverRuntime coverImage={invitation.coverImage} title={invitation.child.name}>
+          <Theme invitation={invitation} />
+        </SmartCoverRuntime>
+      </WhiteLabelFrame>
+    );
   }
 
   const Theme = themeRegistry[invitation.theme] || themeRegistry["luxury-gold"];
-  return <WhiteLabelFrame brand={invitation.brand}><Theme invitation={invitation} /></WhiteLabelFrame>;
+  return (
+    <WhiteLabelFrame brand={invitation.brand}>
+      <SmartCoverRuntime
+        coverImage={invitation.coverImage}
+        title={`${invitation.groom.name} & ${invitation.bride.name}`}
+      >
+        <Theme invitation={invitation} />
+      </SmartCoverRuntime>
+    </WhiteLabelFrame>
+  );
 }

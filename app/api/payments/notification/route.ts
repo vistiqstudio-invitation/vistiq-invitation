@@ -72,10 +72,25 @@ export async function POST(request: Request) {
     if (error) console.warn("checkout_orders notification skipped:", error.message);
 
     if (!error && paid) {
+      const { data: order } = await supabase.from("checkout_orders").select("id, affiliate_id, package_id, amount").eq("order_id", orderId).single();
+      if (order?.affiliate_id) {
+        await supabase.from("affiliate_commissions").upsert({
+          affiliate_id: order.affiliate_id, checkout_order_id: order.id, order_id: orderId,
+          package_id: order.package_id, sale_amount: order.amount,
+          commission_amount: Math.round(Number(order.amount) * 0.3), status: "held",
+          available_at: new Date(Date.now() + 7 * 86400000).toISOString(),
+        }, { onConflict: "checkout_order_id", ignoreDuplicates: true });
+      }
       try {
         await provisionPaidOrder(supabase, orderId, new URL(request.url).origin);
       } catch (provisionError) {
         console.error("checkout account provisioning failed:", provisionError);
+      }
+    }
+    if (!error && ["deny", "cancel", "expire"].includes(normalizedStatus)) {
+      const { data: order } = await supabase.from("checkout_orders").select("id").eq("order_id", orderId).single();
+      if (order) {
+        await supabase.from("affiliate_commissions").update({ status: "cancelled" }).eq("checkout_order_id", order.id).neq("status", "paid");
       }
     }
   }

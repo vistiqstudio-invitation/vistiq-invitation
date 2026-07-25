@@ -41,6 +41,10 @@ export default function HomePage() {
             </Link>
 
             <CheckoutButton packageId="client" label="Order Sekarang" production={midtransProduction} />
+
+            <Link href="/gabung-affiliate" className="affiliateButton">
+              Gabung Affiliate
+            </Link>
           </div>
         </div>
 
@@ -164,6 +168,17 @@ export default function HomePage() {
         <Link href="/gabung-reseller#harga" className="whiteButton">
           Daftar Reseller
         </Link>
+      </section>
+
+      <section className="section">
+        <p className="label">Program Affiliate</p>
+        <h2>Promosikan Vistiq, Dapatkan Komisi 30%</h2>
+        <p style={{ maxWidth: 680, margin: "0 auto 24px", textAlign: "center", color: "#64748b", lineHeight: 1.8 }}>
+          Gratis bergabung. Komisi berlaku untuk paket Client, Reseller, dan Reseller Brand.
+        </p>
+        <div style={{ textAlign: "center" }}>
+          <Link href="/gabung-affiliate" className="primaryButton">Gabung Affiliate</Link>
+        </div>
       </section>
 
       <section className="cta">
@@ -320,10 +335,19 @@ html, body {
   color: white;
 }
 
-.secondaryButton {
+.secondaryButton,
+.affiliateButton {
   background: white;
   color: #1167b2;
   border: 1px solid #dbeafe;
+}
+
+.affiliateButton {
+  padding: 14px 24px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 800;
+  display: inline-block;
 }
 
 .heroActions .priceButton {
@@ -337,6 +361,22 @@ html, body {
   cursor: pointer;
   font-family: inherit;
   font-size: inherit;
+}
+
+.heroText .heroActions > .primaryButton,
+.heroText .heroActions > .affiliateButton,
+.heroText .heroActions > .priceButton {
+  width: 185px;
+  min-height: 54px;
+  margin-top: 0;
+  padding: 14px 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 185px;
+  font-size: 16px;
+  line-height: 1.2;
+  text-align: center;
 }
 
 .heroCard {
@@ -706,8 +746,18 @@ html, body {
     flex-direction: column;
   }
 
+  .heroText .heroActions > .primaryButton,
+  .heroText .heroActions > .affiliateButton,
+  .heroText .heroActions > .priceButton {
+    width: 100%;
+    max-width: none;
+    flex-basis: auto;
+    text-align: center;
+  }
+
   .primaryButton,
-  .secondaryButton {
+  .secondaryButton,
+  .affiliateButton {
     width: 100%;
     text-align: center;
   }

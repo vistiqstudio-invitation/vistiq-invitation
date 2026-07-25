@@ -28,6 +28,14 @@ type Reseller = {
   package?: "reseller" | "reseller_brand";
 };
 
+type CreatedCredentials = {
+  email: string;
+  password: string;
+  name?: string;
+  whatsapp?: string;
+  package?: "reseller" | "reseller_brand";
+};
+
 const PACKAGE_LABELS: Record<string, string> = {
   reseller: "Reseller (30%)",
   reseller_brand: "Reseller Brand - White Label (100%)",
@@ -55,9 +63,70 @@ export default function ResellersPage() {
   });
 
   const [creating, setCreating] = useState(false);
-  const [credentials, setCredentials] = useState<{ email: string; password: string } | null>(null);
+  const [credentials, setCredentials] = useState<CreatedCredentials | null>(null);
+  const [messageCopied, setMessageCopied] = useState(false);
   const [resettingId, setResettingId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+
+  const getWelcomeMessage = (account: CreatedCredentials) => {
+    const isBrand = account.package === "reseller_brand";
+    const brandInstructions = isBrand
+      ? `
+
+Setelah login, silakan buka menu *Brand Saya* untuk:
+✅ Memasukkan nama brand
+✅ Mengunggah logo
+✅ Memilih warna branding
+✅ Menambahkan data kontak bisnis`
+      : "";
+
+    return `Halo Kak *${account.name}* 👋
+
+Selamat! Akun *${isBrand ? "Reseller Brand" : "Reseller"}* Kakak sudah berhasil dibuat dan aktif. 🎉
+
+Berikut akses login Kakak:
+
+🌐 Login: https://www.vistiqinvitation.com/login
+📧 Email: *${account.email}*
+🔐 Password sementara: *${account.password}*${brandInstructions}
+
+Demi keamanan, segera ganti password melalui menu pengaturan akun dan jangan membagikan data login kepada orang lain.
+
+Jika mengalami kendala, silakan hubungi Admin Vistiq Invitation.
+
+Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! 🚀`;
+  };
+
+  const copyWelcomeMessage = async () => {
+    if (!credentials?.name) return;
+
+    try {
+      await navigator.clipboard.writeText(getWelcomeMessage(credentials));
+      setMessageCopied(true);
+      window.setTimeout(() => setMessageCopied(false), 2000);
+    } catch {
+      alert("Pesan gagal disalin. Silakan salin secara manual.");
+    }
+  };
+
+  const openWhatsApp = () => {
+    if (!credentials?.name) return;
+
+    const phone = (credentials.whatsapp || "")
+      .replace(/\D/g, "")
+      .replace(/^0/, "62");
+
+    if (!phone) {
+      alert("Nomor WhatsApp pelanggan belum diisi.");
+      return;
+    }
+
+    window.open(
+      `https://wa.me/${phone}?text=${encodeURIComponent(getWelcomeMessage(credentials))}`,
+      "_blank",
+      "noopener,noreferrer"
+    );
+  };
 
   const fetchResellers = async () => {
     const { data, error } = await supabase
@@ -126,7 +195,14 @@ export default function ResellersPage() {
       return;
     }
 
-    setCredentials({ email: result.email, password: result.password });
+    setCredentials({
+      name: form.name.trim(),
+      email: result.email,
+      password: result.password,
+      whatsapp: form.whatsapp.trim(),
+      package: form.package === "reseller_brand" ? "reseller_brand" : "reseller",
+    });
+    setMessageCopied(false);
 
     setForm({
       name: "",
@@ -182,14 +258,14 @@ export default function ResellersPage() {
     fetchResellers();
   };
 
-  const resetPassword = async (userId: string) => {
+  const resetPassword = async (reseller: Reseller) => {
     if (!confirm("Buat password baru untuk reseller ini? Password lama akan langsung tidak berlaku.")) return;
 
-    setResettingId(userId);
+    setResettingId(reseller.user_id);
     const res = await fetch("/api/admin/reset-password", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId }),
+      body: JSON.stringify({ userId: reseller.user_id }),
     });
     const result = await res.json();
     setResettingId(null);
@@ -199,7 +275,14 @@ export default function ResellersPage() {
       return;
     }
 
-    setCredentials({ email: result.email, password: result.password });
+    setCredentials({
+      name: reseller.name,
+      email: result.email,
+      password: result.password,
+      whatsapp: reseller.whatsapp || "",
+      package: reseller.package === "reseller_brand" ? "reseller_brand" : "reseller",
+    });
+    setMessageCopied(false);
   };
 
   const deleteReseller = async (id: string, name: string) => {
@@ -285,17 +368,70 @@ export default function ResellersPage() {
               }}
             >
               <strong style={{ display: "block", marginBottom: 6, color: "#15803d" }}>
-                Password siap - catat/kirim sekarang, tidak akan ditampilkan lagi:
+                {credentials.name
+                  ? "Akun berhasil dibuat — kirim akses login kepada pelanggan:"
+                  : "Password siap — catat/kirim sekarang, tidak akan ditampilkan lagi:"}
               </strong>
               <p style={{ margin: 0 }}>Email: <code>{credentials.email}</code></p>
-              <p style={{ margin: "4px 0 8px" }}>Password: <code>{credentials.password}</code></p>
-              <button
-                onClick={() => setCredentials(null)}
-                className={styles.button}
-                style={{ padding: "6px 14px", fontSize: 12.5 }}
-              >
-                Tutup
-              </button>
+              <p style={{ margin: "4px 0 12px" }}>Password: <code>{credentials.password}</code></p>
+
+              {credentials.name && (
+                <div
+                  style={{
+                    background: "#fff",
+                    border: "1px solid #dcfce7",
+                    borderRadius: 10,
+                    padding: 14,
+                    marginBottom: 12,
+                    whiteSpace: "pre-wrap",
+                    lineHeight: 1.6,
+                    color: "#334155",
+                    maxHeight: 280,
+                    overflowY: "auto",
+                  }}
+                >
+                  {getWelcomeMessage(credentials)}
+                </div>
+              )}
+
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                {credentials.name && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={copyWelcomeMessage}
+                      className={styles.button}
+                      style={{ padding: "8px 14px", fontSize: 12.5 }}
+                    >
+                      {messageCopied ? "Pesan Tersalin ✓" : "Salin Pesan"}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={openWhatsApp}
+                      className={styles.button}
+                      style={{
+                        padding: "8px 14px",
+                        fontSize: 12.5,
+                        background: "#16a34a",
+                      }}
+                    >
+                      Kirim ke WhatsApp
+                    </button>
+                  </>
+                )}
+                <button
+                  type="button"
+                  onClick={() => setCredentials(null)}
+                  className={styles.button}
+                  style={{
+                    padding: "8px 14px",
+                    fontSize: 12.5,
+                    background: "#64748b",
+                  }}
+                >
+                  Tutup
+                </button>
+              </div>
             </div>
           )}
 
@@ -426,7 +562,7 @@ export default function ResellersPage() {
 
                   <div className={styles.resellerActions}>
                     <button
-                      onClick={() => resetPassword(reseller.user_id)}
+                      onClick={() => resetPassword(reseller)}
                       disabled={resettingId === reseller.user_id}
                       className={styles.button}
                       style={{ fontSize: 11, padding: "6px 10px" }}

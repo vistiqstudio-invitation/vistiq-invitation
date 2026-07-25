@@ -3,7 +3,7 @@ import "server-only";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
-export type UserRole = "owner" | "reseller" | "client";
+export type UserRole = "owner" | "reseller" | "client" | "affiliate";
 
 export type SessionProfile = {
   id: string;
