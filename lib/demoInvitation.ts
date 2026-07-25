@@ -68,7 +68,7 @@ export const COVER_BY_THEME: Record<string, string> = {
   // current photo set. Replace once real photos exist.
   sahara: "/photos/rustic-cover.png",
   "adat-bali": "/photos/adat-bali-cover.png",
-  "adat-sunda": "/photos/floral-cover.png",
+  "adat-sunda": "/photos/adat-sunda-cover.png",
 };
 
 // Couple portrait photos also vary by theme - the default luxury-gold
@@ -102,7 +102,7 @@ const GROOM_PHOTO_BY_THEME: Record<string, string> = {
   "sage-green": "/photos/floral-groom.png",
   sahara: "/photos/rustic-groom.png",
   "adat-bali": "/photos/adat-bali-groom.png",
-  "adat-sunda": "/photos/floral-groom.png",
+  "adat-sunda": "/photos/adat-sunda-groom.png",
 };
 
 const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
@@ -123,7 +123,7 @@ const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
   "golden-romance": "/photos/romance-bride.png",
   "adat-jawa": "/photos/jawa-bride.png",
   "adat-bali": "/photos/adat-bali-bride.png",
-  "adat-sunda": "/photos/floral-bride.png",
+  "adat-sunda": "/photos/adat-sunda-bride.png",
   "adat-minang": "/photos/luxury-bride.png",
   "adat-bugis": "/photos/lantern-bride.png",
   "menara-cahaya": "/photos/imperial-bride.png",
@@ -381,12 +381,12 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
     "/photos/adat-bali-gallery-6.png",
   ],
   "adat-sunda": [
-    "/photos/floral-gallery-7.png",
-    "/photos/floral-gallery-8.png",
-    "/photos/floral-gallery-9.png",
-    "/photos/floral-gallery-10.png",
-    "/photos/floral-gallery-11.png",
-    "/photos/floral-gallery-12.png",
+    "/photos/adat-sunda-gallery-1.png",
+    "/photos/adat-sunda-gallery-2.png",
+    "/photos/adat-sunda-gallery-3.png",
+    "/photos/adat-sunda-gallery-4.png",
+    "/photos/adat-sunda-gallery-5.png",
+    "/photos/adat-sunda-gallery-6.png",
   ],
 };
 
