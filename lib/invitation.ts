@@ -16,6 +16,14 @@ function resolveBrand(raw: Record<string, any>): Brand {
   const reseller = raw.clients?.resellers;
   if (!reseller || !reseller.brand_active || !reseller.brand_name) return null;
 
+  // Reseller Brand is now a Rp149.000/month subscription (grandfathered
+  // lifetime resellers have brand_expires_at = null and never hit this).
+  // A lapsed subscription falls back to default Vistiq branding until the
+  // owner manually extends brand_expires_at after a renewal payment.
+  if (reseller.brand_expires_at && new Date(reseller.brand_expires_at) <= new Date()) {
+    return null;
+  }
+
   return {
     name: reseller.brand_name,
     logoUrl: reseller.logo_url || null,
@@ -385,7 +393,7 @@ export async function getInvitationBySlug(
   const { data, error } = await supabase
     .from("invitations")
     .select(
-      "*, clients:client_id(resellers:reseller_id(brand_name, logo_url, brand_color, brand_active))"
+      "*, clients:client_id(resellers:reseller_id(brand_name, logo_url, brand_color, brand_active, brand_expires_at))"
     )
     .eq("slug", slug)
     .single();

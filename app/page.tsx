@@ -5,7 +5,6 @@ import ThemeGrid from "@/components/ThemeGrid";
 import AqiqahThemeGrid from "@/components/AqiqahThemeGrid";
 import KhitanThemeGrid from "@/components/KhitanThemeGrid";
 import CheckoutButton from "@/components/CheckoutButton";
-import PromoCountdown from "@/components/PromoCountdown";
 
 const HERO_FAN = [
   { key: "royal-imperial", rotate: -18, x: -108, y: 20, scale: 0.82, z: 1 },
@@ -138,19 +137,18 @@ export default function HomePage() {
           </div>
 
           <div className="priceCard">
-            <small className="promoBadge">Promo Launching · 10 Orang Pertama</small>
+            <small className="promoBadge">Layaknya Member Premium</small>
             <h3>Reseller Brand</h3>
-            <span className="oldPrice">Rp 299.000</span>
-            <strong>Rp 149.000<span>/sekali bayar</span></strong>
+            <strong>Rp 149.000<span>/bulan</span></strong>
             <p>
               Semua fitur Reseller, plus ganti nama & logo jadi brand Anda
-              sendiri (white label) di setiap undangan client - dan keuntungan{" "}
-              <strong>100%</strong> jadi milik Anda. Bayar sekali, aktif
-              selamanya.
+              sendiri (white label) di setiap undangan client, keuntungan{" "}
+              <strong>100%</strong> jadi milik Anda, update tema baru setiap
+              bulan, konten promosi siap pakai, dan benefit member premium
+              lainnya.
             </p>
             <CheckoutButton packageId="reseller-brand" label="Bayar Reseller Brand" production={midtransProduction} />
             <span className="paymentMethods">QRIS · Virtual Account · E-Wallet</span>
-            <PromoCountdown className="promoCountdown" />
           </div>
         </div>
       </section>

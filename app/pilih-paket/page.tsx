@@ -60,11 +60,13 @@ const packageDetails: Array<{
     title: "Reseller Brand",
     eyebrow: "Paket White Label",
     description:
-      "Untuk membangun usaha undangan dengan nama dan logo brand sendiri.",
+      "Untuk membangun usaha undangan dengan nama dan logo brand sendiri, layaknya member premium.",
     features: [
       "Semua fitur paket Reseller",
       "Nama dan logo brand sendiri",
       "Keuntungan penjualan 100% milik Anda",
+      "Update tema baru setiap bulan",
+      "Konten promosi siap pakai setiap bulan",
     ],
     button: "Pilih Reseller Brand",
   },
@@ -149,7 +151,7 @@ export default async function PilihPaketPage({
               <p className="cardDescription">{item.description}</p>
               <strong className="packagePrice">
                 Rp {price.toLocaleString("id-ID")}
-                <small>/sekali bayar</small>
+                <small>{item.id === "reseller-brand" ? "/bulan" : "/sekali bayar"}</small>
               </strong>
               <ul>
                 {item.features.map((feature) => (

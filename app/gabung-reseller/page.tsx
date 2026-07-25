@@ -2,7 +2,6 @@ import Link from "next/link";
 import PhoneMockup from "@/components/PhoneMockup";
 import SiteNavbar from "@/components/SiteNavbar";
 import ThemeGrid from "@/components/ThemeGrid";
-import PromoCountdown from "@/components/PromoCountdown";
 import CheckoutButton from "@/components/CheckoutButton";
 
 const HERO_FAN = [
@@ -34,9 +33,9 @@ const STEPS = [
 const BENEFITS = [
   ["Brand & logo sendiri di setiap undangan", "White label penuh — client lihat bisnismu, bukan Vistiq."],
   ["Profit 100% dari setiap penjualan", "Kamu yang tentukan harga jual, seluruh hasilnya masuk ke kamu."],
-  ["Akses dashboard reseller selamanya", "Sekali bayar, tidak ada biaya bulanan."],
+  ["Update tema baru setiap bulan", "Koleksi tema terus bertambah tiap bulan, langsung bisa kamu jual."],
+  ["Konten promosi siap pakai tiap bulan", "Materi promosi baru tiap bulan buat bantu kamu jualan di media sosial."],
   ["Bikin undangan tanpa batas jumlah", "Jual ke sebanyak mungkin client, tidak ada limit."],
-  ["22+ tema premium siap pakai", "Terus bertambah, dari adat Nusantara sampai gaya internasional."],
   ["Link katalog demo dengan brand kamu", "Kirim langsung ke calon client sebagai etalase jualan sendiri."],
   ["Panel client mandiri", "Client bisa edit data & upload foto sendiri, kamu tidak perlu bolak-balik revisi."],
   ["Support teknis langsung dari tim Vistiq", "Ada kendala tinggal chat, dibantu sampai selesai."],
@@ -49,15 +48,15 @@ const FAQS = [
   },
   {
     q: "Berapa modal awal yang dibutuhkan?",
-    a: "Rp149.000 sekali bayar — promo launching untuk 10 orang pertama, normal Rp299.000. Setelah aktif, kamu bisa langsung jualan tanpa batas dengan brand sendiri.",
+    a: "Rp149.000/bulan, layaknya member premium. Setelah aktif, kamu bisa langsung jualan tanpa batas dengan brand sendiri, plus dapat update tema dan konten promosi baru tiap bulan.",
   },
   {
     q: "Keuntungan penjualan saya berapa persen?",
     a: "100% milikmu. Kamu yang tentukan harga jual ke client, dan seluruh hasilnya masuk ke kamu — tidak ada potongan ke Vistiq.",
   },
   {
-    q: "Apakah ada biaya bulanan?",
-    a: "Tidak. Sekali bayar dan aktif selamanya — tidak ada tagihan bulanan sama sekali.",
+    q: "Bagaimana cara perpanjangan tiap bulan?",
+    a: "Perpanjangan dilakukan manual. Dashboard reseller kamu akan menampilkan pengingat masa aktif akun — kalau sudah mendekati atau melewati masa aktif, tinggal hubungi admin Vistiq lewat WhatsApp untuk bayar, dan akun langsung diaktifkan kembali setelah pembayaran dikonfirmasi.",
   },
   {
     q: "Kalau saya bingung pas mulai jualan, ada yang bantu?",
@@ -76,7 +75,7 @@ export default function GabungResellerPage() {
 
       <section className="hero">
         <div className="heroText">
-          <p className="badge">🔥 Promo Launching · 10 Orang Pertama</p>
+          <p className="badge">⭐ Layaknya Member Premium</p>
 
           <h1>Jadi Reseller dengan Brand Sendiri, Profit 100% Milikmu</h1>
 
@@ -87,9 +86,8 @@ export default function GabungResellerPage() {
           </p>
 
           <div className="heroPrice">
-            <span className="oldPrice">Rp 299.000</span>
             <strong>Rp 149.000</strong>
-            <span className="priceHint">sekali bayar, aktif selamanya</span>
+            <span className="priceHint">/bulan — update tema & konten promosi tiap bulan</span>
           </div>
 
           <div className="heroActions">
@@ -104,20 +102,18 @@ export default function GabungResellerPage() {
             </Link>
           </div>
 
-          <PromoCountdown className="promoCountdown" />
-
           <div className="statBar">
-            <div>
-              <strong>22+</strong>
-              <span>Tema Premium</span>
-            </div>
             <div>
               <strong>100%</strong>
               <span>Profit Milikmu</span>
             </div>
             <div>
-              <strong>1x</strong>
-              <span>Bayar, Aktif Selamanya</span>
+              <strong>Tiap Bulan</strong>
+              <span>Update Tema & Konten Promosi</span>
+            </div>
+            <div>
+              <strong>Manual</strong>
+              <span>Perpanjangan via Admin Vistiq</span>
             </div>
           </div>
         </div>
@@ -177,7 +173,7 @@ export default function GabungResellerPage() {
 
       <section className="section">
         <p className="label">Yang Kamu Dapatkan</p>
-        <h2>Sekali Bayar, Ini Semua Milikmu</h2>
+        <h2>Berlangganan Bulanan, Ini Semua Milikmu</h2>
 
         <div className="benefitGrid">
           {BENEFITS.map((item) => (
@@ -217,22 +213,22 @@ export default function GabungResellerPage() {
       </section>
 
       <section id="harga" className="section">
-        <p className="label">Investasi Sekali Bayar</p>
+        <p className="label">Langganan Bulanan</p>
         <h2>Mulai Jadi Reseller Brand Sekarang</h2>
 
         <div className="singleOffer">
           <div className="priceCard featured offerCard">
-            <small className="promoBadge">Promo Launching · 10 Orang Pertama</small>
+            <small className="promoBadge">Layaknya Member Premium</small>
             <h3>Reseller Brand</h3>
-            <span className="oldPrice">Rp 299.000</span>
             <strong>
-              Rp 149.000<span>/sekali bayar</span>
+              Rp 149.000<span>/bulan</span>
             </strong>
             <p>
               Brand & logo sendiri di setiap undangan client, profit{" "}
               <strong style={{ color: "white" }}>100%</strong> jadi milikmu,
-              dan akses dashboard reseller selamanya. Bayar sekali, tanpa
-              biaya bulanan.
+              update tema baru dan konten promosi setiap bulan. Tagihan
+              manual — dashboard kamu akan mengingatkan sebelum masa aktif
+              habis.
             </p>
             <CheckoutButton
               packageId="reseller-brand"
@@ -240,7 +236,6 @@ export default function GabungResellerPage() {
               featured
               production={midtransProduction}
             />
-            <PromoCountdown className="promoCountdown" />
             <span className="paymentMethods">QRIS · Virtual Account · E-Wallet</span>
           </div>
         </div>
@@ -249,8 +244,8 @@ export default function GabungResellerPage() {
       <section className="cta">
         <h2>Siap Jadi Reseller dengan Brand Sendiri?</h2>
         <p>
-          Promo Rp149.000 cuma untuk 10 orang pertama. Daftar sekarang, akses
-          dashboard selamanya.
+          Rp149.000/bulan, layaknya member premium — dapat update tema dan
+          konten promosi baru tiap bulan. Daftar sekarang.
         </p>
 
         <div className="heroActions center">
@@ -264,8 +259,6 @@ export default function GabungResellerPage() {
             Lihat Demo Tema
           </Link>
         </div>
-
-        <PromoCountdown className="promoCountdown" />
       </section>
 
       <footer className="footer">

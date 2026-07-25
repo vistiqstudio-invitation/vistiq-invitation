@@ -20,6 +20,7 @@ type Reseller = {
   brand_color?: string | null;
   brand_active?: boolean;
   package?: "reseller" | "reseller_brand";
+  brand_expires_at?: string | null;
 };
 
 type Client = {
@@ -436,7 +437,10 @@ export default function ResellerInvitationsPage() {
     router.push("/login");
   };
 
-  const brandActive = reseller?.package === "reseller_brand" && Boolean(reseller?.brand_active);
+  const brandNotExpired =
+    !reseller?.brand_expires_at || new Date(reseller.brand_expires_at) > new Date();
+  const brandActive =
+    reseller?.package === "reseller_brand" && Boolean(reseller?.brand_active) && brandNotExpired;
   const brandName = brandActive && reseller?.brand_name ? reseller.brand_name : null;
   const brandStyle = brandActive && reseller?.brand_color
     ? ({ "--accent": reseller.brand_color } as React.CSSProperties)

@@ -29,6 +29,7 @@ type Reseller = {
   brand_active?: boolean;
   package?: "reseller" | "reseller_brand";
   starting_price?: number | null;
+  brand_expires_at?: string | null;
 };
 
 const LOGO_BUCKET = "invitation-assets";
@@ -183,15 +184,29 @@ export default function ResellerPage() {
     router.push("/login");
   };
 
+  // eslint-disable-next-line react-hooks/purity -- reading the clock to compare against a stored expiry timestamp is inherently time-dependent
+  const now = Date.now();
   const isBrandPackage = reseller?.package === "reseller_brand";
-  const brandActive = isBrandPackage && Boolean(reseller?.brand_active);
+  const brandExpiresAt = reseller?.brand_expires_at ? new Date(reseller.brand_expires_at) : null;
+  const brandExpired = isBrandPackage && brandExpiresAt !== null && brandExpiresAt.getTime() <= now;
+  const brandActive = isBrandPackage && Boolean(reseller?.brand_active) && !brandExpired;
+  const brandDaysLeft = brandExpiresAt && !brandExpired
+    ? Math.ceil((brandExpiresAt.getTime() - now) / 86400000)
+    : null;
+  const brandExpiryLabel = brandExpiresAt
+    ? brandExpiresAt.toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })
+    : null;
   const brandName = brandActive && reseller?.brand_name ? reseller.brand_name : null;
   const brandStyle = brandActive && reseller?.brand_color
     ? ({ "--accent": reseller.brand_color } as React.CSSProperties)
     : undefined;
 
   const upgradeText = encodeURIComponent(
-    `Halo Vistiq Invitation, saya ${user?.name || "reseller"} (${user?.email || ""}) ingin upgrade ke paket Reseller Brand (white label, promo launching Rp149.000, normal Rp299.000).`
+    `Halo Vistiq Invitation, saya ${user?.name || "reseller"} (${user?.email || ""}) ingin upgrade ke paket Reseller Brand (white label, Rp149.000/bulan, layaknya member premium).`
+  );
+
+  const renewText = encodeURIComponent(
+    `Halo Vistiq Invitation, saya ${user?.name || "reseller"} (${user?.email || ""}) ingin memperpanjang paket Reseller Brand saya yang ${brandExpired ? "sudah berakhir" : "akan berakhir"}${brandExpiryLabel ? ` (${brandExpiryLabel})` : ""}. Mohon info pembayarannya.`
   );
 
   return (
@@ -234,6 +249,54 @@ export default function ResellerPage() {
           </section>
         ) : (
           <>
+            {isBrandPackage && brandExpired && (
+              <section className={styles.formCard} style={{ borderLeft: "4px solid #dc2626" }}>
+                <h2 className={styles.sectionTitle} style={{ color: "#dc2626" }}>
+                  Masa Aktif Reseller Brand Sudah Berakhir
+                </h2>
+                <p style={{ margin: "0 0 16px", fontSize: 13.5, color: "#64748b" }}>
+                  Langganan Reseller Brand Anda berakhir pada{" "}
+                  <strong>{brandExpiryLabel}</strong>. Brand Anda (nama, logo,
+                  warna) untuk sementara tidak tampil di undangan client
+                  sampai diperpanjang. Hubungi admin Vistiq dan lakukan
+                  pembayaran manual - setelah dikonfirmasi, admin akan
+                  mengaktifkan kembali akun Anda.
+                </p>
+                <a
+                  href={`https://wa.me/${WA_NUMBER}?text=${renewText}`}
+                  target="_blank"
+                  className={styles.button}
+                >
+                  Hubungi Admin untuk Perpanjang
+                </a>
+              </section>
+            )}
+
+            {isBrandPackage && !brandExpired && brandDaysLeft !== null && (
+              <section
+                className={styles.formCard}
+                style={brandDaysLeft <= 7 ? { borderLeft: "4px solid #f59e0b" } : undefined}
+              >
+                <p style={{ margin: 0, fontSize: 13.5, color: brandDaysLeft <= 7 ? "#b45309" : "#64748b" }}>
+                  Masa aktif Reseller Brand Anda hingga{" "}
+                  <strong>{brandExpiryLabel}</strong>
+                  {brandDaysLeft <= 7 ? ` - tinggal ${brandDaysLeft} hari lagi.` : "."}
+                  {brandDaysLeft <= 7 && (
+                    <>
+                      {" "}
+                      <a
+                        href={`https://wa.me/${WA_NUMBER}?text=${renewText}`}
+                        target="_blank"
+                        style={{ color: "#1167b2", fontWeight: 800 }}
+                      >
+                        Hubungi admin untuk perpanjang
+                      </a>
+                    </>
+                  )}
+                </p>
+              </section>
+            )}
+
             <section className={styles.stats}>
               <div className={styles.statCard}>
                 <span>Total Client</span>
@@ -262,9 +325,11 @@ export default function ResellerPage() {
               <section className={styles.formCard}>
                 <h2 className={styles.sectionTitle}>Brand Saya (White Label)</h2>
 
-                <p style={{ margin: "0 0 16px", fontSize: 13.5, color: reseller.brand_active ? "#15803d" : "#b45309" }}>
-                  {reseller.brand_active
+                <p style={{ margin: "0 0 16px", fontSize: 13.5, color: brandActive ? "#15803d" : "#b45309" }}>
+                  {brandActive
                     ? "Paket brand aktif - nama & logo di bawah tampil di undangan client Anda."
+                    : brandExpired
+                    ? "Masa aktif habis - lengkapi data tetap bisa disimpan, tapi brand baru tampil lagi setelah admin memperpanjang."
                     : "Paket brand belum aktif. Lengkapi data di bawah lalu hubungi admin untuk mengaktifkan paket Reseller Brand."}
                 </p>
 
@@ -331,7 +396,7 @@ export default function ResellerPage() {
               </section>
             ) : null}
 
-            {isBrandPackage && reseller.brand_active && (
+            {brandActive && (
               <section className={styles.formCard}>
                 <h2 className={styles.sectionTitle}>Landing Page Anda</h2>
                 <p style={{ margin: "0 0 16px", fontSize: 13.5, color: "#64748b" }}>
@@ -363,9 +428,9 @@ export default function ResellerPage() {
                 <p style={{ margin: "0 0 16px", fontSize: 13.5, color: "#64748b" }}>
                   Tampilkan nama, logo, dan warna brand Anda sendiri di setiap undangan
                   client (white label), dan dashboard Anda akan lengkap seperti dashboard
-                  Vistiq Studio. Normal Rp299.000, promo launching{" "}
-                  <strong>Rp149.000</strong> untuk 10 orang pertama, sekali bayar, aktif
-                  selamanya, keuntungan 100% jadi milik Anda.
+                  Vistiq Studio. <strong>Rp149.000/bulan</strong>, layaknya member
+                  premium - dapat update tema dan konten promosi baru setiap bulan,
+                  keuntungan 100% jadi milik Anda.
                 </p>
                 <a
                   href={`https://wa.me/${WA_NUMBER}?text=${upgradeText}`}

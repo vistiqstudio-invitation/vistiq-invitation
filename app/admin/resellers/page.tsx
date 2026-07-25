@@ -26,6 +26,7 @@ type Reseller = {
   brand_name?: string | null;
   brand_active?: boolean;
   package?: "reseller" | "reseller_brand";
+  brand_expires_at?: string | null;
 };
 
 type CreatedCredentials = {
@@ -40,6 +41,23 @@ const PACKAGE_LABELS: Record<string, string> = {
   reseller: "Reseller (30%)",
   reseller_brand: "Reseller Brand - White Label (100%)",
 };
+
+function brandExpiryStatus(reseller: Reseller): { label: string; color: string } {
+  if (!reseller.brand_expires_at) {
+    return { label: "Lifetime", color: "#15803d" };
+  }
+
+  const expires = new Date(reseller.brand_expires_at);
+  const dateLabel = expires.toLocaleDateString("id-ID", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+
+  return expires.getTime() <= Date.now()
+    ? { label: `Habis ${dateLabel}`, color: "#dc2626" }
+    : { label: `Aktif s/d ${dateLabel}`, color: "#b45309" };
+}
 
 const PACKAGE_DEFAULT_COMMISSION: Record<string, number> = {
   reseller: 30,
@@ -319,6 +337,43 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! ðŸš
     fetchResellers();
   };
 
+  const extendBrandExpiry = async (reseller: Reseller, months: number) => {
+    if (!confirm(`Perpanjang masa aktif brand "${reseller.name}" selama ${months} bulan? Pastikan pembayaran manual sudah dikonfirmasi.`)) return;
+
+    const currentExpiry = reseller.brand_expires_at ? new Date(reseller.brand_expires_at) : null;
+    const base = currentExpiry && currentExpiry.getTime() > Date.now() ? currentExpiry : new Date();
+    const nextExpiry = new Date(base);
+    nextExpiry.setMonth(nextExpiry.getMonth() + months);
+
+    const { error } = await supabase
+      .from("resellers")
+      .update({ brand_expires_at: nextExpiry.toISOString(), brand_active: true })
+      .eq("id", reseller.id);
+
+    if (error) {
+      alert(`Gagal memperpanjang masa aktif: ${error.message}`);
+      return;
+    }
+
+    fetchResellers();
+  };
+
+  const setBrandLifetime = async (id: string, name: string) => {
+    if (!confirm(`Jadikan brand "${name}" lifetime (tanpa masa aktif)?`)) return;
+
+    const { error } = await supabase
+      .from("resellers")
+      .update({ brand_expires_at: null })
+      .eq("id", id);
+
+    if (error) {
+      alert(`Gagal mengubah ke lifetime: ${error.message}`);
+      return;
+    }
+
+    fetchResellers();
+  };
+
   const logout = async () => {
     await supabase.auth.signOut();
     router.push("/login");
@@ -470,7 +525,7 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! ðŸš
               className={styles.input}
             >
               <option value="reseller">Reseller (Rp 149.000 sekali bayar, komisi 30%)</option>
-              <option value="reseller_brand">Reseller Brand - White Label (Promo Rp 149.000, normal Rp 299.000, 100%)</option>
+              <option value="reseller_brand">Reseller Brand - White Label (Rp 149.000/bulan, 100%)</option>
             </select>
 
             <input
@@ -545,6 +600,34 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! ðŸš
                     />
                     Brand {reseller.brand_name ? `(${reseller.brand_name})` : ""}
                   </label>
+
+                  {reseller.package === "reseller_brand" && (
+                    <div style={{ display: "flex", flexDirection: "column", gap: 4, flex: "0 0 auto" }}>
+                      <span style={{ fontSize: 11, fontWeight: 700, color: brandExpiryStatus(reseller).color }}>
+                        {brandExpiryStatus(reseller).label}
+                      </span>
+                      <div style={{ display: "flex", gap: 6 }}>
+                        <button
+                          type="button"
+                          onClick={() => extendBrandExpiry(reseller, 1)}
+                          className={styles.button}
+                          style={{ fontSize: 10, padding: "4px 8px" }}
+                        >
+                          +1 Bulan
+                        </button>
+                        {reseller.brand_expires_at && (
+                          <button
+                            type="button"
+                            onClick={() => setBrandLifetime(reseller.id, reseller.name)}
+                            className={styles.button}
+                            style={{ fontSize: 10, padding: "4px 8px", background: "#64748b" }}
+                          >
+                            Jadikan Lifetime
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  )}
 
                   <select
                     value={reseller.status || "active"}

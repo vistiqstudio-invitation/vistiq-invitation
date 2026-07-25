@@ -14,9 +14,10 @@ export const PAYMENT_PACKAGES = {
   "reseller-brand": {
     code: "RB",
     name: "Paket Reseller Brand",
-    description: "Dashboard reseller white label selamanya",
-    // Launch promo: normal price is Rp299.000, discounted to Rp149.000 for
-    // the first 10 buyers. Revert to 299000 once the promo ends.
+    description: "Dashboard reseller white label, update tema & konten promosi tiap bulan",
+    // Rp149.000/bulan, ditagih manual (lihat provisionPaidOrder.ts untuk
+    // brand_expires_at 1 bulan dari pembelian). 10 reseller brand pertama
+    // (sebelum harga ini berlaku) tetap lifetime - brand_expires_at null.
     amount: 149000,
   },
 } as const;
