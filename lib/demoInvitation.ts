@@ -49,6 +49,7 @@ export const COVER_BY_THEME: Record<string, string> = {
   // which adat-jawa already uses as its own cover) since both themes
   // share a Javanese setting. Replace once real photos exist.
   "jawa-merah": "/photos/jawa-gallery-1.png",
+  "royal-java": "/photos/jawa-cover.png",
   // Placeholder only - no owner-supplied photography for this theme yet.
   // Same Javanese photoshoot as jawa-merah above (it's the only
   // Javanese-styled real photography in the set), just a different
@@ -97,6 +98,7 @@ const GROOM_PHOTO_BY_THEME: Record<string, string> = {
   "menara-cahaya": "/photos/imperial-groom.png",
   santorini: "/photos/white-groom.png",
   "jawa-merah": "/photos/jawa-groom.png",
+  "royal-java": "/photos/jawa-groom.png",
   "jawa-coklat": "/photos/jawa-groom.png",
   "jawa-sepia": "/photos/jawa-groom.png",
   "sage-green": "/photos/floral-groom.png",
@@ -129,6 +131,7 @@ const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
   "menara-cahaya": "/photos/imperial-bride.png",
   santorini: "/photos/white-bride.png",
   "jawa-merah": "/photos/jawa-bride.png",
+  "royal-java": "/photos/jawa-bride.png",
   "jawa-coklat": "/photos/jawa-bride.png",
   "jawa-sepia": "/photos/jawa-bride.png",
   "sage-green": "/photos/floral-bride.png",
@@ -330,6 +333,14 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
     "/photos/jawa-gallery-5.png",
     "/photos/jawa-gallery-6.png",
   ],
+  "royal-java": [
+    "/photos/jawa-gallery-1.png",
+    "/photos/jawa-gallery-2.png",
+    "/photos/jawa-gallery-3.png",
+    "/photos/jawa-gallery-4.png",
+    "/photos/jawa-gallery-5.png",
+    "/photos/jawa-gallery-6.png",
+  ],
   // Placeholder only, same reasoning as jawa-merah above - same
   // Javanese photoshoot, different ordering (skips gallery-4, used as
   // this theme's own cover above) so the picker thumbnails don't match
@@ -407,6 +418,7 @@ const MUSIC_BY_THEME: Record<string, string> = {
   "modern-elegant": "/music/modern-elegant.mp3",
   "royal-imperial": "/music/royal-imperial.mp3",
   "adat-jawa": "/music/adat-jawa.mp3",
+  "royal-java": "/music/jawa-merah.mp3",
   "adat-bali": "/music/adat-bali.mp3",
   "adat-sunda": "/music/adat-sunda.mp3",
   "adat-minang": "/music/adat-minang.mp3",
