@@ -404,6 +404,15 @@ export default function ClientEditPage() {
       return;
     }
 
+    // Always normalize on save - typing directly into the slug field
+    // (instead of clicking "Auto") used to save raw text as-is (spaces,
+    // capital letters, "&"), producing broken-looking share links.
+    const cleanSlug = makeSlug(form.slug);
+    if (!cleanSlug) {
+      alert("Slug tidak valid. Gunakan huruf atau angka.");
+      return;
+    }
+
     setSaving(true);
 
     // Only auto-activate if this client's own account was actually born
@@ -432,7 +441,7 @@ export default function ClientEditPage() {
 
     const { data: inserted, error } = await supabase
       .from("invitations")
-      .insert({ ...form, ...cleanDates, client_id: clientId, is_active: shouldAutoActivate })
+      .insert({ ...form, ...cleanDates, slug: cleanSlug, client_id: clientId, is_active: shouldAutoActivate })
       .select("id")
       .single();
 

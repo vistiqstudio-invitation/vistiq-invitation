@@ -345,6 +345,15 @@ export default function ResellerInvitationsPage() {
       return;
     }
 
+    // Always normalize on save - typing directly into the slug field
+    // (instead of clicking "Auto") used to save raw text as-is (spaces,
+    // capital letters, "&"), producing broken-looking share links.
+    const cleanSlug = makeSlug(form.slug);
+    if (!cleanSlug) {
+      alert("Slug tidak valid. Gunakan huruf atau angka.");
+      return;
+    }
+
     setSaving(true);
 
     // Date-type columns reject an empty string ("" from an untouched
@@ -353,6 +362,7 @@ export default function ResellerInvitationsPage() {
     // value for all of these.
     const payload = {
       ...form,
+      slug: cleanSlug,
       akad_date: form.akad_date || null,
       resepsi_date: form.resepsi_date || null,
       aqiqah_date: form.aqiqah_date || null,

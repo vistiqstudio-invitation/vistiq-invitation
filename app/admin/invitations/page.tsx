@@ -175,8 +175,18 @@ export default function InvitationsPage() {
       return;
     }
 
+    // Always normalize on save - typing directly into the slug field
+    // (instead of clicking "Auto") used to save raw text as-is (spaces,
+    // capital letters, "&"), producing broken-looking share links.
+    const cleanSlug = makeSlug(form.slug);
+    if (!cleanSlug) {
+      alert("Slug tidak valid. Gunakan huruf atau angka.");
+      return;
+    }
+
     const payload = {
       ...form,
+      slug: cleanSlug,
       event_date: form.event_date || null,
     };
 
