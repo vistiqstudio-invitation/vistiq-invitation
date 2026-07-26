@@ -47,6 +47,7 @@ import VelvetCinema from "@/themes/velvet-cinema/VelvetCinema";
 import PrismaticVows from "@/themes/prismatic-vows/PrismaticVows";
 import PearlTide from "@/themes/pearl-tide/PearlTide";
 import JawaSepia from "@/themes/jawa-sepia/JawaSepia";
+import RoyalJava from "@/themes/royal-java/RoyalJava";
 
 export const themeRegistry: Record<
   string,
@@ -85,6 +86,7 @@ export const themeRegistry: Record<
   "prismatic-vows": PrismaticVows,
   "pearl-tide": PearlTide,
   "jawa-sepia": JawaSepia,
+  "royal-java": RoyalJava,
 };
 
 export type ThemeMeta = {
@@ -192,6 +194,14 @@ export const themeList: ThemeMeta[] = [
     description: "Soga & emas antik, motif batik, timeline zigzag, foto bersusun",
     swatch: ["#241811", "#c9a24a"],
     tags: ["adat"],
+  },
+  {
+    key: "royal-java",
+    label: "Royal Java – Maroon Heritage",
+    description: "Opening sinematik pendopo, bunga marun berlapis, batik & emas keraton",
+    swatch: ["#250608", "#d7ad55"],
+    tags: ["premium", "adat"],
+    addedAt: "2026-07-26",
   },
   {
     key: "adat-minang",
