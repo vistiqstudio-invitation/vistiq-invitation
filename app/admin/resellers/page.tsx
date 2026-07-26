@@ -525,7 +525,7 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! ðŸš
               className={styles.input}
             >
               <option value="reseller">Reseller (Rp 149.000 sekali bayar, komisi 30%)</option>
-              <option value="reseller_brand">Reseller Brand - White Label (Rp 149.000/bulan, 100%)</option>
+              <option value="reseller_brand">Reseller Brand - White Label (Rp 99.000/bulan, 100%)</option>
             </select>
 
             <input

@@ -1,7 +1,6 @@
 import Link from "next/link";
 import PhoneMockup from "@/components/PhoneMockup";
 import SiteNavbar from "@/components/SiteNavbar";
-import PromoCountdown from "@/components/PromoCountdown";
 
 const WA_NUMBER = "6281371338032";
 
@@ -34,8 +33,8 @@ const STEPS = [
 const COMPARISON = [
   ["Nama yang tampil ke client", "Vistiq Invitation", "Brand kamu sendiri"],
   ["Profit per penjualan", "30% komisi", "100% milik sendiri"],
-  ["Biaya aktivasi", "Rp149.000 sekali bayar", "Rp149.000 (promo, normal Rp299.000)"],
-  ["Biaya bulanan", "Tidak ada", "Tidak ada"],
+  ["Biaya", "Rp149.000 sekali bayar", "Rp99.000/bulan"],
+  ["Update tema & konten promosi", "Tidak ada", "Setiap bulan"],
   ["Dashboard", "Dashboard reseller standar", "Dashboard full branding sendiri"],
 ];
 
@@ -44,8 +43,8 @@ const BENEFITS = [
   ["Warna brand custom di dashboard client", "Identitas brand kamu konsisten dari undangan sampai dashboard."],
   ["Profit 100% dari setiap penjualan", "Kamu yang tentukan harga ke client, tidak ada potongan komisi."],
   ["Dashboard reseller lengkap", "Selengkap dashboard tim Vistiq sendiri — kelola client, RSVP, dan galeri."],
-  ["Akses ke 22+ tema premium", "Jual tanpa batas jumlah, semua tema tersedia untuk brand kamu."],
-  ["Sekali bayar, aktif selamanya", "Tidak ada biaya bulanan atau perpanjangan."],
+  ["Update tema baru setiap bulan", "Koleksi tema terus bertambah tiap bulan, langsung bisa kamu jual."],
+  ["Konten promosi siap pakai tiap bulan", "Materi promosi baru tiap bulan buat bantu kamu jualan di media sosial."],
   ["Support teknis dari tim Vistiq", "Kami bantu di belakang layar — client kamu tidak perlu tahu."],
 ];
 
@@ -63,8 +62,12 @@ const FAQS = [
     a: "Bisa kapan saja. Tinggal hubungi tim Vistiq lewat WhatsApp untuk upgrade akun reseller kamu ke Reseller Brand.",
   },
   {
-    q: "Apakah ada biaya bulanan?",
-    a: "Tidak ada. Harga normal Rp299.000, tapi sekarang promo launching Rp149.000 untuk 10 orang pertama - sekali bayar, aktif selamanya, tanpa tagihan bulanan.",
+    q: "Berapa biayanya?",
+    a: "Rp99.000/bulan, layaknya member premium — dapat update tema dan konten promosi baru tiap bulan, plus 100% profit dari setiap penjualan jadi milikmu.",
+  },
+  {
+    q: "Bagaimana cara perpanjangan tiap bulan?",
+    a: "Perpanjangan dilakukan manual. Dashboard reseller kamu akan menampilkan pengingat masa aktif akun — kalau sudah mendekati atau melewati masa aktif, tinggal hubungi admin Vistiq lewat WhatsApp untuk bayar, dan akun langsung diaktifkan kembali setelah pembayaran dikonfirmasi.",
   },
   {
     q: "Kalau saya bingung pas setup brand, ada yang bantu?",
@@ -84,15 +87,15 @@ export default function ResellerBrandPage() {
 
       <section className="hero">
         <div className="heroText">
-          <p className="badge">🔥 Promo Launching · 10 Orang Pertama</p>
+          <p className="badge">⭐ Layaknya Member Premium</p>
 
           <h1>Punya Bisnis Undangan Digital dengan Nama Kamu Sendiri</h1>
 
           <p>
             Reseller Brand: logo, nama, dan warna brand kamu tampil di setiap
-            undangan yang kamu jual. Sekali bayar, normal Rp299.000, promo
-            launching <strong>Rp149.000</strong> untuk 10 orang pertama -
-            aktif selamanya, dan 100% keuntungan jadi milikmu.
+            undangan yang kamu jual. <strong>Rp99.000/bulan</strong>, dapat
+            update tema dan konten promosi baru tiap bulan, dan 100%
+            keuntungan jadi milikmu.
           </p>
 
           <div className="heroActions">
@@ -109,20 +112,18 @@ export default function ResellerBrandPage() {
             </Link>
           </div>
 
-          <PromoCountdown className="promoCountdown" />
-
           <div className="statBar">
             <div>
               <strong>100%</strong>
               <span>Profit Milikmu</span>
             </div>
             <div>
-              <strong>Rp149rb</strong>
-              <span>Promo, Normal Rp299rb</span>
+              <strong>Tiap Bulan</strong>
+              <span>Update Tema & Konten Promosi</span>
             </div>
             <div>
-              <strong>Selamanya</strong>
-              <span>Tanpa Biaya Bulanan</span>
+              <strong>Manual</strong>
+              <span>Perpanjangan via Admin Vistiq</span>
             </div>
           </div>
         </div>
@@ -239,7 +240,7 @@ export default function ResellerBrandPage() {
 
       <section className="section">
         <p className="label">Yang Kamu Dapatkan</p>
-        <h2>Sekali Aktifkan, Ini Semua Milikmu</h2>
+        <h2>Berlangganan Bulanan, Ini Semua Milikmu</h2>
 
         <div className="benefitGrid">
           {BENEFITS.map((item) => (
@@ -281,14 +282,14 @@ export default function ResellerBrandPage() {
       <section className="section">
         <div className="priceHighlight">
           <p className="label white">Reseller Brand</p>
-          <p className="promoBadge">Promo Launching · 10 Orang Pertama</p>
-          <p className="oldPrice">Rp 299.000</p>
+          <p className="promoBadge">Layaknya Member Premium</p>
           <h2>
-            Rp 149.000<span>/sekali bayar</span>
+            Rp 99.000<span>/bulan</span>
           </h2>
           <p>
-            White label penuh, profit 100%, aktif selamanya. Tanpa biaya
-            bulanan.
+            White label penuh, profit 100%, update tema dan konten promosi
+            setiap bulan. Tagihan manual — dashboard kamu akan mengingatkan
+            sebelum masa aktif habis.
           </p>
           <a
             href={`https://wa.me/${WA_NUMBER}?text=${ctaText("price-highlight")}`}
@@ -297,7 +298,6 @@ export default function ResellerBrandPage() {
           >
             Aktifkan Brand Saya
           </a>
-          <PromoCountdown className="promoCountdown light" />
           <p className="priceNote">
             Sudah punya akun Reseller biasa? Hubungi kami untuk upgrade
             langsung.
@@ -308,7 +308,8 @@ export default function ResellerBrandPage() {
       <section className="cta">
         <h2>Siap Punya Brand Undangan Digital Sendiri?</h2>
         <p>
-          Sekali bayar, akses selamanya, dan 100% keuntungan jadi milikmu.
+          Rp99.000/bulan, layaknya member premium — dapat update tema dan
+          konten promosi baru tiap bulan, dan 100% keuntungan jadi milikmu.
         </p>
 
         <div className="heroActions center">
@@ -837,39 +838,6 @@ html, body {
   font-weight: 800;
   font-size: 13px;
   margin: 10px 0 0;
-}
-
-.priceHighlight .oldPrice {
-  color: rgba(255,255,255,.55);
-  text-decoration: line-through;
-  font-size: 18px;
-  font-weight: 600;
-  margin: 14px 0 0;
-}
-
-.promoCountdown {
-  display: inline-block;
-  margin: 22px auto 0;
-  padding: 9px 16px;
-  border-radius: 10px;
-  background: #fef2f2;
-  color: #c2413b;
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.promoCountdown strong {
-  font-variant-numeric: tabular-nums;
-  color: #c2413b;
-}
-
-.promoCountdown.light {
-  background: rgba(255,255,255,.16);
-  color: #f5dc8a;
-}
-
-.promoCountdown.light strong {
-  color: #f5dc8a;
 }
 
 .priceHighlight h2 {

@@ -16,7 +16,7 @@ function resolveBrand(raw: Record<string, any>): Brand {
   const reseller = raw.clients?.resellers;
   if (!reseller || !reseller.brand_active || !reseller.brand_name) return null;
 
-  // Reseller Brand is now a Rp149.000/month subscription (grandfathered
+  // Reseller Brand is now a Rp99.000/month subscription (grandfathered
   // lifetime resellers have brand_expires_at = null and never hit this).
   // A lapsed subscription falls back to default Vistiq branding until the
   // owner manually extends brand_expires_at after a renewal payment.
