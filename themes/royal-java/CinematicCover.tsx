@@ -52,17 +52,14 @@ export default function CinematicCover({ invitation }: { invitation: InvitationD
             transition={{ duration: 1 }}
           >
             <div className={styles.coverBackdrop} />
-            <div className={styles.paperWash} />
+            <div className={styles.coverPattern} />
+            <img className={styles.foliageTop} src="/decor/jawa-merah/corner-foliage.png" alt="" />
+            <img className={styles.foliageRight} src="/decor/jawa-merah/corner-foliage.png" alt="" />
+            <div className={styles.jogloGlow} aria-hidden="true"><i /><i /><i /></div>
 
-            <motion.div
-              className={styles.photoCard}
-              initial={{ opacity: 0, y: 28, scale: 0.94 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 1.2, delay: 0.25 }}
-            >
-              {coverPhoto && <img src={coverPhoto} alt={`${invitation.groom.name} dan ${invitation.bride.name}`} />}
-              <p>The Wedding Of</p>
-              <h1>{invitation.groom.name} <em>&amp;</em> {invitation.bride.name}</h1>
+            <motion.div className={styles.coverNames} initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.1, delay: 0.2 }}>
+              <p>The Royal Wedding Of</p>
+              <h1><span>{invitation.groom.name}</span><em>&amp;</em><span>{invitation.bride.name}</span></h1>
             </motion.div>
 
             <motion.div
@@ -71,9 +68,9 @@ export default function CinematicCover({ invitation }: { invitation: InvitationD
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 0.85 }}
             >
-              <p>Kepada Bapak/Ibu/Saudara/i</p>
+              <p>Kepada Yth.</p>
               <h2>{guestName}</h2>
-              <span>Di Tempat</span>
+              <span>di tempat</span>
               <motion.button
                 type="button"
                 onClick={openInvitation}
@@ -84,6 +81,7 @@ export default function CinematicCover({ invitation }: { invitation: InvitationD
                 <span aria-hidden="true">✉</span> Buka Undangan
               </motion.button>
             </motion.div>
+            <img className={styles.floralBottom} src="/decor/jawa-merah/floral-spray.png" alt="" />
           </motion.div>
         ) : (
           <motion.div
