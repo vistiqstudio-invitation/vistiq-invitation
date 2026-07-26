@@ -602,20 +602,23 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! ðŸš
                   </label>
 
                   {reseller.package === "reseller_brand" && (
-                    <div style={{ display: "flex", flexDirection: "column", gap: 4, flex: "0 0 auto" }}>
-                      <span style={{ fontSize: 11, fontWeight: 700, color: brandExpiryStatus(reseller).color }}>
+                    <div className={styles.resellerBrandExpiry}>
+                      <span style={{ color: brandExpiryStatus(reseller).color }}>
                         {brandExpiryStatus(reseller).label}
                       </span>
-                      <div style={{ display: "flex", gap: 6 }}>
-                        <button
-                          type="button"
-                          onClick={() => extendBrandExpiry(reseller, 1)}
-                          className={styles.button}
-                          style={{ fontSize: 10, padding: "4px 8px" }}
-                        >
-                          +1 Bulan
-                        </button>
-                        {reseller.brand_expires_at && (
+                      {/* Lifetime accounts (10 launch-promo resellers, brand_expires_at
+                          null) get no monthly-billing controls at all - "+1 Bulan" would
+                          set an expiry and accidentally convert them out of lifetime. */}
+                      {reseller.brand_expires_at && (
+                        <div>
+                          <button
+                            type="button"
+                            onClick={() => extendBrandExpiry(reseller, 1)}
+                            className={styles.button}
+                            style={{ fontSize: 10, padding: "4px 8px" }}
+                          >
+                            +1 Bulan
+                          </button>
                           <button
                             type="button"
                             onClick={() => setBrandLifetime(reseller.id, reseller.name)}
@@ -624,8 +627,8 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! ðŸš
                           >
                             Jadikan Lifetime
                           </button>
-                        )}
-                      </div>
+                        </div>
+                      )}
                     </div>
                   )}
 
