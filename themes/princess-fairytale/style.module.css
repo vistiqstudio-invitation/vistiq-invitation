@@ -322,7 +322,7 @@
 .countdownScene {
   position: relative;
   overflow: hidden;
-  padding-bottom: clamp(150px, 32vw, 310px);
+  padding-bottom: clamp(220px, 40vw, 360px);
   background: linear-gradient(180deg, #b6467f 0%, #d97ea8 68%, #fff3fa 68%);
 }
 
@@ -333,8 +333,8 @@
 .royalCarriage {
   position: absolute;
   left: 50%;
-  bottom: -3%;
-  width: min(78vw, 560px);
+  bottom: 12px;
+  width: min(66vw, 480px);
   transform: translateX(-50%);
   pointer-events: none;
   filter: drop-shadow(0 24px 28px rgba(125,47,86,.22));
@@ -718,10 +718,10 @@
 
 .cameoFrame {
   position: relative;
-  aspect-ratio: 0.78;
+  aspect-ratio: 1.02;
   overflow: hidden;
   border: 2px solid var(--white);
-  border-radius: 50% 50% 44% 44% / 42% 42% 58% 58%;
+  border-radius: 50%;
   background: var(--blue-mist);
   box-shadow:
     0 0 0 1px var(--gold),
@@ -754,7 +754,7 @@
   inset: 5px;
   z-index: 2;
   border: 5px dotted rgba(255, 255, 255, 0.96);
-  border-radius: 50% 50% 44% 44% / 42% 42% 58% 58%;
+  border-radius: 50%;
   filter: drop-shadow(0 1px 1px rgba(125, 47, 86, 0.25));
   pointer-events: none;
 }
@@ -1145,6 +1145,11 @@
   inset: 18px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   pointer-events: none;
+}
+
+.gallerySection .eyebrow,
+.gallerySection .sectionTitle {
+  color: var(--white);
 }
 
 .gallerySection .princessDivider {
@@ -1707,6 +1712,10 @@
     linear-gradient(135deg, #7d2f56, #b8467e 55%, #7d2f56);
 }
 
+.footer .eyebrow {
+  color: var(--gold-soft);
+}
+
 .footerCorner {
   position: absolute;
   bottom: -48px;
@@ -1776,6 +1785,26 @@
   letter-spacing: 0.18em;
   opacity: 0.62;
   text-transform: uppercase;
+}
+
+.footer .copyright {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: auto;
+  margin: 34px auto 0;
+  color: rgba(255, 255, 255, 0.68);
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-style: normal;
+  letter-spacing: 0.06em;
+  opacity: 1;
+}
+
+.copyright img {
+  height: 16px;
+  vertical-align: middle;
 }
 
 /* Floating controls */
