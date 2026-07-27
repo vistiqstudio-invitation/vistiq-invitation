@@ -1,9 +1,7 @@
 import Link from "next/link";
 import PhoneMockup from "@/components/PhoneMockup";
 import SiteNavbar from "@/components/SiteNavbar";
-import ThemeGrid from "@/components/ThemeGrid";
-import AqiqahThemeGrid from "@/components/AqiqahThemeGrid";
-import KhitanThemeGrid from "@/components/KhitanThemeGrid";
+import ThemeBrowser from "@/components/ThemeBrowser";
 import CheckoutButton from "@/components/CheckoutButton";
 
 const HERO_FAN = [
@@ -86,25 +84,11 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section id="tema" className="sectionDark">
+      <section id="tema" className="section">
         <p className="label">Pilihan Tema</p>
         <h2>Tema Premium Siap Pakai</h2>
 
-        <ThemeGrid />
-      </section>
-
-      <section id="tema-akikah" className="sectionDark">
-        <p className="label">Tema Akikah</p>
-        <h2>Undangan Aqiqah Digital</h2>
-
-        <AqiqahThemeGrid />
-      </section>
-
-      <section id="tema-khitan" className="sectionDark">
-        <p className="label">Tema Khitan</p>
-        <h2>Undangan Khitan Digital</h2>
-
-        <KhitanThemeGrid />
+        <ThemeBrowser />
       </section>
 
       <section id="harga" className="section">

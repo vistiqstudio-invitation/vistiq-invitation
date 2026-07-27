@@ -1,6 +1,7 @@
 import Link from "next/link";
 import PhoneMockup from "@/components/PhoneMockup";
 import SiteNavbar from "@/components/SiteNavbar";
+import ThemeBrowser from "@/components/ThemeBrowser";
 
 const WA_NUMBER = "6281371338032";
 
@@ -209,6 +210,13 @@ export default function ResellerBrandPage() {
             </div>
           ))}
         </div>
+      </section>
+
+      <section id="tema" className="section">
+        <p className="label">Katalog Produk</p>
+        <h2>Semua Tema Ini Bisa Kamu Jual dengan Brand Sendiri</h2>
+
+        <ThemeBrowser />
       </section>
 
       <section className="sectionDark">

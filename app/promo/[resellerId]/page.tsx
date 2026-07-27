@@ -1,30 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { useParams } from "next/navigation";
-import PhoneMockup from "@/components/PhoneMockup";
 import { createClient } from "@/lib/supabase/client";
-import { themeList, aqiqahThemeList, khitanThemeList, isThemeNew } from "@/lib/theme";
-import { COVER_BY_THEME as WEDDING_COVERS } from "@/lib/demoInvitation";
-import { COVER_BY_THEME as AQIQAH_COVERS } from "@/lib/demoAqiqahInvitation";
-import { COVER_BY_THEME as KHITAN_COVERS } from "@/lib/demoKhitanInvitation";
+import ThemeBrowser from "@/components/ThemeBrowser";
 import styles from "../../demo/demo.module.css";
 import hero from "./landing.module.css";
-
-function useMockupWidth() {
-  const [width, setWidth] = useState(150);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 640px)");
-    const apply = () => setWidth(mq.matches ? 84 : 150);
-    apply();
-    mq.addEventListener("change", apply);
-    return () => mq.removeEventListener("change", apply);
-  }, []);
-
-  return width;
-}
 
 // wa.me links need full international digits (62...), but resellers type
 // their number however feels natural to them (081..., +6281..., 6281...).
@@ -43,42 +24,10 @@ type Storefront = {
   whatsapp: string | null;
 };
 
-const SECTIONS = [
-  {
-    key: "wedding",
-    title: "Undangan Pernikahan",
-    eyebrow: "Indonesian Wedding",
-    themes: themeList,
-    demoPath: "/demo",
-    covers: WEDDING_COVERS,
-    overlay: { eyebrow: "The Wedding Of", title: "Rizky Pratama & Nabila Putri", date: "Minggu, 20 September 2026" },
-  },
-  {
-    key: "aqiqah",
-    title: "Undangan Aqiqah",
-    eyebrow: "Indonesian Aqiqah",
-    themes: aqiqahThemeList,
-    demoPath: "/demo-akikah",
-    covers: AQIQAH_COVERS,
-    overlay: { eyebrow: "Aqiqah & Tasyakuran", title: "Muhammad Rayyan Athallah", date: "Minggu, 20 September 2026" },
-  },
-  {
-    key: "khitan",
-    title: "Undangan Khitan",
-    eyebrow: "Indonesian Khitan",
-    themes: khitanThemeList,
-    demoPath: "/demo-khitan",
-    covers: KHITAN_COVERS,
-    overlay: { eyebrow: "Khitanan", title: "Muhammad Rayyan Athallah", date: "Minggu, 20 September 2026" },
-  },
-];
-
 export default function ResellerPromoPage() {
   const params = useParams<{ resellerId: string }>();
   const supabase = createClient();
-  const mockupWidth = useMockupWidth();
   const [store, setStore] = useState<Storefront | null | undefined>(undefined);
-  const [activeSection, setActiveSection] = useState(SECTIONS[0].key);
 
   useEffect(() => {
     const load = async () => {
@@ -136,7 +85,7 @@ export default function ResellerPromoPage() {
 
           <h1 className={hero.heroHeadline}>Undangan digital yang bikin acara Anda diingat tamu</h1>
           <p className={hero.heroCopy}>
-            Pernikahan, aqiqah, atau khitan — pilih dari puluhan tema siap pakai, lihat tampilan aslinya
+            Pernikahan, khitan, aqiqah, wisuda, atau ulang tahun — pilih dari puluhan tema siap pakai, lihat tampilan aslinya
             langsung, lalu konsultasikan kebutuhan Anda ke {brandName} lewat WhatsApp.
           </p>
 
@@ -161,80 +110,7 @@ export default function ResellerPromoPage() {
         <p className={hero.sectionLabel}>Pilih Tema Undangan</p>
         <p className={hero.sectionSub}>Lihat langsung tampilan setiap tema, lalu order dari tema yang Anda suka.</p>
 
-        <div style={{ display: "flex", gap: 8, margin: "20px 0 8px", flexWrap: "wrap" }}>
-          {SECTIONS.map((section) => (
-            <button
-              key={section.key}
-              onClick={() => setActiveSection(section.key)}
-              style={{
-                padding: "9px 18px",
-                borderRadius: 999,
-                border: "1px solid var(--accent, #1167b2)",
-                background: activeSection === section.key ? "var(--accent, #1167b2)" : "white",
-                color: activeSection === section.key ? "white" : "var(--accent, #1167b2)",
-                fontWeight: 700,
-                fontSize: 13.5,
-                cursor: "pointer",
-              }}
-            >
-              {section.title}
-            </button>
-          ))}
-        </div>
-
-        {SECTIONS.filter((section) => section.key === activeSection).map((section) => (
-          <div key={section.key}>
-            <div className={styles.grid} style={{ marginTop: 20 }}>
-              {section.themes.map((theme) => {
-                const orderText = encodeURIComponent(
-                  `Halo ${brandName}, saya ingin order undangan tema ${theme.label}`
-                );
-
-                return (
-                  <div className={styles.card} key={theme.key}>
-                    {isThemeNew(theme) && <span className={styles.newBadge}>Baru</span>}
-
-                    <div className={styles.cardPreview}>
-                      <PhoneMockup
-                        themeKey={theme.key}
-                        width={mockupWidth}
-                        demoPath={section.demoPath}
-                        mode="static"
-                        coverImage={section.covers[theme.key]}
-                        swatch={theme.swatch}
-                        label={theme.label}
-                        overlay={section.overlay}
-                      />
-                    </div>
-
-                    <div className={styles.cardBody}>
-                      <p className={styles.cardEyebrow}>{section.eyebrow}</p>
-                      <h2 className={styles.cardTitle}>{theme.label}</h2>
-                      <p className={styles.cardDesc}>{theme.description}</p>
-
-                      <div className={styles.priceRow}>
-                        <span className={styles.priceNow}>{priceLabel}</span>
-                      </div>
-
-                      <div className={styles.cardActions}>
-                        <Link href={`${section.demoPath}/${theme.key}`} className={styles.cardButton}>
-                          Lihat Demo
-                        </Link>
-                        <a
-                          href={`https://wa.me/${waNumber}?text=${orderText}`}
-                          target="_blank"
-                          className={styles.orderButton}
-                        >
-                          Order
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        ))}
+        <ThemeBrowser waNumber={waNumber} brandName={brandName} priceLabel={priceLabel} />
       </div>
     </main>
   );

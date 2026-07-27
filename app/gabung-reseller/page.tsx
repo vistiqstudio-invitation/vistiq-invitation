@@ -1,7 +1,7 @@
 import Link from "next/link";
 import PhoneMockup from "@/components/PhoneMockup";
 import SiteNavbar from "@/components/SiteNavbar";
-import ThemeGrid from "@/components/ThemeGrid";
+import ThemeBrowser from "@/components/ThemeBrowser";
 import CheckoutButton from "@/components/CheckoutButton";
 
 const HERO_FAN = [
@@ -163,7 +163,7 @@ export default function GabungResellerPage() {
         <p className="label">Katalog Produk</p>
         <h2>Semua Tema Ini Siap Kamu Jual</h2>
 
-        <ThemeGrid />
+        <ThemeBrowser />
 
         <p className="darkNote">
           Katalog demo ini bisa langsung kamu bagikan ke calon client sebagai
