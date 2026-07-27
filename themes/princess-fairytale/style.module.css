@@ -323,7 +323,7 @@
   position: relative;
   overflow: hidden;
   padding-bottom: clamp(220px, 40vw, 360px);
-  background: linear-gradient(180deg, #b6467f 0%, #d97ea8 68%, #fff3fa 68%);
+  background: linear-gradient(180deg, #b6467f 0%, #b6467f 50%, #d97ea8 68%, #fff3fa 68%);
 }
 
 .countdownScene .countdownBand {
