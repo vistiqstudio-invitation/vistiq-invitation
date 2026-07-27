@@ -472,9 +472,9 @@
 
 .hexFrame {
   position: relative;
-  aspect-ratio: 0.92;
+  aspect-ratio: 1.132;
   overflow: hidden;
-  clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
   background: var(--space-panel);
   box-shadow: 0 26px 60px rgba(0, 0, 0, 0.45);
 }
