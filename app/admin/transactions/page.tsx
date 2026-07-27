@@ -138,15 +138,18 @@ export default function AdminTransactionsPage() {
     router.push("/login");
   };
 
-  const totalOmzet = transactions.reduce(
-    (sum, item) => sum + Number(item.amount || 0),
-    0
-  );
+  // Scoped to this page's own "reseller transactions" table - Omzet only
+  // counts sales the owner has actually confirmed ("Dibayar"), and Komisi
+  // is what's still outstanding (not yet paid to the reseller), matching
+  // the same "paid = already settled" semantics as the reseller's own
+  // dashboard ("Komisi Sudah Dibayar").
+  const totalOmzet = transactions
+    .filter((item) => item.status === "paid")
+    .reduce((sum, item) => sum + Number(item.amount || 0), 0);
 
-  const totalKomisi = transactions.reduce(
-    (sum, item) => sum + Number(item.commission || 0),
-    0
-  );
+  const totalKomisi = transactions
+    .filter((item) => item.status !== "paid")
+    .reduce((sum, item) => sum + Number(item.commission || 0), 0);
 
   return (
     <main className={styles.page}>

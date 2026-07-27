@@ -212,16 +212,19 @@ export default function AdminPage() {
       .filter((item) => item.status === "paid")
       .reduce((sum, item) => sum + Number(item.amount || 0), 0);
 
-  // Komisi = what Vistiq owes out - reseller commission on confirmed sales,
-  // plus affiliate commission on every referred sale that hasn't been
-  // cancelled (a "held"/"available"/"requested"/"paid" commission is still
-  // owed even before the affiliate actually withdraws it).
+  // Komisi = what Vistiq still owes out, not what's already settled.
+  // transactions.status "paid" means the owner already paid the reseller
+  // their cut in that same manual step (labelled "Komisi Sudah Dibayar" on
+  // the reseller's own dashboard) - so outstanding commission lives on the
+  // "pending" rows instead. Affiliate commissions are owed until they reach
+  // "paid" (disbursed) or "cancelled" (order refunded/failed) - "held",
+  // "available", and "requested" are all still outstanding.
   const totalKomisi =
     transactions
-      .filter((item) => item.status === "paid")
+      .filter((item) => item.status !== "paid")
       .reduce((sum, item) => sum + Number(item.commission || 0), 0) +
     affiliateCommissions
-      .filter((item) => item.status !== "cancelled")
+      .filter((item) => item.status !== "paid" && item.status !== "cancelled")
       .reduce((sum, item) => sum + Number(item.commission_amount || 0), 0);
 
   const exportCSV = () => {
