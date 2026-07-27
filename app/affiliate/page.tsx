@@ -172,7 +172,7 @@ export default function AffiliatePage() {
               Halo, {affiliate?.name || "Affiliate"}
             </h1>
             <p className={styles.subtitle}>
-              Bagikan satu link referral dan pantau komisi 30%.
+              Bagikan satu link referral dan pantau komisi 10%.
             </p>
           </div>
           <button className={styles.button} onClick={load}>

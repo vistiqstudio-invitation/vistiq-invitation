@@ -61,7 +61,7 @@ Selamat! Pendaftaran Affiliate Vistiq Invitation Kakak sudah disetujui. 🎉
 🔐 Password sementara: *${credentials.password}*
 🔗 Kode referral: *${credentials.referralCode}*
 
-Silakan login, ganti password, lalu salin link referral dari dashboard Affiliate. Komisi 30% berlaku untuk semua paket, tersedia setelah 7 hari, dan dapat dicairkan mulai Rp100.000.`:"";
+Silakan login, ganti password, lalu salin link referral dari dashboard Affiliate. Komisi 10% berlaku untuk semua paket, tersedia setelah 7 hari, dan dapat dicairkan mulai Rp100.000.`:"";
   const copyMessage=async()=>{
     try {
       await navigator.clipboard.writeText(message);

@@ -74,10 +74,16 @@ export async function POST(request: Request) {
     if (!error && paid) {
       const { data: order } = await supabase.from("checkout_orders").select("id, affiliate_id, package_id, amount").eq("order_id", orderId).single();
       if (order?.affiliate_id) {
+        const { data: affiliate } = await supabase
+          .from("affiliates")
+          .select("commission_percent")
+          .eq("id", order.affiliate_id)
+          .single();
+        const commissionPercent = Number(affiliate?.commission_percent ?? 10);
         await supabase.from("affiliate_commissions").upsert({
           affiliate_id: order.affiliate_id, checkout_order_id: order.id, order_id: orderId,
           package_id: order.package_id, sale_amount: order.amount,
-          commission_amount: Math.round(Number(order.amount) * 0.3), status: "held",
+          commission_amount: Math.round(Number(order.amount) * commissionPercent / 100), status: "held",
           available_at: new Date(Date.now() + 7 * 86400000).toISOString(),
         }, { onConflict: "checkout_order_id", ignoreDuplicates: true });
       }

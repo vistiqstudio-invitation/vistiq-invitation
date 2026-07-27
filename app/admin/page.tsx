@@ -63,6 +63,18 @@ type Transaction = {
   created_at: string;
 };
 
+type CheckoutOrder = {
+  id: string;
+  amount: number;
+  status: string;
+};
+
+type AffiliateCommission = {
+  id: string;
+  commission_amount: number;
+  status: string;
+};
+
 type Rsvp = {
   id: number;
   name: string;
@@ -81,6 +93,8 @@ export default function AdminPage() {
   const [resellers, setResellers] = useState<Reseller[]>([]);
   const [invitations, setInvitations] = useState<Invitation[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [checkoutOrders, setCheckoutOrders] = useState<CheckoutOrder[]>([]);
+  const [affiliateCommissions, setAffiliateCommissions] = useState<AffiliateCommission[]>([]);
   const [rsvps, setRsvps] = useState<Rsvp[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -112,12 +126,16 @@ export default function AdminPage() {
         resellersData,
         invitationsData,
         transactionsData,
+        checkoutOrdersData,
+        affiliateCommissionsData,
         rsvpData,
       ] = await Promise.all([
         supabaseFetch("clients"),
         supabaseFetch("resellers"),
         supabaseFetch("invitations"),
         supabaseFetch("transactions"),
+        supabaseFetch("checkout_orders"),
+        supabaseFetch("affiliate_commissions"),
         supabaseFetch("rsvp_wishes"),
       ]);
 
@@ -125,6 +143,8 @@ export default function AdminPage() {
       setResellers(resellersData);
       setInvitations(invitationsData);
       setTransactions(transactionsData);
+      setCheckoutOrders(checkoutOrdersData);
+      setAffiliateCommissions(affiliateCommissionsData);
       setRsvps(rsvpData);
     } catch (err) {
       console.error(err);
@@ -176,15 +196,33 @@ export default function AdminPage() {
     router.push("/login");
   };
 
-  const totalOmzet = transactions.reduce(
-    (sum, item) => sum + Number(item.amount || 0),
-    0
-  );
+  // Omzet = confirmed self-checkout purchases (client/reseller/reseller-brand
+  // packages via Midtrans, checkout_orders.status "paid") + confirmed
+  // reseller-added-client sales (transactions.status "paid", the manual
+  // bank-transfer flow owner marks "Dibayar" in /admin/transactions).
+  // Affiliate-referred sales are already inside checkout_orders (the
+  // affiliate commission is a payout obligation on top of that same sale,
+  // not a separate sale), so counting affiliate_commissions here too would
+  // double the revenue.
+  const totalOmzet =
+    checkoutOrders
+      .filter((item) => item.status === "paid")
+      .reduce((sum, item) => sum + Number(item.amount || 0), 0) +
+    transactions
+      .filter((item) => item.status === "paid")
+      .reduce((sum, item) => sum + Number(item.amount || 0), 0);
 
-  const totalKomisi = transactions.reduce(
-    (sum, item) => sum + Number(item.commission || 0),
-    0
-  );
+  // Komisi = what Vistiq owes out - reseller commission on confirmed sales,
+  // plus affiliate commission on every referred sale that hasn't been
+  // cancelled (a "held"/"available"/"requested"/"paid" commission is still
+  // owed even before the affiliate actually withdraws it).
+  const totalKomisi =
+    transactions
+      .filter((item) => item.status === "paid")
+      .reduce((sum, item) => sum + Number(item.commission || 0), 0) +
+    affiliateCommissions
+      .filter((item) => item.status !== "cancelled")
+      .reduce((sum, item) => sum + Number(item.commission_amount || 0), 0);
 
   const exportCSV = () => {
     if (rsvps.length === 0) {
@@ -293,7 +331,6 @@ export default function AdminPage() {
               <StatCard title="Total Client" value={clients.length} />
               <StatCard title="Total Reseller" value={resellers.length} />
               <StatCard title="Total Undangan" value={invitations.length} />
-              <StatCard title="Total RSVP" value={rsvps.length} />
               <StatCard
                 title="Total Omzet"
                 value={`Rp ${totalOmzet.toLocaleString("id-ID")}`}

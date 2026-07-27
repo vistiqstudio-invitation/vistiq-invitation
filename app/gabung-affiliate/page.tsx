@@ -20,9 +20,9 @@ export default function JoinAffiliatePage() {
   return <main style={s.page}><style>{`form label{display:grid;gap:7px;font-weight:700;font-size:14px}form input{width:100%;padding:14px 15px;border:1px solid #cbd5e1;border-radius:12px;font:inherit}form button{border:0;border-radius:12px;background:#1167b2;color:white;padding:15px;font-weight:800;font-size:15px;cursor:pointer}form button:disabled{opacity:.65}form small{text-align:center;color:#64748b}`}</style><section style={s.card}>
     <Link href="/" style={s.back}>← Kembali ke Vistiq Invitation</Link>
     <span style={s.badge}>PROGRAM AFFILIATE · GRATIS</span>
-    <h1 style={s.title}>Dapatkan Komisi 30%</h1>
+    <h1 style={s.title}>Dapatkan Komisi 10%</h1>
     <p style={s.lead}>Bagikan link referral Anda dan dapatkan komisi dari setiap pembelian paket Client, Reseller, maupun Reseller Brand.</p>
-    <div style={s.info}><b>Komisi 30%</b><span>Ditahan 7 hari</span><span>Minimal pencairan Rp100.000</span></div>
+    <div style={s.info}><b>Komisi 10%</b><span>Ditahan 7 hari</span><span>Minimal pencairan Rp100.000</span></div>
     {done ? <div style={s.success}><h2>Pendaftaran berhasil 🎉</h2><p>Data Anda sedang diperiksa Admin. Informasi login akan dikirim setelah pendaftaran disetujui.</p></div> :
       <form onSubmit={submit} style={s.form}>
         <label>Nama lengkap<input required minLength={2} value={form.name} onChange={e => setForm({...form, name:e.target.value})} /></label>

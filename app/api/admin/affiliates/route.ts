@@ -44,7 +44,7 @@ export async function POST(request: Request) {
     email: application.email,
     whatsapp: application.whatsapp,
     referral_code: referralCode,
-    commission_percent: 30,
+    commission_percent: 10,
   });
   if (affiliateError) {
     await supabase.auth.admin.deleteUser(created.user.id);
