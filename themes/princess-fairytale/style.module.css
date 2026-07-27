@@ -718,7 +718,7 @@
 
 .cameoFrame {
   position: relative;
-  aspect-ratio: 1.02;
+  aspect-ratio: 0.803;
   overflow: hidden;
   border: 2px solid var(--white);
   border-radius: 50%;
