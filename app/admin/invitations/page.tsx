@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import DashboardSidebar from "@/components/admin/DashboardSidebar";
-import { themeList, aqiqahThemeList, khitanThemeList } from "@/lib/theme";
+import { themeList, aqiqahThemeList, khitanThemeList, birthdayThemeList } from "@/lib/theme";
 import styles from "@/styles/dashboard.module.css";
 
 const NAV_ITEMS = [
@@ -21,7 +21,7 @@ type Invitation = {
   id: string;
   slug: string;
   theme?: string;
-  category?: "wedding" | "aqiqah" | "khitan";
+  category?: "wedding" | "aqiqah" | "khitan" | "birthday";
   groom_name?: string;
   bride_name?: string;
   baby_name?: string;
@@ -50,7 +50,7 @@ export default function InvitationsPage() {
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const initialForm = {
-    category: "wedding" as "wedding" | "aqiqah" | "khitan",
+    category: "wedding" as "wedding" | "aqiqah" | "khitan" | "birthday",
     slug: "",
     theme: "luxury-gold",
     groom_name: "",
@@ -140,6 +140,8 @@ export default function InvitationsPage() {
         ? `akikah-${form.baby_name}`
         : form.category === "khitan"
         ? `khitan-${form.baby_name}`
+        : form.category === "birthday"
+        ? `ulang-tahun-${form.baby_name}`
         : `${form.groom_name}-${form.bride_name}`;
     setForm({
       ...form,
@@ -147,7 +149,7 @@ export default function InvitationsPage() {
     });
   };
 
-  const setCategory = (category: "wedding" | "aqiqah" | "khitan") => {
+  const setCategory = (category: "wedding" | "aqiqah" | "khitan" | "birthday") => {
     setForm((prev) => ({
       ...prev,
       category,
@@ -156,14 +158,16 @@ export default function InvitationsPage() {
           ? aqiqahThemeList[0]?.key || ""
           : category === "khitan"
           ? khitanThemeList[0]?.key || ""
+          : category === "birthday"
+          ? birthdayThemeList[0]?.key || ""
           : "luxury-gold",
     }));
   };
 
   const addInvitation = async () => {
-    if (form.category === "aqiqah" || form.category === "khitan") {
+    if (form.category !== "wedding") {
       if (!form.baby_name.trim()) {
-        alert(form.category === "khitan" ? "Nama anak wajib diisi." : "Nama bayi wajib diisi.");
+        alert(form.category === "aqiqah" ? "Nama bayi wajib diisi." : "Nama anak wajib diisi.");
         return;
       }
     } else if (!form.groom_name.trim() || !form.bride_name.trim()) {
@@ -281,17 +285,18 @@ export default function InvitationsPage() {
           <div className={styles.formGrid}>
             <select
               value={form.category}
-              onChange={(e) => setCategory(e.target.value as "wedding" | "aqiqah" | "khitan")}
+              onChange={(e) => setCategory(e.target.value as "wedding" | "aqiqah" | "khitan" | "birthday")}
               className={styles.input}
             >
               <option value="wedding">Pernikahan</option>
               <option value="aqiqah">Aqiqah</option>
               <option value="khitan">Khitan</option>
+              <option value="birthday">Ulang Tahun</option>
             </select>
 
-            {form.category === "aqiqah" || form.category === "khitan" ? (
+            {form.category !== "wedding" ? (
               <input
-                placeholder={form.category === "khitan" ? "Nama Anak" : "Nama Bayi"}
+                placeholder={form.category === "aqiqah" ? "Nama Bayi" : "Nama Anak"}
                 value={form.baby_name}
                 onChange={(e) => setForm({ ...form, baby_name: e.target.value })}
                 className={styles.input}
@@ -341,6 +346,8 @@ export default function InvitationsPage() {
                 ? aqiqahThemeList
                 : form.category === "khitan"
                 ? khitanThemeList
+                : form.category === "birthday"
+                ? birthdayThemeList
                 : themeList
               ).map((theme) => (
                 <option key={theme.key} value={theme.key}>
@@ -367,9 +374,15 @@ export default function InvitationsPage() {
               <option value="inactive">Inactive</option>
             </select>
 
-            {form.category === "aqiqah" || form.category === "khitan" ? (
+            {form.category !== "wedding" ? (
               <input
-                placeholder={form.category === "khitan" ? "Lokasi Acara Khitan" : "Lokasi Acara Aqiqah"}
+                placeholder={
+                  form.category === "birthday"
+                    ? "Lokasi Acara Ulang Tahun"
+                    : form.category === "khitan"
+                    ? "Lokasi Acara Khitan"
+                    : "Lokasi Acara Aqiqah"
+                }
                 value={form.aqiqah_location}
                 onChange={(e) =>
                   setForm({ ...form, aqiqah_location: e.target.value })
