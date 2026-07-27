@@ -1,4 +1,4 @@
-import { Cormorant_Garamond, Playfair_Display, Inter, Alex_Brush, Suranna, Readex_Pro, Chelsea_Market, Noto_Sans_Balinese, Noto_Serif_Display, Raleway } from "next/font/google";
+import { Cormorant_Garamond, Playfair_Display, Inter, Alex_Brush, Suranna, Readex_Pro, Chelsea_Market, Noto_Sans_Balinese, Noto_Serif_Display, Raleway, Orbitron } from "next/font/google";
 
 export const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -73,5 +73,14 @@ export const raleway = Raleway({
   variable: "--font-raleway",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600"],
+  display: "swap",
+});
+
+// Geometric sci-fi display face used by the space-explorer birthday
+// theme for headings and the mission-countdown digits.
+export const orbitron = Orbitron({
+  variable: "--font-orbitron",
+  subsets: ["latin"],
+  weight: ["500", "600", "700", "800"],
   display: "swap",
 });

@@ -10,7 +10,7 @@ import AffiliateReferralTracker from "@/components/AffiliateReferralTracker";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import PwaRegister from "@/components/PwaRegister";
 import InstallAppButton from "@/components/InstallAppButton";
-import { cormorant, playfair, inter, alexBrush, suranna, readexPro, chelseaMarket, notoBalinese, notoSerifDisplay, raleway } from "@/lib/fonts";
+import { cormorant, playfair, inter, alexBrush, suranna, readexPro, chelseaMarket, notoBalinese, notoSerifDisplay, raleway, orbitron } from "@/lib/fonts";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -52,7 +52,7 @@ export default function RootLayout({
   return (
     <html lang="id">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${cormorant.variable} ${playfair.variable} ${inter.variable} ${alexBrush.variable} ${suranna.variable} ${readexPro.variable} ${chelseaMarket.variable} ${notoBalinese.variable} ${notoSerifDisplay.variable} ${raleway.variable}`}
+        className={`${geistSans.variable} ${geistMono.variable} ${cormorant.variable} ${playfair.variable} ${inter.variable} ${alexBrush.variable} ${suranna.variable} ${readexPro.variable} ${chelseaMarket.variable} ${notoBalinese.variable} ${notoSerifDisplay.variable} ${raleway.variable} ${orbitron.variable}`}
       >
         <MetaPixel />
         <LeadTracker />
