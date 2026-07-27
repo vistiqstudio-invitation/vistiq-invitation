@@ -2,7 +2,12 @@ import { notFound } from "next/navigation";
 import { requireRole } from "@/lib/supabase/dal";
 import { createClient } from "@/lib/supabase/server";
 import { getInvitationBySlug } from "@/lib/invitation";
-import { themeRegistry, aqiqahThemeRegistry, khitanThemeRegistry } from "@/lib/theme";
+import {
+  themeRegistry,
+  aqiqahThemeRegistry,
+  khitanThemeRegistry,
+  birthdayThemeRegistry,
+} from "@/lib/theme";
 import SmartCoverRuntime from "@/components/SmartCoverRuntime";
 
 type Props = {
@@ -59,6 +64,20 @@ export default async function PreviewPage({ params }: Props) {
     const Theme = khitanThemeRegistry[invitation.theme] || khitanThemeRegistry["khitan-warna"];
     return (
       <SmartCoverRuntime coverImage={invitation.coverImage} title={invitation.child.name}>
+        <Theme invitation={invitation} />
+      </SmartCoverRuntime>
+    );
+  }
+
+  if (invitation.category === "birthday") {
+    const Theme =
+      birthdayThemeRegistry[invitation.theme] ||
+      birthdayThemeRegistry["princess-fairytale"];
+    return (
+      <SmartCoverRuntime
+        coverImage={invitation.coverImage}
+        title={invitation.child.name}
+      >
         <Theme invitation={invitation} />
       </SmartCoverRuntime>
     );

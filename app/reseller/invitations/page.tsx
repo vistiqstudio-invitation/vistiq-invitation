@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import DashboardSidebar from "@/components/admin/DashboardSidebar";
 import { getResellerNavItems } from "@/components/reseller/navItems";
-import { themeList, aqiqahThemeList, khitanThemeList } from "@/lib/theme";
+import { themeList, aqiqahThemeList, khitanThemeList, birthdayThemeList } from "@/lib/theme";
 import SmartCoverEditor from "@/components/SmartCoverEditor";
 import { MUSIC_LIBRARY } from "@/lib/musicLibrary";
 import styles from "@/styles/dashboard.module.css";
@@ -33,7 +33,7 @@ type Invitation = {
   id: number;
   slug: string;
   theme?: string;
-  category?: "wedding" | "aqiqah" | "khitan";
+  category?: "wedding" | "aqiqah" | "khitan" | "birthday";
   groom_name?: string;
   bride_name?: string;
   baby_name?: string;
@@ -52,7 +52,7 @@ type Transaction = {
 
 const initialForm = {
   client_id: "",
-  category: "wedding" as "wedding" | "aqiqah" | "khitan",
+  category: "wedding" as "wedding" | "aqiqah" | "khitan" | "birthday",
   slug: "",
   theme: "luxury-gold",
   // Only used/shown for reseller_brand package resellers - they keep 100%
@@ -247,11 +247,13 @@ export default function ResellerInvitationsPage() {
         ? `akikah-${form.baby_name}`
         : form.category === "khitan"
         ? `khitan-${form.baby_name}`
+        : form.category === "birthday"
+        ? `ulang-tahun-${form.baby_name}`
         : `${form.groom_name}-${form.bride_name}`;
     set("slug", makeSlug(text));
   };
 
-  const setCategory = (category: "wedding" | "aqiqah" | "khitan") => {
+  const setCategory = (category: "wedding" | "aqiqah" | "khitan" | "birthday") => {
     setForm((prev) => ({
       ...prev,
       category,
@@ -260,6 +262,8 @@ export default function ResellerInvitationsPage() {
           ? aqiqahThemeList[0]?.key || ""
           : category === "khitan"
           ? khitanThemeList[0]?.key || ""
+          : category === "birthday"
+          ? birthdayThemeList[0]?.key || ""
           : "luxury-gold",
     }));
   };
@@ -331,9 +335,9 @@ export default function ResellerInvitationsPage() {
       return;
     }
 
-    if (form.category === "aqiqah" || form.category === "khitan") {
+    if (form.category !== "wedding") {
       if (!form.baby_name.trim()) {
-        alert(form.category === "khitan" ? "Nama anak wajib diisi." : "Nama bayi wajib diisi.");
+        alert(form.category === "aqiqah" ? "Nama bayi wajib diisi." : "Nama anak wajib diisi.");
         return;
       }
     } else if (!form.groom_name.trim() || !form.bride_name.trim()) {
@@ -517,12 +521,13 @@ export default function ResellerInvitationsPage() {
 
                 <select
                   value={form.category}
-                  onChange={(e) => setCategory(e.target.value as "wedding" | "aqiqah" | "khitan")}
+                  onChange={(e) => setCategory(e.target.value as "wedding" | "aqiqah" | "khitan" | "birthday")}
                   className={styles.input}
                 >
                   <option value="wedding">Pernikahan</option>
                   <option value="aqiqah">Aqiqah</option>
                   <option value="khitan">Khitan</option>
+                  <option value="birthday">Ulang Tahun</option>
                 </select>
 
                 <select value={form.theme} onChange={(e) => set("theme", e.target.value)} className={styles.input}>
@@ -530,6 +535,8 @@ export default function ResellerInvitationsPage() {
                     ? aqiqahThemeList
                     : form.category === "khitan"
                     ? khitanThemeList
+                    : form.category === "birthday"
+                    ? birthdayThemeList
                     : themeList
                   ).map((theme) => (
                     <option key={theme.key} value={theme.key}>
@@ -574,15 +581,15 @@ export default function ResellerInvitationsPage() {
                 </p>
               )}
 
-              {form.category === "aqiqah" || form.category === "khitan" ? (
+              {form.category !== "wedding" ? (
                 <>
                   <h2 className={styles.editSectionTitle}>
-                    {form.category === "khitan" ? "Data Anak & Orang Tua" : "Data Bayi & Orang Tua"}
+                    {form.category === "aqiqah" ? "Data Bayi & Orang Tua" : "Data Anak & Orang Tua"}
                   </h2>
 
                   <div className={styles.formGrid}>
                     <input
-                      placeholder={form.category === "khitan" ? "Nama Anak" : "Nama Bayi"}
+                      placeholder={form.category === "aqiqah" ? "Nama Bayi" : "Nama Anak"}
                       value={form.baby_name}
                       onChange={(e) => set("baby_name", e.target.value)}
                       className={styles.input}
@@ -631,7 +638,13 @@ export default function ResellerInvitationsPage() {
                   </div>
 
                   <h2 className={styles.editSectionTitle}>
-                    Jadwal &amp; Lokasi Acara {form.category === "khitan" ? "Khitan" : "Aqiqah"}
+                    Jadwal &amp; Lokasi Acara {
+                      form.category === "birthday"
+                        ? "Ulang Tahun"
+                        : form.category === "khitan"
+                        ? "Khitan"
+                        : "Aqiqah"
+                    }
                   </h2>
 
                   <div className={styles.formGrid}>

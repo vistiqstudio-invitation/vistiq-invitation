@@ -11,6 +11,7 @@ import type {
 } from "@/types/invitation";
 import type { AqiqahInvitationData } from "@/types/aqiqah";
 import type { KhitanInvitationData } from "@/types/khitan";
+import type { BirthdayInvitationData } from "@/types/birthday";
 
 function resolveBrand(raw: Record<string, any>): Brand {
   const reseller = raw.clients?.resellers;
@@ -385,9 +386,83 @@ function normalizeKhitanInvitation(raw: Record<string, any>): KhitanInvitationDa
   };
 }
 
+function normalizeBirthdayInvitation(raw: Record<string, any>): BirthdayInvitationData {
+  const event: BirthdayInvitationData["event"] =
+    raw.aqiqah_date || raw.aqiqah_location || raw.aqiqah_time
+      ? {
+          date: formatDate(raw.aqiqah_date),
+          rawDate: toRawDate(raw.aqiqah_date, raw.aqiqah_time || ""),
+          time: raw.aqiqah_time || "",
+          location: raw.aqiqah_location || "",
+        }
+      : null;
+
+  const gallery = [
+    raw.gallery_1,
+    raw.gallery_2,
+    raw.gallery_3,
+    raw.gallery_4,
+    raw.gallery1,
+    raw.gallery2,
+    raw.gallery3,
+    raw.gallery4,
+    raw.gallery5,
+    raw.gallery6,
+    ...(Array.isArray(raw.gallery_photos) ? raw.gallery_photos : []),
+  ].filter((url): url is string => Boolean(url));
+
+  const gifts: GiftAccount[] = [];
+  const bankName = firstNonEmpty(raw.gift_bank_name, raw.bank_name);
+  const accountNumber = firstNonEmpty(raw.gift_account_number, raw.bank_account);
+  if (bankName || accountNumber) {
+    gifts.push({
+      owner: "Orang Tua",
+      bankName,
+      accountNumber,
+      accountName: firstNonEmpty(raw.gift_account_name, raw.bank_holder),
+    });
+  }
+
+  const parsedAge = Number(firstNonEmpty(raw.child_age, raw.birthday_age, raw.age));
+
+  return {
+    id: raw.id,
+    slug: raw.slug,
+    theme: raw.theme || "princess-fairytale",
+    status: raw.status || (raw.is_active ? "active" : "draft"),
+    category: "birthday",
+    brand: resolveBrand(raw),
+    coverImage: firstNonEmpty(raw.cover_image, raw.cover_photo),
+    musicUrl: raw.music_url || null,
+    videoUrl: firstNonEmpty(raw.video_url, raw.youtube_url),
+    mapsUrl: firstNonEmpty(raw.maps_url, raw.location, raw.map_link),
+    mapsEmbedUrl: firstNonEmpty(raw.maps_embed, raw.map_embed),
+    opening: resolveOpening(raw),
+    child: {
+      name: raw.baby_name || "",
+      photo: firstNonEmpty(raw.cover_image, raw.cover_photo),
+      age: Number.isFinite(parsedAge) && parsedAge > 0 ? parsedAge : null,
+      birthDate: raw.birth_date ? formatDate(raw.birth_date) : null,
+    },
+    parents: {
+      father: raw.father_name || "",
+      mother: raw.mother_name || "",
+    },
+    event,
+    gallery,
+    gifts,
+  };
+}
+
 export async function getInvitationBySlug(
   slug: string
-): Promise<InvitationData | AqiqahInvitationData | KhitanInvitationData | null> {
+): Promise<
+  | InvitationData
+  | AqiqahInvitationData
+  | KhitanInvitationData
+  | BirthdayInvitationData
+  | null
+> {
   const supabase = await createClient();
 
   const { data, error } = await supabase
@@ -402,5 +477,6 @@ export async function getInvitationBySlug(
 
   if (data.category === "aqiqah") return normalizeAqiqahInvitation(data);
   if (data.category === "khitan") return normalizeKhitanInvitation(data);
+  if (data.category === "birthday") return normalizeBirthdayInvitation(data);
   return normalizeInvitation(data);
 }

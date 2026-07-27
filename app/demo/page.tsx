@@ -3,10 +3,18 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import PhoneMockup from "@/components/PhoneMockup";
-import { themeList, aqiqahThemeList, khitanThemeList, isThemeNew, type ThemeMeta } from "@/lib/theme";
+import {
+  themeList,
+  aqiqahThemeList,
+  khitanThemeList,
+  birthdayThemeList,
+  isThemeNew,
+  type ThemeMeta,
+} from "@/lib/theme";
 import { COVER_BY_THEME as WEDDING_COVER_BY_THEME } from "@/lib/demoInvitation";
 import { COVER_BY_THEME as AQIQAH_COVER_BY_THEME } from "@/lib/demoAqiqahInvitation";
 import { COVER_BY_THEME as KHITAN_COVER_BY_THEME } from "@/lib/demoKhitanInvitation";
+import { COVER_BY_THEME as BIRTHDAY_COVER_BY_THEME } from "@/lib/demoBirthdayInvitation";
 import styles from "./demo.module.css";
 
 const WA_NUMBER = "6281371338032";
@@ -23,7 +31,6 @@ const CATEGORIES = [
 type CategoryKey = (typeof CATEGORIES)[number]["key"];
 
 const COMING_SOON_NON_WEDDING = [
-  { label: "Ulang Tahun", description: "Tema undangan ulang tahun digital - segera hadir." },
   { label: "Wisuda", description: "Tema undangan wisuda digital - segera hadir." },
 ];
 
@@ -177,7 +184,7 @@ export default function DemoPickerPage() {
                 eyebrowLabel="Indonesian Aqiqah"
                 overlay={{
                   eyebrow: "Aqiqah & Tasyakuran",
-                  title: "Muhammad Rayyan Athallah",
+                  title: "Nama Buah Hati",
                   date: "Minggu, 20 September 2026",
                 }}
                 orderText={encodeURIComponent(
@@ -196,11 +203,30 @@ export default function DemoPickerPage() {
                 eyebrowLabel="Indonesian Khitan"
                 overlay={{
                   eyebrow: "Khitanan",
-                  title: "Muhammad Rayyan Athallah",
+                  title: "Nama Anak",
                   date: "Minggu, 20 September 2026",
                 }}
                 orderText={encodeURIComponent(
                   `Halo Vistiq Invitation, saya ingin order undangan khitan tema ${theme.label}`
+                )}
+              />
+            ))}
+
+            {birthdayThemeList.map((theme) => (
+              <ThemeCard
+                key={theme.key}
+                theme={theme}
+                mockupWidth={mockupWidth}
+                demoPath="/demo-ulang-tahun"
+                coverImage={BIRTHDAY_COVER_BY_THEME[theme.key]}
+                eyebrowLabel="Kids Birthday"
+                overlay={{
+                  eyebrow: "Birthday Invitation",
+                  title: "Putri Kecil — 7 Tahun",
+                  date: "Minggu, 20 September 2026",
+                }}
+                orderText={encodeURIComponent(
+                  `Halo Vistiq Invitation, saya ingin order undangan ulang tahun tema ${theme.label}`
                 )}
               />
             ))}
@@ -221,7 +247,7 @@ export default function DemoPickerPage() {
                 eyebrowLabel="Indonesian Wedding"
                 overlay={{
                   eyebrow: "The Wedding Of",
-                  title: "Rizky Pratama & Nabila Putri",
+                  title: "Mempelai Pria & Mempelai Wanita",
                   date: "Minggu, 20 September 2026",
                 }}
                 orderText={encodeURIComponent(

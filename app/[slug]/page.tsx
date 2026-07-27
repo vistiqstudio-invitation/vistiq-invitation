@@ -1,7 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getInvitationBySlug } from "@/lib/invitation";
-import { themeRegistry, aqiqahThemeRegistry, khitanThemeRegistry } from "@/lib/theme";
+import {
+  themeRegistry,
+  aqiqahThemeRegistry,
+  khitanThemeRegistry,
+  birthdayThemeRegistry,
+} from "@/lib/theme";
 import WhiteLabelFrame from "@/components/WhiteLabelFrame";
 import SmartCoverRuntime from "@/components/SmartCoverRuntime";
 import { stripSmartCoverConfig } from "@/lib/smartCover";
@@ -62,6 +67,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
+  if (invitation.category === "birthday") {
+    const title = `Ulang Tahun ${invitation.child.name} | ${invitation.brand?.name ?? "Vistiq Invitation"}`;
+    const description = `Undangan ulang tahun ke-${invitation.child.age ?? ""} ${invitation.child.name}. Kami mengundang Bapak/Ibu/Saudara/i untuk turut hadir.`;
+    return {
+      title,
+      description,
+      openGraph: { title, description, images: coverImage ? [coverImage] : undefined },
+      twitter: { card: "summary_large_image", title, description, images: coverImage ? [coverImage] : undefined },
+    };
+  }
+
   const title = `${invitation.groom.name} & ${invitation.bride.name} | ${invitation.brand?.name ?? "Wedding Invitation"}`;
   const description = `Undangan pernikahan ${invitation.groom.name} & ${invitation.bride.name}. Kami mengundang Bapak/Ibu/Saudara/i untuk turut hadir dan memberikan doa restu.`;
 
@@ -103,6 +119,19 @@ export default async function InvitationPage({ params }: Props) {
 
   if (invitation.category === "khitan") {
     const Theme = khitanThemeRegistry[invitation.theme] || khitanThemeRegistry["khitan-warna"];
+    return (
+      <WhiteLabelFrame brand={invitation.brand}>
+        <SmartCoverRuntime coverImage={invitation.coverImage} title={invitation.child.name}>
+          <Theme invitation={invitation} />
+        </SmartCoverRuntime>
+      </WhiteLabelFrame>
+    );
+  }
+
+  if (invitation.category === "birthday") {
+    const Theme =
+      birthdayThemeRegistry[invitation.theme] ||
+      birthdayThemeRegistry["princess-fairytale"];
     return (
       <WhiteLabelFrame brand={invitation.brand}>
         <SmartCoverRuntime coverImage={invitation.coverImage} title={invitation.child.name}>

@@ -1,6 +1,7 @@
 import type { InvitationData } from "@/types/invitation";
 import type { AqiqahInvitationData } from "@/types/aqiqah";
 import type { KhitanInvitationData } from "@/types/khitan";
+import type { BirthdayInvitationData } from "@/types/birthday";
 import AkikahNur from "@/themes/akikah-nur/AkikahNur";
 import AkikahZaitun from "@/themes/akikah-zaitun/AkikahZaitun";
 import AkikahCeria from "@/themes/akikah-ceria/AkikahCeria";
@@ -48,7 +49,7 @@ import PrismaticVows from "@/themes/prismatic-vows/PrismaticVows";
 import PearlTide from "@/themes/pearl-tide/PearlTide";
 import JawaSepia from "@/themes/jawa-sepia/JawaSepia";
 import RoyalJava from "@/themes/royal-java/RoyalJava";
-import PrincessFairytale from "@/themes/princess-fairytale/PrincessFairytale";
+import PrincessBirthday from "@/themes/princess-fairytale/PrincessBirthday";
 
 export const themeRegistry: Record<
   string,
@@ -88,7 +89,6 @@ export const themeRegistry: Record<
   "pearl-tide": PearlTide,
   "jawa-sepia": JawaSepia,
   "royal-java": RoyalJava,
-  "princess-fairytale": PrincessFairytale,
 };
 
 export type ThemeMeta = {
@@ -113,14 +113,6 @@ export function isThemeNew(theme: ThemeMeta): boolean {
 }
 
 export const themeList: ThemeMeta[] = [
-  {
-    key: "princess-fairytale",
-    label: "Princess Fairytale",
-    description: "Lilac, blush & emas kerajaan, kisah dongeng romantis dengan detail berkilau",
-    swatch: ["#fff8fd", "#8b5fa8"],
-    tags: ["premium"],
-    addedAt: "2026-07-27",
-  },
   {
     key: "luxury-gold",
     label: "Luxury Gold",
@@ -478,5 +470,22 @@ export const khitanThemeList: ThemeMeta[] = [
     label: "Khitan Elang",
     description: "Arang & krem minimalis modern, bingkai foto diamond, motif garis elang, tipografi sans-serif",
     swatch: ["#faf9f5", "#2b2b2b"],
+  },
+];
+
+export const birthdayThemeRegistry: Record<
+  string,
+  (props: { invitation: BirthdayInvitationData }) => React.JSX.Element
+> = {
+  "princess-fairytale": PrincessBirthday,
+};
+
+export const birthdayThemeList: ThemeMeta[] = [
+  {
+    key: "princess-fairytale",
+    label: "Princess Fairytale",
+    description: "Pink, ivory & emas dengan kastel, mahkota dan suasana pesta putri kerajaan",
+    swatch: ["#fff8fd", "#d99abb"],
+    addedAt: "2026-07-27",
   },
 ];

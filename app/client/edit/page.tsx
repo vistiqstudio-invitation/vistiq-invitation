@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { themeList, aqiqahThemeList, khitanThemeList } from "@/lib/theme";
+import { themeList, aqiqahThemeList, khitanThemeList, birthdayThemeList } from "@/lib/theme";
 import SmartCoverEditor from "@/components/SmartCoverEditor";
 import { MUSIC_LIBRARY } from "@/lib/musicLibrary";
 import styles from "@/styles/dashboard.module.css";
@@ -13,7 +13,7 @@ const BUCKET = "invitation-assets";
 type PhotoField = "cover_photo" | "bride_photo" | "groom_photo" | "music_url";
 
 const initialForm = {
-  category: "wedding" as "wedding" | "aqiqah" | "khitan",
+  category: "wedding" as "wedding" | "aqiqah" | "khitan" | "birthday",
   slug: "",
   theme: "luxury-gold",
   groom_name: "",
@@ -248,7 +248,7 @@ export default function ClientEditPage() {
     setForm((prev) => ({ ...prev, [field]: value }));
   };
 
-  const setCategory = (category: "wedding" | "aqiqah" | "khitan") => {
+  const setCategory = (category: "wedding" | "aqiqah" | "khitan" | "birthday") => {
     setForm((prev) => ({
       ...prev,
       category,
@@ -257,6 +257,8 @@ export default function ClientEditPage() {
           ? aqiqahThemeList[0]?.key || ""
           : category === "khitan"
           ? khitanThemeList[0]?.key || ""
+          : category === "birthday"
+          ? birthdayThemeList[0]?.key || ""
           : "luxury-gold",
     }));
   };
@@ -275,6 +277,8 @@ export default function ClientEditPage() {
         ? `akikah-${form.baby_name}`
         : form.category === "khitan"
         ? `khitan-${form.baby_name}`
+        : form.category === "birthday"
+        ? `ulang-tahun-${form.baby_name}`
         : `${form.groom_name}-${form.bride_name}`;
     set("slug", makeSlug(text));
   };
@@ -390,9 +394,9 @@ export default function ClientEditPage() {
       return;
     }
 
-    if (form.category === "aqiqah" || form.category === "khitan") {
+    if (form.category !== "wedding") {
       if (!form.baby_name.trim()) {
-        alert(form.category === "khitan" ? "Nama anak wajib diisi." : "Nama bayi wajib diisi.");
+        alert(form.category === "aqiqah" ? "Nama bayi wajib diisi." : "Nama anak wajib diisi.");
         return;
       }
     } else if (!form.groom_name.trim() || !form.bride_name.trim()) {
@@ -524,14 +528,22 @@ export default function ClientEditPage() {
             <h2 className={styles.editSectionTitle}>Kategori, Tema &amp; Slug</h2>
 
             <div className={styles.formGrid}>
-              <select value={form.category} onChange={(e) => setCategory(e.target.value as "wedding" | "aqiqah" | "khitan")} className={styles.input}>
+              <select value={form.category} onChange={(e) => setCategory(e.target.value as "wedding" | "aqiqah" | "khitan" | "birthday")} className={styles.input}>
                 <option value="wedding">Pernikahan</option>
                 <option value="aqiqah">Aqiqah</option>
                 <option value="khitan">Khitan</option>
+                <option value="birthday">Ulang Tahun</option>
               </select>
 
               <select value={form.theme} onChange={(e) => set("theme", e.target.value)} className={styles.input}>
-                {(form.category === "aqiqah" ? aqiqahThemeList : form.category === "khitan" ? khitanThemeList : themeList).map((theme) => (
+                {(form.category === "aqiqah"
+                  ? aqiqahThemeList
+                  : form.category === "khitan"
+                  ? khitanThemeList
+                  : form.category === "birthday"
+                  ? birthdayThemeList
+                  : themeList
+                ).map((theme) => (
                   <option key={theme.key} value={theme.key}>{theme.label}</option>
                 ))}
               </select>
@@ -553,15 +565,15 @@ export default function ClientEditPage() {
           </>
         )}
 
-        {form.category === "aqiqah" || form.category === "khitan" ? (
+        {form.category !== "wedding" ? (
           <>
             <h2 className={styles.editSectionTitle}>
-              {form.category === "khitan" ? "Data Anak & Orang Tua" : "Data Bayi & Orang Tua"}
+              {form.category === "aqiqah" ? "Data Bayi & Orang Tua" : "Data Anak & Orang Tua"}
             </h2>
 
             <div className={styles.formGrid}>
               <input
-                placeholder={form.category === "khitan" ? "Nama Anak" : "Nama Bayi"}
+                placeholder={form.category === "aqiqah" ? "Nama Bayi" : "Nama Anak"}
                 value={form.baby_name}
                 onChange={(e) => set("baby_name", e.target.value)}
                 className={styles.input}
@@ -610,7 +622,13 @@ export default function ClientEditPage() {
             </div>
 
             <h2 className={styles.editSectionTitle}>
-              Jadwal &amp; Lokasi Acara {form.category === "khitan" ? "Khitan" : "Aqiqah"}
+              Jadwal &amp; Lokasi Acara {
+                form.category === "birthday"
+                  ? "Ulang Tahun"
+                  : form.category === "khitan"
+                  ? "Khitan"
+                  : "Aqiqah"
+              }
             </h2>
 
             <div className={styles.formGrid}>
