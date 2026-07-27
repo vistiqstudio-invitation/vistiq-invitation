@@ -67,6 +67,12 @@ export default function PrincessBirthday({
             />
           )}
           <div className={styles.coverWash} />
+          <img
+            className={styles.coverFlowers}
+            src="/photos/princess-fairytale/flowers.webp"
+            alt=""
+            aria-hidden="true"
+          />
           <div className={styles.coverFrame}><span /></div>
           <PrincessCorner className={`${styles.corner} ${styles.cornerTopLeft}`} />
           <PrincessCorner className={`${styles.corner} ${styles.cornerTopRight}`} mirrored />
@@ -101,6 +107,12 @@ export default function PrincessBirthday({
     <main className={styles.root}>
       <FloatingPearls />
       <section className={`${styles.section} ${styles.hero}`}>
+        <img
+          className={styles.heroCastle}
+          src="/photos/princess-fairytale/castle.webp"
+          alt=""
+          aria-hidden="true"
+        />
         <Reveal>
           <p className={styles.eyebrow}>Once Upon a Birthday</p>
           <h1 className={styles.heroTitle}>
@@ -128,12 +140,17 @@ export default function PrincessBirthday({
           <h2 className={styles.sectionTitle}>{invitation.child.name}</h2>
           <PrincessDivider />
           <div className={styles.cameoWrap}>
-            <div className={styles.pearlRing} />
             <div className={styles.cameoFrame}>
               {invitation.child.photo && (
                 <img src={invitation.child.photo} alt={invitation.child.name} />
               )}
             </div>
+            <img
+              className={styles.royalFrame}
+              src="/photos/princess-fairytale/frame.webp"
+              alt=""
+              aria-hidden="true"
+            />
           </div>
           <p className={styles.heroCopy}>
             Putri tercinta dari {invitation.parents.father} &amp; {invitation.parents.mother}
@@ -141,7 +158,17 @@ export default function PrincessBirthday({
         </Reveal>
       </section>
 
-      {event?.rawDate && <Countdown targetDate={event.rawDate} />}
+      {event?.rawDate && (
+        <div className={styles.countdownScene}>
+          <Countdown targetDate={event.rawDate} />
+          <img
+            className={styles.royalCarriage}
+            src="/photos/princess-fairytale/carriage.webp"
+            alt=""
+            aria-hidden="true"
+          />
+        </div>
+      )}
 
       {event && (
         <section className={styles.section}>

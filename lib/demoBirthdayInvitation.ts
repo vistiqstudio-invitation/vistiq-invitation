@@ -1,21 +1,18 @@
 import type { BirthdayInvitationData } from "@/types/birthday";
 
 export const COVER_BY_THEME: Record<string, string> = {
-  "princess-fairytale": "/photos/romance-cover.png",
+  "princess-fairytale": "/photos/princess-fairytale/cover.webp",
 };
 
 const CHILD_PHOTO_BY_THEME: Record<string, string> = {
-  "princess-fairytale": "/photos/romance-bride.png",
+  "princess-fairytale": "/photos/princess-fairytale/profile.webp",
 };
 
 const GALLERY_BY_THEME: Record<string, string[]> = {
   "princess-fairytale": [
-    "/photos/romance-gallery-1.png",
-    "/photos/romance-gallery-2.png",
-    "/photos/romance-gallery-3.png",
-    "/photos/romance-gallery-4.png",
-    "/photos/romance-gallery-5.png",
-    "/photos/romance-gallery-6.png",
+    "/photos/princess-fairytale/gallery-1.webp",
+    "/photos/princess-fairytale/gallery-2.webp",
+    "/photos/princess-fairytale/castle.webp",
   ],
 };
 
