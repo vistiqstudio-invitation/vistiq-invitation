@@ -12,6 +12,7 @@ const NAV_ITEMS = [
   { key: "resellers", label: "Reseller", href: "/admin/resellers" },
   { key: "affiliates", label: "Affiliate", href: "/admin/affiliates" },
   { key: "invitations", label: "Undangan", href: "/admin/invitations" },
+  { key: "musik", label: "Musik", href: "/admin/musik" },
   { key: "rsvp", label: "RSVP", href: "/admin/rsvp" },
   { key: "transactions", label: "Transaksi", href: "/admin/transactions" },
 ];

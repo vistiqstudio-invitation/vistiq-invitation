@@ -1,5 +1,5 @@
 import type { SidebarItem } from "@/components/admin/DashboardSidebar";
-import { IconDashboard, IconInvitation, IconUsers, IconWallet, IconPalette, IconGlobe } from "@/components/admin/icons";
+import { IconDashboard, IconInvitation, IconUsers, IconWallet, IconPalette, IconGlobe, IconMusic } from "@/components/admin/icons";
 
 // Reseller Brand keeps 100% of what they charge their own client and can
 // never earn commission from Vistiq (only Vistiq's admin creates reseller
@@ -25,6 +25,10 @@ export function getResellerNavItems(
 
   if (pkg !== "reseller_brand") {
     items.push({ key: "transactions", label: "Komisi", href: "/reseller/transactions", icon: <IconWallet /> });
+  }
+
+  if (pkg === "reseller_brand") {
+    items.push({ key: "musik", label: "Musik", href: "/reseller/musik", icon: <IconMusic /> });
   }
 
   if (pkg === "reseller_brand" && resellerId) {

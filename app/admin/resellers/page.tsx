@@ -11,6 +11,7 @@ const NAV_ITEMS = [
   { key: "clients", label: "Client", href: "/admin/clients" },
   { key: "resellers", label: "Reseller", href: "/admin/resellers" },
   { key: "invitations", label: "Undangan", href: "/admin/invitations" },
+  { key: "musik", label: "Musik", href: "/admin/musik" },
   { key: "rsvp", label: "RSVP", href: "/admin/rsvp" },
   { key: "transactions", label: "Transaksi", href: "/admin/transactions" },
 ];
