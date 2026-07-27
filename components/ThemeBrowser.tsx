@@ -3,10 +3,11 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import PhoneMockup from "@/components/PhoneMockup";
-import { themeList, aqiqahThemeList, khitanThemeList, isThemeNew, type ThemeMeta } from "@/lib/theme";
+import { themeList, aqiqahThemeList, khitanThemeList, birthdayThemeList, isThemeNew, type ThemeMeta } from "@/lib/theme";
 import { COVER_BY_THEME as WEDDING_COVER_BY_THEME } from "@/lib/demoInvitation";
 import { COVER_BY_THEME as AQIQAH_COVER_BY_THEME } from "@/lib/demoAqiqahInvitation";
 import { COVER_BY_THEME as KHITAN_COVER_BY_THEME } from "@/lib/demoKhitanInvitation";
+import { COVER_BY_THEME as BIRTHDAY_COVER_BY_THEME } from "@/lib/demoBirthdayInvitation";
 import styles from "@/app/demo/demo.module.css";
 
 const OCCASIONS = [
@@ -31,7 +32,6 @@ type WeddingSubKey = (typeof WEDDING_SUBFILTERS)[number]["key"];
 
 const COMING_SOON: Record<string, { label: string; description: string }> = {
   wisuda: { label: "Wisuda", description: "Tema undangan wisuda digital - segera hadir." },
-  "ulang-tahun": { label: "Ulang Tahun", description: "Tema undangan ulang tahun digital - segera hadir." },
 };
 
 function useMockupWidth() {
@@ -194,7 +194,7 @@ export default function ThemeBrowser({
               demoPath="/demo"
               coverImage={WEDDING_COVER_BY_THEME[theme.key]}
               eyebrowLabel="Indonesian Wedding"
-              overlay={{ eyebrow: "The Wedding Of", title: "Rizky Pratama & Nabila Putri", date: "Minggu, 20 September 2026" }}
+              overlay={{ eyebrow: "The Wedding Of", title: "Mempelai Pria & Mempelai Wanita", date: "Minggu, 20 September 2026" }}
               priceLabel={priceLabel}
               waNumber={waNumber}
               brandName={brandName}
@@ -211,7 +211,7 @@ export default function ThemeBrowser({
               demoPath="/demo-khitan"
               coverImage={KHITAN_COVER_BY_THEME[theme.key]}
               eyebrowLabel="Indonesian Khitan"
-              overlay={{ eyebrow: "Khitanan", title: "Muhammad Rayyan Athallah", date: "Minggu, 20 September 2026" }}
+              overlay={{ eyebrow: "Khitanan", title: "Nama Anak", date: "Minggu, 20 September 2026" }}
               priceLabel={priceLabel}
               waNumber={waNumber}
               brandName={brandName}
@@ -228,7 +228,24 @@ export default function ThemeBrowser({
               demoPath="/demo-akikah"
               coverImage={AQIQAH_COVER_BY_THEME[theme.key]}
               eyebrowLabel="Indonesian Aqiqah"
-              overlay={{ eyebrow: "Aqiqah & Tasyakuran", title: "Muhammad Rayyan Athallah", date: "Minggu, 20 September 2026" }}
+              overlay={{ eyebrow: "Aqiqah & Tasyakuran", title: "Nama Buah Hati", date: "Minggu, 20 September 2026" }}
+              priceLabel={priceLabel}
+              waNumber={waNumber}
+              brandName={brandName}
+            />
+          ))}
+        </div>
+      ) : occasion === "ulang-tahun" ? (
+        <div className={styles.grid}>
+          {birthdayThemeList.map((theme) => (
+            <ThemeCard
+              key={theme.key}
+              theme={theme}
+              mockupWidth={mockupWidth}
+              demoPath="/demo-ulang-tahun"
+              coverImage={BIRTHDAY_COVER_BY_THEME[theme.key]}
+              eyebrowLabel="Kids Birthday"
+              overlay={{ eyebrow: "Birthday Invitation", title: "Putri Kecil — 7 Tahun", date: "Minggu, 20 September 2026" }}
               priceLabel={priceLabel}
               waNumber={waNumber}
               brandName={brandName}
