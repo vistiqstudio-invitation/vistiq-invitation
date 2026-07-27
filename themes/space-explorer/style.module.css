@@ -493,9 +493,11 @@
 
 .hexOverlay {
   position: absolute;
-  inset: -10%;
+  left: -10%;
+  top: -10%;
   z-index: 3;
   width: 120%;
+  max-width: none;
   height: 120%;
   object-fit: contain;
   pointer-events: none;
