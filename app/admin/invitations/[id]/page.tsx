@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { themeList, aqiqahThemeList, khitanThemeList } from "@/lib/theme";
 import SmartCoverEditor from "@/components/SmartCoverEditor";
+import { MUSIC_LIBRARY } from "@/lib/musicLibrary";
 import styles from "@/styles/dashboard.module.css";
 
 const BUCKET = "invitation-assets";
@@ -815,7 +816,11 @@ export default function AdminInvitationEditPage() {
 
         <h2 className={styles.editSectionTitle}>Musik Latar (MP3)</h2>
 
-        <MusicUploadBox value={form.music_url} onUpload={(file) => uploadSingleFile(file, "music_url")} />
+        <MusicUploadBox
+          value={form.music_url}
+          onUpload={(file) => uploadSingleFile(file, "music_url")}
+          onSelectLibrary={(url) => set("music_url", url)}
+        />
 
         <h2 className={styles.editSectionTitle}>Upload Foto Utama</h2>
 
@@ -972,7 +977,15 @@ function UploadBox({
   );
 }
 
-function MusicUploadBox({ value, onUpload }: { value: string; onUpload: (file: File) => void }) {
+function MusicUploadBox({
+  value,
+  onUpload,
+  onSelectLibrary,
+}: {
+  value: string;
+  onUpload: (file: File) => void;
+  onSelectLibrary: (url: string) => void;
+}) {
   const handleDrop = (e: React.DragEvent<HTMLLabelElement>) => {
     e.preventDefault();
     const file = e.dataTransfer.files?.[0];
@@ -1002,6 +1015,26 @@ function MusicUploadBox({ value, onUpload }: { value: string; onUpload: (file: F
           className={styles.hiddenInput}
         />
       </label>
+
+      <p style={{ margin: "12px 0 6px", fontSize: 12, color: "#94a3b8", textAlign: "center" }}>
+        atau
+      </p>
+
+      <select
+        defaultValue=""
+        onChange={(e) => {
+          if (e.target.value) onSelectLibrary(e.target.value);
+          e.target.value = "";
+        }}
+        className={styles.input}
+      >
+        <option value="">Pilih dari Pustaka Musik (aman hak cipta)...</option>
+        {MUSIC_LIBRARY.map((track) => (
+          <option key={track.id} value={track.url}>
+            {track.title} - {track.mood}
+          </option>
+        ))}
+      </select>
     </div>
   );
 }
