@@ -50,6 +50,7 @@ import PearlTide from "@/themes/pearl-tide/PearlTide";
 import JawaSepia from "@/themes/jawa-sepia/JawaSepia";
 import RoyalJava from "@/themes/royal-java/RoyalJava";
 import PrincessBirthday from "@/themes/princess-fairytale/PrincessBirthday";
+import SpaceBirthday from "@/themes/space-explorer/SpaceBirthday";
 
 export const themeRegistry: Record<
   string,
@@ -478,6 +479,7 @@ export const birthdayThemeRegistry: Record<
   (props: { invitation: BirthdayInvitationData }) => React.JSX.Element
 > = {
   "princess-fairytale": PrincessBirthday,
+  "space-explorer": SpaceBirthday,
 };
 
 export const birthdayThemeList: ThemeMeta[] = [
@@ -486,6 +488,13 @@ export const birthdayThemeList: ThemeMeta[] = [
     label: "Princess Fairytale",
     description: "Pink, ivory & emas dengan kastel, mahkota dan suasana pesta putri kerajaan",
     swatch: ["#fff8fd", "#d99abb"],
+    addedAt: "2026-07-27",
+  },
+  {
+    key: "space-explorer",
+    label: "Space Explorer",
+    description: "Navy, oranye & cyan dengan roket, planet dan suasana misi luar angkasa",
+    swatch: ["#0b1633", "#ff8c3d"],
     addedAt: "2026-07-27",
   },
 ];
