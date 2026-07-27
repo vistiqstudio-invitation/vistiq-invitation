@@ -48,6 +48,7 @@ import PrismaticVows from "@/themes/prismatic-vows/PrismaticVows";
 import PearlTide from "@/themes/pearl-tide/PearlTide";
 import JawaSepia from "@/themes/jawa-sepia/JawaSepia";
 import RoyalJava from "@/themes/royal-java/RoyalJava";
+import PrincessFairytale from "@/themes/princess-fairytale/PrincessFairytale";
 
 export const themeRegistry: Record<
   string,
@@ -87,6 +88,7 @@ export const themeRegistry: Record<
   "pearl-tide": PearlTide,
   "jawa-sepia": JawaSepia,
   "royal-java": RoyalJava,
+  "princess-fairytale": PrincessFairytale,
 };
 
 export type ThemeMeta = {
@@ -111,6 +113,14 @@ export function isThemeNew(theme: ThemeMeta): boolean {
 }
 
 export const themeList: ThemeMeta[] = [
+  {
+    key: "princess-fairytale",
+    label: "Princess Fairytale",
+    description: "Lilac, blush & emas kerajaan, kisah dongeng romantis dengan detail berkilau",
+    swatch: ["#fff8fd", "#8b5fa8"],
+    tags: ["premium"],
+    addedAt: "2026-07-27",
+  },
   {
     key: "luxury-gold",
     label: "Luxury Gold",

@@ -5,6 +5,7 @@ import type { InvitationData } from "@/types/invitation";
 // free-to-use stock photos (Pexels License - free for commercial use, no
 // attribution required); see public/photos/README for sourcing notes.
 export const COVER_BY_THEME: Record<string, string> = {
+  "princess-fairytale": "/photos/romance-cover.png",
   "luxury-gold": "/photos/luxury-cover.png",
   "royal-black": "/photos/black-cover.png",
   "islamic-green": "/photos/green-cover.png",
@@ -77,6 +78,7 @@ export const COVER_BY_THEME: Record<string, string> = {
 // clashes with lighter/pastel themes. Themes not listed here fall back to
 // the luxury-gold portraits.
 const GROOM_PHOTO_BY_THEME: Record<string, string> = {
+  "princess-fairytale": "/photos/romance-groom.png",
   sakura: "/photos/sakura-groom.png",
   "luxury-gold": "/photos/luxury-groom.png",
   "islamic-green": "/photos/green-groom.png",
@@ -108,6 +110,7 @@ const GROOM_PHOTO_BY_THEME: Record<string, string> = {
 };
 
 const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
+  "princess-fairytale": "/photos/romance-bride.png",
   sakura: "/photos/sakura-bride.png",
   "luxury-gold": "/photos/luxury-bride.png",
   "islamic-green": "/photos/green-bride.png",
@@ -142,6 +145,14 @@ const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
 // theme's mood instead of showing the same six generic photos everywhere.
 // Themes not listed here fall back to the shared /gallery/*.jpg placeholders.
 const GALLERY_BY_THEME: Record<string, string[]> = {
+  "princess-fairytale": [
+    "/photos/romance-gallery-1.png",
+    "/photos/romance-gallery-2.png",
+    "/photos/romance-gallery-3.png",
+    "/photos/romance-gallery-4.png",
+    "/photos/romance-gallery-5.png",
+    "/photos/romance-gallery-6.png",
+  ],
   "luxury-gold": [
     "/photos/luxury-gallery-1.png",
     "/photos/luxury-gallery-2.png",
