@@ -216,9 +216,10 @@ Terima kasih banyak atas perhatiannya.
 
 Wassalamualaikum Warahmatullahi Wabarakatuh`;
 
-  const sendViaWhatsApp = (guestName: string, url: string) => {
+  const copyWaMessage = async (guestName: string, url: string) => {
     const message = buildWaMessage(guestName, url);
-    window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, "_blank");
+    await navigator.clipboard.writeText(message);
+    alert("Pesan berhasil disalin, tinggal paste ke WhatsApp tamu.");
   };
 
   const copyAllLinks = async () => {
@@ -379,8 +380,8 @@ Wassalamualaikum Warahmatullahi Wabarakatuh`;
                             Copy Link
                           </button>
 
-                          <button onClick={() => sendViaWhatsApp(name, url)} className={styles.waButton}>
-                            Kirim via WA
+                          <button onClick={() => copyWaMessage(name, url)} className={styles.waButton}>
+                            Copy Pesan WA
                           </button>
                         </div>
                       </div>
