@@ -23,6 +23,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.vistiqinvitation.com"),
   title: "Vistiq Invitation",
   description: "Digital Invitation Platform",
   manifest: "/manifest.webmanifest",

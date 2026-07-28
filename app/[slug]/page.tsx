@@ -24,6 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const coverImage = stripSmartCoverConfig(invitation.coverImage);
+  const ogImage = coverImage ? [`/api/og/${slug}`] : undefined;
 
   if (invitation.category === "aqiqah") {
     const title = `Aqiqah ${invitation.baby.name} | ${invitation.brand?.name ?? "Vistiq Invitation"}`;
@@ -35,13 +36,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       openGraph: {
         title,
         description,
-        images: coverImage ? [coverImage] : undefined,
+        images: ogImage,
       },
       twitter: {
         card: "summary_large_image",
         title,
         description,
-        images: coverImage ? [coverImage] : undefined,
+        images: ogImage,
       },
     };
   }
@@ -56,13 +57,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       openGraph: {
         title,
         description,
-        images: coverImage ? [coverImage] : undefined,
+        images: ogImage,
       },
       twitter: {
         card: "summary_large_image",
         title,
         description,
-        images: coverImage ? [coverImage] : undefined,
+        images: ogImage,
       },
     };
   }
@@ -73,8 +74,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return {
       title,
       description,
-      openGraph: { title, description, images: coverImage ? [coverImage] : undefined },
-      twitter: { card: "summary_large_image", title, description, images: coverImage ? [coverImage] : undefined },
+      openGraph: { title, description, images: ogImage },
+      twitter: { card: "summary_large_image", title, description, images: ogImage },
     };
   }
 
@@ -87,13 +88,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title,
       description,
-      images: coverImage ? [coverImage] : undefined,
+      images: ogImage,
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: coverImage ? [coverImage] : undefined,
+      images: ogImage,
     },
   };
 }
