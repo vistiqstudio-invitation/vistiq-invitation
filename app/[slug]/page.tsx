@@ -9,7 +9,6 @@ import {
 } from "@/lib/theme";
 import WhiteLabelFrame from "@/components/WhiteLabelFrame";
 import SmartCoverRuntime from "@/components/SmartCoverRuntime";
-import { stripSmartCoverConfig } from "@/lib/smartCover";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -23,8 +22,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { title: "Undangan Tidak Ditemukan | Vistiq Invitation" };
   }
 
-  const coverImage = stripSmartCoverConfig(invitation.coverImage);
-  const ogImage = coverImage ? [`/api/og/${slug}`] : undefined;
+  // The /api/og route always returns an image - the invitation's cover
+  // photo when one is set, otherwise a branded fallback card - so every
+  // invitation link has a share preview.
+  const ogImage = [`/api/og/${slug}`];
 
   if (invitation.category === "aqiqah") {
     const title = `Aqiqah ${invitation.baby.name} | ${invitation.brand?.name ?? "Vistiq Invitation"}`;
