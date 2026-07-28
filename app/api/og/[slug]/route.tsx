@@ -5,16 +5,6 @@ import { parseSmartCoverValue } from "@/lib/smartCover";
 const WIDTH = 800;
 const HEIGHT = 420;
 
-function getDisplayName(
-  invitation: Awaited<ReturnType<typeof getInvitationBySlug>>
-) {
-  if (!invitation) return "";
-  if (invitation.category === "aqiqah") return invitation.baby?.name ?? "";
-  if (invitation.category === "khitan") return invitation.child?.name ?? "";
-  if (invitation.category === "birthday") return invitation.child?.name ?? "";
-  return `${invitation.groom?.name ?? ""} & ${invitation.bride?.name ?? ""}`;
-}
-
 export async function GET(
   _request: Request,
   context: { params: Promise<{ slug: string }> }
@@ -41,7 +31,6 @@ export async function GET(
   // toward the top third, where faces usually sit.
   const focalX = config.desktop.focalX;
   const focalY = 20;
-  const displayName = getDisplayName(invitation);
 
   return new ImageResponse(
     (
@@ -62,36 +51,14 @@ export async function GET(
           height={HEIGHT}
           style={{
             position: "absolute",
-            inset: 0,
+            top: 0,
+            left: 0,
             width: `${WIDTH}px`,
             height: `${HEIGHT}px`,
             objectFit: "cover",
             objectPosition: `${focalX}% ${focalY}%`,
           }}
         />
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            display: "flex",
-            alignItems: "flex-end",
-            padding: "32px",
-            background:
-              "linear-gradient(180deg, rgba(15,23,42,0) 55%, rgba(15,23,42,0.75) 100%)",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              fontSize: 30,
-              fontWeight: 700,
-              color: "#ffffff",
-              textShadow: "0 2px 12px rgba(0,0,0,0.6)",
-            }}
-          >
-            {displayName}
-          </div>
-        </div>
       </div>
     ),
     {
