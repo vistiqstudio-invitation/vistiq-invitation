@@ -242,6 +242,16 @@ export default function ResellerInvitationsPage() {
   };
 
   const autoSlug = () => {
+    if (form.category !== "wedding") {
+      if (!form.baby_name.trim()) {
+        alert(form.category === "aqiqah" ? "Nama bayi wajib diisi." : "Nama anak wajib diisi.");
+        return;
+      }
+    } else if (!form.groom_name.trim() || !form.bride_name.trim()) {
+      alert("Nama mempelai pria dan wanita wajib diisi.");
+      return;
+    }
+
     const text =
       form.category === "aqiqah"
         ? `akikah-${form.baby_name}`
