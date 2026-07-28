@@ -51,6 +51,7 @@ import JawaSepia from "@/themes/jawa-sepia/JawaSepia";
 import RoyalJava from "@/themes/royal-java/RoyalJava";
 import PrincessBirthday from "@/themes/princess-fairytale/PrincessBirthday";
 import SpaceBirthday from "@/themes/space-explorer/SpaceBirthday";
+import DinoBirthday from "@/themes/dinosaur-adventure/DinoBirthday";
 
 export const themeRegistry: Record<
   string,
@@ -480,6 +481,7 @@ export const birthdayThemeRegistry: Record<
 > = {
   "princess-fairytale": PrincessBirthday,
   "space-explorer": SpaceBirthday,
+  "dinosaur-adventure": DinoBirthday,
 };
 
 export const birthdayThemeList: ThemeMeta[] = [
@@ -496,5 +498,12 @@ export const birthdayThemeList: ThemeMeta[] = [
     description: "Navy, oranye & cyan dengan roket, planet dan suasana misi luar angkasa",
     swatch: ["#0b1633", "#ff8c3d"],
     addedAt: "2026-07-27",
+  },
+  {
+    key: "dinosaur-adventure",
+    label: "Dinosaur Adventure",
+    description: "Hijau hutan, rust & amber dengan dinosaurus, pakis raksasa dan suasana ekspedisi purba",
+    swatch: ["#1f3d2e", "#e8a33d"],
+    addedAt: "2026-07-28",
   },
 ];
