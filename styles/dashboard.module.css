@@ -438,6 +438,16 @@
   font-weight: 700;
 }
 
+.waButton {
+  border: none;
+  background: linear-gradient(135deg, #2dd66f, #18a94f);
+  color: white;
+  padding: 12px 22px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
 .secondaryButton {
   border: none;
   background: #e2e8f0;
