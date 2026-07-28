@@ -450,9 +450,9 @@
 
 .eggFrame {
   position: relative;
-  aspect-ratio: 0.82;
+  aspect-ratio: 0.732;
   overflow: hidden;
-  border-radius: 50% 50% 46% 46% / 58% 58% 42% 42%;
+  border-radius: 50%;
   background: var(--dino-jungle);
   box-shadow: 0 26px 60px rgba(0, 0, 0, 0.45);
 }
@@ -470,12 +470,12 @@
 
 .eggOverlay {
   position: absolute;
-  left: -12%;
-  top: -12%;
+  left: -81.79%;
+  top: -41.38%;
   z-index: 3;
-  width: 124%;
+  width: 263.92%;
   max-width: none;
-  height: 124%;
+  height: 193.21%;
   max-height: none;
   object-fit: contain;
   pointer-events: none;
