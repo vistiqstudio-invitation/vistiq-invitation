@@ -197,6 +197,30 @@ export default function ClientPage() {
     alert("Link berhasil disalin.");
   };
 
+  const buildWaMessage = (guestName: string, url: string) =>
+    `Assalamualaikum Warahmatullahi Wabarakatuh
+
+Tanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i ${guestName} untuk menghadiri acara kami.
+
+Berikut link undangan kami, untuk info lengkap dari acara bisa kunjungi :
+
+${url}
+
+Merupakan suatu kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan untuk hadir dan memberikan doa restu.
+
+Mohon maaf perihal undangan hanya di bagikan melalui pesan ini.
+
+Dan agar selalu menjaga kesehatan bersama serta datang pada waktu yang telah ditentukan.
+
+Terima kasih banyak atas perhatiannya.
+
+Wassalamualaikum Warahmatullahi Wabarakatuh`;
+
+  const sendViaWhatsApp = (guestName: string, url: string) => {
+    const message = buildWaMessage(guestName, url);
+    window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, "_blank");
+  };
+
   const copyAllLinks = async () => {
     if (generatedLinks.length === 0) return;
 
@@ -350,9 +374,15 @@ export default function ClientPage() {
                           <div className={styles.linkBox}>{url}</div>
                         </div>
 
-                        <button onClick={() => copyLink(url)} className={styles.exportButton}>
-                          Copy
-                        </button>
+                        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                          <button onClick={() => copyLink(url)} className={styles.exportButton}>
+                            Copy Link
+                          </button>
+
+                          <button onClick={() => sendViaWhatsApp(name, url)} className={styles.waButton}>
+                            Kirim via WA
+                          </button>
+                        </div>
                       </div>
                     ))}
                   </div>
