@@ -4,12 +4,14 @@ export const COVER_BY_THEME: Record<string, string> = {
   "princess-fairytale": "/photos/princess-fairytale/cover.webp",
   "space-explorer": "/photos/space-explorer/cover.webp",
   "dinosaur-adventure": "/photos/dinosaur-adventure/cover.webp",
+  "superhero-city": "/photos/superhero-city/cover.webp",
 };
 
 const CHILD_PHOTO_BY_THEME: Record<string, string> = {
   "princess-fairytale": "/photos/princess-fairytale/profile.webp",
   "space-explorer": "/photos/space-explorer/profile.webp",
   "dinosaur-adventure": "/photos/dinosaur-adventure/profile.webp",
+  "superhero-city": "/photos/superhero-city/profile.webp",
 };
 
 const GALLERY_BY_THEME: Record<string, string[]> = {
@@ -27,6 +29,11 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
     "/photos/dinosaur-adventure/gallery-1.webp",
     "/photos/dinosaur-adventure/gallery-2.webp",
     "/photos/dinosaur-adventure/dino-hero.webp",
+  ],
+  "superhero-city": [
+    "/photos/superhero-city/gallery-1.webp",
+    "/photos/superhero-city/gallery-2.webp",
+    "/photos/superhero-city/action-pose.webp",
   ],
 };
 
@@ -69,6 +76,17 @@ const COPY_BY_THEME: Record<string, ThemeCopy> = {
       quoteSource: "Keluarga",
     },
     location: "Jungle Adventure Park, Jakarta",
+  },
+  "superhero-city": {
+    childName: "Pahlawan Kecil",
+    opening: {
+      greeting: "Kota membutuhkanmu",
+      title: "A Superhero City Birthday Mission",
+      description: "Kami mengundang Bapak/Ibu/Saudara/i untuk ikut merayakan misi ulang tahun pahlawan kecil kami di kota ini.",
+      quote: "Setiap pahlawan sejati memulai kisahnya dari rumah, dikelilingi orang-orang yang menyayanginya.",
+      quoteSource: "Keluarga",
+    },
+    location: "Metropolitan Hall, Jakarta",
   },
 };
 
