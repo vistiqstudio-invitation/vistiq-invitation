@@ -1,4 +1,4 @@
-import { Cormorant_Garamond, Playfair_Display, Inter, Alex_Brush, Suranna, Readex_Pro, Chelsea_Market, Noto_Sans_Balinese, Noto_Serif_Display, Raleway, Orbitron, Baloo_2 } from "next/font/google";
+import { Cormorant_Garamond, Playfair_Display, Inter, Alex_Brush, Suranna, Readex_Pro, Chelsea_Market, Noto_Sans_Balinese, Noto_Serif_Display, Raleway, Orbitron, Baloo_2, Bangers } from "next/font/google";
 
 export const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -91,5 +91,14 @@ export const baloo2 = Baloo_2({
   variable: "--font-baloo2",
   subsets: ["latin"],
   weight: ["500", "600", "700", "800"],
+  display: "swap",
+});
+
+// Comic-book display face used by the superhero-city birthday theme for
+// headings and the countdown badges.
+export const bangers = Bangers({
+  variable: "--font-bangers",
+  subsets: ["latin"],
+  weight: ["400"],
   display: "swap",
 });
