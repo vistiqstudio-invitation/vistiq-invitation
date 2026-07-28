@@ -71,7 +71,9 @@ export default function ClientPage() {
 
   const [guestNamesInput, setGuestNamesInput] = useState("");
   const [selectedInvitationId, setSelectedInvitationId] = useState("");
-  const [generatedLinks, setGeneratedLinks] = useState<{ name: string; url: string }[]>([]);
+  const [generatedLinks, setGeneratedLinks] = useState<
+    { name: string; url: string; groomName?: string; brideName?: string }[]
+  >([]);
   const [fetchError, setFetchError] = useState(false);
 
   const fetchData = async (currentUser: AppUser) => {
@@ -187,6 +189,8 @@ export default function ClientPage() {
     const links = names.map((name) => ({
       name,
       url: `${window.location.origin}/${invitation.slug}?to=${encodeURIComponent(name)}`,
+      groomName: invitation.groom_name,
+      brideName: invitation.bride_name,
     }));
 
     setGeneratedLinks(links);
@@ -197,27 +201,29 @@ export default function ClientPage() {
     alert("Link berhasil disalin.");
   };
 
-  const buildWaMessage = (guestName: string, url: string) =>
-    `Assalamualaikum Warahmatullahi Wabarakatuh
+  const buildWaMessage = (guestName: string, url: string, groomName?: string, brideName?: string) => {
+    const coupleLine = groomName && brideName ? `*${groomName} & ${brideName}*` : null;
 
-Tanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i ${guestName} untuk menghadiri acara kami.
+    return `Assalamualaikum Warahmatullahi Wabarakatuh 🌸
 
-Berikut link undangan kami, untuk info lengkap dari acara bisa kunjungi :
+Yth. Bapak/Ibu/Saudara/i *${guestName}*,
 
+Tanpa mengurangi rasa hormat, dengan penuh sukacita kami ${coupleLine ? `${coupleLine} ` : ""}mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara kami.
+
+💌 Undangan digital kami (info lengkap acara & lokasi ada di dalamnya):
 ${url}
 
-Merupakan suatu kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan untuk hadir dan memberikan doa restu.
+Merupakan suatu kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu 🙏
 
-Mohon maaf perihal undangan hanya di bagikan melalui pesan ini.
-
-Dan agar selalu menjaga kesehatan bersama serta datang pada waktu yang telah ditentukan.
+Mohon maaf perihal undangan hanya kami sampaikan melalui pesan ini. Semoga kita semua senantiasa diberikan kesehatan, sampai bertemu di hari bahagia kami ✨
 
 Terima kasih banyak atas perhatiannya.
 
 Wassalamualaikum Warahmatullahi Wabarakatuh`;
+  };
 
-  const copyWaMessage = async (guestName: string, url: string) => {
-    const message = buildWaMessage(guestName, url);
+  const copyWaMessage = async (guestName: string, url: string, groomName?: string, brideName?: string) => {
+    const message = buildWaMessage(guestName, url, groomName, brideName);
     await navigator.clipboard.writeText(message);
     alert("Pesan berhasil disalin, tinggal paste ke WhatsApp tamu.");
   };
@@ -368,7 +374,7 @@ Wassalamualaikum Warahmatullahi Wabarakatuh`;
               {generatedLinks.length > 0 && (
                 <>
                   <div className={styles.table} style={{ marginTop: 16 }}>
-                    {generatedLinks.map(({ name, url }) => (
+                    {generatedLinks.map(({ name, url, groomName, brideName }) => (
                       <div key={name + url} className={styles.row}>
                         <div>
                           <strong>{name}</strong>
@@ -380,7 +386,10 @@ Wassalamualaikum Warahmatullahi Wabarakatuh`;
                             Copy Link
                           </button>
 
-                          <button onClick={() => copyWaMessage(name, url)} className={styles.waButton}>
+                          <button
+                            onClick={() => copyWaMessage(name, url, groomName, brideName)}
+                            className={styles.waButton}
+                          >
                             Copy Pesan WA
                           </button>
                         </div>
