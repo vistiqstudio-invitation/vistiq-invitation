@@ -3,11 +3,13 @@ import type { BirthdayInvitationData } from "@/types/birthday";
 export const COVER_BY_THEME: Record<string, string> = {
   "princess-fairytale": "/photos/princess-fairytale/cover.webp",
   "space-explorer": "/photos/space-explorer/cover.webp",
+  "dinosaur-adventure": "/photos/dinosaur-adventure/cover.webp",
 };
 
 const CHILD_PHOTO_BY_THEME: Record<string, string> = {
   "princess-fairytale": "/photos/princess-fairytale/profile.webp",
   "space-explorer": "/photos/space-explorer/profile.webp",
+  "dinosaur-adventure": "/photos/dinosaur-adventure/profile.webp",
 };
 
 const GALLERY_BY_THEME: Record<string, string[]> = {
@@ -20,6 +22,11 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
     "/photos/space-explorer/gallery-1.webp",
     "/photos/space-explorer/gallery-2.webp",
     "/photos/space-explorer/rocket.webp",
+  ],
+  "dinosaur-adventure": [
+    "/photos/dinosaur-adventure/gallery-1.webp",
+    "/photos/dinosaur-adventure/gallery-2.webp",
+    "/photos/dinosaur-adventure/dino-hero.webp",
   ],
 };
 
@@ -51,6 +58,17 @@ const COPY_BY_THEME: Record<string, ThemeCopy> = {
       quoteSource: "Keluarga",
     },
     location: "Mission Control Hall, Jakarta",
+  },
+  "dinosaur-adventure": {
+    childName: "Penjelajah Kecil",
+    opening: {
+      greeting: "Bersiaplah menjelajah",
+      title: "A Dinosaur Adventure Birthday",
+      description: "Kami mengundang Bapak/Ibu/Saudara/i untuk ikut menjelajah hutan purba di hari ulang tahun penjelajah kecil kami.",
+      quote: "Petualangan terbaik adalah yang dirayakan bersama orang-orang tersayang.",
+      quoteSource: "Keluarga",
+    },
+    location: "Jungle Adventure Park, Jakarta",
   },
 };
 

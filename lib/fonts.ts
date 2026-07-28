@@ -1,4 +1,4 @@
-import { Cormorant_Garamond, Playfair_Display, Inter, Alex_Brush, Suranna, Readex_Pro, Chelsea_Market, Noto_Sans_Balinese, Noto_Serif_Display, Raleway, Orbitron } from "next/font/google";
+import { Cormorant_Garamond, Playfair_Display, Inter, Alex_Brush, Suranna, Readex_Pro, Chelsea_Market, Noto_Sans_Balinese, Noto_Serif_Display, Raleway, Orbitron, Baloo_2 } from "next/font/google";
 
 export const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -80,6 +80,15 @@ export const raleway = Raleway({
 // theme for headings and the mission-countdown digits.
 export const orbitron = Orbitron({
   variable: "--font-orbitron",
+  subsets: ["latin"],
+  weight: ["500", "600", "700", "800"],
+  display: "swap",
+});
+
+// Playful rounded display face used by the dinosaur-adventure birthday
+// theme for headings.
+export const baloo2 = Baloo_2({
+  variable: "--font-baloo2",
   subsets: ["latin"],
   weight: ["500", "600", "700", "800"],
   display: "swap",
