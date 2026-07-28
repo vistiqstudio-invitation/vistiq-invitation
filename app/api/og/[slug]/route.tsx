@@ -5,6 +5,23 @@ import { parseSmartCoverValue } from "@/lib/smartCover";
 const WIDTH = 800;
 const HEIGHT = 420;
 
+function getDisplayName(
+  invitation: Awaited<ReturnType<typeof getInvitationBySlug>>
+) {
+  if (!invitation) return "";
+  if (invitation.category === "aqiqah") return invitation.baby?.name ?? "";
+  if (invitation.category === "khitan") return invitation.child?.name ?? "";
+  if (invitation.category === "birthday") return invitation.child?.name ?? "";
+  return `${invitation.groom?.name ?? ""} & ${invitation.bride?.name ?? ""}`;
+}
+
+const CATEGORY_LABEL: Record<string, string> = {
+  aqiqah: "Undangan Aqiqah",
+  khitan: "Undangan Khitan",
+  birthday: "Undangan Ulang Tahun",
+  wedding: "Undangan Pernikahan",
+};
+
 export async function GET(
   _request: Request,
   context: { params: Promise<{ slug: string }> }
@@ -17,9 +34,69 @@ export async function GET(
   }
 
   const { source: coverImage, config } = parseSmartCoverValue(invitation.coverImage);
+  const cacheHeaders = {
+    "Cache-Control": "public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800",
+  };
 
+  // No cover photo uploaded yet - fall back to a branded text card so
+  // the share link always has some preview image instead of none at all.
   if (!coverImage) {
-    return new Response("No cover image", { status: 404 });
+    const displayName = getDisplayName(invitation);
+    const categoryLabel = CATEGORY_LABEL[invitation.category] ?? CATEGORY_LABEL.wedding;
+
+    return new ImageResponse(
+      (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            width: `${WIDTH}px`,
+            height: `${HEIGHT}px`,
+            background: "linear-gradient(135deg, #0a1230 0%, #1167b2 100%)",
+            color: "#ffffff",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              fontSize: 16,
+              fontWeight: 600,
+              letterSpacing: 4,
+              color: "#a8c8e8",
+            }}
+          >
+            {categoryLabel.toUpperCase()}
+          </div>
+          <div
+            style={{
+              display: "flex",
+              marginTop: 20,
+              padding: "0 60px",
+              fontSize: 42,
+              fontWeight: 700,
+              textAlign: "center",
+            }}
+          >
+            {displayName}
+          </div>
+          <div
+            style={{
+              display: "flex",
+              marginTop: 28,
+              fontSize: 14,
+              fontWeight: 600,
+              letterSpacing: 3,
+              color: "#a8c8e8",
+            }}
+          >
+            VISTIQ INVITATION
+          </div>
+        </div>
+      ),
+      { width: WIDTH, height: HEIGHT, headers: cacheHeaders }
+    );
   }
 
   // The desktop/mobile focal points in `config` are tuned for the
@@ -61,12 +138,6 @@ export async function GET(
         />
       </div>
     ),
-    {
-      width: WIDTH,
-      height: HEIGHT,
-      headers: {
-        "Cache-Control": "public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800",
-      },
-    }
+    { width: WIDTH, height: HEIGHT, headers: cacheHeaders }
   );
 }
