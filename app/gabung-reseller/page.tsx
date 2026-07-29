@@ -48,7 +48,7 @@ const FAQS = [
   },
   {
     q: "Berapa modal awal yang dibutuhkan?",
-    a: "Rp99.000/bulan, layaknya member premium. Setelah aktif, kamu bisa langsung jualan tanpa batas dengan brand sendiri, plus dapat update tema dan konten promosi baru tiap bulan.",
+    a: "Rp59.000/bulan, layaknya member premium. Setelah aktif, kamu bisa langsung jualan tanpa batas dengan brand sendiri, plus dapat update tema dan konten promosi baru tiap bulan.",
   },
   {
     q: "Keuntungan penjualan saya berapa persen?",
@@ -86,7 +86,7 @@ export default function GabungResellerPage() {
           </p>
 
           <div className="heroPrice">
-            <strong>Rp 99.000</strong>
+            <strong>Rp 59.000</strong>
             <span className="priceHint">/bulan — update tema & konten promosi tiap bulan</span>
           </div>
 
@@ -221,7 +221,7 @@ export default function GabungResellerPage() {
             <small className="promoBadge">Layaknya Member Premium</small>
             <h3>Reseller Brand</h3>
             <strong>
-              Rp 99.000<span>/bulan</span>
+              Rp 59.000<span>/bulan</span>
             </strong>
             <p>
               Brand & logo sendiri di setiap undangan client, profit{" "}
@@ -244,7 +244,7 @@ export default function GabungResellerPage() {
       <section className="cta">
         <h2>Siap Jadi Reseller dengan Brand Sendiri?</h2>
         <p>
-          Rp99.000/bulan, layaknya member premium — dapat update tema dan
+          Rp59.000/bulan, layaknya member premium — dapat update tema dan
           konten promosi baru tiap bulan. Daftar sekarang.
         </p>
 

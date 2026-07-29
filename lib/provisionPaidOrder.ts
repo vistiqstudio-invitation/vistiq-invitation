@@ -73,7 +73,7 @@ export async function provisionPaidOrder(
         name: claimed.customer_name,
         whatsapp: claimed.customer_phone,
         package: resellerBrand ? "reseller_brand" : "reseller",
-        commission_percent: resellerBrand ? 100 : 30,
+        commission_percent: resellerBrand ? 100 : 40,
         status: "active",
         brand_active: resellerBrand,
         brand_expires_at: brandExpiresAt,

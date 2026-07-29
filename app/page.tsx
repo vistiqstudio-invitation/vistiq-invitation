@@ -98,7 +98,7 @@ export default function HomePage() {
         <div className="priceGrid">
           <div className="priceCard">
             <h3>Client</h3>
-            <strong>Rp 149.000</strong>
+            <strong>Rp 99.000</strong>
             <p>
               Untuk yang cuma butuh 1 undangan pernikahan sendiri, lengkap
               dengan RSVP, galeri, dan amplop digital. Bukan reseller.
@@ -113,7 +113,7 @@ export default function HomePage() {
             <strong>Rp 149.000<span>/sekali bayar</span></strong>
             <p>
               Jual undangan digital dengan brand Vistiq Invitation, dapat
-              dashboard reseller dan komisi <strong style={{ color: "white" }}>30%</strong> dari
+              dashboard reseller dan komisi <strong style={{ color: "white" }}>40%</strong> dari
               setiap penjualan client Anda. Bayar sekali, aktif selamanya.
             </p>
             <CheckoutButton packageId="reseller" label="Bayar & Daftar Reseller" featured production={midtransProduction} />
@@ -121,9 +121,25 @@ export default function HomePage() {
           </div>
 
           <div className="priceCard">
+            <small className="promoBadge">Gratis Bergabung</small>
+            <h3>Affiliate</h3>
+            <strong>Gratis</strong>
+            <p>
+              Promosikan Vistiq Invitation lewat link referral Anda dan dapat
+              komisi <strong>10%</strong> dari setiap penjualan paket Client,
+              Reseller, dan Reseller Brand. Tanpa perlu kelola client atau
+              dashboard reseller sendiri.
+            </p>
+            <Link href="/gabung-affiliate" className="priceButton">
+              Gabung Affiliate
+            </Link>
+            <span className="paymentMethods">Gratis · Tanpa Biaya Bulanan</span>
+          </div>
+
+          <div className="priceCard">
             <small className="promoBadge">Layaknya Member Premium</small>
             <h3>Reseller Brand</h3>
-            <strong>Rp 99.000<span>/bulan</span></strong>
+            <strong>Rp 59.000<span>/bulan</span></strong>
             <p>
               Semua fitur Reseller, plus ganti nama & logo jadi brand Anda
               sendiri (white label) di setiap undangan client, keuntungan{" "}
@@ -150,17 +166,6 @@ export default function HomePage() {
         <Link href="/gabung-reseller#harga" className="whiteButton">
           Daftar Reseller
         </Link>
-      </section>
-
-      <section className="section">
-        <p className="label">Program Affiliate</p>
-        <h2>Promosikan Vistiq, Dapatkan Komisi 10%</h2>
-        <p style={{ maxWidth: 680, margin: "0 auto 24px", textAlign: "center", color: "#64748b", lineHeight: 1.8 }}>
-          Gratis bergabung. Komisi berlaku untuk paket Client, Reseller, dan Reseller Brand.
-        </p>
-        <div style={{ textAlign: "center" }}>
-          <Link href="/gabung-affiliate" className="primaryButton">Gabung Affiliate</Link>
-        </div>
       </section>
 
       <section className="cta">
@@ -402,10 +407,15 @@ html, body {
   margin: 10px 0 34px;
 }
 
-.grid,
-.priceGrid {
+.grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.priceGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 18px;
 }
 
@@ -640,6 +650,12 @@ html, body {
   text-align: center;
   padding: 28px;
   color: #64748b;
+}
+
+@media (max-width: 1024px) {
+  .priceGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 768px) {
