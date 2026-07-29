@@ -84,7 +84,7 @@ export default function SpaceBirthday({
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.35, duration: 0.9 }}
           >
-            <p className={styles.coverLabel}>Mission Briefing</p>
+            <p className={styles.coverLabel}>Undangan Ulang Tahun • Misi Luar Angkasa</p>
             <h1 className={styles.coverNames}>{invitation.child.name}</h1>
             <SpaceDivider className={styles.coverDivider} />
             <p className={styles.coverDate}>

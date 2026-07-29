@@ -84,7 +84,7 @@ export default function PrincessBirthday({
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.35, duration: 0.9 }}
           >
-            <p className={styles.coverLabel}>Princess Birthday Invitation</p>
+            <p className={styles.coverLabel}>Undangan Ulang Tahun Putri</p>
             <h1 className={styles.coverNames}>{invitation.child.name}</h1>
             <PrincessDivider className={styles.coverDivider} />
             <p className={styles.coverDate}>

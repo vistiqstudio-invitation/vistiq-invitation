@@ -88,7 +88,7 @@ export default function SuperheroBirthday({
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.35, duration: 0.9 }}
           >
-            <p className={styles.coverLabel}>Misi Ulang Tahun</p>
+            <p className={styles.coverLabel}>Undangan Ulang Tahun • Misi Kepahlawanan</p>
             <h1 className={styles.coverNames}>{invitation.child.name}</h1>
             <ComicDivider className={styles.coverDivider} />
             <p className={styles.coverDate}>
