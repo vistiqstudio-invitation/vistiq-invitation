@@ -143,7 +143,7 @@ export default function ResellerMusikPage() {
   const isBrandPackage = reseller?.package === "reseller_brand";
   const brandName = isBrandPackage && reseller?.brand_active && reseller?.brand_name ? reseller.brand_name : null;
   const upgradeText = encodeURIComponent(
-    "Halo Vistiq Invitation, saya ingin upgrade ke paket Reseller Brand (white label, Rp99.000/bulan) untuk akses perpustakaan musik dan fitur lainnya."
+    "Halo Vistiq Invitation, saya ingin upgrade ke paket Reseller Brand (white label, Rp59.000/bulan) untuk akses perpustakaan musik dan fitur lainnya."
   );
 
   return (

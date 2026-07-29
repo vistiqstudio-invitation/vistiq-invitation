@@ -3,7 +3,7 @@ export const PAYMENT_PACKAGES = {
     code: "CL",
     name: "Paket Client",
     description: "1 undangan digital premium",
-    amount: 149000,
+    amount: 99000,
   },
   reseller: {
     code: "RS",
@@ -15,10 +15,10 @@ export const PAYMENT_PACKAGES = {
     code: "RB",
     name: "Paket Reseller Brand",
     description: "Dashboard reseller white label, update tema & konten promosi tiap bulan",
-    // Rp99.000/bulan, ditagih manual (lihat provisionPaidOrder.ts untuk
+    // Rp59.000/bulan, ditagih manual (lihat provisionPaidOrder.ts untuk
     // brand_expires_at 1 bulan dari pembelian). 10 reseller brand pertama
     // (sebelum harga ini berlaku) tetap lifetime - brand_expires_at null.
-    amount: 99000,
+    amount: 59000,
   },
 } as const;
 

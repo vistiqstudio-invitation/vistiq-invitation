@@ -127,7 +127,7 @@ function ComingSoonCard({ label, description }: { label: string; description: st
 export default function ThemeBrowser({
   waNumber = "6281371338032",
   brandName = "Vistiq Invitation",
-  priceLabel = "Rp 149.000",
+  priceLabel = "Rp 99.000",
   defaultOccasion = "wedding",
 }: {
   waNumber?: string;

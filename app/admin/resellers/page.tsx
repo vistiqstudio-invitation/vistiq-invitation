@@ -39,7 +39,7 @@ type CreatedCredentials = {
 };
 
 const PACKAGE_LABELS: Record<string, string> = {
-  reseller: "Reseller (30%)",
+  reseller: "Reseller (40%)",
   reseller_brand: "Reseller Brand - White Label (100%)",
 };
 
@@ -61,7 +61,7 @@ function brandExpiryStatus(reseller: Reseller): { label: string; color: string }
 }
 
 const PACKAGE_DEFAULT_COMMISSION: Record<string, number> = {
-  reseller: 30,
+  reseller: 40,
   reseller_brand: 100,
 };
 
@@ -77,7 +77,7 @@ export default function ResellersPage() {
     email: "",
     whatsapp: "",
     package: "reseller",
-    commission_percent: 30,
+    commission_percent: 40,
     status: "active",
   });
 
@@ -228,7 +228,7 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! ðŸš
       email: "",
       whatsapp: "",
       package: "reseller",
-      commission_percent: 30,
+      commission_percent: 40,
       status: "active",
     });
 
@@ -525,8 +525,8 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! ðŸš
               }
               className={styles.input}
             >
-              <option value="reseller">Reseller (Rp 149.000 sekali bayar, komisi 30%)</option>
-              <option value="reseller_brand">Reseller Brand - White Label (Rp 99.000/bulan, 100%)</option>
+              <option value="reseller">Reseller (Rp 149.000 sekali bayar, komisi 40%)</option>
+              <option value="reseller_brand">Reseller Brand - White Label (Rp 59.000/bulan, 100%)</option>
             </select>
 
             <input

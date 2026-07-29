@@ -33,8 +33,8 @@ const STEPS = [
 
 const COMPARISON = [
   ["Nama yang tampil ke client", "Vistiq Invitation", "Brand kamu sendiri"],
-  ["Profit per penjualan", "30% komisi", "100% milik sendiri"],
-  ["Biaya", "Rp149.000 sekali bayar", "Rp99.000/bulan"],
+  ["Profit per penjualan", "40% komisi", "100% milik sendiri"],
+  ["Biaya", "Rp149.000 sekali bayar", "Rp59.000/bulan"],
   ["Update tema & konten promosi", "Tidak ada", "Setiap bulan"],
   ["Dashboard", "Dashboard reseller standar", "Dashboard full branding sendiri"],
 ];
@@ -56,7 +56,7 @@ const FAQS = [
   },
   {
     q: "Apa bedanya dengan paket Reseller biasa?",
-    a: "Reseller biasa jual di bawah brand Vistiq Invitation dan dapat komisi 30%. Reseller Brand pakai identitas brand kamu sendiri dan kamu simpan 100% dari harga yang kamu tetapkan.",
+    a: "Reseller biasa jual di bawah brand Vistiq Invitation dan dapat komisi 40%. Reseller Brand pakai identitas brand kamu sendiri dan kamu simpan 100% dari harga yang kamu tetapkan.",
   },
   {
     q: "Saya sudah reseller biasa, bisa upgrade?",
@@ -64,7 +64,7 @@ const FAQS = [
   },
   {
     q: "Berapa biayanya?",
-    a: "Rp99.000/bulan, layaknya member premium — dapat update tema dan konten promosi baru tiap bulan, plus 100% profit dari setiap penjualan jadi milikmu.",
+    a: "Rp59.000/bulan, layaknya member premium — dapat update tema dan konten promosi baru tiap bulan, plus 100% profit dari setiap penjualan jadi milikmu.",
   },
   {
     q: "Bagaimana cara perpanjangan tiap bulan?",
@@ -94,7 +94,7 @@ export default function ResellerBrandPage() {
 
           <p>
             Reseller Brand: logo, nama, dan warna brand kamu tampil di setiap
-            undangan yang kamu jual. <strong>Rp99.000/bulan</strong>, dapat
+            undangan yang kamu jual. <strong>Rp59.000/bulan</strong>, dapat
             update tema dan konten promosi baru tiap bulan, dan 100%
             keuntungan jadi milikmu.
           </p>
@@ -221,7 +221,7 @@ export default function ResellerBrandPage() {
 
       <section className="sectionDark">
         <p className="label">Simulasi Penghasilan</p>
-        <h2>Bandingkan: Komisi 30% vs Profit 100%</h2>
+        <h2>Bandingkan: Komisi 40% vs Profit 100%</h2>
         <p className="darkIntro">
           Contoh kalau kamu jual ke 10 client dalam sebulan, di harga
           Rp200.000 per undangan.
@@ -229,8 +229,8 @@ export default function ResellerBrandPage() {
 
         <div className="simCompareGrid">
           <div className="simCompareCard">
-            <small>Reseller (komisi 30%)</small>
-            <strong>Rp 600.000</strong>
+            <small>Reseller (komisi 40%)</small>
+            <strong>Rp 800.000</strong>
             <p>dari total penjualan Rp2.000.000</p>
           </div>
           <div className="simCompareCard simCompareHighlight">
@@ -292,7 +292,7 @@ export default function ResellerBrandPage() {
           <p className="label white">Reseller Brand</p>
           <p className="promoBadge">Layaknya Member Premium</p>
           <h2>
-            Rp 99.000<span>/bulan</span>
+            Rp 59.000<span>/bulan</span>
           </h2>
           <p>
             White label penuh, profit 100%, update tema dan konten promosi
@@ -316,7 +316,7 @@ export default function ResellerBrandPage() {
       <section className="cta">
         <h2>Siap Punya Brand Undangan Digital Sendiri?</h2>
         <p>
-          Rp99.000/bulan, layaknya member premium — dapat update tema dan
+          Rp59.000/bulan, layaknya member premium — dapat update tema dan
           konten promosi baru tiap bulan, dan 100% keuntungan jadi milikmu.
         </p>
 
