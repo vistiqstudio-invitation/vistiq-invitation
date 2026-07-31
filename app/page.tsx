@@ -153,21 +153,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section id="reseller" className="reseller">
-        <div>
-          <p className="label white">Program Reseller</p>
-          <h2>Jualan Undangan Digital Dengan Brand Sendiri</h2>
-          <p>
-            Reseller mendapatkan sistem login, dashboard, dan bisa mengelola
-            client sendiri tanpa perlu membuat website dari nol.
-          </p>
-        </div>
-
-        <Link href="/gabung-reseller#harga" className="whiteButton">
-          Daftar Reseller
-        </Link>
-      </section>
-
       <section className="cta">
         <h2>Siap Membuat Undangan Digital Premium?</h2>
         <p>
@@ -429,8 +414,7 @@ html, body {
 
 .card p,
 .priceCard p,
-.cta p,
-.reseller p {
+.cta p {
   color: #64748b;
   line-height: 1.7;
 }
@@ -609,38 +593,6 @@ html, body {
   color: #1167b2;
 }
 
-.reseller {
-  background: #1167b2;
-  color: white;
-  padding: 70px 24px;
-  display: flex;
-  justify-content: space-between;
-  gap: 30px;
-  align-items: center;
-}
-
-.reseller > div {
-  max-width: 900px;
-}
-
-.reseller h2 {
-  font-size: 42px;
-}
-
-.white {
-  color: white;
-}
-
-.whiteButton {
-  background: white;
-  color: #1167b2;
-  padding: 15px 24px;
-  border-radius: 999px;
-  text-decoration: none;
-  font-weight: 900;
-  white-space: nowrap;
-}
-
 .cta {
   text-align: center;
   padding: 90px 24px;
@@ -772,7 +724,6 @@ html, body {
 
   .section h2,
   .sectionDark h2,
-  .reseller h2,
   .cta h2 {
     font-size: 34px;
   }
@@ -806,14 +757,5 @@ html, body {
     transform: none;
   }
 
-  .reseller {
-    display: block;
-    padding: 64px 24px;
-  }
-
-  .whiteButton {
-    display: inline-block;
-    margin-top: 24px;
-  }
 }
 `;
