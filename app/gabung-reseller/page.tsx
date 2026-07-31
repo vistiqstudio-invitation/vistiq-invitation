@@ -2,7 +2,12 @@ import Link from "next/link";
 import PhoneMockup from "@/components/PhoneMockup";
 import SiteNavbar from "@/components/SiteNavbar";
 import ThemeBrowser from "@/components/ThemeBrowser";
-import CheckoutButton from "@/components/CheckoutButton";
+
+const WA_NUMBER = "6281371338032";
+const ORDER_TEXT = encodeURIComponent(
+  "Halo Vistiq Invitation, saya ingin daftar Reseller Brand (Rp149.000 sekali bayar, akses selamanya) dari halaman promo ini."
+);
+const WA_ORDER_LINK = `https://wa.me/${WA_NUMBER}?text=${ORDER_TEXT}`;
 
 const HERO_FAN = [
   { key: "jawa-merah", rotate: -18, x: -108, y: 20, scale: 0.82, z: 1 },
@@ -48,15 +53,15 @@ const FAQS = [
   },
   {
     q: "Berapa modal awal yang dibutuhkan?",
-    a: "Rp59.000/bulan, layaknya member premium. Setelah aktif, kamu bisa langsung jualan tanpa batas dengan brand sendiri, plus dapat update tema dan konten promosi baru tiap bulan.",
+    a: "Rp149.000 sekali bayar, akses selamanya — tidak ada tagihan bulanan. Setelah aktif, kamu bisa langsung jualan tanpa batas dengan brand sendiri, plus dapat update tema dan konten promosi baru tiap bulan.",
   },
   {
     q: "Keuntungan penjualan saya berapa persen?",
     a: "100% milikmu. Kamu yang tentukan harga jual ke client, dan seluruh hasilnya masuk ke kamu — tidak ada potongan ke Vistiq.",
   },
   {
-    q: "Bagaimana cara perpanjangan tiap bulan?",
-    a: "Perpanjangan dilakukan manual. Dashboard reseller kamu akan menampilkan pengingat masa aktif akun — kalau sudah mendekati atau melewati masa aktif, tinggal hubungi admin Vistiq lewat WhatsApp untuk bayar, dan akun langsung diaktifkan kembali setelah pembayaran dikonfirmasi.",
+    q: "Apakah ada biaya bulanan setelah saya daftar?",
+    a: "Tidak ada. Rp149.000 ini sekali bayar untuk akses selamanya — brand & logo sendiri tetap aktif tanpa perlu bayar lagi tiap bulan.",
   },
   {
     q: "Kalau saya bingung pas mulai jualan, ada yang bantu?",
@@ -65,8 +70,6 @@ const FAQS = [
 ];
 
 export default function GabungResellerPage() {
-  const midtransProduction = process.env.MIDTRANS_IS_PRODUCTION === "true";
-
   return (
     <main className="page">
       <style>{css}</style>
@@ -75,7 +78,7 @@ export default function GabungResellerPage() {
 
       <section className="hero">
         <div className="heroText">
-          <p className="badge">⭐ Layaknya Member Premium</p>
+          <p className="badge">⭐ Promo Sekali Bayar</p>
 
           <h1>Jadi Reseller dengan Brand Sendiri, Profit 100% Milikmu</h1>
 
@@ -86,16 +89,14 @@ export default function GabungResellerPage() {
           </p>
 
           <div className="heroPrice">
-            <strong>Rp 59.000</strong>
-            <span className="priceHint">/bulan — update tema & konten promosi tiap bulan</span>
+            <strong>Rp 149.000</strong>
+            <span className="priceHint">sekali bayar — akses selamanya, tanpa tagihan bulanan</span>
           </div>
 
           <div className="heroActions">
-            <CheckoutButton
-              packageId="reseller-brand"
-              label="Daftar Reseller Brand Sekarang"
-              production={midtransProduction}
-            />
+            <a href={WA_ORDER_LINK} target="_blank" className="priceButton">
+              Daftar Reseller Brand Sekarang
+            </a>
 
             <Link href="/demo" className="secondaryButton">
               Lihat Demo Tema
@@ -112,8 +113,8 @@ export default function GabungResellerPage() {
               <span>Update Tema & Konten Promosi</span>
             </div>
             <div>
-              <strong>Manual</strong>
-              <span>Perpanjangan via Admin Vistiq</span>
+              <strong>Selamanya</strong>
+              <span>Sekali Bayar, Tanpa Perpanjangan</span>
             </div>
           </div>
         </div>
@@ -173,7 +174,7 @@ export default function GabungResellerPage() {
 
       <section className="section">
         <p className="label">Yang Kamu Dapatkan</p>
-        <h2>Berlangganan Bulanan, Ini Semua Milikmu</h2>
+        <h2>Sekali Bayar, Ini Semua Milikmu Selamanya</h2>
 
         <div className="benefitGrid">
           {BENEFITS.map((item) => (
@@ -213,30 +214,26 @@ export default function GabungResellerPage() {
       </section>
 
       <section id="harga" className="section">
-        <p className="label">Langganan Bulanan</p>
+        <p className="label">Promo Sekali Bayar</p>
         <h2>Mulai Jadi Reseller Brand Sekarang</h2>
 
         <div className="singleOffer">
           <div className="priceCard featured offerCard">
-            <small className="promoBadge">Layaknya Member Premium</small>
+            <small className="promoBadge">Sekali Bayar, Selamanya</small>
             <h3>Reseller Brand</h3>
             <strong>
-              Rp 59.000<span>/bulan</span>
+              Rp 149.000<span>sekali bayar</span>
             </strong>
             <p>
               Brand & logo sendiri di setiap undangan client, profit{" "}
               <strong style={{ color: "white" }}>100%</strong> jadi milikmu,
-              update tema baru dan konten promosi setiap bulan. Tagihan
-              manual — dashboard kamu akan mengingatkan sebelum masa aktif
-              habis.
+              update tema baru dan konten promosi setiap bulan. Bayar sekali
+              di awal, akses selamanya — tidak ada tagihan bulanan.
             </p>
-            <CheckoutButton
-              packageId="reseller-brand"
-              label="Daftar Reseller Brand Sekarang"
-              featured
-              production={midtransProduction}
-            />
-            <span className="paymentMethods">QRIS · Virtual Account · E-Wallet</span>
+            <a href={WA_ORDER_LINK} target="_blank" className="priceButton featuredButton">
+              Daftar Reseller Brand Sekarang
+            </a>
+            <span className="paymentMethods">Konfirmasi & aktivasi langsung via WhatsApp</span>
           </div>
         </div>
       </section>
@@ -244,16 +241,14 @@ export default function GabungResellerPage() {
       <section className="cta">
         <h2>Siap Jadi Reseller dengan Brand Sendiri?</h2>
         <p>
-          Rp59.000/bulan, layaknya member premium — dapat update tema dan
+          Rp149.000 sekali bayar, akses selamanya — dapat update tema dan
           konten promosi baru tiap bulan. Daftar sekarang.
         </p>
 
         <div className="heroActions center">
-          <CheckoutButton
-            packageId="reseller-brand"
-            label="Daftar Reseller Brand Sekarang"
-            production={midtransProduction}
-          />
+          <a href={WA_ORDER_LINK} target="_blank" className="priceButton">
+            Daftar Reseller Brand Sekarang
+          </a>
 
           <Link href="/demo" className="secondaryButton">
             Lihat Demo Tema
