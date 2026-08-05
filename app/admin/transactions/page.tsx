@@ -6,6 +6,18 @@ import { createClient } from "@/lib/supabase/client";
 import DashboardSidebar from "@/components/admin/DashboardSidebar";
 import styles from "@/styles/dashboard.module.css";
 
+function toWaNumber(phone: string) {
+  const digits = phone.replace(/\D/g, "");
+  if (digits.startsWith("62")) return digits;
+  if (digits.startsWith("0")) return `62${digits.slice(1)}`;
+  return `62${digits}`;
+}
+
+function waFollowUpLink(item: CheckoutOrder) {
+  const message = `Halo ${item.customer_name}, kami dari Vistiq Invitation. Pembayaran untuk ${item.package_name} (Rp ${Number(item.amount).toLocaleString("id-ID")}) masih menunggu konfirmasi. Yuk selesaikan pembayarannya supaya akun Anda bisa langsung aktif. Kalau ada kendala saat bayar, kabari kami di sini ya. Terima kasih!`;
+  return `https://wa.me/${toWaNumber(item.customer_phone)}?text=${encodeURIComponent(message)}`;
+}
+
 const NAV_ITEMS = [
   { key: "dashboard", label: "Dashboard", href: "/admin" },
   { key: "clients", label: "Client", href: "/admin/clients" },
@@ -260,6 +272,24 @@ export default function AdminTransactionsPage() {
                       >
                         {syncingId === item.order_id ? "Mengecek..." : "Cek ke Midtrans"}
                       </button>
+                    )}
+                    {item.status === "pending" && (
+                      <a
+                        href={waFollowUpLink(item)}
+                        target="_blank"
+                        className={styles.button}
+                        style={{
+                          display: "block",
+                          marginTop: 6,
+                          fontSize: 11,
+                          padding: "4px 10px",
+                          textAlign: "center",
+                          background: "#22c55e",
+                          color: "white",
+                        }}
+                      >
+                        Follow Up WA
+                      </a>
                     )}
                     {item.status === "paid" && item.provision_status && item.provision_status !== "completed" && (
                       <p style={{ color: "#b45309", fontSize: 12, marginTop: 4 }}>
