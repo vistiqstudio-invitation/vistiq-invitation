@@ -33,7 +33,7 @@ export async function GET(
     return new Response("Not found", { status: 404 });
   }
 
-  const { source: coverImage, config } = parseSmartCoverValue(invitation.coverImage);
+  const { source: coverImage } = parseSmartCoverValue(invitation.coverImage);
   const cacheHeaders = {
     "Cache-Control": "public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800",
   };
@@ -99,25 +99,20 @@ export async function GET(
     );
   }
 
-  // The desktop/mobile focal points in `config` are tuned for the
-  // invitation's own (usually portrait) cover section, not this
-  // landscape crop - reusing them here cuts off faces on a typical
-  // full-body standing photo. Keep the configured horizontal focal
-  // point (there's rarely any horizontal slack to crop anyway, since
-  // portrait sources are width-constrained) but bias vertically
-  // toward the top third, where faces usually sit.
-  const focalX = config.desktop.focalX;
-  const focalY = 20;
-
+  // Cover photos are almost always portrait, and this frame is landscape -
+  // cropping to fill (object-fit: cover) was cutting off the couple.
+  // Show the whole photo instead (object-fit: contain) and fill the
+  // leftover side bars with a brand-colored backdrop instead of cropping.
   return new ImageResponse(
     (
       <div
         style={{
           display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
           width: `${WIDTH}px`,
           height: `${HEIGHT}px`,
-          position: "relative",
-          background: "#0f172a",
+          background: "linear-gradient(135deg, #0a1230 0%, #1167b2 100%)",
         }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -127,13 +122,9 @@ export async function GET(
           width={WIDTH}
           height={HEIGHT}
           style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
             width: `${WIDTH}px`,
             height: `${HEIGHT}px`,
-            objectFit: "cover",
-            objectPosition: `${focalX}% ${focalY}%`,
+            objectFit: "contain",
           }}
         />
       </div>
