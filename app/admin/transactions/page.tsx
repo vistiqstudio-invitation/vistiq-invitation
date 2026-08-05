@@ -14,7 +14,13 @@ function toWaNumber(phone: string) {
 }
 
 function waFollowUpLink(item: CheckoutOrder) {
-  const message = `Halo ${item.customer_name}, kami dari Vistiq Invitation. Pembayaran untuk ${item.package_name} (Rp ${Number(item.amount).toLocaleString("id-ID")}) masih menunggu konfirmasi. Yuk selesaikan pembayarannya supaya akun Anda bisa langsung aktif. Kalau ada kendala saat bayar, kabari kami di sini ya. Terima kasih!`;
+  const amount = `Rp ${Number(item.amount).toLocaleString("id-ID")}`;
+  // An expired order's payment link/VA/QRIS is already dead - the customer
+  // can't just "finish paying" it, they need a brand new checkout.
+  const message =
+    item.status === "expire"
+      ? `Halo ${item.customer_name}, kami dari Vistiq Invitation. Link pembayaran untuk ${item.package_name} (${amount}) sudah kedaluwarsa sebelum sempat dibayar. Kalau masih berminat, silakan checkout ulang di sini ya: https://www.vistiqinvitation.com/pilih-paket. Kalau ada kendala, kabari kami di sini. Terima kasih!`
+      : `Halo ${item.customer_name}, kami dari Vistiq Invitation. Pembayaran untuk ${item.package_name} (${amount}) masih menunggu konfirmasi. Yuk selesaikan pembayarannya supaya akun Anda bisa langsung aktif. Kalau ada kendala saat bayar, kabari kami di sini ya. Terima kasih!`;
   return `https://wa.me/${toWaNumber(item.customer_phone)}?text=${encodeURIComponent(message)}`;
 }
 
@@ -273,7 +279,7 @@ export default function AdminTransactionsPage() {
                         {syncingId === item.order_id ? "Mengecek..." : "Cek ke Midtrans"}
                       </button>
                     )}
-                    {item.status === "pending" && (
+                    {(item.status === "pending" || item.status === "expire") && (
                       <a
                         href={waFollowUpLink(item)}
                         target="_blank"
