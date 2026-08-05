@@ -1,9 +1,49 @@
 import { ImageResponse } from "next/og";
+import { imageSize } from "image-size";
 import { getInvitationBySlug } from "@/lib/invitation";
 import { parseSmartCoverValue } from "@/lib/smartCover";
 
 const WIDTH = 800;
 const HEIGHT = 420;
+
+// Frame the photo itself instead of a fixed landscape box - a portrait
+// cover photo forced into an 800x420 frame either gets cropped (cover) or
+// leaves empty bars on the sides (contain). Sizing the frame to the
+// photo's own aspect ratio shows the whole photo with neither.
+// Target pixel count is tuned lower than WIDTH*HEIGHT because, unlike the
+// old letterboxed version, every pixel here is photo detail (no cheap-to-
+// compress solid background), so the same pixel budget would encode larger.
+const TARGET_PIXELS = 100_000;
+const MIN_DIMENSION = 250;
+const MAX_DIMENSION = 1000;
+
+async function photoFrameSize(coverImage: string): Promise<{ width: number; height: number }> {
+  try {
+    const bytes = await fetch(coverImage).then((res) => res.arrayBuffer());
+    const { width: naturalWidth, height: naturalHeight } = imageSize(new Uint8Array(bytes));
+    if (!naturalWidth || !naturalHeight) return { width: WIDTH, height: HEIGHT };
+
+    const aspectRatio = naturalWidth / naturalHeight;
+    let width = Math.round(Math.sqrt(TARGET_PIXELS * aspectRatio));
+    let height = Math.round(Math.sqrt(TARGET_PIXELS / aspectRatio));
+
+    const longSide = Math.max(width, height);
+    const shortSide = Math.min(width, height);
+    if (longSide > MAX_DIMENSION) {
+      const scale = MAX_DIMENSION / longSide;
+      width = Math.round(width * scale);
+      height = Math.round(height * scale);
+    } else if (shortSide < MIN_DIMENSION) {
+      const scale = MIN_DIMENSION / shortSide;
+      width = Math.round(width * scale);
+      height = Math.round(height * scale);
+    }
+
+    return { width, height };
+  } catch {
+    return { width: WIDTH, height: HEIGHT };
+  }
+}
 
 function getDisplayName(
   invitation: Awaited<ReturnType<typeof getInvitationBySlug>>
@@ -99,36 +139,34 @@ export async function GET(
     );
   }
 
-  // Cover photos are almost always portrait, and this frame is landscape -
-  // cropping to fill (object-fit: cover) was cutting off the couple.
-  // Show the whole photo instead (object-fit: contain) and fill the
-  // leftover side bars with a brand-colored backdrop instead of cropping.
+  // Frame sized to the photo's own aspect ratio so the whole photo fills it
+  // edge to edge - no crop (like a fixed landscape frame would force) and
+  // no empty side bars (like letterboxing a mismatched frame would leave).
+  const frame = await photoFrameSize(coverImage);
+
   return new ImageResponse(
     (
       <div
         style={{
           display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          width: `${WIDTH}px`,
-          height: `${HEIGHT}px`,
-          background: "linear-gradient(135deg, #0a1230 0%, #1167b2 100%)",
+          width: `${frame.width}px`,
+          height: `${frame.height}px`,
         }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={coverImage}
           alt=""
-          width={WIDTH}
-          height={HEIGHT}
+          width={frame.width}
+          height={frame.height}
           style={{
-            width: `${WIDTH}px`,
-            height: `${HEIGHT}px`,
-            objectFit: "contain",
+            width: `${frame.width}px`,
+            height: `${frame.height}px`,
+            objectFit: "cover",
           }}
         />
       </div>
     ),
-    { width: WIDTH, height: HEIGHT, headers: cacheHeaders }
+    { width: frame.width, height: frame.height, headers: cacheHeaders }
   );
 }
