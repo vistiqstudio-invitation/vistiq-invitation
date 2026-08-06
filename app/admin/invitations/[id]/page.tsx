@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { themeList, aqiqahThemeList, khitanThemeList } from "@/lib/theme";
+import { themeList, aqiqahThemeList, khitanThemeList, birthdayThemeList } from "@/lib/theme";
 import ThemePreviewPanel from "@/components/ThemePreviewPanel";
 import SmartCoverEditor from "@/components/SmartCoverEditor";
 import { MUSIC_LIBRARY } from "@/lib/musicLibrary";
@@ -14,7 +14,7 @@ const BUCKET = "invitation-assets";
 type PhotoField = "cover_photo" | "bride_photo" | "groom_photo" | "music_url";
 
 const initialForm = {
-  category: "wedding" as "wedding" | "aqiqah" | "khitan",
+  category: "wedding" as "wedding" | "aqiqah" | "khitan" | "birthday",
   theme: "luxury-gold",
   is_active: true,
 
@@ -136,13 +136,21 @@ export default function AdminInvitationEditPage() {
 
       setForm({
         category:
-          invitation.category === "aqiqah" ? "aqiqah" : invitation.category === "khitan" ? "khitan" : "wedding",
+          invitation.category === "aqiqah"
+            ? "aqiqah"
+            : invitation.category === "khitan"
+            ? "khitan"
+            : invitation.category === "birthday"
+            ? "birthday"
+            : "wedding",
         theme:
           invitation.theme ||
           (invitation.category === "aqiqah"
             ? "akikah-nur"
             : invitation.category === "khitan"
             ? "khitan-warna"
+            : invitation.category === "birthday"
+            ? birthdayThemeList[0]?.key || "princess-fairytale"
             : "luxury-gold"),
         is_active: invitation.is_active !== false,
 
@@ -366,6 +374,8 @@ export default function AdminInvitationEditPage() {
               ? aqiqahThemeList
               : form.category === "khitan"
               ? khitanThemeList
+              : form.category === "birthday"
+              ? birthdayThemeList
               : themeList
             ).map((theme) => (
               <option key={theme.key} value={theme.key}>
@@ -386,15 +396,15 @@ export default function AdminInvitationEditPage() {
           </select>
         </div>
 
-        {form.category === "aqiqah" || form.category === "khitan" ? (
+        {form.category !== "wedding" ? (
           <>
             <h2 className={styles.editSectionTitle}>
-              {form.category === "khitan" ? "Data Anak & Orang Tua" : "Data Bayi & Orang Tua"}
+              {form.category === "aqiqah" ? "Data Bayi & Orang Tua" : "Data Anak & Orang Tua"}
             </h2>
 
             <div className={styles.formGrid}>
               <input
-                placeholder={form.category === "khitan" ? "Nama Anak" : "Nama Bayi"}
+                placeholder={form.category === "aqiqah" ? "Nama Bayi" : "Nama Anak"}
                 value={form.baby_name}
                 onChange={(e) => set("baby_name", e.target.value)}
                 className={styles.input}
@@ -443,7 +453,13 @@ export default function AdminInvitationEditPage() {
             </div>
 
             <h2 className={styles.editSectionTitle}>
-              Jadwal &amp; Lokasi Acara {form.category === "khitan" ? "Khitan" : "Aqiqah"}
+              Jadwal &amp; Lokasi Acara {
+                form.category === "birthday"
+                  ? "Ulang Tahun"
+                  : form.category === "khitan"
+                  ? "Khitan"
+                  : "Aqiqah"
+              }
             </h2>
 
             <div className={styles.formGrid}>
@@ -830,7 +846,11 @@ export default function AdminInvitationEditPage() {
         <div className={styles.uploadGrid}>
           <UploadBox
             title={
-              form.category === "aqiqah" ? "Foto Bayi" : form.category === "khitan" ? "Foto Anak" : "Foto Cover"
+              form.category === "aqiqah"
+                ? "Foto Bayi"
+                : form.category === "khitan" || form.category === "birthday"
+                ? "Foto Anak"
+                : "Foto Cover"
             }
             value={form.cover_photo}
             onUpload={(file) => uploadSingleFile(file, "cover_photo")}
