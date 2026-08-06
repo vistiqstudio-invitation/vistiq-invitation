@@ -7,6 +7,13 @@ import DashboardSidebar from "@/components/admin/DashboardSidebar";
 import { themeList, aqiqahThemeList, khitanThemeList } from "@/lib/theme";
 import styles from "@/styles/dashboard.module.css";
 
+function toWaNumber(phone: string) {
+  const digits = phone.replace(/\D/g, "");
+  if (digits.startsWith("62")) return digits;
+  if (digits.startsWith("0")) return `62${digits.slice(1)}`;
+  return `62${digits}`;
+}
+
 const NAV_ITEMS = [
   { key: "dashboard", label: "Dashboard", href: "/admin" },
   { key: "clients", label: "Client", href: "/admin/clients" },
@@ -45,6 +52,7 @@ export default function ClientsPage() {
     name: string;
     email: string;
     password: string;
+    whatsapp: string;
   } | null>(null);
 
   const fetchClients = async () => {
@@ -114,7 +122,7 @@ export default function ClientsPage() {
       return;
     }
 
-    setNewClientCredentials({ name: form.name, email: result.email, password: result.password });
+    setNewClientCredentials({ name: form.name, email: result.email, password: result.password, whatsapp: form.whatsapp });
 
     setForm({
       name: "",
@@ -127,13 +135,21 @@ export default function ClientsPage() {
     fetchClients();
   };
 
+  const clientCredentialsMessage = () => {
+    if (!newClientCredentials) return "";
+    return `Halo ${newClientCredentials.name}, berikut akun login dashboard undangan Anda di Vistiq Invitation:\n\nLink: ${window.location.origin}/login\nEmail: ${newClientCredentials.email}\nPassword: ${newClientCredentials.password}\n\nLewat dashboard ini Anda bisa generate link undangan per nama tamu, lihat RSVP, dan edit undangan.`;
+  };
+
   const copyClientCredentials = async () => {
     if (!newClientCredentials) return;
 
-    const text = `Halo ${newClientCredentials.name}, berikut akun login dashboard undangan Anda di Vistiq Invitation:\n\nLink: ${window.location.origin}/login\nEmail: ${newClientCredentials.email}\nPassword: ${newClientCredentials.password}\n\nLewat dashboard ini Anda bisa generate link undangan per nama tamu, lihat RSVP, dan edit undangan.`;
-
-    await navigator.clipboard.writeText(text);
+    await navigator.clipboard.writeText(clientCredentialsMessage());
     alert("Pesan berhasil disalin, tinggal paste ke WhatsApp client.");
+  };
+
+  const clientWaLink = () => {
+    if (!newClientCredentials?.whatsapp) return "";
+    return `https://wa.me/${toWaNumber(newClientCredentials.whatsapp)}?text=${encodeURIComponent(clientCredentialsMessage())}`;
   };
 
   const updateStatus = async (id: string, status: string) => {
@@ -258,9 +274,16 @@ export default function ClientsPage() {
               </p>
               <p style={{ margin: 0 }}>Email: {newClientCredentials.email}</p>
               <p style={{ margin: "0 0 12px" }}>Password: {newClientCredentials.password}</p>
-              <button onClick={copyClientCredentials} className={styles.exportButton}>
-                Copy Pesan untuk Dikirim ke Client
-              </button>
+              <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                <button onClick={copyClientCredentials} className={styles.exportButton}>
+                  Copy Pesan untuk Dikirim ke Client
+                </button>
+                {newClientCredentials.whatsapp && (
+                  <a href={clientWaLink()} target="_blank" className={styles.button}>
+                    Kirim ke WA Otomatis
+                  </a>
+                )}
+              </div>
             </div>
           )}
         </section>
