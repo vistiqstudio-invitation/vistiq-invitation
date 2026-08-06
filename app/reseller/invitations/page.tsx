@@ -7,6 +7,7 @@ import DashboardSidebar from "@/components/admin/DashboardSidebar";
 import { getResellerNavItems } from "@/components/reseller/navItems";
 import { themeList, aqiqahThemeList, khitanThemeList, birthdayThemeList } from "@/lib/theme";
 import SmartCoverEditor from "@/components/SmartCoverEditor";
+import ThemePreviewPanel from "@/components/ThemePreviewPanel";
 import { MUSIC_LIBRARY } from "@/lib/musicLibrary";
 import styles from "@/styles/dashboard.module.css";
 
@@ -554,6 +555,8 @@ export default function ResellerInvitationsPage() {
                     </option>
                   ))}
                 </select>
+
+                <ThemePreviewPanel category={form.category} themeKey={form.theme} />
 
                 <div className={styles.slugRow}>
                   <input

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import DashboardSidebar from "@/components/admin/DashboardSidebar";
 import { themeList, aqiqahThemeList, khitanThemeList, birthdayThemeList } from "@/lib/theme";
+import ThemePreviewPanel from "@/components/ThemePreviewPanel";
 import styles from "@/styles/dashboard.module.css";
 
 const NAV_ITEMS = [
@@ -365,6 +366,8 @@ export default function InvitationsPage() {
                 </option>
               ))}
             </select>
+
+            <ThemePreviewPanel category={form.category} themeKey={form.theme} />
 
             <input
               type="date"
