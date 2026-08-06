@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { themeList, aqiqahThemeList, khitanThemeList } from "@/lib/theme";
+import ThemePreviewPanel from "@/components/ThemePreviewPanel";
 import SmartCoverEditor from "@/components/SmartCoverEditor";
 import { MUSIC_LIBRARY } from "@/lib/musicLibrary";
 import styles from "@/styles/dashboard.module.css";
@@ -397,6 +398,8 @@ export default function ResellerInvitationEditPage() {
               </option>
             ))}
           </select>
+
+          <ThemePreviewPanel category={form.category} themeKey={form.theme} />
 
           <select
             value={form.is_active ? "active" : "inactive"}

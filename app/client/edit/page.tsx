@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { themeList, aqiqahThemeList, khitanThemeList, birthdayThemeList } from "@/lib/theme";
 import SmartCoverEditor from "@/components/SmartCoverEditor";
+import ThemePreviewPanel from "@/components/ThemePreviewPanel";
 import { MUSIC_LIBRARY } from "@/lib/musicLibrary";
 import styles from "@/styles/dashboard.module.css";
 
@@ -557,6 +558,8 @@ export default function ClientEditPage() {
                   <option key={theme.key} value={theme.key}>{theme.label}</option>
                 ))}
               </select>
+
+              <ThemePreviewPanel category={form.category} themeKey={form.theme} />
 
               <div className={styles.slugRow}>
                 <input
