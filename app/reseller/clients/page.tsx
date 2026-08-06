@@ -6,8 +6,33 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import DashboardSidebar from "@/components/admin/DashboardSidebar";
 import { getResellerNavItems } from "@/components/reseller/navItems";
-import { themeList, aqiqahThemeList, khitanThemeList } from "@/lib/theme";
+import { themeList, aqiqahThemeList, khitanThemeList, birthdayThemeList } from "@/lib/theme";
 import styles from "@/styles/dashboard.module.css";
+
+function toWaNumber(phone: string) {
+  const digits = phone.replace(/\D/g, "");
+  if (digits.startsWith("62")) return digits;
+  if (digits.startsWith("0")) return `62${digits.slice(1)}`;
+  return `62${digits}`;
+}
+
+function categoryForPackageName(packageName: string) {
+  if (aqiqahThemeList.some((theme) => theme.label === packageName)) return "aqiqah";
+  if (khitanThemeList.some((theme) => theme.label === packageName)) return "khitan";
+  if (birthdayThemeList.some((theme) => theme.label === packageName)) return "birthday";
+  return "wedding";
+}
+
+const DATA_CHECKLIST: Record<string, string> = {
+  wedding:
+    "- Nama lengkap mempelai pria & wanita (+ nama orang tua masing-masing)\n- Instagram mempelai (opsional)\n- Tanggal, jam & lokasi Akad\n- Tanggal, jam & lokasi Resepsi (+ link Google Maps)\n- Foto cover & foto mempelai (pria/wanita)\n- Galeri foto\n- Nomor rekening mempelai pria & wanita (untuk amplop digital)\n- Cerita cinta / love story (opsional)\n- Musik latar (opsional)",
+  aqiqah:
+    "- Nama bayi & jenis kelamin\n- Tanggal & tempat lahir\n- Nama ayah & ibu\n- Tanggal, jam & lokasi acara Aqiqah\n- Foto bayi\n- Galeri foto\n- Nomor rekening (untuk amplop digital, opsional)\n- Musik latar (opsional)",
+  khitan:
+    "- Nama anak\n- Tanggal & tempat lahir\n- Nama ayah & ibu\n- Tanggal, jam & lokasi acara Khitan\n- Foto anak\n- Galeri foto\n- Nomor rekening (untuk amplop digital, opsional)\n- Musik latar (opsional)",
+  birthday:
+    "- Nama anak\n- Tanggal & tempat lahir\n- Nama ayah & ibu\n- Tanggal, jam & lokasi acara Ulang Tahun\n- Foto anak\n- Galeri foto\n- Musik latar (opsional)",
+};
 
 type AppUser = {
   id: string;
@@ -67,6 +92,8 @@ export default function ResellerClientsPage() {
     name: string;
     email: string;
     password: string;
+    whatsapp: string;
+    packageName: string;
   } | null>(null);
   const [resettingId, setResettingId] = useState<string | null>(null);
 
@@ -168,7 +195,13 @@ export default function ResellerClientsPage() {
       return;
     }
 
-    setNewClientCredentials({ name: form.name, email: result.email, password: result.password });
+    setNewClientCredentials({
+      name: form.name,
+      email: result.email,
+      password: result.password,
+      whatsapp: form.whatsapp,
+      packageName: form.package_name,
+    });
 
     setForm({
       name: "",
@@ -181,16 +214,27 @@ export default function ResellerClientsPage() {
     if (reseller) fetchData(reseller.id);
   };
 
-  const copyClientCredentials = async () => {
-    if (!newClientCredentials) return;
+  const clientCredentialsMessage = () => {
+    if (!newClientCredentials) return "";
 
     const dashboardBrand = reseller?.package === "reseller_brand" && reseller.brand_active && reseller.brand_name
       ? reseller.brand_name
       : "Vistiq Invitation";
-    const text = `Halo ${newClientCredentials.name}, berikut akun login dashboard undangan Anda di ${dashboardBrand}:\n\nLink: ${window.location.origin}/login\nEmail: ${newClientCredentials.email}\nPassword: ${newClientCredentials.password}\n\nLewat dashboard ini Anda bisa generate link undangan per nama tamu, lihat RSVP, dan edit undangan.`;
+    const category = categoryForPackageName(newClientCredentials.packageName);
+    const checklist = DATA_CHECKLIST[category];
+    return `Halo ${newClientCredentials.name}, berikut akun login dashboard undangan Anda di ${dashboardBrand}:\n\nLink: ${window.location.origin}/login\nEmail: ${newClientCredentials.email}\nPassword: ${newClientCredentials.password}\n\nLewat dashboard ini Anda bisa generate link undangan per nama tamu, lihat RSVP, dan edit undangan.\n\nSupaya undangannya bisa langsung dipakai, mohon siapkan data berikut untuk diisi di dashboard:\n${checklist}\n\nKalau ada pertanyaan, jangan sungkan hubungi kami ya. Terima kasih!`;
+  };
 
-    await navigator.clipboard.writeText(text);
+  const copyClientCredentials = async () => {
+    if (!newClientCredentials) return;
+
+    await navigator.clipboard.writeText(clientCredentialsMessage());
     alert("Pesan berhasil disalin, tinggal paste ke WhatsApp client.");
+  };
+
+  const clientWaLink = () => {
+    if (!newClientCredentials?.whatsapp) return "";
+    return `https://wa.me/${toWaNumber(newClientCredentials.whatsapp)}?text=${encodeURIComponent(clientCredentialsMessage())}`;
   };
 
   const updateClientStatus = async (id: string, status: string) => {
@@ -221,7 +265,13 @@ export default function ResellerClientsPage() {
       return;
     }
 
-    setNewClientCredentials({ name: client.name, email: result.email, password: result.password });
+    setNewClientCredentials({
+      name: client.name,
+      email: result.email,
+      password: result.password,
+      whatsapp: client.whatsapp || "",
+      packageName: client.package_name || "",
+    });
   };
 
   const invitationLabel = (item: Invitation) =>
@@ -291,9 +341,16 @@ export default function ResellerClientsPage() {
                   </p>
                   <p style={{ margin: 0 }}>Email: {newClientCredentials.email}</p>
                   <p style={{ margin: "0 0 12px" }}>Password: {newClientCredentials.password}</p>
-                  <button onClick={copyClientCredentials} className={styles.exportButton}>
-                    Copy Pesan untuk Dikirim ke Client
-                  </button>
+                  <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                    <button onClick={copyClientCredentials} className={styles.exportButton}>
+                      Copy Pesan untuk Dikirim ke Client
+                    </button>
+                    {newClientCredentials.whatsapp && (
+                      <a href={clientWaLink()} target="_blank" className={styles.button}>
+                        Kirim ke WA Otomatis
+                      </a>
+                    )}
+                  </div>
                 </div>
               )}
 
@@ -337,6 +394,11 @@ export default function ResellerClientsPage() {
                   </optgroup>
                   <optgroup label="Khitan">
                     {khitanThemeList.map((theme) => (
+                      <option key={theme.key} value={theme.label}>{theme.label}</option>
+                    ))}
+                  </optgroup>
+                  <optgroup label="Ulang Tahun">
+                    {birthdayThemeList.map((theme) => (
                       <option key={theme.key} value={theme.label}>{theme.label}</option>
                     ))}
                   </optgroup>
