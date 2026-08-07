@@ -4,11 +4,38 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import PhoneMockup from "@/components/PhoneMockup";
 import { themeList, aqiqahThemeList, khitanThemeList, birthdayThemeList, isThemeNew, type ThemeMeta } from "@/lib/theme";
-import { COVER_BY_THEME as WEDDING_COVER_BY_THEME } from "@/lib/demoInvitation";
-import { COVER_BY_THEME as AQIQAH_COVER_BY_THEME } from "@/lib/demoAqiqahInvitation";
-import { COVER_BY_THEME as KHITAN_COVER_BY_THEME } from "@/lib/demoKhitanInvitation";
-import { COVER_BY_THEME as BIRTHDAY_COVER_BY_THEME } from "@/lib/demoBirthdayInvitation";
 import styles from "@/app/demo/demo.module.css";
+
+function CartIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path
+        d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.6L21 8H6"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <circle cx="10" cy="21" r="1.4" fill="currentColor" />
+      <circle cx="18" cy="21" r="1.4" fill="currentColor" />
+    </svg>
+  );
+}
+
+function SendIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path
+        d="M21 3 3 10.5l7 3 3 7L21 3Z"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M21 3 10 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+}
 
 const OCCASIONS = [
   { key: "wedding", label: "Wedding" },
@@ -39,7 +66,7 @@ function useMockupWidth() {
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 640px)");
-    const apply = () => setWidth(mq.matches ? 84 : 150);
+    const apply = () => setWidth(mq.matches ? 128 : 150);
     apply();
     mq.addEventListener("change", apply);
     return () => mq.removeEventListener("change", apply);
@@ -52,20 +79,20 @@ function ThemeCard({
   theme,
   mockupWidth,
   demoPath,
-  coverImage,
-  overlay,
   eyebrowLabel,
   priceLabel,
+  priceWasLabel,
+  discountLabel,
   waNumber,
   brandName,
 }: {
   theme: ThemeMeta;
   mockupWidth: number;
   demoPath: string;
-  coverImage?: string;
-  overlay: { eyebrow: string; title: string; date: string };
   eyebrowLabel: string;
   priceLabel: string;
+  priceWasLabel?: string;
+  discountLabel?: string;
   waNumber: string;
   brandName: string;
 }) {
@@ -76,30 +103,25 @@ function ThemeCard({
       {isThemeNew(theme) && <span className={styles.newBadge}>Baru</span>}
 
       <div className={styles.cardPreview}>
-        <PhoneMockup
-          themeKey={theme.key}
-          width={mockupWidth}
-          demoPath={demoPath}
-          mode="static"
-          coverImage={coverImage}
-          swatch={theme.swatch}
-          label={theme.label}
-          overlay={overlay}
-        />
+        <PhoneMockup themeKey={theme.key} width={mockupWidth} demoPath={demoPath} mode="live" swatch={theme.swatch} label={theme.label} />
+        {priceWasLabel && discountLabel && <span className={styles.discountBadge}>DISC. {discountLabel}</span>}
       </div>
 
       <div className={styles.cardBody}>
         <p className={styles.cardEyebrow}>{eyebrowLabel}</p>
-        <h2 className={styles.cardTitle}>{theme.label}</h2>
+        <h2 className={styles.cardTitle}>
+          <CartIcon /> {theme.label}
+        </h2>
         <p className={styles.cardDesc}>{theme.description}</p>
 
         <div className={styles.priceRow}>
+          {priceWasLabel && <span className={styles.priceWas}>{priceWasLabel}</span>}
           <span className={styles.priceNow}>{priceLabel}</span>
         </div>
 
         <div className={styles.cardActions}>
           <Link href={`${demoPath}/${theme.key}`} className={styles.cardButton}>
-            Lihat Demo
+            <SendIcon /> Lihat Tema
           </Link>
           <a href={`https://wa.me/${waNumber}?text=${orderText}`} target="_blank" className={styles.orderButton}>
             Order
@@ -128,11 +150,15 @@ export default function ThemeBrowser({
   waNumber = "6281371338032",
   brandName = "Vistiq Invitation",
   priceLabel = "Rp 99.000",
+  priceWasLabel,
+  discountLabel,
   defaultOccasion = "wedding",
 }: {
   waNumber?: string;
   brandName?: string;
   priceLabel?: string;
+  priceWasLabel?: string;
+  discountLabel?: string;
   defaultOccasion?: OccasionKey;
 }) {
   const mockupWidth = useMockupWidth();
@@ -192,10 +218,10 @@ export default function ThemeBrowser({
               theme={theme}
               mockupWidth={mockupWidth}
               demoPath="/demo"
-              coverImage={WEDDING_COVER_BY_THEME[theme.key]}
               eyebrowLabel="Indonesian Wedding"
-              overlay={{ eyebrow: "The Wedding Of", title: "Mempelai Pria & Mempelai Wanita", date: "Minggu, 20 September 2026" }}
               priceLabel={priceLabel}
+              priceWasLabel={priceWasLabel}
+              discountLabel={discountLabel}
               waNumber={waNumber}
               brandName={brandName}
             />
@@ -209,10 +235,10 @@ export default function ThemeBrowser({
               theme={theme}
               mockupWidth={mockupWidth}
               demoPath="/demo-khitan"
-              coverImage={KHITAN_COVER_BY_THEME[theme.key]}
               eyebrowLabel="Indonesian Khitan"
-              overlay={{ eyebrow: "Khitanan", title: "Nama Anak", date: "Minggu, 20 September 2026" }}
               priceLabel={priceLabel}
+              priceWasLabel={priceWasLabel}
+              discountLabel={discountLabel}
               waNumber={waNumber}
               brandName={brandName}
             />
@@ -226,10 +252,10 @@ export default function ThemeBrowser({
               theme={theme}
               mockupWidth={mockupWidth}
               demoPath="/demo-akikah"
-              coverImage={AQIQAH_COVER_BY_THEME[theme.key]}
               eyebrowLabel="Indonesian Aqiqah"
-              overlay={{ eyebrow: "Aqiqah & Tasyakuran", title: "Nama Buah Hati", date: "Minggu, 20 September 2026" }}
               priceLabel={priceLabel}
+              priceWasLabel={priceWasLabel}
+              discountLabel={discountLabel}
               waNumber={waNumber}
               brandName={brandName}
             />
@@ -243,10 +269,10 @@ export default function ThemeBrowser({
               theme={theme}
               mockupWidth={mockupWidth}
               demoPath="/demo-ulang-tahun"
-              coverImage={BIRTHDAY_COVER_BY_THEME[theme.key]}
               eyebrowLabel="Kids Birthday"
-              overlay={{ eyebrow: "Birthday Invitation", title: "Putri Kecil — 7 Tahun", date: "Minggu, 20 September 2026" }}
               priceLabel={priceLabel}
+              priceWasLabel={priceWasLabel}
+              discountLabel={discountLabel}
               waNumber={waNumber}
               brandName={brandName}
             />

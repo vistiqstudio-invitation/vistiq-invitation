@@ -19,7 +19,7 @@ export default function DemoPickerPage() {
           lengkap dengan animasi, RSVP, dan galeri fotonya.
         </p>
 
-        <ThemeBrowser />
+        <ThemeBrowser priceWasLabel="Rp 149.000" discountLabel="34%" />
       </div>
     </main>
   );

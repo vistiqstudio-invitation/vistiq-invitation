@@ -216,7 +216,7 @@ export default function ResellerBrandPage() {
         <p className="label">Katalog Produk</p>
         <h2>Semua Tema Ini Bisa Kamu Jual dengan Brand Sendiri</h2>
 
-        <ThemeBrowser />
+        <ThemeBrowser priceWasLabel="Rp 149.000" discountLabel="34%" />
       </section>
 
       <section className="sectionDark">

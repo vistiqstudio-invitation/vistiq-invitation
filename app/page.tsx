@@ -88,7 +88,7 @@ export default function HomePage() {
         <p className="label">Pilihan Tema</p>
         <h2>Tema Premium Siap Pakai</h2>
 
-        <ThemeBrowser />
+        <ThemeBrowser priceWasLabel="Rp 149.000" discountLabel="34%" />
       </section>
 
       <section id="harga" className="section">

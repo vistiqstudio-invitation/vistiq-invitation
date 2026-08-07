@@ -164,7 +164,7 @@ export default function GabungResellerPage() {
         <p className="label">Katalog Produk</p>
         <h2>Semua Tema Ini Siap Kamu Jual</h2>
 
-        <ThemeBrowser />
+        <ThemeBrowser priceWasLabel="Rp 149.000" discountLabel="34%" />
 
         <p className="darkNote">
           Katalog demo ini bisa langsung kamu bagikan ke calon client sebagai
