@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import styles from "./PhoneMockup.module.css";
 
 const DESIGN_WIDTH = 375;
@@ -63,8 +66,46 @@ export default function PhoneMockup({
   const buttonRadius = 2.5 * scale;
   const bezel = Math.max(DESIGN_BEZEL * scale, 1.5);
 
+  // "live" mode's iframe is the expensive part (a whole extra React app,
+  // animations and all) - on a catalog grid with dozens of cards that's
+  // heavy to scroll through if every one loads immediately. Defer mounting
+  // the iframe until the mockup is actually about to enter view.
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isNearView, setIsNearView] = useState(mode !== "live");
+
+  useEffect(() => {
+    if (mode !== "live" || isNearView) return;
+    const node = containerRef.current;
+    if (!node || typeof IntersectionObserver === "undefined") {
+      setIsNearView(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsNearView(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "300px 0px" }
+    );
+    observer.observe(node);
+
+    // Safety net: a backgrounded/prerendered tab can pause intersection
+    // callbacks indefinitely (they resume once foregrounded, but we'd
+    // rather not leave the card permanently blank if that never happens).
+    const fallback = window.setTimeout(() => setIsNearView(true), 4000);
+
+    return () => {
+      observer.disconnect();
+      window.clearTimeout(fallback);
+    };
+  }, [mode, isNearView]);
+
   return (
     <div
+      ref={containerRef}
       className={`${styles.phone} ${className ?? ""}`}
       style={{ ...style, width: width + bezel * 2, padding: bezel, borderRadius: outerRadius }}
     >
@@ -109,7 +150,7 @@ export default function PhoneMockup({
               </span>
             </div>
           )
-        ) : (
+        ) : isNearView ? (
           <iframe
             src={`${demoPath}/${themeKey}`}
             className={styles.frame}
@@ -123,6 +164,22 @@ export default function PhoneMockup({
             loading="lazy"
             scrolling="no"
           />
+        ) : (
+          <div
+            className={styles.staticFallback}
+            style={{
+              background: swatch
+                ? `linear-gradient(155deg, ${swatch[0]}, ${swatch[1]})`
+                : "#1c1c1e",
+            }}
+          >
+            <span
+              className={styles.staticFallbackLabel}
+              style={{ fontSize: Math.max(width * 0.09, 13), color: swatch ? swatch[1] : "#fff" }}
+            >
+              {label || themeKey}
+            </span>
+          </div>
         )}
 
         {mode === "static" && overlay && (
