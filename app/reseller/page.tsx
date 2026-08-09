@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 import DashboardSidebar from "@/components/admin/DashboardSidebar";
 import ChangePasswordCard from "@/components/dashboard/ChangePasswordCard";
 import { getResellerNavItems } from "@/components/reseller/navItems";
+import CustomDomainCard from "@/components/reseller/CustomDomainCard";
 import styles from "@/styles/dashboard.module.css";
 
 const WA_NUMBER = "6281371338032";
@@ -30,6 +31,7 @@ type Reseller = {
   package?: "reseller" | "reseller_brand";
   starting_price?: number | null;
   brand_expires_at?: string | null;
+  custom_domain?: string | null;
 };
 
 const LOGO_BUCKET = "invitation-assets";
@@ -397,12 +399,16 @@ export default function ResellerPage() {
             ) : null}
 
             {brandActive && (
+              <CustomDomainCard initialDomain={reseller.custom_domain} />
+            )}
+
+            {brandActive && (
               <section className={styles.formCard}>
                 <h2 className={styles.sectionTitle}>Landing Page Anda</h2>
                 <p style={{ margin: "0 0 16px", fontSize: 13.5, color: "#64748b" }}>
                   Halaman promosi lengkap dengan nama, logo, dan harga Anda sendiri - tombol
                   Order akan chat langsung ke WhatsApp Anda, bukan ke Vistiq. Ini juga bisa
-                  dibuka lewat menu "Landing Page" di samping. Bagikan link ini ke calon client Anda.
+                  dibuka lewat menu &quot;Landing Page&quot; di samping. Bagikan link ini ke calon client Anda.
                 </p>
 
                 <div className={styles.linkBox}>
