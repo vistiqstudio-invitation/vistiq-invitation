@@ -32,6 +32,7 @@ type Reseller = {
   starting_price?: number | null;
   brand_expires_at?: string | null;
   custom_domain?: string | null;
+  free_subdomain?: string | null;
 };
 
 const LOGO_BUCKET = "invitation-assets";
@@ -399,7 +400,10 @@ export default function ResellerPage() {
             ) : null}
 
             {brandActive && (
-              <CustomDomainCard initialDomain={reseller.custom_domain} />
+              <CustomDomainCard
+                initialDomain={reseller.custom_domain}
+                initialSubdomain={reseller.free_subdomain}
+              />
             )}
 
             {brandActive && (
