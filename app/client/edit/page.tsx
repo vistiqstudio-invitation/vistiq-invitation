@@ -19,6 +19,8 @@ const initialForm = {
   theme: "luxury-gold",
   groom_name: "",
   bride_name: "",
+  groom_nickname: "",
+  bride_nickname: "",
   groom_parent: "",
   bride_parent: "",
   groom_instagram: "",
@@ -140,11 +142,6 @@ export default function ClientEditPage() {
         .select("*")
         .eq("user_id", authUser.id);
 
-      // A real fetch failure (network blip, RLS edge case) must NOT fall
-      // through to the "no client account yet" branch below - that branch
-      // renders the create-invitation form, and since creation has no
-      // dedupe check, a client who already has an invitation could end up
-      // submitting a second one.
       if (clientsError) {
         setLoadError(true);
         setLoading(false);
@@ -180,11 +177,19 @@ export default function ClientEditPage() {
 
       setForm({
         category:
-          invitation.category === "aqiqah" ? "aqiqah" : invitation.category === "khitan" ? "khitan" : "wedding",
+          invitation.category === "aqiqah"
+            ? "aqiqah"
+            : invitation.category === "khitan"
+            ? "khitan"
+            : invitation.category === "birthday"
+            ? "birthday"
+            : "wedding",
         slug: invitation.slug || "",
         theme: invitation.theme || "",
         groom_name: invitation.groom_name || "",
         bride_name: invitation.bride_name || "",
+        groom_nickname: invitation.groom_nickname || "",
+        bride_nickname: invitation.bride_nickname || "",
         groom_parent: invitation.groom_parent || "",
         bride_parent: invitation.bride_parent || "",
         groom_instagram: invitation.groom_instagram || "",
@@ -306,9 +311,6 @@ export default function ClientEditPage() {
     set("slug", makeSlug(text));
   };
 
-  // Before the invitation row exists (client is creating, not editing yet)
-  // there's no invitation id to scope the upload path to - draft photos
-  // land under the client's own folder instead (see migration 029).
   const uploadToStorage = async (file: File, folder: string) => {
     if (!invitationId && !clientId) {
       alert("Akun client belum terhubung.");
@@ -380,11 +382,9 @@ export default function ClientEditPage() {
   };
 
   const saveData = async () => {
-    // Date-type columns reject an empty string ("" from an untouched
-    // <input type="date">), and baby_gender's check constraint only
-    // allows 'L'/'P' or null, never "" - null is the correct "not set"
-    // value for all of these.
-    const cleanDates = {
+    const cleanFields = {
+      groom_nickname: form.groom_nickname.trim() || null,
+      bride_nickname: form.bride_nickname.trim() || null,
       akad_date: form.akad_date || null,
       resepsi_date: form.resepsi_date || null,
       aqiqah_date: form.aqiqah_date || null,
@@ -397,7 +397,7 @@ export default function ClientEditPage() {
 
       const { error } = await supabase
         .from("invitations")
-        .update({ ...form, ...cleanDates })
+        .update({ ...form, ...cleanFields })
         .eq("id", invitationId);
 
       setSaving(false);
@@ -411,7 +411,6 @@ export default function ClientEditPage() {
       return;
     }
 
-    // Creating for the first time - a client only ever gets one invitation.
     if (!clientId) {
       alert("Akun client belum terhubung.");
       return;
@@ -432,9 +431,6 @@ export default function ClientEditPage() {
       return;
     }
 
-    // Always normalize on save - typing directly into the slug field
-    // (instead of clicking "Auto") used to save raw text as-is (spaces,
-    // capital letters, "&"), producing broken-looking share links.
     const cleanSlug = makeSlug(form.slug);
     if (!cleanSlug) {
       alert("Slug tidak valid. Gunakan huruf atau angka.");
@@ -443,14 +439,6 @@ export default function ClientEditPage() {
 
     setSaving(true);
 
-    // Only auto-activate if this client's own account was actually born
-    // from a completed Midtrans payment (checkout_orders.provision_status
-    // only ever becomes "completed" after provisionPaidOrder verifies real
-    // payment - a client can't fake this row themselves, see migration
-    // 032). A client added manually by a reseller via the bank-transfer
-    // flow has no such row and isn't necessarily paid yet, so their
-    // invitation is created inactive and waits for the owner/reseller to
-    // confirm payment and activate it, same as every other creation path.
     const {
       data: { user: authUser },
     } = await supabase.auth.getUser();
@@ -469,7 +457,13 @@ export default function ClientEditPage() {
 
     const { data: inserted, error } = await supabase
       .from("invitations")
-      .insert({ ...form, ...cleanDates, slug: cleanSlug, client_id: clientId, is_active: shouldAutoActivate })
+      .insert({
+        ...form,
+        ...cleanFields,
+        slug: cleanSlug,
+        client_id: clientId,
+        is_active: shouldAutoActivate,
+      })
       .select("id")
       .single();
 
@@ -795,6 +789,20 @@ export default function ClientEditPage() {
           />
 
           <input
+            placeholder="Nama Panggilan Pria (opsional)"
+            value={form.groom_nickname}
+            onChange={(e) => set("groom_nickname", e.target.value)}
+            className={styles.input}
+          />
+
+          <input
+            placeholder="Nama Panggilan Wanita (opsional)"
+            value={form.bride_nickname}
+            onChange={(e) => set("bride_nickname", e.target.value)}
+            className={styles.input}
+          />
+
+          <input
             placeholder="Putra dari (nama orang tua pria)"
             value={form.groom_parent}
             onChange={(e) => set("groom_parent", e.target.value)}
@@ -927,6 +935,9 @@ export default function ClientEditPage() {
         </div>
 
         <h2 className={styles.editSectionTitle}>Love Story</h2>
+        <p className={styles.helpText} style={{ marginTop: -8 }}>
+          Bisa diisi sampai 5 bagian. Kosongkan part yang tidak digunakan.
+        </p>
 
         {[1, 2, 3, 4, 5].map((n) => {
           const yearKey = `story_${n}_year` as keyof FormState;
@@ -937,23 +948,23 @@ export default function ClientEditPage() {
             <div key={n} className={styles.storyBlock}>
               <div className={styles.storyGrid}>
                 <input
-                  placeholder="Tahun / Label, contoh: 2021"
-                  value={form[yearKey]}
+                  placeholder={`Part ${n} - Tahun / Label, contoh: 2021`}
+                  value={form[yearKey] as string}
                   onChange={(e) => set(yearKey, e.target.value)}
                   className={styles.input}
                 />
 
                 <input
-                  placeholder="Judul momen, contoh: Pertama Bertemu"
-                  value={form[titleKey]}
+                  placeholder={`Part ${n} - Judul momen`}
+                  value={form[titleKey] as string}
                   onChange={(e) => set(titleKey, e.target.value)}
                   className={styles.input}
                 />
               </div>
 
               <textarea
-                placeholder="Ceritakan momen ini..."
-                value={form[descKey]}
+                placeholder={`Part ${n} - Ceritakan momen ini...`}
+                value={form[descKey] as string}
                 onChange={(e) => set(descKey, e.target.value)}
                 className={styles.textarea}
               />
@@ -1040,7 +1051,11 @@ export default function ClientEditPage() {
         <div className={styles.uploadGrid}>
           <UploadBox
             title={
-              form.category === "aqiqah" ? "Foto Bayi" : form.category === "khitan" ? "Foto Anak" : "Foto Cover"
+              form.category === "aqiqah"
+                ? "Foto Bayi"
+                : form.category === "khitan" || form.category === "birthday"
+                ? "Foto Anak"
+                : "Foto Cover"
             }
             value={form.cover_photo}
             onUpload={(file) => uploadSingleFile(file, "cover_photo")}
@@ -1064,19 +1079,12 @@ export default function ClientEditPage() {
         </div>
 
         {form.category === "wedding" && form.cover_photo && (
-
           <SmartCoverEditor
-
             value={form.cover_photo}
-
             onChange={(value) => set("cover_photo", value)}
-
             names={[form.groom_name, form.bride_name].filter(Boolean).join(" & ")}
-
           />
-
         )}
-
 
         <h2 className={styles.editSectionTitle}>Galeri Foto</h2>
 
