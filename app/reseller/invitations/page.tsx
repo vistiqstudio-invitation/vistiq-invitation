@@ -96,6 +96,12 @@ const initialForm = {
   story_3_year: "",
   story_3_title: "",
   story_3_desc: "",
+  story_4_year: "",
+  story_4_title: "",
+  story_4_desc: "",
+  story_5_year: "",
+  story_5_title: "",
+  story_5_desc: "",
 
   groom_bank_name: "",
   groom_bank_account: "",
@@ -932,7 +938,7 @@ export default function ResellerInvitationsPage() {
 
               <h2 className={styles.editSectionTitle}>Love Story</h2>
 
-              {[1, 2, 3].map((n) => {
+              {[1, 2, 3, 4, 5].map((n) => {
                 const yearKey = `story_${n}_year` as keyof FormState;
                 const titleKey = `story_${n}_title` as keyof FormState;
                 const descKey = `story_${n}_desc` as keyof FormState;
