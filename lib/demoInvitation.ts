@@ -492,16 +492,28 @@ export function getDemoInvitation(theme: string): InvitationData {
           "Kami dipertemukan dalam sebuah kesempatan yang tidak pernah kami sangka sebelumnya.",
       },
       {
+        year: "2022",
+        title: "Mulai Mengenal",
+        description:
+          "Percakapan sederhana membawa kami untuk saling mengenal, memahami, dan menemukan banyak kesamaan.",
+      },
+      {
         year: "2023",
         title: "Menjalin Hubungan",
         description:
-          "Setelah saling mengenal lebih dekat, kami memutuskan untuk berjalan bersama.",
+          "Setelah semakin dekat, kami memutuskan untuk berjalan bersama dan menjaga hubungan ini dengan serius.",
+      },
+      {
+        year: "2025",
+        title: "Hari Lamaran",
+        description:
+          "Dengan restu kedua keluarga, kami melangkah ke tahap baru melalui sebuah lamaran yang hangat dan penuh doa.",
       },
       {
         year: "2026",
         title: "Menuju Pernikahan",
         description:
-          "Dengan restu kedua orang tua, kami memutuskan mengikat janji suci pernikahan.",
+          "Kini kami siap mengikat janji suci dan memulai perjalanan baru sebagai pasangan seumur hidup.",
       },
     ],
 
