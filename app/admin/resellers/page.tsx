@@ -39,7 +39,7 @@ type CreatedCredentials = {
 };
 
 const PACKAGE_LABELS: Record<string, string> = {
-  reseller: "Reseller (40%)",
+  reseller: "Reseller (80% reseller / 20% fee platform)",
   reseller_brand: "Reseller Brand - White Label (100%)",
 };
 
@@ -61,7 +61,7 @@ function brandExpiryStatus(reseller: Reseller): { label: string; color: string }
 }
 
 const PACKAGE_DEFAULT_COMMISSION: Record<string, number> = {
-  reseller: 40,
+  reseller: 80,
   reseller_brand: 100,
 };
 
@@ -77,7 +77,7 @@ export default function ResellersPage() {
     email: "",
     whatsapp: "",
     package: "reseller",
-    commission_percent: 40,
+    commission_percent: 80,
     status: "active",
   });
 
@@ -228,7 +228,7 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! ðŸš
       email: "",
       whatsapp: "",
       package: "reseller",
-      commission_percent: 40,
+      commission_percent: 80,
       status: "active",
     });
 
@@ -253,7 +253,7 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! ðŸš
       .eq("id", id);
 
     if (error) {
-      alert(`Gagal mengubah komisi: ${error.message}`);
+      alert(`Gagal mengubah bagian reseller: ${error.message}`);
       return;
     }
 
@@ -397,7 +397,7 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! ðŸš
             <p className={styles.label}>OWNER MENU</p>
             <h1 className={styles.title}>Data Reseller</h1>
             <p className={styles.subtitle}>
-              Kelola reseller, status, dan persentase komisi.
+              Kelola reseller, status, dan persentase bagian reseller.
             </p>
           </div>
 
@@ -525,13 +525,13 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! ðŸš
               }
               className={styles.input}
             >
-              <option value="reseller">Reseller (Rp 149.000 sekali bayar, komisi 40%)</option>
+              <option value="reseller">Reseller (Rp 59.000 sekali bayar, 80% reseller / fee platform 20%)</option>
               <option value="reseller_brand">Reseller Brand - White Label (Rp 59.000/bulan, 100%)</option>
             </select>
 
             <input
               type="number"
-              placeholder="Komisi (%)"
+              placeholder="Bagian Reseller (%)"
               value={form.commission_percent}
               onChange={(e) =>
                 setForm({
@@ -591,6 +591,7 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! ðŸš
                       updateCommission(reseller.id, Number(e.target.value))
                     }
                     className={`${styles.smallInput} ${styles.resellerCommission}`}
+                    title="Bagian reseller (%)"
                   />
 
                   <label className={styles.resellerBrand}>
