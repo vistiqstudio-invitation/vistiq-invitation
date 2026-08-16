@@ -39,8 +39,8 @@ export default function HomePage() {
 
             <CheckoutButton packageId="client" label="Order Sekarang" production={midtransProduction} />
 
-            <Link href="/gabung-affiliate" className="affiliateButton">
-              Gabung Affiliate
+            <Link href="/gabung-reseller" className="affiliateButton">
+              Gabung Reseller
             </Link>
           </div>
         </div>
