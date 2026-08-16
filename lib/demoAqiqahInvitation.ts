@@ -13,24 +13,31 @@ const MUSIC_BY_THEME: Record<string, string> = {
   "akikah-damai": "/music/akikah-damai.mp3",
 };
 
-// akikah-nur has no owner-supplied baby photography yet - unlike the
-// wedding demo set (lib/demoInvitation.ts), there's no reasonable
-// placeholder among the existing assets (they're all adult couple photos,
-// which would misrepresent this as a baby photo), so it stays null and
-// relies on its theme's illustrated fallback. akikah-zaitun's photos are
-// real, user-supplied newborn photography (see themes/akikah-zaitun for
-// sourcing notes).
+// Every aqiqah demo theme gets its own baby photo so previews are visually
+// distinct. Zaitun and Damai keep their existing photo sets; the other five
+// use the new dedicated demo assets.
 export const COVER_BY_THEME: Record<string, string> = {
+  "akikah-nur": "/photos/akikah-nur-demo.webp",
   "akikah-zaitun": "/photos/akikah-zaitun-cover.jpg",
+  "akikah-ceria": "/photos/akikah-ceria-demo.webp",
+  "akikah-anugerah": "/photos/akikah-anugerah-demo.webp",
+  "akikah-safir": "/photos/akikah-safir-demo.webp",
+  "akikah-kasih": "/photos/akikah-kasih-demo.webp",
   "akikah-damai": "/photos/akikah-damai-cover.jpg",
 };
 
 const BABY_PHOTO_BY_THEME: Record<string, string> = {
+  "akikah-nur": "/photos/akikah-nur-demo.webp",
   "akikah-zaitun": "/photos/akikah-zaitun-baby.jpg",
+  "akikah-ceria": "/photos/akikah-ceria-demo.webp",
+  "akikah-anugerah": "/photos/akikah-anugerah-demo.webp",
+  "akikah-safir": "/photos/akikah-safir-demo.webp",
+  "akikah-kasih": "/photos/akikah-kasih-demo.webp",
   "akikah-damai": "/photos/akikah-damai-baby.jpg",
 };
 
 const GALLERY_BY_THEME: Record<string, string[]> = {
+  "akikah-nur": ["/photos/akikah-nur-demo.webp"],
   "akikah-zaitun": [
     "/photos/akikah-zaitun-gallery-1.jpg",
     "/photos/akikah-zaitun-gallery-2.jpg",
@@ -39,6 +46,10 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
     "/photos/akikah-zaitun-gallery-5.jpg",
     "/photos/akikah-zaitun-gallery-6.jpg",
   ],
+  "akikah-ceria": ["/photos/akikah-ceria-demo.webp"],
+  "akikah-anugerah": ["/photos/akikah-anugerah-demo.webp"],
+  "akikah-safir": ["/photos/akikah-safir-demo.webp"],
+  "akikah-kasih": ["/photos/akikah-kasih-demo.webp"],
   "akikah-damai": [
     "/photos/akikah-damai-gallery-1.jpg",
     "/photos/akikah-damai-gallery-2.jpg",
