@@ -86,7 +86,7 @@ function toRawDate(value: string | null, time: string) {
 }
 
 function normalizeInvitation(raw: Record<string, any>): InvitationData {
-  const story: StoryItem[] = [1, 2, 3]
+  const story: StoryItem[] = [1, 2, 3, 4, 5]
     .map((n) => ({
       year: raw[`story_${n}_year`] || "",
       title: raw[`story_${n}_title`],
