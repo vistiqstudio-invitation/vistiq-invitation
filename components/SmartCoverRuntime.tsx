@@ -177,6 +177,34 @@ function applyTextPosition(
   }
 }
 
+function fitCoverHeading(heading: HTMLElement, title?: string) {
+  const textLength = (title ?? heading.textContent ?? "").trim().length;
+
+  heading.style.setProperty("max-width", "100%", "important");
+  heading.style.setProperty("overflow-wrap", "anywhere", "important");
+  heading.style.setProperty("text-wrap", "balance", "important");
+
+  // Long full names (including academic titles) need a smaller, calmer
+  // typescale on narrow invitation covers. Keep each theme's original size
+  // for short names and only intervene when wrapping would otherwise collide
+  // with the portrait or the guest block.
+  if (textLength > 38) {
+    heading.style.setProperty(
+      "font-size",
+      "clamp(16px, 4.2vw, 25px)",
+      "important"
+    );
+    heading.style.setProperty("line-height", "1.18", "important");
+  } else if (textLength > 28) {
+    heading.style.setProperty(
+      "font-size",
+      "clamp(18px, 4.8vw, 30px)",
+      "important"
+    );
+    heading.style.setProperty("line-height", "1.16", "important");
+  }
+}
+
 export default function SmartCoverRuntime({
   coverImage,
   title,
@@ -241,6 +269,7 @@ export default function SmartCoverRuntime({
 
       const heading = textRoot?.querySelector<HTMLElement>("h1, h2, h3") ??
         (textRoot?.matches("h1, h2, h3") ? textRoot : null);
+      const headingCss = heading?.style.cssText;
       const lightOverlay = heading
         ? colorIsDark(window.getComputedStyle(heading).color)
         : false;
@@ -251,14 +280,22 @@ export default function SmartCoverRuntime({
       );
       host.appendChild(overlay);
 
-      if (textRoot) {
+      // A number of themes intentionally place the couple name between a
+      // portrait and the date. Repositioning the bare heading absolutely
+      // pulls it out of that layout and makes it overlap the portrait. Only
+      // move a real text container; leave standalone headings in the theme's
+      // document flow.
+      if (textRoot && !textRoot.matches("h1, h2, h3")) {
         applyTextPosition(textRoot, settings.textPosition, mobile);
       }
+
+      if (heading) fitCoverHeading(heading, title);
 
       restoreCurrent = () => {
         image.style.cssText = imageCss;
         host.style.cssText = hostCss;
         if (textRoot && textCss !== undefined) textRoot.style.cssText = textCss;
+        if (heading && headingCss !== undefined) heading.style.cssText = headingCss;
         overlay.remove();
       };
     };
