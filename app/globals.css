@@ -34,3 +34,37 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Keep the existing homepage layout while the Reseller commercial model is
+   now Rp59.000 once + unlimited sales + 20% platform fee per client sale. */
+.priceGrid > .priceCard.featured > strong {
+  font-size: 0 !important;
+}
+
+.priceGrid > .priceCard.featured > strong::before {
+  content: "Rp 59.000";
+  font-size: 30px;
+}
+
+.priceGrid > .priceCard.featured > strong::after {
+  content: " /sekali bayar";
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255,255,255,.8);
+}
+
+.priceGrid > .priceCard.featured > strong > span {
+  display: none !important;
+}
+
+.priceGrid > .priceCard.featured > p {
+  font-size: 0 !important;
+}
+
+.priceGrid > .priceCard.featured > p::after {
+  content: "Jual undangan digital dengan brand Vistiq tanpa batas. Join Rp59.000 sekali bayar; pada setiap transaksi client, 80% menjadi bagian reseller dan 20% menjadi fee platform.";
+  display: block;
+  font-size: 16px;
+  line-height: 1.7;
+  color: rgba(255,255,255,.85);
+}
