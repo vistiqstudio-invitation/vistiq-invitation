@@ -9,24 +9,37 @@ const MUSIC_BY_THEME: Record<string, string> = {
   "khitan-elang": "/music/khitan-elang.mp3",
 };
 
-export const COVER_BY_THEME: Record<string, string> = {
-  "khitan-warna": "/photos/khitan-warna-cover.jpg",
-};
+const KHITAN_THEMES = [
+  "khitan-warna",
+  "khitan-ksatria",
+  "khitan-raja",
+  "khitan-berani",
+  "khitan-petualang",
+  "khitan-elang",
+] as const;
 
-const CHILD_PHOTO_BY_THEME: Record<string, string> = {
-  "khitan-warna": "/photos/khitan-warna-child.jpg",
-};
+const SHARED_COVER = "/photos/khitan-warna-cover.jpg";
+const SHARED_CHILD_PHOTO = "/photos/khitan-warna-child.jpg";
+const SHARED_GALLERY = [
+  "/photos/khitan-warna-gallery-1.jpg",
+  "/photos/khitan-warna-gallery-2.jpg",
+  "/photos/khitan-warna-gallery-3.jpg",
+  "/photos/khitan-warna-gallery-4.jpg",
+  "/photos/khitan-warna-gallery-5.jpg",
+  "/photos/khitan-warna-gallery-6.jpg",
+];
 
-const GALLERY_BY_THEME: Record<string, string[]> = {
-  "khitan-warna": [
-    "/photos/khitan-warna-gallery-1.jpg",
-    "/photos/khitan-warna-gallery-2.jpg",
-    "/photos/khitan-warna-gallery-3.jpg",
-    "/photos/khitan-warna-gallery-4.jpg",
-    "/photos/khitan-warna-gallery-5.jpg",
-    "/photos/khitan-warna-gallery-6.jpg",
-  ],
-};
+export const COVER_BY_THEME: Record<string, string> = Object.fromEntries(
+  KHITAN_THEMES.map((theme) => [theme, SHARED_COVER]),
+);
+
+const CHILD_PHOTO_BY_THEME: Record<string, string> = Object.fromEntries(
+  KHITAN_THEMES.map((theme) => [theme, SHARED_CHILD_PHOTO]),
+);
+
+const GALLERY_BY_THEME: Record<string, string[]> = Object.fromEntries(
+  KHITAN_THEMES.map((theme) => [theme, SHARED_GALLERY]),
+);
 
 // One shared sample khitan invitation used to demo every khitan theme, same
 // pattern as getDemoInvitation()/getDemoAqiqahInvitation().
