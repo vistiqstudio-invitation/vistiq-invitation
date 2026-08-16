@@ -8,8 +8,8 @@ export const PAYMENT_PACKAGES = {
   reseller: {
     code: "RS",
     name: "Paket Reseller",
-    description: "Akses dashboard reseller selamanya",
-    amount: 149000,
+    description: "Akses dashboard reseller selamanya, jual undangan tanpa batas",
+    amount: 59000,
   },
   "reseller-brand": {
     code: "RB",
