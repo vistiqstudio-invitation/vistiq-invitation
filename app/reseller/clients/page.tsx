@@ -57,7 +57,18 @@ type Client = {
   whatsapp?: string;
   package_name?: string;
   status?: string;
+  sale_price?: number;
   created_at: string;
+};
+
+type Transaction = {
+  id: string;
+  client_id?: string | null;
+  amount: number;
+  commission: number;
+  status?: string;
+  midtrans_redirect_url?: string | null;
+  payment_link_expires_at?: string | null;
 };
 
 type Invitation = {
@@ -70,6 +81,17 @@ type Invitation = {
   client_id?: string;
 };
 
+type NewClientInfo = {
+  name: string;
+  email: string;
+  password: string;
+  whatsapp: string;
+  packageName: string;
+  salePrice: number;
+  paymentUrl?: string | null;
+  paymentError?: string | null;
+};
+
 export default function ResellerClientsPage() {
   const router = useRouter();
   const supabase = createClient();
@@ -77,6 +99,7 @@ export default function ResellerClientsPage() {
   const [user, setUser] = useState<AppUser | null>(null);
   const [reseller, setReseller] = useState<Reseller | null>(null);
   const [clients, setClients] = useState<Client[]>([]);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [invitations, setInvitations] = useState<Invitation[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -85,49 +108,51 @@ export default function ResellerClientsPage() {
     email: "",
     whatsapp: "",
     package_name: "Luxury Gold",
+    sale_price: "100000",
     status: "active",
   });
   const [addingClient, setAddingClient] = useState(false);
-  const [newClientCredentials, setNewClientCredentials] = useState<{
-    name: string;
-    email: string;
-    password: string;
-    whatsapp: string;
-    packageName: string;
-  } | null>(null);
+  const [newClientCredentials, setNewClientCredentials] = useState<NewClientInfo | null>(null);
   const [resettingId, setResettingId] = useState<string | null>(null);
 
   const fetchData = async (resellerId: string) => {
     const { data: clientsData } = await supabase
       .from("clients")
-      .select("id, user_id, name, email, whatsapp, package_name, status, created_at")
+      .select("id, user_id, name, email, whatsapp, package_name, status, sale_price, created_at")
       .eq("reseller_id", resellerId)
       .order("created_at", { ascending: false });
 
     setClients(clientsData ?? []);
 
     const clientIds = (clientsData ?? []).map((c) => c.id);
-
     if (clientIds.length === 0) {
+      setTransactions([]);
       setInvitations([]);
       setLoading(false);
       return;
     }
 
-    const { data: invitationsData } = await supabase
-      .from("invitations")
-      .select("id, slug, category, groom_name, bride_name, baby_name, client_id")
-      .in("client_id", clientIds);
+    const [{ data: invitationsData }, { data: transactionData }] = await Promise.all([
+      supabase
+        .from("invitations")
+        .select("id, slug, category, groom_name, bride_name, baby_name, client_id")
+        .in("client_id", clientIds),
+      supabase
+        .from("transactions")
+        .select("id, client_id, amount, commission, status, midtrans_redirect_url, payment_link_expires_at")
+        .eq("reseller_id", resellerId)
+        .in("client_id", clientIds)
+        .order("created_at", { ascending: false }),
+    ]);
 
     setInvitations(invitationsData ?? []);
+    setTransactions(transactionData ?? []);
     setLoading(false);
   };
 
   useEffect(() => {
     const loadUser = async () => {
-      const {
-        data: { user: authUser },
-      } = await supabase.auth.getUser();
+      const { data: { user: authUser } } = await supabase.auth.getUser();
 
       if (!authUser) {
         router.push("/login");
@@ -178,16 +203,24 @@ export default function ResellerClientsPage() {
       return;
     }
 
+    const salePrice = Math.round(Number(form.sale_price));
+    if (reseller.package !== "reseller_brand" && (!Number.isFinite(salePrice) || salePrice < 1000)) {
+      alert("Harga jual client wajib diisi dengan benar.");
+      return;
+    }
+
     setAddingClient(true);
 
     const response = await fetch("/api/create-client", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
+      body: JSON.stringify({
+        ...form,
+        sale_price: reseller.package === "reseller_brand" ? salePrice || 100000 : salePrice,
+      }),
     });
 
     const result = await response.json();
-
     setAddingClient(false);
 
     if (!response.ok) {
@@ -201,6 +234,9 @@ export default function ResellerClientsPage() {
       password: result.password,
       whatsapp: form.whatsapp,
       packageName: form.package_name,
+      salePrice: Number(result.salePrice || salePrice || 100000),
+      paymentUrl: result.paymentUrl ?? null,
+      paymentError: result.paymentError ?? null,
     });
 
     setForm({
@@ -208,10 +244,11 @@ export default function ResellerClientsPage() {
       email: "",
       whatsapp: "",
       package_name: "Luxury Gold",
+      sale_price: "100000",
       status: "active",
     });
 
-    if (reseller) fetchData(reseller.id);
+    fetchData(reseller.id);
   };
 
   const clientCredentialsMessage = () => {
@@ -222,12 +259,16 @@ export default function ResellerClientsPage() {
       : "Vistiq Invitation";
     const category = categoryForPackageName(newClientCredentials.packageName);
     const checklist = DATA_CHECKLIST[category];
+
+    if (reseller?.package !== "reseller_brand" && newClientCredentials.paymentUrl) {
+      return `Halo ${newClientCredentials.name}, pesanan undangan digital Anda sudah dibuat.\n\nTotal pembayaran: Rp ${newClientCredentials.salePrice.toLocaleString("id-ID")}\nBayar aman melalui Midtrans di link berikut:\n${newClientCredentials.paymentUrl}\n\nSetelah pembayaran berhasil, undangan akan aktif otomatis dan akun dashboard bisa digunakan.\n\nAkun dashboard:\nLink: ${window.location.origin}/login\nEmail: ${newClientCredentials.email}\nPassword: ${newClientCredentials.password}\n\nData yang perlu disiapkan:\n${checklist}\n\nTerima kasih!`;
+    }
+
     return `Halo ${newClientCredentials.name}, berikut akun login dashboard undangan Anda di ${dashboardBrand}:\n\nLink: ${window.location.origin}/login\nEmail: ${newClientCredentials.email}\nPassword: ${newClientCredentials.password}\n\nLewat dashboard ini Anda bisa generate link undangan per nama tamu, lihat RSVP, dan edit undangan.\n\nSupaya undangannya bisa langsung dipakai, mohon siapkan data berikut untuk diisi di dashboard:\n${checklist}\n\nKalau ada pertanyaan, jangan sungkan hubungi kami ya. Terima kasih!`;
   };
 
   const copyClientCredentials = async () => {
     if (!newClientCredentials) return;
-
     await navigator.clipboard.writeText(clientCredentialsMessage());
     alert("Pesan berhasil disalin, tinggal paste ke WhatsApp client.");
   };
@@ -237,14 +278,23 @@ export default function ResellerClientsPage() {
     return `https://wa.me/${toWaNumber(newClientCredentials.whatsapp)}?text=${encodeURIComponent(clientCredentialsMessage())}`;
   };
 
-  const updateClientStatus = async (id: string, status: string) => {
-    const { error } = await supabase.from("clients").update({ status }).eq("id", id);
+  const paymentWaLink = (client: Client, transaction?: Transaction) => {
+    if (!client.whatsapp || !transaction?.midtrans_redirect_url) return "";
+    const message = `Halo ${client.name}, berikut link pembayaran undangan digital Anda.\n\nTotal: Rp ${Number(transaction.amount).toLocaleString("id-ID")}\nPembayaran melalui Midtrans:\n${transaction.midtrans_redirect_url}\n\nSetelah pembayaran berhasil, undangan akan aktif otomatis. Terima kasih!`;
+    return `https://wa.me/${toWaNumber(client.whatsapp)}?text=${encodeURIComponent(message)}`;
+  };
 
+  const updateClientStatus = async (id: string, status: string) => {
+    if (reseller?.package !== "reseller_brand") {
+      alert("Status client Reseller standar mengikuti pembayaran Midtrans dan tidak dapat diubah manual.");
+      return;
+    }
+
+    const { error } = await supabase.from("clients").update({ status }).eq("id", id);
     if (error) {
       alert(`Gagal mengubah status client: ${error.message}`);
       return;
     }
-
     if (reseller) fetchData(reseller.id);
   };
 
@@ -271,6 +321,7 @@ export default function ResellerClientsPage() {
       password: result.password,
       whatsapp: client.whatsapp || "",
       packageName: client.package_name || "",
+      salePrice: Number(client.sale_price || 100000),
     });
   };
 
@@ -309,7 +360,9 @@ export default function ResellerClientsPage() {
             <p className={styles.label}>{brandName ? `${brandName} DASHBOARD` : "RESELLER DASHBOARD"}</p>
             <h1 className={styles.title}>Daftar Client</h1>
             <p className={styles.subtitle}>
-              Tambah client baru dan kelola client yang sudah ada.
+              {reseller?.package === "reseller_brand"
+                ? "Tambah client baru dan kelola client yang sudah ada."
+                : "Tentukan harga jual, kirim link Midtrans ke client, dan pembayaran akan tercatat otomatis."}
             </p>
           </div>
 
@@ -329,24 +382,39 @@ export default function ResellerClientsPage() {
             <section className={styles.formCard}>
               <h2 className={styles.sectionTitle}>Tambah Client Baru</h2>
               <p style={{ marginTop: -8, marginBottom: 16, fontSize: 13, opacity: 0.75 }}>
-                Email dipakai untuk membuatkan akun login dashboard client secara
-                otomatis - client bisa generate link tamu, lihat RSVP, dan edit
-                undangan sendiri.
+                {reseller.package === "reseller_brand"
+                  ? "Email dipakai untuk membuat akun login dashboard client secara otomatis."
+                  : "Setelah disimpan, sistem otomatis membuat tagihan Midtrans. Client berstatus Pending sampai pembayaran berhasil."}
               </p>
 
               {newClientCredentials && (
                 <div className={styles.linkBox} style={{ marginBottom: 16 }}>
-                  <p style={{ margin: "0 0 8px", fontWeight: 600 }}>
-                    Kirim akun login ini ke {newClientCredentials.name}:
+                  <p style={{ margin: "0 0 8px", fontWeight: 700 }}>
+                    Client berhasil dibuat: {newClientCredentials.name}
                   </p>
+                  {reseller.package !== "reseller_brand" && (
+                    <>
+                      <p style={{ margin: "0 0 5px" }}>Harga jual: <strong>Rp {newClientCredentials.salePrice.toLocaleString("id-ID")}</strong></p>
+                      <p style={{ margin: "0 0 12px" }}>
+                        Bagian reseller 80%: <strong>Rp {Math.round(newClientCredentials.salePrice * 0.8).toLocaleString("id-ID")}</strong> · Fee platform 20%: Rp {Math.round(newClientCredentials.salePrice * 0.2).toLocaleString("id-ID")}
+                      </p>
+                      {newClientCredentials.paymentUrl ? (
+                        <a href={newClientCredentials.paymentUrl} target="_blank" rel="noreferrer" className={styles.button} style={{ display: "inline-block", marginBottom: 12 }}>
+                          Buka Link Pembayaran Midtrans
+                        </a>
+                      ) : newClientCredentials.paymentError ? (
+                        <p style={{ color: "#b45309" }}>Link pembayaran belum berhasil dibuat: {newClientCredentials.paymentError}</p>
+                      ) : null}
+                    </>
+                  )}
                   <p style={{ margin: 0 }}>Email: {newClientCredentials.email}</p>
                   <p style={{ margin: "0 0 12px" }}>Password: {newClientCredentials.password}</p>
                   <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
                     <button onClick={copyClientCredentials} className={styles.exportButton}>
-                      Copy Pesan untuk Dikirim ke Client
+                      Copy Pesan untuk Client
                     </button>
                     {newClientCredentials.whatsapp && (
-                      <a href={clientWaLink()} target="_blank" className={styles.button}>
+                      <a href={clientWaLink()} target="_blank" rel="noreferrer" className={styles.button}>
                         Kirim ke WA Otomatis
                       </a>
                     )}
@@ -383,40 +451,52 @@ export default function ResellerClientsPage() {
                   className={styles.input}
                 >
                   <optgroup label="Pernikahan">
-                    {themeList.map((theme) => (
-                      <option key={theme.key} value={theme.label}>{theme.label}</option>
-                    ))}
+                    {themeList.map((theme) => <option key={theme.key} value={theme.label}>{theme.label}</option>)}
                   </optgroup>
                   <optgroup label="Aqiqah">
-                    {aqiqahThemeList.map((theme) => (
-                      <option key={theme.key} value={theme.label}>{theme.label}</option>
-                    ))}
+                    {aqiqahThemeList.map((theme) => <option key={theme.key} value={theme.label}>{theme.label}</option>)}
                   </optgroup>
                   <optgroup label="Khitan">
-                    {khitanThemeList.map((theme) => (
-                      <option key={theme.key} value={theme.label}>{theme.label}</option>
-                    ))}
+                    {khitanThemeList.map((theme) => <option key={theme.key} value={theme.label}>{theme.label}</option>)}
                   </optgroup>
                   <optgroup label="Ulang Tahun">
-                    {birthdayThemeList.map((theme) => (
-                      <option key={theme.key} value={theme.label}>{theme.label}</option>
-                    ))}
+                    {birthdayThemeList.map((theme) => <option key={theme.key} value={theme.label}>{theme.label}</option>)}
                   </optgroup>
                 </select>
 
-                <select
-                  value={form.status}
-                  onChange={(e) => setForm({ ...form, status: e.target.value })}
-                  className={styles.input}
-                >
-                  <option value="active">Active</option>
-                  <option value="pending">Pending</option>
-                  <option value="inactive">Inactive</option>
-                </select>
+                {reseller.package !== "reseller_brand" && (
+                  <input
+                    type="number"
+                    min="1000"
+                    step="1000"
+                    placeholder="Harga jual ke client"
+                    value={form.sale_price}
+                    onChange={(e) => setForm({ ...form, sale_price: e.target.value })}
+                    className={styles.input}
+                  />
+                )}
+
+                {reseller.package === "reseller_brand" && (
+                  <select
+                    value={form.status}
+                    onChange={(e) => setForm({ ...form, status: e.target.value })}
+                    className={styles.input}
+                  >
+                    <option value="active">Active</option>
+                    <option value="pending">Pending</option>
+                    <option value="inactive">Inactive</option>
+                  </select>
+                )}
               </div>
 
+              {reseller.package !== "reseller_brand" && (
+                <p style={{ marginTop: 12, color: "#64748b", fontSize: 13 }}>
+                  Contoh Rp100.000 → Rp80.000 bagian reseller dan Rp20.000 fee Vistiq. Saldo reseller tersedia 6 hari setelah pembayaran berhasil.
+                </p>
+              )}
+
               <button onClick={addClient} className={styles.button} disabled={addingClient} style={{ marginTop: 16 }}>
-                {addingClient ? "Menyimpan..." : "Simpan Client"}
+                {addingClient ? "Membuat Client & Tagihan..." : reseller.package === "reseller_brand" ? "Simpan Client" : "Simpan Client & Buat Tagihan"}
               </button>
             </section>
 
@@ -429,6 +509,8 @@ export default function ResellerClientsPage() {
                 <div className={styles.table}>
                   {clients.map((client) => {
                     const clientInvitations = invitations.filter((inv) => inv.client_id === client.id);
+                    const transaction = transactions.find((tx) => tx.client_id === client.id);
+                    const isPaid = transaction?.status === "paid";
 
                     return (
                       <div key={client.id} className={styles.clientRow}>
@@ -436,6 +518,9 @@ export default function ResellerClientsPage() {
                           <strong>{client.name}</strong>
                           <p>{client.email || "-"}</p>
                           <p>{client.whatsapp || "-"}</p>
+                          {reseller.package !== "reseller_brand" && transaction && (
+                            <p><strong>Rp {Number(transaction.amount).toLocaleString("id-ID")}</strong> · Reseller Rp {Number(transaction.commission).toLocaleString("id-ID")}</p>
+                          )}
                         </div>
 
                         <span className={styles.badge}>{client.package_name || "-"}</span>
@@ -445,7 +530,7 @@ export default function ResellerClientsPage() {
                             <span className={styles.clientEmpty}>Belum ada undangan</span>
                           ) : (
                             clientInvitations.map((inv) => (
-                              <a key={inv.id} href={`/preview/${inv.slug}`} target="_blank">
+                              <a key={inv.id} href={`/preview/${inv.slug}`} target="_blank" rel="noreferrer">
                                 Lihat Undangan ({invitationLabel(inv)})
                               </a>
                             ))
@@ -454,21 +539,30 @@ export default function ResellerClientsPage() {
                           {clientInvitations.length > 0 && (
                             <Link href={`/reseller/rsvp?client_id=${client.id}`}>Lihat RSVP</Link>
                           )}
+
+                          {reseller.package !== "reseller_brand" && !isPaid && transaction?.midtrans_redirect_url && (
+                            <>
+                              <a href={transaction.midtrans_redirect_url} target="_blank" rel="noreferrer">Link Pembayaran</a>
+                              {client.whatsapp && <a href={paymentWaLink(client, transaction)} target="_blank" rel="noreferrer">Kirim Tagihan via WA</a>}
+                            </>
+                          )}
                         </div>
 
-                        <select
-                          value={client.status || "active"}
-                          onChange={(e) => updateClientStatus(client.id, e.target.value)}
-                          className={`${styles.statusSelect} ${styles.clientStatus}`}
-                        >
-                          <option value="active">Active</option>
-                          <option value="pending">Pending</option>
-                          <option value="inactive">Inactive</option>
-                        </select>
+                        {reseller.package === "reseller_brand" ? (
+                          <select
+                            value={client.status || "active"}
+                            onChange={(e) => updateClientStatus(client.id, e.target.value)}
+                            className={`${styles.statusSelect} ${styles.clientStatus}`}
+                          >
+                            <option value="active">Active</option>
+                            <option value="pending">Pending</option>
+                            <option value="inactive">Inactive</option>
+                          </select>
+                        ) : (
+                          <span className={styles.badge}>{isPaid ? "LUNAS" : "MENUNGGU BAYAR"}</span>
+                        )}
 
-                        <p className={styles.date}>
-                          {new Date(client.created_at).toLocaleDateString("id-ID")}
-                        </p>
+                        <p className={styles.date}>{new Date(client.created_at).toLocaleDateString("id-ID")}</p>
 
                         <div className={styles.clientActions}>
                           {client.user_id ? (
