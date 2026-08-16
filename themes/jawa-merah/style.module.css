@@ -1356,6 +1356,54 @@
   pointer-events: none;
 }
 
+
+/* Desktop Love Story: balanced alternating timeline */
+@media (min-width: 701px) {
+  .storyVine {
+    max-width: 800px;
+    padding: 12px 0;
+  }
+
+  .storyVine::before {
+    left: 50%;
+  }
+
+  .storyItem {
+    width: calc(50% - 34px);
+    padding-bottom: 30px;
+  }
+
+  .storyItem:not(.storyEven) {
+    margin-right: auto;
+  }
+
+  .storyEven {
+    margin-left: calc(50% + 34px);
+  }
+
+  .storyItem:not(.storyEven) .storyDot {
+    left: auto;
+    right: -41px;
+  }
+
+  .storyEven .storyDot {
+    left: -41px;
+  }
+
+  .storyCard {
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 700px) {
+  .storyEven {
+    margin-left: 0;
+  }
+}
+
 @media (max-width: 560px) {
   .galleryGrid {
     gap: 12px;
