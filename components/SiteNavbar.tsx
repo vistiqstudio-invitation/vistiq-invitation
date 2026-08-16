@@ -36,9 +36,10 @@ export default function SiteNavbar() {
         <a href="#tema" onClick={close}>Tema</a>
         <a href="#harga" onClick={close}>Harga</a>
         <Link href="/gabung-reseller" onClick={close}>Reseller</Link>
+        <Link href="/gabung-resellerbrand" onClick={close}>Reseller Brand</Link>
         <Link href="/gabung-affiliate" onClick={close}>Affiliate</Link>
         <Link href="/login" onClick={close}>Login</Link>
-        <Link href="/gabung-reseller#harga" className="navButton" onClick={close}>
+        <Link href="/gabung-reseller" className="navButton" onClick={close}>
           Daftar Reseller
         </Link>
       </div>
