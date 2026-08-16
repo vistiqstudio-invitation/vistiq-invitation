@@ -53,7 +53,7 @@ export type InvitationData = {
 
   groom: {
     name: string;
-    nickname: string | null;
+    nickname?: string | null;
     parents: string | null;
     photo: string | null;
     instagram: string | null;
@@ -61,7 +61,7 @@ export type InvitationData = {
 
   bride: {
     name: string;
-    nickname: string | null;
+    nickname?: string | null;
     parents: string | null;
     photo: string | null;
     instagram: string | null;
