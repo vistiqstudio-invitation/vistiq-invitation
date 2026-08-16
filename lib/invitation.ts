@@ -201,6 +201,7 @@ function normalizeInvitation(raw: Record<string, any>): InvitationData {
 
     groom: {
       name: raw.groom_name || "",
+      nickname: firstNonEmpty(raw.groom_nickname),
       parents: firstNonEmpty(
         raw.groom_parent,
         raw.groom_father && raw.groom_mother
@@ -213,6 +214,7 @@ function normalizeInvitation(raw: Record<string, any>): InvitationData {
 
     bride: {
       name: raw.bride_name || "",
+      nickname: firstNonEmpty(raw.bride_nickname),
       parents: firstNonEmpty(
         raw.bride_parent,
         raw.bride_father && raw.bride_mother
