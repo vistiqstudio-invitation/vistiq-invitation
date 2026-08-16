@@ -98,6 +98,8 @@ export default function AutoScrollController() {
         type="button"
         className="autoScrollButton"
         onClick={() => setRunning((value) => !value)}
+        onTouchStart={(event) => event.stopPropagation()}
+        onWheel={(event) => event.stopPropagation()}
         aria-label={running ? "Jeda scroll otomatis" : "Lanjutkan scroll otomatis"}
         title={running ? "Jeda scroll otomatis" : "Lanjutkan scroll otomatis"}
       >
