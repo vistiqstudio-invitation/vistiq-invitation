@@ -152,7 +152,7 @@ export default function ThemeBrowser({
   priceLabel = "Rp 99.000",
   priceWasLabel,
   discountLabel,
-  defaultOccasion = "wedding",
+  defaultOccasion,
 }: {
   waNumber?: string;
   brandName?: string;
@@ -162,7 +162,7 @@ export default function ThemeBrowser({
   defaultOccasion?: OccasionKey;
 }) {
   const mockupWidth = useMockupWidth();
-  const [occasion, setOccasion] = useState<OccasionKey>(defaultOccasion);
+  const [occasion, setOccasion] = useState<OccasionKey | null>(defaultOccasion ?? null);
   const [weddingSub, setWeddingSub] = useState<WeddingSubKey>("semua");
 
   const filteredWeddingThemes = useMemo(() => {
@@ -178,7 +178,11 @@ export default function ThemeBrowser({
           <button
             key={item.key}
             type="button"
-            onClick={() => setOccasion(item.key)}
+            onClick={() => {
+              setOccasion((current) => (current === item.key ? null : item.key));
+              if (item.key === "wedding") setWeddingSub("semua");
+            }}
+            aria-pressed={occasion === item.key}
             className={`${styles.filterButton} ${occasion === item.key ? styles.filterButtonActive : ""}`}
           >
             {item.label}
@@ -203,7 +207,14 @@ export default function ThemeBrowser({
         </div>
       )}
 
-      {occasion === "wedding" && weddingSub === "tanpa-foto" ? (
+      {occasion === null ? (
+        <div className={styles.emptyState}>
+          <p className={styles.emptyStateTitle}>Pilih Jenis Undangan</p>
+          <p className={styles.emptyStateDesc}>
+            Klik Wedding, Khitan, Wisuda, Akikah, atau Ulang Tahun untuk melihat pilihan temanya.
+          </p>
+        </div>
+      ) : occasion === "wedding" && weddingSub === "tanpa-foto" ? (
         <div className={styles.emptyState}>
           <p className={styles.emptyStateTitle}>Segera Hadir</p>
           <p className={styles.emptyStateDesc}>
