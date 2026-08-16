@@ -17,12 +17,12 @@ const initialForm = {
   category: "wedding" as "wedding" | "aqiqah" | "khitan" | "birthday",
   theme: "luxury-gold",
   is_active: true,
-  // Only used/shown for reseller_brand package resellers - they keep 100%
-  // of this, no commission tracked. Empty string = not set yet.
   client_price: "",
 
   groom_name: "",
   bride_name: "",
+  groom_nickname: "",
+  bride_nickname: "",
   groom_parent: "",
   bride_parent: "",
   groom_instagram: "",
@@ -186,6 +186,8 @@ export default function ResellerInvitationEditPage() {
 
         groom_name: invitation.groom_name || "",
         bride_name: invitation.bride_name || "",
+        groom_nickname: invitation.groom_nickname || "",
+        bride_nickname: invitation.bride_nickname || "",
         groom_parent: invitation.groom_parent || "",
         bride_parent: invitation.bride_parent || "",
         groom_instagram: invitation.groom_instagram || "",
@@ -323,12 +325,10 @@ export default function ResellerInvitationEditPage() {
   const saveData = async () => {
     setSaving(true);
 
-    // Date-type columns reject an empty string ("" from an untouched
-    // <input type="date">), and baby_gender's check constraint only
-    // allows 'L'/'P' or null, never "" - null is the correct "not set"
-    // value for all of these.
     const payload = {
       ...form,
+      groom_nickname: form.groom_nickname.trim() || null,
+      bride_nickname: form.bride_nickname.trim() || null,
       akad_date: form.akad_date || null,
       resepsi_date: form.resepsi_date || null,
       aqiqah_date: form.aqiqah_date || null,
@@ -656,6 +656,20 @@ export default function ResellerInvitationEditPage() {
           />
 
           <input
+            placeholder="Nama Panggilan Pria (opsional)"
+            value={form.groom_nickname}
+            onChange={(e) => set("groom_nickname", e.target.value)}
+            className={styles.input}
+          />
+
+          <input
+            placeholder="Nama Panggilan Wanita (opsional)"
+            value={form.bride_nickname}
+            onChange={(e) => set("bride_nickname", e.target.value)}
+            className={styles.input}
+          />
+
+          <input
             placeholder="Putra dari (nama orang tua pria)"
             value={form.groom_parent}
             onChange={(e) => set("groom_parent", e.target.value)}
@@ -788,6 +802,9 @@ export default function ResellerInvitationEditPage() {
         </div>
 
         <h2 className={styles.editSectionTitle}>Love Story</h2>
+        <p className={styles.helpText} style={{ marginTop: -8 }}>
+          Bisa diisi sampai 5 bagian. Kosongkan part yang tidak digunakan.
+        </p>
 
         {[1, 2, 3, 4, 5].map((n) => {
           const yearKey = `story_${n}_year` as keyof FormState;
@@ -798,14 +815,14 @@ export default function ResellerInvitationEditPage() {
             <div key={n} className={styles.storyBlock}>
               <div className={styles.storyGrid}>
                 <input
-                  placeholder="Tahun / Label, contoh: 2021"
+                  placeholder={`Part ${n} - Tahun / Label, contoh: 2021`}
                   value={form[yearKey] as string}
                   onChange={(e) => set(yearKey, e.target.value)}
                   className={styles.input}
                 />
 
                 <input
-                  placeholder="Judul momen, contoh: Pertama Bertemu"
+                  placeholder={`Part ${n} - Judul momen`}
                   value={form[titleKey] as string}
                   onChange={(e) => set(titleKey, e.target.value)}
                   className={styles.input}
@@ -813,7 +830,7 @@ export default function ResellerInvitationEditPage() {
               </div>
 
               <textarea
-                placeholder="Ceritakan momen ini..."
+                placeholder={`Part ${n} - Ceritakan momen ini...`}
                 value={form[descKey] as string}
                 onChange={(e) => set(descKey, e.target.value)}
                 className={styles.textarea}
@@ -929,19 +946,12 @@ export default function ResellerInvitationEditPage() {
         </div>
 
         {form.category === "wedding" && form.cover_photo && (
-
           <SmartCoverEditor
-
             value={form.cover_photo}
-
             onChange={(value) => set("cover_photo", value)}
-
             names={[form.groom_name, form.bride_name].filter(Boolean).join(" & ")}
-
           />
-
         )}
-
 
         <h2 className={styles.editSectionTitle}>Galeri Foto</h2>
 
