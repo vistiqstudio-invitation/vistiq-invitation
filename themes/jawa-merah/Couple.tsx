@@ -13,7 +13,7 @@ function firstName(fullName: string) {
   return fullName.trim().split(/\s+/)[0] || fullName;
 }
 
-function displayName(name: string, nickname: string | null) {
+function displayName(name: string, nickname?: string | null) {
   return nickname?.trim() || firstName(name);
 }
 
