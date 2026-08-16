@@ -40,7 +40,10 @@ export async function POST(request: Request) {
   const email = (body.email || "").trim().toLowerCase();
   const whatsapp = (body.whatsapp || "").trim();
   const pkg = body.package === "reseller_brand" ? "reseller_brand" : "reseller";
-  const commission_percent = Number(body.commission_percent) || 0;
+  // Package rules are fixed: standard reseller keeps 80% and Vistiq takes
+  // a 20% platform fee. Reseller Brand keeps 100%. Do not trust a stale
+  // browser value for this field.
+  const commission_percent = pkg === "reseller_brand" ? 100 : 80;
   const status = body.status || "active";
 
   if (!name || !email) {
