@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 import { InvitationProvider } from "@/components/InvitationProvider";
+import AutoScrollController from "@/components/AutoScrollController";
 import MetaPixel from "@/components/MetaPixel";
 import LeadTracker from "@/components/LeadTracker";
 import AffiliateReferralTracker from "@/components/AffiliateReferralTracker";
@@ -61,6 +62,7 @@ export default function RootLayout({
         <PwaRegister />
         <InvitationProvider>
           {children}
+          <AutoScrollController />
           <FloatingWhatsApp />
           <InstallAppButton />
         </InvitationProvider>
