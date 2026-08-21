@@ -13,6 +13,10 @@ function firstName(fullName: string) {
   return fullName.trim().split(/\s+/)[0] || fullName;
 }
 
+function displayName(name: string, nickname?: string | null) {
+  return nickname?.trim() || firstName(name);
+}
+
 export default function Couple({ invitation }: { invitation: InvitationData }) {
   return (
     <div className={styles.section}>
@@ -40,7 +44,7 @@ export default function Couple({ invitation }: { invitation: InvitationData }) {
               />
             </div>
 
-            <h3 className={styles.profileNickname}>{firstName(invitation.bride.name)}</h3>
+            <h3 className={styles.profileNickname}>{displayName(invitation.bride.name, invitation.bride.nickname)}</h3>
             <p className={styles.profileName}>{invitation.bride.name}</p>
 
             {invitation.bride.parents && (
@@ -81,7 +85,7 @@ export default function Couple({ invitation }: { invitation: InvitationData }) {
               />
             </div>
 
-            <h3 className={styles.profileNickname}>{firstName(invitation.groom.name)}</h3>
+            <h3 className={styles.profileNickname}>{displayName(invitation.groom.name, invitation.groom.nickname)}</h3>
             <p className={styles.profileName}>{invitation.groom.name}</p>
 
             {invitation.groom.parents && (
