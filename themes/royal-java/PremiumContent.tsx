@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { useSearchParams } from "next/navigation";
 import type { InvitationData } from "@/types/invitation";
 import Gift from "@/themes/jawa-merah/Gift";
 import RSVP from "@/themes/jawa-merah/RSVP";
@@ -11,8 +10,6 @@ import Footer from "@/themes/jawa-merah/Footer";
 import styles from "./premium.module.css";
 
 export default function PremiumContent({ invitation }: { invitation: InvitationData }) {
-  const searchParams = useSearchParams();
-  const guestName = searchParams.get("to") || "Bapak/Ibu/Saudara/i";
   const weddingDate = invitation.events[0]?.date;
 
   const reveal = {
@@ -25,21 +22,18 @@ export default function PremiumContent({ invitation }: { invitation: InvitationD
   return (
     <main className={styles.page}>
       <section id="home" className={styles.openedHero}>
-        <motion.div className={styles.heroBase} initial={{ scale: 1.05, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 1.1 }} />
-        <motion.div className={styles.heroTop} aria-hidden="true" initial={{ y: -90, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 1.35, delay: .12, ease: [0.16, 1, 0.3, 1] }}><Image src="/decor/royal-java-layers/canopy.webp" alt="" fill priority sizes="(max-width: 520px) 100vw, 520px" /></motion.div>
-        <motion.div className={styles.heroJanur} aria-hidden="true" initial={{ y: 65, opacity: 0, scaleY: .6 }} animate={{ y: 0, opacity: 1, scaleY: 1 }} transition={{ duration: 1.2, delay: .58, ease: [0.16, 1, 0.3, 1] }}><Image src="/decor/royal-java-layers/janur.webp" alt="" fill priority sizes="(max-width: 520px) 100vw, 520px" /></motion.div>
-        <motion.div className={styles.heroJoglo} aria-hidden="true" initial={{ y: 150, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 1.55, delay: .3, ease: [0.16, 1, 0.3, 1] }}><Image src="/decor/royal-java-layers/joglo.webp" alt="" fill priority sizes="(max-width: 520px) 100vw, 520px" /></motion.div>
-        <motion.div className={styles.heroBottom} aria-hidden="true" initial={{ y: 130, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 1.3, delay: .75, ease: [0.16, 1, 0.3, 1] }}><Image src="/decor/royal-java-layers/florals.webp" alt="" fill priority sizes="(max-width: 520px) 100vw, 520px" /></motion.div>
-        <motion.div className={styles.heroCloud} aria-hidden="true" initial={{ opacity: .9, scale: .6, x: -80 }} animate={{ opacity: [0.9, .55, 0], scale: [0.6, 1.25, 1.55], x: [-80, 0, 95] }} transition={{ duration: 2.1, ease: "easeOut" }} />
-        <motion.div className={styles.heroIdentity} initial={{ opacity: 0, y: 30, filter: "blur(10px)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} transition={{ duration: 1.15, delay: .72 }}>
+        <motion.div className={styles.heroBase} initial={{ scale: 1.05, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 1.8 }} />
+        <motion.div className={styles.heroTop} aria-hidden="true" initial={{ y: -90, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 2.2, delay: .25, ease: [0.16, 1, 0.3, 1] }}><Image src="/decor/royal-java-layers/canopy.webp" alt="" fill priority sizes="(max-width: 520px) 100vw, 520px" /></motion.div>
+        <motion.div className={styles.heroJanur} aria-hidden="true" initial={{ y: 65, opacity: 0, scaleY: .6 }} animate={{ y: 0, opacity: 1, scaleY: 1 }} transition={{ duration: 2.2, delay: 1.35, ease: [0.16, 1, 0.3, 1] }}><Image src="/decor/royal-java-layers/janur.webp" alt="" fill priority sizes="(max-width: 520px) 100vw, 520px" /></motion.div>
+        <motion.div className={styles.heroJoglo} aria-hidden="true" initial={{ y: 150, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 2.5, delay: .85, ease: [0.16, 1, 0.3, 1] }}><Image src="/decor/royal-java-layers/joglo.webp" alt="" fill priority sizes="(max-width: 520px) 100vw, 520px" /></motion.div>
+        <motion.div className={styles.heroBottom} aria-hidden="true" initial={{ y: 130, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 2, delay: 1.8, ease: [0.16, 1, 0.3, 1] }}><Image src="/decor/royal-java-layers/florals.webp" alt="" fill priority sizes="(max-width: 520px) 100vw, 520px" /></motion.div>
+        <motion.div className={styles.heroCloud} aria-hidden="true" initial={{ opacity: .9, scale: .6, x: -80 }} animate={{ opacity: [0.9, .55, 0], scale: [0.6, 1.25, 1.55], x: [-80, 0, 95] }} transition={{ duration: 3.4, ease: "easeOut" }} />
+        <motion.div className={styles.heroIdentity} initial={{ opacity: 0, y: 30, filter: "blur(10px)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} transition={{ duration: 1.7, delay: 2.3 }}>
           <p>The Royal Wedding Of</p>
           <h1><span>{invitation.groom.nickname || invitation.groom.name}</span><em>&amp;</em><span>{invitation.bride.nickname || invitation.bride.name}</span></h1>
           {weddingDate && <time>{weddingDate}</time>}
         </motion.div>
-        <motion.div className={styles.heroGuest} initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .9, delay: 1.15 }}>
-          <p>Kepada Yth.</p><strong>{guestName}</strong><span>di Tempat</span>
-        </motion.div>
-        <motion.div className={styles.scrollCue} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.8 }} aria-hidden="true"><i /></motion.div>
+        <motion.div className={styles.scrollCue} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 3.8 }} aria-hidden="true"><i /></motion.div>
       </section>
 
       <section className={styles.foundLove}>
