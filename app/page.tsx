@@ -41,8 +41,6 @@ export default function HomePage() {
     <SiteNavbar />
     <section className={styles.hero}>
       <div className={styles.heroCopy}>
-        <div className={styles.rating}><span>★★★★★</span><b>Platform Undangan Digital</b></div>
-        <p className={styles.trusted}>Dipercaya untuk membantu berbagai acara istimewa di seluruh Indonesia.</p>
         <h1>Platform<br/>Undangan Website<br/>&amp; Bisnis Digital</h1>
         <p className={styles.heroDescription}>Solusi acara lebih hemat, praktis, dan kekinian dengan <strong>e-invitation</strong> yang dapat dibagikan tanpa batas.</p>
         <div className={styles.actions}><Link href="/demo" className={styles.primary}>Lihat Tema <span>→</span></Link></div>
