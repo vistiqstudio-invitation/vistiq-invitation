@@ -107,11 +107,13 @@ function Couple({ invitation }: { invitation: InvitationData }) {
 
 function Countdown({ date }: { date: string }) {
   const target = useMemo(() => new Date(date).getTime(), [date]);
-  const [now, setNow] = useState(() => Date.now());
-  useEffect(() => { const timer = window.setInterval(() => setNow(Date.now()), 1000); return () => window.clearInterval(timer); }, []);
-  const distance = Math.max(0, target - now);
-  const values = [[Math.floor(distance / 86400000), "Hari"], [Math.floor(distance / 3600000) % 24, "Jam"], [Math.floor(distance / 60000) % 60, "Menit"], [Math.floor(distance / 1000) % 60, "Detik"]] as const;
-  return <section id="countdown" className={styles.countdown}><FloralLayer placement="top"/><div className={styles.countdownArch} aria-hidden="true"/><motion.div className={styles.countdownContent} initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .4 }} transition={{ duration: .8, ease: revealEase }}><p>Kami akan menikah,<br/>dan kami ingin Anda menjadi bagian dari hari istimewa kami!</p><div className={styles.countdownGrid}>{values.map(([value, label]) => <span key={label}><strong>{String(value).padStart(2, "0")}</strong><small>{label}</small></span>)}</div><a href="#event">♡ Save The Date</a></motion.div></section>;
+  const [now, setNow] = useState<number | null>(null);
+  useEffect(() => { const tick = () => setNow(Date.now()); tick(); const timer = window.setInterval(tick, 1000); return () => window.clearInterval(timer); }, []);
+  const distance = now === null ? null : Math.max(0, target - now);
+  const values: [string, string][] = distance === null
+    ? [["--", "Hari"], ["--", "Jam"], ["--", "Menit"], ["--", "Detik"]]
+    : [[Math.floor(distance / 86400000), "Hari"], [Math.floor(distance / 3600000) % 24, "Jam"], [Math.floor(distance / 60000) % 60, "Menit"], [Math.floor(distance / 1000) % 60, "Detik"]].map(([value, label]) => [String(value).padStart(2, "0"), String(label)]);
+  return <section id="countdown" className={styles.countdown}><FloralLayer placement="top"/><div className={styles.countdownArch} aria-hidden="true"/><motion.div className={styles.countdownContent} initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .4 }} transition={{ duration: .8, ease: revealEase }}><p>Kami akan menikah,<br/>dan kami ingin Anda menjadi bagian dari hari istimewa kami!</p><div className={styles.countdownGrid}>{values.map(([value, label]) => <span key={label}><strong>{value}</strong><small>{label}</small></span>)}</div><a href="#event">♡ Save The Date</a></motion.div></section>;
 }
 
 function Events({ invitation }: { invitation: InvitationData }) {
