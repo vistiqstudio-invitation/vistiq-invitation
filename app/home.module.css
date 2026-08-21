@@ -15,11 +15,11 @@
 .primary span svg{width:22px;height:22px;display:block;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .heroVisual{position:relative;isolation:isolate;padding-top:30px}
 .coverColumn{position:relative;z-index:1}
-.coverWaves{position:absolute;z-index:3;top:-1px;left:-4%;width:108%;height:92px;pointer-events:none;overflow:hidden}
-.coverWaves i{position:absolute;display:block;background:var(--blue-soft);border-radius:0 0 52% 48% / 0 0 75% 70%}
-.coverWaves i:nth-child(1){left:-8%;top:0;width:58%;height:63px;transform:rotate(2deg);opacity:.72}
-.coverWaves i:nth-child(2){left:27%;top:0;width:52%;height:79px;transform:rotate(-3deg);opacity:.9}
-.coverWaves i:nth-child(3){right:-8%;top:0;width:48%;height:57px;transform:rotate(3deg)}
+.coverWaves{position:absolute;z-index:3;top:-1px;left:-3%;width:106%;height:118px;pointer-events:none;overflow:visible}
+.coverWaves path{fill:var(--blue-soft)}
+.waveBack{opacity:.38}
+.waveMiddle{opacity:.68}
+.waveFront{opacity:1}
 .featureGrid{max-width:1020px;margin:0 auto;display:grid;grid-template-columns:1fr;gap:18px;border:0}
 .featureCard{padding:0;border:0!important;background:#fff;border-radius:26px;overflow:hidden}
 .featureCard:nth-child(even){padding-left:0}
@@ -39,10 +39,7 @@
   .primary{min-height:58px;padding-left:27px;gap:25px}
   .primary span{width:48px;height:48px}
   .heroVisual{height:555px;margin-top:58px;padding-top:30px}
-  .coverWaves{height:80px;top:-1px}
-  .coverWaves i:nth-child(1){height:51px}
-  .coverWaves i:nth-child(2){height:68px}
-  .coverWaves i:nth-child(3){height:47px}
+  .coverWaves{height:88px;top:-1px;left:-5%;width:110%}
   .features{padding:68px 28px 82px}
   .features .sectionHeading{margin-bottom:28px}
   .features .sectionHeading h2{font-size:34px;line-height:1.08;margin:11px 0 12px}

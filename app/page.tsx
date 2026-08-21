@@ -43,7 +43,11 @@ export default function HomePage() {
         <div className={styles.actions}><Link href="/demo" className={styles.primary}>Lihat Tema <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></Link></div>
       </div>
       <div className={styles.heroVisual} aria-label="Koleksi tema undangan Vistiq">
-        <div className={styles.coverWaves} aria-hidden="true"><i/><i/><i/></div>
+        <svg className={styles.coverWaves} viewBox="0 0 1200 118" preserveAspectRatio="none" aria-hidden="true">
+          <path className={styles.waveBack} d="M0 0H1200V35C1080 18 1018 58 900 40C785 22 716 13 598 39C486 64 390 13 282 36C170 60 89 22 0 48Z"/>
+          <path className={styles.waveMiddle} d="M0 0H1200V54C1092 77 1002 24 884 52C770 79 700 39 586 56C466 74 375 25 259 55C151 82 75 43 0 67Z"/>
+          <path className={styles.waveFront} d="M0 0H1200V70C1090 47 1008 92 894 67C780 42 700 86 581 70C464 54 374 96 264 72C158 49 81 91 0 76Z"/>
+        </svg>
         {HERO_COLUMNS.map((column,columnIndex)=><div key={column[0]} className={`${styles.coverColumn} ${styles[`column${columnIndex + 1}`]}`}><div className={styles.coverTrack}>{[...column,...column].map((src,index)=><div key={`${src}-${index}`} className={styles.inviteCard}><Image src={src} alt="Preview tema undangan Vistiq" fill sizes="(max-width: 640px) 29vw, 180px"/></div>)}</div></div>)}
       </div>
     </section>
