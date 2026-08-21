@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import type { InvitationData } from "@/types/invitation";
 import Gift from "@/themes/jawa-merah/Gift";
 import RSVP from "@/themes/jawa-merah/RSVP";
@@ -17,7 +18,16 @@ export default function PremiumContent({ invitation }: { invitation: InvitationD
           <button type="button">Simpan ke Google Calendar</button>
           <button type="button">Simpan ke Outlook</button>
         </div>
-        <div className={styles.joglo}><i /><i /><i /></div>
+        <div className={styles.jogloPhoto}>
+          <Image
+            src="/photos/royal-java-joglo.png"
+            alt="Rumah adat Joglo khas Jawa"
+            fill
+            sizes="(max-width: 520px) 72vw, 340px"
+            className={styles.jogloImage}
+          />
+          <span aria-hidden="true">Pendopo Jawa</span>
+        </div>
         <img className={styles.welcomeFlowers} src="/decor/jawa-merah/floral-spray.png" alt="" />
         <p>{invitation.opening.description || "Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu kepada kami."}</p>
       </section>
