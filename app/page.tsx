@@ -6,16 +6,15 @@ import CheckoutButton from "@/components/CheckoutButton";
 import styles from "./home.module.css";
 
 const FEATURES = [
-  ["Nama Tamu Personal", "Setiap tautan dapat menampilkan nama tamu secara otomatis.", "01"],
-  ["Bagikan Tanpa Batas", "Kirim melalui WhatsApp, email, dan media sosial tanpa batas tamu.", "02"],
-  ["RSVP & Ucapan", "Pantau konfirmasi kehadiran dan pesan tamu dari dashboard.", "03"],
-  ["Countdown Acara", "Hitung mundur otomatis membantu tamu mengingat hari acara.", "04"],
-  ["Musik Latar", "Pilih musik yang sesuai dengan suasana dan cerita acara Anda.", "05"],
-  ["Amplop Digital", "Tampilkan rekening dan tombol salin untuk memudahkan tamu.", "06"],
-  ["Love Story", "Susun perjalanan cerita pasangan dalam timeline yang elegan.", "07"],
-  ["Galeri Foto & Video", "Bagikan momen terbaik melalui galeri yang responsif.", "08"],
-  ["Navigasi Lokasi", "Arahkan tamu ke lokasi acara melalui tautan peta.", "09"],
-  ["Dashboard Mandiri", "Edit data, buat tautan tamu, dan pantau respons di satu tempat.", "10"],
+  ["Unlimited & Easy Share", "Bagikan undangan melalui WhatsApp dan media sosial tanpa batas tamu.", "↗"],
+  ["Wishes & RSVP Tracking", "Pantau ucapan, doa, dan konfirmasi kehadiran langsung dari dashboard.", "♡"],
+  ["E-Invitation & QR Code", "Undangan digital dilengkapi QR Code yang praktis untuk dibagikan.", "▦"],
+  ["Countdown", "Hitung mundur otomatis membantu tamu mengingat hari istimewa Anda.", "◷"],
+  ["Background Music", "Pilih musik yang sesuai dengan suasana dan cerita acara Anda.", "♫"],
+  ["Amplop Digital", "Tampilkan rekening dan tombol salin untuk memudahkan tamu mengirim hadiah.", "▣"],
+  ["Love Story", "Susun perjalanan cerita pasangan dalam timeline yang elegan.", "♥"],
+  ["Gallery Foto & Video", "Bagikan momen terbaik melalui galeri foto dan video yang responsif.", "▧"],
+  ["Navigasi Lokasi", "Arahkan tamu menuju lokasi acara melalui tautan peta digital.", "⌖"],
 ];
 
 const FAQ = [
@@ -41,15 +40,16 @@ export default function HomePage() {
       <div className={styles.heroCopy}>
         <h1>Platform<br/>Undangan Website<br/>&amp; Bisnis Digital</h1>
         <p className={styles.heroDescription}>Solusi acara lebih hemat, praktis, dan kekinian dengan <strong>e-invitation</strong> yang dapat dibagikan tanpa batas.</p>
-        <div className={styles.actions}><Link href="/demo" className={styles.primary}>Lihat Tema <span>→</span></Link></div>
+        <div className={styles.actions}><Link href="/demo" className={styles.primary}>Lihat Tema <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></Link></div>
       </div>
       <div className={styles.heroVisual} aria-label="Koleksi tema undangan Vistiq">
+        <div className={styles.coverWaves} aria-hidden="true"><i/><i/><i/></div>
         {HERO_COLUMNS.map((column,columnIndex)=><div key={column[0]} className={`${styles.coverColumn} ${styles[`column${columnIndex + 1}`]}`}><div className={styles.coverTrack}>{[...column,...column].map((src,index)=><div key={`${src}-${index}`} className={styles.inviteCard}><Image src={src} alt="Preview tema undangan Vistiq" fill sizes="(max-width: 640px) 29vw, 180px"/></div>)}</div></div>)}
       </div>
     </section>
     <section className={styles.statsBar}><div><strong>Beragam Tema</strong><span>Desain undangan premium siap digunakan</span></div><div><strong>Bagikan Tanpa Batas</strong><span>Nama tamu dan ucapan tersimpan di dashboard</span></div></section>
     <section className={styles.statement}><p className={styles.eyebrow}>KENAPA VISTIQ INVITATION</p><h2>Keindahan desain bertemu dengan kemudahan teknologi.</h2><p>Vistiq membantu Anda membuat pengalaman mengundang yang berkesan, dari saat tautan diterima hingga tamu mengirimkan konfirmasi kehadiran dan doa terbaik.</p></section>
-    <section id="fitur" className={styles.features}><div className={styles.sectionHeading}><div><p className={styles.eyebrow}>FITUR PILIHAN</p><h2>Semua kebutuhan acara dalam satu undangan.</h2></div><p>Dirancang agar mudah digunakan oleh pemilik acara, reseller, maupun client tanpa keahlian teknis.</p></div><div className={styles.featureGrid}>{FEATURES.map(([title,description,number])=><article className={styles.featureCard} key={title}><span>{number}</span><h3>{title}</h3><p>{description}</p></article>)}</div><div className={styles.comingSoon}><div><span>SEGERA HADIR</span><h3>Digital Guestbook & QR Check-In</h3><p>Registrasi tamu, data kehadiran terorganisir, dan layar sapa realtime sedang kami siapkan.</p></div><div className={styles.qrArt}><i/><i/><i/><i/></div></div></section>
+    <section id="fitur" className={styles.features}><div className={styles.sectionHeading}><div><p className={styles.eyebrow}>FITUR UNDANGAN</p><h2>Lengkap untuk setiap momen istimewa.</h2></div><p>Semua kebutuhan undangan tersusun praktis dalam satu platform.</p></div><div className={styles.featureGrid}>{FEATURES.map(([title,description,icon])=><details className={styles.featureCard} key={title}><summary><span className={styles.featureIcon}>{icon}</span><h3>{title}</h3><span className={styles.featureChevron}>⌄</span></summary><p>{description}</p></details>)}</div></section>
     <section id="tema" className={styles.themes}><div className={styles.sectionHeading}><div><p className={styles.eyebrow}>KOLEKSI DESAIN</p><h2>Tema yang mengikuti cerita Anda.</h2></div><Link href="/demo">Lihat semua tema <span>→</span></Link></div><ThemeBrowser priceWasLabel="Rp 149.000" discountLabel="34%"/></section>
     <section id="harga" className={styles.pricing}><div className={styles.centerHeading}><p className={styles.eyebrow}>PAKET VISTIQ</p><h2>Pilih cara terbaik untuk memulai.</h2><p>Untuk satu acara, penghasilan tambahan, atau membangun platform dengan brand sendiri.</p></div><div className={styles.priceGrid}>
       <article className={styles.priceCard}><p>CLIENT</p><h3>Rp99.000</h3><span>Satu undangan premium</span><ul><li>Dashboard client mandiri</li><li>Semua fitur undangan aktif</li><li>Nama tamu tanpa batas</li></ul><CheckoutButton packageId="client" label="Buat Undangan" production={production}/></article>

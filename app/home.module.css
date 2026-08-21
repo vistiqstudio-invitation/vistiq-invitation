@@ -10,3 +10,48 @@
 
 /* Official Vistiq Invitation brand palette. */
 .page{--blue:#1863ad;--blue-dark:#0f4e8a;--blue-soft:#c8e2f5;--blue-wash:rgba(24,99,173,.14);--line:rgba(24,99,173,.22)}
+
+/* Reference-led structure: compact rhythm, layered cover transition and accordion features. */
+.primary span svg{width:22px;height:22px;display:block;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.heroVisual{position:relative;isolation:isolate;padding-top:30px}
+.coverColumn{position:relative;z-index:1}
+.coverWaves{position:absolute;z-index:3;top:-1px;left:-4%;width:108%;height:92px;pointer-events:none;overflow:hidden}
+.coverWaves i{position:absolute;display:block;background:var(--blue-soft);border-radius:0 0 52% 48% / 0 0 75% 70%}
+.coverWaves i:nth-child(1){left:-8%;top:0;width:58%;height:63px;transform:rotate(2deg);opacity:.72}
+.coverWaves i:nth-child(2){left:27%;top:0;width:52%;height:79px;transform:rotate(-3deg);opacity:.9}
+.coverWaves i:nth-child(3){right:-8%;top:0;width:48%;height:57px;transform:rotate(3deg)}
+.featureGrid{max-width:1020px;margin:0 auto;display:grid;grid-template-columns:1fr;gap:18px;border:0}
+.featureCard{padding:0;border:0!important;background:#fff;border-radius:26px;overflow:hidden}
+.featureCard:nth-child(even){padding-left:0}
+.featureCard summary{min-height:92px;padding:17px 24px;display:grid;grid-template-columns:62px 1fr 30px;align-items:center;gap:14px;cursor:pointer;list-style:none}
+.featureCard summary::-webkit-details-marker{display:none}
+.featureIcon{width:58px;height:58px;display:grid;place-items:center;border-radius:17px;background:#f4f6f7;color:var(--ink);font-size:27px;font-weight:500}
+.featureCard h3{margin:0;font-size:22px;line-height:1.2}
+.featureChevron{font-size:30px;font-weight:700;line-height:1;transition:transform .25s ease}
+.featureCard[open] .featureChevron{transform:rotate(180deg)}
+.featureCard>p{margin:0;padding:0 76px 22px 100px;color:#607184;font-size:15px;line-height:1.55}
+
+@media(max-width:640px){
+  .hero{min-height:1020px;padding:185px 30px 0}
+  .hero h1{font-size:33px;line-height:1.03;letter-spacing:-1.15px}
+  .heroDescription{font-size:17px;line-height:1.42;margin-top:24px}
+  .actions{margin-top:24px}
+  .primary{min-height:58px;padding-left:27px;gap:25px}
+  .primary span{width:48px;height:48px}
+  .heroVisual{height:555px;margin-top:58px;padding-top:30px}
+  .coverWaves{height:80px;top:-1px}
+  .coverWaves i:nth-child(1){height:51px}
+  .coverWaves i:nth-child(2){height:68px}
+  .coverWaves i:nth-child(3){height:47px}
+  .features{padding:68px 28px 82px}
+  .features .sectionHeading{margin-bottom:28px}
+  .features .sectionHeading h2{font-size:34px;line-height:1.08;margin:11px 0 12px}
+  .features .sectionHeading>p{font-size:15px;line-height:1.5;margin:0}
+  .featureGrid{gap:12px}
+  .featureCard{border-radius:22px}
+  .featureCard summary{min-height:78px;padding:12px 17px;grid-template-columns:49px 1fr 24px;gap:11px}
+  .featureIcon{width:48px;height:48px;border-radius:14px;font-size:22px}
+  .featureCard h3{font-size:17px;letter-spacing:-.2px}
+  .featureChevron{font-size:25px}
+  .featureCard>p{padding:0 50px 18px 77px;font-size:14px}
+}

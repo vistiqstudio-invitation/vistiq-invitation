@@ -26,7 +26,7 @@ export default function SiteNavbar() {
         {open ? "×" : "☰"}
       </button>
 
-      <Link href="/login" className="mobileLogin" onClick={close}>Login <span>→</span></Link>
+      <Link href="/login" className="mobileLogin" onClick={close}>Login <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></Link>
 
       {open && <div className="navBackdrop" onClick={close} />}
 
@@ -38,7 +38,7 @@ export default function SiteNavbar() {
         <Link href="/gabung-reseller" onClick={close}>Reseller</Link>
         <Link href="/gabung-resellerbrand" onClick={close}>Reseller Brand</Link>
         <Link href="/gabung-affiliate" onClick={close}>Affiliate</Link>
-        <Link href="/login" className="loginButton" onClick={close}>Login <span>→</span></Link>
+        <Link href="/login" className="loginButton" onClick={close}>Login <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></Link>
         <Link href="/gabung-reseller" className="navButton" onClick={close}>
           Daftar Reseller
         </Link>
