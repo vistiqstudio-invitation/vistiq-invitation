@@ -50,6 +50,7 @@ type OccasionKey = (typeof OCCASIONS)[number]["key"];
 const WEDDING_SUBFILTERS = [
   { key: "semua", label: "Semua Tema" },
   { key: "premium", label: "Tema Premium" },
+  { key: "luxury-art", label: "Luxury Art" },
   { key: "reguler", label: "Tema Reguler" },
   { key: "adat", label: "Tema Adat" },
   { key: "tanpa-foto", label: "Tanpa Foto" },

@@ -35,6 +35,11 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Public navigation — shared by the new blue-and-white marketing surface. */
+.navbarWrap{position:absolute;z-index:50;top:25px;left:0;right:0;padding:0 30px}.navbar{max-width:1230px;height:82px;margin:auto;padding:10px 16px 10px 24px;display:flex;align-items:center;justify-content:space-between;gap:28px;background:rgba(255,255,255,.82);backdrop-filter:blur(18px);border-radius:25px;box-shadow:0 10px 26px rgba(10,62,96,.14)}.brand{display:flex;align-items:center;text-decoration:none}.brand img{width:170px;height:52px;object-fit:contain}.navMenu{display:flex;align-items:center;gap:22px}.navMenu a{color:#25394c;text-decoration:none;font-size:14px;font-weight:500;white-space:nowrap}.navMenu a:hover{color:#17649b}.navMenu .loginButton{min-height:52px;padding:4px 5px 4px 24px;border-radius:999px;background:#17649b;color:#fff;font-size:17px;display:flex;align-items:center;gap:20px}.loginButton span{width:43px;height:43px;border-radius:50%;display:grid;place-items:center;background:#fff;color:#17649b;font-size:24px}.navMenu .navButton{display:none}.menuToggle,.navBackdrop{display:none}.srOnly{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:900px){.navbarWrap{top:24px;padding:0 28px}.navbar{height:104px;padding:12px 18px 12px 24px;border-radius:28px}.brand img{width:210px;height:64px}.menuToggle{display:block;border:0;background:transparent;color:#273a4c;padding:8px;font-size:34px;line-height:1}.navBackdrop{display:block;position:fixed;inset:0;background:rgba(11,43,75,.28);z-index:48}.navMenu{display:none}.navMenuOpen{display:flex;position:absolute;z-index:49;top:114px;left:28px;right:28px;padding:18px;flex-direction:column;align-items:stretch;background:#fff;border-radius:20px;box-shadow:0 24px 60px rgba(11,43,75,.18)}.navMenuOpen a{padding:9px 10px}.navMenuOpen .loginButton{justify-content:space-between;padding-left:24px}.navMenuOpen .navButton{display:block;text-align:center;background:#17649b;color:#fff;border-radius:999px}}
+@media(max-width:640px){.navbar{height:104px}.brand img{width:205px}.navMenu .loginButton{display:flex}.navbar>.loginButton{display:flex}}
+
 /* Keep the existing homepage layout while the Reseller commercial model is
    now Rp59.000 once + unlimited sales + 20% platform fee per client sale. */
 .priceGrid > .priceCard.featured > strong {
@@ -68,3 +73,19 @@ body {
   line-height: 1.7;
   color: rgba(255,255,255,.85);
 }
+
+.mobileLogin{display:none}
+.brandMark{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:#17649b;color:#fff;font-size:24px;font-weight:700}.brandWord{font-size:35px;font-weight:700;line-height:.78;letter-spacing:-2px;color:#16283a}.brandWord small{display:block;margin-top:9px;text-align:right;font-size:7px;letter-spacing:3px;font-weight:700}.brand img{display:none}
+@media(max-width:900px){.mobileLogin{margin-left:auto;min-height:56px;padding:4px 5px 4px 24px;border-radius:999px;background:#17649b;color:#fff;text-decoration:none;font-size:18px;display:flex;align-items:center;gap:18px}.mobileLogin span{width:47px;height:47px;border-radius:50%;display:grid;place-items:center;background:#fff;color:#17649b;font-size:25px}.navbar>.menuToggle{order:3}.navbar>.mobileLogin{order:2}.navbar>.brand{order:1}}
+@media(max-width:520px){.navbarWrap{padding:0 16px}.navbar{height:84px;padding:10px 12px 10px 18px;border-radius:22px}.brand img{width:145px;height:48px}.mobileLogin{min-height:48px;padding-left:18px;font-size:16px;gap:10px}.mobileLogin span{width:40px;height:40px}.menuToggle{font-size:28px;padding:4px}.hero{padding-top:210px}}
+@media(max-width:520px){.brandMark{width:40px;height:40px;font-size:19px}.brandWord{font-size:28px}.brandWord small{font-size:5.5px;margin-top:7px}.navbar{gap:10px}}
+
+/* Official Vistiq logo and palette. */
+.brand img{display:block;width:154px;height:auto;object-fit:contain}.navMenu .loginButton,.mobileLogin,.navMenuOpen .navButton{background:#1863ad}.loginButton span,.mobileLogin span{color:#1863ad}
+@media(max-width:640px){.brand img{width:170px}}
+@media(max-width:520px){.brand img{width:130px;height:auto}}
+
+/* Match the compact mobile proportions of the reference navigation. */
+.loginButton span svg,.mobileLogin span svg{width:21px;height:21px;display:block;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+@media(max-width:640px){.brand img{width:142px}}
+@media(max-width:520px){.navbarWrap{top:22px;padding:0 15px}.navbar{height:78px;padding:9px 11px 9px 16px;border-radius:21px;gap:8px}.brand img{width:113px}.mobileLogin{min-height:46px;padding:3px 4px 3px 17px;font-size:16px;gap:9px}.mobileLogin span{width:38px;height:38px;display:flex;align-items:center;justify-content:center}.mobileLogin span svg{width:19px;height:19px}.menuToggle{width:35px;height:42px;display:flex;align-items:center;justify-content:center;font-size:27px;padding:0}}

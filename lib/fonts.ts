@@ -1,4 +1,11 @@
-import { Cormorant_Garamond, Playfair_Display, Inter, Alex_Brush, Suranna, Readex_Pro, Chelsea_Market, Noto_Sans_Balinese, Noto_Serif_Display, Raleway, Orbitron, Baloo_2, Bangers } from "next/font/google";
+import { Alice, Cormorant_Garamond, Playfair_Display, Inter, Alex_Brush, Suranna, Readex_Pro, Chelsea_Market, Noto_Sans_Balinese, Noto_Serif_Display, Raleway, Orbitron, Baloo_2, Bangers } from "next/font/google";
+
+export const alice = Alice({
+  variable: "--font-alice",
+  subsets: ["latin"],
+  weight: ["400"],
+  display: "swap",
+});
 
 export const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",

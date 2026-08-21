@@ -6,6 +6,7 @@ import { withLoveChronicleDemoAssets } from "@/lib/loveChronicleDemo";
 import { withVelvetCinemaDemoAssets } from "@/lib/velvetCinemaDemo";
 import { withPrismaticVowsDemoAssets } from "@/lib/prismaticVowsDemo";
 import { withPearlTideDemoAssets } from "@/lib/pearlTideDemo";
+import { withLuxuryArtGardenDemoAssets } from "@/lib/luxuryArtGardenDemo";
 import WeddingThemeSafeArea from "@/components/WeddingThemeSafeArea";
 
 export default async function DemoThemePage({
@@ -18,10 +19,10 @@ export default async function DemoThemePage({
 
   if (!Theme) notFound();
 
-  const invitation = withPearlTideDemoAssets(theme, withPrismaticVowsDemoAssets(theme, withVelvetCinemaDemoAssets(theme, withLoveChronicleDemoAssets(theme, withPorcelainBloomDemoAssets(
+  const invitation = withLuxuryArtGardenDemoAssets(theme, withPearlTideDemoAssets(theme, withPrismaticVowsDemoAssets(theme, withVelvetCinemaDemoAssets(theme, withLoveChronicleDemoAssets(theme, withPorcelainBloomDemoAssets(
     theme,
     getDemoInvitation(theme),
-  )))));
+  ))))));
 
   return (
     <WeddingThemeSafeArea theme={theme}>

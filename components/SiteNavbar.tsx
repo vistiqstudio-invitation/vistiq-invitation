@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function SiteNavbar() {
   const [open, setOpen] = useState(false);
@@ -9,12 +10,9 @@ export default function SiteNavbar() {
   const close = () => setOpen(false);
 
   return (
-    <nav className="navbar">
+    <nav className="navbarWrap"><div className="navbar">
       <Link href="/" className="brand" onClick={close}>
-        <div>
-          <p>VISTIQ</p>
-          <h1>Invitation</h1>
-        </div>
+        <Image src="/vistiq-invitation-logo.png" alt="Vistiq Invitation" width={900} height={282} priority />
       </Link>
 
       <button
@@ -24,25 +22,27 @@ export default function SiteNavbar() {
         aria-expanded={open}
         aria-label="Buka menu"
       >
-        <span>{open ? "Tutup" : "Menu"}</span>
-        {open ? "✕" : "☰"}
+        <span className="srOnly">{open ? "Tutup" : "Menu"}</span>
+        {open ? "×" : "☰"}
       </button>
+
+      <Link href="/login" className="mobileLogin" onClick={close}>Login <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></Link>
 
       {open && <div className="navBackdrop" onClick={close} />}
 
       <div className={open ? "navMenu navMenuOpen" : "navMenu"}>
-        <a href="/" onClick={close}>Home</a>
+        <Link href="/" onClick={close}>Home</Link>
         <a href="#fitur" onClick={close}>Fitur</a>
         <a href="#tema" onClick={close}>Tema</a>
         <a href="#harga" onClick={close}>Harga</a>
         <Link href="/gabung-reseller" onClick={close}>Reseller</Link>
         <Link href="/gabung-resellerbrand" onClick={close}>Reseller Brand</Link>
         <Link href="/gabung-affiliate" onClick={close}>Affiliate</Link>
-        <Link href="/login" onClick={close}>Login</Link>
+        <Link href="/login" className="loginButton" onClick={close}>Login <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></Link>
         <Link href="/gabung-reseller" className="navButton" onClick={close}>
           Daftar Reseller
         </Link>
       </div>
-    </nav>
+    </div></nav>
   );
 }
