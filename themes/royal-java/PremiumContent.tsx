@@ -25,7 +25,7 @@ export default function PremiumContent({ invitation }: { invitation: InvitationD
       <section id="couple" className={styles.couple}>
         <p className={styles.eyebrow}>The Royal Wedding Of</p>
         {couplePhoto && <div className={styles.ovalPhoto}><img src={couplePhoto} alt="" /></div>}
-        <h1>{invitation.groom.name}<em>&amp;</em>{invitation.bride.name}</h1>
+        <h1>{(invitation.groom.nickname || invitation.groom.name)}<em>&amp;</em>{(invitation.bride.nickname || invitation.bride.name)}</h1>
         <p>{invitation.opening.quote || "Dan di antara tanda-tanda kebesaran-Nya ialah Dia menciptakan pasangan-pasangan untukmu agar kamu cenderung dan merasa tenteram kepadanya."}</p>
         <small>{invitation.opening.quoteSource || "QS. Ar-Rum: 21"}</small>
       </section>

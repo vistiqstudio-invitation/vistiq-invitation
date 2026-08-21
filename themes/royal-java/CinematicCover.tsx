@@ -59,7 +59,7 @@ export default function CinematicCover({ invitation }: { invitation: InvitationD
 
             <motion.div className={styles.coverNames} initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.1, delay: 0.2 }}>
               <p>The Royal Wedding Of</p>
-              <h1><span>{invitation.groom.name}</span><em>&amp;</em><span>{invitation.bride.name}</span></h1>
+              <h1><span>{(invitation.groom.nickname || invitation.groom.name)}</span><em>&amp;</em><span>{(invitation.bride.nickname || invitation.bride.name)}</span></h1>
             </motion.div>
 
             <motion.div
@@ -110,9 +110,9 @@ export default function CinematicCover({ invitation }: { invitation: InvitationD
             >
               {coverPhoto && <img src={coverPhoto} alt="" />}
               <p>The Royal Wedding Of</p>
-              <h2>{invitation.groom.name}</h2>
+              <h2>{(invitation.groom.nickname || invitation.groom.name)}</h2>
               <i>&amp;</i>
-              <h2>{invitation.bride.name}</h2>
+              <h2>{(invitation.bride.nickname || invitation.bride.name)}</h2>
             </motion.div>
             <div className={styles.petals} aria-hidden="true">
               {Array.from({ length: 16 }).map((_, index) => <i key={index} />)}

@@ -32,9 +32,9 @@ export default function Cover({ invitation }: { invitation: InvitationData }) {
         <SepiaOrnament className={styles.sepiaOrnament} />
         <p className={styles.coverEyebrow}>The Wedding Of</p>
         <h1 className={styles.sepiaNames}>
-          <span>{invitation.groom.name}</span>
+          <span>{(invitation.groom.nickname || invitation.groom.name)}</span>
           <b>&amp;</b>
-          <span>{invitation.bride.name}</span>
+          <span>{(invitation.bride.nickname || invitation.bride.name)}</span>
         </h1>
         {invitation.events[0]?.date && <p className={styles.sepiaDate}>{invitation.events[0].date}</p>}
 

@@ -48,9 +48,9 @@ export default function Cover({ invitation }: { invitation: InvitationData }) {
         <div className={styles.coverHeaderCard}>
           <p className={styles.coverTop}>Manten Kagungan Damel</p>
 
-          <h1 className={styles.coverTitle}>{invitation.groom.name}</h1>
+          <h1 className={styles.coverTitle}>{(invitation.groom.nickname || invitation.groom.name)}</h1>
           <MeruRoof className={styles.coverMark} />
-          <h1 className={styles.coverTitle}>{invitation.bride.name}</h1>
+          <h1 className={styles.coverTitle}>{(invitation.bride.nickname || invitation.bride.name)}</h1>
 
           {invitation.events[0]?.date && (
             <p className={styles.coverDate}>{invitation.events[0].date}</p>

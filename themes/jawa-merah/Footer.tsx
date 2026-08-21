@@ -24,9 +24,9 @@ export default function Footer({ invitation }: { invitation: InvitationData }) {
           <p className={styles.footerThanks}>Terima Kasih</p>
 
           <h2 className={styles.footerNames}>
-            <span className={styles.footerNameLine}>{invitation.groom.name}</span>
+            <span className={styles.footerNameLine}>{(invitation.groom.nickname || invitation.groom.name)}</span>
             <span className={styles.footerAmpersand}>&amp;</span>
-            <span className={styles.footerNameLine}>{invitation.bride.name}</span>
+            <span className={styles.footerNameLine}>{(invitation.bride.nickname || invitation.bride.name)}</span>
           </h2>
 
           <p className={styles.footerQuote}>
