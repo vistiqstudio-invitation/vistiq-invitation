@@ -32,17 +32,19 @@ export default function CinematicCover({ invitation }: { invitation: InvitationD
         exit={{ opacity: 0, scale: 1.03 }}
         transition={{ duration: 0.7 }}
       >
-            <Image
-              src="/decor/royal-java-cover-v2.webp"
-              alt=""
-              fill
-              priority
-              sizes="(max-width: 520px) 100vw, 520px"
-              className={styles.coverArtwork}
-            />
+            <motion.div className={styles.coverBase} initial={{ scale: 1.06 }} animate={{ scale: 1 }} transition={{ duration: 2.1, ease: [0.22, 1, 0.36, 1] }}>
+              <Image src="/decor/royal-java-cover-v2.webp" alt="" fill priority sizes="(max-width: 520px) 100vw, 520px" className={styles.coverArtwork} />
+            </motion.div>
+            <motion.div className={styles.topArtwork} aria-hidden="true" initial={{ opacity: 0, y: -42 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.35, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}>
+              <Image src="/decor/royal-java-cover-v2.webp" alt="" fill priority sizes="(max-width: 520px) 100vw, 520px" className={styles.coverArtwork} />
+            </motion.div>
+            <motion.div className={styles.bottomArtwork} aria-hidden="true" initial={{ opacity: 0, y: 75 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.45, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}>
+              <Image src="/decor/royal-java-cover-v2.webp" alt="" fill priority sizes="(max-width: 520px) 100vw, 520px" className={styles.coverArtwork} />
+            </motion.div>
+            <motion.div className={styles.cloudReveal} aria-hidden="true" initial={{ opacity: 0, scale: .7, x: -30 }} animate={{ opacity: [0, .9, 0], scale: [0.7, 1.18, 1.5], x: [-30, 12, 55] }} transition={{ duration: 2.3, delay: .15, ease: "easeOut" }} />
             <div className={styles.coverVeil} aria-hidden="true" />
 
-            <motion.div className={styles.coverNames} initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.1, delay: 0.2 }}>
+            <motion.div className={styles.coverNames} initial={{ opacity: 0, y: 26, filter: "blur(8px)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} transition={{ duration: 1.15, delay: 0.65 }}>
               <p>The Royal Wedding Of</p>
               <h1><span>{(invitation.groom.nickname || invitation.groom.name)}</span><em>&amp;</em><span>{(invitation.bride.nickname || invitation.bride.name)}</span></h1>
               {weddingDate && <time>{weddingDate}</time>}
