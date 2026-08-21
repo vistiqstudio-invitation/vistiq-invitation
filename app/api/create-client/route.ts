@@ -75,7 +75,7 @@ async function createClientPaymentLink({
       midtrans_order_id: orderId,
       midtrans_redirect_url: result.redirect_url,
       payment_link_expires_at: expiresAt,
-    })
+    } as never)
     .eq("id", transactionId);
 
   if (updateError) throw new Error(updateError.message);
@@ -215,7 +215,8 @@ export async function POST(request: Request) {
     if (transaction) {
       try {
         const payment = await createClientPaymentLink({
-          supabaseAdmin,
+          supabaseAdmin:
+            supabaseAdmin as unknown as ReturnType<typeof createServiceClient>,
           transactionId: transaction.id,
           amount: Number(transaction.amount),
           name,
