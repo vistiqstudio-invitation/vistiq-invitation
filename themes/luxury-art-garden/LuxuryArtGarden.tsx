@@ -12,40 +12,47 @@ import styles from "./style.module.css";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
-function Scene({ dense = false }: { dense?: boolean }) {
+function Scene({ dense = false, staged = false }: { dense?: boolean; staged?: boolean }) {
   return (
     <div className={`${styles.scene} ${dense ? styles.sceneDense : ""}`} aria-hidden="true">
+      <motion.i
+        className={styles.sceneArtwork}
+        initial={staged ? { opacity: 0, scale: 1.08 } : false}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1.45, ease }}
+      />
       <motion.i className={styles.cloudOne} animate={{ x: [0, 24, 0] }} transition={{ duration: 14, repeat: Infinity, ease: "linear" }} />
       <motion.i className={styles.cloudTwo} animate={{ x: [0, -30, 0] }} transition={{ duration: 18, repeat: Infinity, ease: "linear" }} />
-      <i className={styles.mountainBack} /><i className={styles.mountainFront} /><i className={styles.lake} /><i className={styles.bridge} />
-      <motion.i className={styles.treeLeft} animate={{ rotate: [-1.2, 1.2, -1.2] }} transition={{ duration: 4, repeat: Infinity }} />
-      <motion.i className={styles.treeRight} animate={{ rotate: [1, -1.4, 1] }} transition={{ duration: 4.6, repeat: Infinity }} />
-      <i className={styles.shrubLeft} /><i className={styles.shrubRight} />
-      <div className={styles.flowerBed}><span>✿</span><span>❀</span><span>✾</span><span>✿</span><span>❀</span><span>✾</span><span>✿</span></div>
+      <motion.i
+        className={styles.botanicalForeground}
+        initial={staged ? { opacity: 0, y: 100, scale: .88 } : false}
+        animate={{ opacity: 1, y: 0, scale: 1, rotate: [-.35, .35, -.35] }}
+        transition={{ opacity: { delay: .75, duration: 1.15, ease }, y: { delay: .75, duration: 1.15, ease }, scale: { delay: .75, duration: 1.15, ease }, rotate: { delay: 1.9, duration: 4.8, repeat: Infinity, ease: "easeInOut" } }}
+      />
     </div>
   );
 }
 
 function OvalPortrait({ src, alt, className = "", priority = false }: { src: string | null; alt: string; className?: string; priority?: boolean }) {
-  return <div className={`${styles.ovalPortrait} ${className}`}><span className={styles.ovalCrown}>❀</span><div className={styles.ovalInner}>{src && <Image src={src} alt={alt} fill priority={priority} sizes="(max-width: 600px) 68vw, 380px" />}</div><i className={styles.ovalFlourishLeft}>❧</i><i className={styles.ovalFlourishRight}>❧</i></div>;
+  return <div className={`${styles.ovalPortrait} ${className}`}><div className={styles.ovalInner}>{src && <Image src={src} alt={alt} fill priority={priority} sizes="(max-width: 600px) 68vw, 380px" />}</div><Image className={styles.ovalFrameAsset} src="/themes/luxury-art-garden/oval-frame.webp" alt="" fill priority={priority} sizes="(max-width: 600px) 78vw, 430px" aria-hidden="true" /></div>;
 }
 
-function Loading() { return <motion.div className={styles.loading} exit={{ opacity: 0 }} transition={{ duration: .5 }}><span>✿</span><small>Luxury Art</small></motion.div>; }
+function Loading() { return <motion.div className={styles.loading} exit={{ opacity: 0, scale: 1.04 }} transition={{ duration: .65, ease }}><span>N <i>&amp;</i> R</span><small>Luxury Art</small></motion.div>; }
 
 function Cover({ invitation }: { invitation: InvitationData }) {
   const { setOpened } = useInvitation();
   const guest = useSearchParams().get("to") || "Bapak/Ibu/Saudara/i";
   const bride = invitation.bride.nickname || invitation.bride.name;
   const groom = invitation.groom.nickname || invitation.groom.name;
-  return <motion.section className={styles.cover} exit={{ opacity: 0, y: "-12%" }} transition={{ duration: 1.05, ease }}><Scene dense/><div className={styles.coverBorder}><i/></div><motion.div className={styles.coverBirds} initial={{opacity:0,x:-30}} animate={{opacity:1,x:0}} transition={{delay:.7}}>⌁　⌁</motion.div><motion.div className={styles.coverTitle} initial={{opacity:0,y:-20}} animate={{opacity:1,y:0}} transition={{delay:.8,duration:.8,ease}}><p>The Wedding of</p><h1>{bride} <span>&amp;</span> {groom}</h1></motion.div><motion.div className={styles.coverPortrait} initial={{opacity:0,scale:.78,y:70}} animate={{opacity:1,scale:1,y:0}} transition={{delay:1.25,duration:1.25,ease}}><OvalPortrait src={invitation.coverImage} alt={`${bride} dan ${groom}`} priority/></motion.div><motion.div className={styles.guestCard} initial={{opacity:0,y:90}} animate={{opacity:1,y:0}} transition={{delay:2.05,duration:.9,ease}}><p>Kepada Yth.<br/><strong>{guest}</strong></p><button onClick={()=>setOpened(true)}><span>✉</span> Buka Undangan</button></motion.div><motion.div className={styles.coverFlorals} initial={{opacity:0,y:90,scale:.8}} animate={{opacity:1,y:0,scale:1}} transition={{delay:1.7,duration:1.1,ease}}>❀ <span>✿</span> ❀ <i>✾</i> ✿</motion.div></motion.section>;
+  return <motion.section className={styles.cover} exit={{ opacity: 0, scale: 1.06, filter: "blur(6px)" }} transition={{ duration: 1.15, ease }}><Scene dense staged/><div className={styles.coverBorder}><i/></div><motion.div className={styles.coverBirds} initial={{opacity:0,x:-30}} animate={{opacity:1,x:0}} transition={{delay:.7}}>⌁　⌁</motion.div><motion.div className={styles.coverTitle} initial={{opacity:0,y:-20}} animate={{opacity:1,y:0}} transition={{delay:.85,duration:.8,ease}}><p>The Wedding of</p><h1>{bride} <span>&amp;</span> {groom}</h1></motion.div><motion.div className={styles.coverPortrait} initial={{opacity:0,scale:.72,y:78}} animate={{opacity:1,scale:1,y:0}} transition={{delay:1.3,duration:1.25,ease}}><OvalPortrait src={invitation.coverImage} alt={`${bride} dan ${groom}`} priority/></motion.div><motion.div className={styles.guestCard} initial={{opacity:0,y:90}} animate={{opacity:1,y:0}} transition={{delay:2.15,duration:.95,ease}}><p>Kepada Yth.<br/><strong>{guest}</strong></p><motion.button whileTap={{scale:.96}} animate={{boxShadow:["0 0 0 0 rgba(117,99,130,.32)","0 0 0 10px rgba(117,99,130,0)"]}} transition={{delay:3, duration:1.8,repeat:Infinity}} onClick={()=>setOpened(true)}><span>✉</span> Buka Undangan</motion.button></motion.div></motion.section>;
 }
 
 function Hero({ invitation }: { invitation: InvitationData }) {
   const bride=invitation.bride.nickname||invitation.bride.name; const groom=invitation.groom.nickname||invitation.groom.name;
-  return <section id="home" className={styles.hero}><Scene dense/><motion.div className={styles.heroTitle} initial={{opacity:0,y:-30}} whileInView={{opacity:1,y:0}} viewport={{once:true}} transition={{duration:.8}}><p>The Wedding of</p><h2>{bride} <span>&amp;</span> {groom}</h2></motion.div><motion.div className={styles.heroPortrait} initial={{opacity:0,scale:.75}} whileInView={{opacity:1,scale:1}} viewport={{once:true}} transition={{delay:.2,duration:1.1,ease}}><OvalPortrait src={invitation.coverImage} alt={`${bride} dan ${groom}`} priority/></motion.div></section>;
+  return <section id="home" className={styles.hero}><Scene dense staged/><motion.div className={styles.heroTitle} initial={{opacity:0,y:-36}} animate={{opacity:1,y:0}} transition={{delay:.75,duration:.9,ease}}><p>The Wedding of</p><h2>{bride} <span>&amp;</span> {groom}</h2></motion.div><motion.div className={styles.heroPortrait} initial={{opacity:0,scale:.7,y:70}} animate={{opacity:1,scale:1,y:0}} transition={{delay:1.2,duration:1.2,ease}}><OvalPortrait src={invitation.coverImage} alt={`${bride} dan ${groom}`} priority/></motion.div></section>;
 }
 
-function Quote() { return <section className={styles.quoteSection}><div className={styles.quoteTreeLeft}>♧</div><div className={styles.quoteTreeRight}>♧</div><motion.blockquote initial={{opacity:0,y:35}} whileInView={{opacity:1,y:0}} viewport={{once:true}} transition={{duration:.8}}><span>“</span><p>Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya.</p><cite>— QS. Ar-Rum 21 —</cite></motion.blockquote></section>; }
+function Quote() { return <section className={styles.quoteSection}><div className={styles.quoteTreeLeft}/><div className={styles.quoteTreeRight}/><motion.blockquote initial={{opacity:0,y:35}} whileInView={{opacity:1,y:0}} viewport={{once:true}} transition={{duration:.8}}><span>“</span><p>Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya.</p><cite>— QS. Ar-Rum 21 —</cite></motion.blockquote></section>; }
 
 function Person({person,role,index}:{person:InvitationData["bride"]|InvitationData["groom"];role:"Putri"|"Putra";index:number}) { return <motion.article className={styles.person} initial={{opacity:0,y:55}} whileInView={{opacity:1,y:0}} viewport={{once:true}} transition={{delay:index*.14,duration:.8,ease}}><div className={styles.personPhoto}>{person.photo&&<Image src={person.photo} alt={person.name} fill sizes="(max-width:600px) 68vw, 340px"/>}</div><div className={styles.personCopy}><p>{role} dari</p><h3>{person.name}</h3><p>{person.parents}</p>{person.instagram&&<a href={`https://instagram.com/${person.instagram.replace("@","")}`} target="_blank" rel="noreferrer">@{person.instagram.replace("@","")}</a>}</div></motion.article>; }
 
@@ -53,7 +60,7 @@ function Couple({invitation}:{invitation:InvitationData}) { return <section id="
 
 function Countdown({date}:{date:string}) { const target=useMemo(()=>new Date(date).getTime(),[date]); const [now,setNow]=useState(()=>Date.now()); useEffect(()=>{const timer=window.setInterval(()=>setNow(Date.now()),1000);return()=>window.clearInterval(timer);},[]); const distance=Math.max(0,target-now); const values=[[Math.floor(distance/86400000),"Hari"],[Math.floor(distance/3600000)%24,"Jam"],[Math.floor(distance/60000)%60,"Menit"],[Math.floor(distance/1000)%60,"Detik"]]; return <section id="countdown" className={styles.countdown}><Scene/><h2>Kami akan menikah,<small>dan kami ingin Anda menjadi bagian dari hari istimewa kami!</small></h2><div>{values.map(([v,l])=><span key={l}><strong>{String(v).padStart(2,"0")}</strong><small>{l}</small></span>)}</div></section>; }
 
-function Events({invitation}:{invitation:InvitationData}) { return <section id="event" className={styles.events}>{invitation.events.map((event,index)=><motion.article key={`${event.name}-${event.date}`} initial={{opacity:0,y:50}} whileInView={{opacity:1,y:0}} viewport={{once:true}} transition={{delay:index*.15,duration:.8,ease}}><div className={styles.eventArch}><span>{index===0?"♧":"❀"}</span><h2>{event.name}</h2><p>{event.date}</p><strong>{event.time}</strong><i/><p>{event.location}</p>{invitation.mapsUrl&&<a href={invitation.mapsUrl} target="_blank" rel="noreferrer">Lihat Maps</a>}</div></motion.article>)}</section>; }
+function Events({invitation}:{invitation:InvitationData}) { return <section id="event" className={styles.events}>{invitation.events.map((event,index)=><motion.article key={`${event.name}-${event.date}`} initial={{opacity:0,y:50}} whileInView={{opacity:1,y:0}} viewport={{once:true}} transition={{delay:index*.15,duration:.8,ease}}><div className={styles.eventArch}><span>{index===0?"I":"II"}</span><h2>{event.name}</h2><p>{event.date}</p><strong>{event.time}</strong><i/><p>{event.location}</p>{invitation.mapsUrl&&<a href={invitation.mapsUrl} target="_blank" rel="noreferrer">Lihat Maps</a>}</div></motion.article>)}</section>; }
 
 function Gallery({invitation}:{invitation:InvitationData}) { const [active,setActive]=useState<number|null>(null); return <section id="gallery" className={styles.gallery}><Scene/><h2>Our Gallery</h2><div className={styles.galleryGrid}>{invitation.gallery.slice(0,6).map((photo,index)=><motion.button key={photo} onClick={()=>setActive(index)} initial={{opacity:0,scale:.88}} whileInView={{opacity:1,scale:1}} viewport={{once:true}} transition={{delay:index*.07}}><Image src={photo} alt={`Galeri ${index+1}`} fill sizes="(max-width:600px) 44vw, 260px"/></motion.button>)}</div><AnimatePresence>{active!==null&&<motion.div className={styles.lightbox} initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} onClick={()=>setActive(null)}><button aria-label="Tutup">×</button><div><Image src={invitation.gallery[active]} alt="Foto galeri" fill sizes="90vw"/></div></motion.div>}</AnimatePresence></section>; }
 
