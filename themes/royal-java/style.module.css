@@ -4,14 +4,14 @@
 .coverBackdrop{position:absolute;inset:0;z-index:-4;background:radial-gradient(circle at 50% 32%,#5d2819 0,#2b0c08 43%,#130504 100%)}
 .coverPattern{position:absolute;inset:0;z-index:-3;opacity:.18;background-image:url("/decor/jawa-merah/paper-texture.jpg");background-size:460px;mix-blend-mode:screen}
 .coverPattern:after{content:"";position:absolute;inset:6% 8% 7%;border:1px solid rgba(204,144,53,.22);box-shadow:inset 0 0 45px rgba(215,139,44,.12)}
-.foliageTop,.foliageRight{position:absolute;z-index:3;width:min(93vw,490px);pointer-events:none;filter:saturate(.95) brightness(.76) contrast(1.08);object-fit:contain}
-.foliageTop{left:-18%;top:-3%;transform:rotate(4deg)}
-.foliageRight{right:-43%;top:11%;transform:rotate(91deg) scale(1.12)}
+.foliageTop,.foliageRight{position:absolute;z-index:3;width:min(76vw,400px);pointer-events:none;filter:saturate(.95) brightness(.76) contrast(1.08);object-fit:contain}
+.foliageTop{left:-22%;top:-5%;transform:rotate(4deg)}
+.foliageRight{right:-39%;top:-2%;transform:rotate(91deg) scale(1.02)}
 .floralBottom{position:absolute;z-index:4;left:50%;bottom:-4%;width:min(125vw,660px);max-width:none;transform:translateX(-50%);filter:saturate(1.05) brightness(.88)}
 .jogloGlow{position:absolute;z-index:-1;left:11%;right:11%;top:8%;height:29%;filter:drop-shadow(0 0 13px rgba(219,149,57,.28))}
 .jogloGlow:before,.jogloGlow:after,.jogloGlow i{content:"";position:absolute;left:50%;transform:translateX(-50%);background:linear-gradient(180deg,#d6a14f,#6f351b);clip-path:polygon(50% 0,100% 100%,0 100%)}
 .jogloGlow:before{top:0;width:68%;height:34%}.jogloGlow:after{top:24%;width:91%;height:31%}.jogloGlow i:nth-child(1){top:48%;width:100%;height:34%}.jogloGlow i:nth-child(2){top:67%;width:3px;height:31%;clip-path:none}.jogloGlow i:nth-child(3){top:67%;left:26%;width:3px;height:31%;clip-path:none;box-shadow:calc(min(48vw,230px)) 0 #a46b31}
-.coverNames{position:relative;z-index:2;width:min(84vw,390px);margin-top:-4vh;text-shadow:0 4px 18px #120200}
+.coverNames{position:relative;z-index:5;width:min(90vw,410px);margin-top:-4vh;text-shadow:0 4px 18px #120200}
 .coverNames p{margin:0 0 10px;color:#d7aa58;font:600 .66rem/1.2 Georgia,serif;letter-spacing:.22em;text-transform:uppercase}
 .coverNames h1{margin:0;font:600 clamp(2.7rem,12vw,4.5rem)/.82 Georgia,serif;letter-spacing:-.045em}
 .coverNames h1 span{display:block}.coverNames h1 em{display:block;margin:.08em 0;color:#d1a040;font-size:.54em;font-weight:400;line-height:.8}

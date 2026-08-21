@@ -14,19 +14,18 @@ export default function PremiumContent({ invitation }: { invitation: InvitationD
   return (
     <main className={styles.page}>
       <section id="home" className={styles.welcome}>
+        <Image
+          src="/photos/royal-java-joglo.png"
+          alt="Rumah adat Joglo khas Jawa"
+          fill
+          priority
+          sizes="(max-width: 520px) 100vw, 520px"
+          className={styles.jogloBackdrop}
+        />
+        <div className={styles.welcomeShade} aria-hidden="true" />
         <div className={styles.calendarButtons}>
           <button type="button">Simpan ke Google Calendar</button>
           <button type="button">Simpan ke Outlook</button>
-        </div>
-        <div className={styles.jogloPhoto}>
-          <Image
-            src="/photos/royal-java-joglo.png"
-            alt="Rumah adat Joglo khas Jawa"
-            fill
-            sizes="(max-width: 520px) 72vw, 340px"
-            className={styles.jogloImage}
-          />
-          <span aria-hidden="true">Pendopo Jawa</span>
         </div>
         <img className={styles.welcomeFlowers} src="/decor/jawa-merah/floral-spray.png" alt="" />
         <p>{invitation.opening.description || "Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu kepada kami."}</p>
