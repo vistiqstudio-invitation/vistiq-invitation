@@ -35,6 +35,11 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Public navigation — shared by the new blue-and-white marketing surface. */
+.navbar{position:relative;z-index:50;max-width:1240px;margin:0 auto;padding:22px 28px;display:flex;align-items:center;justify-content:space-between;gap:28px;background:rgba(255,255,255,.92);backdrop-filter:blur(18px)}
+.brand{text-decoration:none}.brand p{margin:0;color:#1863ad;font-size:10px;font-weight:900;letter-spacing:3px}.brand h1{margin:2px 0 0;color:#0b2b4b;font:400 27px/1 Georgia,serif}.navMenu{display:flex;align-items:center;gap:21px}.navMenu a{color:#31526f;text-decoration:none;font-size:13px;font-weight:700;white-space:nowrap}.navMenu a:hover{color:#1863ad}.navMenu .navButton{padding:12px 19px;border-radius:12px;background:#1863ad;color:#fff;box-shadow:0 12px 28px rgba(24,99,173,.22)}.menuToggle,.navBackdrop{display:none}
+@media(max-width:900px){.navbar{padding:16px 20px}.menuToggle{display:flex;align-items:center;gap:8px;border:1px solid #dceaf7;background:#fff;color:#0b2b4b;padding:10px 13px;border-radius:12px;font-weight:800}.menuToggle span{font-size:12px}.navBackdrop{display:block;position:fixed;inset:0;background:rgba(11,43,75,.28);z-index:48}.navMenu{display:none}.navMenuOpen{display:flex;position:absolute;z-index:49;top:76px;left:16px;right:16px;padding:18px;flex-direction:column;align-items:stretch;background:#fff;border:1px solid #dceaf7;border-radius:18px;box-shadow:0 24px 60px rgba(11,43,75,.18)}.navMenuOpen a{padding:9px 10px}.navMenuOpen .navButton{text-align:center}}
+
 /* Keep the existing homepage layout while the Reseller commercial model is
    now Rp59.000 once + unlimited sales + 20% platform fee per client sale. */
 .priceGrid > .priceCard.featured > strong {
