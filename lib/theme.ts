@@ -43,6 +43,7 @@ import SageGreen from "@/themes/sage-green/SageGreen";
 import Sahara from "@/themes/sahara/Sahara";
 import MidnightAurora from "@/themes/midnight-aurora/MidnightAurora";
 import PorcelainBloom from "@/themes/porcelain-bloom/PorcelainBloom";
+import LuxuryArtGarden from "@/themes/luxury-art-garden/LuxuryArtGarden";
 import LoveChronicle from "@/themes/love-chronicle/LoveChronicle";
 import VelvetCinema from "@/themes/velvet-cinema/VelvetCinema";
 import PrismaticVows from "@/themes/prismatic-vows/PrismaticVows";
@@ -86,6 +87,7 @@ export const themeRegistry: Record<
   sahara: Sahara,
   "midnight-aurora": MidnightAurora,
   "porcelain-bloom": PorcelainBloom,
+  "luxury-art-garden": LuxuryArtGarden,
   "love-chronicle": LoveChronicle,
   "velvet-cinema": VelvetCinema,
   "prismatic-vows": PrismaticVows,
@@ -320,6 +322,14 @@ export const themeList: ThemeMeta[] = [
     description: "Navy-ungu malam, aurora bergerak, orbit perak & aksen konstelasi",
     swatch: ["#071126", "#a88bff"],
     tags: ["premium"],
+  },
+  {
+    key: "luxury-art-garden",
+    label: "Luxury Art — Garden Valley",
+    description: "Luxury art bernuansa midnight blue, botanical relief, bingkai galeri & aksen antique gold",
+    swatch: ["#e8eef5", "#173f67"],
+    tags: ["luxury-art", "premium"],
+    addedAt: "2026-08-21",
   },
   {
     key: "porcelain-bloom",
