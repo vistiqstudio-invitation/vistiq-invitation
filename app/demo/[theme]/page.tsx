@@ -6,6 +6,7 @@ import { withLoveChronicleDemoAssets } from "@/lib/loveChronicleDemo";
 import { withVelvetCinemaDemoAssets } from "@/lib/velvetCinemaDemo";
 import { withPrismaticVowsDemoAssets } from "@/lib/prismaticVowsDemo";
 import { withPearlTideDemoAssets } from "@/lib/pearlTideDemo";
+import WeddingThemeSafeArea from "@/components/WeddingThemeSafeArea";
 
 export default async function DemoThemePage({
   params,
@@ -22,5 +23,9 @@ export default async function DemoThemePage({
     getDemoInvitation(theme),
   )))));
 
-  return <Theme invitation={invitation} />;
+  return (
+    <WeddingThemeSafeArea theme={theme}>
+      <Theme invitation={invitation} />
+    </WeddingThemeSafeArea>
+  );
 }
