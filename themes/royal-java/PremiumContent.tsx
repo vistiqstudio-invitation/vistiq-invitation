@@ -11,7 +11,6 @@ import Footer from "@/themes/jawa-merah/Footer";
 import styles from "./premium.module.css";
 
 export default function PremiumContent({ invitation }: { invitation: InvitationData }) {
-  const couplePhoto = invitation.coverImage || invitation.groom.photo || invitation.bride.photo;
   const searchParams = useSearchParams();
   const guestName = searchParams.get("to") || "Bapak/Ibu/Saudara/i";
   const weddingDate = invitation.events[0]?.date;
@@ -59,10 +58,26 @@ export default function PremiumContent({ invitation }: { invitation: InvitationD
       <section id="couple" className={styles.couple}>
         <motion.div {...reveal}>
           <p className={styles.eyebrow}>The Royal Wedding Of</p>
-          {couplePhoto && <div className={styles.ovalPhoto}><Image src={couplePhoto} alt="Foto kedua mempelai" fill sizes="235px" /></div>}
           <h1>{(invitation.groom.nickname || invitation.groom.name)}<em>&amp;</em>{(invitation.bride.nickname || invitation.bride.name)}</h1>
           <p className={styles.courtesy}>{invitation.opening.description || "Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu kepada kami."}</p>
         </motion.div>
+        <div className={styles.people}>
+          <motion.article {...reveal}>
+            {invitation.groom.photo && <div className={styles.personPhoto}><Image src={invitation.groom.photo} alt={`Foto ${invitation.groom.name}`} fill sizes="220px" /></div>}
+            <span className={styles.personRole}>Mempelai Pria</span>
+            <h3>{invitation.groom.name}</h3>
+            {invitation.groom.parents && <p>Putra dari<br /><b>{invitation.groom.parents}</b></p>}
+            {invitation.groom.instagram && <a href={`https://instagram.com/${invitation.groom.instagram.replace("@", "")}`} target="_blank" rel="noreferrer">@{invitation.groom.instagram.replace("@", "")}</a>}
+          </motion.article>
+          <span className={styles.peopleAmp}>&amp;</span>
+          <motion.article {...reveal}>
+            {invitation.bride.photo && <div className={styles.personPhoto}><Image src={invitation.bride.photo} alt={`Foto ${invitation.bride.name}`} fill sizes="220px" /></div>}
+            <span className={styles.personRole}>Mempelai Wanita</span>
+            <h3>{invitation.bride.name}</h3>
+            {invitation.bride.parents && <p>Putri dari<br /><b>{invitation.bride.parents}</b></p>}
+            {invitation.bride.instagram && <a href={`https://instagram.com/${invitation.bride.instagram.replace("@", "")}`} target="_blank" rel="noreferrer">@{invitation.bride.instagram.replace("@", "")}</a>}
+          </motion.article>
+        </div>
       </section>
 
       <section id="event" className={styles.events}>
@@ -78,6 +93,16 @@ export default function PremiumContent({ invitation }: { invitation: InvitationD
               {invitation.mapsUrl && <a href={invitation.mapsUrl} target="_blank" rel="noreferrer">Lihat Lokasi</a>}
             </article>
           ))}
+        </motion.div>
+      </section>
+
+      <section className={styles.moment}>
+        <div className={styles.momentShade} aria-hidden="true" />
+        <motion.div {...reveal}>
+          <span>Menuju Hari Bahagia</span>
+          <h2>{weddingDate || "Hari Pernikahan"}</h2>
+          <i aria-hidden="true">❦</i>
+          <p>Dengan penuh rasa syukur, kami menantikan kehadiran dan doa restu Anda pada hari istimewa kami.</p>
         </motion.div>
       </section>
 
