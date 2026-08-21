@@ -27,12 +27,10 @@ const FAQ = [
   ["Apakah tersedia paket untuk menjual kembali?", "Tersedia paket Reseller dan Reseller Brand, termasuk pilihan white-label dengan identitas brand sendiri."],
 ];
 
-const HERO_CARDS = [
-  { src: "/photos/jawa-cover.png", className: "cardOne", alt: "Tema undangan Jawa" },
-  { src: "/photos/imperial-cover.png", className: "cardTwo", alt: "Tema undangan Imperial" },
-  { src: "/photos/luxury-cover.png", className: "cardThree", alt: "Tema undangan Luxury" },
-  { src: "/photos/sakura-cover.png", className: "cardFour", alt: "Tema undangan Sakura" },
-  { src: "/photos/botanical-cover.png", className: "cardFive", alt: "Tema undangan Botanical" },
+const HERO_COLUMNS = [
+  ["/photos/jawa-cover.png", "/photos/botanical-cover.png", "/photos/boho-cover.png"],
+  ["/photos/imperial-cover.png", "/photos/luxury-cover.png", "/photos/deco-cover.png"],
+  ["/photos/sakura-cover.png", "/photos/romance-cover.png", "/photos/floral-cover.png"],
 ];
 
 export default function HomePage() {
@@ -46,7 +44,7 @@ export default function HomePage() {
         <div className={styles.actions}><Link href="/demo" className={styles.primary}>Lihat Tema <span>→</span></Link></div>
       </div>
       <div className={styles.heroVisual} aria-label="Koleksi tema undangan Vistiq">
-        {HERO_CARDS.map(card=><div key={card.src} className={`${styles.inviteCard} ${styles[card.className]}`}><Image src={card.src} alt={card.alt} fill sizes="(max-width: 640px) 32vw, 190px"/></div>)}
+        {HERO_COLUMNS.map((column,columnIndex)=><div key={column[0]} className={`${styles.coverColumn} ${styles[`column${columnIndex + 1}`]}`}><div className={styles.coverTrack}>{[...column,...column].map((src,index)=><div key={`${src}-${index}`} className={styles.inviteCard}><Image src={src} alt="Preview tema undangan Vistiq" fill sizes="(max-width: 640px) 29vw, 180px"/></div>)}</div></div>)}
       </div>
     </section>
     <section className={styles.statsBar}><div><strong>Beragam Tema</strong><span>Desain undangan premium siap digunakan</span></div><div><strong>Bagikan Tanpa Batas</strong><span>Nama tamu dan ucapan tersimpan di dashboard</span></div></section>
