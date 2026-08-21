@@ -31,7 +31,7 @@ function Cover({ invitation }: { invitation: InvitationData }) {
   const guest = useSearchParams().get("to") || "Bapak/Ibu/Saudara/i";
   return (
     <motion.section className={styles.cover} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-      {invitation.coverImage && <motion.img className={styles.coverPhoto} src={invitation.coverImage} alt={`Foto ${invitation.groom.name} dan ${invitation.bride.name}`} initial={{ scale: 1.08 }} animate={{ scale: 1 }} transition={{ duration: 2.5 }} />}
+      {invitation.coverImage && <motion.img className={styles.coverPhoto} src={invitation.coverImage} alt={`Foto ${(invitation.groom.nickname || invitation.groom.name)} dan ${(invitation.bride.nickname || invitation.bride.name)}`} initial={{ scale: 1.08 }} animate={{ scale: 1 }} transition={{ duration: 2.5 }} />}
       <div className={styles.coverShade} /><div className={styles.paperGrain} />
       <PostalStamp className={`${styles.postalStamp} ${styles.coverStamp}`} text="SAVE THE DATE" />
       <div className={styles.postmark} aria-hidden="true"><span>VISTIQ POST</span><i>20 · 09 · 26</i></div>
@@ -40,10 +40,10 @@ function Cover({ invitation }: { invitation: InvitationData }) {
         <h1 className={styles.masthead}>Love Chronicle</h1>
         <div className={styles.doubleRule} />
         <p className={styles.coverLead}>Two hearts write the headline of a lifetime</p>
-        <h2 className={styles.coverNames}>{invitation.groom.name}<span>&amp;</span>{invitation.bride.name}</h2>
+        <h2 className={styles.coverNames}>{(invitation.groom.nickname || invitation.groom.name)}<span>&amp;</span>{(invitation.bride.nickname || invitation.bride.name)}</h2>
         <div className={styles.coverInfo}><b>{invitation.events[0]?.date}</b><span>Special Wedding Edition</span></div>
         <div className={styles.guestBox}><small>EXCLUSIVELY DELIVERED TO</small><strong>{guest}</strong><button onClick={() => setOpened(true)}>Baca Undangan <span>→</span></button></div>
-        <WaxSeal className={styles.coverSeal} initials={`${invitation.groom.name[0]}${invitation.bride.name[0]}`} />
+        <WaxSeal className={styles.coverSeal} initials={`${(invitation.groom.nickname || invitation.groom.name)[0]}${(invitation.bride.nickname || invitation.bride.name)[0]}`} />
       </motion.div>
     </motion.section>
   );
@@ -51,7 +51,7 @@ function Cover({ invitation }: { invitation: InvitationData }) {
 
 function Opening({ invitation }: { invitation: InvitationData }) {
   return <div className={`${styles.section} ${styles.opening}`}>
-    <Reveal><p className={styles.dateline}>JAKARTA — MINGGU, 20 SEPTEMBER 2026</p><h2 className={styles.headline}>A Beautiful Beginning<br />Worth Writing About</h2><p className={styles.dropcap}>Dengan memohon rahmat dan ridho Allah SWT, kami bermaksud menyelenggarakan pernikahan putra-putri kami, <b>{invitation.groom.name}</b> &amp; <b>{invitation.bride.name}</b>. Merupakan kehormatan bagi kami apabila Anda berkenan hadir dan memberikan doa restu.</p></Reveal>
+    <Reveal><p className={styles.dateline}>JAKARTA — MINGGU, 20 SEPTEMBER 2026</p><h2 className={styles.headline}>A Beautiful Beginning<br />Worth Writing About</h2><p className={styles.dropcap}>Dengan memohon rahmat dan ridho Allah SWT, kami bermaksud menyelenggarakan pernikahan putra-putri kami, <b>{(invitation.groom.nickname || invitation.groom.name)}</b> &amp; <b>{(invitation.bride.nickname || invitation.bride.name)}</b>. Merupakan kehormatan bagi kami apabila Anda berkenan hadir dan memberikan doa restu.</p></Reveal>
     <Reveal delay={.15}><blockquote className={styles.pullQuote}><span>“</span><p>Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu pasangan hidup supaya kamu mendapat ketenangan hati padanya.</p><cite>QS. Ar-Rum : 21</cite></blockquote></Reveal>
   </div>;
 }
@@ -110,7 +110,7 @@ function RSVP({ invitation }: { invitation: InvitationData }) {
 
 function Wishes({ invitation }: { invitation: InvitationData }) { const{entries,totalCount,hasMore,loadMore}=useRsvpWishes(invitation.id);return <div className={styles.section}><Heading kicker="Letters To The Couple" title="Wedding Wishes"/>{totalCount===0?<p className={styles.empty}>Jadilah yang pertama mengirimkan ucapan dan doa.</p>:<><div className={styles.wishes}>{entries.map((e,i)=><Reveal key={e.id} delay={Math.min(i*.05,.25)}><article><span>LETTER 0{i+1}</span><p>“{e.message}”</p><div><b>{e.name}</b><small>{e.attendance}</small></div></article></Reveal>)}</div>{hasMore&&<button className={styles.more} onClick={loadMore}>Load More Letters</button>}</>}</div> }
 
-function Footer({ invitation }: { invitation: InvitationData }) { return <footer className={styles.footer}><PostalStamp className={styles.footerStamp}/><p>THE FINAL EDITION</p><h2>And so,<br/>the adventure begins.</h2><div className={styles.footerNames}>{invitation.groom.name}<span>&amp;</span>{invitation.bride.name}</div><ChronicleRule className={styles.footerRule}/><small>{invitation.brand?.logoUrl && <img src={invitation.brand.logoUrl} alt="" style={{height:16,verticalAlign:"middle",marginRight:6,display:"inline-block"}}/>}© {new Date().getFullYear()} {invitation.brand?.name??"Vistiq Invitation"}</small></footer> }
+function Footer({ invitation }: { invitation: InvitationData }) { return <footer className={styles.footer}><PostalStamp className={styles.footerStamp}/><p>THE FINAL EDITION</p><h2>And so,<br/>the adventure begins.</h2><div className={styles.footerNames}>{(invitation.groom.nickname || invitation.groom.name)}<span>&amp;</span>{(invitation.bride.nickname || invitation.bride.name)}</div><ChronicleRule className={styles.footerRule}/><small>{invitation.brand?.logoUrl && <img src={invitation.brand.logoUrl} alt="" style={{height:16,verticalAlign:"middle",marginRight:6,display:"inline-block"}}/>}© {new Date().getFullYear()} {invitation.brand?.name??"Vistiq Invitation"}</small></footer> }
 function Music({url}:{url:string|null}){const{audioRef,isPlaying,toggle}=useMusicPlayer(url);if(!url)return null;return <><audio ref={audioRef} src={url} loop/><button className={styles.music} onClick={toggle} aria-label={isPlaying?"Jeda musik":"Putar musik"}>{isPlaying?"Ⅱ":"♪"}</button></>}
 const nav=[["home","Top"],["couple","Couple"],["story","Story"],["event","Event"],["gallery","Gallery"],["gift","Gift"],["rsvp","RSVP"]];
 function Menu(){return <nav className={styles.menu} aria-label="Navigasi undangan">{nav.map(([id,l])=><button key={id} onClick={()=>document.getElementById(id)?.scrollIntoView({behavior:"smooth"})}><span>◆</span>{l}</button>)}</nav>}

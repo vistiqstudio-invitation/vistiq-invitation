@@ -45,9 +45,9 @@ export default function Cover({ invitation }: { invitation: InvitationData }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, delay: 0.55, ease: "easeOut" }}
       >
-        {invitation.groom.name.split(" ")[0]}
+        {(invitation.groom.nickname || invitation.groom.name).split(" ")[0]}
         <span>&amp;</span>
-        {invitation.bride.name.split(" ")[0]}
+        {(invitation.bride.nickname || invitation.bride.name).split(" ")[0]}
       </motion.h1>
 
       {invitation.events[0]?.date && (

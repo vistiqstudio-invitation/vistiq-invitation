@@ -148,7 +148,9 @@ export default async function InvitationPage({ params }: Props) {
     <WhiteLabelFrame brand={invitation.brand}>
       <SmartCoverRuntime
         coverImage={invitation.coverImage}
-        title={`${invitation.groom.name} & ${invitation.bride.name}`}
+        title={`${invitation.groom.nickname || invitation.groom.name} & ${
+          invitation.bride.nickname || invitation.bride.name
+        }`}
       >
         <Theme invitation={invitation} />
       </SmartCoverRuntime>

@@ -69,7 +69,7 @@ function Cover({ invitation }: { invitation: InvitationData }) {
         <motion.img
           className={styles.coverImage}
           src={invitation.coverImage}
-          alt={`Foto ${invitation.bride.name} dan ${invitation.groom.name}`}
+          alt={`Foto ${(invitation.bride.nickname || invitation.bride.name)} dan ${(invitation.groom.nickname || invitation.groom.name)}`}
           initial={{ scale: 1.1 }}
           animate={{ scale: 1 }}
           transition={{ duration: 2.8, ease: "easeOut" }}
@@ -96,9 +96,9 @@ function Cover({ invitation }: { invitation: InvitationData }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.25, duration: 0.9 }}
       >
-        <span>{invitation.bride.name.charAt(0)}</span>
+        <span>{(invitation.bride.nickname || invitation.bride.name).charAt(0)}</span>
         <i>&amp;</i>
-        <span>{invitation.groom.name.charAt(0)}</span>
+        <span>{(invitation.groom.nickname || invitation.groom.name).charAt(0)}</span>
       </motion.div>
 
       <motion.div
@@ -111,9 +111,9 @@ function Cover({ invitation }: { invitation: InvitationData }) {
           {invitation.opening?.title || "The Wedding Celebration"}
         </p>
         <h1 className={styles.coverNames}>
-          {invitation.bride.name}
+          {(invitation.bride.nickname || invitation.bride.name)}
           <span>&amp;</span>
-          {invitation.groom.name}
+          {(invitation.groom.nickname || invitation.groom.name)}
         </h1>
         <PorcelainDivider className={styles.coverDivider} />
         {invitation.events[0]?.date && (
@@ -138,9 +138,9 @@ function Hero({ invitation }: { invitation: InvitationData }) {
       <PorcelainCorner className={`${styles.sectionCorner} ${styles.sectionCornerLeft}`} />
       <Reveal>
         <div className={styles.heroCrest} aria-hidden="true">
-          <span>{invitation.bride.name.charAt(0)}</span>
+          <span>{(invitation.bride.nickname || invitation.bride.name).charAt(0)}</span>
           <i>&amp;</i>
-          <span>{invitation.groom.name.charAt(0)}</span>
+          <span>{(invitation.groom.nickname || invitation.groom.name).charAt(0)}</span>
         </div>
         <p className={styles.arabic}>بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</p>
         <h2 className={styles.heroTitle}>
@@ -148,8 +148,8 @@ function Hero({ invitation }: { invitation: InvitationData }) {
         </h2>
         <p className={styles.heroCopy}>
           Dengan memohon rahmat dan ridho Allah SWT, kami bermaksud
-          menyelenggarakan pernikahan putra-putri kami, {invitation.bride.name}
-          {" "}&amp; {invitation.groom.name}.
+          menyelenggarakan pernikahan putra-putri kami, {(invitation.bride.nickname || invitation.bride.name)}
+          {" "}&amp; {(invitation.groom.nickname || invitation.groom.name)}.
         </p>
       </Reveal>
 
@@ -642,15 +642,15 @@ function Footer({ invitation }: { invitation: InvitationData }) {
       <PorcelainCorner className={`${styles.footerCorner} ${styles.footerCornerRight}`} mirrored />
       <Reveal>
         <div className={styles.footerCrest}>
-          {invitation.bride.name.charAt(0)}
+          {(invitation.bride.nickname || invitation.bride.name).charAt(0)}
           <span>&amp;</span>
-          {invitation.groom.name.charAt(0)}
+          {(invitation.groom.nickname || invitation.groom.name).charAt(0)}
         </div>
         <p>Terima kasih atas doa, restu, dan kehadiran Anda.</p>
         <h2>
-          {invitation.bride.name}
+          {(invitation.bride.nickname || invitation.bride.name)}
           <span>&amp;</span>
-          {invitation.groom.name}
+          {(invitation.groom.nickname || invitation.groom.name)}
         </h2>
         <small>{invitation.brand?.logoUrl && <img src={invitation.brand.logoUrl} alt="" style={{height:16,verticalAlign:"middle",marginRight:6,display:"inline-block"}}/>}© {new Date().getFullYear()} {invitation.brand?.name ?? "Vistiq Invitation"}</small>
       </Reveal>

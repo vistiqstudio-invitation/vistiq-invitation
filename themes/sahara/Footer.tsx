@@ -15,9 +15,9 @@ export default function Footer({ invitation }: { invitation: InvitationData }) {
         </p>
 
         <h2 className={styles.footerNames}>
-          {invitation.groom.name.split(" ")[0]}
+          {(invitation.groom.nickname || invitation.groom.name).split(" ")[0]}
           <span>&amp;</span>
-          {invitation.bride.name.split(" ")[0]}
+          {(invitation.bride.nickname || invitation.bride.name).split(" ")[0]}
         </h2>
 
         <p className={styles.copyright}>

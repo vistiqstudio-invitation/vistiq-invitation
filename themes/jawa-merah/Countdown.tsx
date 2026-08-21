@@ -25,7 +25,7 @@ function toCalendarStamp(date: Date) {
 function buildCalendarLinks(invitation: InvitationData, rawDate: string) {
   const start = new Date(rawDate);
   const end = new Date(start.getTime() + 2 * 60 * 60 * 1000);
-  const title = `Pernikahan ${invitation.groom.name} & ${invitation.bride.name}`;
+  const title = `Pernikahan ${(invitation.groom.nickname || invitation.groom.name)} & ${(invitation.bride.nickname || invitation.bride.name)}`;
   const location = invitation.events[0]?.location || "";
 
   const google =

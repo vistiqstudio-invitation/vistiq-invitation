@@ -45,9 +45,9 @@ export default function Cover({ invitation }: { invitation: InvitationData }) {
           <p className={styles.coverTop}>Baralek Gadang</p>
 
           <h1 className={styles.coverTitle}>
-            {invitation.groom.name}
+            {(invitation.groom.nickname || invitation.groom.name)}
             <span>jo</span>
-            {invitation.bride.name}
+            {(invitation.bride.nickname || invitation.bride.name)}
           </h1>
 
           {invitation.events[0]?.date && (
