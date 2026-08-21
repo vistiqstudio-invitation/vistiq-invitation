@@ -30,7 +30,7 @@
 .coverTitle h1 span,.heroTitle h2 span{display:inline-block;margin:0 4px;color:var(--lavender)}
 .coverArch{position:absolute;z-index:2;left:13%;right:13%;bottom:4%;height:56%;border:23px double rgba(157,149,129,.82);border-bottom:0;border-radius:50% 50% 0 0/30% 30% 0 0;background:linear-gradient(180deg,rgba(236,245,239,.18),rgba(226,240,235,.2));box-shadow:inset 0 0 0 2px rgba(250,246,230,.62),0 8px 16px rgba(49,68,58,.12)}
 .coverArch:before{content:"";position:absolute;left:-18px;right:-18px;top:7px;height:30%;border-top:3px solid rgba(234,225,202,.8);border-radius:50%}
-.coverArch i{position:absolute;left:-42%;right:-42%;top:-27%;height:45%;background:url('/themes/luxury-art-garden/botanical-foreground.webp') center bottom/100% auto no-repeat;transform:rotate(180deg);filter:drop-shadow(0 4px 5px rgba(51,70,59,.14))}
+.coverArch i{display:none}
 .guestBlock{position:absolute;z-index:10;left:11%;right:11%;bottom:14%;text-align:center}
 .guestBlock p{margin:0 0 13px;font-size:14px;line-height:1.18;text-shadow:0 1px rgba(255,255,255,.55)}
 .guestBlock strong{font-weight:400}
