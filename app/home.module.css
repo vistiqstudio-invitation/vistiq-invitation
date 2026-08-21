@@ -7,3 +7,6 @@
 @keyframes coverFlow{from{transform:translateY(0)}to{transform:translateY(calc(-50% - 8px))}}
 @media(max-width:640px){.hero{min-height:1100px;padding-top:205px}.heroVisual{height:560px;margin-top:68px;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:0}.coverTrack{gap:12px;animation-duration:20s}.column2 .coverTrack{animation-duration:24s}.column3 .coverTrack{animation-duration:22s}.inviteCard{height:44vw;flex-basis:44vw;border-radius:18px}}
 @media(prefers-reduced-motion:reduce){.coverTrack{animation-play-state:paused}}
+
+/* Official Vistiq Invitation brand palette. */
+.page{--blue:#1863ad;--blue-dark:#0f4e8a;--blue-soft:#c8e2f5;--blue-wash:rgba(24,99,173,.14);--line:rgba(24,99,173,.22)}
