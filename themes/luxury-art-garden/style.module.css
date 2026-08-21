@@ -24,14 +24,15 @@
 .floralBottom{bottom:-1px;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 46%,#000 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 46%,#000 100%)}
 .floralTop .floralArtwork,.floralBottom .floralArtwork{background-position:center bottom;background-size:100% auto}
 
-.coverTitle,.heroTitle{position:absolute;z-index:8;left:7%;right:7%;top:8%;text-align:center}
+.coverTitle,.heroTitle{position:absolute;z-index:8;left:10%;right:10%;top:7%;text-align:center}
 .coverTitle p,.heroTitle p{margin:0 0 6px;font-size:15px;line-height:1.2}
-.coverTitle h1,.heroTitle h2{margin:0;color:var(--brand);font-family:var(--font-alex-brush),cursive;font-size:clamp(44px,12.5vw,62px);font-weight:400;line-height:.92;text-shadow:0 2px rgba(255,255,255,.55)}
-.coverTitle h1 span,.heroTitle h2 span{display:inline-block;margin:0 4px;color:var(--lavender)}
+.coverTitle h1,.heroTitle h2{margin:0;color:var(--brand);font-family:var(--font-alex-brush),cursive;font-size:clamp(40px,10.5vw,52px);font-weight:400;line-height:.84;text-shadow:0 2px rgba(255,255,255,.72)}
+.coverTitle h1 em,.heroTitle h2 em{display:block;font-style:normal;font-weight:400}
+.coverTitle h1 span,.heroTitle h2 span{display:block;margin:-1px 0 1px;color:var(--lavender);font-size:.67em;line-height:.72}
 .coverArch{position:absolute;z-index:5;left:0;right:0;bottom:-1%;height:69%;border:0;background:url('/themes/luxury-art-garden/garden-arch-overlay-v2.webp') center bottom/96% 100% no-repeat;filter:drop-shadow(0 9px 12px rgba(38,57,55,.15));pointer-events:none}
 .coverArch:before{display:none}
 .coverArch i{display:none}
-.guestBlock{position:absolute;z-index:10;left:11%;right:11%;bottom:12.5%;text-align:center}
+.guestBlock{position:absolute;z-index:10;left:19%;right:19%;bottom:12.5%;text-align:center}
 .guestBlock p{margin:0 0 13px;font-size:14px;line-height:1.18;text-shadow:0 1px rgba(255,255,255,.55)}
 .guestBlock strong{font-weight:400}
 .guestBlock button,.countdownContent>a,.eventContent a,.giftToggle{display:inline-flex;min-height:38px;align-items:center;justify-content:center;gap:7px;padding:0 20px;border:0;border-radius:999px;background:var(--brand);color:#fff;text-decoration:none;box-shadow:0 5px 13px rgba(23,79,123,.2)}
@@ -55,9 +56,9 @@
 .greetingArch{position:absolute;z-index:2;left:0;right:0;bottom:-44px;height:540px;border:0;background:url('/themes/luxury-art-garden/garden-arch-overlay-v2.webp') center bottom/106% 100% no-repeat;filter:drop-shadow(0 8px 12px rgba(42,64,59,.12));pointer-events:none}
 .greetingArch:before{display:none}
 .greetingArch i{display:none}
-.greetingCopy{position:absolute;z-index:5;left:13%;right:13%;bottom:116px;text-align:center}
-.greetingCopy h2{margin:0 0 13px;color:var(--brand);font-family:var(--font-alex-brush),cursive;font-size:38px;font-weight:400;line-height:1.02}
-.greetingCopy p{margin:0;font-size:14px;line-height:1.4}
+.greetingCopy{position:absolute;z-index:5;left:20%;right:20%;bottom:118px;padding:8px 0;text-align:center;text-shadow:0 1px 0 rgba(255,255,255,.95)}
+.greetingCopy h2{margin:0 0 13px;color:var(--brand);font-family:var(--font-alex-brush),cursive;font-size:35px;font-weight:400;line-height:1.02}
+.greetingCopy p{margin:0;font-size:13px;line-height:1.42}
 
 .couple{min-height:1370px;padding:72px 16px 205px;background:linear-gradient(#e3f1f5,#f2f8f7)}
 .softLandscape{position:absolute;z-index:0;inset:0;background:url('/themes/luxury-art-garden/garden-valley-bg.webp') center/cover no-repeat;opacity:.12;filter:saturate(.65)}
@@ -67,16 +68,15 @@
 .personPhoto:after{content:"";position:absolute;inset:5px;border:1px solid rgba(255,255,255,.75);border-radius:inherit;pointer-events:none}
 .personPhoto img{object-fit:cover;object-position:center 20%}
 .personFlora{position:absolute;z-index:4;inset:0;background:url('/themes/luxury-art-garden/pointed-portrait-frame-v2.webp') center/contain no-repeat;transform-origin:center bottom;filter:drop-shadow(0 10px 14px rgba(43,63,58,.14));pointer-events:none}
-.personCopy{position:relative;z-index:6;width:88%;margin:-32px auto 0}
+.personCopy{position:relative;z-index:6;width:78%;margin:4px auto 0;text-shadow:0 1px 0 rgba(255,255,255,.95)}
 .personCopy h3{margin:0;color:var(--brand);font-family:var(--font-alex-brush),cursive;font-size:43px;font-weight:400;line-height:1}
 .personCopy p{margin:7px 0 4px;font-size:13px;line-height:1.35}
 .personCopy a{display:inline-block;margin-top:7px;color:var(--brand-dark);font-size:12px;text-decoration:none}
-.floralDivider{position:relative;z-index:4;width:175px;height:78px;margin:-10px auto 25px;background:url('/themes/luxury-art-garden/botanical-foreground.webp') center bottom/100% auto no-repeat}
 
 .countdown{height:620px;padding:275px 25px 60px;background:linear-gradient(#eaf5f7,#dceef6);text-align:center}
 .countdownArch{position:absolute;z-index:2;left:0;right:0;top:22px;height:590px;border:0;background:url('/themes/luxury-art-garden/garden-arch-overlay-v2.webp') center top/105% 100% no-repeat;filter:drop-shadow(0 8px 12px rgba(43,63,58,.12));pointer-events:none}
 .countdownArch:before{display:none}
-.countdownContent{position:relative;z-index:5;width:88%;margin:auto}
+.countdownContent{position:relative;z-index:5;width:68%;margin:auto;text-shadow:0 1px 0 rgba(255,255,255,.95)}
 .countdownContent>p{margin:0 0 18px;font-size:13px;line-height:1.34}
 .countdownGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:17px;color:var(--brand)}
 .countdownGrid strong,.countdownGrid small{display:block}
@@ -89,7 +89,7 @@
 .events>article:before{content:"";position:absolute;z-index:3;inset:18px 0 0;background:url('/themes/luxury-art-garden/garden-arch-overlay-v2.webp') center/100% 100% no-repeat;filter:drop-shadow(0 8px 12px rgba(43,63,58,.11));pointer-events:none}
 .events>article:nth-child(even){background:linear-gradient(rgba(245,248,244,.82),rgba(225,240,245,.88)),url('/themes/luxury-art-garden/garden-valley-bg.webp') center/cover no-repeat}
 .events .floralLayer{opacity:.18}
-.eventContent{position:relative;z-index:5;width:68%;margin-top:92px;padding:28px 12px 34px;text-align:center;text-shadow:0 1px 0 rgba(255,255,255,.94)}
+.eventContent{position:relative;z-index:5;width:62%;margin-top:92px;padding:28px 8px 34px;text-align:center;text-shadow:0 1px 0 rgba(255,255,255,.94)}
 .eventContent h2,.gallery>h2,.story>h2,.rsvp>h2,.gifts>h2{margin:0;color:var(--brand);font-family:var(--font-cormorant),Georgia,serif;font-size:30px;font-weight:500;line-height:1;text-transform:uppercase}
 .eventContent p{margin:10px 0 2px;font-size:15px;text-transform:uppercase}
 .eventContent strong{display:block;font-size:13px}
@@ -160,12 +160,13 @@
 .giftAccounts button svg{width:12px;height:12px}
 
 .footer{height:100vh;height:100svh;min-height:720px;padding:72px 28px 90px;background:#dceef2;text-align:center}
-.footerCopy{position:relative;z-index:7;width:88%;margin:0 auto}
+.footerCopy{position:relative;z-index:7;width:74%;margin:0 auto;text-shadow:0 1px 0 rgba(255,255,255,.9)}
 .footerCopy p{margin:0;font-size:13px;line-height:1.35}
 .footerCopy h3{margin:9px 0;color:var(--brand);font-family:var(--font-alex-brush),cursive;font-size:27px;font-weight:400}
 .footerCopy small{display:block;margin-top:15px;font-size:12px}
-.footerCopy h2{margin:3px 0;color:var(--brand);font-family:var(--font-alex-brush),cursive;font-size:41px;font-weight:400;line-height:1}
-.footerCopy h2 span{color:var(--lavender)}
+.footerCopy h2{margin:3px 0;color:var(--brand);font-family:var(--font-alex-brush),cursive;font-size:38px;font-weight:400;line-height:.88}
+.footerCopy h2 em{display:block;font-style:normal;font-weight:400}
+.footerCopy h2 span{display:block;margin:1px 0;color:var(--lavender);font-size:.68em;line-height:.72}
 .footerPortrait{position:absolute;z-index:6;left:0;right:0;top:37%;width:min(330px,70%);margin:auto}
 
 .floatingActions{position:fixed;z-index:1001;right:12px;bottom:70px;display:grid;gap:6px}
@@ -184,22 +185,22 @@
   .desktopPhoto img{object-fit:cover;object-position:center 43%}
   .invitationShell{z-index:1;width:500px;margin:0 0 0 auto;box-shadow:-6px 0 22px rgba(0,0,0,.12)}
   .nav{left:calc(100% - 250px)}
-  .coverTitle h1,.heroTitle h2{font-size:60px}
+  .coverTitle h1,.heroTitle h2{font-size:50px}
 }
 
 @media(max-width:390px){
-  .coverTitle,.heroTitle{top:8.5%}
-  .coverTitle h1,.heroTitle h2{font-size:43px}
+  .coverTitle,.heroTitle{top:7.5%}
+  .coverTitle h1,.heroTitle h2{font-size:41px}
   .coverArch{left:0;right:0;height:68%;background-size:100% 100%}
-  .guestBlock{bottom:11.5%}
+  .guestBlock{left:18%;right:18%;bottom:11.5%}
   .heroPortrait{top:24%;width:70%}
   .quoteGreeting{padding-left:18px;padding-right:18px}
   .quotePhotoWrap{height:245px}
   .quoteGreeting blockquote p{font-size:14px}
   .personFrame{width:min(340px,88vw);height:auto}
-  .personCopy{margin-top:-28px}
+  .personCopy{width:82%;margin-top:3px}
   .countdown{padding-top:268px}
-  .eventContent{width:72%}
+  .eventContent{width:64%}
   .rsvp{padding-left:22px;padding-right:22px}
   .gallery{padding-left:18px;padding-right:18px}
   .galleryGrid button{min-height:128px}

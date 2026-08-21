@@ -60,7 +60,7 @@ function Cover({ invitation, onOpen }: { invitation: InvitationData; onOpen: () 
   return (
     <motion.section className={styles.cover} exit={{ y: "-120%" }} transition={{ duration: 1.8, ease: coverEase }}>
       <GardenScene staged/>
-      <motion.div className={styles.coverTitle} initial={{ opacity: 0, y: -26 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.25, duration: .9, ease: revealEase }}><p>The Wedding of</p><h1>{bride} <span>&amp;</span> {groom}</h1></motion.div>
+      <motion.div className={styles.coverTitle} initial={{ opacity: 0, y: -26 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.25, duration: .9, ease: revealEase }}><p>The Wedding of</p><h1><em>{bride}</em><span>&amp;</span><em>{groom}</em></h1></motion.div>
       <motion.div className={styles.coverArch} initial={{ opacity: 0, y: 90, scale: .86 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: 1.6, duration: 1.1, ease: revealEase }}><i/></motion.div>
       <motion.div className={styles.guestBlock} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 2.35, duration: .8, ease: revealEase }}><p>Kepada Yth.<br/><strong>{guest}</strong></p><motion.button type="button" whileTap={{ scale: .96 }} onClick={onOpen}>Buka Undangan</motion.button></motion.div>
     </motion.section>
@@ -73,7 +73,7 @@ function Hero({ invitation, active }: { invitation: InvitationData; active: bool
   return (
     <section id="home" className={styles.hero}>
       <GardenScene staged active={active}/>
-      <motion.div className={styles.heroTitle} initial={{ opacity: 0, y: -24 }} animate={active ? { opacity: 1, y: 0 } : { opacity: 0, y: -24 }} transition={{ delay: .65, duration: .8, ease: revealEase }}><p>The Wedding of</p><h2>{bride} <span>&amp;</span> {groom}</h2></motion.div>
+      <motion.div className={styles.heroTitle} initial={{ opacity: 0, y: -24 }} animate={active ? { opacity: 1, y: 0 } : { opacity: 0, y: -24 }} transition={{ delay: .65, duration: .8, ease: revealEase }}><p>The Wedding of</p><h2><em>{bride}</em><span>&amp;</span><em>{groom}</em></h2></motion.div>
       <div className={styles.heroPortrait}><motion.div initial={{ opacity: 0, scale: 1.45, filter: "blur(12px)" }} animate={active ? { opacity: 1, scale: 1, filter: "blur(0px)" } : { opacity: 0, scale: 1.45, filter: "blur(12px)" }} transition={{ delay: 1.05, duration: 1.25, ease: revealEase }}><OvalPortrait src={invitation.coverImage} alt={`${bride} dan ${groom}`} priority/></motion.div></div>
     </section>
   );
@@ -102,7 +102,7 @@ function Person({ person, role, index }: { person: InvitationData["bride"] | Inv
 }
 
 function Couple({ invitation }: { invitation: InvitationData }) {
-  return <section id="couple" className={styles.couple}><div className={styles.softLandscape} aria-hidden="true"/><Person person={invitation.bride} role="Putri" index={0}/><div className={styles.floralDivider} aria-hidden="true"/><Person person={invitation.groom} role="Putra" index={1}/><FloralLayer placement="bottom" delay={.4}/></section>;
+  return <section id="couple" className={styles.couple}><div className={styles.softLandscape} aria-hidden="true"/><Person person={invitation.bride} role="Putri" index={0}/><Person person={invitation.groom} role="Putra" index={1}/><FloralLayer placement="bottom" delay={.4}/></section>;
 }
 
 function Countdown({ date }: { date: string }) {
@@ -148,7 +148,7 @@ function Gifts({ invitation }: { invitation: InvitationData }) {
 
 function Footer({ invitation }: { invitation: InvitationData }) {
   const bride = invitation.bride.nickname || invitation.bride.name; const groom = invitation.groom.nickname || invitation.groom.name;
-  return <footer className={styles.footer}><GardenScene/><motion.div className={styles.footerCopy} initial={{ opacity: 0, y: 22 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .4 }} transition={{ duration: .8, ease: revealEase }}><p>Atas kehadiran dan do’a restu dari Bapak/Ibu/Saudara/i sekalian, kami mengucapkan Terima Kasih.</p><h3>Wassalamu’alaikum Wr. Wb.</h3><small>Kami yang berbahagia</small><h2>{bride} <span>&amp;</span> {groom}</h2></motion.div><div className={styles.footerPortrait}><motion.div initial={{ opacity: 0, scale: .78 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true, amount: .35 }} transition={{ duration: 1, ease: revealEase }}><OvalPortrait src={invitation.coverImage} alt={`${bride} dan ${groom}`}/></motion.div></div></footer>;
+  return <footer className={styles.footer}><GardenScene/><motion.div className={styles.footerCopy} initial={{ opacity: 0, y: 22 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .4 }} transition={{ duration: .8, ease: revealEase }}><p>Atas kehadiran dan do’a restu dari Bapak/Ibu/Saudara/i sekalian, kami mengucapkan Terima Kasih.</p><h3>Wassalamu’alaikum Wr. Wb.</h3><small>Kami yang berbahagia</small><h2><em>{bride}</em><span>&amp;</span><em>{groom}</em></h2></motion.div><div className={styles.footerPortrait}><motion.div initial={{ opacity: 0, scale: .78 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true, amount: .35 }} transition={{ duration: 1, ease: revealEase }}><OvalPortrait src={invitation.coverImage} alt={`${bride} dan ${groom}`}/></motion.div></div></footer>;
 }
 
 const nav: [string, IconName, string][] = [["home", "home", "Home"], ["couple", "couple", "Mempelai"], ["event", "calendar", "Acara"], ["gallery", "gallery", "Galeri"], ["story", "heart", "Cerita"], ["rsvp", "chat", "Ucapan"], ["gift", "gift", "Hadiah"]];
