@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useInvitation } from "@/components/InvitationProvider";
 import type { InvitationData } from "@/types/invitation";
@@ -12,6 +13,7 @@ export default function CinematicCover({ invitation }: { invitation: InvitationD
   const searchParams = useSearchParams();
   const guestName = searchParams.get("to") || "Bapak/Ibu/Saudara/i";
   const coverPhoto = invitation.coverImage || invitation.groom.photo || invitation.bride.photo;
+  const weddingDate = invitation.events[0]?.date;
   const [playing, setPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const finishTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -51,15 +53,20 @@ export default function CinematicCover({ invitation }: { invitation: InvitationD
             exit={{ opacity: 0, scale: 1.08 }}
             transition={{ duration: 1 }}
           >
-            <div className={styles.coverBackdrop} />
-            <div className={styles.coverPattern} />
-            <img className={styles.foliageTop} src="/decor/jawa-merah/corner-foliage.png" alt="" />
-            <img className={styles.foliageRight} src="/decor/jawa-merah/corner-foliage.png" alt="" />
-            <div className={styles.jogloGlow} aria-hidden="true"><i /><i /><i /></div>
+            <Image
+              src="/decor/royal-java-cover-v2.webp"
+              alt=""
+              fill
+              priority
+              sizes="(max-width: 520px) 100vw, 520px"
+              className={styles.coverArtwork}
+            />
+            <div className={styles.coverVeil} aria-hidden="true" />
 
             <motion.div className={styles.coverNames} initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.1, delay: 0.2 }}>
               <p>The Royal Wedding Of</p>
               <h1><span>{(invitation.groom.nickname || invitation.groom.name)}</span><em>&amp;</em><span>{(invitation.bride.nickname || invitation.bride.name)}</span></h1>
+              {weddingDate && <time>{weddingDate}</time>}
             </motion.div>
 
             <motion.div
@@ -81,7 +88,6 @@ export default function CinematicCover({ invitation }: { invitation: InvitationD
                 <span aria-hidden="true">✉</span> Buka Undangan
               </motion.button>
             </motion.div>
-            <img className={styles.floralBottom} src="/decor/jawa-merah/floral-spray.png" alt="" />
           </motion.div>
         ) : (
           <motion.div
