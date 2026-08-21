@@ -9,6 +9,92 @@
   display: contents;
 }
 
+@media (min-width: 768px) {
+  .root
+    :global([class*="coverHeader"]:not([class*="coverHeaderCard"])) {
+    position: absolute !important;
+    inset: auto 50% 22% auto !important;
+    z-index: 4 !important;
+    width: min(620px, 82%) !important;
+    margin: 0 !important;
+    padding: 15px 34px 10px !important;
+    border-radius: 18px 18px 0 0;
+    text-align: center !important;
+    background: linear-gradient(
+      180deg,
+      rgba(8, 8, 10, 0.05),
+      rgba(8, 8, 10, 0.64)
+    );
+    backdrop-filter: blur(2px);
+    transform: translateX(50%);
+  }
+
+  .root
+    :global([class*="coverHeader"]:not([class*="coverHeaderCard"]))
+    :global([class*="coverTop"]) {
+    margin: 0 0 7px !important;
+    font-size: 9px !important;
+  }
+
+  .root
+    :global([class*="coverHeader"]:not([class*="coverHeaderCard"]))
+    :global([class*="coverTitle"]) {
+    margin: 0 0 7px !important;
+    font-size: clamp(34px, 4vw, 52px) !important;
+    line-height: 0.94 !important;
+    text-wrap: balance;
+  }
+
+  .root
+    :global([class*="coverHeader"]:not([class*="coverHeaderCard"]))
+    :global([class*="coverTitle"])
+    span {
+    margin: 4px 0 !important;
+  }
+
+  .root
+    :global([class*="coverHeader"]:not([class*="coverHeaderCard"]))
+    :global([class*="coverDate"]) {
+    margin: 0 !important;
+    font-size: 10px !important;
+  }
+
+  .root :global([class*="coverContent"]) {
+    position: absolute !important;
+    inset: auto 50% 3% auto !important;
+    z-index: 4 !important;
+    width: min(620px, 82%) !important;
+    margin: 0 !important;
+    padding: 11px 34px 18px !important;
+    border-radius: 0 0 18px 18px;
+    text-align: center !important;
+    background: rgba(8, 8, 10, 0.72);
+    backdrop-filter: blur(3px);
+    transform: translateX(50%);
+  }
+
+  .root :global([class*="coverContent"]) :global([class*="line"]) {
+    display: none !important;
+  }
+
+  .root :global([class*="coverContent"]) :global([class*="guestLabel"]) {
+    margin: 0 0 3px !important;
+    font-size: 9px !important;
+  }
+
+  .root :global([class*="coverContent"]) :global([class*="guestName"]) {
+    margin: 0 0 10px !important;
+    font-size: clamp(15px, 1.7vw, 20px) !important;
+  }
+
+  .root :global([class*="coverContent"]) button {
+    margin: 0 !important;
+    min-height: 36px;
+    padding: 9px 20px !important;
+    font-size: 9px !important;
+  }
+}
+
 @media (max-width: 767px) {
   .root
     :global([class*="coverHeader"]:not([class*="coverHeaderCard"])) {
