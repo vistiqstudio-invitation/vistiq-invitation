@@ -1,8 +1,10 @@
 .cinematic{position:fixed;inset:0;z-index:9999;overflow:hidden;background:#1c0807;color:#fff7df;display:grid;place-items:center;text-align:center;isolation:isolate}
 .coverScene,.videoScene{position:absolute;inset:0;overflow:hidden}
 .coverScene{display:block;padding:0;background:#f1dfc3;color:#741527;isolation:isolate}
+.coverBase,.topArtwork,.bottomArtwork{position:absolute;inset:0;z-index:0}.topArtwork{z-index:1;clip-path:inset(0 0 62% 0)}.bottomArtwork{z-index:1;clip-path:inset(58% 0 0 0)}
 .coverArtwork{z-index:0;object-fit:cover;object-position:center center}
-.coverVeil{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(255,250,239,.06),transparent 35%,rgba(255,247,229,.08) 62%,rgba(53,17,12,.12) 100%)}
+.coverVeil{position:absolute;inset:0;z-index:2;background:linear-gradient(180deg,rgba(255,250,239,.04),transparent 35%,rgba(255,247,229,.06) 62%,rgba(53,17,12,.12) 100%)}
+.cloudReveal{position:absolute;z-index:2;left:-20%;top:19%;width:135%;height:30%;background:radial-gradient(ellipse at 28% 55%,rgba(255,255,255,.95),rgba(255,251,238,.72) 35%,transparent 67%),radial-gradient(ellipse at 68% 45%,rgba(255,255,255,.84),transparent 65%);filter:blur(10px);pointer-events:none}
 .coverNames{position:absolute;z-index:3;left:9%;top:28%;width:82%;text-shadow:0 1px 0 rgba(255,255,255,.72)}
 .coverNames p{margin:0 0 9px;color:#49372e;font:600 .6rem/1.15 Georgia,serif;letter-spacing:.08em;text-transform:uppercase}
 .coverNames h1{margin:0;color:#85192c;font:500 clamp(2rem,9.5vw,3.35rem)/.9 Georgia,serif;letter-spacing:-.035em}
