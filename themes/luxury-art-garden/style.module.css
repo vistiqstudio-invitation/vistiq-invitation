@@ -1,4 +1,4 @@
-.root{--mist:#eaf5f4;--mist-2:#dcefed;--paper:#f5f7f2;--brand:#2f6f9f;--brand-dark:#174f7b;--brand-soft:#8eb2c9;--lavender:#8a6f8d;--gold:#b49a69;--stone:#a49c89;--ink:#304943;position:relative;min-height:100vh;overflow-x:clip;background:#272727;color:var(--ink);font-family:var(--font-alice),Georgia,serif}
+.root{--mist:#eaf5f7;--mist-2:#dceef6;--paper:#f7f8f3;--brand:#1863ad;--brand-dark:#0f4e8a;--brand-soft:#2f7cc8;--lavender:#2f7cc8;--gold:#b49a69;--stone:#a49c89;--ink:#2d464d;position:relative;min-height:100vh;overflow-x:clip;background:#272727;color:var(--ink);font-family:var(--font-alice),Georgia,serif}
 .root *{box-sizing:border-box}
 .root button,.root input,.root textarea{font:inherit}
 .root button{cursor:pointer}
@@ -19,19 +19,19 @@
 .floralArtwork{position:absolute;inset:0;background-image:url('/themes/luxury-art-garden/botanical-foreground.webp');background-repeat:no-repeat;transform-origin:center bottom}
 .floralFrame{inset:-2%}
 .floralFrame .floralArtwork{background-position:center center;background-size:100% 100%}
-.floralTop,.floralBottom{left:-10%;right:-10%;height:175px}
-.floralTop{top:-1px;transform:rotate(180deg)}
-.floralBottom{bottom:-1px}
+.floralTop,.floralBottom{left:-10%;right:-10%;height:200px}
+.floralTop{top:-1px;transform:rotate(180deg);-webkit-mask-image:linear-gradient(to top,#000 0,#000 52%,transparent 100%);mask-image:linear-gradient(to top,#000 0,#000 52%,transparent 100%)}
+.floralBottom{bottom:-1px;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 46%,#000 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 46%,#000 100%)}
 .floralTop .floralArtwork,.floralBottom .floralArtwork{background-position:center bottom;background-size:100% auto}
 
-.coverTitle,.heroTitle{position:absolute;z-index:8;left:7%;right:7%;top:10%;text-align:center}
+.coverTitle,.heroTitle{position:absolute;z-index:8;left:7%;right:7%;top:8%;text-align:center}
 .coverTitle p,.heroTitle p{margin:0 0 6px;font-size:15px;line-height:1.2}
 .coverTitle h1,.heroTitle h2{margin:0;color:var(--brand);font-family:var(--font-alex-brush),cursive;font-size:clamp(44px,12.5vw,62px);font-weight:400;line-height:.92;text-shadow:0 2px rgba(255,255,255,.55)}
 .coverTitle h1 span,.heroTitle h2 span{display:inline-block;margin:0 4px;color:var(--lavender)}
-.coverArch{position:absolute;z-index:2;left:13%;right:13%;bottom:4%;height:56%;border:23px double rgba(157,149,129,.82);border-bottom:0;border-radius:50% 50% 0 0/30% 30% 0 0;background:linear-gradient(180deg,rgba(236,245,239,.18),rgba(226,240,235,.2));box-shadow:inset 0 0 0 2px rgba(250,246,230,.62),0 8px 16px rgba(49,68,58,.12)}
-.coverArch:before{content:"";position:absolute;left:-18px;right:-18px;top:7px;height:30%;border-top:3px solid rgba(234,225,202,.8);border-radius:50%}
+.coverArch{position:absolute;z-index:5;left:0;right:0;bottom:-1%;height:69%;border:0;background:url('/themes/luxury-art-garden/garden-arch-overlay-v2.webp') center bottom/96% 100% no-repeat;filter:drop-shadow(0 9px 12px rgba(38,57,55,.15));pointer-events:none}
+.coverArch:before{display:none}
 .coverArch i{display:none}
-.guestBlock{position:absolute;z-index:10;left:11%;right:11%;bottom:14%;text-align:center}
+.guestBlock{position:absolute;z-index:10;left:11%;right:11%;bottom:12.5%;text-align:center}
 .guestBlock p{margin:0 0 13px;font-size:14px;line-height:1.18;text-shadow:0 1px rgba(255,255,255,.55)}
 .guestBlock strong{font-weight:400}
 .guestBlock button,.countdownContent>a,.eventContent a,.giftToggle{display:inline-flex;min-height:38px;align-items:center;justify-content:center;gap:7px;padding:0 20px;border:0;border-radius:999px;background:var(--brand);color:#fff;text-decoration:none;box-shadow:0 5px 13px rgba(23,79,123,.2)}
@@ -44,7 +44,7 @@
 .ovalInner img{object-fit:cover;object-position:center 42%}
 .ovalFrameAsset{z-index:3;object-fit:contain;pointer-events:none}
 
-.quoteGreeting{min-height:960px;padding:68px 24px 0;background:linear-gradient(#f4fbfa 0,#e7f4f2 70%,#dcefed 100%)}
+.quoteGreeting{min-height:1080px;padding:76px 24px 0;background:linear-gradient(#f7fbfb 0,#e8f4f5 70%,#dceef6 100%)}
 .quotePhotoWrap{position:relative;z-index:5;width:92%;height:270px;margin:0 auto 24px}
 .quotePhoto{position:absolute;z-index:1;inset:38px 29px 27px;overflow:hidden;border:2px solid rgba(47,111,159,.52);border-radius:12px 12px 46% 46%/12px 12px 22% 22%;background:#cadeda;box-shadow:0 7px 18px rgba(40,67,60,.13)}
 .quotePhoto img{object-fit:cover;object-position:center 43%}
@@ -52,30 +52,30 @@
 .quoteGreeting blockquote{position:relative;z-index:5;width:83%;margin:0 auto;text-align:center}
 .quoteGreeting blockquote p{margin:0 0 13px;font-size:15px;line-height:1.38}
 .quoteGreeting cite{font-size:14px;font-style:normal;font-weight:700}
-.greetingArch{position:absolute;z-index:2;left:-15%;right:-15%;bottom:-28px;height:420px;border:22px double rgba(157,149,129,.8);border-bottom:0;border-radius:50% 50% 0 0/28% 28% 0 0;background:rgba(229,242,239,.38);box-shadow:inset 0 0 0 2px rgba(255,251,238,.58)}
-.greetingArch:before{content:"";position:absolute;inset:9px -18px auto;height:31%;border-top:3px solid rgba(234,225,202,.78);border-radius:50%}
-.greetingArch i{position:absolute;left:-7%;right:-7%;top:-78px;height:145px;background:url('/themes/luxury-art-garden/botanical-foreground.webp') center bottom/100% auto no-repeat;transform:rotate(180deg);transform-origin:center}
-.greetingCopy{position:absolute;z-index:5;left:10%;right:10%;bottom:88px;text-align:center}
+.greetingArch{position:absolute;z-index:2;left:0;right:0;bottom:-44px;height:540px;border:0;background:url('/themes/luxury-art-garden/garden-arch-overlay-v2.webp') center bottom/106% 100% no-repeat;filter:drop-shadow(0 8px 12px rgba(42,64,59,.12));pointer-events:none}
+.greetingArch:before{display:none}
+.greetingArch i{display:none}
+.greetingCopy{position:absolute;z-index:5;left:13%;right:13%;bottom:116px;text-align:center}
 .greetingCopy h2{margin:0 0 13px;color:var(--brand);font-family:var(--font-alex-brush),cursive;font-size:38px;font-weight:400;line-height:1.02}
 .greetingCopy p{margin:0;font-size:14px;line-height:1.4}
 
-.couple{min-height:1250px;padding:72px 20px 185px;background:linear-gradient(#e4f2f1,#eef7f4)}
+.couple{min-height:1370px;padding:72px 16px 205px;background:linear-gradient(#e3f1f5,#f2f8f7)}
 .softLandscape{position:absolute;z-index:0;inset:0;background:url('/themes/luxury-art-garden/garden-valley-bg.webp') center/cover no-repeat;opacity:.12;filter:saturate(.65)}
-.person{position:relative;z-index:5;width:100%;margin:0 auto 48px;text-align:center}
-.personFrame{position:relative;width:min(330px,76vw);height:420px;margin:0 auto}
-.personPhoto{position:absolute;z-index:2;inset:38px 49px 45px;overflow:hidden;border:5px solid var(--brand);border-radius:46% 46% 13% 13%/23% 23% 9% 9%;background:#a8bfb7;clip-path:polygon(50% 0,88% 8%,100% 22%,100% 80%,82% 94%,50% 100%,18% 94%,0 80%,0 22%,12% 8%);box-shadow:0 12px 27px rgba(36,61,55,.16)}
+.person{position:relative;z-index:5;width:100%;margin:0 auto 42px;text-align:center}
+.personFrame{position:relative;width:min(360px,82vw);height:auto;aspect-ratio:1122/1402;margin:0 auto}
+.personPhoto{position:absolute;z-index:2;inset:9.5% 19.5% 14.5%;overflow:hidden;border:0;border-radius:46% 46% 12% 12%/22% 22% 8% 8%;background:#a8bfb7;clip-path:polygon(50% 0,70% 5%,88% 17%,100% 32%,100% 100%,0 100%,0 32%,12% 17%,30% 5%);box-shadow:0 12px 27px rgba(36,61,55,.16)}
 .personPhoto:after{content:"";position:absolute;inset:5px;border:1px solid rgba(255,255,255,.75);border-radius:inherit;pointer-events:none}
 .personPhoto img{object-fit:cover;object-position:center 20%}
-.personFlora{position:absolute;z-index:4;inset:0;background:url('/themes/luxury-art-garden/botanical-foreground.webp') center/100% 100% no-repeat;transform-origin:center bottom;pointer-events:none}
-.personCopy{position:relative;z-index:6;width:88%;margin:-27px auto 0}
+.personFlora{position:absolute;z-index:4;inset:0;background:url('/themes/luxury-art-garden/pointed-portrait-frame-v2.webp') center/contain no-repeat;transform-origin:center bottom;filter:drop-shadow(0 10px 14px rgba(43,63,58,.14));pointer-events:none}
+.personCopy{position:relative;z-index:6;width:88%;margin:-32px auto 0}
 .personCopy h3{margin:0;color:var(--brand);font-family:var(--font-alex-brush),cursive;font-size:43px;font-weight:400;line-height:1}
 .personCopy p{margin:7px 0 4px;font-size:13px;line-height:1.35}
 .personCopy a{display:inline-block;margin-top:7px;color:var(--brand-dark);font-size:12px;text-decoration:none}
 .floralDivider{position:relative;z-index:4;width:175px;height:78px;margin:-10px auto 25px;background:url('/themes/luxury-art-garden/botanical-foreground.webp') center bottom/100% auto no-repeat}
 
-.countdown{height:510px;padding:175px 25px 55px;background:linear-gradient(#eaf5f2,#dcefed);text-align:center}
-.countdownArch{position:absolute;z-index:2;left:-13%;right:-13%;top:64px;height:390px;border:21px double rgba(157,149,129,.79);border-bottom:0;border-radius:50% 50% 0 0/28% 28% 0 0;background:rgba(232,244,241,.38)}
-.countdownArch:before{content:"";position:absolute;inset:9px -17px auto;height:31%;border-top:3px solid rgba(236,226,204,.78);border-radius:50%}
+.countdown{height:620px;padding:275px 25px 60px;background:linear-gradient(#eaf5f7,#dceef6);text-align:center}
+.countdownArch{position:absolute;z-index:2;left:0;right:0;top:22px;height:590px;border:0;background:url('/themes/luxury-art-garden/garden-arch-overlay-v2.webp') center top/105% 100% no-repeat;filter:drop-shadow(0 8px 12px rgba(43,63,58,.12));pointer-events:none}
+.countdownArch:before{display:none}
 .countdownContent{position:relative;z-index:5;width:88%;margin:auto}
 .countdownContent>p{margin:0 0 18px;font-size:13px;line-height:1.34}
 .countdownGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:17px;color:var(--brand)}
@@ -85,9 +85,11 @@
 .countdownContent>a{min-height:34px;padding:0 16px;font-size:12px}
 
 .events{background:var(--mist)}
-.events>article{height:480px;display:grid;place-items:center;padding:55px 28px;background:linear-gradient(#edf7f5,#dfeeed)}
-.events>article:nth-child(even){background:linear-gradient(#f4f7f2,#e5f1ef)}
-.eventContent{position:relative;z-index:5;width:76%;padding:70px 22px 45px;border:2px solid rgba(47,111,159,.42);border-radius:48% 48% 8px 8px/25% 25% 8px 8px;background:rgba(237,248,246,.74);box-shadow:0 11px 25px rgba(43,65,58,.11);text-align:center}
+.events>article{height:620px;display:grid;place-items:center;padding:55px 28px;background:linear-gradient(rgba(235,246,247,.8),rgba(220,238,246,.86)),url('/themes/luxury-art-garden/garden-valley-bg.webp') center/cover no-repeat}
+.events>article:before{content:"";position:absolute;z-index:3;inset:18px 0 0;background:url('/themes/luxury-art-garden/garden-arch-overlay-v2.webp') center/100% 100% no-repeat;filter:drop-shadow(0 8px 12px rgba(43,63,58,.11));pointer-events:none}
+.events>article:nth-child(even){background:linear-gradient(rgba(245,248,244,.82),rgba(225,240,245,.88)),url('/themes/luxury-art-garden/garden-valley-bg.webp') center/cover no-repeat}
+.events .floralLayer{opacity:.18}
+.eventContent{position:relative;z-index:5;width:65%;margin-top:90px;padding:32px 20px;border:1px solid rgba(24,99,173,.2);border-radius:24px;background:rgba(241,249,248,.8);box-shadow:0 11px 25px rgba(43,65,58,.1);text-align:center;backdrop-filter:blur(2px)}
 .eventContent h2,.gallery>h2,.story>h2,.rsvp>h2,.gifts>h2{margin:0;color:var(--brand);font-family:var(--font-cormorant),Georgia,serif;font-size:30px;font-weight:500;line-height:1;text-transform:uppercase}
 .eventContent p{margin:10px 0 2px;font-size:15px;text-transform:uppercase}
 .eventContent strong{display:block;font-size:13px}
@@ -124,8 +126,8 @@
 .storyTimeline small{display:block;margin:2px 0;color:#536a64;font-size:10px}
 .storyTimeline p{margin:0;font-size:12px;line-height:1.34}
 
-.rsvp{min-height:720px;padding:120px 28px 160px;background:linear-gradient(#e7f3f1,#dcefed);text-align:center}
-.rsvpArch{position:absolute;z-index:1;left:-16%;right:-16%;top:35px;height:310px;border:20px double rgba(157,149,129,.7);border-bottom:0;border-radius:50% 50% 0 0/29% 29% 0 0;opacity:.82}
+.rsvp{min-height:800px;padding:225px 30px 165px;background:linear-gradient(#e7f3f5,#dceef6);text-align:center}
+.rsvpArch{position:absolute;z-index:1;left:0;right:0;top:18px;height:720px;border:0;background:url('/themes/luxury-art-garden/garden-arch-overlay-v2.webp') center top/112% 100% no-repeat;filter:drop-shadow(0 7px 11px rgba(43,63,58,.1));opacity:.42;pointer-events:none}
 .rsvp>h2,.rsvp>p,.rsvp form,.thanks,.wishes{position:relative;z-index:5}
 .rsvp>h2{margin-bottom:8px}
 .rsvp>p{width:86%;margin:0 auto 17px;font-size:13px;line-height:1.34}
@@ -188,13 +190,17 @@
 @media(max-width:390px){
   .coverTitle,.heroTitle{top:8.5%}
   .coverTitle h1,.heroTitle h2{font-size:43px}
-  .coverArch{left:11%;right:11%;height:54%}
-  .guestBlock{bottom:12.5%}
+  .coverArch{left:0;right:0;height:68%;background-size:100% 100%}
+  .guestBlock{bottom:11.5%}
   .heroPortrait{top:24%;width:70%}
   .quoteGreeting{padding-left:18px;padding-right:18px}
   .quotePhotoWrap{height:245px}
   .quoteGreeting blockquote p{font-size:14px}
-  .personFrame{height:385px}
+  .personFrame{width:min(340px,88vw);height:auto}
+  .personCopy{margin-top:-28px}
+  .countdown{padding-top:268px}
+  .eventContent{width:69%}
+  .rsvp{padding-left:22px;padding-right:22px}
   .gallery{padding-left:18px;padding-right:18px}
   .galleryGrid button{min-height:128px}
   .galleryGrid button:nth-child(2),.galleryGrid button:nth-child(5){min-height:148px}
