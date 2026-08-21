@@ -25,15 +25,11 @@ export default function PremiumContent({ invitation }: { invitation: InvitationD
   return (
     <main className={styles.page}>
       <section id="home" className={styles.openedHero}>
-        <motion.div className={styles.heroBase} initial={{ scale: 1.08, opacity: .65 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 1.7, ease: [0.22, 1, 0.36, 1] }}>
-          <Image src="/decor/royal-java-cover-v2.webp" alt="" fill priority sizes="(max-width: 520px) 100vw, 520px" className={styles.heroArtwork} />
-        </motion.div>
-        <motion.div className={styles.heroTop} aria-hidden="true" initial={{ y: -70, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 1.25, delay: .12, ease: [0.22, 1, 0.36, 1] }}>
-          <Image src="/decor/royal-java-cover-v2.webp" alt="" fill priority sizes="(max-width: 520px) 100vw, 520px" className={styles.heroArtwork} />
-        </motion.div>
-        <motion.div className={styles.heroBottom} aria-hidden="true" initial={{ y: 130, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 1.45, delay: .18, ease: [0.16, 1, 0.3, 1] }}>
-          <Image src="/decor/royal-java-cover-v2.webp" alt="" fill priority sizes="(max-width: 520px) 100vw, 520px" className={styles.heroArtwork} />
-        </motion.div>
+        <motion.div className={styles.heroBase} initial={{ scale: 1.05, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 1.1 }} />
+        <motion.div className={styles.heroTop} aria-hidden="true" initial={{ y: -90, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 1.35, delay: .12, ease: [0.16, 1, 0.3, 1] }}><Image src="/decor/royal-java-layers/canopy.webp" alt="" fill priority sizes="(max-width: 520px) 100vw, 520px" /></motion.div>
+        <motion.div className={styles.heroJanur} aria-hidden="true" initial={{ y: 65, opacity: 0, scaleY: .6 }} animate={{ y: 0, opacity: 1, scaleY: 1 }} transition={{ duration: 1.2, delay: .58, ease: [0.16, 1, 0.3, 1] }}><Image src="/decor/royal-java-layers/janur.webp" alt="" fill priority sizes="(max-width: 520px) 100vw, 520px" /></motion.div>
+        <motion.div className={styles.heroJoglo} aria-hidden="true" initial={{ y: 150, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 1.55, delay: .3, ease: [0.16, 1, 0.3, 1] }}><Image src="/decor/royal-java-layers/joglo.webp" alt="" fill priority sizes="(max-width: 520px) 100vw, 520px" /></motion.div>
+        <motion.div className={styles.heroBottom} aria-hidden="true" initial={{ y: 130, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 1.3, delay: .75, ease: [0.16, 1, 0.3, 1] }}><Image src="/decor/royal-java-layers/florals.webp" alt="" fill priority sizes="(max-width: 520px) 100vw, 520px" /></motion.div>
         <motion.div className={styles.heroCloud} aria-hidden="true" initial={{ opacity: .9, scale: .6, x: -80 }} animate={{ opacity: [0.9, .55, 0], scale: [0.6, 1.25, 1.55], x: [-80, 0, 95] }} transition={{ duration: 2.1, ease: "easeOut" }} />
         <motion.div className={styles.heroIdentity} initial={{ opacity: 0, y: 30, filter: "blur(10px)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} transition={{ duration: 1.15, delay: .72 }}>
           <p>The Royal Wedding Of</p>

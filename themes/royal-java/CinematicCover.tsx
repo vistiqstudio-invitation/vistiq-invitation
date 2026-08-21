@@ -32,16 +32,12 @@ export default function CinematicCover({ invitation }: { invitation: InvitationD
         exit={{ opacity: 0, scale: 1.03 }}
         transition={{ duration: 0.7 }}
       >
-            <motion.div className={styles.coverBase} initial={{ scale: 1.06 }} animate={{ scale: 1 }} transition={{ duration: 2.1, ease: [0.22, 1, 0.36, 1] }}>
-              <Image src="/decor/royal-java-cover-v2.webp" alt="" fill priority sizes="(max-width: 520px) 100vw, 520px" className={styles.coverArtwork} />
-            </motion.div>
-            <motion.div className={styles.topArtwork} aria-hidden="true" initial={{ opacity: 0, y: -42 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.35, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}>
-              <Image src="/decor/royal-java-cover-v2.webp" alt="" fill priority sizes="(max-width: 520px) 100vw, 520px" className={styles.coverArtwork} />
-            </motion.div>
-            <motion.div className={styles.bottomArtwork} aria-hidden="true" initial={{ opacity: 0, y: 75 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.45, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}>
-              <Image src="/decor/royal-java-cover-v2.webp" alt="" fill priority sizes="(max-width: 520px) 100vw, 520px" className={styles.coverArtwork} />
-            </motion.div>
-            <motion.div className={styles.cloudReveal} aria-hidden="true" initial={{ opacity: 0, scale: .7, x: -30 }} animate={{ opacity: [0, .9, 0], scale: [0.7, 1.18, 1.5], x: [-30, 12, 55] }} transition={{ duration: 2.3, delay: .15, ease: "easeOut" }} />
+            <motion.div className={styles.paperScene} initial={{ opacity: 0, scale: 1.05 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.35 }} />
+            <motion.div className={styles.canopyLayer} aria-hidden="true" initial={{ opacity: 0, y: -80, scale: 1.08 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 1.45, delay: .18, ease: [0.16, 1, 0.3, 1] }}><Image src="/decor/royal-java-layers/canopy.webp" alt="" fill priority sizes="(max-width: 520px) 100vw, 520px" /></motion.div>
+            <motion.div className={styles.janurLayer} aria-hidden="true" initial={{ opacity: 0, y: 70, scaleY: .6 }} animate={{ opacity: 1, y: 0, scaleY: 1 }} transition={{ duration: 1.25, delay: .65, ease: [0.16, 1, 0.3, 1] }}><Image src="/decor/royal-java-layers/janur.webp" alt="" fill priority sizes="(max-width: 520px) 100vw, 520px" /></motion.div>
+            <motion.div className={styles.jogloLayer} aria-hidden="true" initial={{ opacity: 0, y: 145, scale: .94 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 1.55, delay: .38, ease: [0.16, 1, 0.3, 1] }}><Image src="/decor/royal-java-layers/joglo.webp" alt="" fill priority sizes="(max-width: 520px) 100vw, 520px" /></motion.div>
+            <motion.div className={styles.floralLayer} aria-hidden="true" initial={{ opacity: 0, y: 120 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.3, delay: .82, ease: [0.16, 1, 0.3, 1] }}><Image src="/decor/royal-java-layers/florals.webp" alt="" fill priority sizes="(max-width: 520px) 100vw, 520px" /></motion.div>
+            <motion.div className={styles.cloudReveal} aria-hidden="true" initial={{ opacity: .85, scale: .65, x: -70 }} animate={{ opacity: [0.85, .45, 0], scale: [0.65, 1.2, 1.55], x: [-70, 15, 90] }} transition={{ duration: 2.2, ease: "easeOut" }} />
             <div className={styles.coverVeil} aria-hidden="true" />
 
             <motion.div className={styles.coverNames} initial={{ opacity: 0, y: 26, filter: "blur(8px)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} transition={{ duration: 1.15, delay: 0.65 }}>
