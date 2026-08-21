@@ -30,7 +30,7 @@ export default function SiteNavbar() {
       {open && <div className="navBackdrop" onClick={close} />}
 
       <div className={open ? "navMenu navMenuOpen" : "navMenu"}>
-        <a href="/" onClick={close}>Home</a>
+        <Link href="/" onClick={close}>Home</Link>
         <a href="#fitur" onClick={close}>Fitur</a>
         <a href="#tema" onClick={close}>Tema</a>
         <a href="#harga" onClick={close}>Harga</a>
