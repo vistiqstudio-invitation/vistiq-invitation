@@ -56,7 +56,7 @@
 
   .root :global([class*="coverContent"]) {
     position: absolute !important;
-    inset: auto auto 2.5% 50% !important;
+    inset: auto auto 6% 50% !important;
     z-index: 4 !important;
     width: min(620px, 82%) !important;
     margin: 0 !important;
@@ -141,7 +141,8 @@
 
   .root :global([class*="coverContent"]) {
     position: absolute !important;
-    inset: auto 5% max(12px, env(safe-area-inset-bottom)) !important;
+    inset: auto 5%
+      max(7vh, calc(env(safe-area-inset-bottom) + 12px)) !important;
     z-index: 4 !important;
     width: 90% !important;
     margin: 0 !important;
