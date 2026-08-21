@@ -9,12 +9,9 @@ export default function SiteNavbar() {
   const close = () => setOpen(false);
 
   return (
-    <nav className="navbar">
+    <nav className="navbarWrap"><div className="navbar">
       <Link href="/" className="brand" onClick={close}>
-        <div>
-          <p>VISTIQ</p>
-          <h1>Invitation</h1>
-        </div>
+        <span className="brandMark">V</span><span className="brandWord">vistiq<small>INVITATION</small></span>
       </Link>
 
       <button
@@ -24,9 +21,11 @@ export default function SiteNavbar() {
         aria-expanded={open}
         aria-label="Buka menu"
       >
-        <span>{open ? "Tutup" : "Menu"}</span>
-        {open ? "✕" : "☰"}
+        <span className="srOnly">{open ? "Tutup" : "Menu"}</span>
+        {open ? "×" : "☰"}
       </button>
+
+      <Link href="/login" className="mobileLogin" onClick={close}>Login <span>→</span></Link>
 
       {open && <div className="navBackdrop" onClick={close} />}
 
@@ -38,11 +37,11 @@ export default function SiteNavbar() {
         <Link href="/gabung-reseller" onClick={close}>Reseller</Link>
         <Link href="/gabung-resellerbrand" onClick={close}>Reseller Brand</Link>
         <Link href="/gabung-affiliate" onClick={close}>Affiliate</Link>
-        <Link href="/login" onClick={close}>Login</Link>
+        <Link href="/login" className="loginButton" onClick={close}>Login <span>→</span></Link>
         <Link href="/gabung-reseller" className="navButton" onClick={close}>
           Daftar Reseller
         </Link>
       </div>
-    </nav>
+    </div></nav>
   );
 }
