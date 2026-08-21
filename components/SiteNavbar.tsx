@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function SiteNavbar() {
   const [open, setOpen] = useState(false);
@@ -11,7 +12,7 @@ export default function SiteNavbar() {
   return (
     <nav className="navbarWrap"><div className="navbar">
       <Link href="/" className="brand" onClick={close}>
-        <span className="brandMark">V</span><span className="brandWord">vistiq<small>INVITATION</small></span>
+        <Image src="/vistiq-invitation-logo.png" alt="Vistiq Invitation" width={900} height={282} priority />
       </Link>
 
       <button
