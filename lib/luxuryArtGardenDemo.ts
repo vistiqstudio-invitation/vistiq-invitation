@@ -19,8 +19,18 @@ export function withLuxuryArtGardenDemoAssets(
     ...invitation,
     coverImage: "/photos/floral-cover.png",
     musicUrl: "/music-library/acoustic-garden.mp3",
-    groom: { ...invitation.groom, photo: "/photos/floral-groom.png" },
+    groom: {
+      ...invitation.groom,
+      name: "Rizki Pratama",
+      instagram: "rizkipratama",
+      photo: "/photos/floral-groom.png",
+    },
     bride: { ...invitation.bride, photo: "/photos/floral-bride.png" },
     gallery: GALLERY,
+    gifts: invitation.gifts.map((account) =>
+      account.owner === "Mempelai Pria"
+        ? { ...account, accountName: "Rizki Pratama" }
+        : account,
+    ),
   };
 }
