@@ -89,7 +89,7 @@
 .events>article:before{content:"";position:absolute;z-index:3;inset:18px 0 0;background:url('/themes/luxury-art-garden/garden-arch-overlay-v2.webp') center/100% 100% no-repeat;filter:drop-shadow(0 8px 12px rgba(43,63,58,.11));pointer-events:none}
 .events>article:nth-child(even){background:linear-gradient(rgba(245,248,244,.82),rgba(225,240,245,.88)),url('/themes/luxury-art-garden/garden-valley-bg.webp') center/cover no-repeat}
 .events .floralLayer{opacity:.18}
-.eventContent{position:relative;z-index:5;width:65%;margin-top:90px;padding:32px 20px;border:1px solid rgba(24,99,173,.2);border-radius:24px;background:rgba(241,249,248,.8);box-shadow:0 11px 25px rgba(43,65,58,.1);text-align:center;backdrop-filter:blur(2px)}
+.eventContent{position:relative;z-index:5;width:68%;margin-top:92px;padding:28px 12px 34px;text-align:center;text-shadow:0 1px 0 rgba(255,255,255,.94)}
 .eventContent h2,.gallery>h2,.story>h2,.rsvp>h2,.gifts>h2{margin:0;color:var(--brand);font-family:var(--font-cormorant),Georgia,serif;font-size:30px;font-weight:500;line-height:1;text-transform:uppercase}
 .eventContent p{margin:10px 0 2px;font-size:15px;text-transform:uppercase}
 .eventContent strong{display:block;font-size:13px}
@@ -199,7 +199,7 @@
   .personFrame{width:min(340px,88vw);height:auto}
   .personCopy{margin-top:-28px}
   .countdown{padding-top:268px}
-  .eventContent{width:69%}
+  .eventContent{width:72%}
   .rsvp{padding-left:22px;padding-right:22px}
   .gallery{padding-left:18px;padding-right:18px}
   .galleryGrid button{min-height:128px}
