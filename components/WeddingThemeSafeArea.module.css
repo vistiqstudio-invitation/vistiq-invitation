@@ -1,0 +1,205 @@
+/*
+ * Wedding portraits normally place both faces in the upper/middle third.
+ * The older cover family used a top title + bottom guest block, which made
+ * the title cross that portrait zone on phones. This wrapper creates one
+ * compact lower-third composition below the portrait without changing each
+ * theme's colors, fonts, ornaments, or animation.
+ */
+.root {
+  display: contents;
+}
+
+@media (min-width: 768px) {
+  .root
+    :global([class*="coverHeader"]:not([class*="coverHeaderCard"])) {
+    position: absolute !important;
+    inset: auto auto 20% 50% !important;
+    z-index: 4 !important;
+    width: min(620px, 82%) !important;
+    margin: 0 !important;
+    padding: 8px 34px !important;
+    text-align: center !important;
+    background: transparent;
+    backdrop-filter: none;
+    transform: translateX(-50%) !important;
+  }
+
+  .root
+    :global([class*="coverHeader"]:not([class*="coverHeaderCard"]))
+    :global([class*="coverTop"]) {
+    margin: 0 0 7px !important;
+    font-size: 9px !important;
+  }
+
+  .root
+    :global([class*="coverHeader"]:not([class*="coverHeaderCard"]))
+    :global([class*="coverTitle"]) {
+    margin: 0 0 7px !important;
+    font-size: clamp(34px, 4vw, 52px) !important;
+    line-height: 0.94 !important;
+    text-wrap: balance;
+  }
+
+  .root
+    :global([class*="coverHeader"]:not([class*="coverHeaderCard"]))
+    :global([class*="coverTitle"])
+    span {
+    margin: 4px 0 !important;
+  }
+
+  .root
+    :global([class*="coverHeader"]:not([class*="coverHeaderCard"]))
+    :global([class*="coverDate"]) {
+    margin: 0 !important;
+    font-size: 10px !important;
+  }
+
+  .root :global([class*="coverContent"]) {
+    position: absolute !important;
+    inset: auto auto 6% 50% !important;
+    z-index: 4 !important;
+    width: min(620px, 82%) !important;
+    margin: 0 !important;
+    padding: 8px 34px 12px !important;
+    text-align: center !important;
+    background: transparent;
+    backdrop-filter: none;
+    transform: translateX(-50%) !important;
+  }
+
+  .root :global([class*="coverContent"]) :global([class*="line"]) {
+    display: none !important;
+  }
+
+  .root :global([class*="coverContent"])::before,
+  .root :global([class*="coverContent"])::after {
+    display: none !important;
+  }
+
+  .root :global([class*="coverContent"]) :global([class*="guestLabel"]) {
+    margin: 0 0 3px !important;
+    font-size: 9px !important;
+  }
+
+  .root :global([class*="coverContent"]) :global([class*="guestName"]) {
+    margin: 0 0 10px !important;
+    font-size: clamp(15px, 1.7vw, 20px) !important;
+  }
+
+  .root :global([class*="coverContent"]) button {
+    margin: 0 !important;
+    min-height: 36px;
+    padding: 9px 20px !important;
+    font-size: 9px !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .root
+    :global([class*="coverHeader"]:not([class*="coverHeaderCard"])) {
+    position: absolute !important;
+    inset: auto 5% 24% !important;
+    z-index: 4 !important;
+    width: 90% !important;
+    margin: 0 !important;
+    padding: 7px 18px !important;
+    background: transparent;
+    backdrop-filter: none;
+  }
+
+  .root
+    :global([class*="coverHeader"]:not([class*="coverHeaderCard"]))
+    :global([class*="coverTop"]) {
+    margin: 0 0 5px !important;
+    font-size: 8px !important;
+    line-height: 1.2 !important;
+  }
+
+  .root
+    :global([class*="coverHeader"]:not([class*="coverHeaderCard"]))
+    :global([class*="coverTitle"]) {
+    margin: 0 0 5px !important;
+    font-size: clamp(25px, 7.4vw, 32px) !important;
+    line-height: 0.94 !important;
+    text-wrap: balance;
+  }
+
+  .root
+    :global([class*="coverHeader"]:not([class*="coverHeaderCard"]))
+    :global([class*="coverTitle"])
+    span {
+    margin: 3px 0 !important;
+  }
+
+  .root
+    :global([class*="coverHeader"]:not([class*="coverHeaderCard"]))
+    :global([class*="coverDate"]) {
+    margin: 0 !important;
+    font-size: 9px !important;
+    line-height: 1.25 !important;
+  }
+
+  .root :global([class*="coverContent"]) {
+    position: absolute !important;
+    inset: auto 5%
+      max(7vh, calc(env(safe-area-inset-bottom) + 12px)) !important;
+    z-index: 4 !important;
+    width: 90% !important;
+    margin: 0 !important;
+    padding: 8px 18px 10px !important;
+    background: transparent;
+    backdrop-filter: none;
+  }
+
+  .root :global([class*="coverContent"]) :global([class*="line"]) {
+    display: none !important;
+  }
+
+  .root :global([class*="coverContent"])::before,
+  .root :global([class*="coverContent"])::after {
+    display: none !important;
+  }
+
+  .root :global([class*="coverContent"]) :global([class*="guestLabel"]) {
+    margin: 0 0 3px !important;
+    font-size: 8px !important;
+    line-height: 1.2 !important;
+  }
+
+  .root :global([class*="coverContent"]) :global([class*="guestName"]) {
+    margin: 0 0 9px !important;
+    font-size: clamp(13px, 4vw, 17px) !important;
+    line-height: 1.15 !important;
+  }
+
+  .root :global([class*="coverContent"]) button {
+    margin: 0 !important;
+    min-height: 32px;
+    padding: 8px 17px !important;
+    font-size: 8px !important;
+  }
+
+  /* Cinema-style covers use a central marquee. Move it below the portrait. */
+  .root:is(
+      [data-wedding-theme="velvet-cinema"],
+      [data-wedding-theme="prismatic-vows"],
+      [data-wedding-theme="pearl-tide"]
+    )
+    :global([class*="marquee"]) {
+    position: absolute !important;
+    inset: auto 4% 158px !important;
+    width: 92% !important;
+    margin: 0 !important;
+    padding: 19px 25px 22px !important;
+  }
+
+  .root:is(
+      [data-wedding-theme="velvet-cinema"],
+      [data-wedding-theme="prismatic-vows"],
+      [data-wedding-theme="pearl-tide"]
+    )
+    :global([class*="marquee"])
+    h1 {
+    font-size: clamp(31px, 9vw, 42px) !important;
+  }
+}

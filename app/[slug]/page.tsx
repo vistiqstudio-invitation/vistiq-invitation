@@ -9,6 +9,7 @@ import {
 } from "@/lib/theme";
 import WhiteLabelFrame from "@/components/WhiteLabelFrame";
 import SmartCoverRuntime from "@/components/SmartCoverRuntime";
+import WeddingThemeSafeArea from "@/components/WeddingThemeSafeArea";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -146,14 +147,16 @@ export default async function InvitationPage({ params }: Props) {
   const Theme = themeRegistry[invitation.theme] || themeRegistry["luxury-gold"];
   return (
     <WhiteLabelFrame brand={invitation.brand}>
-      <SmartCoverRuntime
-        coverImage={invitation.coverImage}
-        title={`${invitation.groom.nickname || invitation.groom.name} & ${
-          invitation.bride.nickname || invitation.bride.name
-        }`}
-      >
-        <Theme invitation={invitation} />
-      </SmartCoverRuntime>
+      <WeddingThemeSafeArea theme={invitation.theme}>
+        <SmartCoverRuntime
+          coverImage={invitation.coverImage}
+          title={`${invitation.groom.nickname || invitation.groom.name} & ${
+            invitation.bride.nickname || invitation.bride.name
+          }`}
+        >
+          <Theme invitation={invitation} />
+        </SmartCoverRuntime>
+      </WeddingThemeSafeArea>
     </WhiteLabelFrame>
   );
 }
