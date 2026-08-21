@@ -42,7 +42,7 @@ export default function CinematicCover({ invitation }: { invitation: InvitationD
 
             <motion.div className={styles.coverNames} initial={{ opacity: 0, y: 26, filter: "blur(8px)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} transition={{ duration: 1.15, delay: 0.65 }}>
               <p>The Royal Wedding Of</p>
-              <h1><span>{(invitation.groom.nickname || invitation.groom.name)}</span><em>&amp;</em><span>{(invitation.bride.nickname || invitation.bride.name)}</span></h1>
+              <h1><span>{invitation.groom.name}</span><em>&amp;</em><span>{invitation.bride.name}</span></h1>
               {weddingDate && <time>{weddingDate}</time>}
             </motion.div>
 
