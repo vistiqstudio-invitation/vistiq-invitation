@@ -168,7 +168,7 @@ export default function LuxuryArtGarden({ invitation }: { invitation: Invitation
   const { opened, setOpened } = useInvitation();
   const { audioRef, isPlaying, toggle } = useMusicPlayer(invitation.musicUrl, false);
   const date = invitation.events[0]?.rawDate;
-  useEffect(() => { const previousOverflow = document.body.style.overflow; const previousTouch = document.body.style.touchAction; if (!opened) { document.body.style.overflow = "hidden"; document.body.style.touchAction = "none"; window.scrollTo(0, 0); } return () => { document.body.style.overflow = previousOverflow; document.body.style.touchAction = previousTouch; }; }, [opened]);
+  useEffect(() => { const previousOverflow = document.body.style.overflow; const previousTouch = document.body.style.touchAction; if (!opened) { window.scrollTo(0, 0); document.documentElement.scrollTop = 0; document.body.scrollTop = 0; document.body.style.overflow = "hidden"; document.body.style.touchAction = "none"; } return () => { document.body.style.overflow = previousOverflow; document.body.style.touchAction = previousTouch; }; }, [opened]);
   async function openInvitation() { setOpened(true); if (invitation.musicUrl && !isPlaying) { try { await toggle(); } catch { /* music remains available from its control */ } } }
   return (
     <main className={styles.root}>

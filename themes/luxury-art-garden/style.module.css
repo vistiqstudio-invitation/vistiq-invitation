@@ -183,11 +183,11 @@
 .nav svg{width:21px;height:21px}
 
 @media(min-width:601px){
-  .root{min-height:100vh;padding-right:500px}
-  .desktopPhoto{position:fixed;inset:0 500px 0 0;display:block;background:#9c9b91}
+  .root{min-height:100vh}
+  .desktopPhoto{position:fixed;z-index:0;inset:0 500px 0 0;display:block;background:#9c9b91}
   .desktopPhoto:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(16,25,24,.03),rgba(16,25,24,0) 72%)}
   .desktopPhoto img{object-fit:cover;object-position:center 43%}
-  .invitationShell{width:500px;margin:0;box-shadow:-6px 0 22px rgba(0,0,0,.12)}
+  .invitationShell{z-index:1;width:500px;margin:0 0 0 auto;box-shadow:-6px 0 22px rgba(0,0,0,.12)}
   .nav{left:calc(100% - 250px)}
   .coverTitle h1,.heroTitle h2{font-size:63px}
 }
