@@ -51,9 +51,9 @@ export default function Cover({ invitation }: { invitation: InvitationData }) {
         )}
 
         <h1 className={styles.coverTitle}>
-          <span className={styles.coverName}>{invitation.groom.name}</span>
+          <span className={styles.coverName}>{(invitation.groom.nickname || invitation.groom.name.split(" ")[0])}</span>
           <span className={styles.coverAmp}>&amp;</span>
-          <span className={styles.coverName}>{invitation.bride.name}</span>
+          <span className={styles.coverName}>{(invitation.bride.nickname || invitation.bride.name.split(" ")[0])}</span>
         </h1>
 
         {invitation.events[0]?.date && (

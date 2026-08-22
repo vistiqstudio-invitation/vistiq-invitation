@@ -2,7 +2,7 @@
 .root *{box-sizing:border-box}
 .root button,.root input,.root textarea{font:inherit}
 .root button{cursor:pointer}
-.desktopPhoto{display:none}
+.desktopPhoto{position:relative;display:none}
 .invitationShell{position:relative;width:100%;max-width:500px;min-height:100vh;margin:0 auto;background:var(--mist);box-shadow:0 0 34px rgba(10,28,32,.16)}
 .invitationContent{position:relative;width:100%;overflow:hidden;background:var(--mist)}
 .cover,.hero,.quoteGreeting,.couple,.countdown,.events article,.gallery,.story,.rsvp,.gifts,.footer{position:relative;isolation:isolate;overflow:hidden}
@@ -29,12 +29,14 @@
 .coverTitle h1,.heroTitle h2{margin:0;color:var(--brand);font-family:var(--font-alex-brush),cursive;font-size:clamp(40px,10.5vw,52px);font-weight:400;line-height:.84;text-shadow:0 2px rgba(255,255,255,.72)}
 .coverTitle h1 em,.heroTitle h2 em{display:block;font-style:normal;font-weight:400}
 .coverTitle h1 span,.heroTitle h2 span{display:block;margin:-1px 0 1px;color:var(--lavender);font-size:.67em;line-height:.72}
-.coverArch{position:absolute;z-index:5;left:0;right:0;bottom:-1%;height:69%;border:0;background:url('/themes/luxury-art-garden/garden-arch-overlay-v2.webp') center bottom/96% 100% no-repeat;filter:drop-shadow(0 9px 12px rgba(38,57,55,.15));pointer-events:none}
-.coverArch:before{display:none}
-.coverArch i{display:none}
-.guestBlock{position:absolute;z-index:10;left:19%;right:19%;bottom:12.5%;text-align:center}
-.guestBlock p{margin:0 0 13px;font-size:14px;line-height:1.18;text-shadow:0 1px rgba(255,255,255,.55)}
-.guestBlock strong{font-weight:400}
+.coverTitle h1{display:flex;align-items:baseline;justify-content:center;gap:9px;white-space:nowrap;font-size:clamp(39px,10vw,50px);line-height:1}
+.coverTitle h1 em,.coverTitle h1 span{display:inline;margin:0;line-height:1}
+.coverTitle h1 span{font-size:.72em}
+.coverPortrait{position:absolute;z-index:6;left:0;right:0;top:21%;width:min(305px,66%);margin:auto}
+.guestBlock{position:absolute;z-index:10;left:16%;right:16%;bottom:6.5%;padding:13px 10px 16px;border:1px solid rgba(255,255,255,.58);border-radius:18px;background:rgba(245,250,249,.64);text-align:center;box-shadow:0 8px 24px rgba(31,68,74,.1);backdrop-filter:blur(5px)}
+.guestBlock p{margin:0 0 11px;font-size:14px;line-height:1.22;text-shadow:0 1px rgba(255,255,255,.75)}
+.guestBlock span,.guestBlock strong{display:block}
+.guestBlock strong{margin-top:3px;font-weight:600}
 .guestBlock button,.countdownContent>a,.eventContent a,.giftToggle{display:inline-flex;min-height:38px;align-items:center;justify-content:center;gap:7px;padding:0 20px;border:0;border-radius:999px;background:var(--brand);color:#fff;text-decoration:none;box-shadow:0 5px 13px rgba(23,79,123,.2)}
 
 .hero{height:100vh;height:100svh;min-height:720px;background:#dceff3}
@@ -190,9 +192,10 @@
 
 @media(max-width:390px){
   .coverTitle,.heroTitle{top:7.5%}
-  .coverTitle h1,.heroTitle h2{font-size:41px}
-  .coverArch{left:0;right:0;height:68%;background-size:100% 100%}
-  .guestBlock{left:18%;right:18%;bottom:11.5%}
+  .coverTitle h1{gap:7px;font-size:39px}
+  .heroTitle h2{font-size:41px}
+  .coverPortrait{top:22%;width:67%}
+  .guestBlock{left:14%;right:14%;bottom:5.5%}
   .heroPortrait{top:24%;width:70%}
   .quoteGreeting{padding-left:18px;padding-right:18px}
   .quotePhotoWrap{height:245px}

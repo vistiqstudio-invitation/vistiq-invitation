@@ -22,10 +22,11 @@ export function withLuxuryArtGardenDemoAssets(
     groom: {
       ...invitation.groom,
       name: "Rizki Pratama",
+      nickname: "Rizki",
       instagram: "rizkipratama",
       photo: "/photos/floral-groom.png",
     },
-    bride: { ...invitation.bride, photo: "/photos/floral-bride.png" },
+    bride: { ...invitation.bride, nickname: "Nabila", photo: "/photos/floral-bride.png" },
     gallery: GALLERY,
     gifts: invitation.gifts.map((account) =>
       account.owner === "Mempelai Pria"
