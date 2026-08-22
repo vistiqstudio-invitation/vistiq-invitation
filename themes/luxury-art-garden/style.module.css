@@ -162,14 +162,14 @@
 .giftAccounts button svg{width:12px;height:12px}
 
 .footer{height:100vh;height:100svh;min-height:720px;padding:72px 28px 90px;background:#dceef2;text-align:center}
-.footerCopy{position:relative;z-index:7;width:74%;margin:0 auto;text-shadow:0 1px 0 rgba(255,255,255,.9)}
+.footerCopy{position:relative;z-index:7;width:80%;margin:0 auto;text-shadow:0 1px 0 rgba(255,255,255,.9)}
 .footerCopy p{margin:0;font-size:13px;line-height:1.35}
 .footerCopy h3{margin:9px 0;color:var(--brand);font-family:var(--font-alex-brush),cursive;font-size:27px;font-weight:400}
-.footerCopy small{display:block;margin-top:15px;font-size:12px}
-.footerCopy h2{margin:3px 0;color:var(--brand);font-family:var(--font-alex-brush),cursive;font-size:38px;font-weight:400;line-height:.88}
-.footerCopy h2 em{display:block;font-style:normal;font-weight:400}
-.footerCopy h2 span{display:block;margin:1px 0;color:var(--lavender);font-size:.68em;line-height:.72}
-.footerPortrait{position:absolute;z-index:6;left:0;right:0;top:37%;width:min(330px,70%);margin:auto}
+.footerCopy small{display:block;margin-top:11px;font-size:12px}
+.footerCopy h2{display:flex;align-items:baseline;justify-content:center;gap:7px;margin:5px auto 0;color:var(--brand);font-family:var(--font-alex-brush),cursive;font-size:36px;font-weight:400;line-height:1;white-space:nowrap}
+.footerCopy h2 em{display:inline;font-style:normal;font-weight:400;line-height:1}
+.footerCopy h2 span{display:inline;margin:0;color:var(--lavender);font-size:.72em;line-height:1}
+.footerPortrait{position:absolute;z-index:6;left:0;right:0;top:49%;width:min(300px,66%);margin:auto}
 
 .floatingActions{position:fixed;z-index:1001;right:12px;bottom:70px;display:grid;gap:6px}
 .floatingActions button{position:relative;display:grid;width:43px;height:43px;place-items:center;border:1.5px solid rgba(255,255,255,.8);border-radius:50%;background:rgba(47,111,159,.94);color:#fff;box-shadow:0 5px 14px rgba(43,53,52,.18);backdrop-filter:blur(8px)}
