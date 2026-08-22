@@ -54,15 +54,15 @@ function OvalPortrait({ src, alt, priority = false }: { src: string | null; alt:
 }
 
 function Cover({ invitation, onOpen }: { invitation: InvitationData; onOpen: () => void }) {
-  const guest = useSearchParams().get("to") || "Bapak/Ibu/Saudara/i";
-  const bride = invitation.bride.nickname || invitation.bride.name;
-  const groom = invitation.groom.nickname || invitation.groom.name;
+  const guest = useSearchParams().get("to") || "Bapak/Ibu";
+  const bride = invitation.bride.nickname || invitation.bride.name.split(" ")[0];
+  const groom = invitation.groom.nickname || invitation.groom.name.split(" ")[0];
   return (
     <motion.section className={styles.cover} exit={{ y: "-120%" }} transition={{ duration: 1.8, ease: coverEase }}>
       <GardenScene staged/>
       <motion.div className={styles.coverTitle} initial={{ opacity: 0, y: -26 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.25, duration: .9, ease: revealEase }}><p>The Wedding of</p><h1><em>{bride}</em><span>&amp;</span><em>{groom}</em></h1></motion.div>
-      <motion.div className={styles.coverArch} initial={{ opacity: 0, y: 90, scale: .86 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: 1.6, duration: 1.1, ease: revealEase }}><i/></motion.div>
-      <motion.div className={styles.guestBlock} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 2.35, duration: .8, ease: revealEase }}><p>Kepada Yth.<br/><strong>{guest}</strong></p><motion.button type="button" whileTap={{ scale: .96 }} onClick={onOpen}>Buka Undangan</motion.button></motion.div>
+      <motion.div className={styles.coverPortrait} initial={{ opacity: 0, y: 72, scale: .82 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: 1.55, duration: 1.15, ease: revealEase }}><OvalPortrait src={invitation.coverImage} alt={`${bride} dan ${groom}`} priority/></motion.div>
+      <motion.div className={styles.guestBlock} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 2.25, duration: .8, ease: revealEase }}><p><span>Kepada Yth.</span><strong>{guest}</strong></p><motion.button type="button" whileTap={{ scale: .96 }} onClick={onOpen}>Buka Undangan</motion.button></motion.div>
     </motion.section>
   );
 }

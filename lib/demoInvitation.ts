@@ -472,6 +472,7 @@ export function getDemoInvitation(theme: string): InvitationData {
 
     groom: {
       name: "Rizky Pratama",
+      nickname: "Rizky",
       parents: "Bapak Yusuf & Ibu Fatimah",
       photo: GROOM_PHOTO_BY_THEME[theme] || "/themes/luxury-gold/groom.png",
       instagram: "rizkypratama",
@@ -479,6 +480,7 @@ export function getDemoInvitation(theme: string): InvitationData {
 
     bride: {
       name: "Nabila Putri",
+      nickname: "Nabila",
       parents: "Bapak Ahmad & Ibu Siti",
       photo: BRIDE_PHOTO_BY_THEME[theme] || "/themes/luxury-gold/bride.png",
       instagram: "nabilaputri",
