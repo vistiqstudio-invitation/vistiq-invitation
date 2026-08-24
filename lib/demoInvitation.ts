@@ -1,4 +1,5 @@
 import type { InvitationData } from "@/types/invitation";
+import { DEFAULT_WEDDING_VOCAL_TRACK, WEDDING_VOCAL_TRACKS } from "@/lib/weddingMusic";
 
 // Cover photos vary by theme so the demo picker doesn't show the same
 // image eight times over. All photos are either original theme assets or
@@ -424,40 +425,45 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
   ],
 };
 
-// Background music also varies by theme so the picker doesn't play the same
-// track for all 23 themes. Each file is a distinct ~60s wedding song (no
-// mood-matching intended - just variety); source: user-supplied MP3 batch,
-// not AI-generated or scraped.
+// Every wedding demo uses a vocal song. Tracks still vary by theme, but the
+// allowlist below intentionally excludes instrumental-only music.
 const MUSIC_BY_THEME: Record<string, string> = {
-  "luxury-gold": "/music/luxury-gold.mp3",
-  "minimal-white": "/music/minimal-white.mp3",
-  "islamic-green": "/music/islamic-green.mp3",
-  "royal-black": "/music/royal-black.mp3",
-  "floral-garden": "/music/floral-garden.mp3",
-  "emerald-lantern": "/music/emerald-lantern.mp3",
-  sakura: "/music/sakura.mp3",
-  rustic: "/music/rustic.mp3",
-  bohemian: "/music/bohemian.mp3",
-  "modern-elegant": "/music/modern-elegant.mp3",
-  "royal-imperial": "/music/royal-imperial.mp3",
-  "adat-jawa": "/music/adat-jawa.mp3",
-  "royal-java": "/music/jawa-merah.mp3",
-  "luxury-art-java-heritage": "/music/adat-jawa.mp3",
-  "adat-bali": "/music/adat-bali.mp3",
-  "adat-sunda": "/music/adat-sunda.mp3",
-  "adat-minang": "/music/adat-minang.mp3",
-  "adat-bugis": "/music/adat-bugis.mp3",
-  "menara-cahaya": "/music/menara-cahaya.mp3",
-  santorini: "/music/santorini.mp3",
-  "vintage-botanical": "/music/vintage-botanical.mp3",
-  "pastel-studio": "/music/pastel-studio.mp3",
-  "art-deco-glam": "/music/art-deco-glam.mp3",
-  "golden-romance": "/music/golden-romance.mp3",
-  "jawa-merah": "/music/jawa-merah.mp3",
-  "jawa-coklat": "/music/jawa-coklat.mp3",
-  "jawa-sepia": "/music/jawa-coklat.mp3",
-  "sage-green": "/music/sage-green.mp3",
-  sahara: "/music/sahara.mp3",
+  "luxury-gold": WEDDING_VOCAL_TRACKS.indonesianBallad,
+  "minimal-white": WEDDING_VOCAL_TRACKS.englishBallad,
+  "islamic-green": WEDDING_VOCAL_TRACKS.islamicPrayer,
+  "royal-black": WEDDING_VOCAL_TRACKS.englishBallad,
+  "floral-garden": WEDDING_VOCAL_TRACKS.indonesianBallad,
+  "emerald-lantern": WEDDING_VOCAL_TRACKS.englishBallad,
+  sakura: WEDDING_VOCAL_TRACKS.englishBallad,
+  rustic: WEDDING_VOCAL_TRACKS.indonesianBallad,
+  bohemian: WEDDING_VOCAL_TRACKS.englishBallad,
+  "modern-elegant": WEDDING_VOCAL_TRACKS.indonesianBallad,
+  "royal-imperial": WEDDING_VOCAL_TRACKS.englishBallad,
+  "adat-jawa": WEDDING_VOCAL_TRACKS.islamicRomance,
+  "royal-java": WEDDING_VOCAL_TRACKS.islamicRomance,
+  "luxury-art-java-heritage": WEDDING_VOCAL_TRACKS.islamicRomance,
+  "adat-bali": WEDDING_VOCAL_TRACKS.indonesianBallad,
+  "adat-sunda": WEDDING_VOCAL_TRACKS.indonesianBallad,
+  "adat-minang": WEDDING_VOCAL_TRACKS.minangWedding,
+  "adat-bugis": WEDDING_VOCAL_TRACKS.indonesianBallad,
+  "menara-cahaya": WEDDING_VOCAL_TRACKS.islamicPrayer,
+  santorini: WEDDING_VOCAL_TRACKS.englishBallad,
+  "vintage-botanical": WEDDING_VOCAL_TRACKS.indonesianBallad,
+  "pastel-studio": WEDDING_VOCAL_TRACKS.englishBallad,
+  "art-deco-glam": WEDDING_VOCAL_TRACKS.englishBallad,
+  "golden-romance": WEDDING_VOCAL_TRACKS.indonesianBallad,
+  "jawa-merah": WEDDING_VOCAL_TRACKS.islamicRomance,
+  "jawa-coklat": WEDDING_VOCAL_TRACKS.islamicRomance,
+  "jawa-sepia": WEDDING_VOCAL_TRACKS.islamicRomance,
+  "sage-green": WEDDING_VOCAL_TRACKS.indonesianBallad,
+  sahara: WEDDING_VOCAL_TRACKS.islamicPrayer,
+  "midnight-aurora": WEDDING_VOCAL_TRACKS.englishBallad,
+  "luxury-art-garden": WEDDING_VOCAL_TRACKS.indonesianBallad,
+  "porcelain-bloom": WEDDING_VOCAL_TRACKS.indonesianBallad,
+  "love-chronicle": WEDDING_VOCAL_TRACKS.indonesianBallad,
+  "velvet-cinema": WEDDING_VOCAL_TRACKS.englishBallad,
+  "prismatic-vows": WEDDING_VOCAL_TRACKS.englishBallad,
+  "pearl-tide": WEDDING_VOCAL_TRACKS.englishBallad,
 };
 
 // One shared sample invitation used to demo every theme. Only the `theme`,
@@ -475,7 +481,7 @@ export function getDemoInvitation(theme: string): InvitationData {
     brand: null,
 
     coverImage: COVER_BY_THEME[theme] || "/themes/luxury-gold/cover.png",
-    musicUrl: MUSIC_BY_THEME[theme] || "/music/wedding2.mp3",
+    musicUrl: MUSIC_BY_THEME[theme] || DEFAULT_WEDDING_VOCAL_TRACK,
     videoUrl: null,
 
     mapsUrl: "https://maps.google.com",
