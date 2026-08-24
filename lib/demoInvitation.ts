@@ -51,7 +51,7 @@ export const COVER_BY_THEME: Record<string, string> = {
   // share a Javanese setting. Replace once real photos exist.
   "jawa-merah": "/photos/jawa-gallery-1.png",
   "royal-java": "/photos/jawa-cover.png",
-  "luxury-art-java-heritage": "/photos/jawa-cover.png",
+  "luxury-art-java-heritage": "/photos/luxury-sage-cover.webp",
   // Placeholder only - no owner-supplied photography for this theme yet.
   // Same Javanese photoshoot as jawa-merah above (it's the only
   // Javanese-styled real photography in the set), just a different
@@ -102,7 +102,7 @@ const GROOM_PHOTO_BY_THEME: Record<string, string> = {
   santorini: "/photos/white-groom.png",
   "jawa-merah": "/photos/jawa-groom.png",
   "royal-java": "/photos/jawa-groom.png",
-  "luxury-art-java-heritage": "/photos/jawa-groom.png",
+  "luxury-art-java-heritage": "/photos/luxury-sage-groom.webp",
   "jawa-coklat": "/photos/jawa-groom.png",
   "jawa-sepia": "/photos/jawa-groom.png",
   "sage-green": "/photos/floral-groom.png",
@@ -137,7 +137,7 @@ const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
   santorini: "/photos/white-bride.png",
   "jawa-merah": "/photos/jawa-bride.png",
   "royal-java": "/photos/jawa-bride.png",
-  "luxury-art-java-heritage": "/photos/jawa-bride.png",
+  "luxury-art-java-heritage": "/photos/luxury-sage-bride.webp",
   "jawa-coklat": "/photos/jawa-bride.png",
   "jawa-sepia": "/photos/jawa-bride.png",
   "sage-green": "/photos/floral-bride.png",
@@ -356,12 +356,13 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
     "/photos/jawa-gallery-6.png",
   ],
   "luxury-art-java-heritage": [
-    "/photos/jawa-gallery-1.png",
-    "/photos/jawa-gallery-2.png",
-    "/photos/jawa-gallery-3.png",
-    "/photos/jawa-gallery-4.png",
-    "/photos/jawa-gallery-5.png",
-    "/photos/jawa-gallery-6.png",
+    "/photos/luxury-sage-cover.webp",
+    "/photos/luxury-sage-gallery-garden.webp",
+    "/photos/luxury-sage-gallery-seated.webp",
+    "/photos/luxury-sage-bride.webp",
+    "/photos/luxury-sage-gallery-close.webp",
+    "/photos/luxury-sage-groom.webp",
+    "/photos/luxury-sage-gallery-back.webp",
   ],
   // Placeholder only, same reasoning as jawa-merah above - same
   // Javanese photoshoot, different ordering (skips gallery-4, used as
