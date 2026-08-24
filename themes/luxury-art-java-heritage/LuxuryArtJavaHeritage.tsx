@@ -33,9 +33,9 @@ function Icon({ name }: { name: IconName }) {
   );
 }
 
-function FloralLayer({ placement = "frame", delay = 0 }: { placement?: "frame" | "top" | "bottom"; delay?: number }) {
+function FloralLayer({ placement = "frame" }: { placement?: "frame" | "top" | "bottom"; delay?: number }) {
   const className = placement === "top" ? styles.floralTop : placement === "bottom" ? styles.floralBottom : styles.floralFrame;
-  return <div className={`${styles.floralLayer} ${className}`} aria-hidden="true"><motion.i className={styles.floralArtwork} animate={{ y: [0, -4, 0], scale: [1, 1.012, 1] }} transition={{ duration: 5.4, delay, repeat: Infinity, ease: "easeInOut" }}/></div>;
+  return <div className={`${styles.floralLayer} ${className}`} aria-hidden="true"><i className={styles.floralArtwork}/></div>;
 }
 
 function GardenScene({ staged = false, active = true }: { staged?: boolean; active?: boolean }) {
@@ -129,8 +129,7 @@ function Gallery({ invitation }: { invitation: InvitationData }) {
 }
 
 function Story({ invitation }: { invitation: InvitationData }) {
-  const image = invitation.gallery[1] || invitation.coverImage;
-  return <section id="story" className={styles.story}><div className={styles.storyPhoto}>{image && <Image src={image} alt="Love story" fill sizes="(max-width: 600px) 100vw, 500px"/>}</div><FloralLayer placement="bottom"/><h2>Love Story</h2><div className={styles.storyTimeline}>{invitation.story.map((item, index) => <motion.article key={`${item.year}-${item.title}`} initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: .4 }} transition={{ delay: index * .07, duration: .65 }}><i/><div><h3>{item.title}</h3><small>{item.year}</small><p>{item.description}</p></div></motion.article>)}</div></section>;
+  return <section id="story" className={styles.story}><FloralLayer placement="bottom"/><h2>Love Story</h2><div className={styles.storyTimeline}>{invitation.story.map((item, index) => <motion.article key={`${item.year}-${item.title}`} initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: .4 }} transition={{ delay: index * .07, duration: .65 }}><i/><div><h3>{item.title}</h3><small>{item.year}</small><p>{item.description}</p></div></motion.article>)}</div></section>;
 }
 
 function RSVP({ invitation }: { invitation: InvitationData }) {
