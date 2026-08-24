@@ -135,7 +135,8 @@ function Gallery({ invitation }: { invitation: InvitationData }) {
 }
 
 function Story({ invitation }: { invitation: InvitationData }) {
-  return <section id="story" className={styles.story}><FloralLayer placement="bottom"/><h2>Love Story</h2><div className={styles.storyTimeline}>{invitation.story.map((item, index) => <motion.article key={`${item.year}-${item.title}`} initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: .4 }} transition={{ delay: index * .07, duration: .65 }}><i/><div><h3>{item.title}</h3><small>{item.year}</small><p>{item.description}</p></div></motion.article>)}</div></section>;
+  const image = invitation.gallery[1] || invitation.coverImage;
+  return <section id="story" className={styles.story}><div className={styles.storyLandscape}/><motion.div className={styles.storyPortrait} initial={{ opacity: 0, y: 35, scale: .94 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} viewport={{ once: true, amount: .35 }} transition={{ duration: .85, ease: revealEase }}>{image && <Image src={image} alt="Love story" fill sizes="(max-width: 600px) 62vw, 300px"/>}</motion.div><h2>Love Story</h2><div className={styles.storyTimeline}>{invitation.story.map((item, index) => <motion.article key={`${item.year}-${item.title}`} initial={{ opacity: 0, x: 22 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: .35 }} transition={{ delay: index * .08, duration: .65, ease: revealEase }}><i/><div><h3>{item.title}</h3><small>{item.year}</small><p>{item.description}</p></div></motion.article>)}</div></section>;
 }
 
 function RSVP({ invitation }: { invitation: InvitationData }) {
