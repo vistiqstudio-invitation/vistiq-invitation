@@ -1,4 +1,5 @@
 import type { InvitationData } from "@/types/invitation";
+import { WEDDING_VOCAL_TRACKS } from "@/lib/weddingMusic";
 
 const CINEMA_GALLERY = [
   "/photos/deco-gallery-1.png",
@@ -11,5 +12,5 @@ const CINEMA_GALLERY = [
 
 export function withVelvetCinemaDemoAssets(theme:string,invitation:InvitationData):InvitationData {
   if(theme!=="velvet-cinema") return invitation;
-  return {...invitation,coverImage:"/photos/deco-cover.png",musicUrl:"/music/art-deco-glam.mp3",groom:{...invitation.groom,photo:"/photos/deco-groom.png"},bride:{...invitation.bride,photo:"/photos/deco-bride.png"},gallery:CINEMA_GALLERY};
+  return {...invitation,coverImage:"/photos/deco-cover.png",musicUrl:WEDDING_VOCAL_TRACKS.englishBallad,groom:{...invitation.groom,photo:"/photos/deco-groom.png"},bride:{...invitation.bride,photo:"/photos/deco-bride.png"},gallery:CINEMA_GALLERY};
 }

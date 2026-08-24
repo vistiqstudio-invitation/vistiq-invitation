@@ -44,6 +44,7 @@ import Sahara from "@/themes/sahara/Sahara";
 import MidnightAurora from "@/themes/midnight-aurora/MidnightAurora";
 import PorcelainBloom from "@/themes/porcelain-bloom/PorcelainBloom";
 import LuxuryArtGarden from "@/themes/luxury-art-garden/LuxuryArtGarden";
+import LuxuryArtJavaHeritage from "@/themes/luxury-art-java-heritage/LuxuryArtJavaHeritage";
 import LoveChronicle from "@/themes/love-chronicle/LoveChronicle";
 import VelvetCinema from "@/themes/velvet-cinema/VelvetCinema";
 import PrismaticVows from "@/themes/prismatic-vows/PrismaticVows";
@@ -88,6 +89,7 @@ export const themeRegistry: Record<
   "midnight-aurora": MidnightAurora,
   "porcelain-bloom": PorcelainBloom,
   "luxury-art-garden": LuxuryArtGarden,
+  "luxury-art-java-heritage": LuxuryArtJavaHeritage,
   "love-chronicle": LoveChronicle,
   "velvet-cinema": VelvetCinema,
   "prismatic-vows": PrismaticVows,
@@ -330,6 +332,14 @@ export const themeList: ThemeMeta[] = [
     swatch: ["#e8eef5", "#173f67"],
     tags: ["luxury-art", "premium"],
     addedAt: "2026-08-21",
+  },
+  {
+    key: "luxury-art-java-heritage",
+    label: "Luxury Art — Java Heritage",
+    description: "Ivory, marun dan emas antik, lanskap joglo berlapis, floral Jawa dan transisi sinematik",
+    swatch: ["#eee6d7", "#6f261f"],
+    tags: ["luxury-art", "premium", "adat"],
+    addedAt: "2026-08-24",
   },
   {
     key: "porcelain-bloom",

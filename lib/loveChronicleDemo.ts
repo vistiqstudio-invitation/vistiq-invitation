@@ -1,4 +1,5 @@
 import type { InvitationData } from "@/types/invitation";
+import { WEDDING_VOCAL_TRACKS } from "@/lib/weddingMusic";
 
 const CHRONICLE_GALLERY = [
   "/photos/modern-gallery-1.png",
@@ -17,7 +18,7 @@ export function withLoveChronicleDemoAssets(
   return {
     ...invitation,
     coverImage: "/photos/modern-cover.png",
-    musicUrl: "/music/modern-elegant.mp3",
+    musicUrl: WEDDING_VOCAL_TRACKS.indonesianBallad,
     groom: { ...invitation.groom, photo: "/photos/modern-groom.png" },
     bride: { ...invitation.bride, photo: "/photos/modern-bride.png" },
     gallery: CHRONICLE_GALLERY,

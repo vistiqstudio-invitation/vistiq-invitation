@@ -1,4 +1,5 @@
 import type { InvitationData } from "@/types/invitation";
+import { WEDDING_VOCAL_TRACKS } from "@/lib/weddingMusic";
 
 const PORCELAIN_GALLERY = [
   "/photos/floral-gallery-7.png",
@@ -18,7 +19,7 @@ export function withPorcelainBloomDemoAssets(
   return {
     ...invitation,
     coverImage: "/photos/floral-cover.png",
-    musicUrl: "/music/floral-garden.mp3",
+    musicUrl: WEDDING_VOCAL_TRACKS.indonesianBallad,
     groom: {
       ...invitation.groom,
       photo: "/photos/floral-groom.png",
