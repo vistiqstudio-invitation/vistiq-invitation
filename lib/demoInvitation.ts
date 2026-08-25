@@ -53,6 +53,7 @@ export const COVER_BY_THEME: Record<string, string> = {
   "jawa-merah": "/photos/jawa-gallery-1.png",
   "royal-java": "/photos/jawa-cover.png",
   "luxury-art-java-heritage": "/photos/luxury-sage-cover.webp",
+  "luxury-art-sakura": "/photos/sakura-cover.png",
   // Placeholder only - no owner-supplied photography for this theme yet.
   // Same Javanese photoshoot as jawa-merah above (it's the only
   // Javanese-styled real photography in the set), just a different
@@ -104,6 +105,7 @@ const GROOM_PHOTO_BY_THEME: Record<string, string> = {
   "jawa-merah": "/photos/jawa-groom.png",
   "royal-java": "/photos/jawa-groom.png",
   "luxury-art-java-heritage": "/photos/luxury-sage-groom.webp",
+  "luxury-art-sakura": "/photos/sakura-groom.png",
   "jawa-coklat": "/photos/jawa-groom.png",
   "jawa-sepia": "/photos/jawa-groom.png",
   "sage-green": "/photos/floral-groom.png",
@@ -139,6 +141,7 @@ const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
   "jawa-merah": "/photos/jawa-bride.png",
   "royal-java": "/photos/jawa-bride.png",
   "luxury-art-java-heritage": "/photos/luxury-sage-bride.webp",
+  "luxury-art-sakura": "/photos/sakura-bride.png",
   "jawa-coklat": "/photos/jawa-bride.png",
   "jawa-sepia": "/photos/jawa-bride.png",
   "sage-green": "/photos/floral-bride.png",
@@ -365,6 +368,14 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
     "/photos/luxury-sage-groom.webp",
     "/photos/luxury-sage-gallery-back.webp",
   ],
+  "luxury-art-sakura": [
+    "/photos/sakura-gallery-1.png",
+    "/photos/sakura-gallery-2.png",
+    "/photos/sakura-gallery-3.png",
+    "/photos/sakura-gallery-4.png",
+    "/photos/sakura-gallery-5.png",
+    "/photos/sakura-gallery-6.png",
+  ],
   // Placeholder only, same reasoning as jawa-merah above - same
   // Javanese photoshoot, different ordering (skips gallery-4, used as
   // this theme's own cover above) so the picker thumbnails don't match
@@ -442,6 +453,7 @@ const MUSIC_BY_THEME: Record<string, string> = {
   "adat-jawa": WEDDING_VOCAL_TRACKS.islamicRomance,
   "royal-java": WEDDING_VOCAL_TRACKS.islamicRomance,
   "luxury-art-java-heritage": WEDDING_VOCAL_TRACKS.islamicRomance,
+  "luxury-art-sakura": WEDDING_VOCAL_TRACKS.englishBallad,
   "adat-bali": WEDDING_VOCAL_TRACKS.indonesianBallad,
   "adat-sunda": WEDDING_VOCAL_TRACKS.indonesianBallad,
   "adat-minang": WEDDING_VOCAL_TRACKS.minangWedding,

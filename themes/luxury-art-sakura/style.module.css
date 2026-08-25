@@ -1,0 +1,196 @@
+.root {
+  --ivory: #fff9f4;
+  --paper: #fffdf8;
+  --rose: #c98382;
+  --rose-soft: #dfa4a4;
+  --rose-pale: #f8d7d1;
+  --brown: #7f472e;
+  --brown-deep: #5b3021;
+  --taupe: #7c664e;
+  min-height: 100vh;
+  background: #292929;
+  color: var(--brown);
+  font-family: var(--font-inter), Arial, sans-serif;
+}
+.root * { box-sizing: border-box; }
+.root button { cursor: pointer; font: inherit; }
+.shell { position: relative; width: 100%; max-width: 450px; min-height: 100vh; margin: auto; overflow: hidden; background: var(--ivory); box-shadow: 0 0 40px #0007; }
+.desktopScene { display: none; }
+.paperLandscape,.coupleLandscape,.eventLandscape,.storyLandscape,.footerLandscape { position: absolute; inset: 0; background: url('/themes/luxury-art-sakura/japanese-watercolor.webp') center/cover no-repeat; }
+
+.branch { position: absolute; z-index: 7; display: block; width: 220px; pointer-events: none; }
+.branch>i { display: block; width: 100%; aspect-ratio: 1100/746; background: url('/themes/luxury-art-sakura/sakura-branch.webp') center/contain no-repeat; transform-origin: 45% 55%; animation: branchSway 7s ease-in-out infinite alternate; }
+.archPortrait { position: relative; aspect-ratio: 3/4; border: 3px double #ad805e; border-radius: 50% 50% 8px 8px/22% 22% 8px 8px; background: #f2e9e4; box-shadow: 0 10px 28px #7b4b3922; }
+.archPortrait>i { position: absolute; inset: 6px; overflow: hidden; border: 1px solid #fff; border-radius: inherit; }
+.archPortrait img { object-fit: cover; object-position: center 38%; }
+.coverCard button,.countdownCard a,.eventCopy a,.giftCard button { display: inline-flex; min-height: 35px; align-items: center; justify-content: center; gap: 6px; padding: 0 17px; border: 0; border-radius: 999px; background: var(--taupe); box-shadow: 0 8px 20px #694b3530; color: white; font: 600 10px/1 var(--font-inter), sans-serif; text-decoration: none; }
+
+/* Cover */
+.cover { position: fixed; z-index: 3000; top: 0; right: 0; width: min(100%,450px); height: 100svh; min-height: 650px; overflow: hidden; background: #eadbd1; }
+.coverPhoto { position: absolute; inset: -15px; }
+.coverPhoto img { object-fit: cover; object-position: center; filter: blur(8px) saturate(.72); transform: scale(1.08); }
+.coverPhoto:after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg,#fffdf9de 0 17%,#fffaf2b2 46%,#754e3c79 100%); }
+.coverArt { position: absolute; inset: 0; background: url('/themes/luxury-art-sakura/japanese-watercolor.webp') center/cover no-repeat; opacity: .35; mix-blend-mode: multiply; }
+.coverCard { position: absolute; z-index: 4; left: 8%; right: 8%; top: 11%; bottom: 18%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 30px 28px 24px; border: 1px solid #fff9; border-radius: 20px; background: #fffaf3bf; box-shadow: 0 18px 48px #5c392e2e, inset 0 0 0 1px #fff7; backdrop-filter: blur(9px); text-align: center; }
+.coverBranch { right: -72px; top: 5%; width: 170px; transform: rotate(75deg); }
+.coverCard>small,.heroArch>small { font: 700 9px/1 var(--font-inter),sans-serif; letter-spacing: .2em; text-transform: uppercase; }
+.coverCard>.archPortrait { width: 56%; max-width: 205px; margin: 16px auto 11px; }
+.coverCard h1,.heroArch h1 { margin: 0; color: var(--brown); font: 500 30px/1 var(--font-cormorant),serif; }
+.coverCard p { margin: 11px 0 13px; font-size: 10px; line-height: 1.45; }
+.coverCard p strong,.coverCard p span { display: block; }
+.coverCard p strong { font-size: 12px; }
+.bloom { position: absolute; z-index: 20; inset: 0; display: grid; place-items: center; overflow: hidden; background: #fff7f0c9; pointer-events: none; }
+.bloom>span { position: absolute; left: 50%; top: 50%; width: 230px; }
+.bloom .branch { position: relative; width: 100%; }
+
+/* Hero and opening */
+.hero { position: relative; height: 100svh; min-height: 720px; overflow: hidden; background: var(--ivory); }
+.hero:after { content: ""; position: absolute; z-index: 2; left: 0; right: 0; bottom: -1px; height: 25%; background: linear-gradient(transparent,#fff9f4d8); }
+.heroArch { position: absolute; z-index: 6; left: 6.5%; right: 6.5%; top: 8%; bottom: 4%; display: flex; flex-direction: column; align-items: center; padding: 72px 25px 0; border-radius: 48% 48% 0 0/19% 19% 0 0; background: #fffdf9d1; box-shadow: inset 0 0 0 1px #fff,inset 0 8px 30px #c8947a13; text-align: center; backdrop-filter: blur(1.5px); }
+.heroArch>.archPortrait { width: 52%; max-width: 215px; margin: 16px auto 13px; }
+.heroArch h1 { font-size: 31px; }
+.heroArch p { margin: 11px 0 0; font: 700 9px/1.3 var(--font-inter),sans-serif; letter-spacing: .05em; text-transform: uppercase; }
+.heroBranchLeft { left: -96px; top: -28px; width: 270px; transform: rotate(17deg); }
+.heroBranchRight { right: -107px; top: 56px; width: 240px; transform: scaleX(-1) rotate(21deg); }
+.opening { position: relative; min-height: 690px; background: var(--rose); }
+.quotePanel { position: relative; min-height: 340px; padding: 145px 42px 45px; overflow: hidden; background: linear-gradient(#c98382e8,#c98382f4),url('/themes/luxury-art-sakura/japanese-watercolor.webp') center 58%/cover; color: white; text-align: center; }
+.quotePanel:before { content: "✿"; position: absolute; left: 50%; top: 74px; font-size: 25px; transform: translateX(-50%); }
+.quoteBranch { right: -87px; top: -35px; width: 210px; transform: rotate(82deg); opacity: .85; }
+.quotePanel blockquote { margin: 0; }
+.quotePanel p { margin: 0 0 15px; font: 500 12px/1.58 var(--font-cormorant),serif; }
+.quotePanel strong { font-size: 10px; }
+.greetingPanel { position: relative; z-index: 3; min-height: 365px; margin-top: -1px; padding: 72px 38px 55px; border-radius: 0 90px 0 0; background: linear-gradient(#fffdf9ed,#fffdf9f6),url('/themes/luxury-art-sakura/japanese-watercolor.webp') center 30%/cover; text-align: center; }
+.greetingPanel h2 { margin: 0 0 14px; font: 400 31px/1 var(--font-alex-brush),cursive; }
+.greetingPanel p { margin: auto; max-width: 340px; font: 500 14px/1.55 var(--font-cormorant),serif; }
+
+/* Couple */
+.couple { position: relative; min-height: 1000px; overflow: hidden; padding: 0 20px 155px; background: var(--paper); }
+.coupleLandscape { opacity: .46; }
+.coupleLandscape:after { content: ""; position: absolute; inset: 0; background: linear-gradient(#fffdf8bd,#fffdf84d,#fffdf8d1); }
+.coupleBranch { left: -95px; top: 43%; width: 220px; transform: rotate(17deg); }
+.couple article { position: relative; z-index: 7; text-align: center; }
+.couple article>.archPortrait { width: 48%; max-width: 200px; margin: 0 auto; }
+.couple h3 { margin: 10px 0 3px; font: 600 21px/1.1 var(--font-cormorant),serif; }
+.couple p { width: 84%; margin: auto; font-size: 11px; line-height: 1.35; }
+.couple a { display: grid; width: 32px; height: 32px; place-items: center; margin: 8px auto; border-radius: 50%; background: var(--rose); color: white; text-decoration: none; }
+.couple b { display: block; margin: 6px; font: 500 27px/1 var(--font-cormorant),serif; }
+
+/* Countdown and event cards */
+.countdown { position: relative; min-height: 470px; overflow: hidden; padding: 64px 0 82px; background: var(--rose); }
+.countdownBranch { left: -82px; bottom: -9px; width: 210px; transform: rotate(22deg); }
+.countdownCard { position: relative; z-index: 6; display: flex; width: 85%; min-height: 315px; flex-direction: column; align-items: center; justify-content: center; margin: auto; padding: 30px 25px; border: 3px double #b68268; border-radius: 25px; background: #fffdf8ed; box-shadow: 0 14px 34px #6f45422b; text-align: center; }
+.countdownCard:after { content: ""; position: absolute; right: -28px; bottom: -17px; width: 110px; height: 135px; background: url('/themes/luxury-art-sakura/sakura-branch.webp') center/contain no-repeat; transform: rotate(-36deg); }
+.countdownCard>span { font-size: 25px; }
+.countdownCard>p { margin: 10px auto 18px; font: 600 15px/1.45 var(--font-cormorant),serif; }
+.countdownCard>div { display: grid; width: 100%; grid-template-columns: repeat(4,1fr); gap: 7px; }
+.countdownCard b { font: 600 30px/1 var(--font-cormorant),serif; }
+.countdownCard b small { display: block; margin-top: 4px; font: 500 10px/1.2 var(--font-inter),sans-serif; }
+.countdownCard em { margin: 16px 0 12px; font-size: 12px; font-style: normal; }
+.events { position: relative; overflow: hidden; padding: 34px 0 68px; background: var(--rose); }
+.events article { position: relative; width: 80%; height: 540px; margin: 0 auto 34px; overflow: hidden; border: 1px dotted #aa806a; border-radius: 49%/16%; background: #fffdf8; text-align: center; }
+.eventLandscape { z-index: 1; top: auto; height: 215px; background-position: center bottom; }
+.eventLandscape:after { content: ""; position: absolute; inset: 0; background: linear-gradient(transparent,#fffdf81c); }
+.eventBranch { left: -54px; top: 18px; width: 150px; transform: rotate(30deg); }
+.eventCopy { position: relative; z-index: 6; display: flex; height: 100%; flex-direction: column; align-items: center; padding: 86px 29px 158px; }
+.eventCopy>span { font-size: 26px; }
+.eventCopy>small { margin-top: 6px; color: var(--rose); font: 400 20px/1 var(--font-alex-brush),cursive; }
+.eventCopy h2 { margin: 4px 0; font: 600 25px/1 var(--font-cormorant),serif; letter-spacing: .08em; text-transform: uppercase; }
+.eventCopy h3 { margin: 11px 0 5px; font: 700 25px/1.08 var(--font-cormorant),serif; text-transform: uppercase; }
+.eventCopy p,.eventCopy strong { display: block; font-size: 10px; }
+.eventCopy i { margin: 10px; font-style: normal; }
+.eventCopy a { margin-top: 15px; }
+
+/* Gallery */
+.gallery { position: relative; min-height: 950px; margin-top: -1px; overflow: hidden; padding: 92px 18px 170px; clip-path: polygon(0 0,37% 0,50% 28px,63% 0,100% 0,100% 100%,0 100%); background: linear-gradient(#fffdf8e6,#fffdf8f0),url('/themes/luxury-art-sakura/japanese-watercolor.webp') center/cover; text-align: center; }
+.galleryBranch { left: -58px; top: 50px; width: 190px; transform: rotate(16deg); }
+.gallery header,.rsvp header { position: relative; z-index: 5; }
+.gallery header i,.rsvp header i { color: var(--rose); font: 400 24px/1 var(--font-alex-brush),cursive; }
+.gallery h2,.rsvp h2 { margin: 0; font: 500 33px/1 var(--font-cormorant),serif; }
+.gallery header p,.rsvp header p { margin: 11px auto 26px; font-size: 10px; line-height: 1.5; }
+.galleryGrid { position: relative; z-index: 5; display: grid; grid-template-columns: repeat(3,1fr); grid-auto-rows: 166px; gap: 7px; }
+.galleryGrid button { position: relative; overflow: hidden; padding: 0; border: 0; border-radius: 9px; background: #ecdcd7; }
+.galleryGrid button:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+.galleryGrid button:nth-child(4) { grid-row: span 2; }
+.galleryGrid button:nth-child(6) { grid-column: span 2; }
+.galleryGrid img { object-fit: cover; transition: transform .6s ease; }
+.galleryGrid button:hover img { transform: scale(1.04); }
+.lightbox { position: fixed; z-index: 9999; inset: 0; background: #2d1814ed; }
+.lightbox>img { object-fit: contain; }
+.lightbox>button { position: absolute; z-index: 3; top: 14px; right: 17px; border: 0; background: transparent; color: white; font-size: 40px; }
+
+/* Story */
+.story { position: relative; min-height: 1130px; overflow: hidden; padding: 385px 27px 120px; background: var(--brown-deep); color: white; }
+.storyLandscape { top: 0; height: 365px; background-position: center 65%; opacity: .42; }
+.storyLandscape:after { content: ""; position: absolute; inset: 0; background: linear-gradient(transparent 38%,var(--brown-deep)); }
+.storyBranch { left: -70px; top: 276px; width: 180px; transform: rotate(28deg); }
+.storyPortrait { position: absolute; z-index: 5; left: 50%; top: 116px; width: 52%; max-width: 215px; transform: translateX(-50%); }
+.story .archPortrait>i { box-shadow: inset 0 0 0 4px #fffaf1,inset 0 0 0 5px #c39775; }
+.story>h2 { position: relative; z-index: 5; margin: 0; text-align: center; font: 500 35px/1 var(--font-cormorant),serif; }
+.timeline { position: relative; z-index: 5; margin-top: 29px; padding-left: 29px; }
+.timeline:before { content: ""; position: absolute; left: 7px; top: 18px; bottom: 20px; width: 1px; background: linear-gradient(#f6d1c7,#f6d1c73a); }
+.timeline article { position: relative; margin-bottom: 13px; padding: 13px 15px; border: 1px solid #ffffff29; border-radius: 12px; background: #fff8f20a; box-shadow: 0 9px 18px #2f191627; }
+.timeline article>i { position: absolute; left: -30px; top: 18px; display: grid; width: 18px; height: 18px; place-items: center; border-radius: 50%; background: #f7d3cd; color: var(--brown); font-size: 10px; font-style: normal; }
+.timeline time { display: inline-block; padding: 3px 8px; border-radius: 99px; background: #f7d3cd; color: var(--brown-deep); font: 700 9px/1 var(--font-inter),sans-serif; letter-spacing: .08em; }
+.timeline h3 { margin: 7px 0 4px; font: 600 17px/1.2 var(--font-cormorant),serif; }
+.timeline p { margin: 0; color: #fffaf3e2; font-size: 12px; line-height: 1.55; }
+
+/* RSVP, Gift, Footer */
+.rsvp { position: relative; min-height: 730px; margin-top: -1px; overflow: hidden; padding: 150px 25px 120px; clip-path: polygon(0 0,37% 0,50% 27px,63% 0,100% 0,100% 100%,0 100%); background: linear-gradient(#fffdf8e7,#fffdf8f4),url('/themes/luxury-art-sakura/japanese-watercolor.webp') center/cover; text-align: center; }
+.rsvpBranch { right: -83px; top: 28px; width: 220px; transform: scaleX(-1) rotate(22deg); }
+.rsvp form { position: relative; z-index: 5; display: grid; gap: 8px; text-align: left; }
+.rsvp input,.rsvp textarea { width: 100%; padding: 11px; border: 1px solid #b88270; border-radius: 7px; background: #fffaf7e8; color: var(--brown); font-size: 12px; }
+.rsvp textarea { min-height: 112px; resize: vertical; }
+.rsvp form>small { font-size: 10px; }
+.rsvp form>div { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+.rsvp form button { min-height: 35px; border: 1px solid var(--rose); border-radius: 7px; background: #fffaf7; color: var(--rose); font-size: 11px; }
+.rsvp form>button,.rsvp form .selected { background: var(--rose); color: white; }
+.thanks { position: relative; z-index: 5; display: block; padding: 18px; border-radius: 9px; background: #fff; }
+.wishes { position: relative; z-index: 5; margin-top: 14px; text-align: left; }
+.wishes article { padding: 10px 4px; border-bottom: 1px solid #bb8e7d42; }
+.wishes strong,.wishes small { margin-right: 8px; font-size: 10px; }
+.wishes small { color: var(--rose); }
+.wishes p { margin: 4px 0; font-size: 10px; }
+.gift { position: relative; min-height: 500px; overflow: hidden; padding: 98px 24px 110px; background: linear-gradient(#fff9f4f0,#fff9f4f4),url('/themes/luxury-art-sakura/japanese-watercolor.webp') center/cover; }
+.giftBranch { left: -87px; top: 25px; width: 190px; transform: rotate(24deg); }
+.giftCard { position: relative; z-index: 5; display: flex; min-height: 220px; overflow: hidden; border: 1px dotted #a77862; border-radius: 16px; background: #fffdf9e9; box-shadow: 0 15px 32px #76503c1b; }
+.giftCard>b { display: grid; width: 64px; flex: 0 0 auto; place-items: center; background: var(--rose); color: white; font-size: 17px; font-weight: 500; letter-spacing: .03em; writing-mode: vertical-rl; transform: rotate(180deg); }
+.giftCard>div { display: flex; flex: 1; flex-direction: column; align-items: center; justify-content: center; padding: 28px 22px; text-align: center; }
+.giftCard p { max-width: 255px; margin: 0 0 16px; font-size: 13px; line-height: 1.58; }
+.accounts { position: relative; z-index: 5; display: grid; gap: 8px; margin-top: 12px; overflow: hidden; }
+.accounts article { display: grid; padding: 12px; border: 1px solid #a7796350; border-radius: 9px; background: white; }
+.accounts article small { color: var(--rose); }
+.accounts article button { justify-self: end; border: 0; background: transparent; color: var(--brown); }
+.footer { position: relative; height: 100svh; min-height: 730px; overflow: hidden; padding: 72px 26px 125px; background: var(--paper); text-align: center; }
+.footerLandscape { opacity: .47; }
+.footerLandscape:after { content: ""; position: absolute; inset: 0; background: linear-gradient(#fffdf8c8,#fffdf84e,#fffdf879); }
+.footerBranch { right: -72px; top: 25px; width: 195px; transform: scaleX(-1) rotate(24deg); }
+.footer>.archPortrait { position: relative; z-index: 5; width: 48%; max-width: 205px; margin: auto; }
+.footer p,.footer h3,.footer small,.footer h2 { position: relative; z-index: 5; }
+.footer p { width: 86%; margin: 18px auto 0; font-size: 11px; line-height: 1.5; }
+.footer h3 { margin: 10px; font: 400 27px/1 var(--font-alex-brush),cursive; }
+.footer small { font-size: 10px; }
+.footer h2 { margin: 7px; font: 500 29px/1 var(--font-cormorant),serif; }
+
+/* Fixed interaction */
+.nav { position: fixed; z-index: 1000; left: 50%; bottom: max(8px,env(safe-area-inset-bottom)); display: flex; width: min(360px,calc(100vw - 24px)); gap: 4px; padding: 6px; border: 1px solid #fff; border-radius: 8px; background: #d18f90e8; transform: translateX(-50%); box-shadow: 0 4px 16px #734c4938; backdrop-filter: blur(9px); }
+.nav button { display: grid; flex: 1; height: 44px; place-items: center; padding: 0; border: 1px solid #ffffffad; border-radius: 5px; background: #ffffff14; color: white; font-size: 17px; }
+.music { position: fixed; z-index: 1001; right: max(15px,calc((100vw - 450px)/2 + 15px)); bottom: 78px; width: 44px; height: 44px; border: 1px solid white; border-radius: 50%; background: #d18f90e8; color: white; font-size: 17px; box-shadow: 0 5px 16px #70443f38; }
+.petals { position: fixed; z-index: 40; inset: 0; max-width: 450px; margin-left: auto; overflow: hidden; pointer-events: none; }
+.petals i { position: absolute; top: -18px; left: var(--left); width: var(--size); height: calc(var(--size)*.72); border-radius: 80% 20% 75% 25%; background: linear-gradient(135deg,#f9d2d1,#cf858a); opacity: .68; animation: petalFall var(--duration) linear var(--delay) infinite; }
+
+@keyframes branchSway { from { transform: rotate(-1.5deg); } to { transform: rotate(2deg); } }
+@keyframes petalFall { 0% { transform: translate3d(0,-5vh,0) rotate(0); } 100% { transform: translate3d(var(--drift),105vh,0) rotate(620deg); } }
+@media (min-width: 720px) {
+  .desktopScene { position: fixed; inset: 0 450px 0 0; display: block; overflow: hidden; }
+  .desktopScene>img { object-fit: cover; filter: saturate(.8); }
+  .desktopScene:after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg,#2819169c,#28191635); }
+  .desktopScene>div { position: absolute; z-index: 3; left: 8%; bottom: 10%; color: white; }
+  .desktopScene small { letter-spacing: .25em; text-transform: uppercase; }
+  .desktopScene h2 { margin: 8px 0; font: 500 54px/1 var(--font-cormorant),serif; }
+  .shell { margin-right: 0; }
+  .cover { right: 0; }
+  .nav { left: calc(100% - 225px); }
+}
+@media (max-width: 450px) { .desktopScene { display: none; } .shell,.cover { width: 100%; } .heroArch { top: 7%; bottom: 4%; padding-top: 68px; } }
+@media (max-width: 380px) { .coverCard { top: 9%; bottom: 15%; } .coverCard>.archPortrait { width: 51%; } .hero { min-height: 680px; } .heroArch { padding-top: 56px; } .heroArch>.archPortrait { width: 49%; } .couple { min-height: 960px; } .events article { height: 520px; } .eventCopy { padding-top: 80px; } .galleryGrid { grid-auto-rows: 142px; } .nav button { height: 42px; } }
+@media (prefers-reduced-motion: reduce) { .root * { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
