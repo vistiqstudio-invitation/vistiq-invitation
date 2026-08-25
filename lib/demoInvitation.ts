@@ -471,6 +471,7 @@ const MUSIC_BY_THEME: Record<string, string> = {
   sahara: WEDDING_VOCAL_TRACKS.islamicPrayer,
   "midnight-aurora": WEDDING_VOCAL_TRACKS.englishBallad,
   "luxury-art-garden": WEDDING_VOCAL_TRACKS.indonesianBallad,
+  "luxury-art-love-paradise": WEDDING_VOCAL_TRACKS.indonesianBallad,
   "porcelain-bloom": WEDDING_VOCAL_TRACKS.indonesianBallad,
   "love-chronicle": WEDDING_VOCAL_TRACKS.indonesianBallad,
   "velvet-cinema": WEDDING_VOCAL_TRACKS.englishBallad,
