@@ -120,7 +120,8 @@ function Countdown({ date, label }: { date: string; label: string }) {
   useEffect(() => { const tick = () => setNow(Date.now()); tick(); const timer = window.setInterval(tick, 1000); return () => window.clearInterval(timer); }, []);
   const distance = now === null ? null : Math.max(0, target - now);
   const values = distance === null ? ["--", "--", "--", "--"] : [Math.floor(distance / 86400000), Math.floor(distance / 3600000) % 24, Math.floor(distance / 60000) % 60, Math.floor(distance / 1000) % 60].map(value => String(value).padStart(2, "0"));
-  return <section className={styles.countdown}><Branch className={styles.countdownBranch} /><motion.div className={styles.countdownCard} {...reveal}>
+  return <section className={styles.countdown}><motion.div className={styles.countdownCard} {...reveal}>
+    <Branch className={styles.countdownBranch} />
     <span>▦</span><p>Kami akan menikah,<br />dan kami ingin Anda menjadi bagian<br />dari hari istimewa kami!</p>
     <div>{values.map((value, index) => <b key={index}>{value}<small>{["Hari", "Jam", "Menit", "Detik"][index]}</small></b>)}</div>
     <em>{label}</em><a href="#event">▣ Save The Date</a>
@@ -129,9 +130,7 @@ function Countdown({ date, label }: { date: string; label: string }) {
 
 function Events({ invitation }: { invitation: InvitationData }) {
   return <section id="event" className={styles.events}>{invitation.events.map((event, index) => <motion.article key={`${event.name}-${index}`} {...reveal}>
-    <div className={styles.eventLandscape} /><Branch className={styles.eventBranch} />
     <div className={styles.eventCopy}>
-      <span className={styles.eventEmblem} aria-hidden="true" />
       <h2>{event.name}</h2>
       <h3>{event.date}</h3>
       <p>{event.time}</p>

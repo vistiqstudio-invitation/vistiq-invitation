@@ -16,7 +16,7 @@
 .root button { cursor: pointer; font: inherit; }
 .shell { position: relative; width: 100%; max-width: 450px; min-height: 100vh; margin: auto; overflow: hidden; background: var(--ivory); box-shadow: 0 0 40px #0007; }
 .desktopScene { display: none; }
-.paperLandscape,.coupleLandscape,.eventLandscape,.storyLandscape,.footerLandscape { position: absolute; inset: 0; background: url('/themes/luxury-art-sakura/japanese-watercolor.webp') center/cover no-repeat; }
+.paperLandscape,.coupleLandscape,.storyLandscape,.footerLandscape { position: absolute; inset: 0; background: url('/themes/luxury-art-sakura/japanese-watercolor.webp') center/cover no-repeat; }
 
 .branch { position: absolute; z-index: 7; display: block; width: 220px; pointer-events: none; }
 .branch>i { display: block; width: 100%; aspect-ratio: 1100/746; background: url('/themes/luxury-art-sakura/sakura-branch.webp') center/contain no-repeat; transform-origin: 45% 55%; animation: branchSway 7s ease-in-out infinite alternate; }
@@ -82,31 +82,28 @@
 
 /* Countdown and event cards */
 .countdown { position: relative; min-height: 395px; overflow: hidden; padding: 38px 0 52px; background: var(--rose); }
-.countdownBranch { left: -82px; bottom: -9px; width: 210px; transform: rotate(22deg); }
-.countdownCard { position: relative; z-index: 6; display: flex; width: 85%; min-height: 300px; flex-direction: column; align-items: center; justify-content: center; margin: auto; padding: 24px 25px; border: 3px double #b68268; border-radius: 25px; background: #fffdf8ed; box-shadow: 0 14px 34px #6f45422b; text-align: center; }
-.countdownCard:after { content: ""; position: absolute; right: -28px; bottom: -17px; width: 110px; height: 135px; background: url('/themes/luxury-art-sakura/sakura-branch.webp') center/contain no-repeat; transform: rotate(-36deg); }
+.countdownBranch { z-index: 1; left: -62px; bottom: -30px; width: 185px; transform: rotate(22deg); }
+.countdownCard { position: relative; z-index: 6; display: flex; width: 85%; min-height: 300px; flex-direction: column; align-items: center; justify-content: center; margin: auto; overflow: hidden; padding: 24px 25px; border: 3px double #b68268; border-radius: 25px; background: #fffdf8ed; box-shadow: 0 14px 34px #6f45422b; text-align: center; }
+.countdownCard:after { content: ""; position: absolute; z-index: 1; right: -24px; bottom: -25px; width: 105px; height: 130px; background: url('/themes/luxury-art-sakura/sakura-branch.webp') center/contain no-repeat; transform: rotate(-36deg); }
+.countdownCard>span:not(.branch),.countdownCard>p,.countdownCard>div,.countdownCard>em,.countdownCard>a { position: relative; z-index: 2; }
 .countdownCard>span { font-size: 25px; }
 .countdownCard>p { margin: 7px auto 12px; font: 500 15px/1.4 var(--font-montserrat),sans-serif; }
 .countdownCard>div { display: grid; width: 100%; grid-template-columns: repeat(4,1fr); gap: 7px; }
 .countdownCard b { font: 600 29px/1 var(--font-montserrat),sans-serif; }
 .countdownCard b small { display: block; margin-top: 4px; font: 500 10px/1.2 var(--font-montserrat),sans-serif; }
 .countdownCard em { margin: 11px 0 9px; font-size: 12px; font-style: normal; }
-.events { position: relative; overflow: hidden; padding: 24px 0 44px; background: linear-gradient(#cb8888e8,#cb8888e8),url('/themes/luxury-art-sakura/japanese-watercolor.webp') center/cover; }
-.events article { position: relative; width: 84%; height: 540px; margin: 0 auto 28px; overflow: hidden; border: 2px solid #9c5b3d; border-radius: 50% 50% 25px 25px/17% 17% 25px 25px; background: #fffdf8; text-align: center; }
-.eventLandscape { z-index: 1; top: auto; height: 205px; background-position: center bottom; }
-.eventLandscape:after { content: ""; position: absolute; inset: 0; background: linear-gradient(transparent,#fffdf81c); }
-.eventBranch { left: -50px; top: 34px; width: 142px; transform: rotate(28deg); }
-.eventCopy { position: relative; z-index: 6; display: flex; height: 100%; flex-direction: column; align-items: center; padding: 46px 25px 150px; }
-.eventEmblem { display: block; width: 112px; height: 78px; flex: 0 0 auto; background: url('/themes/luxury-art-sakura/japanese-watercolor.webp') right bottom/230px auto no-repeat; filter: saturate(1.12) contrast(1.02); -webkit-mask-image: radial-gradient(ellipse at center,#000 42%,transparent 76%); mask-image: radial-gradient(ellipse at center,#000 42%,transparent 76%); }
-.eventCopy h2 { margin: 4px 0 12px; font: 500 34px/1 var(--font-playfair),serif; letter-spacing: .02em; text-transform: uppercase; }
-.eventCopy h3 { margin: 0 0 9px; font: 700 25px/1.22 var(--font-montserrat),sans-serif; text-transform: uppercase; }
-.eventCopy p { margin: 0; font: 600 15px/1.35 var(--font-montserrat),sans-serif; }
+.events { position: relative; overflow: hidden; padding: 28px 0 48px; background: linear-gradient(#cb8888ed,#cb8888ed),url('/themes/luxury-art-sakura/japanese-watercolor.webp') center/cover; }
+.events article { position: relative; width: 84%; height: 570px; margin: 0 auto 30px; overflow: hidden; border: 2px solid #99583d; border-radius: 50% 50% 24px 24px/16% 16% 24px 24px; background: #fffaf0 url('/themes/luxury-art-sakura/event-watercolor-v2.webp') center/100% 100% no-repeat; box-shadow: 0 14px 30px #72443f2b; text-align: center; }
+.eventCopy { position: relative; z-index: 6; display: flex; height: 100%; flex-direction: column; align-items: center; padding: 146px 22px 122px; }
+.eventCopy h2 { margin: 0 0 14px; color: #7d422b; font: 500 40px/.95 var(--font-cormorant),serif; letter-spacing: -.025em; text-transform: uppercase; }
+.eventCopy h3 { max-width: 290px; margin: 0 0 10px; color: #7d422b; font: 700 25px/1.18 var(--font-montserrat),sans-serif; letter-spacing: -.035em; text-transform: uppercase; }
+.eventCopy p { margin: 0; color: #4f3025; font: 600 15px/1.35 var(--font-montserrat),sans-serif; }
 .eventPin { position: relative; display: flex; width: 118px; height: 35px; align-items: center; justify-content: center; margin: 9px 0 8px; }
 .eventPin:before,.eventPin:after { content: ""; width: 38px; height: 1px; background: #a26042; }
 .eventPin i { position: relative; width: 20px; height: 25px; margin: 0 10px; border-radius: 50% 50% 50% 0; background: #9b5737; transform: rotate(-45deg); }
 .eventPin i:after { content: ""; position: absolute; left: 7px; top: 7px; width: 6px; height: 6px; border-radius: 50%; background: #fffdf8; }
-.eventCopy strong { display: block; max-width: 275px; font: 700 15px/1.32 var(--font-montserrat),sans-serif; }
-.eventCopy a { min-height: 41px; margin-top: 14px; padding-inline: 20px; font-size: 13px; }
+.eventCopy strong { display: block; max-width: 285px; color: #39251f; font: 700 15px/1.28 var(--font-montserrat),sans-serif; }
+.eventCopy a { min-height: 43px; margin-top: 13px; padding-inline: 21px; background: #965333; font-size: 13px; }
 .eventCopy a svg { width: 20px; height: 20px; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2; }
 
 /* Gallery */
@@ -182,9 +179,9 @@
 .footer h2 { margin: 10px 0 0; font: 400 35px/1.15 var(--font-abril-fatface),serif; }
 
 /* Fixed interaction */
-.nav { position: fixed; z-index: 1000; left: 50%; bottom: max(8px,env(safe-area-inset-bottom)); display: flex; width: min(368px,calc(100vw - 18px)); gap: 4px; padding: 7px; border: 1px solid #ffffffd1; border-radius: 14px; background: #fffdf5e8; transform: translateX(-50%); box-shadow: 0 7px 22px #734c4947; backdrop-filter: blur(11px); }
-.nav button { display: grid; flex: 1; height: 46px; place-items: center; padding: 0; border: 0; border-radius: 7px; background: #d99091; color: white; }
-.nav button svg { width: 25px; height: 25px; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.45; }
+.nav { position: fixed; z-index: 1000; left: 50%; bottom: max(8px,env(safe-area-inset-bottom)); display: flex; width: min(330px,78vw); gap: 4px; padding: 6px; border: 1px solid #ffffffd1; border-radius: 14px; background: #fffdf5ee; transform: translateX(-50%); box-shadow: 0 7px 22px #734c4947; backdrop-filter: blur(11px); }
+.nav button { display: grid; min-width: 0; flex: 1; height: 43px; place-items: center; padding: 0; border: 0; border-radius: 7px; background: #d99091; color: white; }
+.nav button svg { width: 23px; height: 23px; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.5; }
 .music { position: fixed; z-index: 1001; right: max(15px,calc((100vw - 450px)/2 + 15px)); bottom: 78px; width: 44px; height: 44px; border: 1px solid white; border-radius: 50%; background: #d18f90e8; color: white; font-size: 17px; box-shadow: 0 5px 16px #70443f38; }
 .petals { position: fixed; z-index: 40; inset: 0; max-width: 450px; margin-left: auto; overflow: hidden; pointer-events: none; }
 .petals i { position: absolute; top: -18px; left: var(--left); width: var(--size); height: calc(var(--size)*.72); border-radius: 80% 20% 75% 25%; background: linear-gradient(135deg,#f9d2d1,#cf858a); opacity: .68; animation: petalFall var(--duration) linear var(--delay) infinite; }
@@ -203,5 +200,5 @@
   .nav { left: calc(100% - 225px); }
 }
 @media (max-width: 450px) { .desktopScene { display: none; } .shell,.cover { width: 100%; } }
-@media (max-width: 380px) { .coverCard { top: 27%; bottom: 20%; padding-top: 43%; } .coverCard>.archPortrait { width: 56%; } .hero { min-height: 680px; } .heroArch { top: 10%; padding-bottom: 26px; } .heroArch>.archPortrait { width: 225px; max-width: 70%; } .couple { min-height: 820px; } .events article { height: 530px; } .eventCopy { padding: 43px 22px 145px; } .eventCopy h2 { font-size: 31px; } .eventCopy h3 { font-size: 23px; } .galleryGrid { grid-auto-rows: 142px; } .nav button { height: 42px; } }
+@media (max-width: 380px) { .coverCard { top: 27%; bottom: 20%; padding-top: 43%; } .coverCard>.archPortrait { width: 56%; } .hero { min-height: 680px; } .heroArch { top: 10%; padding-bottom: 26px; } .heroArch>.archPortrait { width: 225px; max-width: 70%; } .couple { min-height: 820px; } .events article { height: 555px; } .eventCopy { padding: 140px 20px 116px; } .eventCopy h2 { font-size: 37px; } .eventCopy h3 { font-size: 23px; } .galleryGrid { grid-auto-rows: 142px; } .nav button { height: 41px; } }
 @media (prefers-reduced-motion: reduce) { .root * { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
