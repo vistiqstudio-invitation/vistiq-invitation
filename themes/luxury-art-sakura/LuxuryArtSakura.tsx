@@ -51,13 +51,21 @@ function Cover({ invitation, opening, onOpen }: { invitation: InvitationData; op
   return <motion.section className={styles.cover} exit={{ opacity: 0 }} transition={{ duration: .55 }}>
     <div className={styles.coverPhoto}>{invitation.coverImage && <Image src={invitation.coverImage} alt="" fill priority sizes="500px" />}</div>
     <div className={styles.coverArt} />
+    <Branch className={styles.coverTopBranchLeft} />
+    <Branch className={styles.coverTopBranchRight} />
     <Branch className={styles.coverBranch} />
     <motion.div className={styles.coverCard} initial={{ opacity: 0, y: 28, scale: .97 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 1.25, ease }}>
       <small>The Wedding of</small>
       <ArchPhoto src={invitation.coverImage} alt={`${bride} dan ${groom}`} priority />
       <h1>{bride} &amp; {groom}</h1>
       <p>Kepada Yth.<strong>{guest}</strong><span>di Tempat</span></p>
-      <button type="button" onClick={onOpen}>▣&nbsp; Buka Undangan</button>
+      <button type="button" onClick={onOpen}>
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <rect x="2.75" y="5.25" width="18.5" height="13.5" rx="2.25" />
+          <path d="m4 7 8 6 8-6" />
+        </svg>
+        <span>Buka Undangan</span>
+      </button>
     </motion.div>
     <AnimatePresence>{opening && <motion.div className={styles.bloom} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       {Array.from({ length: 6 }, (_, index) => <motion.span key={index} initial={{ x: 0, y: 0, rotate: index * 58, scale: .6, opacity: .15 }} animate={{ x: Math.cos(index) * 360, y: Math.sin(index) * 420, rotate: index * 110, scale: 1.8, opacity: 1 }} transition={{ duration: 1.15, ease }}><Branch /></motion.span>)}
