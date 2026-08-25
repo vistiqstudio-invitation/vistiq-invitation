@@ -10,7 +10,7 @@
   min-height: 100vh;
   background: #292929;
   color: var(--brown);
-  font-family: var(--font-inter), Arial, sans-serif;
+  font-family: var(--font-montserrat), Arial, sans-serif;
 }
 .root * { box-sizing: border-box; }
 .root button { cursor: pointer; font: inherit; }
@@ -23,85 +23,87 @@
 .archPortrait { position: relative; aspect-ratio: 3/4; border: 3px double #ad805e; border-radius: 50% 50% 8px 8px/22% 22% 8px 8px; background: #f2e9e4; box-shadow: 0 10px 28px #7b4b3922; }
 .archPortrait>i { position: absolute; inset: 6px; overflow: hidden; border: 1px solid #fff; border-radius: inherit; }
 .archPortrait img { object-fit: cover; object-position: center 38%; }
-.coverCard button,.countdownCard a,.eventCopy a,.giftCard button { display: inline-flex; min-height: 35px; align-items: center; justify-content: center; gap: 6px; padding: 0 17px; border: 0; border-radius: 999px; background: var(--taupe); box-shadow: 0 8px 20px #694b3530; color: white; font: 600 10px/1 var(--font-inter), sans-serif; text-decoration: none; }
+.coverCard button,.countdownCard a,.eventCopy a,.giftCard button { display: inline-flex; min-height: 35px; align-items: center; justify-content: center; gap: 6px; padding: 0 17px; border: 0; border-radius: 999px; background: var(--taupe); box-shadow: 0 8px 20px #694b3530; color: white; font: 500 10px/1 var(--font-montserrat), sans-serif; text-decoration: none; }
 
 /* Cover */
 .cover { position: fixed; z-index: 3000; top: 0; right: 0; width: min(100%,450px); height: 100svh; min-height: 650px; overflow: hidden; background: #eadbd1; }
 .coverPhoto { position: absolute; inset: -15px; }
-.coverPhoto img { object-fit: cover; object-position: center; filter: blur(8px) saturate(.72); transform: scale(1.08); }
-.coverPhoto:after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg,#fffdf9de 0 17%,#fffaf2b2 46%,#754e3c79 100%); }
-.coverArt { position: absolute; inset: 0; background: url('/themes/luxury-art-sakura/japanese-watercolor.webp') center/cover no-repeat; opacity: .35; mix-blend-mode: multiply; }
-.coverCard { position: absolute; z-index: 4; left: 8%; right: 8%; top: 11%; bottom: 18%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 30px 28px 24px; border: 1px solid #fff9; border-radius: 20px; background: #fffaf3bf; box-shadow: 0 18px 48px #5c392e2e, inset 0 0 0 1px #fff7; backdrop-filter: blur(9px); text-align: center; }
-.coverBranch { right: -72px; top: 5%; width: 170px; transform: rotate(75deg); }
-.coverCard>small,.heroArch>small { font: 700 9px/1 var(--font-inter),sans-serif; letter-spacing: .2em; text-transform: uppercase; }
-.coverCard>.archPortrait { width: 56%; max-width: 205px; margin: 16px auto 11px; }
-.coverCard h1,.heroArch h1 { margin: 0; color: var(--brown); font: 500 30px/1 var(--font-cormorant),serif; }
-.coverCard p { margin: 11px 0 13px; font-size: 10px; line-height: 1.45; }
+.coverPhoto img { object-fit: cover; object-position: center; filter: blur(10px) saturate(1.25) brightness(1.08); transform: scale(1.22); }
+.coverPhoto:after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg,#fff8f382,#fff5ef45 48%,#e9a6a06b 100%); }
+.coverArt { position: absolute; inset: 0; background: url('/themes/luxury-art-sakura/japanese-watercolor.webp') center/cover no-repeat; opacity: .18; mix-blend-mode: multiply; }
+.coverCard { position: absolute; z-index: 4; left: 7.5%; right: 7.5%; top: 27%; bottom: 22%; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 43% 28px 22px; border: 1px solid #ffffffa6; border-radius: 20px; background: linear-gradient(#ffffffb8,#ffffffb8),url('/themes/luxury-art-sakura/japanese-watercolor.webp') center bottom/cover no-repeat; box-shadow: 0 18px 42px #874f4730, inset 0 0 0 1px #fff7; backdrop-filter: blur(3px); text-align: center; }
+.coverBranch { right: -19px; top: 18%; width: 135px; transform: rotate(78deg); }
+.coverCard>small,.heroArch>small { color: #242424; font: 400 14px/1.15 var(--font-montserrat),sans-serif; letter-spacing: 0; text-transform: uppercase; }
+.coverCard>.archPortrait { position: absolute; left: 50%; top: -30%; width: 58%; max-width: 200px; margin: 0; transform: translateX(-50%); }
+.coverCard h1,.heroArch h1 { margin: 7px 0 0; color: var(--brown); font: 400 30px/1.25 var(--font-abril-fatface),serif; }
+.coverCard p { margin: 13px 0 12px; color: #292929; font-size: 14px; line-height: 1.35; }
 .coverCard p strong,.coverCard p span { display: block; }
-.coverCard p strong { font-size: 12px; }
+.coverCard p strong { margin-top: 1px; font-size: 16px; font-weight: 500; }
+.coverCard button { min-height: 43px; padding: 0 20px; background: var(--brown); font-size: 14px; }
 .bloom { position: absolute; z-index: 20; inset: 0; display: grid; place-items: center; overflow: hidden; background: #fff7f0c9; pointer-events: none; }
 .bloom>span { position: absolute; left: 50%; top: 50%; width: 230px; }
 .bloom .branch { position: relative; width: 100%; }
 
 /* Hero and opening */
 .hero { position: relative; height: 100svh; min-height: 720px; overflow: hidden; background: var(--ivory); }
-.hero:after { content: ""; position: absolute; z-index: 2; left: 0; right: 0; bottom: -1px; height: 25%; background: linear-gradient(transparent,#fff9f4d8); }
-.heroArch { position: absolute; z-index: 6; left: 6.5%; right: 6.5%; top: 8%; bottom: 4%; display: flex; flex-direction: column; align-items: center; padding: 72px 25px 0; border-radius: 48% 48% 0 0/19% 19% 0 0; background: #fffdf9d1; box-shadow: inset 0 0 0 1px #fff,inset 0 8px 30px #c8947a13; text-align: center; backdrop-filter: blur(1.5px); }
-.heroArch>.archPortrait { width: 52%; max-width: 215px; margin: 16px auto 13px; }
-.heroArch h1 { font-size: 31px; }
-.heroArch p { margin: 11px 0 0; font: 700 9px/1.3 var(--font-inter),sans-serif; letter-spacing: .05em; text-transform: uppercase; }
-.heroBranchLeft { left: -96px; top: -28px; width: 270px; transform: rotate(17deg); }
-.heroBranchRight { right: -107px; top: 56px; width: 240px; transform: scaleX(-1) rotate(21deg); }
-.opening { position: relative; min-height: 690px; background: var(--rose); }
-.quotePanel { position: relative; min-height: 340px; padding: 145px 42px 45px; overflow: hidden; background: linear-gradient(#c98382e8,#c98382f4),url('/themes/luxury-art-sakura/japanese-watercolor.webp') center 58%/cover; color: white; text-align: center; }
-.quotePanel:before { content: "✿"; position: absolute; left: 50%; top: 74px; font-size: 25px; transform: translateX(-50%); }
+.paperLandscape { opacity: .57; }
+.hero:after { content: ""; position: absolute; z-index: 2; left: 0; right: 0; bottom: -1px; height: 22%; background: linear-gradient(transparent,#fff9f4b8); }
+.heroArch { position: absolute; z-index: 6; left: 5%; right: 5%; top: 11%; bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 24px 100px; border-radius: 200px 200px 0 0; background: #ffffffd4; box-shadow: inset 0 0 10px #00000042; text-align: center; backdrop-filter: blur(1.2px); }
+.heroArch>.archPortrait { width: 200px; max-width: 58%; margin: 10px auto; }
+.heroArch h1 { margin-top: 0; font-size: 30px; }
+.heroArch p { margin: 8px 0 0; font: 500 12px/1.3 var(--font-montserrat),sans-serif; letter-spacing: 0; text-transform: uppercase; }
+.heroBranchLeft { left: -53px; top: -18px; width: 155px; transform: rotate(20deg); }
+.heroBranchRight { right: -56px; top: 23px; width: 150px; transform: scaleX(-1) rotate(20deg); }
+.opening { position: relative; min-height: 620px; background: var(--rose); }
+.quotePanel { position: relative; min-height: 300px; padding: 122px 42px 36px; overflow: hidden; background: linear-gradient(#c98382e8,#c98382f4),url('/themes/luxury-art-sakura/japanese-watercolor.webp') center 58%/cover; color: white; text-align: center; }
+.quotePanel:before { content: "✿"; position: absolute; left: 50%; top: 61px; font-size: 25px; transform: translateX(-50%); }
 .quoteBranch { right: -87px; top: -35px; width: 210px; transform: rotate(82deg); opacity: .85; }
 .quotePanel blockquote { margin: 0; }
 .quotePanel p { margin: 0 0 15px; font: 500 12px/1.58 var(--font-cormorant),serif; }
 .quotePanel strong { font-size: 10px; }
-.greetingPanel { position: relative; z-index: 3; min-height: 365px; margin-top: -1px; padding: 72px 38px 55px; border-radius: 0 90px 0 0; background: linear-gradient(#fffdf9ed,#fffdf9f6),url('/themes/luxury-art-sakura/japanese-watercolor.webp') center 30%/cover; text-align: center; }
+.greetingPanel { position: relative; z-index: 3; min-height: 320px; margin-top: -1px; padding: 55px 38px 42px; border-radius: 0 90px 0 0; background: linear-gradient(#fffdf9ed,#fffdf9f6),url('/themes/luxury-art-sakura/japanese-watercolor.webp') center 30%/cover; text-align: center; }
 .greetingPanel h2 { margin: 0 0 14px; font: 400 31px/1 var(--font-alex-brush),cursive; }
 .greetingPanel p { margin: auto; max-width: 340px; font: 500 14px/1.55 var(--font-cormorant),serif; }
 
 /* Couple */
-.couple { position: relative; min-height: 1000px; overflow: hidden; padding: 0 20px 155px; background: var(--paper); }
+.couple { position: relative; min-height: 860px; overflow: hidden; padding: 0 20px 90px; background: var(--paper); }
 .coupleLandscape { opacity: .46; }
 .coupleLandscape:after { content: ""; position: absolute; inset: 0; background: linear-gradient(#fffdf8bd,#fffdf84d,#fffdf8d1); }
 .coupleBranch { left: -95px; top: 43%; width: 220px; transform: rotate(17deg); }
 .couple article { position: relative; z-index: 7; text-align: center; }
 .couple article>.archPortrait { width: 48%; max-width: 200px; margin: 0 auto; }
-.couple h3 { margin: 10px 0 3px; font: 600 21px/1.1 var(--font-cormorant),serif; }
+.couple h3 { margin: 8px 0 3px; font: 600 21px/1.1 var(--font-cormorant),serif; }
 .couple p { width: 84%; margin: auto; font-size: 11px; line-height: 1.35; }
-.couple a { display: grid; width: 32px; height: 32px; place-items: center; margin: 8px auto; border-radius: 50%; background: var(--rose); color: white; text-decoration: none; }
-.couple b { display: block; margin: 6px; font: 500 27px/1 var(--font-cormorant),serif; }
+.couple a { display: grid; width: 32px; height: 32px; place-items: center; margin: 6px auto; border-radius: 50%; background: var(--rose); color: white; text-decoration: none; }
+.couple b { display: block; margin: 3px; font: 500 27px/1 var(--font-cormorant),serif; }
 
 /* Countdown and event cards */
-.countdown { position: relative; min-height: 470px; overflow: hidden; padding: 64px 0 82px; background: var(--rose); }
+.countdown { position: relative; min-height: 395px; overflow: hidden; padding: 38px 0 52px; background: var(--rose); }
 .countdownBranch { left: -82px; bottom: -9px; width: 210px; transform: rotate(22deg); }
-.countdownCard { position: relative; z-index: 6; display: flex; width: 85%; min-height: 315px; flex-direction: column; align-items: center; justify-content: center; margin: auto; padding: 30px 25px; border: 3px double #b68268; border-radius: 25px; background: #fffdf8ed; box-shadow: 0 14px 34px #6f45422b; text-align: center; }
+.countdownCard { position: relative; z-index: 6; display: flex; width: 85%; min-height: 300px; flex-direction: column; align-items: center; justify-content: center; margin: auto; padding: 24px 25px; border: 3px double #b68268; border-radius: 25px; background: #fffdf8ed; box-shadow: 0 14px 34px #6f45422b; text-align: center; }
 .countdownCard:after { content: ""; position: absolute; right: -28px; bottom: -17px; width: 110px; height: 135px; background: url('/themes/luxury-art-sakura/sakura-branch.webp') center/contain no-repeat; transform: rotate(-36deg); }
 .countdownCard>span { font-size: 25px; }
-.countdownCard>p { margin: 10px auto 18px; font: 600 15px/1.45 var(--font-cormorant),serif; }
+.countdownCard>p { margin: 7px auto 12px; font: 600 15px/1.4 var(--font-cormorant),serif; }
 .countdownCard>div { display: grid; width: 100%; grid-template-columns: repeat(4,1fr); gap: 7px; }
 .countdownCard b { font: 600 30px/1 var(--font-cormorant),serif; }
 .countdownCard b small { display: block; margin-top: 4px; font: 500 10px/1.2 var(--font-inter),sans-serif; }
-.countdownCard em { margin: 16px 0 12px; font-size: 12px; font-style: normal; }
-.events { position: relative; overflow: hidden; padding: 34px 0 68px; background: var(--rose); }
-.events article { position: relative; width: 80%; height: 540px; margin: 0 auto 34px; overflow: hidden; border: 1px dotted #aa806a; border-radius: 49%/16%; background: #fffdf8; text-align: center; }
-.eventLandscape { z-index: 1; top: auto; height: 215px; background-position: center bottom; }
+.countdownCard em { margin: 11px 0 9px; font-size: 12px; font-style: normal; }
+.events { position: relative; overflow: hidden; padding: 18px 0 38px; background: var(--rose); }
+.events article { position: relative; width: 84%; height: 500px; margin: 0 auto 24px; overflow: hidden; border: 1px dotted #aa806a; border-radius: 49%/16%; background: #fffdf8; text-align: center; }
+.eventLandscape { z-index: 1; top: auto; height: 185px; background-position: center bottom; }
 .eventLandscape:after { content: ""; position: absolute; inset: 0; background: linear-gradient(transparent,#fffdf81c); }
 .eventBranch { left: -54px; top: 18px; width: 150px; transform: rotate(30deg); }
-.eventCopy { position: relative; z-index: 6; display: flex; height: 100%; flex-direction: column; align-items: center; padding: 86px 29px 158px; }
+.eventCopy { position: relative; z-index: 6; display: flex; height: 100%; flex-direction: column; align-items: center; padding: 70px 26px 132px; }
 .eventCopy>span { font-size: 26px; }
-.eventCopy>small { margin-top: 6px; color: var(--rose); font: 400 20px/1 var(--font-alex-brush),cursive; }
-.eventCopy h2 { margin: 4px 0; font: 600 25px/1 var(--font-cormorant),serif; letter-spacing: .08em; text-transform: uppercase; }
-.eventCopy h3 { margin: 11px 0 5px; font: 700 25px/1.08 var(--font-cormorant),serif; text-transform: uppercase; }
+.eventCopy>small { margin-top: 3px; color: var(--rose); font: 400 20px/1 var(--font-alex-brush),cursive; }
+.eventCopy h2 { margin: 2px 0; font: 600 25px/1 var(--font-cormorant),serif; letter-spacing: .08em; text-transform: uppercase; }
+.eventCopy h3 { margin: 7px 0 3px; font: 700 25px/1.08 var(--font-cormorant),serif; text-transform: uppercase; }
 .eventCopy p,.eventCopy strong { display: block; font-size: 10px; }
-.eventCopy i { margin: 10px; font-style: normal; }
-.eventCopy a { margin-top: 15px; }
+.eventCopy i { margin: 7px; font-style: normal; }
+.eventCopy a { margin-top: 10px; }
 
 /* Gallery */
-.gallery { position: relative; min-height: 950px; margin-top: -1px; overflow: hidden; padding: 92px 18px 170px; clip-path: polygon(0 0,37% 0,50% 28px,63% 0,100% 0,100% 100%,0 100%); background: linear-gradient(#fffdf8e6,#fffdf8f0),url('/themes/luxury-art-sakura/japanese-watercolor.webp') center/cover; text-align: center; }
+.gallery { position: relative; min-height: 900px; margin-top: -1px; overflow: hidden; padding: 76px 18px 105px; clip-path: polygon(0 0,37% 0,50% 28px,63% 0,100% 0,100% 100%,0 100%); background: linear-gradient(#fffdf8e6,#fffdf8f0),url('/themes/luxury-art-sakura/japanese-watercolor.webp') center/cover; text-align: center; }
 .galleryBranch { left: -58px; top: 50px; width: 190px; transform: rotate(16deg); }
 .gallery header,.rsvp header { position: relative; z-index: 5; }
 .gallery header i,.rsvp header i { color: var(--rose); font: 400 24px/1 var(--font-alex-brush),cursive; }
@@ -119,11 +121,11 @@
 .lightbox>button { position: absolute; z-index: 3; top: 14px; right: 17px; border: 0; background: transparent; color: white; font-size: 40px; }
 
 /* Story */
-.story { position: relative; min-height: 1130px; overflow: hidden; padding: 385px 27px 120px; background: var(--brown-deep); color: white; }
+.story { position: relative; min-height: 1040px; overflow: hidden; padding: 365px 27px 95px; background: var(--brown-deep); color: white; }
 .storyLandscape { top: 0; height: 365px; background-position: center 65%; opacity: .42; }
 .storyLandscape:after { content: ""; position: absolute; inset: 0; background: linear-gradient(transparent 38%,var(--brown-deep)); }
 .storyBranch { left: -70px; top: 276px; width: 180px; transform: rotate(28deg); }
-.storyPortrait { position: absolute; z-index: 5; left: 50%; top: 116px; width: 52%; max-width: 215px; transform: translateX(-50%); }
+.storyPortrait { position: absolute; z-index: 5; left: 50%; top: 96px; width: 52%; max-width: 215px; transform: translateX(-50%); }
 .story .archPortrait>i { box-shadow: inset 0 0 0 4px #fffaf1,inset 0 0 0 5px #c39775; }
 .story>h2 { position: relative; z-index: 5; margin: 0; text-align: center; font: 500 35px/1 var(--font-cormorant),serif; }
 .timeline { position: relative; z-index: 5; margin-top: 29px; padding-left: 29px; }
@@ -135,7 +137,7 @@
 .timeline p { margin: 0; color: #fffaf3e2; font-size: 12px; line-height: 1.55; }
 
 /* RSVP, Gift, Footer */
-.rsvp { position: relative; min-height: 730px; margin-top: -1px; overflow: hidden; padding: 150px 25px 120px; clip-path: polygon(0 0,37% 0,50% 27px,63% 0,100% 0,100% 100%,0 100%); background: linear-gradient(#fffdf8e7,#fffdf8f4),url('/themes/luxury-art-sakura/japanese-watercolor.webp') center/cover; text-align: center; }
+.rsvp { position: relative; min-height: 610px; margin-top: -1px; overflow: hidden; padding: 112px 25px 72px; clip-path: polygon(0 0,37% 0,50% 27px,63% 0,100% 0,100% 100%,0 100%); background: linear-gradient(#fffdf8e7,#fffdf8f4),url('/themes/luxury-art-sakura/japanese-watercolor.webp') center/cover; text-align: center; }
 .rsvpBranch { right: -83px; top: 28px; width: 220px; transform: scaleX(-1) rotate(22deg); }
 .rsvp form { position: relative; z-index: 5; display: grid; gap: 8px; text-align: left; }
 .rsvp input,.rsvp textarea { width: 100%; padding: 11px; border: 1px solid #b88270; border-radius: 7px; background: #fffaf7e8; color: var(--brown); font-size: 12px; }
@@ -150,7 +152,7 @@
 .wishes strong,.wishes small { margin-right: 8px; font-size: 10px; }
 .wishes small { color: var(--rose); }
 .wishes p { margin: 4px 0; font-size: 10px; }
-.gift { position: relative; min-height: 500px; overflow: hidden; padding: 98px 24px 110px; background: linear-gradient(#fff9f4f0,#fff9f4f4),url('/themes/luxury-art-sakura/japanese-watercolor.webp') center/cover; }
+.gift { position: relative; min-height: 390px; overflow: hidden; padding: 72px 24px 68px; background: linear-gradient(#fff9f4f0,#fff9f4f4),url('/themes/luxury-art-sakura/japanese-watercolor.webp') center/cover; }
 .giftBranch { left: -87px; top: 25px; width: 190px; transform: rotate(24deg); }
 .giftCard { position: relative; z-index: 5; display: flex; min-height: 220px; overflow: hidden; border: 1px dotted #a77862; border-radius: 16px; background: #fffdf9e9; box-shadow: 0 15px 32px #76503c1b; }
 .giftCard>b { display: grid; width: 64px; flex: 0 0 auto; place-items: center; background: var(--rose); color: white; font-size: 17px; font-weight: 500; letter-spacing: .03em; writing-mode: vertical-rl; transform: rotate(180deg); }
@@ -160,7 +162,7 @@
 .accounts article { display: grid; padding: 12px; border: 1px solid #a7796350; border-radius: 9px; background: white; }
 .accounts article small { color: var(--rose); }
 .accounts article button { justify-self: end; border: 0; background: transparent; color: var(--brown); }
-.footer { position: relative; height: 100svh; min-height: 730px; overflow: hidden; padding: 72px 26px 125px; background: var(--paper); text-align: center; }
+.footer { position: relative; min-height: 660px; overflow: hidden; padding: 62px 26px 105px; background: var(--paper); text-align: center; }
 .footerLandscape { opacity: .47; }
 .footerLandscape:after { content: ""; position: absolute; inset: 0; background: linear-gradient(#fffdf8c8,#fffdf84e,#fffdf879); }
 .footerBranch { right: -72px; top: 25px; width: 195px; transform: scaleX(-1) rotate(24deg); }
@@ -191,6 +193,6 @@
   .cover { right: 0; }
   .nav { left: calc(100% - 225px); }
 }
-@media (max-width: 450px) { .desktopScene { display: none; } .shell,.cover { width: 100%; } .heroArch { top: 7%; bottom: 4%; padding-top: 68px; } }
-@media (max-width: 380px) { .coverCard { top: 9%; bottom: 15%; } .coverCard>.archPortrait { width: 51%; } .hero { min-height: 680px; } .heroArch { padding-top: 56px; } .heroArch>.archPortrait { width: 49%; } .couple { min-height: 960px; } .events article { height: 520px; } .eventCopy { padding-top: 80px; } .galleryGrid { grid-auto-rows: 142px; } .nav button { height: 42px; } }
+@media (max-width: 450px) { .desktopScene { display: none; } .shell,.cover { width: 100%; } }
+@media (max-width: 380px) { .coverCard { top: 27%; bottom: 20%; padding-top: 43%; } .coverCard>.archPortrait { width: 56%; } .hero { min-height: 680px; } .heroArch { top: 10%; padding-bottom: 86px; } .heroArch>.archPortrait { width: 190px; max-width: 56%; } .couple { min-height: 820px; } .events article { height: 485px; } .eventCopy { padding-top: 65px; padding-bottom: 126px; } .galleryGrid { grid-auto-rows: 142px; } .nav button { height: 42px; } }
 @media (prefers-reduced-motion: reduce) { .root * { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
