@@ -45,6 +45,7 @@ import MidnightAurora from "@/themes/midnight-aurora/MidnightAurora";
 import PorcelainBloom from "@/themes/porcelain-bloom/PorcelainBloom";
 import LuxuryArtGarden from "@/themes/luxury-art-garden/LuxuryArtGarden";
 import LuxuryArtJavaHeritage from "@/themes/luxury-art-java-heritage/LuxuryArtJavaHeritage";
+import LuxuryArtSakura from "@/themes/luxury-art-sakura/LuxuryArtSakura";
 import LoveChronicle from "@/themes/love-chronicle/LoveChronicle";
 import VelvetCinema from "@/themes/velvet-cinema/VelvetCinema";
 import PrismaticVows from "@/themes/prismatic-vows/PrismaticVows";
@@ -90,6 +91,7 @@ export const themeRegistry: Record<
   "porcelain-bloom": PorcelainBloom,
   "luxury-art-garden": LuxuryArtGarden,
   "luxury-art-java-heritage": LuxuryArtJavaHeritage,
+  "luxury-art-sakura": LuxuryArtSakura,
   "love-chronicle": LoveChronicle,
   "velvet-cinema": VelvetCinema,
   "prismatic-vows": PrismaticVows,
@@ -340,6 +342,14 @@ export const themeList: ThemeMeta[] = [
     swatch: ["#eee6d7", "#6f261f"],
     tags: ["luxury-art", "premium", "adat"],
     addedAt: "2026-08-24",
+  },
+  {
+    key: "luxury-art-sakura",
+    label: "Luxury Art — Sakura Romance",
+    description: "Ivory dan blush Sakura, lanskap watercolor Jepang, foto arch, kelopak jatuh dan transisi floral sinematik",
+    swatch: ["#fff9f4", "#c98382"],
+    tags: ["luxury-art", "premium"],
+    addedAt: "2026-08-25",
   },
   {
     key: "porcelain-bloom",
