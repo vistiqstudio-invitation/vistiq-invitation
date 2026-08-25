@@ -1,4 +1,18 @@
-import { Alice, Cormorant_Garamond, Playfair_Display, Inter, Alex_Brush, Suranna, Readex_Pro, Chelsea_Market, Noto_Sans_Balinese, Noto_Serif_Display, Raleway, Orbitron, Baloo_2, Bangers } from "next/font/google";
+import { Abril_Fatface, Alice, Cormorant_Garamond, Playfair_Display, Inter, Montserrat, Alex_Brush, Suranna, Readex_Pro, Chelsea_Market, Noto_Sans_Balinese, Noto_Serif_Display, Raleway, Orbitron, Baloo_2, Bangers } from "next/font/google";
+
+export const abrilFatface = Abril_Fatface({
+  variable: "--font-abril-fatface",
+  subsets: ["latin"],
+  weight: ["400"],
+  display: "swap",
+});
+
+export const montserrat = Montserrat({
+  variable: "--font-montserrat",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
 
 export const alice = Alice({
   variable: "--font-alice",
