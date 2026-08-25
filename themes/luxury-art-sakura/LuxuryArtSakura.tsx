@@ -17,10 +17,18 @@ const reveal = {
   viewport: { once: false, amount: 0.18 },
   transition: { duration: 1.15, ease },
 };
-const navItems = [
-  ["home", "⌂"], ["couple", "♙"], ["event", "▦"], ["gallery", "▣"],
-  ["story", "♡"], ["rsvp", "◉"], ["gift", "♧"],
-] as const;
+const navItems = ["home", "couple", "event", "gallery", "story", "rsvp", "gift"] as const;
+
+function NavIcon({ name }: { name: typeof navItems[number] }) {
+  const common = { viewBox: "0 0 24 24", fill: "none", "aria-hidden": true } as const;
+  if (name === "home") return <svg {...common}><path d="m3 10.5 9-7 9 7v9a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 19.5z" /><path d="M9.5 21v-6h5v6" /><path d="M15.5 7.2c.8-1 2.8-.4 2.8 1.1 0 1.3-1.5 2.2-2.8 3.1-1.3-.9-2.8-1.8-2.8-3.1 0-1.5 2-2.1 2.8-1.1Z" /></svg>;
+  if (name === "couple") return <svg {...common}><circle cx="8" cy="7" r="2.5" /><circle cx="16" cy="7" r="2.5" /><path d="M3.5 20v-3.5A4.5 4.5 0 0 1 8 12h1a4.5 4.5 0 0 1 3 1.1A4.5 4.5 0 0 1 15 12h1a4.5 4.5 0 0 1 4.5 4.5V20" /><path d="M12 13.1c1-1.4 3.4-.6 3.4 1.1 0 1.5-1.8 2.5-3.4 3.6-1.6-1.1-3.4-2.1-3.4-3.6 0-1.7 2.4-2.5 3.4-1.1Z" /></svg>;
+  if (name === "event") return <svg {...common}><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M7 3v4M17 3v4M3 10h18M7 14h2M11 14h2M15 14h2M7 17.5h2M11 17.5h2" /></svg>;
+  if (name === "gallery") return <svg {...common}><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="9" cy="9" r="2" /><path d="m5.5 18 4.2-4.2 2.6 2.6 2.2-2.2 4 3.8" /></svg>;
+  if (name === "story") return <svg {...common}><path d="M8.5 5.5c2.2-2.8 6.7-1.2 6.7 2.4 0 3.4-3.8 5.7-6.7 8-2.9-2.3-6.7-4.6-6.7-8 0-3.6 4.5-5.2 6.7-2.4Z" /><path d="M15.5 8.1c2.2-2.4 6.7-.8 6.7 2.8 0 3.4-3.8 5.7-6.7 8-1.4-1.1-3-2.2-4.3-3.6" /></svg>;
+  if (name === "rsvp") return <svg {...common}><path d="M4 4.5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H10l-5.5 3v-3H4a2 2 0 0 1-2-2v-10a2 2 0 0 1 2-2Z" /><path d="M12 8.7c1.1-1.4 3.5-.6 3.5 1.2 0 1.6-1.9 2.7-3.5 3.8-1.6-1.1-3.5-2.2-3.5-3.8 0-1.8 2.4-2.6 3.5-1.2Z" /></svg>;
+  return <svg {...common}><rect x="3" y="9" width="18" height="12" rx="1.5" /><path d="M12 9v12M2.5 6h19v4h-19z" /><path d="M12 6c-1.5-3.8-6-4.2-6-.9C6 7.1 9 7 12 6Zm0 0c1.5-3.8 6-4.2 6-.9 0 2-3 1.9-6 .9Z" /></svg>;
+}
 
 function ArchPhoto({ src, alt, className = "", priority = false }: { src: string | null; alt: string; className?: string; priority?: boolean }) {
   return <div className={`${styles.archPortrait} ${className}`}>
@@ -51,13 +59,21 @@ function Cover({ invitation, opening, onOpen }: { invitation: InvitationData; op
   return <motion.section className={styles.cover} exit={{ opacity: 0 }} transition={{ duration: .55 }}>
     <div className={styles.coverPhoto}>{invitation.coverImage && <Image src={invitation.coverImage} alt="" fill priority sizes="500px" />}</div>
     <div className={styles.coverArt} />
+    <Branch className={styles.coverTopBranchLeft} />
+    <Branch className={styles.coverTopBranchRight} />
     <Branch className={styles.coverBranch} />
     <motion.div className={styles.coverCard} initial={{ opacity: 0, y: 28, scale: .97 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 1.25, ease }}>
       <small>The Wedding of</small>
       <ArchPhoto src={invitation.coverImage} alt={`${bride} dan ${groom}`} priority />
       <h1>{bride} &amp; {groom}</h1>
       <p>Kepada Yth.<strong>{guest}</strong><span>di Tempat</span></p>
-      <button type="button" onClick={onOpen}>▣&nbsp; Buka Undangan</button>
+      <button type="button" onClick={onOpen}>
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <rect x="2.75" y="5.25" width="18.5" height="13.5" rx="2.25" />
+          <path d="m4 7 8 6 8-6" />
+        </svg>
+        <span>Buka Undangan</span>
+      </button>
     </motion.div>
     <AnimatePresence>{opening && <motion.div className={styles.bloom} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       {Array.from({ length: 6 }, (_, index) => <motion.span key={index} initial={{ x: 0, y: 0, rotate: index * 58, scale: .6, opacity: .15 }} animate={{ x: Math.cos(index) * 360, y: Math.sin(index) * 420, rotate: index * 110, scale: 1.8, opacity: 1 }} transition={{ duration: 1.15, ease }}><Branch /></motion.span>)}
@@ -114,7 +130,20 @@ function Countdown({ date, label }: { date: string; label: string }) {
 function Events({ invitation }: { invitation: InvitationData }) {
   return <section id="event" className={styles.events}>{invitation.events.map((event, index) => <motion.article key={`${event.name}-${index}`} {...reveal}>
     <div className={styles.eventLandscape} /><Branch className={styles.eventBranch} />
-    <div className={styles.eventCopy}><span>♧</span><small>{index === 0 ? "Our Sacred Moment" : "Celebrate With Us"}</small><h2>{event.name}</h2><h3>{event.date}</h3><p>{event.time}</p><i>◇</i><strong>{event.location}</strong>{invitation.mapsUrl && <a href={invitation.mapsUrl} target="_blank" rel="noreferrer">⌕ Lihat Maps</a>}</div>
+    <div className={styles.eventCopy}>
+      <span className={styles.eventEmblem} aria-hidden="true" />
+      <h2>{event.name}</h2>
+      <h3>{event.date}</h3>
+      <p>{event.time}</p>
+      <span className={styles.eventPin} aria-hidden="true">
+        <i />
+      </span>
+      <strong>{event.location}</strong>
+      {invitation.mapsUrl && <a href={invitation.mapsUrl} target="_blank" rel="noreferrer">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="6.5" /><path d="m16 16 4.25 4.25" /></svg>
+        <span>Lihat Maps</span>
+      </a>}
+    </div>
   </motion.article>)}</section>;
 }
 
@@ -158,7 +187,7 @@ function Footer({ invitation }: { invitation: InvitationData }) {
 }
 
 function Navigation() {
-  return <nav className={styles.nav}>{navItems.map(([id, icon]) => <button key={id} type="button" aria-label={`Ke bagian ${id}`} onClick={() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })}>{icon}</button>)}</nav>;
+  return <nav className={styles.nav}>{navItems.map(id => <button key={id} type="button" aria-label={`Ke bagian ${id}`} onClick={() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })}><NavIcon name={id} /></button>)}</nav>;
 }
 
 export default function LuxuryArtSakura({ invitation }: { invitation: InvitationData }) {
