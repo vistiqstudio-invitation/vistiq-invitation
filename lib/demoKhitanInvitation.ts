@@ -1,4 +1,5 @@
 import type { KhitanInvitationData } from "@/types/khitan";
+import { KHITAN_COVER_BY_THEME } from "@/lib/themeCoverImages";
 
 const MUSIC_BY_THEME: Record<string, string> = {
   "khitan-warna": "/music/khitan-warna.mp3",
@@ -18,7 +19,6 @@ const KHITAN_THEMES = [
   "khitan-elang",
 ] as const;
 
-const SHARED_COVER = "/photos/khitan-warna-cover.jpg";
 const SHARED_CHILD_PHOTO = "/photos/khitan-warna-child.jpg";
 const SHARED_GALLERY = [
   "/photos/khitan-warna-gallery-1.jpg",
@@ -29,9 +29,7 @@ const SHARED_GALLERY = [
   "/photos/khitan-warna-gallery-6.jpg",
 ];
 
-export const COVER_BY_THEME: Record<string, string> = Object.fromEntries(
-  KHITAN_THEMES.map((theme) => [theme, SHARED_COVER]),
-);
+export const COVER_BY_THEME = KHITAN_COVER_BY_THEME;
 
 const CHILD_PHOTO_BY_THEME: Record<string, string> = Object.fromEntries(
   KHITAN_THEMES.map((theme) => [theme, SHARED_CHILD_PHOTO]),

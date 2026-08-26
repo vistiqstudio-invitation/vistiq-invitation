@@ -1,80 +1,8 @@
 import type { InvitationData } from "@/types/invitation";
 import { DEFAULT_WEDDING_VOCAL_TRACK, WEDDING_VOCAL_TRACKS } from "@/lib/weddingMusic";
+import { WEDDING_COVER_BY_THEME } from "@/lib/themeCoverImages";
 
-// Cover photos vary by theme so the demo picker doesn't show the same
-// image eight times over. All photos are either original theme assets or
-// free-to-use stock photos (Pexels License - free for commercial use, no
-// attribution required); see public/photos/README for sourcing notes.
-export const COVER_BY_THEME: Record<string, string> = {
-  "princess-fairytale": "/photos/romance-cover.png",
-  "luxury-gold": "/photos/luxury-cover.png",
-  "royal-black": "/photos/black-cover.png",
-  "islamic-green": "/photos/green-cover.png",
-  "emerald-lantern": "/photos/lantern-cover.png",
-  "minimal-white": "/photos/white-cover.png",
-  "floral-garden": "/photos/floral-cover.png",
-  sakura: "/photos/sakura-cover.png",
-  rustic: "/photos/rustic-cover.png",
-  bohemian: "/photos/boho-cover.png",
-  "modern-elegant": "/photos/modern-cover.png",
-  "royal-imperial": "/photos/imperial-cover.png",
-  "vintage-botanical": "/photos/botanical-cover.png",
-  "pastel-studio": "/photos/pastel-cover.png",
-  "art-deco-glam": "/photos/deco-cover.png",
-  "golden-romance": "/photos/romance-cover.png",
-  "adat-jawa": "/photos/jawa-cover.png",
-  // Reuses one of luxury-gold's own gallery shots (not luxury-cover.png,
-  // which luxury-gold already uses as its own cover) so the two themes
-  // don't show an identical cover photo side by side in the demo grid.
-  // The luxury-* photos happen to be genuine Minang wedding photography
-  // (suntiang headdress, marun-gold songket), a perfect match for this
-  // theme even though luxury-gold itself is styled as a generic glam
-  // theme rather than an adat one.
-  "adat-minang": "/photos/luxury-gallery-1.png",
-  // Placeholder only - no owner-supplied Bugis photography yet. Reuses
-  // emerald-lantern's real jade-and-gold night garden photoshoot since
-  // it's a reasonable palette match for this theme's teal-and-gold
-  // colors. Replace once real Adat Bugis photos are supplied.
-  "adat-bugis": "/photos/lantern-cover.png",
-  // Reuses royal-imperial's real cover shot (maroon-and-gold palace
-  // court attire) since its formal dark-and-gold mood is a reasonable
-  // match for this theme too - no dedicated mosque-architecture photos
-  // supplied yet.
-  "menara-cahaya": "/photos/imperial-cover.png",
-  // Placeholder only - no owner-supplied photography for this theme
-  // yet. Reuses minimal-white's cover (white studio backdrop) since its
-  // light, airy tone is the closest match to this theme's white-and-blue
-  // palette among the current photo set. Replace once real photos exist.
-  santorini: "/photos/white-cover.png",
-  // Placeholder only - no owner-supplied photography for this theme yet.
-  // Reuses one of adat-jawa's own gallery shots (not jawa-cover.png,
-  // which adat-jawa already uses as its own cover) since both themes
-  // share a Javanese setting. Replace once real photos exist.
-  "jawa-merah": "/photos/jawa-gallery-1.png",
-  "royal-java": "/photos/jawa-cover.png",
-  "luxury-art-java-heritage": "/photos/luxury-sage-cover.webp",
-  "luxury-art-sakura": "/photos/sakura-cover.png",
-  // Placeholder only - no owner-supplied photography for this theme yet.
-  // Same Javanese photoshoot as jawa-merah above (it's the only
-  // Javanese-styled real photography in the set), just a different
-  // gallery shot as the cover so the two don't show an identical
-  // thumbnail side by side in the demo picker. Replace once real
-  // photos exist.
-  "jawa-coklat": "/photos/jawa-gallery-4.png",
-  "jawa-sepia": "/photos/jawa-cover.png",
-  // Placeholder only - no owner-supplied photography for this theme yet.
-  // Reuses floral-garden's real cover shot since its soft, natural sage
-  // tones are the closest mood match among the current photo set.
-  // Replace once real photos exist.
-  "sage-green": "/photos/floral-cover.png",
-  // Placeholder only - no owner-supplied photography for this theme yet.
-  // Reuses rustic's real cover shot since its terracotta/earthy tones are
-  // the closest mood match to this desert-inspired theme among the
-  // current photo set. Replace once real photos exist.
-  sahara: "/photos/rustic-cover.png",
-  "adat-bali": "/photos/adat-bali-cover.png",
-  "adat-sunda": "/photos/adat-sunda-cover.png",
-};
+export const COVER_BY_THEME = WEDDING_COVER_BY_THEME;
 
 // Couple portrait photos also vary by theme - the default luxury-gold
 // portraits are dark with a gold ornate frame baked into the image, which
