@@ -7,7 +7,7 @@ type Props = {
   swatch?: [string, string];
 };
 
-/** A lightweight, motion-free cover used in theme catalog cards. */
+/** A motion-free screenshot of the theme's complete invitation opening screen. */
 export default function ThemeCoverPreview({ coverImage, label, swatch }: Props) {
   return (
     <div
@@ -25,7 +25,7 @@ export default function ThemeCoverPreview({ coverImage, label, swatch }: Props) 
       {coverImage ? (
         <Image
           src={coverImage}
-          alt={`Cover tema ${label}`}
+          alt={`Tampilan pembuka undangan tema ${label}`}
           fill
           sizes="(max-width: 640px) 50vw, (max-width: 1040px) 33vw, 260px"
           className={styles.image}

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import ThemeCoverPreview from "@/components/ThemeCoverPreview";
 import { aqiqahThemeList } from "@/lib/theme";
-import { COVER_BY_THEME } from "@/lib/demoAqiqahInvitation";
+import { getThemeCoverImage } from "@/lib/themeCoverImages";
 import styles from "../demo/demo.module.css";
 
 const WA_NUMBER = "6281371338032";
@@ -31,7 +31,7 @@ export default function DemoAkikahPickerPage() {
               <div className={styles.card} key={theme.key}>
                 <div className={styles.cardPreview}>
                   <ThemeCoverPreview
-                    coverImage={COVER_BY_THEME[theme.key]}
+                    coverImage={getThemeCoverImage(theme.key, "/demo-akikah")}
                     swatch={theme.swatch}
                     label={theme.label}
                   />
