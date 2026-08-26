@@ -70,8 +70,25 @@ export const BIRTHDAY_COVER_BY_THEME: Record<string, string> = {
 };
 
 export function getThemeCoverImage(themeKey: string, demoPath: string): string | null {
-  if (demoPath === "/demo-khitan") return KHITAN_COVER_BY_THEME[themeKey] ?? null;
-  if (demoPath === "/demo-akikah") return AQIQAH_COVER_BY_THEME[themeKey] ?? null;
-  if (demoPath === "/demo-ulang-tahun") return BIRTHDAY_COVER_BY_THEME[themeKey] ?? null;
-  return WEDDING_COVER_BY_THEME[themeKey] ?? null;
+  if (demoPath === "/demo-khitan") {
+    return KHITAN_COVER_BY_THEME[themeKey]
+      ? `/theme-previews/khitan/${themeKey}.jpg`
+      : null;
+  }
+
+  if (demoPath === "/demo-akikah") {
+    return AQIQAH_COVER_BY_THEME[themeKey]
+      ? `/theme-previews/akikah/${themeKey}.jpg`
+      : null;
+  }
+
+  if (demoPath === "/demo-ulang-tahun") {
+    return BIRTHDAY_COVER_BY_THEME[themeKey]
+      ? `/theme-previews/birthday/${themeKey}.jpg`
+      : null;
+  }
+
+  return WEDDING_COVER_BY_THEME[themeKey]
+    ? `/theme-previews/wedding/${themeKey}.jpg`
+    : null;
 }
