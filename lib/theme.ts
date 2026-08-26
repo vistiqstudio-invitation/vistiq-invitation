@@ -44,6 +44,7 @@ import Sahara from "@/themes/sahara/Sahara";
 import MidnightAurora from "@/themes/midnight-aurora/MidnightAurora";
 import PorcelainBloom from "@/themes/porcelain-bloom/PorcelainBloom";
 import LuxuryArtGarden from "@/themes/luxury-art-garden/LuxuryArtGarden";
+import LuxuryArtLoveParadise from "@/themes/luxury-art-love-paradise/LuxuryArtLoveParadise";
 import LuxuryArtJavaHeritage from "@/themes/luxury-art-java-heritage/LuxuryArtJavaHeritage";
 import LuxuryArtSakura from "@/themes/luxury-art-sakura/LuxuryArtSakura";
 import LoveChronicle from "@/themes/love-chronicle/LoveChronicle";
@@ -90,6 +91,7 @@ export const themeRegistry: Record<
   "midnight-aurora": MidnightAurora,
   "porcelain-bloom": PorcelainBloom,
   "luxury-art-garden": LuxuryArtGarden,
+  "luxury-art-love-paradise": LuxuryArtLoveParadise,
   "luxury-art-java-heritage": LuxuryArtJavaHeritage,
   "luxury-art-sakura": LuxuryArtSakura,
   "love-chronicle": LoveChronicle,
@@ -334,6 +336,14 @@ export const themeList: ThemeMeta[] = [
     swatch: ["#e8eef5", "#173f67"],
     tags: ["luxury-art", "premium"],
     addedAt: "2026-08-21",
+  },
+  {
+    key: "luxury-art-love-paradise",
+    label: "Luxury Art — Love Paradise",
+    description: "Ivory, powder blue dan lavender, taman lembah watercolor, bingkai oval berlapis, floral relief dan animasi kabut yang lembut",
+    swatch: ["#f4f7f4", "#2f7cc8"],
+    tags: ["luxury-art", "premium"],
+    addedAt: "2026-08-25",
   },
   {
     key: "luxury-art-java-heritage",
