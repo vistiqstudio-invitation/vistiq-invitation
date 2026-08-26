@@ -1,0 +1,30 @@
+.cover {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: #e8eef5;
+}
+
+.image {
+  object-fit: cover;
+  object-position: center;
+}
+
+.fallbackLabel {
+  position: absolute;
+  inset: auto 18px 18px;
+  color: white;
+  font-family: Georgia, serif;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.25;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+
+@media (max-width: 640px) {
+  .fallbackLabel {
+    inset: auto 10px 10px;
+    font-size: 13px;
+  }
+}

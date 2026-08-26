@@ -1,11 +1,7 @@
 import type { BirthdayInvitationData } from "@/types/birthday";
+import { BIRTHDAY_COVER_BY_THEME } from "@/lib/themeCoverImages";
 
-export const COVER_BY_THEME: Record<string, string> = {
-  "princess-fairytale": "/photos/princess-fairytale/cover.webp",
-  "space-explorer": "/photos/space-explorer/cover.webp",
-  "dinosaur-adventure": "/photos/dinosaur-adventure/cover.webp",
-  "superhero-city": "/photos/superhero-city/cover.webp",
-};
+export const COVER_BY_THEME = BIRTHDAY_COVER_BY_THEME;
 
 const CHILD_PHOTO_BY_THEME: Record<string, string> = {
   "princess-fairytale": "/photos/princess-fairytale/profile.webp",

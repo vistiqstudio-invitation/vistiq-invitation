@@ -1,4 +1,5 @@
 import type { AqiqahInvitationData } from "@/types/aqiqah";
+import { AQIQAH_COVER_BY_THEME } from "@/lib/themeCoverImages";
 
 const MUSIC_BY_THEME: Record<string, string> = {
   "akikah-nur": "/music/akikah-nur.mp3",
@@ -13,18 +14,7 @@ const MUSIC_BY_THEME: Record<string, string> = {
   "akikah-damai": "/music/akikah-damai.mp3",
 };
 
-// Every aqiqah demo theme gets its own baby photo so previews are visually
-// distinct. Zaitun and Damai keep their existing photo sets; the other five
-// use the new dedicated demo assets.
-export const COVER_BY_THEME: Record<string, string> = {
-  "akikah-nur": "/photos/akikah-nur-demo.webp",
-  "akikah-zaitun": "/photos/akikah-zaitun-cover.jpg",
-  "akikah-ceria": "/photos/akikah-ceria-demo.webp",
-  "akikah-anugerah": "/photos/akikah-anugerah-demo.webp",
-  "akikah-safir": "/photos/akikah-safir-demo.webp",
-  "akikah-kasih": "/photos/akikah-kasih-demo.webp",
-  "akikah-damai": "/photos/akikah-damai-cover.jpg",
-};
+export const COVER_BY_THEME = AQIQAH_COVER_BY_THEME;
 
 const BABY_PHOTO_BY_THEME: Record<string, string> = {
   "akikah-nur": "/photos/akikah-nur-demo.webp",

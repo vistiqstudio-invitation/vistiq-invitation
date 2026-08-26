@@ -1,31 +1,12 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import Link from "next/link";
-import PhoneMockup from "@/components/PhoneMockup";
+import ThemeCoverPreview from "@/components/ThemeCoverPreview";
 import { khitanThemeList } from "@/lib/theme";
 import { COVER_BY_THEME } from "@/lib/demoKhitanInvitation";
 import styles from "../demo/demo.module.css";
 
 const WA_NUMBER = "6281371338032";
 
-function useMockupWidth() {
-  const [width, setWidth] = useState(150);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 640px)");
-    const apply = () => setWidth(mq.matches ? 84 : 150);
-    apply();
-    mq.addEventListener("change", apply);
-    return () => mq.removeEventListener("change", apply);
-  }, []);
-
-  return width;
-}
-
 export default function DemoKhitanPickerPage() {
-  const mockupWidth = useMockupWidth();
-
   return (
     <main className={styles.page}>
       <div className={styles.inner}>
@@ -49,15 +30,10 @@ export default function DemoKhitanPickerPage() {
             return (
               <div className={styles.card} key={theme.key}>
                 <div className={styles.cardPreview}>
-                  <PhoneMockup
-                    themeKey={theme.key}
-                    width={mockupWidth}
-                    demoPath="/demo-khitan"
-                    mode="static"
+                  <ThemeCoverPreview
                     coverImage={COVER_BY_THEME[theme.key]}
                     swatch={theme.swatch}
                     label={theme.label}
-                    overlay={{ eyebrow: "Khitanan", title: "Muhammad Rayyan Athallah", date: "Minggu, 20 September 2026" }}
                   />
                 </div>
 

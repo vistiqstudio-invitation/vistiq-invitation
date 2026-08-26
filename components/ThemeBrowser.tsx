@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
-import PhoneMockup from "@/components/PhoneMockup";
+import ThemeCoverPreview from "@/components/ThemeCoverPreview";
 import { themeList, aqiqahThemeList, khitanThemeList, birthdayThemeList, isThemeNew, type ThemeMeta } from "@/lib/theme";
+import { getThemeCoverImage } from "@/lib/themeCoverImages";
 import styles from "@/app/demo/demo.module.css";
 
 function CartIcon() {
@@ -62,23 +63,8 @@ const COMING_SOON: Record<string, { label: string; description: string }> = {
   wisuda: { label: "Wisuda", description: "Tema undangan wisuda digital - segera hadir." },
 };
 
-function useMockupWidth() {
-  const [width, setWidth] = useState(150);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 640px)");
-    const apply = () => setWidth(mq.matches ? 128 : 150);
-    apply();
-    mq.addEventListener("change", apply);
-    return () => mq.removeEventListener("change", apply);
-  }, []);
-
-  return width;
-}
-
 function ThemeCard({
   theme,
-  mockupWidth,
   demoPath,
   eyebrowLabel,
   priceLabel,
@@ -88,7 +74,6 @@ function ThemeCard({
   brandName,
 }: {
   theme: ThemeMeta;
-  mockupWidth: number;
   demoPath: string;
   eyebrowLabel: string;
   priceLabel: string;
@@ -104,7 +89,11 @@ function ThemeCard({
       {isThemeNew(theme) && <span className={styles.newBadge}>Baru</span>}
 
       <div className={styles.cardPreview}>
-        <PhoneMockup themeKey={theme.key} width={mockupWidth} demoPath={demoPath} mode="live" swatch={theme.swatch} label={theme.label} />
+        <ThemeCoverPreview
+          coverImage={getThemeCoverImage(theme.key, demoPath)}
+          swatch={theme.swatch}
+          label={theme.label}
+        />
         {priceWasLabel && discountLabel && <span className={styles.discountBadge}>DISC. {discountLabel}</span>}
       </div>
 
@@ -162,7 +151,6 @@ export default function ThemeBrowser({
   discountLabel?: string;
   defaultOccasion?: OccasionKey;
 }) {
-  const mockupWidth = useMockupWidth();
   const [occasion, setOccasion] = useState<OccasionKey | null>(defaultOccasion ?? null);
   const [weddingSub, setWeddingSub] = useState<WeddingSubKey>("semua");
 
@@ -228,7 +216,6 @@ export default function ThemeBrowser({
             <ThemeCard
               key={theme.key}
               theme={theme}
-              mockupWidth={mockupWidth}
               demoPath="/demo"
               eyebrowLabel="Indonesian Wedding"
               priceLabel={priceLabel}
@@ -245,7 +232,6 @@ export default function ThemeBrowser({
             <ThemeCard
               key={theme.key}
               theme={theme}
-              mockupWidth={mockupWidth}
               demoPath="/demo-khitan"
               eyebrowLabel="Indonesian Khitan"
               priceLabel={priceLabel}
@@ -262,7 +248,6 @@ export default function ThemeBrowser({
             <ThemeCard
               key={theme.key}
               theme={theme}
-              mockupWidth={mockupWidth}
               demoPath="/demo-akikah"
               eyebrowLabel="Indonesian Aqiqah"
               priceLabel={priceLabel}
@@ -279,7 +264,6 @@ export default function ThemeBrowser({
             <ThemeCard
               key={theme.key}
               theme={theme}
-              mockupWidth={mockupWidth}
               demoPath="/demo-ulang-tahun"
               eyebrowLabel="Kids Birthday"
               priceLabel={priceLabel}
