@@ -2,6 +2,7 @@ import type { InvitationData } from "@/types/invitation";
 import { WEDDING_VOCAL_TRACKS } from "@/lib/weddingMusic";
 
 const GALLERY = [
+  "/photos/luxury-art-love-paradise/hero.webp",
   "/photos/luxury-art-love-paradise/gallery-01.webp",
   "/photos/luxury-art-love-paradise/gallery-02.webp",
   "/photos/luxury-art-love-paradise/gallery-03.webp",
@@ -22,22 +23,22 @@ export function withLuxuryArtLoveParadiseDemoAssets(
     musicUrl: WEDDING_VOCAL_TRACKS.indonesianBallad,
     bride: {
       ...invitation.bride,
-      name: "Nabila Putri",
-      nickname: "Nabila",
-      instagram: "nabilaputri",
+      name: "Salsa Azzahra",
+      nickname: "Salsa",
+      instagram: "salsaazzahra",
       photo: "/photos/luxury-art-love-paradise/bride.webp",
     },
     groom: {
       ...invitation.groom,
-      name: "Rizky Pratama",
-      nickname: "Rizky",
-      instagram: "rizkypratama",
+      name: "Bagas Pratama",
+      nickname: "Bagas",
+      instagram: "bagaspratama",
       photo: "/photos/luxury-art-love-paradise/groom.webp",
     },
     gallery: GALLERY,
     gifts: invitation.gifts.map((account) =>
       account.owner === "Mempelai Pria"
-        ? { ...account, accountName: "Rizky Pratama" }
+        ? { ...account, accountName: "Bagas Pratama" }
         : account,
     ),
   };
