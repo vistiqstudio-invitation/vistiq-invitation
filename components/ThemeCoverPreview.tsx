@@ -7,10 +7,8 @@ type Props = {
   swatch?: [string, string];
 };
 
-/** A motion-free screenshot-like preview of the theme's complete invitation opening screen. */
+/** A motion-free screenshot of the theme's complete invitation opening screen. */
 export default function ThemeCoverPreview({ coverImage, label, swatch }: Props) {
-  const isChampagneRomance = label.toLowerCase().includes("champagne romance");
-
   return (
     <div
       className={styles.cover}
@@ -30,26 +28,11 @@ export default function ThemeCoverPreview({ coverImage, label, swatch }: Props) 
           alt={`Tampilan pembuka undangan tema ${label}`}
           fill
           sizes="(max-width: 640px) 50vw, (max-width: 1040px) 33vw, 260px"
-          className={`${styles.image} ${isChampagneRomance ? styles.champagneImage : ""}`}
+          className={styles.image}
         />
       ) : (
         <span className={styles.fallbackLabel}>{label}</span>
       )}
-
-      {isChampagneRomance && coverImage ? (
-        <div className={styles.champagneOverlay} aria-hidden="true">
-          <div className={styles.champagneCopy}>
-            <span className={styles.champagneArc}>THE WEDDING OF</span>
-            <strong>Alya <i>&amp;</i> Raka</strong>
-            <div className={styles.champagneGuest}>
-              <span>Kepada Yth.</span>
-              <b>Bpk/Ibu/Saudara/i</b>
-              <span>di Tempat</span>
-            </div>
-            <span className={styles.champagneButton}>✉ &nbsp; Buka Undangan</span>
-          </div>
-        </div>
-      ) : null}
     </div>
   );
 }
