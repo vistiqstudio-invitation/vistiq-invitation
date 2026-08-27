@@ -1,5 +1,6 @@
 import Image from "next/image";
 import ChampagneRomanceCatalogCover from "./ChampagneRomanceCatalogCover";
+import LoveParadiseCatalogCover from "./LoveParadiseCatalogCover";
 import styles from "./ThemeCoverPreview.module.css";
 
 type Props = {
@@ -10,13 +11,16 @@ type Props = {
 
 /** A motion-free preview of the theme's complete invitation opening screen. */
 export default function ThemeCoverPreview({ coverImage, label, swatch }: Props) {
-  const isChampagneRomance = label.toLowerCase().includes("champagne romance");
+  const normalizedLabel = label.toLowerCase();
+  const isChampagneRomance = normalizedLabel.includes("champagne romance");
+  const isLoveParadise = normalizedLabel.includes("love paradise");
+  const hasLiveCover = isChampagneRomance || isLoveParadise;
 
   return (
     <div
       className={styles.cover}
       style={
-        coverImage || isChampagneRomance
+        coverImage || hasLiveCover
           ? undefined
           : {
               background: swatch
@@ -27,6 +31,8 @@ export default function ThemeCoverPreview({ coverImage, label, swatch }: Props) 
     >
       {isChampagneRomance ? (
         <ChampagneRomanceCatalogCover />
+      ) : isLoveParadise ? (
+        <LoveParadiseCatalogCover />
       ) : coverImage ? (
         <Image
           src={coverImage}
