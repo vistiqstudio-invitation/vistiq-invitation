@@ -46,28 +46,22 @@ jobs:
             try {
               await page.goto('http://127.0.0.1:3000/demo/luxury-art-champagne-romance', { waitUntil: 'networkidle', timeout: 90000 });
               await page.screenshot({ path: 'visual-check/01-cover.png' });
-              const coverLayer = page.locator('[class*="coverLayer"]').first();
               await page.getByRole('button', { name: /Buka Undangan/i }).click();
-              await coverLayer.waitFor({ state: 'detached', timeout: 5000 });
-              await page.waitForTimeout(450);
-
-              const shots = [
-                ['02-home.png', '#home'],
-                ['03-quote.png', '[class*="quoteSection"]'],
-                ['04-couple.png', '#couple'],
-                ['05-event.png', '#event'],
-                ['06-gallery.png', '#gallery'],
-                ['07-story.png', '#story'],
-                ['08-wishes.png', '#wishes'],
-                ['09-gift.png', '#gift'],
-              ];
-              for (const [file, selector] of shots) {
-                const target = page.locator(selector).first();
-                await target.scrollIntoViewIfNeeded();
-                await page.waitForTimeout(300);
-                await page.screenshot({ path: `visual-check/${file}` });
-              }
-              await page.screenshot({ path: 'visual-check/10-full.png', fullPage: true });
+              await page.waitForTimeout(800);
+              const state = await page.evaluate(() => {
+                const cover = document.querySelector('[class*="coverLayer"]');
+                const content = document.querySelector('[class*="content"]');
+                return {
+                  coverExists: !!cover,
+                  coverDisplay: cover ? getComputedStyle(cover).display : null,
+                  coverOpacity: cover ? getComputedStyle(cover).opacity : null,
+                  contentClass: content ? content.className : null,
+                  contentOpacity: content ? getComputedStyle(content).opacity : null,
+                  bodyTextHasHome: document.body.innerText.includes('THE WEDDING OF'),
+                };
+              });
+              fs.writeFileSync('visual-check/state.json', JSON.stringify(state, null, 2));
+              await page.screenshot({ path: 'visual-check/02-after-click.png' });
             } catch (err) {
               fs.writeFileSync('visual-check/error.txt', String(err && err.stack ? err.stack : err));
               throw err;
