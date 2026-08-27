@@ -9,6 +9,7 @@ import { withPearlTideDemoAssets } from "@/lib/pearlTideDemo";
 import { withLuxuryArtGardenDemoAssets } from "@/lib/luxuryArtGardenDemo";
 import { withLuxuryArtLoveParadiseDemoAssets } from "@/lib/luxuryArtLoveParadiseDemo";
 import { withLuxuryArtLX005DemoAssets } from "@/lib/luxuryArtLX005Demo";
+import LuxuryArtLX005 from "@/themes/luxury-art-lx005/LuxuryArtLX005";
 import WeddingThemeSafeArea from "@/components/WeddingThemeSafeArea";
 
 export default async function DemoThemePage({
@@ -17,7 +18,7 @@ export default async function DemoThemePage({
   params: Promise<{ theme: string }>;
 }) {
   const { theme } = await params;
-  const Theme = themeRegistry[theme];
+  const Theme = theme === "luxury-art-lx005" ? LuxuryArtLX005 : themeRegistry[theme];
 
   if (!Theme) notFound();
 
