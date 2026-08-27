@@ -24,7 +24,7 @@ export const WEDDING_COVER_BY_THEME: Record<string, string> = {
   "royal-java": "/photos/jawa-cover.png",
   "luxury-art-java-heritage": "/photos/luxury-sage-cover.webp",
   "luxury-art-sakura": "/photos/sakura-cover.png",
-  "luxury-art-champagne-romance": "/photos/luxury-art-love-paradise/couple-cover.webp",
+  "luxury-art-champagne-romance": "/theme-previews/wedding/luxury-art-champagne-romance.jpg",
   "jawa-coklat": "/photos/jawa-gallery-4.png",
   "jawa-sepia": "/photos/jawa-cover.png",
   "sage-green": "/photos/floral-cover.png",
@@ -67,6 +67,5 @@ export function getThemeCoverImage(themeKey: string, demoPath: string): string |
   if (demoPath === "/demo-khitan") return KHITAN_COVER_BY_THEME[themeKey] ? `/theme-previews/khitan/${themeKey}.jpg` : null;
   if (demoPath === "/demo-akikah") return AQIQAH_COVER_BY_THEME[themeKey] ? `/theme-previews/akikah/${themeKey}.jpg` : null;
   if (demoPath === "/demo-ulang-tahun") return BIRTHDAY_COVER_BY_THEME[themeKey] ? `/theme-previews/birthday/${themeKey}.jpg` : null;
-  if (themeKey === "luxury-art-champagne-romance") return WEDDING_COVER_BY_THEME[themeKey];
   return WEDDING_COVER_BY_THEME[themeKey] ? `/theme-previews/wedding/${themeKey}.jpg` : null;
 }
