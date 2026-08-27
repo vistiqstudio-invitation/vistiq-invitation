@@ -9,7 +9,7 @@ import type { InvitationData } from "@/types/invitation";
 import styles from "./style.module.css";
 
 const ease = [0.22, 1, 0.36, 1] as const;
-
+type Direction = "up" | "down" | "left" | "right" | "scale";
 type IconName = "home" | "couple" | "calendar" | "gallery" | "heart" | "chat" | "gift" | "music" | "mail" | "pin" | "copy";
 
 function Icon({ name }: { name: IconName }) {
@@ -46,9 +46,23 @@ function dateParts(raw?: string | null) {
   };
 }
 
-function Reveal({ children, className = "", delay = 0 }: { children: ReactNode; className?: string; delay?: number }) {
+function revealInitial(direction: Direction) {
+  if (direction === "left") return { opacity: 0, x: -34, y: 0, scale: 1, filter: "blur(5px)" };
+  if (direction === "right") return { opacity: 0, x: 34, y: 0, scale: 1, filter: "blur(5px)" };
+  if (direction === "down") return { opacity: 0, x: 0, y: -28, scale: 1, filter: "blur(5px)" };
+  if (direction === "scale") return { opacity: 0, x: 0, y: 0, scale: 0.92, filter: "blur(5px)" };
+  return { opacity: 0, x: 0, y: 30, scale: 1, filter: "blur(5px)" };
+}
+
+function Reveal({ children, className = "", delay = 0, direction = "up", amount = 0.2 }: { children: ReactNode; className?: string; delay?: number; direction?: Direction; amount?: number }) {
   return (
-    <motion.div className={className} initial={{ opacity: 0, y: 22 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.16 }} transition={{ duration: 0.7, delay, ease }}>
+    <motion.div
+      className={className}
+      initial={revealInitial(direction)}
+      whileInView={{ opacity: 1, x: 0, y: 0, scale: 1, filter: "blur(0px)" }}
+      viewport={{ once: true, amount, margin: "0px 0px -7% 0px" }}
+      transition={{ duration: 0.78, delay, ease }}
+    >
       {children}
     </motion.div>
   );
@@ -58,15 +72,25 @@ function Photo({ src, alt, className = "", priority = false }: { src: string | n
   return <div className={className}>{src ? <Image src={src} alt={alt} fill sizes="(max-width: 520px) 100vw, 420px" priority={priority}/> : null}</div>;
 }
 
+function MotionPhoto({ src, alt, className = "", delay = 0, direction = "scale", amount = 0.18 }: { src: string | null | undefined; alt: string; className?: string; delay?: number; direction?: Direction; amount?: number }) {
+  return (
+    <motion.div
+      className={className}
+      initial={revealInitial(direction)}
+      whileInView={{ opacity: 1, x: 0, y: 0, scale: 1, filter: "blur(0px)" }}
+      viewport={{ once: true, amount, margin: "0px 0px -7% 0px" }}
+      transition={{ duration: 0.82, delay, ease }}
+    >
+      {src ? <Image src={src} alt={alt} fill sizes="(max-width: 520px) 100vw, 420px"/> : null}
+    </motion.div>
+  );
+}
+
 function ArcTitle() {
   return (
     <svg className={styles.coverArc} viewBox="0 0 190 74" aria-hidden="true">
-      <defs>
-        <path id="champagne-cover-arc" d="M 31 61 A 67 67 0 0 1 159 61" />
-      </defs>
-      <text>
-        <textPath href="#champagne-cover-arc" startOffset="50%" textAnchor="middle">THE WEDDING OF</textPath>
-      </text>
+      <defs><path id="champagne-cover-arc" d="M 31 61 A 67 67 0 0 1 159 61" /></defs>
+      <text><textPath href="#champagne-cover-arc" startOffset="50%" textAnchor="middle">THE WEDDING OF</textPath></text>
     </svg>
   );
 }
@@ -85,28 +109,21 @@ function Cover({ invitation, onOpen, staticMode = false }: { invitation: Invitat
       <div className={styles.coverCopy}>
         <ArcTitle/>
         <h1>{bride} <em>&amp;</em> {groom}</h1>
-        <div className={styles.coverGuest}>
-          <span>Kepada Yth.</span>
-          <strong>{guest}</strong>
-          <small>di Tempat</small>
-        </div>
+        <div className={styles.coverGuest}><span>Kepada Yth.</span><strong>{guest}</strong><small>di Tempat</small></div>
         <button type="button" onClick={onOpen}><Icon name="mail"/> Buka Undangan</button>
       </div>
       <div className={styles.coverLeafShadow}/>
     </section>
   );
   if (staticMode) return body;
-  return <motion.div className={styles.coverLayer} exit={{ opacity: 0, y: -38 }} transition={{ duration: 0.85, ease }}>{body}</motion.div>;
+  return <motion.div className={styles.coverLayer} exit={{ opacity: 0, y: -42, scale: 1.015 }} transition={{ duration: 0.82, ease }}>{body}</motion.div>;
 }
 
 function Hero({ invitation }: { invitation: InvitationData }) {
   const bride = firstName(invitation.bride.name, invitation.bride.nickname);
   const groom = firstName(invitation.groom.name, invitation.groom.nickname);
   const p = dateParts(invitation.events[0]?.rawDate || invitation.events[0]?.date);
-  const slides = useMemo(() => {
-    const unique = Array.from(new Set([invitation.gallery[0], invitation.gallery[1], invitation.gallery[2], invitation.coverImage].filter(Boolean) as string[]));
-    return unique.length ? unique.slice(0, 3) : [];
-  }, [invitation.gallery, invitation.coverImage]);
+  const slides = useMemo(() => Array.from(new Set([invitation.gallery[0], invitation.gallery[1], invitation.gallery[2], invitation.coverImage].filter(Boolean) as string[])).slice(0, 3), [invitation.gallery, invitation.coverImage]);
   const [active, setActive] = useState(0);
   useEffect(() => {
     if (slides.length < 2) return;
@@ -115,22 +132,18 @@ function Hero({ invitation }: { invitation: InvitationData }) {
   }, [slides.length]);
   return (
     <section id="home" className={styles.hero}>
-      <div className={styles.heroSlider}>
+      <motion.div className={styles.heroSlider} initial={{ opacity: 0, scale: 1.045 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.05, ease }}>
         <AnimatePresence mode="sync">
-          {slides[active] ? (
-            <motion.div key={slides[active]} className={styles.heroSlide} initial={{ opacity: 0, scale: 1.025 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.95, ease }}>
-              <Image src={slides[active]} alt={`${bride} & ${groom}`} fill sizes="(max-width:520px) 100vw, 420px"/>
-            </motion.div>
-          ) : null}
+          {slides[active] ? <motion.div key={slides[active]} className={styles.heroSlide} initial={{ opacity: 0, scale: 1.035 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 1.05, ease }}><Image src={slides[active]} alt={`${bride} & ${groom}`} fill sizes="(max-width:520px) 100vw, 420px"/></motion.div> : null}
         </AnimatePresence>
-        {slides.length > 1 ? <div className={styles.heroDots}>{slides.map((_, i) => <span key={i} className={i === active ? styles.heroDotActive : ""}/>)}</div> : null}
-      </div>
-      <div className={styles.heroPanel}>
-        <p>THE WEDDING OF</p>
-        <h2>{bride} <span>&amp;</span> {groom}</h2>
-        <small>{p.weekday}, {p.date} {p.month} {p.year}</small>
-        <i className={styles.heroArch}/>
-      </div>
+        {slides.length > 1 ? <motion.div className={styles.heroDots} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.65, duration: 0.6, ease }}>{slides.map((_, i) => <span key={i} className={i === active ? styles.heroDotActive : ""}/>)}</motion.div> : null}
+      </motion.div>
+      <motion.div className={styles.heroPanel} initial={{ opacity: 0, y: 54 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15, duration: 0.9, ease }}>
+        <motion.p initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.38, duration: 0.65, ease }}>THE WEDDING OF</motion.p>
+        <motion.h2 initial={{ opacity: 0, y: 18, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: 0.48, duration: 0.72, ease }}>{bride} <span>&amp;</span> {groom}</motion.h2>
+        <motion.small initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.58, duration: 0.65, ease }}>{p.weekday}, {p.date} {p.month} {p.year}</motion.small>
+        <motion.i className={styles.heroArch} initial={{ opacity: 0, scale: 0.75, rotate: -6 }} animate={{ opacity: 1, scale: 1, rotate: 0 }} transition={{ delay: 0.62, duration: 0.75, ease }}/>
+      </motion.div>
     </section>
   );
 }
@@ -147,16 +160,16 @@ function QuoteCountdown({ invitation }: { invitation: InvitationData }) {
   return (
     <section className={styles.quoteSection}>
       <div className={styles.quoteCurve}/>
-      <Reveal className={styles.collage}>
-        <div className={styles.monogram}>{initials}</div>
-        {photos.slice(0, 3).map((src, i) => <Photo key={`${src}-${i}`} src={src} alt="Wedding collage" className={styles[`collagePhoto${i + 1}`]}/>) }
+      <Reveal className={styles.collage} direction="scale" amount={0.24}>
+        <Reveal className={styles.monogram} direction="left" delay={0.08}><span>{initials}</span></Reveal>
+        {photos.slice(0, 3).map((src, i) => <MotionPhoto key={`${src}-${i}`} src={src} alt="Wedding collage" className={styles[`collagePhoto${i + 1}`]} delay={0.1 + i * 0.09} direction={i === 1 ? "left" : "right"}/>) }
       </Reveal>
-      <Reveal className={styles.quoteCopy} delay={0.06}>
-        <p>“{invitation.opening.quote || "Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya."}”</p>
-        <strong>~ {invitation.opening.quoteSource || "QS. Ar-Rum : 21"} ~</strong>
-        <div className={styles.quoteLine}/>
-        <div className={styles.countdown}>{values.map((v, i) => <div key={i}><b>{String(v).padStart(2, "0")}</b><span>{["Hari", "Jam", "Menit", "Detik"][i]}</span></div>)}</div>
-        <button className={styles.saveDate} type="button"><Icon name="calendar"/> Save The Date</button>
+      <Reveal className={styles.quoteCopy} delay={0.04}>
+        <motion.p initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.5 }} transition={{ delay: 0.12, duration: 0.65, ease }}>“{invitation.opening.quote || "Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya."}”</motion.p>
+        <motion.strong initial={{ opacity: 0, scale: 0.94 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true, amount: 0.5 }} transition={{ delay: 0.18, duration: 0.6, ease }}>~ {invitation.opening.quoteSource || "QS. Ar-Rum : 21"} ~</motion.strong>
+        <motion.div className={styles.quoteLine} initial={{ scaleX: 0, opacity: 0 }} whileInView={{ scaleX: 1, opacity: 1 }} viewport={{ once: true, amount: 0.5 }} transition={{ delay: 0.22, duration: 0.7, ease }}/>
+        <div className={styles.countdown}>{values.map((v, i) => <motion.div key={i} initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.5 }} transition={{ delay: 0.24 + i * 0.07, duration: 0.6, ease }}><b>{String(v).padStart(2, "0")}</b><span>{["Hari", "Jam", "Menit", "Detik"][i]}</span></motion.div>)}</div>
+        <motion.button className={styles.saveDate} type="button" initial={{ opacity: 0, y: 14, scale: 0.94 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} viewport={{ once: true, amount: 0.5 }} transition={{ delay: 0.48, duration: 0.65, ease }}><Icon name="calendar"/> Save The Date</motion.button>
       </Reveal>
     </section>
   );
@@ -168,29 +181,23 @@ function Couple({ invitation }: { invitation: InvitationData }) {
   return (
     <section id="couple" className={styles.coupleSection}>
       <div className={styles.greeting}>
-        <div className={styles.dotOrnament}>•••••• ◯ ••••••</div>
-        <h3>{invitation.opening.greeting || "Assalamu’alaikum Wr. Wb."}</h3>
-        <p>{invitation.opening.description || "Dengan memohon rahmat dan ridho Allah Subhanahu Wa Ta’ala, insyaaAllah kami akan menyelenggarakan acara pernikahan:"}</p>
+        <Reveal direction="scale" delay={0.02}><div className={styles.dotOrnament}>•••••• ◯ ••••••</div></Reveal>
+        <Reveal delay={0.08}><h3>{invitation.opening.greeting || "Assalamu’alaikum Wr. Wb."}</h3></Reveal>
+        <Reveal delay={0.14}><p>{invitation.opening.description || "Dengan memohon rahmat dan ridho Allah Subhanahu Wa Ta’ala, insyaaAllah kami akan menyelenggarakan acara pernikahan:"}</p></Reveal>
       </div>
-      <Reveal className={styles.personBride}>
-        <div className={styles.personSageBride}/>
-        <Photo src={bridePhoto} alt={invitation.bride.name} className={styles.personPhotoBride}/>
-        <div className={styles.personWhiteBride}/>
-        <div className={styles.verticalBride}>THE GROOM</div>
-        <div className={styles.personInfoBride}>
-          <h3>{invitation.bride.name}</h3>
-          <p>{invitation.bride.parents}</p>
-        </div>
+      <Reveal className={styles.personBride} direction="left" amount={0.14}>
+        <motion.div className={styles.personSageBride} initial={{ opacity: 0, x: -24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.7, ease }}/>
+        <MotionPhoto src={bridePhoto} alt={invitation.bride.name} className={styles.personPhotoBride} direction="left" delay={0.08}/>
+        <motion.div className={styles.personWhiteBride} initial={{ opacity: 0, x: 26 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ delay: 0.12, duration: 0.72, ease }}/>
+        <Reveal className={styles.verticalBride} direction="down" delay={0.2}>THE GROOM</Reveal>
+        <Reveal className={styles.personInfoBride} delay={0.24}><h3>{invitation.bride.name}</h3><p>{invitation.bride.parents}</p></Reveal>
       </Reveal>
-      <Reveal className={styles.personGroom}>
-        <div className={styles.personSageGroom}/>
-        <Photo src={groomPhoto} alt={invitation.groom.name} className={styles.personPhotoGroom}/>
-        <div className={styles.personWhiteGroom}/>
-        <div className={styles.verticalGroom}>THE BRIDE</div>
-        <div className={styles.personInfoGroom}>
-          <h3>{invitation.groom.name}</h3>
-          <p>{invitation.groom.parents}</p>
-        </div>
+      <Reveal className={styles.personGroom} direction="right" amount={0.14}>
+        <motion.div className={styles.personSageGroom} initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.7, ease }}/>
+        <MotionPhoto src={groomPhoto} alt={invitation.groom.name} className={styles.personPhotoGroom} direction="right" delay={0.08}/>
+        <motion.div className={styles.personWhiteGroom} initial={{ opacity: 0, x: -26 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ delay: 0.12, duration: 0.72, ease }}/>
+        <Reveal className={styles.verticalGroom} direction="down" delay={0.2}>THE BRIDE</Reveal>
+        <Reveal className={styles.personInfoGroom} delay={0.24}><h3>{invitation.groom.name}</h3><p>{invitation.groom.parents}</p></Reveal>
       </Reveal>
     </section>
   );
@@ -200,30 +207,25 @@ function EventCard({ event, photo, side, reverse = false }: { event: InvitationD
   const p = dateParts(event.rawDate || event.date);
   const maps = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.location)}`;
   return (
-    <Reveal className={`${styles.eventCard} ${reverse ? styles.eventReverse : ""}`}>
-      <Photo src={photo} alt={event.name} className={styles.eventPhoto}/>
-      <div className={styles.eventLower}>
-        <div className={styles.eventSide}>{side}</div>
-        <div className={styles.eventDetails}>
-          <div className={styles.eventDate}><strong>{p.date}</strong><span>{p.weekday.toUpperCase()}<br/>{p.month.toUpperCase()}<br/>{p.year}</span></div>
-          <hr/>
-          <p>◷ &nbsp; {event.time} - Selesai</p>
-          <h4>Lokasi Acara</h4>
-          <b>{event.location}</b>
-          <a href={maps} target="_blank" rel="noreferrer"><Icon name="pin"/> Google Maps</a>
-        </div>
-      </div>
-    </Reveal>
+    <motion.div className={`${styles.eventCard} ${reverse ? styles.eventReverse : ""}`} initial={{ opacity: 0, y: 38, scale: 0.97 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} viewport={{ once: true, amount: 0.16, margin: "0px 0px -6% 0px" }} transition={{ duration: 0.82, ease }}>
+      <MotionPhoto src={photo} alt={event.name} className={styles.eventPhoto} direction="scale" delay={0.06}/>
+      <motion.div className={styles.eventLower} initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ delay: 0.12, duration: 0.72, ease }}>
+        <motion.div className={styles.eventSide} initial={{ opacity: 0, x: reverse ? 22 : -22 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.25 }} transition={{ delay: 0.18, duration: 0.62, ease }}>{side}</motion.div>
+        <motion.div className={styles.eventDetails} initial={{ opacity: 0, x: reverse ? -20 : 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.22 }} transition={{ delay: 0.2, duration: 0.68, ease }}>
+          <div className={styles.eventDate}><motion.strong initial={{ opacity: 0, scale: 0.82 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.28, duration: 0.55, ease }}>{p.date}</motion.strong><span>{p.weekday.toUpperCase()}<br/>{p.month.toUpperCase()}<br/>{p.year}</span></div>
+          <hr/><p>◷ &nbsp; {event.time} - Selesai</p><h4>Lokasi Acara</h4><b>{event.location}</b>
+          <motion.a href={maps} target="_blank" rel="noreferrer" initial={{ opacity: 0, y: 10, scale: 0.95 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.36, duration: 0.55, ease }}><Icon name="pin"/> Google Maps</motion.a>
+        </motion.div>
+      </motion.div>
+    </motion.div>
   );
 }
 
 function Events({ invitation }: { invitation: InvitationData }) {
   return (
     <section id="event" className={styles.eventsSection}>
-      <div className={styles.eventHeading}><b>Wedding</b><em>Event</em></div>
-      {invitation.events.slice(0, 2).map((event, i) => (
-        <EventCard key={`${event.name}-${i}`} event={event} photo={invitation.gallery[4 + i] || invitation.gallery[i] || invitation.coverImage} side={i === 0 ? "AKAD NIKAH" : "RESEPSI"} reverse={i === 1}/>
-      ))}
+      <Reveal className={styles.eventHeading} direction="scale"><b>Wedding</b><em>Event</em></Reveal>
+      {invitation.events.slice(0, 2).map((event, i) => <EventCard key={`${event.name}-${i}`} event={event} photo={invitation.gallery[4 + i] || invitation.gallery[i] || invitation.coverImage} side={i === 0 ? "AKAD NIKAH" : "RESEPSI"} reverse={i === 1}/>) }
     </section>
   );
 }
@@ -238,9 +240,7 @@ function youtubeEmbed(url: string | null) {
       const id = u.searchParams.get("v");
       if (id) return `https://www.youtube.com/embed/${id}`;
     }
-  } catch {
-    return null;
-  }
+  } catch { return null; }
   return null;
 }
 
@@ -249,9 +249,9 @@ function Gallery({ invitation }: { invitation: InvitationData }) {
   const photos = invitation.gallery.slice(0, 8);
   return (
     <section id="gallery" className={styles.gallerySection}>
-      <div className={styles.galleryHeading}><em>Our</em><b>Gallery</b></div>
-      {video ? <div className={styles.videoBox}><iframe src={video} title="Wedding video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen/></div> : null}
-      <div className={styles.galleryGrid}>{photos.map((src, i) => <Photo key={`${src}-${i}`} src={src} alt={`Gallery ${i + 1}`} className={`${styles.galleryItem} ${i === 4 ? styles.galleryWide : ""}`}/>)}</div>
+      <Reveal className={styles.galleryHeading} direction="scale"><em>Our</em><b>Gallery</b></Reveal>
+      {video ? <Reveal className={styles.videoBox} direction="scale" delay={0.08}><iframe src={video} title="Wedding video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen/></Reveal> : null}
+      <div className={styles.galleryGrid}>{photos.map((src, i) => <MotionPhoto key={`${src}-${i}`} src={src} alt={`Gallery ${i + 1}`} className={`${styles.galleryItem} ${i === 4 ? styles.galleryWide : ""}`} direction={i % 2 === 0 ? "left" : "right"} delay={(i % 4) * 0.055} amount={0.12}/>)}</div>
     </section>
   );
 }
@@ -261,20 +261,15 @@ function Story({ invitation }: { invitation: InvitationData }) {
   const stories = invitation.story.slice(0, 5);
   return (
     <section id="story" className={styles.storySection}>
-      <Photo src={photo} alt="Love story" className={styles.storyPhoto}/>
-      <div className={styles.storyLabel}>LOVE STORY</div>
-      <div className={styles.storyBody}>
-        <div className={styles.storySide}>TRUE STORY</div>
+      <MotionPhoto src={photo} alt="Love story" className={styles.storyPhoto} direction="scale"/>
+      <Reveal className={styles.storyLabel} direction="scale" delay={0.1}>LOVE STORY</Reveal>
+      <motion.div className={styles.storyBody} initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.14 }} transition={{ delay: 0.12, duration: 0.76, ease }}>
+        <Reveal className={styles.storySide} direction="left" delay={0.16}>TRUE STORY</Reveal>
         <div className={styles.storyTimeline}>
-          <div className={styles.storyLine}/>
-          {stories.map((item, i) => (
-            <Reveal key={`${item.year}-${i}`} className={styles.storyItem} delay={i * 0.035}>
-              <span className={styles.storyNode}>♥</span>
-              <div><h4>{item.title}</h4><small>{item.year}</small><p>{item.description}</p></div>
-            </Reveal>
-          ))}
+          <motion.div className={styles.storyLine} initial={{ scaleY: 0, transformOrigin: "top" }} whileInView={{ scaleY: 1 }} viewport={{ once: true, amount: 0.2 }} transition={{ delay: 0.22, duration: 1.1, ease }}/>
+          {stories.map((item, i) => <Reveal key={`${item.year}-${i}`} className={styles.storyItem} delay={0.24 + i * 0.075} direction="right"><motion.span className={styles.storyNode} initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.28 + i * 0.075, duration: 0.45, ease }}>♥</motion.span><div><h4>{item.title}</h4><small>{item.year}</small><p>{item.description}</p></div></Reveal>)}
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }
@@ -305,33 +300,26 @@ function Wishes({ invitation }: { invitation: InvitationData }) {
     const result = await submit({ name: name.trim(), whatsapp: "", attendance, message: message.trim() });
     if (!result.error) { setName(""); setMessage(""); setPage(1); }
   };
+  const field = (delay: number) => ({ initial: { opacity: 0, y: 12 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true, amount: 0.5 }, transition: { delay, duration: 0.52, ease } });
   return (
     <section id="wishes" className={styles.wishesSection}>
       <div className={styles.wishesCurve}/>
-      <div className={styles.wishesHeading}><b>RSVP &amp; Ucapan</b><em>Wishes</em></div>
-      <Reveal className={styles.wishesCard}>
-        <p>Berikan ucapan terbaik untuk kedua mempelai</p>
+      <Reveal className={styles.wishesHeading} direction="scale"><b>RSVP &amp; Ucapan</b><em>Wishes</em></Reveal>
+      <Reveal className={styles.wishesCard} direction="scale" delay={0.08} amount={0.12}>
+        <motion.p {...field(0.12)}>Berikan ucapan terbaik untuk kedua mempelai</motion.p>
         <form onSubmit={onSubmit}>
-          <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Nama Kamu"/>
-          <textarea value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Berikan Ucapan & Do'a" rows={3}/>
-          <label>Konfirmasi Kehadiran ?</label>
-          <div className={styles.attendance}>
-            <button type="button" className={attendance === "Hadir" ? styles.selected : ""} onClick={() => setAttendance("Hadir")}>◉ Hadir</button>
-            <button type="button" className={attendance === "Tidak Hadir" ? styles.selected : ""} onClick={() => setAttendance("Tidak Hadir")}>⊗ Tidak Hadir</button>
-          </div>
-          <button className={styles.sendButton} disabled={submitting} type="submit">{submitting ? "Mengirim..." : "Send"}</button>
+          <motion.input {...field(0.16)} value={name} onChange={(e) => setName(e.target.value)} placeholder="Nama Kamu"/>
+          <motion.textarea {...field(0.2)} value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Berikan Ucapan & Do'a" rows={3}/>
+          <motion.label {...field(0.24)}>Konfirmasi Kehadiran ?</motion.label>
+          <motion.div className={styles.attendance} {...field(0.28)}><button type="button" className={attendance === "Hadir" ? styles.selected : ""} onClick={() => setAttendance("Hadir")}>◉ Hadir</button><button type="button" className={attendance === "Tidak Hadir" ? styles.selected : ""} onClick={() => setAttendance("Tidak Hadir")}>⊗ Tidak Hadir</button></motion.div>
+          <motion.button className={styles.sendButton} disabled={submitting} type="submit" {...field(0.32)}>{submitting ? "Mengirim..." : "Send"}</motion.button>
           {submitted ? <small className={styles.sent}>Ucapan Anda sudah terkirim.</small> : null}
         </form>
         <div className={styles.wishList}>
-          {visible.map((entry) => (
-            <div className={styles.wishItem} key={entry.id}>
-              <i>{entry.name.slice(0, 1).toUpperCase()}</i>
-              <div><b>{entry.name}</b><small>{formatWishDate(entry.created_at)} · {entry.attendance}</small><p>{entry.message}</p></div>
-            </div>
-          ))}
-          {!entries.length ? <p className={styles.emptyWishes}>Belum ada ucapan. Jadilah yang pertama mengirim doa terbaik.</p> : null}
+          {visible.map((entry, i) => <Reveal className={styles.wishItem} key={entry.id} delay={0.06 + i * 0.06} direction="right"><i>{entry.name.slice(0, 1).toUpperCase()}</i><div><b>{entry.name}</b><small>{formatWishDate(entry.created_at)} · {entry.attendance}</small><p>{entry.message}</p></div></Reveal>)}
+          {!entries.length ? <Reveal direction="up" delay={0.16}><p className={styles.emptyWishes}>Belum ada ucapan. Jadilah yang pertama mengirim doa terbaik.</p></Reveal> : null}
         </div>
-        {entries.length ? <div className={styles.pagination}><button type="button" disabled={page <= 1} onClick={() => setPage((v) => Math.max(1, v - 1))}>←</button><span>{page}/{Math.max(totalPages, page)}</span><button type="button" disabled={page >= totalPages && !hasMore} onClick={nextPage}>→</button></div> : null}
+        {entries.length ? <Reveal className={styles.pagination} direction="scale" delay={0.18}><button type="button" disabled={page <= 1} onClick={() => setPage((v) => Math.max(1, v - 1))}>←</button><span>{page}/{Math.max(totalPages, page)}</span><button type="button" disabled={page >= totalPages && !hasMore} onClick={nextPage}>→</button></Reveal> : null}
       </Reveal>
     </section>
   );
@@ -348,16 +336,13 @@ function Gift({ invitation }: { invitation: InvitationData }) {
   };
   return (
     <section id="gift" className={styles.giftSection}>
-      <Reveal className={styles.giftCard}>
-        <Icon name="gift"/>
-        <h2>Kirim Hadiah</h2>
-        <p>Doa Restu Anda merupakan karunia yang sangat berarti bagi kami. Namun jika memberi adalah ungkapan tanda kasih Anda, Anda dapat memberi kado secara cashless.</p>
-        {gift ? <><button type="button" onClick={copy}><Icon name="gift"/> {copied ? "Nomor Tersalin" : "Amplop Digital"}</button><small>{gift.bankName || "Bank"} · {gift.accountNumber || "-"}<br/>{gift.accountName || gift.owner}</small></> : null}
+      <Reveal className={styles.giftCard} direction="scale" amount={0.16}>
+        <motion.div initial={{ opacity: 0, scale: 0.6, rotate: -12 }} whileInView={{ opacity: 1, scale: 1, rotate: 0 }} viewport={{ once: true }} transition={{ delay: 0.12, duration: 0.65, ease }}><Icon name="gift"/></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.18, duration: 0.6, ease }}>Kirim Hadiah</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.24, duration: 0.6, ease }}>Doa Restu Anda merupakan karunia yang sangat berarti bagi kami. Namun jika memberi adalah ungkapan tanda kasih Anda, Anda dapat memberi kado secara cashless.</motion.p>
+        {gift ? <><motion.button type="button" onClick={copy} initial={{ opacity: 0, y: 12, scale: 0.94 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.3, duration: 0.6, ease }}><Icon name="gift"/> {copied ? "Nomor Tersalin" : "Amplop Digital"}</motion.button><motion.small initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.36, duration: 0.55, ease }}>{gift.bankName || "Bank"} · {gift.accountNumber || "-"}<br/>{gift.accountName || gift.owner}</motion.small></> : null}
       </Reveal>
-      <div className={styles.closingIntro}>
-        <p>Merupakan suatu kebahagiaan dan kehormatan bagi kami, apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan do’a restu kepada kami.</p>
-        <span>Wassalamu’alaikum Wr. Wb.</span>
-      </div>
+      <Reveal className={styles.closingIntro} direction="right" delay={0.08}><p>Merupakan suatu kebahagiaan dan kehormatan bagi kami, apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan do’a restu kepada kami.</p><span>Wassalamu’alaikum Wr. Wb.</span></Reveal>
     </section>
   );
 }
@@ -368,9 +353,9 @@ function Closing({ invitation }: { invitation: InvitationData }) {
   const photo = invitation.gallery[7] || invitation.gallery[5] || invitation.gallery[0] || invitation.coverImage;
   return (
     <section className={styles.closing}>
-      <Photo src={photo} alt={`${bride} & ${groom}`} className={styles.closingPhoto}/>
-      <div className={styles.closingShade}/>
-      <div className={styles.closingNames}><span>Kami yang berbahagia,</span><h2>{bride} <em>&amp;</em> {groom}</h2></div>
+      <MotionPhoto src={photo} alt={`${bride} & ${groom}`} className={styles.closingPhoto} direction="scale" amount={0.12}/>
+      <motion.div className={styles.closingShade} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true, amount: 0.12 }} transition={{ delay: 0.18, duration: 1.0, ease }}/>
+      <Reveal className={styles.closingNames} direction="up" delay={0.24} amount={0.2}><span>Kami yang berbahagia,</span><h2>{bride} <em>&amp;</em> {groom}</h2></Reveal>
     </section>
   );
 }
@@ -379,13 +364,12 @@ const nav = [["home", "home"], ["couple", "couple"], ["event", "calendar"], ["ga
 
 export default function ChampagneRomance({ invitation, previewMode = false }: { invitation: InvitationData; previewMode?: boolean }) {
   const [opened, setOpened] = useState(false);
+  const [contentReady, setContentReady] = useState(false);
   const [musicOn, setMusicOn] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const open = () => {
     setOpened(true);
-    if (invitation.musicUrl && audioRef.current) {
-      audioRef.current.play().then(() => setMusicOn(true)).catch(() => setMusicOn(false));
-    }
+    if (invitation.musicUrl && audioRef.current) audioRef.current.play().then(() => setMusicOn(true)).catch(() => setMusicOn(false));
   };
   const toggleMusic = () => {
     const el = audioRef.current;
@@ -399,26 +383,18 @@ export default function ChampagneRomance({ invitation, previewMode = false }: { 
     <main className={styles.stage}>
       <div className={styles.invitation}>
         {invitation.musicUrl ? <audio ref={audioRef} src={invitation.musicUrl} loop preload="none"/> : null}
-        <AnimatePresence>{!opened ? <Cover invitation={invitation} onOpen={open}/> : null}</AnimatePresence>
-        <div className={`${styles.content} ${opened ? styles.opened : ""}`}>
-          <Hero invitation={invitation}/>
-          <QuoteCountdown invitation={invitation}/>
-          <Couple invitation={invitation}/>
-          <Events invitation={invitation}/>
-          <Gallery invitation={invitation}/>
-          <Story invitation={invitation}/>
-          <Wishes invitation={invitation}/>
-          <Gift invitation={invitation}/>
-          <Closing invitation={invitation}/>
-        </div>
-        {opened ? <>
-          <div className={styles.floatingActions}>
+        <AnimatePresence onExitComplete={() => setContentReady(true)}>{!opened ? <Cover invitation={invitation} onOpen={open}/> : null}</AnimatePresence>
+        {contentReady ? <motion.div className={`${styles.content} ${styles.opened}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.35, ease }}>
+          <Hero invitation={invitation}/><QuoteCountdown invitation={invitation}/><Couple invitation={invitation}/><Events invitation={invitation}/><Gallery invitation={invitation}/><Story invitation={invitation}/><Wishes invitation={invitation}/><Gift invitation={invitation}/><Closing invitation={invitation}/>
+        </motion.div> : null}
+        {contentReady ? <>
+          <motion.div className={styles.floatingActions} initial={{ opacity: 0, x: 18 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5, duration: 0.65, ease }}>
             <button type="button" aria-label="Kirim hadiah" onClick={() => scrollTo("gift")}><Icon name="gift"/></button>
             <button type="button" aria-label="Musik" className={musicOn ? styles.musicOn : ""} onClick={toggleMusic}><Icon name="music"/></button>
-          </div>
-          <nav className={styles.bottomNav} aria-label="Navigasi undangan">
-            {nav.map(([id, icon]) => <button type="button" key={id} aria-label={id} onClick={() => scrollTo(id)}><Icon name={icon}/></button>)}
-          </nav>
+          </motion.div>
+          <motion.nav className={styles.bottomNav} aria-label="Navigasi undangan" initial={{ opacity: 0, y: 30, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: 0.45, duration: 0.72, ease }}>
+            {nav.map(([id, icon], i) => <motion.button type="button" key={id} aria-label={id} onClick={() => scrollTo(id)} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55 + i * 0.045, duration: 0.5, ease }}><Icon name={icon}/></motion.button>)}
+          </motion.nav>
         </> : null}
       </div>
     </main>
