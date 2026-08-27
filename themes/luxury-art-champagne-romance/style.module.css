@@ -26,7 +26,7 @@
 .coverLayer{position:fixed;z-index:1000;inset:0;margin:auto;width:min(100%,390px);height:100dvh}
 .cover{position:absolute;inset:0;background:var(--sage);overflow:hidden}
 .coverStatic{position:relative;min-height:620px;height:100%}
-.coverPhoto{position:absolute;inset:0}
+.coverPhoto{position:absolute;inset:0;overflow:hidden}
 .coverPhoto img{object-fit:cover;object-position:center 34%}
 .coverGradient{position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0) 0%,rgba(255,255,255,0) 37%,rgba(160,166,139,.10) 47%,rgba(156,162,135,.32) 59%,rgba(150,156,129,.68) 73%,rgba(145,151,124,.94) 88%,rgba(140,146,119,.99) 100%)}
 .coverGradient:after{content:"";position:absolute;left:0;right:0;bottom:0;height:48%;background:linear-gradient(180deg,rgba(135,141,115,0),rgba(135,141,115,.28) 44%,rgba(130,136,111,.55) 100%)}
@@ -226,7 +226,7 @@
 }
 
 /* FINAL VISUAL REFINEMENTS */
-.coverPhoto img{object-position:center 25%}
+.coverPhoto img{object-position:center 50%;transform:translateY(-6%) scale(1.08);transform-origin:center center}
 .coverGradient{background:linear-gradient(180deg,rgba(255,255,255,0) 0%,rgba(255,255,255,0) 32%,rgba(151,157,130,.12) 43%,rgba(148,154,127,.34) 54%,rgba(145,151,124,.66) 67%,rgba(139,145,118,.90) 80%,rgba(132,138,112,.985) 100%)}
 .coverGradient:after{height:58%;background:linear-gradient(180deg,rgba(123,130,104,0) 0%,rgba(123,130,104,.10) 20%,rgba(123,130,104,.34) 48%,rgba(119,126,100,.64) 75%,rgba(115,122,96,.78) 100%)}
 .coverCopy{bottom:60px}
@@ -273,7 +273,7 @@
 .closingNames h2{font-size:34px;margin-top:4px}
 
 @media (max-width:360px){
-  .coverPhoto img{object-position:center 24%}
+  .coverPhoto img{object-position:center 50%;transform:translateY(-5.5%) scale(1.08)}
   .coverCopy{bottom:51px}
   .coverCopy h1{font-size:31px}
   .heroSlider{height:322px}
