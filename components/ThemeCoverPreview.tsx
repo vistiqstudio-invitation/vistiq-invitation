@@ -1,4 +1,5 @@
 import Image from "next/image";
+import ChampagneRomanceCatalogCover from "./ChampagneRomanceCatalogCover";
 import styles from "./ThemeCoverPreview.module.css";
 
 type Props = {
@@ -7,13 +8,15 @@ type Props = {
   swatch?: [string, string];
 };
 
-/** A motion-free screenshot of the theme's complete invitation opening screen. */
+/** A motion-free preview of the theme's complete invitation opening screen. */
 export default function ThemeCoverPreview({ coverImage, label, swatch }: Props) {
+  const isChampagneRomance = label.toLowerCase().includes("champagne romance");
+
   return (
     <div
       className={styles.cover}
       style={
-        coverImage
+        coverImage || isChampagneRomance
           ? undefined
           : {
               background: swatch
@@ -22,7 +25,9 @@ export default function ThemeCoverPreview({ coverImage, label, swatch }: Props) 
             }
       }
     >
-      {coverImage ? (
+      {isChampagneRomance ? (
+        <ChampagneRomanceCatalogCover />
+      ) : coverImage ? (
         <Image
           src={coverImage}
           alt={`Tampilan pembuka undangan tema ${label}`}
