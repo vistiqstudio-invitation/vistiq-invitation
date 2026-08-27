@@ -41,13 +41,17 @@ jobs:
           const fs = require('fs');
           (async () => {
             fs.mkdirSync('visual-check', { recursive: true });
+            const logs = [];
             const browser = await chromium.launch({ headless: true });
             const page = await browser.newPage({ viewport: { width: 390, height: 848 }, deviceScaleFactor: 1 });
+            page.on('console', msg => logs.push(`[console:${msg.type()}] ${msg.text()}`));
+            page.on('pageerror', err => logs.push(`[pageerror] ${err.stack || err.message}`));
+            page.on('requestfailed', req => logs.push(`[requestfailed] ${req.url()} :: ${req.failure()?.errorText || ''}`));
             try {
               await page.goto('http://127.0.0.1:3000/demo/luxury-art-champagne-romance', { waitUntil: 'networkidle', timeout: 90000 });
               await page.screenshot({ path: 'visual-check/01-cover.png' });
               await page.getByRole('button', { name: /Buka Undangan/i }).click();
-              await page.waitForTimeout(800);
+              await page.waitForTimeout(900);
               const state = await page.evaluate(() => {
                 const cover = document.querySelector('[class*="coverLayer"]');
                 const content = document.querySelector('[class*="content"]');
@@ -57,7 +61,6 @@ jobs:
                   coverOpacity: cover ? getComputedStyle(cover).opacity : null,
                   contentClass: content ? content.className : null,
                   contentOpacity: content ? getComputedStyle(content).opacity : null,
-                  bodyTextHasHome: document.body.innerText.includes('THE WEDDING OF'),
                 };
               });
               fs.writeFileSync('visual-check/state.json', JSON.stringify(state, null, 2));
@@ -66,6 +69,7 @@ jobs:
               fs.writeFileSync('visual-check/error.txt', String(err && err.stack ? err.stack : err));
               throw err;
             } finally {
+              fs.writeFileSync('visual-check/browser.log', logs.join('\n'));
               await browser.close();
             }
           })().catch(err => { console.error(err); process.exit(1); });
