@@ -1,0 +1,37 @@
+name: Patch Champagne Motion CSS
+
+on:
+  push:
+    branches:
+      - fix/champagne-romance-scroll-motion
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/champagne-romance-scroll-motion
+      - name: Preserve layout transforms during motion
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('themes/luxury-art-champagne-romance/style.module.css')
+          s = p.read_text()
+          marker = '/* MOTION TRANSFORM SAFETY */'
+          if marker not in s:
+              s += '''\n\n/* MOTION TRANSFORM SAFETY */\n.verticalGroom{transform:rotate(180deg)!important}\n.storySide{transform:rotate(180deg)!important}\n.eventSide{transform:rotate(180deg)!important}\n.eventReverse .eventSide{transform:none!important}\n.bottomNav{transform:translateX(-50%)!important}\n.giftCard>div:first-child>svg{width:34px;height:34px;color:#171813;margin-bottom:8px}\n'''
+              p.write_text(s)
+          PY
+      - name: Commit patch
+        run: |
+          if git diff --quiet; then exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add themes/luxury-art-champagne-romance/style.module.css
+          git commit -m "fix(theme): preserve css transforms during motion"
+          git push origin HEAD:fix/champagne-romance-scroll-motion
