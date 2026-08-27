@@ -33,46 +33,55 @@ jobs:
           cat /tmp/vistiq-dev.log
           exit 1
 
-      - name: Capture reference checkpoints
+      - name: Inspect cover button
         run: |
           mkdir -p visual-check
           cat > capture-visual.cjs <<'EOF'
           const { chromium } = require('playwright');
           const fs = require('fs');
           (async () => {
-            fs.mkdirSync('visual-check', { recursive: true });
-            const logs = [];
             const browser = await chromium.launch({ headless: true });
             const page = await browser.newPage({ viewport: { width: 390, height: 848 }, deviceScaleFactor: 1 });
+            const logs = [];
             page.on('console', msg => logs.push(`[console:${msg.type()}] ${msg.text()}`));
             page.on('pageerror', err => logs.push(`[pageerror] ${err.stack || err.message}`));
-            page.on('requestfailed', req => logs.push(`[requestfailed] ${req.url()} :: ${req.failure()?.errorText || ''}`));
-            try {
-              await page.goto('http://127.0.0.1:3000/demo/luxury-art-champagne-romance', { waitUntil: 'networkidle', timeout: 90000 });
-              await page.screenshot({ path: 'visual-check/01-cover.png' });
-              await page.getByRole('button', { name: /Buka Undangan/i }).click();
-              await page.waitForTimeout(900);
-              const state = await page.evaluate(() => {
-                const cover = document.querySelector('[class*="coverLayer"]');
-                const content = document.querySelector('[class*="content"]');
-                return {
-                  coverExists: !!cover,
-                  coverDisplay: cover ? getComputedStyle(cover).display : null,
-                  coverOpacity: cover ? getComputedStyle(cover).opacity : null,
-                  contentClass: content ? content.className : null,
-                  contentOpacity: content ? getComputedStyle(content).opacity : null,
-                };
-              });
-              fs.writeFileSync('visual-check/state.json', JSON.stringify(state, null, 2));
-              await page.screenshot({ path: 'visual-check/02-after-click.png' });
-            } catch (err) {
-              fs.writeFileSync('visual-check/error.txt', String(err && err.stack ? err.stack : err));
-              throw err;
-            } finally {
-              fs.writeFileSync('visual-check/browser.log', logs.join('\n'));
-              await browser.close();
-            }
-          })().catch(err => { console.error(err); process.exit(1); });
+            await page.goto('http://127.0.0.1:3000/demo/luxury-art-champagne-romance', { waitUntil: 'networkidle', timeout: 90000 });
+            const button = page.getByRole('button', { name: /Buka Undangan/i }).first();
+            const before = await button.evaluate((el) => {
+              const keys = Object.keys(el);
+              const propKey = keys.find(k => k.startsWith('__reactProps$'));
+              const props = propKey ? el[propKey] : null;
+              return {
+                outerHTML: el.outerHTML,
+                reactKeys: keys.filter(k => k.startsWith('__react')).slice(0,10),
+                propKeys: props ? Object.keys(props) : [],
+                onClickType: props ? typeof props.onClick : null,
+                disabled: el.disabled,
+              };
+            });
+            await page.screenshot({ path: 'visual-check/01-cover.png' });
+            await button.click();
+            await page.waitForTimeout(500);
+            const afterClick = await page.evaluate(() => ({
+              contentClass: document.querySelector('[class*="content"]')?.className || null,
+              coverExists: !!document.querySelector('[class*="coverLayer"]'),
+            }));
+            const direct = await button.evaluate((el) => {
+              const propKey = Object.keys(el).find(k => k.startsWith('__reactProps$'));
+              const props = propKey ? el[propKey] : null;
+              if (props && typeof props.onClick === 'function') props.onClick({ preventDefault(){}, stopPropagation(){} });
+              return !!(props && typeof props.onClick === 'function');
+            });
+            await page.waitForTimeout(500);
+            const afterDirect = await page.evaluate(() => ({
+              contentClass: document.querySelector('[class*="content"]')?.className || null,
+              coverExists: !!document.querySelector('[class*="coverLayer"]'),
+            }));
+            fs.writeFileSync('visual-check/button.json', JSON.stringify({ before, afterClick, direct, afterDirect }, null, 2));
+            fs.writeFileSync('visual-check/browser.log', logs.join('\n'));
+            await page.screenshot({ path: 'visual-check/02-after.png' });
+            await browser.close();
+          })().catch(err => { fs.writeFileSync('visual-check/error.txt', String(err && err.stack ? err.stack : err)); console.error(err); process.exit(1); });
           EOF
           node capture-visual.cjs
 
