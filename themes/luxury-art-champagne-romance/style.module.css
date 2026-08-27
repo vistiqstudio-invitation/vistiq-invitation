@@ -27,9 +27,9 @@
 .cover{position:absolute;inset:0;background:var(--sage);overflow:hidden}
 .coverStatic{position:relative;min-height:620px;height:100%}
 .coverPhoto{position:absolute;inset:0}
-.coverPhoto img{object-fit:cover;object-position:center center}
-.coverGradient{position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.01) 0%,rgba(255,255,255,0) 43%,rgba(150,156,129,.08) 53%,rgba(151,157,130,.28) 66%,rgba(148,154,126,.68) 82%,rgba(145,151,124,.92) 100%)}
-.coverGradient:after{content:"";position:absolute;left:0;right:0;bottom:0;height:38%;background:radial-gradient(ellipse at 50% 15%,rgba(255,255,255,.08),transparent 56%)}
+.coverPhoto img{object-fit:cover;object-position:center 34%}
+.coverGradient{position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0) 0%,rgba(255,255,255,0) 37%,rgba(160,166,139,.10) 47%,rgba(156,162,135,.32) 59%,rgba(150,156,129,.68) 73%,rgba(145,151,124,.94) 88%,rgba(140,146,119,.99) 100%)}
+.coverGradient:after{content:"";position:absolute;left:0;right:0;bottom:0;height:48%;background:linear-gradient(180deg,rgba(135,141,115,0),rgba(135,141,115,.28) 44%,rgba(130,136,111,.55) 100%)}
 .coverTopDetail{display:none}
 .coverCopy{position:absolute;left:22px;right:22px;bottom:57px;text-align:center;color:#fff;z-index:4}
 .coverArc{display:block;width:192px;height:64px;margin:0 auto -18px;overflow:visible;transform:scaleX(1.08);transform-origin:center bottom}
@@ -53,10 +53,10 @@
 .heroDots .heroDotActive{width:13px;border-radius:999px;background:#fff}
 .heroPanel{position:relative;z-index:5;margin-top:-24px;min-height:185px;padding:48px 29px 44px;background:#fff;border-radius:50% 50% 0 0 / 30px 30px 0 0;text-align:left;overflow:hidden}
 .heroPanel:before{content:"";position:absolute;left:-15%;right:-15%;top:-43px;height:70px;background:#fff;border-radius:50%}
-.heroPanel p{position:relative;z-index:2;font-size:8px;letter-spacing:.16em;margin:0 0 4px;color:#aaa795}
-.heroPanel h2{position:relative;z-index:2;font-family:'Cormorant Garamond',serif;font-size:29px;font-weight:500;color:#9ea18a;margin:0 0 4px}
+.heroPanel p{position:relative;z-index:2;font-size:9.5px;letter-spacing:.16em;margin:0 0 5px;color:#aaa795}
+.heroPanel h2{position:relative;z-index:2;font-family:'Cormorant Garamond',serif;font-size:35px;line-height:1.02;font-weight:500;color:#9ea18a;margin:0 0 7px}
 .heroPanel h2 span{font-weight:400}
-.heroPanel small{position:relative;z-index:2;font-size:8.5px;color:#b0ad9e}
+.heroPanel small{position:relative;z-index:2;font-size:9.5px;color:#b0ad9e}
 .heroArch{position:absolute;right:28px;bottom:15px;width:58px;height:72px;border:1px solid rgba(161,163,142,.25);border-radius:31px 31px 0 0}
 .heroArch:after{content:"";position:absolute;width:27px;height:27px;border-radius:50%;background:#d7d5c8;left:-13px;bottom:-3px}
 
@@ -103,7 +103,7 @@
 .personWhiteGroom{position:absolute;left:0;top:0;width:35%;height:286px;background:#fff;border-radius:0 0 88px 0;z-index:1}
 .verticalGroom{position:absolute;left:55px;top:68px;z-index:4;font-family:'Cormorant Garamond',serif;font-size:31px;line-height:1;color:#8f927d;writing-mode:vertical-rl;transform:rotate(180deg);letter-spacing:-.04em}
 .personGroom:after{content:"";position:absolute;left:0;right:0;top:300px;height:205px;background:#fff;border-radius:85px 0 0 0;z-index:3}
-.personInfoGroom{position:absolute;z-index:5;top:385px;left:28px;right:28px;text-align:right;color:#999985}
+.personInfoGroom{position:absolute;z-index:5;top:345px;left:28px;right:28px;text-align:right;color:#999985}
 
 /* EVENTS */
 .eventsSection{background:var(--ivory);padding:34px 20px 62px}
@@ -161,9 +161,9 @@
 .wishesSection{position:relative;background:var(--ivory);padding:69px 20px 65px;overflow:hidden}
 .wishesSection:before{content:"";position:absolute;left:0;right:0;top:25px;bottom:0;background:var(--sage);border-radius:58px 0 0 0;z-index:0}
 .wishesCurve{display:none}
-.wishesHeading{position:relative;z-index:2;height:57px;color:#fff;padding-left:5px}
-.wishesHeading b{font-family:'Cormorant Garamond',serif;font-size:23px;font-weight:600}
-.wishesHeading em{font-family:'Parisienne',cursive;font-size:22px;color:#1f201b;position:absolute;left:158px;top:11px;font-weight:400}
+.wishesHeading{position:relative;z-index:2;height:57px;color:#fff;text-align:center;padding-left:0;white-space:nowrap}
+.wishesHeading b{font-family:'Cormorant Garamond',serif;font-size:23px;font-weight:600;display:inline-block}
+.wishesHeading em{font-family:'Parisienne',cursive;font-size:22px;color:#1f201b;position:relative;left:-4px;top:10px;font-weight:400;display:inline-block}
 .wishesCard{position:relative;z-index:2;background:#fff;padding:14px 12px 13px;border-radius:32px 0 0 0;color:#44443d}
 .wishesCard>p{font-size:7.6px;margin:0 0 10px}
 .wishesCard form{display:grid;gap:6px}
@@ -218,7 +218,7 @@
 .bottomNav svg{width:14px;height:14px}
 
 @media (max-width:360px){
-  .coverCopy{bottom:48px}.coverCopy h1{font-size:29px}.heroSlider{height:310px}.personBride,.personGroom{min-height:480px}.personInfoBride{top:352px}.personInfoGroom{top:373px}.verticalBride{right:48px}.verticalGroom{left:48px}.eventPhoto{height:193px}.galleryItem{height:170px}.bottomNav{width:275px}.bottomNav button{width:32px}.floatingActions{left:auto;right:11px}
+  .coverCopy{bottom:48px}.coverCopy h1{font-size:29px}.heroSlider{height:310px}.personBride,.personGroom{min-height:480px}.personInfoBride{top:352px}.personInfoGroom{top:338px}.verticalBride{right:48px}.verticalGroom{left:48px}.eventPhoto{height:193px}.galleryItem{height:170px}.bottomNav{width:275px}.bottomNav button{width:32px}.floatingActions{left:auto;right:11px}
 }
 
 @media (min-width:700px){
