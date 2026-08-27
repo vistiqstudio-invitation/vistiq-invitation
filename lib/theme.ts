@@ -44,8 +44,10 @@ import Sahara from "@/themes/sahara/Sahara";
 import MidnightAurora from "@/themes/midnight-aurora/MidnightAurora";
 import PorcelainBloom from "@/themes/porcelain-bloom/PorcelainBloom";
 import LuxuryArtGarden from "@/themes/luxury-art-garden/LuxuryArtGarden";
+import LuxuryArtLoveParadise from "@/themes/luxury-art-love-paradise/LuxuryArtLoveParadise";
 import LuxuryArtJavaHeritage from "@/themes/luxury-art-java-heritage/LuxuryArtJavaHeritage";
 import LuxuryArtSakura from "@/themes/luxury-art-sakura/LuxuryArtSakura";
+import LuxuryArtLX005 from "@/themes/luxury-art-lx005/LuxuryArtLX005";
 import LoveChronicle from "@/themes/love-chronicle/LoveChronicle";
 import VelvetCinema from "@/themes/velvet-cinema/VelvetCinema";
 import PrismaticVows from "@/themes/prismatic-vows/PrismaticVows";
@@ -90,8 +92,10 @@ export const themeRegistry: Record<
   "midnight-aurora": MidnightAurora,
   "porcelain-bloom": PorcelainBloom,
   "luxury-art-garden": LuxuryArtGarden,
+  "luxury-art-love-paradise": LuxuryArtLoveParadise,
   "luxury-art-java-heritage": LuxuryArtJavaHeritage,
   "luxury-art-sakura": LuxuryArtSakura,
+  "luxury-art-lx005": LuxuryArtLX005,
   "love-chronicle": LoveChronicle,
   "velvet-cinema": VelvetCinema,
   "prismatic-vows": PrismaticVows,
@@ -334,6 +338,22 @@ export const themeList: ThemeMeta[] = [
     swatch: ["#e8eef5", "#173f67"],
     tags: ["luxury-art", "premium"],
     addedAt: "2026-08-21",
+  },
+  {
+    key: "luxury-art-love-paradise",
+    label: "Luxury Art — Love Paradise",
+    description: "Ivory, powder blue dan lavender, taman lembah watercolor, bingkai oval berlapis, floral relief dan animasi kabut yang lembut",
+    swatch: ["#f4f7f4", "#2f7cc8"],
+    tags: ["luxury-art", "premium"],
+    addedAt: "2026-08-25",
+  },
+  {
+    key: "luxury-art-lx005",
+    label: "Luxury Art — LX005",
+    description: "Ivory dan powder blue, bingkai arch berlapis, floral relief, taman watercolor dan transisi sinematik lembut",
+    swatch: ["#f5f0e8", "#7d9db9"],
+    tags: ["luxury-art", "premium"],
+    addedAt: "2026-08-27",
   },
   {
     key: "luxury-art-java-heritage",
