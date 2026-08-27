@@ -8,21 +8,32 @@ on:
 jobs:
   capture:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 15
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: visual-check-placeholder
     steps:
       - uses: actions/checkout@v4
 
-      - name: Wait for Vercel preview
-        run: sleep 35
-
-      - name: Install Playwright Chromium
+      - name: Install app and Playwright
         run: |
+          npm ci
           npm install --no-save playwright@1.55.0
           npx playwright install chromium --with-deps
 
+      - name: Start local app
+        run: |
+          npm run dev > /tmp/vistiq-dev.log 2>&1 &
+          for i in {1..60}; do
+            if curl -fsS http://127.0.0.1:3000/demo/luxury-art-champagne-romance >/dev/null; then
+              exit 0
+            fi
+            sleep 2
+          done
+          cat /tmp/vistiq-dev.log
+          exit 1
+
       - name: Capture reference checkpoints
-        env:
-          PREVIEW_URL: https://vistiq-invitation-git-feat-champagne-r-967f83-vistiq-invitation.vercel.app/demo/luxury-art-champagne-romance
         run: |
           mkdir -p visual-check
           cat > capture-visual.cjs <<'EOF'
@@ -33,24 +44,29 @@ jobs:
             const browser = await chromium.launch({ headless: true });
             const page = await browser.newPage({ viewport: { width: 390, height: 848 }, deviceScaleFactor: 1 });
             try {
-              await page.goto(process.env.PREVIEW_URL, { waitUntil: 'networkidle', timeout: 90000 });
+              await page.goto('http://127.0.0.1:3000/demo/luxury-art-champagne-romance', { waitUntil: 'networkidle', timeout: 90000 });
               await page.screenshot({ path: 'visual-check/01-cover.png' });
               await page.getByRole('button', { name: /Buka Undangan/i }).click();
-              await page.waitForTimeout(1300);
+              await page.waitForTimeout(1200);
               const shots = [
                 ['02-home.png', '#home'],
-                ['03-couple.png', '#couple'],
-                ['04-event.png', '#event'],
-                ['05-gallery.png', '#gallery'],
-                ['06-story.png', '#story'],
-                ['07-wishes.png', '#wishes'],
-                ['08-gift.png', '#gift'],
+                ['03-quote.png', '.quoteSection'],
+                ['04-couple.png', '#couple'],
+                ['05-event.png', '#event'],
+                ['06-gallery.png', '#gallery'],
+                ['07-story.png', '#story'],
+                ['08-wishes.png', '#wishes'],
+                ['09-gift.png', '#gift'],
               ];
               for (const [file, selector] of shots) {
-                await page.locator(selector).scrollIntoViewIfNeeded();
-                await page.waitForTimeout(400);
+                const target = selector.startsWith('.')
+                  ? page.locator(`[class*="${selector.slice(1)}"]`).first()
+                  : page.locator(selector);
+                await target.scrollIntoViewIfNeeded();
+                await page.waitForTimeout(350);
                 await page.screenshot({ path: `visual-check/${file}` });
               }
+              await page.screenshot({ path: 'visual-check/10-full.png', fullPage: true });
             } catch (err) {
               fs.writeFileSync('visual-check/error.txt', String(err && err.stack ? err.stack : err));
               throw err;
@@ -60,6 +76,10 @@ jobs:
           })().catch(err => { console.error(err); process.exit(1); });
           EOF
           node capture-visual.cjs
+
+      - name: Save dev log
+        if: always()
+        run: cp /tmp/vistiq-dev.log visual-check/dev.log 2>/dev/null || true
 
       - uses: actions/upload-artifact@v4
         if: always()
