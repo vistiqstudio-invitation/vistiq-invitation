@@ -1,0 +1,144 @@
+.cover {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #dff3fb;
+}
+
+.background {
+  z-index: 0;
+  object-fit: cover;
+  object-position: center 45%;
+}
+
+.fade {
+  position: absolute;
+  z-index: 1;
+  inset: 38% 0 0;
+  background: linear-gradient(
+    transparent,
+    rgba(255, 253, 244, .2) 28%,
+    rgba(255, 253, 244, .86) 72%,
+    #fffdf4 100%
+  );
+}
+
+.garden {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 37%;
+  background: url('/themes/luxury-art-love-paradise/garden-scene.webp') center bottom / 100% auto no-repeat;
+  mix-blend-mode: multiply;
+  opacity: .82;
+  -webkit-mask-image: linear-gradient(transparent, #000 32%);
+  mask-image: linear-gradient(transparent, #000 32%);
+}
+
+.title {
+  position: absolute;
+  z-index: 5;
+  left: 5%;
+  right: 5%;
+  top: 5%;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 2px 10px rgba(18, 37, 44, .34);
+}
+
+.title p {
+  margin: 0 0 2px;
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: clamp(7px, 2.2vw, 12px);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.title h3 {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 5px;
+  margin: 0;
+  font-family: var(--font-alex-brush), "Brush Script MT", cursive;
+  font-size: clamp(24px, 8.8vw, 45px);
+  font-weight: 400;
+  line-height: .94;
+  white-space: nowrap;
+}
+
+.title h3 em,
+.title h3 span {
+  font-style: normal;
+  font-weight: 400;
+}
+
+.title h3 span {
+  font-size: .7em;
+}
+
+.guest {
+  position: absolute;
+  z-index: 6;
+  left: 12%;
+  right: 12%;
+  bottom: 4.3%;
+  padding: 5.2% 5% 5.8%;
+  border-radius: 18px;
+  background: rgba(255, 253, 246, .88);
+  text-align: center;
+  box-shadow: 0 6px 20px rgba(43, 55, 38, .14);
+  backdrop-filter: blur(5px);
+}
+
+.guest p {
+  margin: 0 0 8%;
+  color: #323b31;
+  font-family: Arial, sans-serif;
+  font-size: clamp(6px, 1.8vw, 10px);
+  line-height: 1.25;
+}
+
+.guest span,
+.guest strong {
+  display: block;
+}
+
+.guest strong {
+  margin-top: 2px;
+  font-weight: 500;
+}
+
+.button {
+  display: inline-flex;
+  min-height: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 90%;
+  padding: 7% 8%;
+  border-radius: 999px;
+  background: #7b8760;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  font-size: clamp(6px, 1.9vw, 10px);
+  line-height: 1;
+  box-shadow: 0 5px 13px rgba(68, 80, 50, .2);
+}
+
+.button svg {
+  width: 1.4em;
+  height: 1.4em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex: 0 0 auto;
+}
+
+.button b {
+  font-weight: 600;
+}
