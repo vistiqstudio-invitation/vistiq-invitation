@@ -1,0 +1,59 @@
+name: Champagne Romance Visual Check
+
+on:
+  push:
+    branches:
+      - feat/champagne-romance-rebuild
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Wait for Vercel preview
+        run: sleep 75
+
+      - name: Install Playwright library
+        run: npm install --no-save playwright-core@1.55.0
+
+      - name: Capture reference checkpoints
+        env:
+          PREVIEW_URL: https://vistiq-invitation-git-feat-champagne-r-967f83-vistiq-invitation.vercel.app/demo/luxury-art-champagne-romance
+        run: |
+          cat > /tmp/capture.cjs <<'EOF'
+          const { chromium } = require('playwright-core');
+          const fs = require('fs');
+          (async () => {
+            fs.mkdirSync('visual-check', { recursive: true });
+            const browser = await chromium.launch({ channel: 'chrome', headless: true });
+            const page = await browser.newPage({ viewport: { width: 390, height: 848 }, deviceScaleFactor: 1 });
+            await page.goto(process.env.PREVIEW_URL, { waitUntil: 'networkidle', timeout: 90000 });
+            await page.screenshot({ path: 'visual-check/01-cover.png' });
+            await page.getByRole('button', { name: /Buka Undangan/i }).click();
+            await page.waitForTimeout(1500);
+            const shots = [
+              ['02-home.png', '#home'],
+              ['03-couple.png', '#couple'],
+              ['04-event.png', '#event'],
+              ['05-gallery.png', '#gallery'],
+              ['06-story.png', '#story'],
+              ['07-wishes.png', '#wishes'],
+              ['08-gift.png', '#gift'],
+            ];
+            for (const [file, selector] of shots) {
+              await page.locator(selector).scrollIntoViewIfNeeded();
+              await page.waitForTimeout(450);
+              await page.screenshot({ path: `visual-check/${file}` });
+            }
+            await browser.close();
+          })().catch(err => { console.error(err); process.exit(1); });
+          EOF
+          node /tmp/capture.cjs
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: champagne-romance-visual-check
+          path: visual-check/*.png
+          retention-days: 1
