@@ -7,6 +7,7 @@ import {
   khitanThemeRegistry,
   birthdayThemeRegistry,
 } from "@/lib/theme";
+import LuxuryArtLX005 from "@/themes/luxury-art-lx005/LuxuryArtLX005";
 import WhiteLabelFrame from "@/components/WhiteLabelFrame";
 import SmartCoverRuntime from "@/components/SmartCoverRuntime";
 import WeddingThemeSafeArea from "@/components/WeddingThemeSafeArea";
@@ -144,7 +145,9 @@ export default async function InvitationPage({ params }: Props) {
     );
   }
 
-  const Theme = themeRegistry[invitation.theme] || themeRegistry["luxury-gold"];
+  const Theme = invitation.theme === "luxury-art-lx005"
+    ? LuxuryArtLX005
+    : themeRegistry[invitation.theme] || themeRegistry["luxury-gold"];
   return (
     <WhiteLabelFrame brand={invitation.brand}>
       <WeddingThemeSafeArea theme={invitation.theme}>
