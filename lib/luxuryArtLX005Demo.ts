@@ -19,7 +19,7 @@ export function withLuxuryArtLX005DemoAssets(
 
   return {
     ...invitation,
-    coverImage: "/photos/luxury-art-love-paradise/couple-cover.webp",
+    coverImage: "/photos/luxury-art-love-paradise/hero.webp",
     musicUrl: WEDDING_VOCAL_TRACKS.indonesianBallad,
     opening: {
       ...invitation.opening,
