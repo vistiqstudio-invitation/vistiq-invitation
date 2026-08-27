@@ -34,62 +34,62 @@ export function withLuxuryArtChampagneRomanceDemoAssets(
     },
     bride: {
       ...invitation.bride,
-      name: "Anisa Salsafira Rahma",
-      nickname: "Anisa",
-      parents: "Putri Kedua dari Bapak H. Sriyanto & Ibu Hj. Siti Aminah (Almh)",
+      name: "Alya Rahmadani Putri",
+      nickname: "Alya",
+      parents: "Putri Pertama dari Bapak H. Rahmat Hidayat & Ibu Hj. Nur Aini",
       photo: "/photos/luxury-art-love-paradise/bride.webp",
     },
     groom: {
       ...invitation.groom,
-      name: "Muhammad Haris Akbar",
-      nickname: "Haris",
-      parents: "Putra Kedua dari Bapak H. Sriyanto & Ibu Hj. Siti Aminah (Almh)",
+      name: "Raka Pradipta Mahendra",
+      nickname: "Raka",
+      parents: "Putra Kedua dari Bapak Ir. Dimas Prasetyo & Ibu Ratna Maharani",
       photo: "/photos/luxury-art-love-paradise/groom.webp",
     },
     events: [
       {
         name: "Akad Nikah",
-        date: "Minggu, 24 Desember 2023",
-        rawDate: "2026-12-24T12:00:00",
-        time: "12.00 WIB",
-        location: "Jl. KH. Agus Salim Pertokoan No. 105 Rt. 06, Kel. Berbas Pantai, Bontang Selatan, Kalimantan Timur",
+        date: "Sabtu, 18 April 2026",
+        rawDate: "2026-04-18T09:00:00",
+        time: "09.00 WIB",
+        location: "Gedung Serbaguna Taman Prestasi, Jl. Ahmad Yani No. 28, Bontang, Kalimantan Timur",
       },
       {
         name: "Resepsi",
-        date: "Minggu, 7 Desember 2023",
-        rawDate: "2026-12-07T12:00:00",
-        time: "12.00 WIB",
-        location: "Jl. KH. Agus Salim Pertokoan No. 105 Rt. 06, Kel. Berbas Pantai, Bontang Selatan, Kalimantan Timur",
+        date: "Minggu, 19 April 2026",
+        rawDate: "2026-04-19T11:00:00",
+        time: "11.00 WIB - Selesai",
+        location: "Ballroom Hotel Bintang Sintuk, Jl. MT Haryono No. 17, Bontang, Kalimantan Timur",
       },
     ],
     gallery: GALLERY,
     story: [
       {
-        year: "2015",
-        title: "Perkenalan",
-        description: "Tahun 2015 kami dipertemukan saat menjadi mahasiswa baru. Berawal sebagai teman biasa, kisah kami perlahan tumbuh.",
+        year: "2018",
+        title: "Pertemuan Pertama",
+        description: "Kami pertama kali bertemu melalui kegiatan kampus. Dari obrolan sederhana, tumbuh rasa nyaman yang membuat kami semakin dekat.",
       },
       {
-        year: "2016",
-        title: "Awal Hubungan",
-        description: "Setahun kemudian kami menjadi sahabat dekat, hingga akhirnya perasaan yang sama membuat kami memulai hubungan yang lebih serius.",
+        year: "2019",
+        title: "Mulai Bersama",
+        description: "Persahabatan kami berkembang menjadi hubungan yang lebih serius. Kami belajar tumbuh, saling mendukung, dan mengenal keluarga masing-masing.",
       },
       {
-        year: "2021",
+        year: "2025",
         title: "Lamaran",
-        description: "Setelah perjalanan panjang, kami mengajak kedua keluarga bertemu dan memantapkan langkah menuju pernikahan.",
+        description: "Setelah melalui perjalanan panjang bersama, kedua keluarga bertemu dan merestui langkah kami menuju jenjang pernikahan.",
       },
       {
-        year: "2023",
-        title: "Pernikahan",
-        description: "Dengan penuh syukur, kami memilih melangkah bersama dan memulai babak baru sebagai pasangan suami istri.",
+        year: "2026",
+        title: "Hari Bahagia",
+        description: "Dengan penuh syukur, kami memulai babak baru dan berharap perjalanan ini selalu dipenuhi kasih, keberkahan, dan kebahagiaan.",
       },
     ],
     gifts: invitation.gifts.map((account) =>
       account.owner === "Mempelai Pria"
-        ? { ...account, accountName: "Muhammad Haris Akbar" }
+        ? { ...account, accountName: "Raka Pradipta Mahendra" }
         : account.owner === "Mempelai Wanita"
-          ? { ...account, accountName: "Anisa Salsafira Rahma" }
+          ? { ...account, accountName: "Alya Rahmadani Putri" }
           : account,
     ),
   };
