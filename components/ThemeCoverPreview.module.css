@@ -22,9 +22,95 @@
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
 }
 
+.champagneImage {
+  object-position: center 42%;
+}
+
+.champagneOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg,
+      rgba(255,255,255,0) 0%,
+      rgba(255,255,255,0) 39%,
+      rgba(171,177,150,.09) 49%,
+      rgba(158,165,137,.30) 61%,
+      rgba(145,152,124,.68) 76%,
+      rgba(129,137,108,.93) 100%);
+}
+
+.champagneCopy {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: 7%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 1px 6px rgba(54, 58, 44, .24);
+}
+
+.champagneArc {
+  width: 72%;
+  margin-bottom: 1px;
+  font-family: Arial, sans-serif;
+  font-size: clamp(5px, 1.8vw, 9px);
+  font-weight: 600;
+  letter-spacing: .18em;
+  transform: rotate(-8deg);
+}
+
+.champagneCopy strong {
+  margin-top: 2px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(16px, 5.9vw, 30px);
+  line-height: 1.05;
+  font-weight: 400;
+}
+
+.champagneCopy strong i {
+  font-style: normal;
+  font-weight: 400;
+}
+
+.champagneGuest {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 11%;
+  font-family: Arial, sans-serif;
+  font-size: clamp(5px, 1.65vw, 8px);
+  line-height: 1.4;
+}
+
+.champagneGuest b {
+  font-size: 1.08em;
+  font-weight: 600;
+}
+
+.champagneButton {
+  margin-top: 6%;
+  padding: 4% 8%;
+  min-width: 58%;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, .95);
+  color: #9da087;
+  text-shadow: none;
+  font-family: Arial, sans-serif;
+  font-size: clamp(5px, 1.55vw, 8px);
+}
+
 @media (max-width: 640px) {
   .fallbackLabel {
     inset: auto 10px 10px;
     font-size: 13px;
+  }
+
+  .champagneCopy {
+    bottom: 6.5%;
   }
 }
