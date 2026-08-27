@@ -344,3 +344,12 @@
   .closingIntro{margin-left:-22px;margin-right:-22px}
   .closingNames{bottom:102px}
 }
+
+
+/* MOTION TRANSFORM SAFETY */
+.verticalGroom{transform:rotate(180deg)!important}
+.storySide{transform:rotate(180deg)!important}
+.eventSide{transform:rotate(180deg)!important}
+.eventReverse .eventSide{transform:none!important}
+.bottomNav{transform:translateX(-50%)!important}
+.giftCard>div:first-child>svg{width:34px;height:34px;color:#171813;margin-bottom:8px}
