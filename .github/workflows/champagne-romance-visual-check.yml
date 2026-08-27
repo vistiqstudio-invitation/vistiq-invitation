@@ -25,7 +25,7 @@ jobs:
         run: |
           npm run dev > /tmp/vistiq-dev.log 2>&1 &
           for i in {1..60}; do
-            if curl -fsS http://127.0.0.1:3000/demo/luxury-art-champagne-romance >/dev/null; then
+            if curl -fsS http://localhost:3000/demo/luxury-art-champagne-romance >/dev/null; then
               exit 0
             fi
             sleep 2
@@ -33,7 +33,7 @@ jobs:
           cat /tmp/vistiq-dev.log
           exit 1
 
-      - name: Inspect cover button
+      - name: Capture hydrated reference checkpoints
         run: |
           mkdir -p visual-check
           cat > capture-visual.cjs <<'EOF'
@@ -45,43 +45,39 @@ jobs:
             const logs = [];
             page.on('console', msg => logs.push(`[console:${msg.type()}] ${msg.text()}`));
             page.on('pageerror', err => logs.push(`[pageerror] ${err.stack || err.message}`));
-            await page.goto('http://127.0.0.1:3000/demo/luxury-art-champagne-romance', { waitUntil: 'networkidle', timeout: 90000 });
-            const button = page.getByRole('button', { name: /Buka Undangan/i }).first();
-            const before = await button.evaluate((el) => {
-              const keys = Object.keys(el);
-              const propKey = keys.find(k => k.startsWith('__reactProps$'));
-              const props = propKey ? el[propKey] : null;
-              return {
-                outerHTML: el.outerHTML,
-                reactKeys: keys.filter(k => k.startsWith('__react')).slice(0,10),
-                propKeys: props ? Object.keys(props) : [],
-                onClickType: props ? typeof props.onClick : null,
-                disabled: el.disabled,
-              };
-            });
-            await page.screenshot({ path: 'visual-check/01-cover.png' });
-            await button.click();
-            await page.waitForTimeout(500);
-            const afterClick = await page.evaluate(() => ({
-              contentClass: document.querySelector('[class*="content"]')?.className || null,
-              coverExists: !!document.querySelector('[class*="coverLayer"]'),
-            }));
-            const direct = await button.evaluate((el) => {
-              const propKey = Object.keys(el).find(k => k.startsWith('__reactProps$'));
-              const props = propKey ? el[propKey] : null;
-              if (props && typeof props.onClick === 'function') props.onClick({ preventDefault(){}, stopPropagation(){} });
-              return !!(props && typeof props.onClick === 'function');
-            });
-            await page.waitForTimeout(500);
-            const afterDirect = await page.evaluate(() => ({
-              contentClass: document.querySelector('[class*="content"]')?.className || null,
-              coverExists: !!document.querySelector('[class*="coverLayer"]'),
-            }));
-            fs.writeFileSync('visual-check/button.json', JSON.stringify({ before, afterClick, direct, afterDirect }, null, 2));
-            fs.writeFileSync('visual-check/browser.log', logs.join('\n'));
-            await page.screenshot({ path: 'visual-check/02-after.png' });
-            await browser.close();
-          })().catch(err => { fs.writeFileSync('visual-check/error.txt', String(err && err.stack ? err.stack : err)); console.error(err); process.exit(1); });
+            try {
+              await page.goto('http://localhost:3000/demo/luxury-art-champagne-romance', { waitUntil: 'networkidle', timeout: 90000 });
+              await page.waitForTimeout(500);
+              await page.screenshot({ path: 'visual-check/01-cover.png' });
+              await page.getByRole('button', { name: /Buka Undangan/i }).click();
+              await page.waitForTimeout(1200);
+              const content = page.locator('[class*="content"]').first();
+              await content.waitFor({ state: 'visible', timeout: 5000 });
+              const shots = [
+                ['02-home.png', '#home'],
+                ['03-quote.png', '[class*="quoteSection"]'],
+                ['04-couple.png', '#couple'],
+                ['05-event.png', '#event'],
+                ['06-gallery.png', '#gallery'],
+                ['07-story.png', '#story'],
+                ['08-wishes.png', '#wishes'],
+                ['09-gift.png', '#gift'],
+              ];
+              for (const [file, selector] of shots) {
+                const target = page.locator(selector).first();
+                await target.scrollIntoViewIfNeeded();
+                await page.waitForTimeout(320);
+                await page.screenshot({ path: `visual-check/${file}` });
+              }
+              await page.screenshot({ path: 'visual-check/10-full.png', fullPage: true });
+            } catch (err) {
+              fs.writeFileSync('visual-check/error.txt', String(err && err.stack ? err.stack : err));
+              throw err;
+            } finally {
+              fs.writeFileSync('visual-check/browser.log', logs.join('\n'));
+              await browser.close();
+            }
+          })().catch(err => { console.error(err); process.exit(1); });
           EOF
           node capture-visual.cjs
 
