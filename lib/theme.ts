@@ -48,6 +48,7 @@ import LuxuryArtLoveParadise from "@/themes/luxury-art-love-paradise/LuxuryArtLo
 import LuxuryArtJavaHeritage from "@/themes/luxury-art-java-heritage/LuxuryArtJavaHeritage";
 import LuxuryArtSakura from "@/themes/luxury-art-sakura/LuxuryArtSakura";
 import ChampagneRomance from "@/themes/luxury-art-champagne-romance/ChampagneRomance";
+import WhiteGarden from "@/themes/luxury-art-white-garden/WhiteGarden";
 import LoveChronicle from "@/themes/love-chronicle/LoveChronicle";
 import VelvetCinema from "@/themes/velvet-cinema/VelvetCinema";
 import PrismaticVows from "@/themes/prismatic-vows/PrismaticVows";
@@ -96,6 +97,7 @@ export const themeRegistry: Record<
   "luxury-art-java-heritage": LuxuryArtJavaHeritage,
   "luxury-art-sakura": LuxuryArtSakura,
   "luxury-art-champagne-romance": ChampagneRomance,
+  "luxury-art-white-garden": WhiteGarden,
   "love-chronicle": LoveChronicle,
   "velvet-cinema": VelvetCinema,
   "prismatic-vows": PrismaticVows,
@@ -152,6 +154,7 @@ export const themeList: ThemeMeta[] = [
   { key: "sahara", label: "Sahara", description: "Krem & terracotta pasir, foto arch tinggi, galeri grid lightbox, story dua kolom", swatch: ["#fffdf9", "#ae8f7a"], tags: ["reguler"] },
   { key: "midnight-aurora", label: "Midnight Aurora", description: "Navy-ungu malam, aurora bergerak, orbit perak & aksen konstelasi", swatch: ["#071126", "#a88bff"], tags: ["premium"] },
   { key: "luxury-art-garden", label: "Luxury Art — Garden Valley", description: "Luxury art bernuansa midnight blue, botanical relief, bingkai galeri & aksen antique gold", swatch: ["#e8eef5", "#173f67"], tags: ["luxury-art", "premium"], addedAt: "2026-08-21" },
+  { key: "luxury-art-white-garden", label: "Luxury Art — White Garden", description: "Art 14: taman bunga putih berlapis, pilar klasik, kupu-kupu, bingkai emas dan tipografi dekoratif", swatch: ["#f9f8f2", "#a46e3d"], tags: ["luxury-art", "premium"], addedAt: "2026-08-28" },
   { key: "luxury-art-love-paradise", label: "Luxury Art — Love Paradise", description: "Ivory, powder blue dan lavender, taman lembah watercolor, bingkai oval berlapis, floral relief dan animasi kabut yang lembut", swatch: ["#f4f7f4", "#2f7cc8"], tags: ["luxury-art", "premium"], addedAt: "2026-08-25" },
   { key: "luxury-art-champagne-romance", label: "Luxury Art — Champagne Romance", description: "Warm champagne, taupe dan ivory dengan layout editorial, panel organik, tipografi vertikal dan foto wedding dominan", swatch: ["#f7f1e7", "#b9ad98"], tags: ["luxury-art", "premium"], addedAt: "2026-08-27" },
   { key: "luxury-art-java-heritage", label: "Luxury Art — Java Heritage", description: "Ivory, marun dan emas antik, lanskap joglo berlapis, floral Jawa dan transisi sinematik", swatch: ["#eee6d7", "#6f261f"], tags: ["luxury-art", "premium", "adat"], addedAt: "2026-08-24" },

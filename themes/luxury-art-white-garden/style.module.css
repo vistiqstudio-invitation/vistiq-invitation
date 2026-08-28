@@ -1,0 +1,155 @@
+@font-face{font-family:WGActivists;src:url('/themes/luxury-art-white-garden/Activists-Regular.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:WGCormorant;src:url('/themes/luxury-art-white-garden/Cormorant-400-normal.ttf') format('truetype');font-weight:400;font-display:swap}
+@font-face{font-family:WGCormorant;src:url('/themes/luxury-art-white-garden/Cormorant-600-normal.ttf') format('truetype');font-weight:600;font-display:swap}
+@font-face{font-family:WGCormorant;src:url('/themes/luxury-art-white-garden/Cormorant-400-italic.ttf') format('truetype');font-style:italic;font-display:swap}
+@font-face{font-family:WGNames;src:url('/themes/luxury-art-white-garden/Cormorant-Upright-400-normal.ttf') format('truetype');font-display:swap}
+@font-face{font-family:WGInfant;src:url('/themes/luxury-art-white-garden/Cormorant-Infant-400-normal.ttf') format('truetype');font-display:swap}
+.root{--gold:#a46e3d;--ink:#262820;position:relative;width:min(100%,500px);margin:auto;container-type:inline-size;background:white;color:var(--ink);font-family:WGCormorant,Georgia,serif;font-weight:400;isolation:isolate;overflow-x:clip}
+.root *{box-sizing:border-box}
+.root h1,.root h2,.root h3,.root h4,.root p{margin:0;font-weight:400}
+.root h1{font-family:WGNames,Georgia,serif;font-size:9cqw;color:var(--gold);line-height:1.15;overflow-wrap:anywhere}
+.root h2{font-family:WGActivists,Georgia,serif;font-size:9cqw;color:var(--gold);line-height:1.15;margin:0 0 3cqw}
+.root h3{font-family:WGNames,Georgia,serif;font-size:7cqw;color:var(--gold);line-height:1.2}
+.root p{font-size:3.4cqw;line-height:1.3}
+.root a{color:inherit;text-decoration:none}
+.root button,.root input,.root textarea,.root select{font:inherit}
+.root button,.root a{touch-action:manipulation}
+.root button:focus-visible,.root a:focus-visible{outline:3px solid #704724;outline-offset:4px}
+.scene{position:relative;overflow:hidden;min-height:140cqw;background-position:center;background-repeat:no-repeat;background-size:100% 100%;text-align:center}
+.columns{background-image:url('/themes/luxury-art-white-garden/nadiah-yusuf-1sdaS.jpg')}
+.arch{background-image:url('/themes/luxury-art-white-garden/nadiah-yusuf-3-1.jpg')}
+.hall{background-image:url('/themes/luxury-art-white-garden/nadiah-yusuf-2s.jpg')}
+.sceneBody{position:relative;z-index:2;padding:24cqw 10cqw 24cqw}
+.artwork{position:absolute;inset:0;z-index:1;pointer-events:none}
+.artwork img{position:absolute;height:auto;object-fit:contain}
+.canopyLeft{top:-1%;left:-3%;width:38%;transform-origin:top left;animation:sway 7s ease-in-out infinite alternate}
+.canopyRight{top:-1%;right:-3%;width:38%;transform-origin:top right;animation:sway 8s ease-in-out infinite alternate-reverse}
+.treeLeft{top:10%;left:-12%;width:32%;opacity:.65}
+.treeRight{top:10%;right:-12%;width:32%;opacity:.65}
+.oakLeft{top:29%;left:-13%;width:32%}
+.oakRight{top:29%;right:-13%;width:32%}
+.flowerLeft{top:2%;left:-23%;width:40%;height:85%!important}
+.flowerRight{top:2%;right:-23%;width:40%;height:85%!important}
+.leafLeft{bottom:7%;left:-12%;width:35%;transform-origin:bottom;animation:sway 8s ease-in-out infinite alternate}
+.leafRight{bottom:7%;right:-12%;width:35%;transform-origin:bottom;animation:sway 7s ease-in-out infinite alternate-reverse}
+.stemLeft{bottom:0;left:-6%;width:24%;transform-origin:bottom;animation:sway 6s ease-in-out infinite alternate}
+.stemRight{bottom:0;right:-6%;width:24%;transform-origin:bottom;animation:sway 7s ease-in-out infinite alternate-reverse}
+.bedLeft{bottom:-1%;left:-3%;width:44%}
+.bedRight{bottom:-1%;right:-3%;width:44%}
+.bedCenter{bottom:-1%;left:29%;width:42%;animation:breathe 6s ease-in-out infinite alternate}
+.butterflyLeft{bottom:8%;left:17%;width:8%;transform-origin:center;animation:flutter 2.4s ease-in-out infinite}
+.butterflyRight{bottom:8%;right:17%;width:8%;transform-origin:center;animation:flutter 2.8s ease-in-out infinite reverse}
+.paper,.quotePaper,.couplePaper{position:relative;background:rgba(255,255,255,.84);border-radius:12cqw 12cqw 6cqw 6cqw;padding:10cqw 5cqw;min-width:0}
+.paper::before,.quotePaper::before,.couplePaper::before{position:absolute;inset:0;content:"";background:url('/themes/luxury-art-white-garden/nadiah-yusuf-26.png') center/contain no-repeat;opacity:.09;pointer-events:none}
+.paper>*{position:relative}
+.portrait{position:relative;width:40cqw;aspect-ratio:2/3;margin:5cqw auto;isolation:isolate;border:2px solid var(--gold);border-radius:7cqw;padding:4px;background:#fff;box-shadow:0 0 0 2px #fcfaf3,0 0 0 3px #a88a64,0 0 5cqw #6668;overflow:hidden}
+.portraitImage{object-fit:cover;padding:4px;border-radius:7cqw}
+.emptyPhoto{height:100%;display:grid;place-items:center;font-size:3.4cqw}
+.widePortrait{width:70cqw;aspect-ratio:1.25;border-radius:5cqw}
+.widePortrait .portraitImage{border-radius:5cqw}
+.button{display:inline-flex;align-items:center;justify-content:center;gap:2cqw;min-height:34px;padding:1.4cqw 4cqw;margin:3cqw auto 0;border:0;border-radius:100px;color:#fff!important;background:var(--gold);font-size:3.2cqw!important;line-height:1.2;cursor:pointer;transition:background .2s,transform .2s;max-width:100%;overflow-wrap:anywhere}
+.button:hover{background:#86542b;transform:translateY(-1px)}
+.button:disabled{opacity:.55;cursor:wait}
+.button svg{width:3.6cqw;height:3.6cqw;flex:none}
+.opening{position:fixed;inset:0;margin:auto;width:min(500px,100%);z-index:50;overflow:auto;overscroll-behavior:contain;background:#fff}
+.openingScene{min-height:100svh}
+.openingScene .sceneBody{min-height:100svh;padding:18cqw 10cqw 22cqw;display:grid;align-items:center}
+.openingScene .canopyLeft,.openingScene .canopyRight{width:59%;top:-1%}
+.openingPaper{padding:7cqw 3cqw 8cqw;background:#ffffffd4;border-radius:11cqw 11cqw 6cqw 6cqw;position:relative}
+.openingPaper::before{content:"";position:absolute;inset:0;background:url('/themes/luxury-art-white-garden/nadiah-yusuf-26.png') center/contain no-repeat;opacity:.15;pointer-events:none}
+.openingPaper>*{position:relative}
+.root .eyebrow{font-size:4cqw;letter-spacing:.1em;text-transform:uppercase;margin:0 0 4cqw}
+.root .date{font-family:WGInfant,Georgia,serif;font-size:3.4cqw;text-transform:uppercase;margin-top:5cqw}
+.openingPaper .portrait{margin:6cqw auto 5cqw}
+.root .recipient{font-size:4.4cqw;margin:3cqw 0}
+.root .guest{font-family:WGInfant,Georgia,serif;font-size:4cqw;overflow-wrap:anywhere}
+.hero{min-height:170cqw}
+.hero .sceneBody{padding-top:42cqw}
+.hero h2{margin-top:6cqw}
+.countdown{display:flex;gap:2cqw;justify-content:center;margin:3cqw 0}
+.countdown>div{background:#b98d61;color:#fff;border-radius:2cqw;width:15cqw;min-height:14cqw;display:flex;flex-direction:column;justify-content:center}
+.countdown strong{font-size:5cqw;font-weight:400;line-height:1}
+.countdown span{font-size:2.5cqw;text-transform:uppercase}
+.quoteScene{min-height:170cqw}
+.quoteScene .sceneBody{padding-top:24cqw;padding-bottom:25cqw}
+.quotePaper{padding-top:14cqw;padding-bottom:16cqw;border-radius:35cqw 35cqw 10cqw 10cqw}
+.quotePaper h3{font-size:10cqw;margin-bottom:9cqw}
+.quotePaper p{line-height:1.45;margin-top:4cqw}
+.coupleScene .sceneBody{padding-top:22cqw}
+.couplePaper{padding:7cqw 3cqw 9cqw}
+.coupleScene .canopyLeft,.coupleScene .canopyRight{width:59%}
+.bismillah{width:50cqw;height:auto;object-fit:contain;margin:0 auto 6cqw}
+.person{margin-top:8cqw}
+.person h3{font-size:6cqw;margin-top:4cqw;overflow-wrap:anywhere}
+.person p{margin-top:3cqw}
+.person .portrait{width:38cqw;aspect-ratio:1/1;border-radius:4cqw}
+.person .portraitImage{border-radius:4cqw}
+.between{display:block;font-size:6cqw;color:#8b795f;margin:8cqw auto 4cqw}
+.eventsScene .sceneBody{padding-top:28cqw;padding-bottom:25cqw}
+.event+ .event{margin-top:12cqw}
+.event h4{font-size:4.3cqw;margin-top:5cqw}
+.event p{margin-top:5cqw;white-space:pre-line}
+.galleryScene .sceneBody{padding-top:22cqw;padding-left:9cqw;padding-right:9cqw}
+.gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1cqw;margin:6cqw auto 0}
+.gallery button{border:1px solid #ab8050;background:transparent;padding:0;cursor:zoom-in;overflow:hidden;aspect-ratio:2/3}
+.gallery img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .3s}
+.gallery button:hover img{transform:scale(1.04)}
+.storyScene .sceneBody{padding-top:22cqw}
+.timeline{text-align:left;margin-top:8cqw;padding-left:9cqw}
+.timeline article{position:relative;padding:0 0 7cqw 4cqw;border-left:1px solid #b7966d}
+.timeline article:last-child{padding-bottom:0}
+.timeline i{position:absolute;left:-4.1cqw;top:0;background:#fff;display:grid;place-items:center;width:8cqw;height:8cqw;border:1px solid #b7966d;border-radius:2cqw 0 2cqw 0;color:var(--gold)}
+.timeline svg{width:4cqw;height:4cqw}
+.timeline small{display:block;font-size:3.3cqw;margin-left:2cqw}
+.timeline h3{font-size:5cqw;margin:1cqw 0 2cqw 2cqw}
+.timeline p{margin-left:2cqw;line-height:1.5}
+.giftScene{min-height:110cqw}
+.giftScene .sceneBody{padding-top:20cqw;padding-bottom:20cqw}
+.giftScene .button{display:flex;width:fit-content;margin-top:4cqw}
+.bankList article{padding:6cqw 3cqw;border:1px solid #c8ac8d;border-radius:3cqw;margin:5cqw 0;background:#f5eee6}
+.bankList strong,.bankList b{display:block;margin-bottom:3cqw;overflow-wrap:anywhere}
+.bankList b{font-family:WGInfant,Georgia,serif;font-size:4cqw;letter-spacing:.04em}
+.delivery{margin:4cqw 0;padding:4cqw;border:1px solid #c8ac8d;border-radius:3cqw}
+.root .notice{font-size:3cqw;margin-top:3cqw}
+.streaming{min-height:110cqw}
+.streaming .sceneBody{padding-top:20cqw;padding-bottom:25cqw}
+.streaming h2{font-size:8.5cqw}
+.root .streamNotice{font-style:italic;margin-top:6cqw;color:#77654e}
+.wishesScene .sceneBody{padding-top:24cqw}
+.wishesBox{background:#b99774;color:#fff;border-radius:4cqw;padding:5cqw 4cqw;margin:5cqw auto 0;font-family:Arial,sans-serif;font-size:2.8cqw;text-align:left}
+.wishesBox>strong{display:block;text-align:center}
+.attendance{display:flex;justify-content:center;gap:2cqw;margin:4cqw 0 6cqw}
+.attendance>div{display:flex;flex-direction:column;align-items:center;width:17cqw;padding:3cqw 2cqw;border:1px solid #e0c9b0;border-radius:2cqw;text-align:center}
+.attendance b{font-weight:400;font-size:4cqw}
+.attendance span{font-size:2.4cqw}
+.wishesBox label{display:block;margin-bottom:3cqw}
+.wishesBox input,.wishesBox select,.wishesBox textarea{display:block;width:100%;margin-top:1.5cqw;padding:2.5cqw;border:1px solid #e0c9b0;border-radius:1cqw;background:#fff;color:#29241f;min-height:38px;font-size:16px}
+.wishesBox textarea{resize:vertical}
+.wishesBox .button{font-family:Arial,sans-serif;font-size:2.7cqw!important;min-height:40px}
+.wishesBox>p{font-size:3cqw;margin-top:3cqw}
+.entries article{padding:4cqw 0;border-bottom:1px solid #d2b99d;overflow-wrap:anywhere}
+.entries small{display:block;margin:1cqw 0;opacity:.9}
+.entries p{font:inherit;line-height:1.5}
+.closing{min-height:180cqw}
+.closing .sceneBody{padding-top:40cqw;padding-bottom:35cqw}
+.closing .canopyLeft,.closing .canopyRight{width:59%}
+.closing .portrait{width:55cqw;aspect-ratio:2/3;margin-bottom:7cqw}
+.closing h3{font-size:8cqw;margin-top:5cqw}
+.closing p{font-size:3.5cqw}
+.brand{display:flex;flex-direction:column;align-items:center;gap:10px;padding:24px;font-size:12px;background:#fff}
+.brand strong{font-size:14px;letter-spacing:.1em;color:var(--gold)}
+.music{position:fixed;z-index:40;bottom:20px;right:max(12px,calc((100vw - 500px)/2 + 12px));width:42px;height:42px;border:0;padding:0;background:transparent;color:#b98d61;cursor:pointer;border-radius:50%}
+.music svg{width:100%;height:100%}
+.spinning{animation:spin 7s linear infinite}
+.musicError{position:fixed;z-index:41;bottom:70px;right:max(12px,calc((100vw - 500px)/2 + 12px));width:240px;padding:10px;background:#fff;color:#704724;border:1px solid #b98d61;font-size:14px!important}
+.lightbox{position:fixed;inset:0;margin:auto;width:min(96vw,800px);height:92dvh;max-height:92dvh;border:0;background:#181818;color:white;padding:35px 12px 15px;z-index:100}
+.lightbox::backdrop{background:#000d}
+.lightbox>img{height:calc(100% - 45px);width:100%;object-fit:contain}
+.close{position:absolute;right:10px;top:0;color:white;background:transparent;border:0;font:32px Arial!important;cursor:pointer;width:40px;height:40px}
+.lightboxControls{display:flex;align-items:center;justify-content:space-between;gap:10px;font:14px Arial}
+.lightboxControls button{border:1px solid #ddd;background:#333;color:#fff;padding:8px;cursor:pointer}
+@keyframes sway{from{transform:rotate(-1deg)}to{transform:rotate(1.5deg)}}
+@keyframes breathe{from{transform:translateY(0)}to{transform:translateY(-3px)}}
+@keyframes flutter{0%,100%{transform:rotate(-10deg) scaleX(1)}50%{transform:translateY(-4px) rotate(5deg) scaleX(.55)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.root *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}

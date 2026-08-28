@@ -43,6 +43,9 @@ export type InvitationData = {
   brand: Brand;
 
   coverImage: string | null;
+  // Optional dedicated presentation photos; existing invitations use gallery/cover fallbacks.
+  heroImage?: string | null;
+  closingImage?: string | null;
   musicUrl: string | null;
   videoUrl: string | null;
 
