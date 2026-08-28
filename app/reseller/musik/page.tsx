@@ -141,7 +141,8 @@ export default function ResellerMusikPage() {
   };
 
   const isBrandPackage = reseller?.package === "reseller_brand";
-  const brandName = isBrandPackage && reseller?.brand_active && reseller?.brand_name ? reseller.brand_name : null;
+  const brandingEnabled = reseller?.package === "reseller" || Boolean(reseller?.brand_active);
+  const brandName = brandingEnabled && reseller?.brand_name ? reseller.brand_name : null;
   const upgradeText = encodeURIComponent(
     "Halo Vistiq Invitation, saya ingin upgrade ke paket Reseller Brand (white label, Rp59.000/bulan) untuk akses perpustakaan musik dan fitur lainnya."
   );
@@ -150,9 +151,9 @@ export default function ResellerMusikPage() {
     <main className={styles.page}>
       <DashboardSidebar
         brandTop={brandName ? brandName.toUpperCase() : "VISTIQ"}
-        brandBottom={brandName ? "Reseller Brand" : "Reseller"}
-        logoUrl={isBrandPackage && reseller?.brand_active ? reseller?.logo_url : null}
-        accentColor={isBrandPackage && reseller?.brand_active ? reseller?.brand_color : null}
+        brandBottom={reseller?.package === "reseller_brand" ? "Reseller Brand" : "Reseller"}
+        logoUrl={brandingEnabled ? reseller?.logo_url : null}
+        accentColor={brandingEnabled ? reseller?.brand_color : null}
         items={getResellerNavItems(reseller?.package, reseller?.id)}
         activeKey="musik"
         notificationRole="reseller"
