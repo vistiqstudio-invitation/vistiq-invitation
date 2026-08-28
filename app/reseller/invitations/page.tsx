@@ -17,6 +17,7 @@ type PhotoField = "cover_photo" | "bride_photo" | "groom_photo" | "music_url";
 
 type Reseller = {
   id: string;
+  status?: string;
   brand_name?: string | null;
   logo_url?: string | null;
   brand_color?: string | null;
@@ -394,7 +395,9 @@ export default function ResellerInvitationsPage() {
 
     setForm(initialForm);
     if (reseller) fetchData(reseller.id);
-    alert("Undangan berhasil dibuat dan siap dibagikan ke tamu.");
+    alert(canManageActivation
+      ? "Undangan berhasil dibuat. Aktifkan setelah pembayaran client Anda dikonfirmasi."
+      : "Undangan berhasil dibuat. Tunggu admin Vistiq memverifikasi pembayaran dan mengaktifkannya.");
   };
 
   const confirmPayment = async (transactionId: string) => {
@@ -425,17 +428,6 @@ export default function ResellerInvitationsPage() {
     window.open(`/preview/${slug}`, "_blank");
   };
 
-  const updateActive = async (id: number, is_active: boolean) => {
-    const { error } = await supabase.from("invitations").update({ is_active }).eq("id", id);
-
-    if (error) {
-      alert(`Gagal mengubah status undangan: ${error.message}`);
-      return;
-    }
-
-    if (reseller) fetchData(reseller.id);
-  };
-
   const deleteInvitation = async (id: number, name: string) => {
     if (!confirm(`Hapus undangan "${name}" secara permanen? Tindakan ini tidak bisa dibatalkan.`)) return;
 
@@ -458,10 +450,24 @@ export default function ResellerInvitationsPage() {
 
   const brandNotExpired =
     !reseller?.brand_expires_at || new Date(reseller.brand_expires_at) > new Date();
-  const brandActive =
-    reseller?.package === "reseller_brand" && Boolean(reseller?.brand_active) && brandNotExpired;
-  const brandName = brandActive && reseller?.brand_name ? reseller.brand_name : null;
-  const brandStyle = brandActive && reseller?.brand_color
+  const canManageActivation = reseller?.package === "reseller_brand"
+    && reseller?.status === "active" && Boolean(reseller?.brand_active) && brandNotExpired;
+
+  const updateActive = async (id: number, is_active: boolean) => {
+    if (!canManageActivation) return;
+    if (is_active && !confirm("Pembayaran client sudah Anda konfirmasi? Aktifkan undangan ini?")) return;
+    const { data, error } = await supabase.from("invitations")
+      .update({ is_active }).eq("id", id).select("is_active").single();
+    if (error || data?.is_active !== is_active) {
+      alert("Status tidak berhasil diubah. Pastikan paket Reseller Brand masih aktif.");
+      return;
+    }
+    if (reseller) fetchData(reseller.id);
+  };
+  const brandingEnabled = reseller?.package === "reseller"
+    || (reseller?.package === "reseller_brand" && Boolean(reseller?.brand_active) && brandNotExpired);
+  const brandName = brandingEnabled && reseller?.brand_name ? reseller.brand_name : null;
+  const brandStyle = brandingEnabled && reseller?.brand_color
     ? ({ "--accent": reseller.brand_color } as React.CSSProperties)
     : undefined;
 
@@ -469,9 +475,9 @@ export default function ResellerInvitationsPage() {
     <main className={styles.page} style={brandStyle}>
       <DashboardSidebar
         brandTop={brandName ? brandName.toUpperCase() : "VISTIQ"}
-        brandBottom={brandName ? "Reseller Brand" : "Reseller"}
-        logoUrl={brandActive ? reseller?.logo_url : null}
-        accentColor={brandActive ? reseller?.brand_color : null}
+        brandBottom={reseller?.package === "reseller_brand" ? "Reseller Brand" : "Reseller"}
+        logoUrl={brandingEnabled ? reseller?.logo_url : null}
+        accentColor={brandingEnabled ? reseller?.brand_color : null}
         items={getResellerNavItems(reseller?.package, reseller?.id)}
         activeKey="invitations"
         notificationRole="reseller"
@@ -484,7 +490,7 @@ export default function ResellerInvitationsPage() {
             <p className={styles.label}>{brandName ? `${brandName} DASHBOARD` : "RESELLER DASHBOARD"}</p>
             <h1 className={styles.title}>Buat Undangan</h1>
             <p className={styles.subtitle}>
-              Buatkan undangan digital lengkap untuk client Anda, langsung siap dibagikan.
+              Buat dan preview undangan client. Bagikan ke tamu setelah undangan diaktifkan.
             </p>
           </div>
 
@@ -565,7 +571,9 @@ export default function ResellerInvitationsPage() {
                 </div>
 
                 <div className={styles.input} style={{ display: "flex", alignItems: "center", color: "#92400e" }}>
-                  Menunggu Pembayaran - diaktifkan otomatis setelah dikonfirmasi admin
+                  {canManageActivation
+                    ? "Draft - Anda dapat mengaktifkan setelah pembayaran client dikonfirmasi"
+                    : "Menunggu Pembayaran - hanya admin Vistiq yang dapat mengaktifkan setelah pembayaran dikonfirmasi"}
                 </div>
 
                 {reseller?.package === "reseller_brand" && (
@@ -1174,38 +1182,37 @@ export default function ResellerInvitationsPage() {
                         </span>
                       )}
 
-                      {brandActive ? (
+                      {canManageActivation ? (
                         <select
-                          value={item.is_active === false ? "inactive" : "active"}
+                          aria-label={`Status undangan ${item.slug}`}
+                          value={item.is_active ? "active" : "inactive"}
                           onChange={(e) => updateActive(item.id, e.target.value === "active")}
                           className={styles.statusSelect}
                         >
-                          <option value="active">Active</option>
-                          <option value="inactive">Inactive</option>
+                          <option value="active">Aktif</option>
+                          <option value="inactive">Tidak Aktif</option>
                         </select>
-                      ) : (
-                        <>
-                          <span className={styles.status}>
-                            {item.is_active === false ? "Menunggu Pembayaran" : "Aktif"}
-                          </span>
+                      ) : <>
+                        <span className={styles.status}>
+                          {item.is_active === false ? "Menunggu Aktivasi Admin" : "Aktif"}
+                        </span>
 
-                          {item.is_active === false && transaction && transaction.status !== "paid" && (
-                            alreadyConfirmed ? (
-                              <span style={{ fontSize: 12, color: "#0369a1" }}>
-                                Menunggu verifikasi admin
-                              </span>
-                            ) : (
-                              <button
-                                onClick={() => confirmPayment(transaction.id)}
-                                disabled={confirmingId === transaction.id}
-                                className={styles.miniButtonGreen}
-                              >
-                                {confirmingId === transaction.id ? "Mengirim..." : "Konfirmasi Sudah Bayar"}
-                              </button>
-                            )
-                          )}
-                        </>
-                      )}
+                        {item.is_active === false && transaction && transaction.status !== "paid" && (
+                          alreadyConfirmed ? (
+                            <span style={{ fontSize: 12, color: "#0369a1" }}>
+                              Menunggu verifikasi admin
+                            </span>
+                          ) : (
+                            <button
+                              onClick={() => confirmPayment(transaction.id)}
+                              disabled={confirmingId === transaction.id}
+                              className={styles.miniButtonGreen}
+                            >
+                              {confirmingId === transaction.id ? "Mengirim..." : "Konfirmasi Sudah Bayar"}
+                            </button>
+                          )
+                        )}
+                      </>}
 
                       <div className={styles.actions}>
                         <button
@@ -1223,7 +1230,7 @@ export default function ResellerInvitationsPage() {
                           Copy
                         </button>
 
-                        {brandActive && (
+                        {canManageActivation && (
                           <button
                             onClick={() =>
                               deleteInvitation(

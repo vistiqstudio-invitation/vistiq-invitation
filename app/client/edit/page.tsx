@@ -439,22 +439,6 @@ export default function ClientEditPage() {
 
     setSaving(true);
 
-    const {
-      data: { user: authUser },
-    } = await supabase.auth.getUser();
-
-    const { data: paidOrder } = authUser
-      ? await supabase
-          .from("checkout_orders")
-          .select("id")
-          .eq("auth_user_id", authUser.id)
-          .eq("provision_status", "completed")
-          .limit(1)
-          .maybeSingle()
-      : { data: null };
-
-    const shouldAutoActivate = Boolean(paidOrder);
-
     const { data: inserted, error } = await supabase
       .from("invitations")
       .insert({
@@ -462,7 +446,7 @@ export default function ClientEditPage() {
         ...cleanFields,
         slug: cleanSlug,
         client_id: clientId,
-        is_active: shouldAutoActivate,
+        is_active: false,
       })
       .select("id")
       .single();
@@ -476,9 +460,7 @@ export default function ClientEditPage() {
 
     setInvitationId(inserted.id);
     alert(
-      shouldAutoActivate
-        ? "Undangan berhasil dibuat! Bisa terus dilengkapi/diubah kapan saja."
-        : "Undangan berhasil dibuat dan sudah bisa dilengkapi. Link undangan akan aktif setelah pembayaran dikonfirmasi oleh admin/reseller Anda."
+      "Undangan berhasil dibuat dan dapat dilengkapi. Aktivasi dilakukan oleh admin Vistiq atau pengelola Reseller Brand Anda setelah pembayaran dikonfirmasi."
     );
   };
 

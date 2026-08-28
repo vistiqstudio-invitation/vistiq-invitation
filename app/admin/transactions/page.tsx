@@ -140,7 +140,7 @@ export default function AdminTransactionsPage() {
           <div>
             <p className={styles.label}>OWNER MENU</p>
             <h1 className={styles.title}>Transaksi</h1>
-            <p className={styles.subtitle}>Pembayaran client reseller diproses otomatis lewat Midtrans. Status tidak perlu dikonfirmasi manual.</p>
+            <p className={styles.subtitle}>Pembayaran tercatat otomatis lewat Midtrans. Setelah pembayaran berhasil diverifikasi, aktifkan undangan melalui menu Undangan.</p>
           </div>
           <button onClick={fetchTransactions} className={styles.button}>Refresh</button>
         </header>

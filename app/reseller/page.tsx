@@ -193,14 +193,15 @@ export default function ResellerPage() {
   const brandExpiresAt = reseller?.brand_expires_at ? new Date(reseller.brand_expires_at) : null;
   const brandExpired = isBrandPackage && brandExpiresAt !== null && brandExpiresAt.getTime() <= now;
   const brandActive = isBrandPackage && Boolean(reseller?.brand_active) && !brandExpired;
+  const brandingEnabled = reseller?.package === "reseller" || brandActive;
   const brandDaysLeft = brandExpiresAt && !brandExpired
     ? Math.ceil((brandExpiresAt.getTime() - now) / 86400000)
     : null;
   const brandExpiryLabel = brandExpiresAt
     ? brandExpiresAt.toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })
     : null;
-  const brandName = brandActive && reseller?.brand_name ? reseller.brand_name : null;
-  const brandStyle = brandActive && reseller?.brand_color
+  const brandName = brandingEnabled && reseller?.brand_name ? reseller.brand_name : null;
+  const brandStyle = brandingEnabled && reseller?.brand_color
     ? ({ "--accent": reseller.brand_color } as React.CSSProperties)
     : undefined;
 
@@ -216,9 +217,9 @@ export default function ResellerPage() {
     <main className={styles.page} style={brandStyle}>
       <DashboardSidebar
         brandTop={brandName ? brandName.toUpperCase() : "VISTIQ"}
-        brandBottom={brandName ? "Reseller Brand" : "Reseller"}
-        logoUrl={brandActive ? reseller?.logo_url : null}
-        accentColor={brandActive ? reseller?.brand_color : null}
+        brandBottom={reseller?.package === "reseller_brand" ? "Reseller Brand" : "Reseller"}
+        logoUrl={brandingEnabled ? reseller?.logo_url : null}
+        accentColor={brandingEnabled ? reseller?.brand_color : null}
         items={getResellerNavItems(reseller?.package, reseller?.id)}
         activeKey="dashboard"
         notificationRole="reseller"
@@ -324,12 +325,13 @@ export default function ResellerPage() {
               </div>
             </section>
 
-            {isBrandPackage ? (
-              <section className={styles.formCard}>
-                <h2 className={styles.sectionTitle}>Brand Saya (White Label)</h2>
+            <section className={styles.formCard}>
+                <h2 className={styles.sectionTitle}>{isBrandPackage ? "Brand Saya (White Label)" : "Brand Saya"}</h2>
 
-                <p style={{ margin: "0 0 16px", fontSize: 13.5, color: brandActive ? "#15803d" : "#b45309" }}>
-                  {brandActive
+                <p style={{ margin: "0 0 16px", fontSize: 13.5, color: brandingEnabled ? "#15803d" : "#b45309" }}>
+                  {!isBrandPackage
+                    ? "Nama dan logo brand Anda akan tampil di dashboard serta undangan client. Fitur domain sendiri tetap khusus Reseller Brand."
+                    : brandActive
                     ? "Paket brand aktif - nama & logo di bawah tampil di undangan client Anda."
                     : brandExpired
                     ? "Masa aktif habis - lengkapi data tetap bisa disimpan, tapi brand baru tampil lagi setelah admin memperpanjang."
@@ -352,20 +354,24 @@ export default function ResellerPage() {
                     style={{ padding: 4, height: 44 }}
                   />
 
-                  <input
-                    type="number"
-                    min="0"
-                    step="1000"
-                    placeholder="Harga Mulai Dari, contoh: 59000"
-                    value={brandForm.starting_price}
-                    onChange={(e) => setBrandForm({ ...brandForm, starting_price: e.target.value })}
-                    className={styles.input}
-                  />
+                  {isBrandPackage && (
+                    <input
+                      type="number"
+                      min="0"
+                      step="1000"
+                      placeholder="Harga Mulai Dari, contoh: 59000"
+                      value={brandForm.starting_price}
+                      onChange={(e) => setBrandForm({ ...brandForm, starting_price: e.target.value })}
+                      className={styles.input}
+                    />
+                  )}
                 </div>
 
-                <p className={styles.helpText} style={{ marginTop: -8 }}>
-                  Harga ini yang tampil di halaman katalog Anda (di bawah) - bebas Anda tentukan sendiri, tidak terikat harga Vistiq.
-                </p>
+                {isBrandPackage && (
+                  <p className={styles.helpText} style={{ marginTop: -8 }}>
+                    Harga ini yang tampil di halaman katalog Anda - bebas Anda tentukan sendiri, tidak terikat harga Vistiq.
+                  </p>
+                )}
 
                 <div style={{ display: "flex", alignItems: "center", gap: 16, margin: "16px 0" }}>
                   {reseller.logo_url && (
@@ -397,7 +403,6 @@ export default function ResellerPage() {
                   {savingBrand ? "Menyimpan..." : "Simpan Brand"}
                 </button>
               </section>
-            ) : null}
 
             {brandActive && (
               <CustomDomainCard
@@ -406,7 +411,7 @@ export default function ResellerPage() {
               />
             )}
 
-            {brandActive && (
+            {brandingEnabled && (
               <section className={styles.formCard}>
                 <h2 className={styles.sectionTitle}>Landing Page Anda</h2>
                 <p style={{ margin: "0 0 16px", fontSize: 13.5, color: "#64748b" }}>
@@ -436,11 +441,9 @@ export default function ResellerPage() {
               <section className={styles.formCard}>
                 <h2 className={styles.sectionTitle}>Upgrade ke Reseller Brand</h2>
                 <p style={{ margin: "0 0 16px", fontSize: 13.5, color: "#64748b" }}>
-                  Tampilkan nama, logo, dan warna brand Anda sendiri di setiap undangan
-                  client (white label), dan dashboard Anda akan lengkap seperti dashboard
-                  Vistiq Studio. <strong>Rp59.000/bulan</strong>, layaknya member
-                  premium - dapat update tema dan konten promosi baru setiap bulan,
-                  keuntungan 100% jadi milik Anda.
+                  Gunakan subdomain atau domain sendiri, dapatkan fitur premium,
+                  update tema dan konten promosi baru setiap bulan, serta nikmati
+                  keuntungan 100% milik Anda. <strong>Rp59.000/bulan</strong>.
                 </p>
                 <a
                   href={`https://wa.me/${WA_NUMBER}?text=${upgradeText}`}
