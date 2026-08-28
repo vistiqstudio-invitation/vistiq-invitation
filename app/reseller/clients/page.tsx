@@ -254,7 +254,7 @@ export default function ResellerClientsPage() {
   const clientCredentialsMessage = () => {
     if (!newClientCredentials) return "";
 
-    const dashboardBrand = reseller?.package === "reseller_brand" && reseller.brand_active && reseller.brand_name
+    const dashboardBrand = (reseller?.package === "reseller" || reseller?.brand_active) && reseller.brand_name
       ? reseller.brand_name
       : "Vistiq Invitation";
     const category = categoryForPackageName(newClientCredentials.packageName);
@@ -335,9 +335,9 @@ export default function ResellerClientsPage() {
     router.push("/login");
   };
 
-  const brandActive = reseller?.package === "reseller_brand" && Boolean(reseller?.brand_active);
-  const brandName = brandActive && reseller?.brand_name ? reseller.brand_name : null;
-  const brandStyle = brandActive && reseller?.brand_color
+  const brandingEnabled = reseller?.package === "reseller" || Boolean(reseller?.brand_active);
+  const brandName = brandingEnabled && reseller?.brand_name ? reseller.brand_name : null;
+  const brandStyle = brandingEnabled && reseller?.brand_color
     ? ({ "--accent": reseller.brand_color } as React.CSSProperties)
     : undefined;
 
@@ -345,9 +345,9 @@ export default function ResellerClientsPage() {
     <main className={styles.page} style={brandStyle}>
       <DashboardSidebar
         brandTop={brandName ? brandName.toUpperCase() : "VISTIQ"}
-        brandBottom={brandName ? "Reseller Brand" : "Reseller"}
-        logoUrl={brandActive ? reseller?.logo_url : null}
-        accentColor={brandActive ? reseller?.brand_color : null}
+        brandBottom={reseller?.package === "reseller_brand" ? "Reseller Brand" : "Reseller"}
+        logoUrl={brandingEnabled ? reseller?.logo_url : null}
+        accentColor={brandingEnabled ? reseller?.brand_color : null}
         items={getResellerNavItems(reseller?.package, reseller?.id)}
         activeKey="clients"
         notificationRole="reseller"
