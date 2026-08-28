@@ -15,7 +15,17 @@ import type { BirthdayInvitationData } from "@/types/birthday";
 
 function resolveBrand(raw: Record<string, any>): Brand {
   const reseller = raw.clients?.resellers;
-  if (!reseller || !reseller.brand_active || !reseller.brand_name) return null;
+  if (!reseller || !reseller.brand_name || reseller.status !== "active") return null;
+
+  if (reseller.package === "reseller") {
+    return {
+      name: reseller.brand_name,
+      logoUrl: reseller.logo_url || null,
+      color: reseller.brand_color || null,
+    };
+  }
+
+  if (reseller.package !== "reseller_brand" || !reseller.brand_active) return null;
 
   // Reseller Brand is now a Rp99.000/month subscription (grandfathered
   // lifetime resellers have brand_expires_at = null and never hit this).
@@ -470,7 +480,7 @@ export async function getInvitationBySlug(
   const { data, error } = await supabase
     .from("invitations")
     .select(
-      "*, clients:client_id(resellers:reseller_id(brand_name, logo_url, brand_color, brand_active, brand_expires_at))"
+      "*, clients:client_id(resellers:reseller_id(brand_name, logo_url, brand_color, brand_active, brand_expires_at, package, status))"
     )
     .eq("slug", slug)
     .single();
