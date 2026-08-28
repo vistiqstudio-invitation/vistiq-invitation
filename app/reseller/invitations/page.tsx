@@ -425,17 +425,6 @@ export default function ResellerInvitationsPage() {
     window.open(`/preview/${slug}`, "_blank");
   };
 
-  const updateActive = async (id: number, is_active: boolean) => {
-    const { error } = await supabase.from("invitations").update({ is_active }).eq("id", id);
-
-    if (error) {
-      alert(`Gagal mengubah status undangan: ${error.message}`);
-      return;
-    }
-
-    if (reseller) fetchData(reseller.id);
-  };
-
   const deleteInvitation = async (id: number, name: string) => {
     if (!confirm(`Hapus undangan "${name}" secara permanen? Tindakan ini tidak bisa dibatalkan.`)) return;
 
@@ -458,10 +447,10 @@ export default function ResellerInvitationsPage() {
 
   const brandNotExpired =
     !reseller?.brand_expires_at || new Date(reseller.brand_expires_at) > new Date();
-  const brandActive =
-    reseller?.package === "reseller_brand" && Boolean(reseller?.brand_active) && brandNotExpired;
-  const brandName = brandActive && reseller?.brand_name ? reseller.brand_name : null;
-  const brandStyle = brandActive && reseller?.brand_color
+  const brandingEnabled = reseller?.package === "reseller"
+    || (reseller?.package === "reseller_brand" && Boolean(reseller?.brand_active) && brandNotExpired);
+  const brandName = brandingEnabled && reseller?.brand_name ? reseller.brand_name : null;
+  const brandStyle = brandingEnabled && reseller?.brand_color
     ? ({ "--accent": reseller.brand_color } as React.CSSProperties)
     : undefined;
 
@@ -469,9 +458,9 @@ export default function ResellerInvitationsPage() {
     <main className={styles.page} style={brandStyle}>
       <DashboardSidebar
         brandTop={brandName ? brandName.toUpperCase() : "VISTIQ"}
-        brandBottom={brandName ? "Reseller Brand" : "Reseller"}
-        logoUrl={brandActive ? reseller?.logo_url : null}
-        accentColor={brandActive ? reseller?.brand_color : null}
+        brandBottom={reseller?.package === "reseller_brand" ? "Reseller Brand" : "Reseller"}
+        logoUrl={brandingEnabled ? reseller?.logo_url : null}
+        accentColor={brandingEnabled ? reseller?.brand_color : null}
         items={getResellerNavItems(reseller?.package, reseller?.id)}
         activeKey="invitations"
         notificationRole="reseller"
@@ -565,7 +554,7 @@ export default function ResellerInvitationsPage() {
                 </div>
 
                 <div className={styles.input} style={{ display: "flex", alignItems: "center", color: "#92400e" }}>
-                  Menunggu Pembayaran - diaktifkan otomatis setelah dikonfirmasi admin
+                  Menunggu Pembayaran - hanya admin Vistiq yang dapat mengaktifkan setelah pembayaran dikonfirmasi
                 </div>
 
                 {reseller?.package === "reseller_brand" && (
@@ -1174,38 +1163,27 @@ export default function ResellerInvitationsPage() {
                         </span>
                       )}
 
-                      {brandActive ? (
-                        <select
-                          value={item.is_active === false ? "inactive" : "active"}
-                          onChange={(e) => updateActive(item.id, e.target.value === "active")}
-                          className={styles.statusSelect}
-                        >
-                          <option value="active">Active</option>
-                          <option value="inactive">Inactive</option>
-                        </select>
-                      ) : (
-                        <>
-                          <span className={styles.status}>
-                            {item.is_active === false ? "Menunggu Pembayaran" : "Aktif"}
-                          </span>
+                      <>
+                        <span className={styles.status}>
+                          {item.is_active === false ? "Menunggu Aktivasi Admin" : "Aktif"}
+                        </span>
 
-                          {item.is_active === false && transaction && transaction.status !== "paid" && (
-                            alreadyConfirmed ? (
-                              <span style={{ fontSize: 12, color: "#0369a1" }}>
-                                Menunggu verifikasi admin
-                              </span>
-                            ) : (
-                              <button
-                                onClick={() => confirmPayment(transaction.id)}
-                                disabled={confirmingId === transaction.id}
-                                className={styles.miniButtonGreen}
-                              >
-                                {confirmingId === transaction.id ? "Mengirim..." : "Konfirmasi Sudah Bayar"}
-                              </button>
-                            )
-                          )}
-                        </>
-                      )}
+                        {item.is_active === false && transaction && transaction.status !== "paid" && (
+                          alreadyConfirmed ? (
+                            <span style={{ fontSize: 12, color: "#0369a1" }}>
+                              Menunggu verifikasi admin
+                            </span>
+                          ) : (
+                            <button
+                              onClick={() => confirmPayment(transaction.id)}
+                              disabled={confirmingId === transaction.id}
+                              className={styles.miniButtonGreen}
+                            >
+                              {confirmingId === transaction.id ? "Mengirim..." : "Konfirmasi Sudah Bayar"}
+                            </button>
+                          )
+                        )}
+                      </>
 
                       <div className={styles.actions}>
                         <button
@@ -1223,7 +1201,7 @@ export default function ResellerInvitationsPage() {
                           Copy
                         </button>
 
-                        {brandActive && (
+                        {brandingEnabled && (
                           <button
                             onClick={() =>
                               deleteInvitation(
