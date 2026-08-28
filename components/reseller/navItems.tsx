@@ -20,7 +20,7 @@ export function getResellerNavItems(
     items.push({ key: "musik", label: "Musik", href: "/reseller/musik", icon: <IconMusic /> });
   }
 
-  if (pkg === "reseller_brand" && resellerId) {
+  if (resellerId) {
     items.push({ key: "landing", label: "Landing Page", href: `/promo/${resellerId}`, external: true, icon: <IconGlobe /> });
   } else {
     items.push({ key: "demo", label: "Demo Tema", href: "/demo", external: true, icon: <IconPalette /> });
