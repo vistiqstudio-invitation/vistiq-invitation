@@ -220,6 +220,7 @@ export default function InvitationsPage() {
   };
 
   const updateActive = async (id: string, is_active: boolean) => {
+    if (is_active && !confirm("Pastikan pembayaran client sudah berhasil dan Anda verifikasi. Aktifkan undangan ini?")) return;
     const { error } = await supabase.from("invitations").update({ is_active }).eq("id", id);
 
     if (error) {

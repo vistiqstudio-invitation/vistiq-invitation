@@ -78,7 +78,7 @@ export async function GET(request: Request) {
 
         if (paid && transaction.client_id) {
           await supabase.from("clients").update({ status: "active" }).eq("id", transaction.client_id);
-          await supabase.from("invitations").update({ is_active: true }).eq("client_id", transaction.client_id);
+          // Payment is recorded here; invitation activation requires Vistiq admin approval.
         }
       }
     } else {

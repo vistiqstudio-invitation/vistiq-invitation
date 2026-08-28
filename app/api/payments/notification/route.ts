@@ -97,10 +97,7 @@ export async function POST(request: Request) {
         .update({ status: "active" })
         .eq("id", resellerTransaction.client_id);
 
-      await supabase
-        .from("invitations")
-        .update({ is_active: true })
-        .eq("client_id", resellerTransaction.client_id);
+      // A settled payment does not publish the invitation. Vistiq admin activates it.
     }
 
     return NextResponse.json({ received: true, resellerClientPayment: true });

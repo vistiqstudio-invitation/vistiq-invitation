@@ -261,7 +261,7 @@ export default function ResellerClientsPage() {
     const checklist = DATA_CHECKLIST[category];
 
     if (reseller?.package !== "reseller_brand" && newClientCredentials.paymentUrl) {
-      return `Halo ${newClientCredentials.name}, pesanan undangan digital Anda sudah dibuat.\n\nTotal pembayaran: Rp ${newClientCredentials.salePrice.toLocaleString("id-ID")}\nBayar aman melalui Midtrans di link berikut:\n${newClientCredentials.paymentUrl}\n\nSetelah pembayaran berhasil, undangan akan aktif otomatis dan akun dashboard bisa digunakan.\n\nAkun dashboard:\nLink: ${window.location.origin}/login\nEmail: ${newClientCredentials.email}\nPassword: ${newClientCredentials.password}\n\nData yang perlu disiapkan:\n${checklist}\n\nTerima kasih!`;
+      return `Halo ${newClientCredentials.name}, pesanan undangan digital Anda sudah dibuat.\n\nTotal pembayaran: Rp ${newClientCredentials.salePrice.toLocaleString("id-ID")}\nBayar aman melalui Midtrans di link berikut:\n${newClientCredentials.paymentUrl}\n\nSetelah pembayaran berhasil, akun dashboard bisa digunakan. Undangan menunggu verifikasi dan aktivasi oleh admin Vistiq.\n\nAkun dashboard:\nLink: ${window.location.origin}/login\nEmail: ${newClientCredentials.email}\nPassword: ${newClientCredentials.password}\n\nData yang perlu disiapkan:\n${checklist}\n\nTerima kasih!`;
     }
 
     return `Halo ${newClientCredentials.name}, berikut akun login dashboard undangan Anda di ${dashboardBrand}:\n\nLink: ${window.location.origin}/login\nEmail: ${newClientCredentials.email}\nPassword: ${newClientCredentials.password}\n\nLewat dashboard ini Anda bisa generate link undangan per nama tamu, lihat RSVP, dan edit undangan.\n\nSupaya undangannya bisa langsung dipakai, mohon siapkan data berikut untuk diisi di dashboard:\n${checklist}\n\nKalau ada pertanyaan, jangan sungkan hubungi kami ya. Terima kasih!`;
@@ -280,7 +280,7 @@ export default function ResellerClientsPage() {
 
   const paymentWaLink = (client: Client, transaction?: Transaction) => {
     if (!client.whatsapp || !transaction?.midtrans_redirect_url) return "";
-    const message = `Halo ${client.name}, berikut link pembayaran undangan digital Anda.\n\nTotal: Rp ${Number(transaction.amount).toLocaleString("id-ID")}\nPembayaran melalui Midtrans:\n${transaction.midtrans_redirect_url}\n\nSetelah pembayaran berhasil, undangan akan aktif otomatis. Terima kasih!`;
+    const message = `Halo ${client.name}, berikut link pembayaran undangan digital Anda.\n\nTotal: Rp ${Number(transaction.amount).toLocaleString("id-ID")}\nPembayaran melalui Midtrans:\n${transaction.midtrans_redirect_url}\n\nSetelah pembayaran berhasil, admin Vistiq akan memverifikasi dan mengaktifkan undangan. Terima kasih!`;
     return `https://wa.me/${toWaNumber(client.whatsapp)}?text=${encodeURIComponent(message)}`;
   };
 
