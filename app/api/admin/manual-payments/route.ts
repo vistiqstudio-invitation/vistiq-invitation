@@ -162,7 +162,7 @@ export async function POST(request: Request) {
         const { error: renewError } = await supabase
           .from("resellers")
           .update({
-            package: "reseller-brand",
+            package: "reseller_brand",
             status: "active",
             brand_active: true,
             commission_percent: 100,
