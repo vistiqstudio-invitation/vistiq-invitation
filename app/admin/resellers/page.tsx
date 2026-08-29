@@ -35,6 +35,7 @@ type CreatedCredentials = {
   email: string;
   password: string;
   orderId?: string;
+  orderStatus?: "pending" | "paid";
   name?: string;
   whatsapp?: string;
   package?: "reseller" | "reseller_brand";
@@ -80,7 +81,6 @@ export default function ResellersPage() {
     whatsapp: "",
     package: "reseller",
     commission_percent: 80,
-    status: "active",
   });
 
   const [creating, setCreating] = useState(false);
@@ -222,6 +222,7 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! ðŸš
       email: result.email,
       password: result.password,
       orderId: result.orderId,
+      orderStatus: result.orderStatus === "paid" ? "paid" : "pending",
       whatsapp: form.whatsapp.trim(),
       package: form.package === "reseller_brand" ? "reseller_brand" : "reseller",
     });
@@ -233,7 +234,6 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! ðŸš
       whatsapp: "",
       package: "reseller",
       commission_percent: 80,
-      status: "active",
     });
 
     fetchResellers();
@@ -418,7 +418,7 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! ðŸš
         <section className={styles.formCard}>
           <h2 className={styles.sectionTitle}>Tambah Reseller Baru</h2>
           <p style={{ margin: "0 0 16px", fontSize: 13.5, color: "#64748b" }}>
-            Akun login (email + password) dibuat otomatis begitu disimpan.
+            Akun yang dibuat Admin Vistiq langsung Active. Paketnya otomatis dicatat Lunas dan masuk omzet Owner.
           </p>
 
           {credentials && (
@@ -441,7 +441,9 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! ðŸš
               <p style={{ margin: "4px 0 12px" }}>Password: <code>{credentials.password}</code></p>
               {credentials.orderId && (
                 <p style={{ margin: "4px 0 12px", color: "#1d4ed8" }}>
-                  Order paket: <code>{credentials.orderId}</code> Â· PENDING â€” konfirmasi di menu Transaksi setelah transfer masuk.
+                  Order paket: <code>{credentials.orderId}</code> Â· {credentials.orderStatus === "paid"
+                    ? "LUNAS â€” otomatis masuk omzet Owner."
+                    : "PENDING â€” konfirmasi di menu Transaksi setelah transfer masuk."}
                 </p>
               )}
 
@@ -556,15 +558,6 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! ðŸš
               className={styles.input}
             />
 
-            <select
-              value={form.status}
-              onChange={(e) => setForm({ ...form, status: e.target.value })}
-              className={styles.input}
-            >
-              <option value="active">Active</option>
-              <option value="pending">Pending</option>
-              <option value="inactive">Inactive</option>
-            </select>
           </div>
 
           <button onClick={addReseller} className={styles.button} disabled={creating}>

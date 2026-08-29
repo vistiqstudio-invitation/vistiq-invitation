@@ -223,7 +223,7 @@ export default function AdminTransactionsPage() {
           <div>
             <p className={styles.label}>OWNER MENU</p>
             <h1 className={styles.title}>Transaksi</h1>
-            <p className={styles.subtitle}>Kelola pembayaran paket dan penjualan client reseller. Order manual baru menjadi omzet setelah Owner mengonfirmasi transfer.</p>
+            <p className={styles.subtitle}>Kelola pembayaran paket dan penjualan client reseller. Akun yang dibuat Admin Vistiq langsung Lunas dan masuk omzet; order manual akun lama tetap menunggu konfirmasi transfer.</p>
           </div>
           <button onClick={fetchTransactions} className={styles.button}>Refresh</button>
         </header>
@@ -334,7 +334,11 @@ export default function AdminTransactionsPage() {
                   <div>
                     <strong>{item.package_name} · Rp {Number(item.amount).toLocaleString("id-ID")}</strong>
                     {item.order_source === "owner_manual" && (
-                      <p style={{ color: "#1d4ed8", fontSize: 12 }}>Order manual Owner · {packageLabel(item.package_id)} · akun sudah dibuat</p>
+                      <p style={{ color: item.payment_type === "admin_created" ? "#15803d" : "#1d4ed8", fontSize: 12 }}>
+                        {item.payment_type === "admin_created"
+                          ? `Dibuat Admin Vistiq · ${packageLabel(item.package_id)} · akun aktif & omzet tercatat`
+                          : `Order manual Owner · ${packageLabel(item.package_id)} · akun sudah dibuat`}
+                      </p>
                     )}
                     {item.reseller_id && <p>{resellerName(item.reseller_id)}</p>}
                     <p>{item.customer_name} · {item.customer_email} · {item.customer_phone}</p>
