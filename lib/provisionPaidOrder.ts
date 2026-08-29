@@ -72,7 +72,7 @@ export async function provisionPaidOrder(
         user_id: authUserId,
         name: claimed.customer_name,
         whatsapp: claimed.customer_phone,
-        package: resellerBrand ? "reseller-brand" : "reseller",
+        package: resellerBrand ? "reseller_brand" : "reseller",
         // Standard Reseller keeps 80%; the remaining 20% is the platform fee.
         commission_percent: resellerBrand ? 100 : 80,
         status: "active",
