@@ -5,88 +5,34 @@ import { createClient as createServiceClient } from "@supabase/supabase-js";
 import crypto from "node:crypto";
 import { getSessionProfile } from "@/lib/supabase/dal";
 
+const ADMIN_WHATSAPP = "6281371338032";
+
 function generatePassword() {
   return crypto.randomBytes(9).toString("base64url");
 }
 
-async function createClientPaymentLink({
-  supabaseAdmin,
-  transactionId,
-  amount,
-  name,
-  email,
-  phone,
-}: {
-  supabaseAdmin: ReturnType<typeof createServiceClient>;
+function manualClientPaymentUrl(params: {
   transactionId: string;
   amount: number;
-  name: string;
-  email: string;
-  phone: string;
+  clientName: string;
+  resellerName: string;
 }) {
-  const serverKey = process.env.MIDTRANS_SERVER_KEY;
-  const production = process.env.MIDTRANS_IS_PRODUCTION === "true";
-  if (!serverKey) throw new Error("Konfigurasi Midtrans belum tersedia.");
-
-  const orderId = `VSTQ-RC-${Date.now()}-${crypto.randomBytes(4).toString("hex")}`;
-  const endpoint = production
-    ? "https://app.midtrans.com/snap/v1/transactions"
-    : "https://app.sandbox.midtrans.com/snap/v1/transactions";
-
-  const response = await fetch(endpoint, {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: `Basic ${Buffer.from(`${serverKey}:`).toString("base64")}`,
-    },
-    body: JSON.stringify({
-      transaction_details: { order_id: orderId, gross_amount: amount },
-      item_details: [
-        {
-          id: "reseller-client-invitation",
-          price: amount,
-          quantity: 1,
-          name: "Undangan Digital Vistiq",
-        },
-      ],
-      customer_details: { first_name: name, email, phone },
-      expiry: { unit: "hours", duration: 24 },
-      custom_field1: "reseller_client",
-      custom_field2: transactionId,
-    }),
-    cache: "no-store",
-  });
-
-  const result = (await response.json()) as {
-    token?: string;
-    redirect_url?: string;
-    error_messages?: string[];
-  };
-
-  if (!response.ok || !result.redirect_url) {
-    throw new Error(result.error_messages?.[0] || "Gagal membuat link pembayaran Midtrans.");
-  }
-
-  const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
-  const { error: updateError } = await supabaseAdmin
-    .from("transactions")
-    .update({
-      midtrans_order_id: orderId,
-      midtrans_redirect_url: result.redirect_url,
-      payment_link_expires_at: expiresAt,
-    } as never)
-    .eq("id", transactionId);
-
-  if (updateError) throw new Error(updateError.message);
-
-  return { orderId, paymentUrl: result.redirect_url, expiresAt };
+  const message = [
+    "Halo Admin Vistiq, saya ingin konfirmasi pembayaran undangan client Reseller.",
+    "",
+    `ID Transaksi: ${params.transactionId}`,
+    `Client: ${params.clientName}`,
+    `Reseller: ${params.resellerName}`,
+    `Total: Rp ${params.amount.toLocaleString("id-ID")}`,
+    "",
+    "Mohon kirimkan informasi rekening Vistiq. Setelah transfer diterima, mohon tandai Pembayaran Sukses dari Dashboard Owner.",
+  ].join("\n");
+  return `https://wa.me/${ADMIN_WHATSAPP}?text=${encodeURIComponent(message)}`;
 }
 
 export async function POST(request: Request) {
   const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
   const profile = await getSessionProfile();
 
   if (!profile || (profile.role !== "owner" && profile.role !== "reseller")) {
@@ -118,39 +64,36 @@ export async function POST(request: Request) {
   const requestedSalePrice = Math.round(Number(body.sale_price || 100000));
 
   if (!name || !email) {
-    return NextResponse.json(
-      { error: "Nama dan email wajib diisi." },
-      { status: 400 },
-    );
+    return NextResponse.json({ error: "Nama dan email wajib diisi." }, { status: 400 });
   }
 
   let reseller_id: string | null = null;
-  let resellerPackage: "reseller" | "reseller_brand" | null = null;
+  let resellerPackage: string | null = null;
+  let resellerName = profile.name || "Reseller";
 
   if (profile.role === "reseller") {
     const { data: reseller } = await supabaseAdmin
       .from("resellers")
-      .select("id, package")
+      .select("id, package, name")
       .eq("user_id", profile.id)
       .single();
 
     if (!reseller) {
-      return NextResponse.json(
-        { error: "Akun reseller belum terhubung." },
-        { status: 400 },
-      );
+      return NextResponse.json({ error: "Akun reseller belum terhubung." }, { status: 400 });
     }
 
     reseller_id = reseller.id;
-    resellerPackage = reseller.package as "reseller" | "reseller_brand";
+    resellerPackage = reseller.package;
+    resellerName = reseller.name || resellerName;
   } else if (body.reseller_id) {
     reseller_id = body.reseller_id;
     const { data: reseller } = await supabaseAdmin
       .from("resellers")
-      .select("package")
+      .select("package, name")
       .eq("id", reseller_id)
       .maybeSingle();
-    resellerPackage = (reseller?.package as "reseller" | "reseller_brand" | undefined) ?? null;
+    resellerPackage = reseller?.package ?? null;
+    resellerName = reseller?.name || resellerName;
   }
 
   const salePrice = resellerPackage === "reseller"
@@ -160,14 +103,12 @@ export async function POST(request: Request) {
   if (resellerPackage === "reseller") status = "pending";
 
   const password = generatePassword();
-
-  const { data: created, error: createUserError } =
-    await supabaseAdmin.auth.admin.createUser({
-      email,
-      password,
-      email_confirm: true,
-      user_metadata: { role: "client", name, whatsapp },
-    });
+  const { data: created, error: createUserError } = await supabaseAdmin.auth.admin.createUser({
+    email,
+    password,
+    email_confirm: true,
+    user_metadata: { role: "client", name, whatsapp },
+  });
 
   if (createUserError || !created.user) {
     const message = createUserError?.message.includes("already been registered")
@@ -193,15 +134,14 @@ export async function POST(request: Request) {
 
   if (clientError || !client) {
     await supabaseAdmin.auth.admin.deleteUser(created.user.id);
-    return NextResponse.json(
-      { error: "Gagal menyimpan data client." },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: "Gagal menyimpan data client." }, { status: 500 });
   }
 
   let paymentUrl: string | null = null;
-  let paymentError: string | null = null;
+  let transactionId: string | null = null;
 
+  // Trigger database membuat transaksi pending hanya untuk Reseller standar.
+  // Pembayaran dilakukan manual ke Vistiq; tidak lagi membuat link Midtrans.
   if (resellerPackage === "reseller") {
     const { data: transaction } = await supabaseAdmin
       .from("transactions")
@@ -213,21 +153,18 @@ export async function POST(request: Request) {
       .maybeSingle();
 
     if (transaction) {
-      try {
-        const payment = await createClientPaymentLink({
-          supabaseAdmin:
-            supabaseAdmin as unknown as ReturnType<typeof createServiceClient>,
-          transactionId: transaction.id,
-          amount: Number(transaction.amount),
-          name,
-          email,
-          phone: whatsapp,
-        });
-        paymentUrl = payment.paymentUrl;
-      } catch (error) {
-        paymentError = error instanceof Error ? error.message : "Gagal membuat link pembayaran.";
-        console.error("create-client payment link:", error);
-      }
+      transactionId = transaction.id;
+      await supabaseAdmin
+        .from("transactions")
+        .update({ payment_type: "manual_whatsapp" })
+        .eq("id", transaction.id)
+        .eq("status", "pending");
+      paymentUrl = manualClientPaymentUrl({
+        transactionId: transaction.id,
+        amount: Number(transaction.amount),
+        clientName: name,
+        resellerName,
+      });
     }
   }
 
@@ -236,7 +173,9 @@ export async function POST(request: Request) {
     email,
     password,
     salePrice,
+    transactionId,
     paymentUrl,
-    paymentError,
+    paymentMethod: resellerPackage === "reseller" ? "manual_whatsapp" : "direct_to_brand_reseller",
+    paymentError: null,
   });
 }
