@@ -9,11 +9,17 @@ import { getResellerNavItems } from "@/components/reseller/navItems";
 import { themeList, aqiqahThemeList, khitanThemeList, birthdayThemeList } from "@/lib/theme";
 import styles from "@/styles/dashboard.module.css";
 
+const ADMIN_WHATSAPP = "6281371338032";
+
 function toWaNumber(phone: string) {
   const digits = phone.replace(/\D/g, "");
   if (digits.startsWith("62")) return digits;
   if (digits.startsWith("0")) return `62${digits.slice(1)}`;
   return `62${digits}`;
+}
+
+function isBrandPackage(value?: string | null) {
+  return value === "reseller-brand" || value === "reseller_brand";
 }
 
 function categoryForPackageName(packageName: string) {
@@ -46,7 +52,7 @@ type Reseller = {
   logo_url?: string | null;
   brand_color?: string | null;
   brand_active?: boolean;
-  package?: "reseller" | "reseller_brand";
+  package?: "reseller" | "reseller-brand" | "reseller_brand";
 };
 
 type Client = {
@@ -67,8 +73,7 @@ type Transaction = {
   amount: number;
   commission: number;
   status?: string;
-  midtrans_redirect_url?: string | null;
-  payment_link_expires_at?: string | null;
+  payment_type?: string | null;
 };
 
 type Invitation = {
@@ -139,7 +144,7 @@ export default function ResellerClientsPage() {
         .in("client_id", clientIds),
       supabase
         .from("transactions")
-        .select("id, client_id, amount, commission, status, midtrans_redirect_url, payment_link_expires_at")
+        .select("id, client_id, amount, commission, status, payment_type")
         .eq("reseller_id", resellerId)
         .in("client_id", clientIds)
         .order("created_at", { ascending: false }),
@@ -203,8 +208,9 @@ export default function ResellerClientsPage() {
       return;
     }
 
+    const brandPackage = isBrandPackage(reseller.package);
     const salePrice = Math.round(Number(form.sale_price));
-    if (reseller.package !== "reseller_brand" && (!Number.isFinite(salePrice) || salePrice < 1000)) {
+    if (!brandPackage && (!Number.isFinite(salePrice) || salePrice < 1000)) {
       alert("Harga jual client wajib diisi dengan benar.");
       return;
     }
@@ -216,7 +222,7 @@ export default function ResellerClientsPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         ...form,
-        sale_price: reseller.package === "reseller_brand" ? salePrice || 100000 : salePrice,
+        sale_price: brandPackage ? salePrice || 100000 : salePrice,
       }),
     });
 
@@ -254,14 +260,15 @@ export default function ResellerClientsPage() {
   const clientCredentialsMessage = () => {
     if (!newClientCredentials) return "";
 
-    const dashboardBrand = (reseller?.package === "reseller" || reseller?.brand_active) && reseller.brand_name
+    const brandPackage = isBrandPackage(reseller?.package);
+    const dashboardBrand = (reseller?.package === "reseller" || reseller?.brand_active) && reseller?.brand_name
       ? reseller.brand_name
       : "Vistiq Invitation";
     const category = categoryForPackageName(newClientCredentials.packageName);
     const checklist = DATA_CHECKLIST[category];
 
-    if (reseller?.package !== "reseller_brand" && newClientCredentials.paymentUrl) {
-      return `Halo ${newClientCredentials.name}, pesanan undangan digital Anda sudah dibuat.\n\nTotal pembayaran: Rp ${newClientCredentials.salePrice.toLocaleString("id-ID")}\nBayar aman melalui Midtrans di link berikut:\n${newClientCredentials.paymentUrl}\n\nSetelah pembayaran berhasil, akun dashboard bisa digunakan. Undangan menunggu verifikasi dan aktivasi oleh admin Vistiq.\n\nAkun dashboard:\nLink: ${window.location.origin}/login\nEmail: ${newClientCredentials.email}\nPassword: ${newClientCredentials.password}\n\nData yang perlu disiapkan:\n${checklist}\n\nTerima kasih!`;
+    if (!brandPackage && newClientCredentials.paymentUrl) {
+      return `Halo ${newClientCredentials.name}, pesanan undangan digital Anda sudah dibuat.\n\nTotal pembayaran: Rp ${newClientCredentials.salePrice.toLocaleString("id-ID")}\nPembayaran dilakukan manual ke Vistiq Invitation. Silakan hubungi Admin Vistiq melalui link berikut untuk mendapatkan informasi rekening dan konfirmasi transfer:\n${newClientCredentials.paymentUrl}\n\nSetelah pembayaran diterima, Admin Vistiq akan menandai Pembayaran Sukses. Undangan kemudian menunggu aktivasi Admin.\n\nAkun dashboard:\nLink: ${window.location.origin}/login\nEmail: ${newClientCredentials.email}\nPassword: ${newClientCredentials.password}\n\nData yang perlu disiapkan:\n${checklist}\n\nTerima kasih!`;
     }
 
     return `Halo ${newClientCredentials.name}, berikut akun login dashboard undangan Anda di ${dashboardBrand}:\n\nLink: ${window.location.origin}/login\nEmail: ${newClientCredentials.email}\nPassword: ${newClientCredentials.password}\n\nLewat dashboard ini Anda bisa generate link undangan per nama tamu, lihat RSVP, dan edit undangan.\n\nSupaya undangannya bisa langsung dipakai, mohon siapkan data berikut untuk diisi di dashboard:\n${checklist}\n\nKalau ada pertanyaan, jangan sungkan hubungi kami ya. Terima kasih!`;
@@ -278,15 +285,31 @@ export default function ResellerClientsPage() {
     return `https://wa.me/${toWaNumber(newClientCredentials.whatsapp)}?text=${encodeURIComponent(clientCredentialsMessage())}`;
   };
 
+  const adminPaymentLink = (client: Client, transaction?: Transaction) => {
+    if (!transaction) return "";
+    const message = [
+      "Halo Admin Vistiq, saya ingin konfirmasi pembayaran undangan client Reseller.",
+      "",
+      `ID Transaksi: ${transaction.id}`,
+      `Client: ${client.name}`,
+      `Total: Rp ${Number(transaction.amount).toLocaleString("id-ID")}`,
+      `Reseller: ${user?.name || "Reseller"}`,
+      "",
+      "Mohon kirimkan informasi rekening Vistiq. Setelah transfer diterima, mohon tandai Pembayaran Sukses dari Dashboard Owner.",
+    ].join("\n");
+    return `https://wa.me/${ADMIN_WHATSAPP}?text=${encodeURIComponent(message)}`;
+  };
+
   const paymentWaLink = (client: Client, transaction?: Transaction) => {
-    if (!client.whatsapp || !transaction?.midtrans_redirect_url) return "";
-    const message = `Halo ${client.name}, berikut link pembayaran undangan digital Anda.\n\nTotal: Rp ${Number(transaction.amount).toLocaleString("id-ID")}\nPembayaran melalui Midtrans:\n${transaction.midtrans_redirect_url}\n\nSetelah pembayaran berhasil, admin Vistiq akan memverifikasi dan mengaktifkan undangan. Terima kasih!`;
+    if (!client.whatsapp || !transaction) return "";
+    const adminLink = adminPaymentLink(client, transaction);
+    const message = `Halo ${client.name}, berikut informasi pembayaran undangan digital Anda.\n\nTotal: Rp ${Number(transaction.amount).toLocaleString("id-ID")}\nPembayaran dilakukan ke Vistiq Invitation. Silakan hubungi Admin Vistiq melalui link berikut untuk informasi rekening dan konfirmasi transfer:\n${adminLink}\n\nSetelah pembayaran diterima, Admin Vistiq akan menandai pembayaran sukses. Terima kasih!`;
     return `https://wa.me/${toWaNumber(client.whatsapp)}?text=${encodeURIComponent(message)}`;
   };
 
   const updateClientStatus = async (id: string, status: string) => {
-    if (reseller?.package !== "reseller_brand") {
-      alert("Status client Reseller standar mengikuti pembayaran Midtrans dan tidak dapat diubah manual.");
+    if (!isBrandPackage(reseller?.package)) {
+      alert("Status client Reseller standar mengikuti verifikasi pembayaran oleh Admin Vistiq dan tidak dapat diubah manual oleh reseller.");
       return;
     }
 
@@ -335,6 +358,7 @@ export default function ResellerClientsPage() {
     router.push("/login");
   };
 
+  const brandPackage = isBrandPackage(reseller?.package);
   const brandingEnabled = reseller?.package === "reseller" || Boolean(reseller?.brand_active);
   const brandName = brandingEnabled && reseller?.brand_name ? reseller.brand_name : null;
   const brandStyle = brandingEnabled && reseller?.brand_color
@@ -345,7 +369,7 @@ export default function ResellerClientsPage() {
     <main className={styles.page} style={brandStyle}>
       <DashboardSidebar
         brandTop={brandName ? brandName.toUpperCase() : "VISTIQ"}
-        brandBottom={reseller?.package === "reseller_brand" ? "Reseller Brand" : "Reseller"}
+        brandBottom={brandPackage ? "Reseller Brand" : "Reseller"}
         logoUrl={brandingEnabled ? reseller?.logo_url : null}
         accentColor={brandingEnabled ? reseller?.brand_color : null}
         items={getResellerNavItems(reseller?.package, reseller?.id)}
@@ -360,9 +384,9 @@ export default function ResellerClientsPage() {
             <p className={styles.label}>{brandName ? `${brandName} DASHBOARD` : "RESELLER DASHBOARD"}</p>
             <h1 className={styles.title}>Daftar Client</h1>
             <p className={styles.subtitle}>
-              {reseller?.package === "reseller_brand"
-                ? "Tambah client baru dan kelola client yang sudah ada."
-                : "Tentukan harga jual, kirim link Midtrans ke client, dan pembayaran akan tercatat otomatis."}
+              {brandPackage
+                ? "Tambah client baru dan kelola client yang sudah ada. Pembayaran client Reseller Brand dikelola langsung oleh brand Anda."
+                : "Tentukan harga jual. Pembayaran client masuk ke Vistiq melalui WhatsApp Admin; setelah diverifikasi, 80% menjadi bagian reseller dan 20% fee Vistiq."}
             </p>
           </div>
 
@@ -382,9 +406,9 @@ export default function ResellerClientsPage() {
             <section className={styles.formCard}>
               <h2 className={styles.sectionTitle}>Tambah Client Baru</h2>
               <p style={{ marginTop: -8, marginBottom: 16, fontSize: 13, opacity: 0.75 }}>
-                {reseller.package === "reseller_brand"
-                  ? "Email dipakai untuk membuat akun login dashboard client secara otomatis."
-                  : "Setelah disimpan, sistem otomatis membuat tagihan Midtrans. Client berstatus Pending sampai pembayaran berhasil."}
+                {brandPackage
+                  ? "Email dipakai untuk membuat akun login dashboard client secara otomatis. Pembayaran client menjadi urusan Reseller Brand sepenuhnya."
+                  : "Setelah disimpan, sistem membuat transaksi Pending. Client melakukan transfer ke Vistiq dan Admin Vistiq yang menandai Pembayaran Sukses setelah uang diterima."}
               </p>
 
               {newClientCredentials && (
@@ -392,18 +416,18 @@ export default function ResellerClientsPage() {
                   <p style={{ margin: "0 0 8px", fontWeight: 700 }}>
                     Client berhasil dibuat: {newClientCredentials.name}
                   </p>
-                  {reseller.package !== "reseller_brand" && (
+                  {!brandPackage && (
                     <>
                       <p style={{ margin: "0 0 5px" }}>Harga jual: <strong>Rp {newClientCredentials.salePrice.toLocaleString("id-ID")}</strong></p>
                       <p style={{ margin: "0 0 12px" }}>
                         Bagian reseller 80%: <strong>Rp {Math.round(newClientCredentials.salePrice * 0.8).toLocaleString("id-ID")}</strong> · Fee platform 20%: Rp {Math.round(newClientCredentials.salePrice * 0.2).toLocaleString("id-ID")}
                       </p>
                       {newClientCredentials.paymentUrl ? (
-                        <a href={newClientCredentials.paymentUrl} target="_blank" rel="noreferrer" className={styles.button} style={{ display: "inline-block", marginBottom: 12 }}>
-                          Buka Link Pembayaran Midtrans
+                        <a href={newClientCredentials.paymentUrl} target="_blank" rel="noreferrer" className={styles.button} style={{ display: "inline-block", marginBottom: 12, background: "#22c55e", color: "white" }}>
+                          Hubungi Admin Vistiq untuk Pembayaran
                         </a>
                       ) : newClientCredentials.paymentError ? (
-                        <p style={{ color: "#b45309" }}>Link pembayaran belum berhasil dibuat: {newClientCredentials.paymentError}</p>
+                        <p style={{ color: "#b45309" }}>Tautan WhatsApp Admin belum tersedia: {newClientCredentials.paymentError}</p>
                       ) : null}
                     </>
                   )}
@@ -464,7 +488,7 @@ export default function ResellerClientsPage() {
                   </optgroup>
                 </select>
 
-                {reseller.package !== "reseller_brand" && (
+                {!brandPackage && (
                   <input
                     type="number"
                     min="1000"
@@ -476,7 +500,7 @@ export default function ResellerClientsPage() {
                   />
                 )}
 
-                {reseller.package === "reseller_brand" && (
+                {brandPackage && (
                   <select
                     value={form.status}
                     onChange={(e) => setForm({ ...form, status: e.target.value })}
@@ -489,14 +513,14 @@ export default function ResellerClientsPage() {
                 )}
               </div>
 
-              {reseller.package !== "reseller_brand" && (
+              {!brandPackage && (
                 <p style={{ marginTop: 12, color: "#64748b", fontSize: 13 }}>
-                  Contoh Rp100.000 → Rp80.000 bagian reseller dan Rp20.000 fee Vistiq. Saldo reseller tersedia 6 hari setelah pembayaran berhasil.
+                  Contoh Rp100.000 → Rp80.000 bagian reseller dan Rp20.000 fee Vistiq. Saldo reseller tersedia 6 hari setelah Admin Vistiq menandai pembayaran sukses.
                 </p>
               )}
 
               <button onClick={addClient} className={styles.button} disabled={addingClient} style={{ marginTop: 16 }}>
-                {addingClient ? "Membuat Client & Tagihan..." : reseller.package === "reseller_brand" ? "Simpan Client" : "Simpan Client & Buat Tagihan"}
+                {addingClient ? "Membuat Client..." : brandPackage ? "Simpan Client" : "Simpan Client & Buat Tagihan Manual"}
               </button>
             </section>
 
@@ -518,7 +542,7 @@ export default function ResellerClientsPage() {
                           <strong>{client.name}</strong>
                           <p>{client.email || "-"}</p>
                           <p>{client.whatsapp || "-"}</p>
-                          {reseller.package !== "reseller_brand" && transaction && (
+                          {!brandPackage && transaction && (
                             <p><strong>Rp {Number(transaction.amount).toLocaleString("id-ID")}</strong> · Reseller Rp {Number(transaction.commission).toLocaleString("id-ID")}</p>
                           )}
                         </div>
@@ -540,15 +564,15 @@ export default function ResellerClientsPage() {
                             <Link href={`/reseller/rsvp?client_id=${client.id}`}>Lihat RSVP</Link>
                           )}
 
-                          {reseller.package !== "reseller_brand" && !isPaid && transaction?.midtrans_redirect_url && (
+                          {!brandPackage && !isPaid && transaction && (
                             <>
-                              <a href={transaction.midtrans_redirect_url} target="_blank" rel="noreferrer">Link Pembayaran</a>
-                              {client.whatsapp && <a href={paymentWaLink(client, transaction)} target="_blank" rel="noreferrer">Kirim Tagihan via WA</a>}
+                              <a href={adminPaymentLink(client, transaction)} target="_blank" rel="noreferrer">Hubungi Admin Vistiq</a>
+                              {client.whatsapp && <a href={paymentWaLink(client, transaction)} target="_blank" rel="noreferrer">Kirim Instruksi Pembayaran via WA</a>}
                             </>
                           )}
                         </div>
 
-                        {reseller.package === "reseller_brand" ? (
+                        {brandPackage ? (
                           <select
                             value={client.status || "active"}
                             onChange={(e) => updateClientStatus(client.id, e.target.value)}
@@ -559,7 +583,7 @@ export default function ResellerClientsPage() {
                             <option value="inactive">Inactive</option>
                           </select>
                         ) : (
-                          <span className={styles.badge}>{isPaid ? "LUNAS" : "MENUNGGU BAYAR"}</span>
+                          <span className={styles.badge}>{isPaid ? "LUNAS" : "MENUNGGU VERIFIKASI"}</span>
                         )}
 
                         <p className={styles.date}>{new Date(client.created_at).toLocaleDateString("id-ID")}</p>
