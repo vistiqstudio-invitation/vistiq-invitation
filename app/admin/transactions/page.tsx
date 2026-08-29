@@ -17,8 +17,8 @@ function waFollowUpLink(item: CheckoutOrder) {
   const amount = `Rp ${Number(item.amount).toLocaleString("id-ID")}`;
   const message =
     item.status === "expire"
-      ? `Halo ${item.customer_name}, kami dari Vistiq Invitation. Link pembayaran untuk ${item.package_name} (${amount}) sudah kedaluwarsa. Silakan checkout ulang jika masih berminat. Terima kasih!`
-      : `Halo ${item.customer_name}, kami dari Vistiq Invitation. Pembayaran untuk ${item.package_name} (${amount}) masih menunggu. Silakan selesaikan pembayaran agar akun bisa aktif. Terima kasih!`;
+      ? `Halo ${item.customer_name}, kami dari Vistiq Invitation. Pesanan ${item.package_name} (${amount}) sudah kedaluwarsa. Silakan buat pesanan ulang jika masih berminat. Terima kasih!`
+      : `Halo ${item.customer_name}, kami dari Vistiq Invitation. Pembayaran manual untuk ${item.package_name} (${amount}) masih menunggu. Jika sudah transfer, silakan kirim konfirmasi ke WhatsApp Admin Vistiq. Terima kasih!`;
   return `https://wa.me/${toWaNumber(item.customer_phone)}?text=${encodeURIComponent(message)}`;
 }
 
@@ -53,6 +53,7 @@ type Client = { id: string; name: string };
 type CheckoutOrder = {
   id: string;
   order_id: string;
+  package_id: string;
   package_name: string;
   amount: number;
   customer_name: string;
@@ -74,13 +75,14 @@ export default function AdminTransactionsPage() {
   const [checkoutOrders, setCheckoutOrders] = useState<CheckoutOrder[]>([]);
   const [loading, setLoading] = useState(true);
   const [syncingId, setSyncingId] = useState<string | null>(null);
+  const [confirmingId, setConfirmingId] = useState<string | null>(null);
 
   const fetchTransactions = async () => {
     const [{ data: tx }, { data: resellerData }, { data: clientData }, { data: checkoutData }] = await Promise.all([
       supabase.from("transactions").select("id, client_id, reseller_id, amount, commission, status, created_at, paid_at, available_at, payment_type, midtrans_order_id").order("created_at", { ascending: false }),
       supabase.from("resellers").select("id, name"),
       supabase.from("clients").select("id, name"),
-      supabase.from("checkout_orders").select("id, order_id, package_name, amount, customer_name, customer_email, customer_phone, status, payment_type, provision_status, provision_error, created_at").order("created_at", { ascending: false }),
+      supabase.from("checkout_orders").select("id, order_id, package_id, package_name, amount, customer_name, customer_email, customer_phone, status, payment_type, provision_status, provision_error, created_at").order("created_at", { ascending: false }),
     ]);
 
     setTransactions(tx ?? []);
@@ -102,6 +104,28 @@ export default function AdminTransactionsPage() {
       await fetchTransactions();
     } finally {
       setSyncingId(null);
+    }
+  };
+
+  const confirmManualPayment = async (type: "reseller-client" | "checkout-order", id: string, label: string) => {
+    if (!confirm(`Pastikan pembayaran ${label} sudah benar-benar masuk ke rekening Vistiq. Tandai Pembayaran Sukses?`)) return;
+    const key = `${type}:${id}`;
+    setConfirmingId(key);
+    try {
+      const response = await fetch("/api/admin/manual-payments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type, id }),
+      });
+      const result = await response.json();
+      if (!response.ok) {
+        alert(result.error || "Gagal mengonfirmasi pembayaran.");
+        return;
+      }
+      if (result.warning) alert(`Pembayaran sudah tercatat sukses, tetapi aktivasi akun perlu dicek: ${result.warning}`);
+      await fetchTransactions();
+    } finally {
+      setConfirmingId(null);
     }
   };
 
@@ -140,7 +164,7 @@ export default function AdminTransactionsPage() {
           <div>
             <p className={styles.label}>OWNER MENU</p>
             <h1 className={styles.title}>Transaksi</h1>
-            <p className={styles.subtitle}>Pembayaran tercatat otomatis lewat Midtrans. Setelah pembayaran berhasil diverifikasi, aktifkan undangan melalui menu Undangan.</p>
+            <p className={styles.subtitle}>Pembayaran Reseller, Reseller Brand, dan client Reseller diverifikasi manual melalui WhatsApp. Setelah uang masuk ke rekening Vistiq, klik “Pembayaran Sukses”. Aktivasi undangan tetap dilakukan Admin melalui menu Undangan.</p>
           </div>
           <button onClick={fetchTransactions} className={styles.button}>Refresh</button>
         </header>
@@ -160,6 +184,7 @@ export default function AdminTransactionsPage() {
                 const amount = Number(item.amount || 0);
                 const resellerShare = Number(item.commission || 0);
                 const platformFee = Math.max(0, amount - resellerShare);
+                const confirmKey = `reseller-client:${item.id}`;
                 return (
                   <div className={styles.row} key={item.id}>
                     <div>
@@ -171,11 +196,21 @@ export default function AdminTransactionsPage() {
                           {item.available_at ? ` · Saldo reseller tersedia ${new Date(item.available_at).toLocaleString("id-ID")}` : ""}
                         </p>
                       )}
-                      {item.payment_type && <p style={{ fontSize: 12 }}>Metode: {item.payment_type}</p>}
+                      {item.payment_type && <p style={{ fontSize: 12 }}>Metode: {item.payment_type === "manual_whatsapp" ? "Transfer Manual · WA Admin" : item.payment_type}</p>}
                     </div>
                     <div>
                       <span className={styles.badge}>{item.status === "paid" ? "LUNAS" : String(item.status || "pending").toUpperCase()}</span>
-                      {item.status !== "paid" && item.midtrans_order_id && (
+                      {item.status === "pending" && (
+                        <button
+                          onClick={() => confirmManualPayment("reseller-client", item.id, `${clientName(item.client_id)} sebesar Rp ${amount.toLocaleString("id-ID")}`)}
+                          disabled={confirmingId === confirmKey}
+                          className={styles.button}
+                          style={{ display: "block", marginTop: 6, fontSize: 11, padding: "6px 10px", background: "#15803d", color: "white" }}
+                        >
+                          {confirmingId === confirmKey ? "Memproses..." : "Pembayaran Sukses"}
+                        </button>
+                      )}
+                      {item.status !== "paid" && item.midtrans_order_id && item.payment_type !== "manual_whatsapp" && (
                         <button
                           onClick={() => syncOrder(item.midtrans_order_id!)}
                           disabled={syncingId === item.midtrans_order_id}
@@ -195,45 +230,59 @@ export default function AdminTransactionsPage() {
         </section>
 
         <section className={styles.tableWrap}>
-          <h2 className={styles.sectionTitle}>Pembayaran Paket dari Landing Page</h2>
-          {checkoutOrders.length === 0 ? <p>Belum ada checkout Midtrans.</p> : (
+          <h2 className={styles.sectionTitle}>Pembayaran Paket Reseller / Reseller Brand</h2>
+          {checkoutOrders.length === 0 ? <p>Belum ada checkout paket.</p> : (
             <div className={styles.table}>
-              {checkoutOrders.map((item) => (
-                <div className={styles.row} key={item.id}>
-                  <div>
-                    <strong>{item.package_name} · Rp {Number(item.amount).toLocaleString("id-ID")}</strong>
-                    <p>{item.customer_name} · {item.customer_email} · {item.customer_phone}</p>
-                    <p style={{ color: "#64748b", fontSize: 12 }}>{item.order_id}</p>
+              {checkoutOrders.map((item) => {
+                const manualResellerPackage = item.package_id === "reseller" || item.package_id === "reseller-brand";
+                const confirmKey = `checkout-order:${item.id}`;
+                return (
+                  <div className={styles.row} key={item.id}>
+                    <div>
+                      <strong>{item.package_name} · Rp {Number(item.amount).toLocaleString("id-ID")}</strong>
+                      <p>{item.customer_name} · {item.customer_email} · {item.customer_phone}</p>
+                      <p style={{ color: "#64748b", fontSize: 12 }}>{item.order_id}</p>
+                    </div>
+                    <div>
+                      <strong style={{ color: item.status === "paid" ? "#15803d" : "#b45309" }}>
+                        {item.status === "paid" ? "Dibayar" : item.status}
+                        {item.payment_type ? ` · ${item.payment_type === "manual_whatsapp" ? "Transfer Manual" : item.payment_type}` : ""}
+                      </strong>
+                      {item.status === "pending" && manualResellerPackage && (
+                        <button
+                          onClick={() => confirmManualPayment("checkout-order", item.id, `${item.package_name} sebesar Rp ${Number(item.amount).toLocaleString("id-ID")}`)}
+                          disabled={confirmingId === confirmKey}
+                          className={styles.button}
+                          style={{ display: "block", marginTop: 6, fontSize: 11, padding: "6px 10px", background: "#15803d", color: "white" }}
+                        >
+                          {confirmingId === confirmKey ? "Memproses..." : "Pembayaran Sukses"}
+                        </button>
+                      )}
+                      {item.status !== "paid" && !manualResellerPackage && (
+                        <button
+                          onClick={() => syncOrder(item.order_id)}
+                          disabled={syncingId === item.order_id}
+                          className={styles.button}
+                          style={{ display: "block", marginTop: 6, fontSize: 11, padding: "4px 10px" }}
+                        >
+                          {syncingId === item.order_id ? "Mengecek..." : "Cek ke Midtrans"}
+                        </button>
+                      )}
+                      {(item.status === "pending" || item.status === "expire") && (
+                        <a href={waFollowUpLink(item)} target="_blank" rel="noreferrer" className={styles.button} style={{ display: "block", marginTop: 6, fontSize: 11, padding: "4px 10px", textAlign: "center", background: "#22c55e", color: "white" }}>
+                          Follow Up WA
+                        </a>
+                      )}
+                      {item.status === "paid" && item.provision_status && item.provision_status !== "completed" && (
+                        <p style={{ color: "#b45309", fontSize: 12, marginTop: 4 }}>
+                          Akun: {item.provision_status}{item.provision_error ? ` — ${item.provision_error}` : ""}
+                        </p>
+                      )}
+                    </div>
+                    <p className={styles.date}>{new Date(item.created_at).toLocaleDateString("id-ID")}</p>
                   </div>
-                  <div>
-                    <strong style={{ color: item.status === "paid" ? "#15803d" : "#b45309" }}>
-                      {item.status === "paid" ? "Dibayar" : item.status}
-                      {item.payment_type ? ` · ${item.payment_type}` : ""}
-                    </strong>
-                    {item.status !== "paid" && (
-                      <button
-                        onClick={() => syncOrder(item.order_id)}
-                        disabled={syncingId === item.order_id}
-                        className={styles.button}
-                        style={{ display: "block", marginTop: 6, fontSize: 11, padding: "4px 10px" }}
-                      >
-                        {syncingId === item.order_id ? "Mengecek..." : "Cek ke Midtrans"}
-                      </button>
-                    )}
-                    {(item.status === "pending" || item.status === "expire") && (
-                      <a href={waFollowUpLink(item)} target="_blank" rel="noreferrer" className={styles.button} style={{ display: "block", marginTop: 6, fontSize: 11, padding: "4px 10px", textAlign: "center", background: "#22c55e", color: "white" }}>
-                        Follow Up WA
-                      </a>
-                    )}
-                    {item.status === "paid" && item.provision_status && item.provision_status !== "completed" && (
-                      <p style={{ color: "#b45309", fontSize: 12, marginTop: 4 }}>
-                        Akun: {item.provision_status}{item.provision_error ? ` — ${item.provision_error}` : ""}
-                      </p>
-                    )}
-                  </div>
-                  <p className={styles.date}>{new Date(item.created_at).toLocaleDateString("id-ID")}</p>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </section>
