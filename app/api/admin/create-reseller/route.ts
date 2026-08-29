@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 import { createClient as createServiceClient } from "@supabase/supabase-js";
 import crypto from "node:crypto";
 import { getSessionProfile } from "@/lib/supabase/dal";
+import { createManualPackageOrder } from "@/lib/createManualPackageOrder";
 
 function generatePassword() {
   return crypto.randomBytes(9).toString("base64url");
@@ -74,16 +75,20 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: message }, { status: 400 });
   }
 
-  const { error: resellerError } = await supabaseAdmin.from("resellers").insert({
-    user_id: created.user.id,
-    name,
-    whatsapp,
-    package: pkg,
-    commission_percent,
-    status,
-  });
+  const { data: reseller, error: resellerError } = await supabaseAdmin
+    .from("resellers")
+    .insert({
+      user_id: created.user.id,
+      name,
+      whatsapp,
+      package: pkg,
+      commission_percent,
+      status,
+    })
+    .select("id")
+    .single();
 
-  if (resellerError) {
+  if (resellerError || !reseller) {
     // Roll back the auth user so we don't leave an orphaned login with no
     // matching reseller row.
     await supabaseAdmin.auth.admin.deleteUser(created.user.id);
@@ -93,5 +98,27 @@ export async function POST(request: Request) {
     );
   }
 
-  return NextResponse.json({ email, password });
+  try {
+    const { orderId } = await createManualPackageOrder(supabaseAdmin, {
+      resellerId: reseller.id,
+      package: pkg,
+      name,
+      email,
+      whatsapp,
+    });
+
+    return NextResponse.json({ email, password, orderId });
+  } catch (orderError) {
+    // Account creation and its pending payment record must not diverge. If
+    // the ledger insert fails, remove both rows so a later retry cannot leave
+    // an active account without a traceable package order.
+    await supabaseAdmin.from("resellers").delete().eq("id", reseller.id);
+    await supabaseAdmin.auth.admin.deleteUser(created.user.id);
+
+    console.error("create-reseller: manual package order failed", orderError);
+    return NextResponse.json(
+      { error: orderError instanceof Error ? orderError.message : "Gagal membuat order paket manual." },
+      { status: 500 },
+    );
+  }
 }

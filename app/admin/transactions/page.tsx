@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import DashboardSidebar from "@/components/admin/DashboardSidebar";
 import styles from "@/styles/dashboard.module.css";
+import { PAYMENT_PACKAGES } from "@/lib/paymentPackages";
 
 function toWaNumber(phone: string) {
   const digits = phone.replace(/\D/g, "");
@@ -47,7 +48,12 @@ type Transaction = {
   midtrans_order_id?: string | null;
 };
 
-type Reseller = { id: string; name: string };
+type Reseller = {
+  id: string;
+  name: string;
+  whatsapp?: string | null;
+  package?: "reseller" | "reseller_brand" | null;
+};
 type Client = { id: string; name: string };
 
 type CheckoutOrder = {
@@ -59,9 +65,14 @@ type CheckoutOrder = {
   customer_email: string;
   customer_phone: string;
   status: string;
+  package_id?: string | null;
+  reseller_id?: string | null;
+  order_source?: string | null;
   payment_type?: string | null;
   provision_status?: string | null;
   provision_error?: string | null;
+  confirmed_at?: string | null;
+  settlement_applied_at?: string | null;
   created_at: string;
 };
 
@@ -74,13 +85,17 @@ export default function AdminTransactionsPage() {
   const [checkoutOrders, setCheckoutOrders] = useState<CheckoutOrder[]>([]);
   const [loading, setLoading] = useState(true);
   const [syncingId, setSyncingId] = useState<string | null>(null);
+  const [confirmingOrderId, setConfirmingOrderId] = useState<string | null>(null);
+  const [creatingManualOrder, setCreatingManualOrder] = useState(false);
+  const [manualResellerId, setManualResellerId] = useState("");
+  const [manualAmount, setManualAmount] = useState(String(PAYMENT_PACKAGES.reseller.amount));
 
   const fetchTransactions = async () => {
     const [{ data: tx }, { data: resellerData }, { data: clientData }, { data: checkoutData }] = await Promise.all([
       supabase.from("transactions").select("id, client_id, reseller_id, amount, commission, status, created_at, paid_at, available_at, payment_type, midtrans_order_id").order("created_at", { ascending: false }),
-      supabase.from("resellers").select("id, name"),
+      supabase.from("resellers").select("id, name, whatsapp, package"),
       supabase.from("clients").select("id, name"),
-      supabase.from("checkout_orders").select("id, order_id, package_name, amount, customer_name, customer_email, customer_phone, status, payment_type, provision_status, provision_error, created_at").order("created_at", { ascending: false }),
+      supabase.from("checkout_orders").select("id, order_id, package_id, package_name, amount, customer_name, customer_email, customer_phone, status, reseller_id, order_source, payment_type, provision_status, provision_error, confirmed_at, settlement_applied_at, created_at").order("created_at", { ascending: false }),
     ]);
 
     setTransactions(tx ?? []);
@@ -93,6 +108,14 @@ export default function AdminTransactionsPage() {
   const resellerName = (id?: string | null) => resellers.find((r) => r.id === id)?.name || "-";
   const clientName = (id?: string | null) => clients.find((c) => c.id === id)?.name || "Client";
 
+  const selectedManualReseller = resellers.find((item) => item.id === manualResellerId);
+
+  const packageLabel = (packageId?: string | null) => {
+    if (packageId === "reseller-brand") return "Reseller Brand";
+    if (packageId === "reseller") return "Reseller";
+    return "Paket";
+  };
+
   const syncOrder = async (orderId: string) => {
     setSyncingId(orderId);
     try {
@@ -102,6 +125,63 @@ export default function AdminTransactionsPage() {
       await fetchTransactions();
     } finally {
       setSyncingId(null);
+    }
+  };
+
+  const createManualOrder = async () => {
+    if (!manualResellerId) {
+      alert("Pilih reseller terlebih dahulu.");
+      return;
+    }
+
+    const amount = Number(manualAmount);
+    if (!Number.isSafeInteger(amount) || amount <= 0) {
+      alert("Nominal pembayaran harus berupa angka bulat lebih dari 0.");
+      return;
+    }
+
+    setCreatingManualOrder(true);
+    try {
+      const response = await fetch("/api/admin/create-manual-package-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ resellerId: manualResellerId, amount }),
+      });
+      const result = await response.json();
+
+      if (!response.ok) {
+        alert(result.error || "Gagal membuat order paket manual.");
+        return;
+      }
+
+      setManualResellerId("");
+      setManualAmount(String(PAYMENT_PACKAGES.reseller.amount));
+      await fetchTransactions();
+      alert(`Order ${result.orderId} dibuat sebagai pending. Konfirmasi setelah transfer benar-benar masuk.`);
+    } finally {
+      setCreatingManualOrder(false);
+    }
+  };
+
+  const confirmPackagePayment = async (item: CheckoutOrder) => {
+    if (!confirm(`Konfirmasi pembayaran ${item.package_name} dari ${item.customer_name}? Pastikan transfer sudah masuk.`)) return;
+
+    setConfirmingOrderId(item.id);
+    try {
+      const { data, error } = await supabase.rpc("owner_confirm_package_payment", {
+        p_checkout_order_id: item.id,
+      });
+
+      if (error) {
+        alert(error.message || "Gagal mengonfirmasi pembayaran paket.");
+        return;
+      }
+
+      const result = Array.isArray(data) ? data[0] : data;
+      alert(result?.already_paid ? "Pembayaran ini sudah pernah dikonfirmasi." : "Pembayaran berhasil dikonfirmasi dan dicatat sebagai omzet.");
+      await fetchTransactions();
+    } finally {
+      setConfirmingOrderId(null);
     }
   };
 
@@ -120,7 +200,10 @@ export default function AdminTransactionsPage() {
   const logout = async () => { await supabase.auth.signOut(); router.push("/login"); };
 
   const paidTransactions = transactions.filter((item) => item.status === "paid");
-  const totalOmzet = paidTransactions.reduce((sum, item) => sum + Number(item.amount || 0), 0);
+  const paidPackageOrders = checkoutOrders.filter((item) => item.status === "paid");
+  const totalPackageRevenue = paidPackageOrders.reduce((sum, item) => sum + Number(item.amount || 0), 0);
+  const totalClientGrossSales = paidTransactions.reduce((sum, item) => sum + Number(item.amount || 0), 0);
+  const totalOwnerOmzet = totalPackageRevenue + totalClientGrossSales;
   const totalResellerShare = paidTransactions.reduce((sum, item) => sum + Number(item.commission || 0), 0);
   const totalPlatformFee = paidTransactions.reduce((sum, item) => sum + Math.max(0, Number(item.amount || 0) - Number(item.commission || 0)), 0);
 
@@ -140,16 +223,64 @@ export default function AdminTransactionsPage() {
           <div>
             <p className={styles.label}>OWNER MENU</p>
             <h1 className={styles.title}>Transaksi</h1>
-            <p className={styles.subtitle}>Pembayaran tercatat otomatis lewat Midtrans. Setelah pembayaran berhasil diverifikasi, aktifkan undangan melalui menu Undangan.</p>
+            <p className={styles.subtitle}>Kelola pembayaran paket dan penjualan client reseller. Order manual baru menjadi omzet setelah Owner mengonfirmasi transfer.</p>
           </div>
           <button onClick={fetchTransactions} className={styles.button}>Refresh</button>
         </header>
 
         <section className={styles.stats}>
-          <div className={styles.statCard}><span>Omzet Reseller Lunas</span><strong>Rp {totalOmzet.toLocaleString("id-ID")}</strong></div>
+          <div className={styles.statCard}><span>Omzet Paket Lunas</span><strong>Rp {totalPackageRevenue.toLocaleString("id-ID")}</strong></div>
+          <div className={styles.statCard}><span>Omzet Client Reseller</span><strong>Rp {totalClientGrossSales.toLocaleString("id-ID")}</strong></div>
+          <div className={styles.statCard}><span>Total Omzet Owner</span><strong>Rp {totalOwnerOmzet.toLocaleString("id-ID")}</strong></div>
           <div className={styles.statCard}><span>Hak Reseller 80%</span><strong>Rp {totalResellerShare.toLocaleString("id-ID")}</strong></div>
           <div className={styles.statCard}><span>Fee Vistiq 20%</span><strong>Rp {totalPlatformFee.toLocaleString("id-ID")}</strong></div>
-          <div className={styles.statCard}><span>Total Transaksi Reseller</span><strong>{transactions.length}</strong></div>
+        </section>
+
+        <section className={styles.formCard}>
+          <h2 className={styles.sectionTitle}>Catat Order Paket Manual</h2>
+          <p style={{ margin: "0 0 16px", fontSize: 13.5, color: "#64748b" }}>
+            Gunakan untuk akun reseller yang sudah dibuat sebelumnya atau perpanjangan Reseller Brand. Order tetap pending sampai pembayaran dikonfirmasi.
+          </p>
+          <div className={styles.formGrid}>
+            <select
+              value={manualResellerId}
+              onChange={(event) => {
+                const nextId = event.target.value;
+                const nextReseller = resellers.find((item) => item.id === nextId);
+                setManualResellerId(nextId);
+                setManualAmount(
+                  nextReseller?.package === "reseller_brand"
+                    ? String(PAYMENT_PACKAGES["reseller-brand"].amount)
+                    : String(PAYMENT_PACKAGES.reseller.amount),
+                );
+              }}
+              className={styles.input}
+            >
+              <option value="">Pilih reseller</option>
+              {resellers.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.name} · {item.package === "reseller_brand" ? "Reseller Brand" : "Reseller"}
+                </option>
+              ))}
+            </select>
+            <input
+              type="number"
+              min="1"
+              step="1"
+              value={manualAmount}
+              onChange={(event) => setManualAmount(event.target.value)}
+              className={styles.input}
+              placeholder="Nominal dibayar"
+            />
+          </div>
+          {selectedManualReseller && (
+            <p style={{ margin: "10px 0 0", fontSize: 12.5, color: "#475569" }}>
+              Paket yang dicatat: {selectedManualReseller.package === "reseller_brand" ? "Reseller Brand (bulanan)" : "Reseller (sekali bayar)"}. Nominal dapat disesuaikan untuk histori harga lama.
+            </p>
+          )}
+          <button onClick={createManualOrder} className={styles.button} disabled={creatingManualOrder} style={{ marginTop: 14 }}>
+            {creatingManualOrder ? "Membuat order..." : "Buat Order Pending"}
+          </button>
         </section>
 
         <section className={styles.tableWrap}>
@@ -195,22 +326,39 @@ export default function AdminTransactionsPage() {
         </section>
 
         <section className={styles.tableWrap}>
-          <h2 className={styles.sectionTitle}>Pembayaran Paket dari Landing Page</h2>
-          {checkoutOrders.length === 0 ? <p>Belum ada checkout Midtrans.</p> : (
+          <h2 className={styles.sectionTitle}>Pembayaran Paket</h2>
+          {checkoutOrders.length === 0 ? <p>Belum ada order paket.</p> : (
             <div className={styles.table}>
               {checkoutOrders.map((item) => (
                 <div className={styles.row} key={item.id}>
                   <div>
                     <strong>{item.package_name} · Rp {Number(item.amount).toLocaleString("id-ID")}</strong>
+                    {item.order_source === "owner_manual" && (
+                      <p style={{ color: "#1d4ed8", fontSize: 12 }}>Order manual Owner · {packageLabel(item.package_id)} · akun sudah dibuat</p>
+                    )}
+                    {item.reseller_id && <p>{resellerName(item.reseller_id)}</p>}
                     <p>{item.customer_name} · {item.customer_email} · {item.customer_phone}</p>
                     <p style={{ color: "#64748b", fontSize: 12 }}>{item.order_id}</p>
+                    {item.status === "paid" && item.confirmed_at && (
+                      <p style={{ color: "#15803d", fontSize: 12 }}>Dikonfirmasi {new Date(item.confirmed_at).toLocaleString("id-ID")}</p>
+                    )}
                   </div>
                   <div>
                     <strong style={{ color: item.status === "paid" ? "#15803d" : "#b45309" }}>
-                      {item.status === "paid" ? "Dibayar" : item.status}
+                      {item.status === "paid" ? "LUNAS" : String(item.status).toUpperCase()}
                       {item.payment_type ? ` · ${item.payment_type}` : ""}
                     </strong>
-                    {item.status !== "paid" && (
+                    {item.order_source === "owner_manual" && item.status === "pending" && (
+                      <button
+                        onClick={() => confirmPackagePayment(item)}
+                        disabled={confirmingOrderId === item.id}
+                        className={styles.button}
+                        style={{ display: "block", marginTop: 6, fontSize: 11, padding: "4px 10px", background: "#15803d" }}
+                      >
+                        {confirmingOrderId === item.id ? "Mengonfirmasi..." : "Pembayaran Sukses"}
+                      </button>
+                    )}
+                    {item.order_source !== "owner_manual" && item.status !== "paid" && (
                       <button
                         onClick={() => syncOrder(item.order_id)}
                         disabled={syncingId === item.order_id}
@@ -220,7 +368,7 @@ export default function AdminTransactionsPage() {
                         {syncingId === item.order_id ? "Mengecek..." : "Cek ke Midtrans"}
                       </button>
                     )}
-                    {(item.status === "pending" || item.status === "expire") && (
+                    {item.order_source !== "owner_manual" && (item.status === "pending" || item.status === "expire") && (
                       <a href={waFollowUpLink(item)} target="_blank" rel="noreferrer" className={styles.button} style={{ display: "block", marginTop: 6, fontSize: 11, padding: "4px 10px", textAlign: "center", background: "#22c55e", color: "white" }}>
                         Follow Up WA
                       </a>

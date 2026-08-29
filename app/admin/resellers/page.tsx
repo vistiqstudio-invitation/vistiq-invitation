@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import DashboardSidebar from "@/components/admin/DashboardSidebar";
 import styles from "@/styles/dashboard.module.css";
+import { PAYMENT_PACKAGES } from "@/lib/paymentPackages";
 
 const NAV_ITEMS = [
   { key: "dashboard", label: "Dashboard", href: "/admin" },
@@ -33,6 +34,7 @@ type Reseller = {
 type CreatedCredentials = {
   email: string;
   password: string;
+  orderId?: string;
   name?: string;
   whatsapp?: string;
   package?: "reseller" | "reseller_brand";
@@ -86,6 +88,7 @@ export default function ResellersPage() {
   const [messageCopied, setMessageCopied] = useState(false);
   const [resettingId, setResettingId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [creatingOrderId, setCreatingOrderId] = useState<string | null>(null);
 
   const getWelcomeMessage = (account: CreatedCredentials) => {
     const isBrand = account.package === "reseller_brand";
@@ -218,6 +221,7 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! ðŸš
       name: form.name.trim(),
       email: result.email,
       password: result.password,
+      orderId: result.orderId,
       whatsapp: form.whatsapp.trim(),
       package: form.package === "reseller_brand" ? "reseller_brand" : "reseller",
     });
@@ -339,24 +343,29 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! ðŸš
   };
 
   const extendBrandExpiry = async (reseller: Reseller, months: number) => {
-    if (!confirm(`Perpanjang masa aktif brand "${reseller.name}" selama ${months} bulan? Pastikan pembayaran manual sudah dikonfirmasi.`)) return;
+    if (!confirm(`Buat order pembayaran manual untuk "${reseller.name}" selama ${months} bulan? Masa aktif baru akan bertambah setelah Owner menekan Pembayaran Sukses.`)) return;
 
-    const currentExpiry = reseller.brand_expires_at ? new Date(reseller.brand_expires_at) : null;
-    const base = currentExpiry && currentExpiry.getTime() > Date.now() ? currentExpiry : new Date();
-    const nextExpiry = new Date(base);
-    nextExpiry.setMonth(nextExpiry.getMonth() + months);
+    setCreatingOrderId(reseller.id);
+    try {
+      const response = await fetch("/api/admin/create-manual-package-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          resellerId: reseller.id,
+          amount: PAYMENT_PACKAGES["reseller-brand"].amount * months,
+        }),
+      });
+      const result = await response.json();
 
-    const { error } = await supabase
-      .from("resellers")
-      .update({ brand_expires_at: nextExpiry.toISOString(), brand_active: true })
-      .eq("id", reseller.id);
+      if (!response.ok) {
+        alert(result.error || "Gagal membuat order perpanjangan.");
+        return;
+      }
 
-    if (error) {
-      alert(`Gagal memperpanjang masa aktif: ${error.message}`);
-      return;
+      alert(`Order ${result.orderId} dibuat. Buka Owner â†’ Transaksi untuk mengonfirmasi setelah transfer masuk.`);
+    } finally {
+      setCreatingOrderId(null);
     }
-
-    fetchResellers();
   };
 
   const setBrandLifetime = async (id: string, name: string) => {
@@ -430,6 +439,11 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! ðŸš
               </strong>
               <p style={{ margin: 0 }}>Email: <code>{credentials.email}</code></p>
               <p style={{ margin: "4px 0 12px" }}>Password: <code>{credentials.password}</code></p>
+              {credentials.orderId && (
+                <p style={{ margin: "4px 0 12px", color: "#1d4ed8" }}>
+                  Order paket: <code>{credentials.orderId}</code> Â· PENDING â€” konfirmasi di menu Transaksi setelah transfer masuk.
+                </p>
+              )}
 
               {credentials.name && (
                 <div
@@ -616,10 +630,11 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! ðŸš
                           <button
                             type="button"
                             onClick={() => extendBrandExpiry(reseller, 1)}
+                            disabled={creatingOrderId === reseller.id}
                             className={styles.button}
                             style={{ fontSize: 10, padding: "4px 8px" }}
                           >
-                            +1 Bulan
+                            {creatingOrderId === reseller.id ? "Membuat..." : "Buat Tagihan +1 Bulan"}
                           </button>
                           <button
                             type="button"
