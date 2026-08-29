@@ -10,10 +10,7 @@ declare global {
     snap?: {
       pay: (
         token: string,
-        callbacks: Record<
-          string,
-          (result?: { order_id?: string }) => void
-        >,
+        callbacks: Record<string, (result?: { order_id?: string }) => void>,
       ) => void;
     };
   }
@@ -42,6 +39,7 @@ export default function CheckoutButton({
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const manualPackage = packageId === "reseller" || packageId === "reseller-brand";
   const clientKey = process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY ?? "";
   const scriptUrl = production
     ? "https://app.midtrans.com/snap/snap.js"
@@ -67,29 +65,24 @@ export default function CheckoutButton({
         .split("; ")
         .find((row) => row.startsWith("vistiq_ref="))
         ?.split("=")[1];
-      const activeReferral =
-        referralCode ||
-        (cookieReferral ? decodeURIComponent(cookieReferral) : "");
+      const activeReferral = referralCode || (cookieReferral ? decodeURIComponent(cookieReferral) : "");
 
       const response = await fetch("/api/payments/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          packageId,
-          name,
-          email,
-          phone,
-          referralCode: activeReferral,
-        }),
+        body: JSON.stringify({ packageId, name, email, phone, referralCode: activeReferral }),
       });
       const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.error || "Checkout gagal dibuat.");
+      if (!response.ok) throw new Error(data.error || "Checkout gagal dibuat.");
+
+      if (data.manual && data.whatsappUrl) {
+        setOpen(false);
+        window.location.href = data.whatsappUrl;
+        return;
       }
+
       if (!window.snap) {
-        throw new Error(
-          "Layanan pembayaran belum selesai dimuat. Silakan coba lagi.",
-        );
+        throw new Error("Layanan pembayaran belum selesai dimuat. Silakan coba lagi.");
       }
 
       setOpen(false);
@@ -103,9 +96,7 @@ export default function CheckoutButton({
         onClose: () => setLoading(false),
       });
     } catch (caught) {
-      setError(
-        caught instanceof Error ? caught.message : "Terjadi kesalahan.",
-      );
+      setError(caught instanceof Error ? caught.message : "Terjadi kesalahan.");
     } finally {
       setLoading(false);
     }
@@ -113,11 +104,13 @@ export default function CheckoutButton({
 
   return (
     <>
-      <Script
-        src={scriptUrl}
-        data-client-key={clientKey}
-        strategy="afterInteractive"
-      />
+      {!manualPackage && (
+        <Script
+          src={scriptUrl}
+          data-client-key={clientKey}
+          strategy="afterInteractive"
+        />
+      )}
       <button
         type="button"
         className={`priceButton ${featured ? "featuredButton" : ""}`}
@@ -133,9 +126,7 @@ export default function CheckoutButton({
         <div
           className={styles.backdrop}
           role="presentation"
-          onMouseDown={(event) =>
-            event.target === event.currentTarget && setOpen(false)
-          }
+          onMouseDown={(event) => event.target === event.currentTarget && setOpen(false)}
         >
           <section
             className={styles.modal}
@@ -152,57 +143,40 @@ export default function CheckoutButton({
               ×
             </button>
             <span className={styles.secure}>
-              PEMBAYARAN AMAN · MIDTRANS
+              {manualPackage ? "PEMBAYARAN MANUAL · WHATSAPP ADMIN" : "PEMBAYARAN AMAN · MIDTRANS"}
             </span>
-            <h2 id={`checkout-${packageId}`}>
-              Lengkapi Data Pemesan
-            </h2>
+            <h2 id={`checkout-${packageId}`}>Lengkapi Data Pemesan</h2>
             <p>
-              Data ini digunakan untuk konfirmasi pembayaran dan pembuatan
-              akun Anda.
+              {manualPackage
+                ? "Setelah data tersimpan, Anda akan diarahkan ke WhatsApp Admin Vistiq untuk menerima informasi rekening dan konfirmasi pembayaran."
+                : "Data ini digunakan untuk konfirmasi pembayaran dan pembuatan akun Anda."}
             </p>
             <form onSubmit={submit}>
               <label>
                 Nama lengkap
-                <input
-                  value={name}
-                  onChange={(event) => setName(event.target.value)}
-                  autoComplete="name"
-                  required
-                  minLength={2}
-                />
+                <input value={name} onChange={(event) => setName(event.target.value)} autoComplete="name" required minLength={2} />
               </label>
               <label>
                 Email aktif
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
-                  autoComplete="email"
-                  required
-                />
+                <input type="email" value={email} onChange={(event) => setEmail(event.target.value)} autoComplete="email" required />
               </label>
               <label>
                 Nomor WhatsApp
-                <input
-                  value={phone}
-                  onChange={(event) => setPhone(event.target.value)}
-                  inputMode="tel"
-                  autoComplete="tel"
-                  placeholder="08xxxxxxxxxx"
-                  required
-                />
+                <input value={phone} onChange={(event) => setPhone(event.target.value)} inputMode="tel" autoComplete="tel" placeholder="08xxxxxxxxxx" required />
               </label>
               {error && <p className={styles.error}>{error}</p>}
               <button className={styles.pay} disabled={loading}>
                 {loading
                   ? "Menyiapkan pembayaran..."
-                  : "Lanjut ke Pembayaran"}
+                  : manualPackage
+                    ? "Lanjut Konfirmasi via WhatsApp"
+                    : "Lanjut ke Pembayaran"}
               </button>
             </form>
             <small>
-              Anda akan memilih QRIS, virtual account, atau e-wallet di
-              halaman Midtrans.
+              {manualPackage
+                ? "Pembayaran dinyatakan sukses hanya setelah Admin Vistiq memverifikasi transfer dan menekan Pembayaran Sukses di Dashboard Owner."
+                : "Anda akan memilih QRIS, virtual account, atau e-wallet di halaman Midtrans."}
             </small>
           </section>
         </div>
