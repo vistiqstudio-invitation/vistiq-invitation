@@ -41,6 +41,7 @@ type Transaction = {
   status?: string;
   reseller_id?: string | null;
   created_at: string;
+  reseller_confirmed_at?: string | null;
   paid_at?: string | null;
   available_at?: string | null;
   payment_type?: string | null;
@@ -74,10 +75,11 @@ export default function AdminTransactionsPage() {
   const [checkoutOrders, setCheckoutOrders] = useState<CheckoutOrder[]>([]);
   const [loading, setLoading] = useState(true);
   const [syncingId, setSyncingId] = useState<string | null>(null);
+  const [confirmingId, setConfirmingId] = useState<string | null>(null);
 
   const fetchTransactions = async () => {
     const [{ data: tx }, { data: resellerData }, { data: clientData }, { data: checkoutData }] = await Promise.all([
-      supabase.from("transactions").select("id, client_id, reseller_id, amount, commission, status, created_at, paid_at, available_at, payment_type, midtrans_order_id").order("created_at", { ascending: false }),
+      supabase.from("transactions").select("id, client_id, reseller_id, amount, commission, status, created_at, reseller_confirmed_at, paid_at, available_at, payment_type, midtrans_order_id").order("created_at", { ascending: false }),
       supabase.from("resellers").select("id, name"),
       supabase.from("clients").select("id, name"),
       supabase.from("checkout_orders").select("id, order_id, package_name, amount, customer_name, customer_email, customer_phone, status, payment_type, provision_status, provision_error, created_at").order("created_at", { ascending: false }),
@@ -102,6 +104,32 @@ export default function AdminTransactionsPage() {
       await fetchTransactions();
     } finally {
       setSyncingId(null);
+    }
+  };
+
+  const confirmManualPayment = async (item: Transaction) => {
+    if (item.status !== "pending") return;
+
+    const amount = Number(item.amount || 0).toLocaleString("id-ID");
+    const confirmed = window.confirm(
+      `Pastikan transfer ${clientName(item.client_id)} sebesar Rp ${amount} sudah benar-benar masuk. Tandai transaksi ini sebagai Pembayaran Sukses?`,
+    );
+    if (!confirmed) return;
+
+    setConfirmingId(item.id);
+    try {
+      const { error } = await supabase.rpc("owner_confirm_transaction_payment", {
+        p_transaction_id: item.id,
+      });
+
+      if (error) {
+        alert(error.message || "Gagal mengonfirmasi pembayaran.");
+        return;
+      }
+
+      await fetchTransactions();
+    } finally {
+      setConfirmingId(null);
     }
   };
 
@@ -140,7 +168,7 @@ export default function AdminTransactionsPage() {
           <div>
             <p className={styles.label}>OWNER MENU</p>
             <h1 className={styles.title}>Transaksi</h1>
-            <p className={styles.subtitle}>Pembayaran tercatat otomatis lewat Midtrans. Setelah pembayaran berhasil diverifikasi, aktifkan undangan melalui menu Undangan.</p>
+            <p className={styles.subtitle}>Pembayaran Midtrans tersinkron otomatis. Untuk transfer manual, Owner dapat mengonfirmasi setelah dana benar-benar masuk. Aktivasi undangan dilakukan melalui menu Undangan.</p>
           </div>
           <button onClick={fetchTransactions} className={styles.button}>Refresh</button>
         </header>
@@ -171,10 +199,25 @@ export default function AdminTransactionsPage() {
                           {item.available_at ? ` · Saldo reseller tersedia ${new Date(item.available_at).toLocaleString("id-ID")}` : ""}
                         </p>
                       )}
+                      {item.status === "pending" && item.reseller_confirmed_at && (
+                        <p style={{ fontSize: 12, color: "#b45309" }}>
+                          Reseller melaporkan pembayaran sudah dilakukan · {new Date(item.reseller_confirmed_at).toLocaleString("id-ID")}
+                        </p>
+                      )}
                       {item.payment_type && <p style={{ fontSize: 12 }}>Metode: {item.payment_type}</p>}
                     </div>
                     <div>
                       <span className={styles.badge}>{item.status === "paid" ? "LUNAS" : String(item.status || "pending").toUpperCase()}</span>
+                      {item.status === "pending" && (
+                        <button
+                          onClick={() => confirmManualPayment(item)}
+                          disabled={confirmingId === item.id}
+                          className={styles.miniButtonGreen}
+                          style={{ display: "block", marginTop: 6, fontSize: 11, padding: "6px 10px" }}
+                        >
+                          {confirmingId === item.id ? "Mengonfirmasi..." : "Pembayaran Sukses"}
+                        </button>
+                      )}
                       {item.status !== "paid" && item.midtrans_order_id && (
                         <button
                           onClick={() => syncOrder(item.midtrans_order_id!)}
