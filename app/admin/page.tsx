@@ -42,6 +42,8 @@ type Reseller = {
   whatsapp?: string;
   commission_percent?: number;
   status?: string;
+  package?: "reseller" | "reseller_brand" | string | null;
+  brand_active?: boolean | null;
   created_at: string;
 };
 
@@ -57,14 +59,18 @@ type Invitation = {
 
 type Transaction = {
   id: string;
+  reseller_id?: string | null;
   amount: number;
   commission: number;
   status?: string;
+  paid_at?: string | null;
   created_at: string;
 };
 
 type CheckoutOrder = {
   id: string;
+  package_id?: string | null;
+  package_name?: string | null;
   amount: number;
   status: string;
 };
@@ -196,36 +202,53 @@ export default function AdminPage() {
     router.push("/login");
   };
 
-  // Omzet = confirmed self-checkout purchases (client/reseller/reseller-brand
-  // packages via Midtrans, checkout_orders.status "paid") + confirmed
-  // reseller-added-client sales (transactions.status "paid", the manual
-  // bank-transfer flow owner marks "Dibayar" in /admin/transactions).
-  // Affiliate-referred sales are already inside checkout_orders (the
-  // affiliate commission is a payout obligation on top of that same sale,
-  // not a separate sale), so counting affiliate_commissions here too would
-  // double the revenue.
-  const totalOmzet =
-    checkoutOrders
-      .filter((item) => item.status === "paid")
-      .reduce((sum, item) => sum + Number(item.amount || 0), 0) +
-    transactions
-      .filter((item) => item.status === "paid")
-      .reduce((sum, item) => sum + Number(item.amount || 0), 0);
+  const resellerById = new Map(resellers.map((item) => [item.id, item]));
 
-  // Komisi = what Vistiq still owes out, not what's already settled.
-  // transactions.status "paid" means the owner already paid the reseller
-  // their cut in that same manual step (labelled "Komisi Sudah Dibayar" on
-  // the reseller's own dashboard) - so outstanding commission lives on the
-  // "pending" rows instead. Affiliate commissions are owed until they reach
-  // "paid" (disbursed) or "cancelled" (order refunded/failed) - "held",
-  // "available", and "requested" are all still outstanding.
-  const totalKomisi =
-    transactions
-      .filter((item) => item.status !== "paid")
-      .reduce((sum, item) => sum + Number(item.commission || 0), 0) +
-    affiliateCommissions
-      .filter((item) => item.status !== "paid" && item.status !== "cancelled")
-      .reduce((sum, item) => sum + Number(item.commission_amount || 0), 0);
+  const isBrandResellerTransaction = (item: Transaction) => {
+    if (!item.reseller_id) return false;
+    const reseller = resellerById.get(item.reseller_id);
+    return reseller?.package === "reseller_brand";
+  };
+
+  // Aturan omzet Vistiq:
+  // 1. Pembayaran paket yang benar-benar paid masuk 100% sebagai omzet
+  //    (Reseller sekali bayar, Reseller Brand langganan bulanan, dan paket
+  //    direct-client bila ada). Nilai yang dipakai adalah amount transaksi
+  //    aktual, sehingga histori harga lama tetap tercatat sesuai pembayaran.
+  // 2. Penjualan undangan oleh Reseller standar baru masuk setelah client
+  //    benar-benar membayar (transactions.status === "paid"). Harga jual penuh
+  //    adalah omzet penjualan; 80% adalah komisi reseller dan 20% hak Vistiq.
+  // 3. Penjualan undangan oleh Reseller Brand tidak masuk omzet Vistiq karena
+  //    100% hasil penjualan tersebut milik Reseller Brand.
+  const paidStandardResellerSales = transactions.filter(
+    (item) => item.status === "paid" && !isBrandResellerTransaction(item),
+  );
+
+  const packageRevenue = checkoutOrders
+    .filter((item) => item.status === "paid")
+    .reduce((sum, item) => sum + Number(item.amount || 0), 0);
+
+  const regularResellerGrossSales = paidStandardResellerSales.reduce(
+    (sum, item) => sum + Number(item.amount || 0),
+    0,
+  );
+
+  const totalOmzet = packageRevenue + regularResellerGrossSales;
+
+  // Komisi reseller hanya lahir dari penjualan undangan Reseller standar yang
+  // sudah dibayar client. Transaksi pending belum menjadi omzet/komisi. Komisi
+  // affiliate yang masih menjadi kewajiban tetap digabung ke kartu total
+  // komisi; penjualan Reseller Brand tidak pernah menghasilkan komisi Vistiq.
+  const resellerCommission = paidStandardResellerSales.reduce(
+    (sum, item) => sum + Number(item.commission || 0),
+    0,
+  );
+
+  const outstandingAffiliateCommission = affiliateCommissions
+    .filter((item) => item.status !== "paid" && item.status !== "cancelled")
+    .reduce((sum, item) => sum + Number(item.commission_amount || 0), 0);
+
+  const totalKomisi = resellerCommission + outstandingAffiliateCommission;
 
   const exportCSV = () => {
     if (rsvps.length === 0) {
