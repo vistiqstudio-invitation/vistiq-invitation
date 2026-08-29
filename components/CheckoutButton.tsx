@@ -40,6 +40,9 @@ export default function CheckoutButton({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const manualPackage = packageId === "reseller" || packageId === "reseller-brand";
+  const visibleLabel = manualPackage && label.toLowerCase().includes("midtrans")
+    ? "Daftar & Bayar Manual via WhatsApp"
+    : label;
   const clientKey = process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY ?? "";
   const scriptUrl = production
     ? "https://app.midtrans.com/snap/snap.js"
@@ -119,7 +122,7 @@ export default function CheckoutButton({
           setOpen(true);
         }}
       >
-        {label}
+        {visibleLabel}
       </button>
 
       {open && (
