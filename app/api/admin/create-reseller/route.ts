@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 import { createClient as createServiceClient } from "@supabase/supabase-js";
 import crypto from "node:crypto";
 import { getSessionProfile } from "@/lib/supabase/dal";
+import { createAdminPaidPackageOrder } from "@/lib/createManualPackageOrder";
 
 function generatePassword() {
   return crypto.randomBytes(9).toString("base64url");
@@ -44,7 +45,13 @@ export async function POST(request: Request) {
   // a 20% platform fee. Reseller Brand keeps 100%. Do not trust a stale
   // browser value for this field.
   const commission_percent = pkg === "reseller_brand" ? 100 : 80;
-  const status = body.status || "active";
+  // Accounts created directly by Vistiq Owner are already approved. Ignore
+  // any client-supplied status so this rule cannot be bypassed by a stale or
+  // modified browser request.
+  const status = "active";
+  const brandExpiresAt = pkg === "reseller_brand"
+    ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
+    : null;
 
   if (!name || !email) {
     return NextResponse.json(
@@ -74,16 +81,22 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: message }, { status: 400 });
   }
 
-  const { error: resellerError } = await supabaseAdmin.from("resellers").insert({
-    user_id: created.user.id,
-    name,
-    whatsapp,
-    package: pkg,
-    commission_percent,
-    status,
-  });
+  const { data: reseller, error: resellerError } = await supabaseAdmin
+    .from("resellers")
+    .insert({
+      user_id: created.user.id,
+      name,
+      whatsapp,
+      package: pkg,
+      commission_percent,
+      status,
+      brand_active: pkg === "reseller_brand",
+      brand_expires_at: brandExpiresAt,
+    })
+    .select("id")
+    .single();
 
-  if (resellerError) {
+  if (resellerError || !reseller) {
     // Roll back the auth user so we don't leave an orphaned login with no
     // matching reseller row.
     await supabaseAdmin.auth.admin.deleteUser(created.user.id);
@@ -93,5 +106,29 @@ export async function POST(request: Request) {
     );
   }
 
-  return NextResponse.json({ email, password });
+  try {
+    const { orderId } = await createAdminPaidPackageOrder(supabaseAdmin, {
+      resellerId: reseller.id,
+      package: pkg,
+      name,
+      email,
+      whatsapp,
+      authUserId: created.user.id,
+      confirmedBy: profile.id,
+    });
+
+    return NextResponse.json({ email, password, orderId, orderStatus: "paid" });
+  } catch (orderError) {
+    // Account creation and its paid package ledger record must not diverge.
+    // If the ledger insert fails, remove both rows so a later retry cannot
+    // leave an active account without a traceable package order.
+    await supabaseAdmin.from("resellers").delete().eq("id", reseller.id);
+    await supabaseAdmin.auth.admin.deleteUser(created.user.id);
+
+    console.error("create-reseller: manual package order failed", orderError);
+    return NextResponse.json(
+      { error: orderError instanceof Error ? orderError.message : "Gagal membuat order paket manual." },
+      { status: 500 },
+    );
+  }
 }
