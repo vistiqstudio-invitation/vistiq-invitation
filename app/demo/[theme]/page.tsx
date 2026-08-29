@@ -10,6 +10,7 @@ import { withLuxuryArtGardenDemoAssets } from "@/lib/luxuryArtGardenDemo";
 import { withLuxuryArtLoveParadiseDemoAssets } from "@/lib/luxuryArtLoveParadiseDemo";
 import { withLuxuryArtChampagneRomanceDemoAssets } from "@/lib/luxuryArtChampagneRomanceDemo";
 import WeddingThemeSafeArea from "@/components/WeddingThemeSafeArea";
+import { withWhiteGardenDemo } from "@/lib/whiteGardenDemo";
 
 export default async function DemoThemePage({
   params,
@@ -46,7 +47,7 @@ export default async function DemoThemePage({
 
   return (
     <WeddingThemeSafeArea theme={theme}>
-      <Theme invitation={invitation} />
+      <Theme invitation={withWhiteGardenDemo(theme, invitation)} />
     </WeddingThemeSafeArea>
   );
 }

@@ -1,4 +1,5 @@
 export const WEDDING_COVER_BY_THEME: Record<string, string> = {
+  "luxury-art-white-garden": "/themes/luxury-art-white-garden/DLLADE1.jpeg",
   "princess-fairytale": "/photos/romance-cover.png",
   "luxury-gold": "/photos/luxury-cover.png",
   "royal-black": "/photos/black-cover.png",
@@ -64,6 +65,8 @@ export const BIRTHDAY_COVER_BY_THEME: Record<string, string> = {
 };
 
 export function getThemeCoverImage(themeKey: string, demoPath: string): string | null {
+  // Use the licensed portrait until a verified theme screenshot is available.
+  if (demoPath === "/demo" && themeKey === "luxury-art-white-garden") return WEDDING_COVER_BY_THEME[themeKey];
   if (demoPath === "/demo-khitan") return KHITAN_COVER_BY_THEME[themeKey] ? `/theme-previews/khitan/${themeKey}.jpg` : null;
   if (demoPath === "/demo-akikah") return AQIQAH_COVER_BY_THEME[themeKey] ? `/theme-previews/akikah/${themeKey}.jpg` : null;
   if (demoPath === "/demo-ulang-tahun") return BIRTHDAY_COVER_BY_THEME[themeKey] ? `/theme-previews/birthday/${themeKey}.jpg` : null;
