@@ -7,13 +7,16 @@ import DashboardSidebar from "@/components/admin/DashboardSidebar";
 import { getResellerNavItems } from "@/components/reseller/navItems";
 import styles from "@/styles/dashboard.module.css";
 
+const ADMIN_WHATSAPP = "6281371338032";
+
 type Reseller = {
   id: string;
+  name?: string | null;
   brand_name?: string | null;
   logo_url?: string | null;
   brand_color?: string | null;
   brand_active?: boolean;
-  package?: "reseller" | "reseller_brand";
+  package?: "reseller" | "reseller-brand" | "reseller_brand";
 };
 
 type Transaction = {
@@ -25,8 +28,6 @@ type Transaction = {
   created_at: string;
   paid_at?: string | null;
   available_at?: string | null;
-  midtrans_order_id?: string | null;
-  midtrans_redirect_url?: string | null;
   payment_type?: string | null;
   withdrawal_id?: string | null;
 };
@@ -37,8 +38,26 @@ type Client = {
   whatsapp?: string | null;
 };
 
+function isBrandPackage(value?: string | null) {
+  return value === "reseller-brand" || value === "reseller_brand";
+}
+
 function formatDate(value?: string | null) {
   return value ? new Date(value).toLocaleString("id-ID") : "-";
+}
+
+function adminPaymentLink(item: Transaction, client: Client | undefined, reseller: Reseller | null) {
+  const message = [
+    "Halo Admin Vistiq, saya ingin konfirmasi pembayaran undangan client Reseller.",
+    "",
+    `ID Transaksi: ${item.id}`,
+    `Client: ${client?.name || "Client"}`,
+    `Reseller: ${reseller?.name || "Reseller"}`,
+    `Total: Rp ${Number(item.amount).toLocaleString("id-ID")}`,
+    "",
+    "Mohon kirimkan informasi rekening Vistiq. Setelah transfer diterima, mohon tandai Pembayaran Sukses dari Dashboard Owner.",
+  ].join("\n");
+  return `https://wa.me/${ADMIN_WHATSAPP}?text=${encodeURIComponent(message)}`;
 }
 
 export default function ResellerTransactionsPage() {
@@ -48,13 +67,12 @@ export default function ResellerTransactionsPage() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [clients, setClients] = useState<Client[]>([]);
   const [loading, setLoading] = useState(true);
-  const [syncing, setSyncing] = useState<string | null>(null);
 
   const fetchTransactions = async (resellerId: string) => {
     const [{ data: tx }, { data: clientData }] = await Promise.all([
       supabase
         .from("transactions")
-        .select("id, client_id, amount, commission, status, created_at, paid_at, available_at, midtrans_order_id, midtrans_redirect_url, payment_type, withdrawal_id")
+        .select("id, client_id, amount, commission, status, created_at, paid_at, available_at, payment_type, withdrawal_id")
         .eq("reseller_id", resellerId)
         .order("created_at", { ascending: false }),
       supabase
@@ -88,19 +106,6 @@ export default function ResellerTransactionsPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
-  const syncPayment = async (item: Transaction) => {
-    if (!item.midtrans_order_id || !reseller) return;
-    setSyncing(item.id);
-    try {
-      const response = await fetch(`/api/payments/status?order_id=${encodeURIComponent(item.midtrans_order_id)}`, { cache: "no-store" });
-      const result = await response.json();
-      if (!response.ok) alert(result.error || "Gagal mengecek pembayaran.");
-      await fetchTransactions(reseller.id);
-    } finally {
-      setSyncing(null);
-    }
-  };
-
   const logout = async () => { await supabase.auth.signOut(); router.push("/login"); };
 
   const paidTransactions = transactions.filter((item) => item.status === "paid");
@@ -112,19 +117,20 @@ export default function ResellerTransactionsPage() {
   );
   const pendingCount = transactions.filter((item) => item.status !== "paid").length;
 
+  const brandPackage = isBrandPackage(reseller?.package);
   const brandingEnabled = reseller?.package === "reseller" || Boolean(reseller?.brand_active);
   const brandName = brandingEnabled && reseller?.brand_name ? reseller.brand_name : null;
   const brandStyle = brandingEnabled && reseller?.brand_color
     ? ({ "--accent": reseller.brand_color } as React.CSSProperties)
     : undefined;
 
-  const clientName = (id?: string | null) => clients.find((client) => client.id === id)?.name || "Client";
+  const clientFor = (id?: string | null) => clients.find((client) => client.id === id);
 
   return (
     <main className={styles.page} style={brandStyle}>
       <DashboardSidebar
         brandTop={brandName ? brandName.toUpperCase() : "VISTIQ"}
-        brandBottom={reseller?.package === "reseller_brand" ? "Reseller Brand" : "Reseller"}
+        brandBottom={brandPackage ? "Reseller Brand" : "Reseller"}
         logoUrl={brandingEnabled ? reseller?.logo_url : null}
         accentColor={brandingEnabled ? reseller?.brand_color : null}
         items={getResellerNavItems(reseller?.package, reseller?.id)}
@@ -139,7 +145,7 @@ export default function ResellerTransactionsPage() {
             <p className={styles.label}>{brandName ? `${brandName} DASHBOARD` : "RESELLER DASHBOARD"}</p>
             <h1 className={styles.title}>Transaksi Client</h1>
             <p className={styles.subtitle}>
-              Pembayaran client Reseller standar wajib melalui Midtrans. Setelah lunas, 80% menjadi penghasilan reseller dan 20% fee platform.
+              Pembayaran client Reseller standar masuk ke Vistiq melalui WhatsApp Admin. Setelah Admin memverifikasi transfer, 80% menjadi bagian reseller dan 20% fee Vistiq.
             </p>
           </div>
           <button onClick={() => reseller && fetchTransactions(reseller.id)} className={styles.button}>Refresh</button>
@@ -149,16 +155,16 @@ export default function ResellerTransactionsPage() {
           <p>Memuat data...</p>
         ) : !reseller ? (
           <section className={styles.warningBox}><h2>Akun reseller belum terhubung.</h2></section>
-        ) : reseller.package === "reseller_brand" ? (
+        ) : brandPackage ? (
           <section className={styles.warningBox}>
             <h2>Reseller Brand menyimpan 100% harga jual.</h2>
-            <p>Reseller Brand tidak menggunakan skema pembayaran 80/20 milik paket Reseller standar.</p>
+            <p>Pembayaran client Reseller Brand dilakukan langsung ke Reseller Brand dan tidak masuk transaksi Vistiq.</p>
           </section>
         ) : (
           <>
             <section className={styles.stats}>
               <div className={styles.statCard}><span>Transaksi Lunas</span><strong>{paidTransactions.length}</strong></div>
-              <div className={styles.statCard}><span>Menunggu Bayar</span><strong>{pendingCount}</strong></div>
+              <div className={styles.statCard}><span>Menunggu Verifikasi</span><strong>{pendingCount}</strong></div>
               <div className={styles.statCard}><span>Omzet Lunas</span><strong>Rp {totalOmzet.toLocaleString("id-ID")}</strong></div>
               <div className={styles.statCard}><span>Penghasilan Reseller 80%</span><strong>Rp {totalResellerShare.toLocaleString("id-ID")}</strong></div>
               <div className={styles.statCard}><span>Fee Vistiq 20%</span><strong>Rp {totalPlatformFee.toLocaleString("id-ID")}</strong></div>
@@ -176,37 +182,34 @@ export default function ResellerTransactionsPage() {
                     const platformFee = Math.max(0, amount - resellerShare);
                     const isPaid = item.status === "paid";
                     const available = item.available_at ? new Date(item.available_at).getTime() <= Date.now() : false;
+                    const client = clientFor(item.client_id);
 
                     return (
                       <div className={styles.row} key={item.id}>
                         <div>
-                          <strong>{clientName(item.client_id)} · Rp {amount.toLocaleString("id-ID")}</strong>
+                          <strong>{client?.name || "Client"} · Rp {amount.toLocaleString("id-ID")}</strong>
                           <p>Bagian reseller Rp {resellerShare.toLocaleString("id-ID")} · Fee Vistiq Rp {platformFee.toLocaleString("id-ID")}</p>
                           <p style={{ fontSize: 12, color: "#64748b" }}>
                             {isPaid
                               ? `Lunas ${formatDate(item.paid_at)} · ${available ? "Saldo sudah bisa ditarik" : `Saldo tersedia ${formatDate(item.available_at)}`}`
-                              : "Menunggu pembayaran client melalui Midtrans"}
+                              : "Menunggu transfer dan verifikasi Admin Vistiq"}
                           </p>
-                          {item.payment_type && <p style={{ fontSize: 12 }}>Metode: {item.payment_type}</p>}
+                          {item.payment_type && <p style={{ fontSize: 12 }}>Metode: {item.payment_type === "manual_whatsapp" ? "Transfer Manual · WA Admin" : item.payment_type}</p>}
                           {item.withdrawal_id && <p style={{ fontSize: 12, color: "#0369a1" }}>Saldo transaksi ini sudah masuk proses penarikan.</p>}
                         </div>
 
                         <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
-                          <span className={styles.badge}>{isPaid ? "LUNAS" : "MENUNGGU"}</span>
-                          {!isPaid && item.midtrans_redirect_url && (
-                            <a href={item.midtrans_redirect_url} target="_blank" rel="noreferrer" className={styles.button} style={{ fontSize: 11, padding: "6px 10px" }}>
-                              Link Bayar
-                            </a>
-                          )}
-                          {!isPaid && item.midtrans_order_id && (
-                            <button
-                              onClick={() => syncPayment(item)}
-                              disabled={syncing === item.id}
-                              className={styles.exportButton}
-                              style={{ fontSize: 11, padding: "6px 10px" }}
+                          <span className={styles.badge}>{isPaid ? "LUNAS" : "MENUNGGU VERIFIKASI"}</span>
+                          {!isPaid && (
+                            <a
+                              href={adminPaymentLink(item, client, reseller)}
+                              target="_blank"
+                              rel="noreferrer"
+                              className={styles.button}
+                              style={{ fontSize: 11, padding: "6px 10px", background: "#22c55e", color: "white" }}
                             >
-                              {syncing === item.id ? "Mengecek..." : "Cek Midtrans"}
-                            </button>
+                              Hubungi Admin Vistiq
+                            </a>
                           )}
                         </div>
 
