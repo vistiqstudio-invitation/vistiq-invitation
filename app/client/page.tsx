@@ -12,6 +12,8 @@ const navItems = (hasInvitation: boolean) => [
   { key: "edit", label: hasInvitation ? "Edit Undangan" : "Buat Undangan", href: "/client/edit" },
 ];
 
+const ADMIN_WHATSAPP = "6281371338032";
+
 type AppUser = {
   id: string;
   role: "owner" | "reseller" | "client";
@@ -30,6 +32,17 @@ type Client = {
   status?: string;
   created_at: string;
 };
+
+function clientStatusLabel(status?: string) {
+  if (status === "pending") return "Menunggu Aktivasi Admin";
+  if (status === "active") return "Aktif";
+  return status || "Menunggu Aktivasi Admin";
+}
+
+function adminActivationLink(client: Client) {
+  const message = `Halo Admin Vistiq, mohon bantu verifikasi dan aktivasi undangan saya.\n\nClient: ${client.name}\n\nMohon diperiksa dan diaktifkan. Terima kasih.`;
+  return `https://wa.me/${ADMIN_WHATSAPP}?text=${encodeURIComponent(message)}`;
+}
 
 type DashboardBrand = {
   brand_name: string;
@@ -328,7 +341,7 @@ Wassalamualaikum Warahmatullahi Wabarakatuh`;
         ) : (
           <>
             <section className={styles.stats}>
-              <StatCard title="Status Client" value={client.status || "active"} />
+              <StatCard title="Status Client" value={clientStatusLabel(client.status)} />
               <StatCard title="Paket" value={client.package_name || "-"} />
               <StatCard title="Total Undangan" value={invitations.length} />
               <StatCard title="Total RSVP" value={rsvps.length} />
@@ -452,7 +465,18 @@ Wassalamualaikum Warahmatullahi Wabarakatuh`;
                   title="Paket"
                   meta={client.package_name || "Luxury Gold"}
                 />
-                <MiniItem title="Status" meta={client.status || "active"} />
+                <MiniItem title="Status" meta={clientStatusLabel(client.status)} />
+                {client.status === "pending" && (
+                  <a
+                    href={adminActivationLink(client)}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={styles.button}
+                    style={{ display: "inline-block", marginTop: 12, textAlign: "center" }}
+                  >
+                    Hubungi Admin untuk Aktivasi
+                  </a>
+                )}
               </Panel>
             </section>
 
