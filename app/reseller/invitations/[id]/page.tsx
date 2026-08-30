@@ -16,7 +16,6 @@ type PhotoField = "cover_photo" | "bride_photo" | "groom_photo" | "music_url";
 const initialForm = {
   category: "wedding" as "wedding" | "aqiqah" | "khitan" | "birthday",
   theme: "luxury-gold",
-  is_active: true,
   client_price: "",
 
   groom_name: "",
@@ -101,11 +100,6 @@ export default function ResellerInvitationEditPage() {
   const [resellerPackage, setResellerPackage] = useState<"reseller" | "reseller_brand" | null>(null);
   const [form, setForm] = useState<FormState>(initialForm);
 
-  useEffect(() => {
-    loadInvitation();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const loadInvitation = async () => {
     try {
       const {
@@ -181,7 +175,6 @@ export default function ResellerInvitationEditPage() {
             : invitation.category === "birthday"
             ? birthdayThemeList[0]?.key || "princess-fairytale"
             : "luxury-gold"),
-        is_active: invitation.is_active !== false,
         client_price: invitation.client_price != null ? String(invitation.client_price) : "",
 
         groom_name: invitation.groom_name || "",
@@ -259,6 +252,13 @@ export default function ResellerInvitationEditPage() {
 
     setLoading(false);
   };
+
+  useEffect(() => {
+    // This effect loads the existing invitation and hydrates the editor once.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadInvitation();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const set = (field: keyof FormState, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -423,14 +423,9 @@ export default function ResellerInvitationEditPage() {
 
           <ThemePreviewPanel category={form.category} themeKey={form.theme} />
 
-          <select
-            value={form.is_active ? "active" : "inactive"}
-            onChange={(e) => setForm({ ...form, is_active: e.target.value === "active" })}
-            className={styles.input}
-          >
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
-          </select>
+          <div className={styles.input} style={{ display: "flex", alignItems: "center", color: "#92400e" }}>
+            Status aktivasi dikelola Admin Vistiq. Setelah data dan pembayaran client siap, hubungi admin untuk menayangkan undangan.
+          </div>
 
           {resellerPackage === "reseller_brand" && (
             <input

@@ -86,6 +86,7 @@ export default function AdminTransactionsPage() {
   const [loading, setLoading] = useState(true);
   const [syncingId, setSyncingId] = useState<string | null>(null);
   const [confirmingOrderId, setConfirmingOrderId] = useState<string | null>(null);
+  const [confirmingTransactionId, setConfirmingTransactionId] = useState<string | null>(null);
   const [creatingManualOrder, setCreatingManualOrder] = useState(false);
   const [manualResellerId, setManualResellerId] = useState("");
   const [manualAmount, setManualAmount] = useState(String(PAYMENT_PACKAGES.reseller.amount));
@@ -182,6 +183,30 @@ export default function AdminTransactionsPage() {
       await fetchTransactions();
     } finally {
       setConfirmingOrderId(null);
+    }
+  };
+
+  const confirmClientPayment = async (item: Transaction) => {
+    if (!confirm(`Konfirmasi pembayaran client ${clientName(item.client_id)}? Pastikan transfer sudah masuk.`)) return;
+
+    setConfirmingTransactionId(item.id);
+    try {
+      const { data, error } = await supabase.rpc("owner_confirm_reseller_client_payment", {
+        p_transaction_id: item.id,
+      });
+
+      if (error) {
+        alert(error.message || "Gagal mengonfirmasi pembayaran client.");
+        return;
+      }
+
+      const result = Array.isArray(data) ? data[0] : data;
+      alert(result?.already_paid
+        ? "Pembayaran ini sudah pernah dikonfirmasi. Tidak ada saldo atau komisi tambahan."
+        : "Pembayaran client berhasil dikonfirmasi. Saldo reseller ditahan selama 6 hari.");
+      await fetchTransactions();
+    } finally {
+      setConfirmingTransactionId(null);
     }
   };
 
@@ -314,6 +339,16 @@ export default function AdminTransactionsPage() {
                           style={{ display: "block", marginTop: 6, fontSize: 11, padding: "4px 10px" }}
                         >
                           {syncingId === item.midtrans_order_id ? "Mengecek..." : "Cek ke Midtrans"}
+                        </button>
+                      )}
+                      {item.status === "pending" && (
+                        <button
+                          onClick={() => confirmClientPayment(item)}
+                          disabled={confirmingTransactionId === item.id}
+                          className={styles.button}
+                          style={{ display: "block", marginTop: 6, fontSize: 11, padding: "4px 10px", background: "#15803d" }}
+                        >
+                          {confirmingTransactionId === item.id ? "Mengonfirmasi..." : "Pembayaran Sukses"}
                         </button>
                       )}
                     </div>

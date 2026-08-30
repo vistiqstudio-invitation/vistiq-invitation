@@ -12,6 +12,7 @@ import { MUSIC_LIBRARY } from "@/lib/musicLibrary";
 import styles from "@/styles/dashboard.module.css";
 
 const BUCKET = "invitation-assets";
+const ADMIN_WHATSAPP = "6281371338032";
 
 type PhotoField = "cover_photo" | "bride_photo" | "groom_photo" | "music_url";
 
@@ -49,7 +50,6 @@ type Transaction = {
   id: string;
   client_id: string;
   status?: string;
-  reseller_confirmed_at?: string | null;
 };
 
 const initialForm = {
@@ -60,11 +60,6 @@ const initialForm = {
   // Only used/shown for reseller_brand package resellers - they keep 100%
   // of this, no commission tracked. Empty string = not set yet.
   client_price: "",
-  // Resellers can no longer flip this themselves - a new invitation stays
-  // inactive until the owner confirms payment (admin/transactions) or
-  // manually activates it (admin/invitations).
-  is_active: false,
-
   groom_name: "",
   bride_name: "",
   groom_nickname: "",
@@ -147,7 +142,6 @@ export default function ResellerInvitationsPage() {
   const [transactionsByClientId, setTransactionsByClientId] = useState<Record<string, Transaction>>({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [confirmingId, setConfirmingId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<number | null>(null);
 
   const [form, setForm] = useState<FormState>(initialForm);
@@ -179,7 +173,7 @@ export default function ResellerInvitationsPage() {
 
     const { data: transactionsData } = await supabase
       .from("transactions")
-      .select("id, client_id, status, reseller_confirmed_at")
+      .select("id, client_id, status")
       .in("client_id", clientIds)
       .order("created_at", { ascending: false });
 
@@ -395,27 +389,7 @@ export default function ResellerInvitationsPage() {
 
     setForm(initialForm);
     if (reseller) fetchData(reseller.id);
-    alert(canManageActivation
-      ? "Undangan berhasil dibuat. Aktifkan setelah pembayaran client Anda dikonfirmasi."
-      : "Undangan berhasil dibuat. Tunggu admin Vistiq memverifikasi pembayaran dan mengaktifkannya.");
-  };
-
-  const confirmPayment = async (transactionId: string) => {
-    setConfirmingId(transactionId);
-
-    const { error } = await supabase.rpc("confirm_payment_notification", {
-      p_transaction_id: transactionId,
-    });
-
-    setConfirmingId(null);
-
-    if (error) {
-      alert(`Gagal mengirim konfirmasi: ${error.message}`);
-      return;
-    }
-
-    if (reseller) fetchData(reseller.id);
-    alert("Konfirmasi terkirim. Admin akan memverifikasi pembayaran dan mengaktifkan undangan.");
+    alert("Undangan berhasil dibuat sebagai draft. Hubungi admin Vistiq untuk verifikasi dan aktivasi.");
   };
 
   const copyLink = async (slug: string) => {
@@ -450,19 +424,12 @@ export default function ResellerInvitationsPage() {
 
   const brandNotExpired =
     !reseller?.brand_expires_at || new Date(reseller.brand_expires_at) > new Date();
-  const canManageActivation = reseller?.package === "reseller_brand"
+  const canDeleteInvitation = reseller?.package === "reseller_brand"
     && reseller?.status === "active" && Boolean(reseller?.brand_active) && brandNotExpired;
 
-  const updateActive = async (id: number, is_active: boolean) => {
-    if (!canManageActivation) return;
-    if (is_active && !confirm("Pembayaran client sudah Anda konfirmasi? Aktifkan undangan ini?")) return;
-    const { data, error } = await supabase.from("invitations")
-      .update({ is_active }).eq("id", id).select("is_active").single();
-    if (error || data?.is_active !== is_active) {
-      alert("Status tidak berhasil diubah. Pastikan paket Reseller Brand masih aktif.");
-      return;
-    }
-    if (reseller) fetchData(reseller.id);
+  const adminActivationLink = (invitation: Invitation, clientName?: string) => {
+    const message = `Halo Admin Vistiq, mohon bantu verifikasi dan aktivasi client reseller saya.\n\nClient: ${clientName || "-"}\nUndangan: /${invitation.slug}\n\nMohon diperiksa dan diaktifkan. Terima kasih.`;
+    return `https://wa.me/${ADMIN_WHATSAPP}?text=${encodeURIComponent(message)}`;
   };
   const brandingEnabled = reseller?.package === "reseller"
     || (reseller?.package === "reseller_brand" && Boolean(reseller?.brand_active) && brandNotExpired);
@@ -571,9 +538,7 @@ export default function ResellerInvitationsPage() {
                 </div>
 
                 <div className={styles.input} style={{ display: "flex", alignItems: "center", color: "#92400e" }}>
-                  {canManageActivation
-                    ? "Draft - Anda dapat mengaktifkan setelah pembayaran client dikonfirmasi"
-                    : "Menunggu Pembayaran - hanya admin Vistiq yang dapat mengaktifkan setelah pembayaran dikonfirmasi"}
+                  Menunggu Aktivasi Admin — setelah data dan pembayaran client siap, hubungi Admin Vistiq melalui WhatsApp.
                 </div>
 
                 {reseller?.package === "reseller_brand" && (
@@ -1159,7 +1124,7 @@ export default function ResellerInvitationsPage() {
                 <div className={styles.table}>
                   {invitations.map((item) => {
                     const transaction = item.client_id ? transactionsByClientId[item.client_id] : null;
-                    const alreadyConfirmed = Boolean(transaction?.reseller_confirmed_at);
+                    const client = clients.find((candidate) => candidate.id === item.client_id);
 
                     return (
                     <div key={item.id} className={styles.row}>
@@ -1182,37 +1147,26 @@ export default function ResellerInvitationsPage() {
                         </span>
                       )}
 
-                      {canManageActivation ? (
-                        <select
-                          aria-label={`Status undangan ${item.slug}`}
-                          value={item.is_active ? "active" : "inactive"}
-                          onChange={(e) => updateActive(item.id, e.target.value === "active")}
-                          className={styles.statusSelect}
-                        >
-                          <option value="active">Aktif</option>
-                          <option value="inactive">Tidak Aktif</option>
-                        </select>
-                      ) : <>
-                        <span className={styles.status}>
-                          {item.is_active === false ? "Menunggu Aktivasi Admin" : "Aktif"}
+                      {transaction && (
+                        <span className={styles.packageBadge}>
+                          {transaction.status === "paid" ? "LUNAS" : "MENUNGGU BAYAR"}
                         </span>
+                      )}
 
-                        {item.is_active === false && transaction && transaction.status !== "paid" && (
-                          alreadyConfirmed ? (
-                            <span style={{ fontSize: 12, color: "#0369a1" }}>
-                              Menunggu verifikasi admin
-                            </span>
-                          ) : (
-                            <button
-                              onClick={() => confirmPayment(transaction.id)}
-                              disabled={confirmingId === transaction.id}
-                              className={styles.miniButtonGreen}
-                            >
-                              {confirmingId === transaction.id ? "Mengirim..." : "Konfirmasi Sudah Bayar"}
-                            </button>
-                          )
-                        )}
-                      </>}
+                      <span className={styles.status}>
+                        {item.is_active === false ? "Menunggu Aktivasi Admin" : "Aktif"}
+                      </span>
+
+                      {item.is_active === false && (
+                        <a
+                          href={adminActivationLink(item, client?.name)}
+                          target="_blank"
+                          rel="noreferrer"
+                          className={styles.miniButtonGreen}
+                        >
+                          Hubungi Admin untuk Aktivasi
+                        </a>
+                      )}
 
                       <div className={styles.actions}>
                         <button
@@ -1230,7 +1184,7 @@ export default function ResellerInvitationsPage() {
                           Copy
                         </button>
 
-                        {canManageActivation && (
+                        {canDeleteInvitation && (
                           <button
                             onClick={() =>
                               deleteInvitation(

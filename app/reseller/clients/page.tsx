@@ -16,6 +16,8 @@ function toWaNumber(phone: string) {
   return `62${digits}`;
 }
 
+const ADMIN_WHATSAPP = "6281371338032";
+
 function categoryForPackageName(packageName: string) {
   if (aqiqahThemeList.some((theme) => theme.label === packageName)) return "aqiqah";
   if (khitanThemeList.some((theme) => theme.label === packageName)) return "khitan";
@@ -32,12 +34,6 @@ const DATA_CHECKLIST: Record<string, string> = {
     "- Nama anak\n- Tanggal & tempat lahir\n- Nama ayah & ibu\n- Tanggal, jam & lokasi acara Khitan\n- Foto anak\n- Galeri foto\n- Nomor rekening (untuk amplop digital, opsional)\n- Musik latar (opsional)",
   birthday:
     "- Nama anak\n- Tanggal & tempat lahir\n- Nama ayah & ibu\n- Tanggal, jam & lokasi acara Ulang Tahun\n- Foto anak\n- Galeri foto\n- Musik latar (opsional)",
-};
-
-type AppUser = {
-  id: string;
-  role: "owner" | "reseller" | "client";
-  name: string;
 };
 
 type Reseller = {
@@ -79,6 +75,7 @@ type Invitation = {
   bride_name?: string;
   baby_name?: string;
   client_id?: string;
+  is_active?: boolean;
 };
 
 type NewClientInfo = {
@@ -96,7 +93,6 @@ export default function ResellerClientsPage() {
   const router = useRouter();
   const supabase = createClient();
 
-  const [user, setUser] = useState<AppUser | null>(null);
   const [reseller, setReseller] = useState<Reseller | null>(null);
   const [clients, setClients] = useState<Client[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -109,7 +105,6 @@ export default function ResellerClientsPage() {
     whatsapp: "",
     package_name: "Luxury Gold",
     sale_price: "100000",
-    status: "active",
   });
   const [addingClient, setAddingClient] = useState(false);
   const [newClientCredentials, setNewClientCredentials] = useState<NewClientInfo | null>(null);
@@ -135,7 +130,7 @@ export default function ResellerClientsPage() {
     const [{ data: invitationsData }, { data: transactionData }] = await Promise.all([
       supabase
         .from("invitations")
-        .select("id, slug, category, groom_name, bride_name, baby_name, client_id")
+        .select("id, slug, category, groom_name, bride_name, baby_name, client_id, is_active")
         .in("client_id", clientIds),
       supabase
         .from("transactions")
@@ -169,8 +164,6 @@ export default function ResellerClientsPage() {
         router.push("/login");
         return;
       }
-
-      setUser({ id: authUser.id, role: profile.role, name: profile.name || "Reseller" });
 
       const { data: resellerData } = await supabase
         .from("resellers")
@@ -245,7 +238,6 @@ export default function ResellerClientsPage() {
       whatsapp: "",
       package_name: "Luxury Gold",
       sale_price: "100000",
-      status: "active",
     });
 
     fetchData(reseller.id);
@@ -264,7 +256,7 @@ export default function ResellerClientsPage() {
       return `Halo ${newClientCredentials.name}, pesanan undangan digital Anda sudah dibuat.\n\nTotal pembayaran: Rp ${newClientCredentials.salePrice.toLocaleString("id-ID")}\nBayar aman melalui Midtrans di link berikut:\n${newClientCredentials.paymentUrl}\n\nSetelah pembayaran berhasil, akun dashboard bisa digunakan. Undangan menunggu verifikasi dan aktivasi oleh admin Vistiq.\n\nAkun dashboard:\nLink: ${window.location.origin}/login\nEmail: ${newClientCredentials.email}\nPassword: ${newClientCredentials.password}\n\nData yang perlu disiapkan:\n${checklist}\n\nTerima kasih!`;
     }
 
-    return `Halo ${newClientCredentials.name}, berikut akun login dashboard undangan Anda di ${dashboardBrand}:\n\nLink: ${window.location.origin}/login\nEmail: ${newClientCredentials.email}\nPassword: ${newClientCredentials.password}\n\nLewat dashboard ini Anda bisa generate link undangan per nama tamu, lihat RSVP, dan edit undangan.\n\nSupaya undangannya bisa langsung dipakai, mohon siapkan data berikut untuk diisi di dashboard:\n${checklist}\n\nKalau ada pertanyaan, jangan sungkan hubungi kami ya. Terima kasih!`;
+    return `Halo ${newClientCredentials.name}, berikut akun login dashboard undangan Anda di ${dashboardBrand}:\n\nLink: ${window.location.origin}/login\nEmail: ${newClientCredentials.email}\nPassword: ${newClientCredentials.password}\n\nLewat dashboard ini Anda bisa generate link undangan per nama tamu, lihat RSVP, dan edit undangan.\n\nSupaya undangannya bisa langsung dipakai, mohon siapkan data berikut untuk diisi di dashboard:\n${checklist}\n\nUndangan akan tetap menjadi draft sampai diaktifkan oleh admin Vistiq.\n\nKalau ada pertanyaan, jangan sungkan hubungi kami ya. Terima kasih!`;
   };
 
   const copyClientCredentials = async () => {
@@ -284,18 +276,15 @@ export default function ResellerClientsPage() {
     return `https://wa.me/${toWaNumber(client.whatsapp)}?text=${encodeURIComponent(message)}`;
   };
 
-  const updateClientStatus = async (id: string, status: string) => {
-    if (reseller?.package !== "reseller_brand") {
-      alert("Status client Reseller standar mengikuti pembayaran Midtrans dan tidak dapat diubah manual.");
-      return;
-    }
+  const adminActivationLink = (client: Client, invitation?: Invitation) => {
+    const message = `Halo Admin Vistiq, mohon bantu verifikasi dan aktivasi client saya.\n\nClient: ${client.name}\nEmail: ${client.email || "-"}${invitation ? `\nUndangan: /${invitation.slug}` : ""}\n\nMohon diperiksa dan diaktifkan. Terima kasih.`;
+    return `https://wa.me/${ADMIN_WHATSAPP}?text=${encodeURIComponent(message)}`;
+  };
 
-    const { error } = await supabase.from("clients").update({ status }).eq("id", id);
-    if (error) {
-      alert(`Gagal mengubah status client: ${error.message}`);
-      return;
-    }
-    if (reseller) fetchData(reseller.id);
+  const adminActivationLinkForNewClient = () => {
+    if (!newClientCredentials) return "";
+    const message = `Halo Admin Vistiq, mohon bantu verifikasi dan aktivasi client reseller saya.\n\nClient: ${newClientCredentials.name}\nEmail: ${newClientCredentials.email}\n\nMohon diperiksa dan diaktifkan. Terima kasih.`;
+    return `https://wa.me/${ADMIN_WHATSAPP}?text=${encodeURIComponent(message)}`;
   };
 
   const resetClientPassword = async (client: Client) => {
@@ -383,8 +372,8 @@ export default function ResellerClientsPage() {
               <h2 className={styles.sectionTitle}>Tambah Client Baru</h2>
               <p style={{ marginTop: -8, marginBottom: 16, fontSize: 13, opacity: 0.75 }}>
                 {reseller.package === "reseller_brand"
-                  ? "Email dipakai untuk membuat akun login dashboard client secara otomatis."
-                  : "Setelah disimpan, sistem otomatis membuat tagihan Midtrans. Client berstatus Pending sampai pembayaran berhasil."}
+                  ? "Email dipakai untuk membuat akun login dashboard client secara otomatis. Client dan undangan tetap menunggu aktivasi admin Vistiq."
+                  : "Setelah disimpan, sistem otomatis membuat tagihan Midtrans. Client dan undangan menunggu pembayaran serta aktivasi admin Vistiq."}
               </p>
 
               {newClientCredentials && (
@@ -418,6 +407,9 @@ export default function ResellerClientsPage() {
                         Kirim ke WA Otomatis
                       </a>
                     )}
+                    <a href={adminActivationLinkForNewClient()} target="_blank" rel="noreferrer" className={styles.miniButtonGreen}>
+                      Hubungi Admin untuk Aktivasi
+                    </a>
                   </div>
                 </div>
               )}
@@ -476,17 +468,6 @@ export default function ResellerClientsPage() {
                   />
                 )}
 
-                {reseller.package === "reseller_brand" && (
-                  <select
-                    value={form.status}
-                    onChange={(e) => setForm({ ...form, status: e.target.value })}
-                    className={styles.input}
-                  >
-                    <option value="active">Active</option>
-                    <option value="pending">Pending</option>
-                    <option value="inactive">Inactive</option>
-                  </select>
-                )}
               </div>
 
               {reseller.package !== "reseller_brand" && (
@@ -511,6 +492,8 @@ export default function ResellerClientsPage() {
                     const clientInvitations = invitations.filter((inv) => inv.client_id === client.id);
                     const transaction = transactions.find((tx) => tx.client_id === client.id);
                     const isPaid = transaction?.status === "paid";
+                    const activeInvitation = clientInvitations.find((inv) => inv.is_active);
+                    const invitationForActivation = clientInvitations.find((inv) => !inv.is_active) || clientInvitations[0];
 
                     return (
                       <div key={client.id} className={styles.clientRow}>
@@ -531,7 +514,7 @@ export default function ResellerClientsPage() {
                           ) : (
                             clientInvitations.map((inv) => (
                               <a key={inv.id} href={`/preview/${inv.slug}`} target="_blank" rel="noreferrer">
-                                Lihat Undangan ({invitationLabel(inv)})
+                                {inv.is_active ? "Lihat Undangan" : "Lihat Draft Undangan"} ({invitationLabel(inv)})
                               </a>
                             ))
                           )}
@@ -546,21 +529,32 @@ export default function ResellerClientsPage() {
                               {client.whatsapp && <a href={paymentWaLink(client, transaction)} target="_blank" rel="noreferrer">Kirim Tagihan via WA</a>}
                             </>
                           )}
+
+                          {!activeInvitation && (
+                            <a
+                              href={adminActivationLink(client, invitationForActivation)}
+                              target="_blank"
+                              rel="noreferrer"
+                              className={styles.miniButtonGreen}
+                              style={{ display: "inline-block", marginTop: 6, textAlign: "center" }}
+                            >
+                              Hubungi Admin untuk Aktivasi
+                            </a>
+                          )}
                         </div>
 
-                        {reseller.package === "reseller_brand" ? (
-                          <select
-                            value={client.status || "active"}
-                            onChange={(e) => updateClientStatus(client.id, e.target.value)}
-                            className={`${styles.statusSelect} ${styles.clientStatus}`}
-                          >
-                            <option value="active">Active</option>
-                            <option value="pending">Pending</option>
-                            <option value="inactive">Inactive</option>
-                          </select>
-                        ) : (
-                          <span className={styles.badge}>{isPaid ? "LUNAS" : "MENUNGGU BAYAR"}</span>
-                        )}
+                        <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                          {reseller.package !== "reseller_brand" && (
+                            <span className={styles.badge}>{isPaid ? "LUNAS" : "MENUNGGU BAYAR"}</span>
+                          )}
+                          <span className={styles.badge}>
+                            {clientInvitations.length === 0
+                              ? "BELUM ADA UNDANGAN"
+                              : activeInvitation
+                              ? "AKTIF"
+                              : "MENUNGGU AKTIVASI ADMIN"}
+                          </span>
+                        </div>
 
                         <p className={styles.date}>{new Date(client.created_at).toLocaleDateString("id-ID")}</p>
 
