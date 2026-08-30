@@ -157,7 +157,9 @@ export async function POST(request: Request) {
     ? Math.max(1000, Number.isFinite(requestedSalePrice) ? requestedSalePrice : 100000)
     : Math.max(0, Number.isFinite(requestedSalePrice) ? requestedSalePrice : 100000);
 
-  if (resellerPackage === "reseller") status = "pending";
+  // Every client owned by a reseller must wait for Owner activation,
+  // regardless of reseller package or payment method.
+  if (reseller_id) status = "pending";
 
   const password = generatePassword();
 
