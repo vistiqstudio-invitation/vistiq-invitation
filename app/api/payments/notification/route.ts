@@ -91,14 +91,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Database update failed" }, { status: 500 });
     }
 
-    if (paid && resellerTransaction.client_id) {
-      await supabase
-        .from("clients")
-        .update({ status: "active" })
-        .eq("id", resellerTransaction.client_id);
-
-      // A settled payment does not publish the invitation. Vistiq admin activates it.
-    }
+    // A settled payment updates the ledger only. Vistiq admin activates the client/invitation.
 
     return NextResponse.json({ received: true, resellerClientPayment: true });
   }
