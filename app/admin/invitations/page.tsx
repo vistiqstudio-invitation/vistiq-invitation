@@ -477,7 +477,7 @@ export default function InvitationsPage() {
                       record) so this label can never drift out of sync
                       with the Active/Inactive dropdown next to it. */}
                   <span className={styles.status}>
-                    {item.is_active === false ? "Menunggu Pembayaran" : "Aktif"}
+                    {item.is_active === false ? "Menunggu Aktivasi Admin" : "Aktif"}
                   </span>
 
                   <select
