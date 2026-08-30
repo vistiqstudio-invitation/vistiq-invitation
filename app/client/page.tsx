@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import DashboardSidebar from "@/components/admin/DashboardSidebar";
 import ChangePasswordCard from "@/components/dashboard/ChangePasswordCard";
+import WhatsAppIcon from "@/components/WhatsAppIcon";
 import styles from "@/styles/dashboard.module.css";
 
 const navItems = (hasInvitation: boolean) => [
@@ -471,9 +472,10 @@ Wassalamualaikum Warahmatullahi Wabarakatuh`;
                     href={adminActivationLink(client)}
                     target="_blank"
                     rel="noreferrer"
-                    className={styles.button}
-                    style={{ display: "inline-block", marginTop: 12, textAlign: "center" }}
+                    className={styles.adminActivationButton}
+                    style={{ marginTop: 12 }}
                   >
+                    <WhatsAppIcon />
                     Hubungi Admin untuk Aktivasi
                   </a>
                 )}
