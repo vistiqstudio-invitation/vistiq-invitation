@@ -589,7 +589,7 @@ function FloatingControls({ isPlaying, toggle }: { isPlaying: boolean; toggle: (
 function BottomNav() {
   return (
     <nav className={styles.bottomNav} aria-label="Navigasi undangan">
-      {nav.map(([id, icon, label]) => <button type="button" key={id} aria-label={label} onClick={() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" })}><Icon name={icon} /></button>)}
+      {nav.map(([id, icon, label]) => <a href={`#${id}`} key={id} aria-label={label}><Icon name={icon} /></a>)}
     </nav>
   );
 }
