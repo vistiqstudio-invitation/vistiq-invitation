@@ -135,7 +135,7 @@
 .rsvpCard>p{margin:11px 0 20px;text-align:center;font-family:var(--font-playfair),serif;font-size:9px;line-height:1.45}
 .rsvpCard form{display:grid;gap:10px}
 .rsvpCard label{display:grid;gap:3px;font-family:var(--font-playfair),serif;font-size:9px}
-.rsvpCard input,.rsvpCard select,.wishesCard input,.wishesCard textarea{width:100%;padding:8px 9px;border:0;border-radius:2px;background:rgba(255,255,255,.96);color:#554238;font-family:var(--font-playfair),serif;font-size:10px;outline:none}
+.rsvpCard input,.rsvpCard select,.wishesCard input,.wishesCard select,.wishesCard textarea{width:100%;padding:8px 9px;border:0;border-radius:2px;background:rgba(255,255,255,.96);color:#554238;font-family:var(--font-playfair),serif;font-size:10px;outline:none}
 .rsvpCard button,.wishesCard form button{padding:8px;border:1px solid rgba(255,255,255,.8);border-radius:2px;background:rgba(100,70,54,.45);color:#fff;font-family:var(--font-playfair),serif;font-size:10px}
 .rsvpCard button:disabled,.wishesCard button:disabled{opacity:.6}
 .rsvpStats{display:flex;justify-content:center;gap:14px;margin-top:19px;font-family:var(--font-playfair),serif;font-size:8px}

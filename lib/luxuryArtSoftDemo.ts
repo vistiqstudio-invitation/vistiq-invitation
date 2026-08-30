@@ -53,14 +53,14 @@ export function withLuxuryArtSoftDemoAssets(
     events: [
       {
         name: "Akad Nikah",
-        date: "Minggu, 30 September 2026",
+        date: "Rabu, 30 September 2026",
         rawDate: "2026-09-30T09:00:00",
         time: "09.00 WIB",
         location: "Gedung Serbaguna Vistiq, Jakarta",
       },
       {
         name: "Resepsi",
-        date: "Minggu, 30 September 2026",
+        date: "Rabu, 30 September 2026",
         rawDate: "2026-09-30T11:00:00",
         time: "11.00 WIB - Selesai",
         location: "Gedung Serbaguna Vistiq, Jakarta",

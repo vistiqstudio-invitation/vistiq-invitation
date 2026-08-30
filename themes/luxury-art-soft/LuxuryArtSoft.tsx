@@ -129,6 +129,40 @@ function eventDateParts(event?: EventItem) {
   };
 }
 
+function eventTimezoneOffsetMinutes(time: string) {
+  const normalized = time.toUpperCase();
+  if (/\bWITA\b/.test(normalized)) return 8 * 60;
+  if (/\bWIT\b/.test(normalized)) return 9 * 60;
+  return 7 * 60;
+}
+
+function parseEventDate(event?: EventItem) {
+  const rawDate = event?.rawDate?.trim();
+  if (!rawDate) return null;
+
+  // Invitation dates are stored without an offset. Treat them as Indonesian
+  // local time (or the zone written in the event time) instead of letting
+  // each visitor's browser reinterpret the date in its own timezone.
+  const localParts = rawDate.match(
+    /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2}))?/,
+  );
+  if (!localParts) {
+    const parsed = new Date(rawDate);
+    return Number.isNaN(parsed.getTime()) ? null : parsed;
+  }
+
+  const [, year, month, day, hours, minutes, seconds = "00"] = localParts;
+  const localUtcMs = Date.UTC(
+    Number(year),
+    Number(month) - 1,
+    Number(day),
+    Number(hours),
+    Number(minutes),
+    Number(seconds),
+  );
+  return new Date(localUtcMs - eventTimezoneOffsetMinutes(event?.time || "") * 60_000);
+}
+
 function fallbackPhotos(invitation: InvitationData) {
   return [
     invitation.gallery[0] || `${ASSET}TEMA-M-3.jpg`,
@@ -287,7 +321,7 @@ function PersonCard({
 
 function QuoteCountdown({ invitation }: { invitation: InvitationData }) {
   const event = invitation.events[0];
-  const target = event?.rawDate ? new Date(event.rawDate).getTime() : null;
+  const target = parseEventDate(event)?.getTime() ?? null;
   const [now, setNow] = useState<number | null>(null);
   useEffect(() => {
     const tick = () => setNow(Date.now());
@@ -489,6 +523,7 @@ function RsvpAndWishes({ invitation }: { invitation: InvitationData }) {
   const [guestCount, setGuestCount] = useState("1");
   const [wishName, setWishName] = useState("");
   const [wishMessage, setWishMessage] = useState("");
+  const [wishAttendance, setWishAttendance] = useState<Attendance>("Hadir");
   const [error, setError] = useState("");
 
   const sendRsvp = async (event: FormEvent<HTMLFormElement>) => {
@@ -504,10 +539,11 @@ function RsvpAndWishes({ invitation }: { invitation: InvitationData }) {
     event.preventDefault();
     setError("");
     if (!wishName.trim() || !wishMessage.trim()) { setError("Nama dan ucapan wajib diisi."); return; }
-    const result = await submit({ name: wishName.trim(), whatsapp: "", attendance: "Hadir", message: wishMessage.trim() });
+    const result = await submit({ name: wishName.trim(), whatsapp: "", attendance: wishAttendance, message: wishMessage.trim() });
     if (result.error) { setError(result.error); return; }
     setWishName("");
     setWishMessage("");
+    setWishAttendance("Hadir");
   };
 
   return (
@@ -533,12 +569,17 @@ function RsvpAndWishes({ invitation }: { invitation: InvitationData }) {
           <p>Berikan harapan dan doa tulus Anda di sini karena kami sangat bersemangat untuk memulai perjalanan baru bersama.</p>
           <form onSubmit={sendWish}>
             <input value={wishName} onChange={(event) => setWishName(event.target.value)} placeholder="Nama" aria-label="Nama" required />
+            <select value={wishAttendance} onChange={(event) => setWishAttendance(event.target.value as Attendance)} aria-label="Konfirmasi kehadiran">
+              <option>Hadir</option>
+              <option>Tidak Hadir</option>
+              <option>Masih Ragu</option>
+            </select>
             <textarea value={wishMessage} onChange={(event) => setWishMessage(event.target.value)} placeholder="Ucapan dan doa" aria-label="Ucapan dan doa" rows={3} required />
             <button type="submit" disabled={submitting}>{submitting ? "Mengirim..." : "Kirim Ucapan"}</button>
           </form>
           {submitted ? <small className={styles.formSuccess}>Ucapan Anda sudah terkirim.</small> : null}
           <div className={styles.wishList}>
-            {entries.slice(0, 3).map((entry) => <article key={entry.id}><i>{entry.name.slice(0, 1).toUpperCase()}</i><div><strong>{entry.name}</strong><small>{entry.attendance}</small><p>{entry.message}</p></div></article>)}
+            {entries.map((entry) => <article key={entry.id}><i>{entry.name.slice(0, 1).toUpperCase()}</i><div><strong>{entry.name}</strong><small>{entry.attendance}</small><p>{entry.message}</p></div></article>)}
             {!entries.length ? <p className={styles.emptyWishes}>Comments are closed — jadilah yang pertama mengirim doa terbaik.</p> : null}
           </div>
           {hasMore ? <button type="button" className={styles.moreWishes} onClick={loadMore}>Lihat ucapan lainnya</button> : null}
@@ -597,7 +638,7 @@ function BottomNav() {
 export default function LuxuryArtSoft({ invitation }: { invitation: InvitationData }) {
   const { opened, setOpened } = useInvitation();
   const { audioRef, isPlaying, toggle } = useMusicPlayer(invitation.musicUrl, false);
-  const [contentReady, setContentReady] = useState(false);
+  const [contentReady, setContentReady] = useState(() => opened);
   const fallbackMusic = useRef(false);
 
   useEffect(() => {
