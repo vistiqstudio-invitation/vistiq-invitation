@@ -1157,3 +1157,53 @@
   flex: 0 0 auto;
   fill: currentColor;
 }
+
+ 
+/* Reseller summary cards stay compact without changing dashboard actions. */
+.resellerSummaryStats {
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.resellerSummaryCard {
+  min-height: 112px;
+  padding: 18px 20px;
+  gap: 5px;
+  border-radius: 16px;
+  box-shadow: 0 8px 22px rgba(20, 72, 116, 0.06);
+}
+
+.resellerSummaryCard span {
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+.resellerSummaryCard strong {
+  font-size: clamp(24px, 2.6vw, 32px);
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 640px) {
+  .resellerSummaryStats {
+    gap: 12px;
+    margin-bottom: 22px;
+  }
+
+  .resellerSummaryCard {
+    min-height: 98px;
+    padding: 15px 16px;
+    border-radius: 16px;
+    gap: 4px;
+  }
+
+  .resellerSummaryCard span {
+    font-size: 12px;
+  }
+
+  .resellerSummaryCard strong {
+    font-size: 24px;
+    line-height: 1.1;
+  }
+}

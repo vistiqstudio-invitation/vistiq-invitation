@@ -301,25 +301,25 @@ export default function ResellerPage() {
               </section>
             )}
 
-            <section className={styles.stats}>
-              <div className={styles.statCard}>
+            <section className={`${styles.stats} ${styles.resellerSummaryStats}`}>
+              <div className={`${styles.statCard} ${styles.resellerSummaryCard}`}>
                 <span>Total Client</span>
                 <strong>{clientCount}</strong>
               </div>
 
-              <div className={styles.statCard}>
+              <div className={`${styles.statCard} ${styles.resellerSummaryCard}`}>
                 <span>Paket</span>
                 <strong>{PACKAGE_LABELS[reseller.package || "reseller"]}</strong>
               </div>
 
               {!isBrandPackage && (
-                <div className={styles.statCard}>
+                <div className={`${styles.statCard} ${styles.resellerSummaryCard}`}>
                   <span>Komisi</span>
                   <strong>{reseller.commission_percent || 0}%</strong>
                 </div>
               )}
 
-              <div className={styles.statCard}>
+              <div className={`${styles.statCard} ${styles.resellerSummaryCard}`}>
                 <span>Status</span>
                 <strong>{reseller.status || "active"}</strong>
               </div>
