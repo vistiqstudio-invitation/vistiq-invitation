@@ -48,6 +48,7 @@ import LuxuryArtLoveParadise from "@/themes/luxury-art-love-paradise/LuxuryArtLo
 import LuxuryArtJavaHeritage from "@/themes/luxury-art-java-heritage/LuxuryArtJavaHeritage";
 import LuxuryArtSakura from "@/themes/luxury-art-sakura/LuxuryArtSakura";
 import ChampagneRomance from "@/themes/luxury-art-champagne-romance/ChampagneRomance";
+import LuxuryArtSoft from "@/themes/luxury-art-soft/LuxuryArtSoft";
 import LoveChronicle from "@/themes/love-chronicle/LoveChronicle";
 import VelvetCinema from "@/themes/velvet-cinema/VelvetCinema";
 import PrismaticVows from "@/themes/prismatic-vows/PrismaticVows";
@@ -96,6 +97,7 @@ export const themeRegistry: Record<
   "luxury-art-java-heritage": LuxuryArtJavaHeritage,
   "luxury-art-sakura": LuxuryArtSakura,
   "luxury-art-champagne-romance": ChampagneRomance,
+  "luxury-art-soft": LuxuryArtSoft,
   "love-chronicle": LoveChronicle,
   "velvet-cinema": VelvetCinema,
   "prismatic-vows": PrismaticVows,
@@ -156,6 +158,7 @@ export const themeList: ThemeMeta[] = [
   { key: "luxury-art-champagne-romance", label: "Luxury Art — Champagne Romance", description: "Warm champagne, taupe dan ivory dengan layout editorial, panel organik, tipografi vertikal dan foto wedding dominan", swatch: ["#f7f1e7", "#b9ad98"], tags: ["luxury-art", "premium"], addedAt: "2026-08-27" },
   { key: "luxury-art-java-heritage", label: "Luxury Art — Java Heritage", description: "Ivory, marun dan emas antik, lanskap joglo berlapis, floral Jawa dan transisi sinematik", swatch: ["#eee6d7", "#6f261f"], tags: ["luxury-art", "premium", "adat"], addedAt: "2026-08-24" },
   { key: "luxury-art-sakura", label: "Luxury Art — Sakura Romance", description: "Ivory dan blush Sakura, lanskap watercolor Jepang, foto arch, kelopak jatuh dan transisi floral sinematik", swatch: ["#fff9f4", "#c98382"], tags: ["luxury-art", "premium"], addedAt: "2026-08-25" },
+  { key: "luxury-art-soft", label: "Luxury Art — Art Soft", description: "Watercolor garden, frame arch, cover video sinematik, countdown, gift, RSVP dan wishes bergaya editorial", swatch: ["#efe6da", "#6c4435"], tags: ["luxury-art", "premium"], addedAt: "2026-08-30" },
   { key: "porcelain-bloom", label: "Porcelain Bloom", description: "Ivory & powder blue, porselen klasik, mutiara, pita satin & floral biru", swatch: ["#fbfaf6", "#2d638f"], tags: ["premium"] },
   { key: "love-chronicle", label: "Love Chronicle", description: "Champagne & burgundy, wedding newspaper, cap pos, perangko & wax seal", swatch: ["#f4eddf", "#7a2433"], tags: ["premium"] },
   { key: "velvet-cinema", label: "Velvet Cinema", description: "Merah beludru & hitam, premiere film, marquee lights, tiket VIP & filmstrip", swatch: ["#0a0909", "#761423"], tags: ["premium"] },
