@@ -1124,3 +1124,36 @@
 .content{padding:42px clamp(20px,4vw,56px);max-width:1600px;width:100%;margin:auto}.header{margin-bottom:30px;align-items:flex-start}.label{color:#1863ad;letter-spacing:2px;font-size:11px;font-weight:900}.title{font-family:Georgia,serif;font-size:clamp(30px,3vw,44px);font-weight:400;letter-spacing:-1px;color:#0b2b4b}.subtitle{color:#6b8093;line-height:1.65}.stats{gap:16px}.statCard,.panel,.formCard,.generatorCard,.editCard,.loginCard{border:1px solid #dceaf7;border-radius:22px;background:#fff;box-shadow:0 14px 42px rgba(20,72,116,.07)}.statCard{padding:23px}.statCard strong{color:#1863ad;font-size:29px}.sectionTitle{font-family:Georgia,serif;color:#0b2b4b;font-weight:400;font-size:25px}
 .input,.textarea,.smallInput,.statusSelect{border:1px solid #d6e6f4!important;background:#fafdff!important;border-radius:12px!important;color:#0b2b4b!important;outline:none}.input:focus,.textarea:focus,.smallInput:focus,.statusSelect:focus{border-color:#2f7cc8!important;box-shadow:0 0 0 4px rgba(47,124,200,.1)}.button,.smallButton,.exportButton,.waButton{border-radius:12px!important;background:linear-gradient(135deg,#1863ad,#2f7cc8)!important;color:#fff!important;box-shadow:0 10px 24px rgba(24,99,173,.2)!important}.secondaryButton{border-radius:12px!important;color:#1863ad!important;border-color:#cfe2f3!important;background:#fff!important}.tableWrap{border:1px solid #dceaf7;border-radius:18px;overflow:hidden;background:#fff}.tableHead{background:#eaf4fd!important;color:#315774!important}.row,.clientRow,.resellerRow{border-color:#e5eff8!important}.row:hover,.clientRow:hover,.resellerRow:hover{background:#f5faff}.standalonePage{background:radial-gradient(circle at 85% 10%,rgba(47,124,200,.2),transparent 30%),linear-gradient(145deg,#eff7ff,#fff 55%,#eaf4fd);padding:24px}.loginCard{max-width:460px;padding:42px}.badge,.status,.packageBadge{border-radius:999px!important}.warningBox{border-radius:16px!important}.dropZone,.galleryDropZone,.musicDropZone,.uploadBox{border-color:#bcd7ee!important;background:#f7fbff!important;border-radius:18px!important}
 @media(max-width:860px){.page{grid-template-columns:1fr}.sidebar{padding:14px 16px;background:#0b2b4b}.content{padding:28px 16px}.header{gap:16px}.loginCard{padding:30px 22px}}
+
+.adminActivationButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  background: #16a34a !important;
+  color: #fff !important;
+  padding: 10px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 700;
+  line-height: 1.2;
+  text-decoration: none !important;
+  box-shadow: 0 8px 18px rgba(22, 163, 74, 0.18);
+}
+
+.adminActivationButton:hover {
+  background: #15803d !important;
+  color: #fff !important;
+  text-decoration: none !important;
+}
+
+.adminActivationButton:focus-visible {
+  outline: 3px solid rgba(22, 163, 74, 0.28);
+  outline-offset: 3px;
+}
+
+.adminActivationButton svg {
+  flex: 0 0 auto;
+  fill: currentColor;
+}

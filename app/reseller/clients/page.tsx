@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import DashboardSidebar from "@/components/admin/DashboardSidebar";
+import WhatsAppIcon from "@/components/WhatsAppIcon";
 import { getResellerNavItems } from "@/components/reseller/navItems";
 import { themeList, aqiqahThemeList, khitanThemeList, birthdayThemeList } from "@/lib/theme";
 import styles from "@/styles/dashboard.module.css";
@@ -407,7 +408,8 @@ export default function ResellerClientsPage() {
                         Kirim ke WA Otomatis
                       </a>
                     )}
-                    <a href={adminActivationLinkForNewClient()} target="_blank" rel="noreferrer" className={styles.miniButtonGreen}>
+                    <a href={adminActivationLinkForNewClient()} target="_blank" rel="noreferrer" className={styles.adminActivationButton}>
+                      <WhatsAppIcon />
                       Hubungi Admin untuk Aktivasi
                     </a>
                   </div>
@@ -535,9 +537,10 @@ export default function ResellerClientsPage() {
                               href={adminActivationLink(client, invitationForActivation)}
                               target="_blank"
                               rel="noreferrer"
-                              className={styles.miniButtonGreen}
-                              style={{ display: "inline-block", marginTop: 6, textAlign: "center" }}
+                              className={styles.adminActivationButton}
+                              style={{ marginTop: 6 }}
                             >
+                              <WhatsAppIcon />
                               Hubungi Admin untuk Aktivasi
                             </a>
                           )}

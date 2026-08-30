@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import DashboardSidebar from "@/components/admin/DashboardSidebar";
+import WhatsAppIcon from "@/components/WhatsAppIcon";
 import { getResellerNavItems } from "@/components/reseller/navItems";
 import { themeList, aqiqahThemeList, khitanThemeList, birthdayThemeList } from "@/lib/theme";
 import SmartCoverEditor from "@/components/SmartCoverEditor";
@@ -1162,8 +1163,9 @@ export default function ResellerInvitationsPage() {
                           href={adminActivationLink(item, client?.name)}
                           target="_blank"
                           rel="noreferrer"
-                          className={styles.miniButtonGreen}
+                          className={styles.adminActivationButton}
                         >
+                          <WhatsAppIcon />
                           Hubungi Admin untuk Aktivasi
                         </a>
                       )}
