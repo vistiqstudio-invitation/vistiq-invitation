@@ -162,6 +162,10 @@
   z-index: 1;
   font-family: var(--font-heading);
   font-size: clamp(32px, 7vw, 52px);
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+  line-height: 1.05;
   color: var(--sky);
   margin: 0 0 8px;
 }
