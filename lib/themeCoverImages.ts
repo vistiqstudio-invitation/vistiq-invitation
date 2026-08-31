@@ -25,7 +25,7 @@ export const WEDDING_COVER_BY_THEME: Record<string, string> = {
   "luxury-art-java-heritage": "/photos/luxury-sage-cover.webp",
   "luxury-art-sakura": "/photos/sakura-cover.png",
   "luxury-art-champagne-romance": "/theme-previews/wedding/luxury-art-champagne-romance.jpg",
-  "luxury-art-soft": "/themes/luxury-art-soft/panel-cover.jpg",
+  "luxury-art-soft": "/themes/luxury-art-soft/ai-cover.jpg",
   "jawa-coklat": "/photos/jawa-gallery-4.png",
   "jawa-sepia": "/photos/jawa-cover.png",
   "sage-green": "/photos/floral-cover.png",

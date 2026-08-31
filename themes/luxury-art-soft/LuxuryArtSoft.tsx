@@ -165,11 +165,11 @@ function parseEventDate(event?: EventItem) {
 
 function fallbackPhotos(invitation: InvitationData) {
   return [
-    invitation.gallery[0] || `${ASSET}TEMA-M-3.jpg`,
-    invitation.gallery[1] || `${ASSET}TEMA-M-4.jpg`,
-    invitation.gallery[2] || `${ASSET}TEMA-M-10.jpg`,
-    invitation.gallery[3] || `${ASSET}TEMA-M-19.jpg`,
-    invitation.gallery[4] || `${ASSET}TEMA-M-2.jpg`,
+    invitation.gallery[0] || `${ASSET}ai-gallery-01.jpg`,
+    invitation.gallery[1] || `${ASSET}ai-gallery-02.jpg`,
+    invitation.gallery[2] || `${ASSET}ai-gallery-03.jpg`,
+    invitation.gallery[3] || `${ASSET}ai-gallery-04.jpg`,
+    invitation.gallery[4] || `${ASSET}ai-gallery-05.jpg`,
   ];
 }
 
@@ -177,7 +177,7 @@ function Cover({ invitation, onOpen }: { invitation: InvitationData; onOpen: () 
   const guest = useSearchParams().get("to") || "Bapak/Ibu/Saudara/i";
   const bride = firstName(invitation.bride.name, invitation.bride.nickname);
   const groom = firstName(invitation.groom.name, invitation.groom.nickname);
-  const fallback = invitation.coverImage || `${ASSET}TEMA-M-3.jpg`;
+  const fallback = invitation.coverImage || `${ASSET}ai-cover.jpg`;
   const videoSource = invitation.videoUrl || `${ASSET}cover.mp4`;
   const [videoFailed, setVideoFailed] = useState(false);
 
@@ -233,7 +233,7 @@ function Hero({ invitation }: { invitation: InvitationData }) {
 
   return (
     <section id="home" className={styles.heroPanel}>
-      <Image src={`${ASSET}panel-cover.jpg`} alt="" fill priority sizes="(max-width: 450px) 100vw, 450px" className={styles.panelArt} />
+      <Image src={`${ASSET}ai-cover.jpg`} alt="" fill priority sizes="(max-width: 450px) 100vw, 450px" className={styles.panelArt} />
       <div className={styles.panelShade} />
       <motion.div
         className={styles.panelCopy}
@@ -250,8 +250,8 @@ function Hero({ invitation }: { invitation: InvitationData }) {
 }
 
 function Couple({ invitation }: { invitation: InvitationData }) {
-  const bridePhoto = invitation.bride.photo || invitation.gallery[0] || `${ASSET}TEMA-M-3.jpg`;
-  const groomPhoto = invitation.groom.photo || invitation.gallery[1] || `${ASSET}TEMA-M-4.jpg`;
+  const bridePhoto = invitation.bride.photo || invitation.gallery[0] || `${ASSET}ai-bride.jpg`;
+  const groomPhoto = invitation.groom.photo || invitation.gallery[1] || `${ASSET}ai-groom.jpg`;
   const description = invitation.opening.description || "Tanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara pernikahan kami.";
 
   return (
@@ -343,7 +343,7 @@ function QuoteCountdown({ invitation }: { invitation: InvitationData }) {
       ].map((value) => String(value).padStart(2, "0"));
   const quote = invitation.opening.quote || "Love is that condition in which the happiness of another person is essential to your own.";
   const source = invitation.opening.quoteSource || "Robert A. Heinlein";
-  const background = invitation.gallery[2] || `${ASSET}quote.jpg`;
+  const background = invitation.gallery[2] || `${ASSET}ai-gallery-03.jpg`;
 
   return (
     <section id="countdown" className={styles.quoteSection}>
@@ -419,7 +419,7 @@ function Gallery({ invitation }: { invitation: InvitationData }) {
         viewport={{ once: true, amount: 0.25 }}
         transition={{ duration: 0.9, ease: revealEase }}
       >
-        <Image src={`${ASSET}gallery.jpg`} alt="" fill sizes="(max-width: 450px) 100vw, 450px" />
+        <Image src={`${ASSET}ai-gallery-01.jpg`} alt="" fill sizes="(max-width: 450px) 100vw, 450px" />
         <div><span>Our</span><strong>Gallery</strong></div>
       </motion.div>
       <div className={styles.galleryShelf}>
@@ -592,7 +592,7 @@ function RsvpAndWishes({ invitation }: { invitation: InvitationData }) {
 function Footer({ invitation }: { invitation: InvitationData }) {
   const bride = firstName(invitation.bride.name, invitation.bride.nickname);
   const groom = firstName(invitation.groom.name, invitation.groom.nickname);
-  const photo = invitation.gallery[4] || invitation.coverImage || `${ASSET}TEMA-M-2.jpg`;
+  const photo = invitation.gallery[4] || invitation.coverImage || `${ASSET}ai-footer.jpg`;
   return (
     <footer className={styles.footerSection}>
       <Image src={photo} alt={`${bride} dan ${groom}`} fill sizes="(max-width: 450px) 100vw, 450px" className={styles.footerPhoto} />
