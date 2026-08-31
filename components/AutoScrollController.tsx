@@ -9,29 +9,57 @@ export default function AutoScrollController() {
   const { opened } = useInvitation();
   const [running, setRunning] = useState(false);
   const [available, setAvailable] = useState(false);
+  const [heroVisible, setHeroVisible] = useState(false);
   const frameRef = useRef<number | null>(null);
   const lastTimeRef = useRef<number | null>(null);
   const startedRef = useRef(false);
 
   useEffect(() => {
     if (!opened) {
-      setRunning(false);
-      setAvailable(false);
-      startedRef.current = false;
-      return;
+      const resetTimer = window.setTimeout(() => {
+        setRunning(false);
+        setAvailable(false);
+        setHeroVisible(false);
+        startedRef.current = false;
+      }, 0);
+      return () => window.clearTimeout(resetTimer);
     }
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const timer = window.setTimeout(() => {
       const canScroll = document.documentElement.scrollHeight > window.innerHeight + 80;
       setAvailable(canScroll);
-      if (canScroll && !reducedMotion && !startedRef.current) {
+      const hero = document.querySelector<HTMLElement>("[data-opening-hero]");
+      const heroBounds = hero?.getBoundingClientRect();
+      const heroIsVisible = Boolean(heroBounds && heroBounds.top < window.innerHeight && heroBounds.bottom > 0);
+      if (canScroll && !reducedMotion && !startedRef.current && !heroIsVisible) {
         startedRef.current = true;
         setRunning(true);
       }
     }, 1400);
 
     return () => window.clearTimeout(timer);
+  }, [opened]);
+
+  useEffect(() => {
+    if (!opened) return;
+
+    const hero = document.querySelector<HTMLElement>("[data-opening-hero]");
+    if (!hero) {
+      return;
+    }
+
+    const updateVisibility = () => {
+      const bounds = hero.getBoundingClientRect();
+      setHeroVisible(bounds.top < window.innerHeight && bounds.bottom > 0);
+    };
+
+    updateVisibility();
+    const observer = new IntersectionObserver(([entry]) => {
+      setHeroVisible(entry.isIntersecting);
+    }, { threshold: 0.01 });
+    observer.observe(hero);
+    return () => observer.disconnect();
   }, [opened]);
 
   useEffect(() => {
@@ -90,7 +118,7 @@ export default function AutoScrollController() {
     };
   }, [opened]);
 
-  if (!opened || !available) return null;
+  if (!opened || !available || heroVisible) return null;
 
   return (
     <>
