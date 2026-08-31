@@ -6,6 +6,11 @@
   background: #e8eef5;
 }
 
+/* Khitan covers use the same 375 × 812 portrait canvas as the full demo. */
+.liveKhitanCover {
+  aspect-ratio: 375 / 812;
+}
+
 .image {
   object-fit: cover;
   object-position: center;
