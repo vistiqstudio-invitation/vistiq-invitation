@@ -188,12 +188,6 @@
 .footerCopy small{display:block;margin-top:19px;font-family:var(--font-playfair),serif;font-size:10px}
 .footerCopy h2{margin:5px 0 0;font-family:var(--font-alex-brush),cursive;font-size:37px;font-weight:400;line-height:1}
 .footerCopy h2 em{font-family:var(--font-playfair),serif;font-size:.65em;font-style:normal}
-.brandFooter{display:grid;place-items:center;min-height:154px;padding:22px 18px 26px;background:#2f211c;color:#f5e8d8;text-align:center}
-.brandFooter small{font-family:var(--font-playfair),serif;font-size:9px;letter-spacing:.2em}
-.brandFooter strong{margin-top:5px;font-family:var(--font-alex-brush),cursive;font-size:29px;font-weight:400}
-.brandFooter p{margin:6px 0 0;font-family:var(--font-playfair),serif;font-size:9px}
-.brandFooterLinks{display:flex;gap:14px;margin-top:12px;font-family:var(--font-playfair),serif;font-size:8px}
-.brandFooterLinks a{color:inherit;text-decoration:none}
 .floatingControls{position:fixed;z-index:5100;right:max(12px,calc((100vw - 450px)/2 + 12px));bottom:75px;display:grid;gap:5px}
 .floatingControls button{display:grid;width:32px;height:32px;place-items:center;border:0;border-radius:8px;background:rgba(120,91,72,.9);color:#fff;box-shadow:0 4px 12px rgba(50,27,17,.2)}
 .floatingControls button svg{width:16px;height:16px}.floatingControls .musicActive{background:#6c493b}
