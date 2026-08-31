@@ -27,7 +27,7 @@ export default function ThemeCoverPreview({
 
   return (
     <div
-      className={styles.cover}
+      className={`${styles.cover} ${isLiveKhitanPreview ? styles.liveKhitanCover : ""}`}
       style={
         coverImage || hasLiveCover
           ? undefined
