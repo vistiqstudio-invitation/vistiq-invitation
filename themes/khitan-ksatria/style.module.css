@@ -184,6 +184,10 @@
   font-weight: 700;
   font-style: italic;
   font-size: clamp(28px, 6.2vw, 44px);
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+  line-height: 1.05;
   color: var(--cream);
   margin: 0 0 10px;
 }
