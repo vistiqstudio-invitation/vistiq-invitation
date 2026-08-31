@@ -260,7 +260,7 @@ function Hero({ invitation }: { invitation: InvitationData }) {
     : invitation.events[0]?.date || "SAVE THE DATE";
 
   return (
-    <section className={styles.heroPanel} aria-label="Halaman pembuka undangan">
+    <section className={styles.heroPanel} data-opening-hero aria-label="Halaman pembuka undangan">
       <Image src={`${ASSET}art-soft-opening.svg`} alt="" fill priority sizes="(max-width: 450px) 100vw, 450px" className={styles.panelArt} />
       <div className={styles.panelShade} />
       <div className={styles.heroFrame}>
@@ -724,6 +724,7 @@ export default function LuxuryArtSoft({ invitation }: { invitation: InvitationDa
   const { opened, setOpened } = useInvitation();
   const { audioRef, isPlaying, toggle } = useMusicPlayer(invitation.musicUrl, false);
   const [contentReady, setContentReady] = useState(() => opened);
+  const [showNavigation, setShowNavigation] = useState(false);
   const fallbackMusic = useRef(false);
 
   useEffect(() => {
@@ -743,6 +744,18 @@ export default function LuxuryArtSoft({ invitation }: { invitation: InvitationDa
       document.body.style.overflow = previousOverflow;
       document.body.style.touchAction = previousTouchAction;
     };
+  }, [opened]);
+
+  useEffect(() => {
+    if (!opened) return;
+    const hero = document.querySelector<HTMLElement>('[data-opening-hero]');
+    if (!hero) return;
+
+    const observer = new IntersectionObserver(([entry]) => {
+      setShowNavigation(!entry.isIntersecting);
+    }, { threshold: 0.01 });
+    observer.observe(hero);
+    return () => observer.disconnect();
   }, [opened]);
 
   const openInvitation = async () => {
@@ -775,7 +788,7 @@ export default function LuxuryArtSoft({ invitation }: { invitation: InvitationDa
           <BrandFooter invitation={invitation} />
         </div>
         <AnimatePresence onExitComplete={() => setContentReady(true)}>{!opened ? <Cover invitation={invitation} onOpen={() => void openInvitation()} /> : null}</AnimatePresence>
-        {contentReady ? <><FloatingControls isPlaying={isPlaying} toggle={toggle} /><BottomNav /></> : null}
+        {contentReady && showNavigation ? <><FloatingControls isPlaying={isPlaying} toggle={toggle} /><BottomNav /></> : null}
       </div>
     </main>
   );
