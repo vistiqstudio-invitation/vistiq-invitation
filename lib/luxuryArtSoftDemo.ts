@@ -10,8 +10,8 @@ const GALLERY = [
   `${ASSET}ai-gallery-04.jpg`,
   `${ASSET}ai-gallery-05.jpg`,
   `${ASSET}ai-cover.jpg`,
-  `${ASSET}ai-rsvp.jpg`,
-  `${ASSET}ai-wishes.jpg`,
+  `${ASSET}ai-footer.jpg`,
+  `${ASSET}ai-bride.jpg`,
 ];
 
 export function withLuxuryArtSoftDemoAssets(
