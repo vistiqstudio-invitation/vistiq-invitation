@@ -177,8 +177,7 @@ function fallbackPhotos(invitation: InvitationData) {
     `${ASSET}ai-bride.jpg`,
   ];
   const customPhotos = invitation.gallery.filter(Boolean);
-  const count = Math.max(customPhotos.length, defaults.length);
-  return Array.from({ length: count }, (_, index) => customPhotos[index] || defaults[index]);
+  return customPhotos.length ? customPhotos : defaults;
 }
 
 function googleCalendarHref(event?: EventItem) {
@@ -375,6 +374,7 @@ function QuoteCountdown({ invitation }: { invitation: InvitationData }) {
   const quote = invitation.opening.quote || "Love is that condition in which the happiness of another person is essential to your own.";
   const source = invitation.opening.quoteSource || "Robert A. Heinlein";
   const background = invitation.gallery[2] || `${ASSET}ai-gallery-03.jpg`;
+  const saveDate = googleCalendarHref(event);
 
   return (
     <section id="countdown" className={styles.quoteSection}>
@@ -397,8 +397,8 @@ function QuoteCountdown({ invitation }: { invitation: InvitationData }) {
             </span>
           ))}
         </div>
-        {googleCalendarHref(event) ? (
-          <a className={styles.saveDate} href={googleCalendarHref(event) || undefined} target="_blank" rel="noreferrer">
+        {saveDate ? (
+          <a className={styles.saveDate} href={saveDate} target="_blank" rel="noreferrer">
             <Icon name="calendar" /> SAVE THE DATE
           </a>
         ) : null}
@@ -418,26 +418,26 @@ function Events({ invitation }: { invitation: InvitationData }) {
   );
 }
 
-function LiveStreaming({ invitation }: { invitation: InvitationData }) {
-  const liveUrl = isExternalUrl(invitation.videoUrl) ? invitation.videoUrl : null;
+function WeddingVideo({ invitation }: { invitation: InvitationData }) {
+  const videoUrl = isExternalUrl(invitation.videoUrl) ? invitation.videoUrl : null;
 
   return (
-    <section id="live" className={styles.liveSection}>
-      <Image src={`${ASSET}ai-gallery-03.jpg`} alt="" fill sizes="(max-width: 450px) 100vw, 450px" className={styles.liveBackground} />
-      <div className={styles.liveShade} />
+    <section id="video" className={styles.videoSection}>
+      <Image src={`${ASSET}ai-gallery-03.jpg`} alt="" fill sizes="(max-width: 450px) 100vw, 450px" className={styles.videoBackground} />
+      <div className={styles.videoShade} />
       <motion.div
-        className={styles.liveContent}
+        className={styles.videoContent}
         initial={{ opacity: 0, y: 22 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.35 }}
         transition={{ duration: 0.8, ease: revealEase }}
       >
-        <div className={styles.liveHeading}><span>Live</span><em>Streaming</em></div>
-        <p>Saksikan momen bahagia kami melalui siaran langsung pada hari pernikahan.</p>
-        {liveUrl ? (
-          <a href={liveUrl} target="_blank" rel="noreferrer"><Icon name="play" /> Join Live</a>
+        <div className={styles.videoHeading}><span>Wedding</span><em>Video</em></div>
+        <p>Saksikan video pre-wedding kami dan simpan cerita kecil menuju hari bahagia.</p>
+        {videoUrl ? (
+          <a href={videoUrl} target="_blank" rel="noreferrer"><Icon name="play" /> Watch Video</a>
         ) : (
-          <span className={styles.livePending}>Link streaming menyusul</span>
+          <span className={styles.videoPending}>Video pre-wedding</span>
         )}
       </motion.div>
     </section>
@@ -532,7 +532,7 @@ function Story({ invitation }: { invitation: InvitationData }) {
             <i>♥</i>
             <div className={styles.storyCard}>
               <div className={styles.storyCardPhoto}>
-                <Image src={photos[index] || `${ASSET}ai-gallery-03.jpg`} alt={`Momen ${story.title}`} fill sizes="(max-width: 450px) 66vw, 300px" />
+                <Image src={photos[index] || photos[index % photos.length] || `${ASSET}ai-gallery-03.jpg`} alt={`Momen ${story.title}`} fill sizes="(max-width: 450px) 66vw, 300px" />
               </div>
               <div className={styles.storyCardCopy}><small>{story.year}</small><h3>{story.title}</h3><p>{story.description}</p></div>
             </div>
@@ -681,10 +681,12 @@ function BrandFooter({ invitation }: { invitation: InvitationData }) {
         <small>EXCLUSIVE WEB INVITATION</small>
         <strong>{brandName}</strong>
         <p>Dibuat dengan penuh cinta untuk hari yang istimewa.</p>
-        <div className={styles.brandFooterLinks}>
-          <a href="https://instagram.com/vistiqinvitation" target="_blank" rel="noreferrer">Instagram</a>
-          <a href={`https://wa.me/${ADMIN_WHATSAPP}`} target="_blank" rel="noreferrer">WhatsApp</a>
-        </div>
+        {!invitation.brand ? (
+          <div className={styles.brandFooterLinks}>
+            <a href="https://instagram.com/vistiqinvitation" target="_blank" rel="noreferrer">Instagram</a>
+            <a href={`https://wa.me/${ADMIN_WHATSAPP}`} target="_blank" rel="noreferrer">WhatsApp</a>
+          </div>
+        ) : null}
       </div>
     </section>
   );
@@ -764,7 +766,7 @@ export default function LuxuryArtSoft({ invitation }: { invitation: InvitationDa
           <Couple invitation={invitation} />
           <QuoteCountdown invitation={invitation} />
           <Events invitation={invitation} />
-          <LiveStreaming invitation={invitation} />
+          <WeddingVideo invitation={invitation} />
           <Gallery invitation={invitation} />
           <Story invitation={invitation} />
           <Gift invitation={invitation} />
