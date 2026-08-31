@@ -61,7 +61,7 @@ export function getDemoKhitanInvitation(theme: string): KhitanInvitationData {
     opening: { greeting: null, title: null, description: null, quote: null, quoteSource: null },
 
     child: {
-      name: "Muhammad Rayyan Athallah",
+      name: "Rayyan Athalla",
       photo: CHILD_PHOTO_BY_THEME[theme] || null,
       birthDate: "Senin, 12 Mei 2018",
       birthPlace: "Jakarta",
