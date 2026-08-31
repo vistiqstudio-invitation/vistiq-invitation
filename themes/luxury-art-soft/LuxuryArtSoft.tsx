@@ -673,25 +673,6 @@ function Footer({ invitation }: { invitation: InvitationData }) {
   );
 }
 
-function BrandFooter({ invitation }: { invitation: InvitationData }) {
-  const brandName = invitation.brand?.name || "Vistiq Invitation";
-  return (
-    <section className={styles.brandFooter} aria-label="Brand undangan">
-      <div>
-        <small>EXCLUSIVE WEB INVITATION</small>
-        <strong>{brandName}</strong>
-        <p>Dibuat dengan penuh cinta untuk hari yang istimewa.</p>
-        {!invitation.brand ? (
-          <div className={styles.brandFooterLinks}>
-            <a href="https://instagram.com/vistiqinvitation" target="_blank" rel="noreferrer">Instagram</a>
-            <a href={`https://wa.me/${ADMIN_WHATSAPP}`} target="_blank" rel="noreferrer">WhatsApp</a>
-          </div>
-        ) : null}
-      </div>
-    </section>
-  );
-}
-
 const nav: [string, IconName, string][] = [
   ["home", "home", "Home"],
   ["couple", "couple", "Mempelai"],
@@ -785,7 +766,6 @@ export default function LuxuryArtSoft({ invitation }: { invitation: InvitationDa
           <Gift invitation={invitation} />
           <RsvpAndWishes invitation={invitation} />
           <Footer invitation={invitation} />
-          <BrandFooter invitation={invitation} />
         </div>
         <AnimatePresence onExitComplete={() => setContentReady(true)}>{!opened ? <Cover invitation={invitation} onOpen={() => void openInvitation()} /> : null}</AnimatePresence>
         {contentReady && showNavigation ? <><FloatingControls isPlaying={isPlaying} toggle={toggle} /><BottomNav /></> : null}
