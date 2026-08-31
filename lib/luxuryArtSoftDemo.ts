@@ -29,71 +29,71 @@ export function withLuxuryArtSoftDemoAssets(
       ...invitation.opening,
       greeting: "Assalamu’alaikum Wr. Wb.",
       description:
-        "Dengan memohon rahmat dan ridho Allah Subhanahu Wa Ta’ala, insyaaAllah kami akan menyelenggarakan acara pernikahan:",
+        "Dengan penuh rasa syukur, kami mengundang Bapak/Ibu/Saudara/i untuk hadir dalam perayaan pernikahan kami:",
       quote:
-        "Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya.",
-      quoteSource: "QS. Ar-Rum : 21",
+        "Maha Suci Allah yang telah menciptakan semuanya berpasang-pasangan, baik dari apa yang ditumbuhkan oleh bumi dan dari diri mereka maupun dari apa yang tidak mereka ketahui.",
+      quoteSource: "QS. Yasin : 36",
     },
     groom: {
       ...invitation.groom,
-      name: "Saputra Mahendra",
-      nickname: "Saputra",
-      parents: "Putra pertama dari Bapak H. Mahendra & Ibu Hj. Sulastri",
+      name: "Rendra Adinata",
+      nickname: "Rendra",
+      parents: "Putra kedua dari Bapak Fajar Adinata & Ibu Nirmala Sari",
       photo: `${ASSET}ai-groom.jpg`,
-      instagram: "saputramahendra",
+      instagram: "rendraadinata",
     },
     bride: {
       ...invitation.bride,
-      name: "Juwita Anggraini",
-      nickname: "Juwita",
-      parents: "Putri kedua dari Bapak H. Anggraini & Ibu Hj. Ratna",
+      name: "Keisya Maharani Putri",
+      nickname: "Keisya",
+      parents: "Putri pertama dari Bapak Bima Prakoso & Ibu Larasati",
       photo: `${ASSET}ai-bride.jpg`,
-      instagram: "juwitaanggraini",
+      instagram: "keisyamaharani",
     },
     events: [
       {
         name: "Akad Nikah",
-        date: "Rabu, 30 September 2026",
-        rawDate: "2026-09-30T09:00:00",
+        date: "Sabtu, 14 November 2026",
+        rawDate: "2026-11-14T09:00:00",
         time: "09.00 WIB",
-        location: "Gedung Serbaguna Vistiq, Jakarta",
+        location: "Paviliun Arunika, Bandung",
       },
       {
         name: "Resepsi",
-        date: "Rabu, 30 September 2026",
-        rawDate: "2026-09-30T11:00:00",
+        date: "Sabtu, 14 November 2026",
+        rawDate: "2026-11-14T11:00:00",
         time: "11.00 WIB - Selesai",
-        location: "Gedung Serbaguna Vistiq, Jakarta",
+        location: "Paviliun Arunika, Bandung",
       },
     ],
     gallery: GALLERY,
     story: [
       {
-        year: "2018",
-        title: "Awal Bertemu",
-        description: "Pertemuan sederhana yang menjadi awal dari cerita indah kami.",
+        year: "2019",
+        title: "Pertemuan Pertama",
+        description: "Satu pertemuan singkat menjadi awal dari perjalanan yang tidak pernah kami duga.",
       },
       {
-        year: "2020",
-        title: "Menjalin Kasih",
-        description: "Kami belajar tumbuh, saling mendukung, dan mengenal keluarga masing-masing.",
+        year: "2021",
+        title: "Tumbuh Bersama",
+        description: "Kami belajar saling menguatkan, merayakan hal-hal kecil, dan mengenal keluarga masing-masing.",
       },
       {
         year: "2025",
-        title: "Lamaran",
-        description: "Dengan restu kedua keluarga, kami mantap melangkah menuju jenjang pernikahan.",
+        title: "Hari Lamaran",
+        description: "Dengan restu keluarga, kami memilih untuk melangkah pada tujuan yang sama.",
       },
       {
         year: "2026",
-        title: "Hari Bahagia",
-        description: "Dengan penuh syukur, kami memulai babak baru dalam perjalanan bersama.",
+        title: "Janji Selamanya",
+        description: "Dengan penuh syukur, kami membuka babak baru dan menitipkan doa pada setiap langkah.",
       },
     ],
     gifts: invitation.gifts.map((account) =>
       account.owner === "Mempelai Pria"
-        ? { ...account, accountName: "Saputra Mahendra" }
+        ? { ...account, accountName: "Rendra Adinata" }
         : account.owner === "Mempelai Wanita"
-          ? { ...account, accountName: "Juwita Anggraini" }
+          ? { ...account, accountName: "Keisya Maharani Putri" }
           : account,
     ),
   };
