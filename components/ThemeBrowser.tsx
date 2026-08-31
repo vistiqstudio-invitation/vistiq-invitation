@@ -93,6 +93,8 @@ function ThemeCard({
           coverImage={getThemeCoverImage(theme.key, demoPath)}
           swatch={theme.swatch}
           label={theme.label}
+          demoPath={demoPath}
+          themeKey={theme.key}
         />
         {priceWasLabel && discountLabel && <span className={styles.discountBadge}>DISC. {discountLabel}</span>}
       </div>
