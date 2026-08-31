@@ -4,14 +4,14 @@ import { WEDDING_VOCAL_TRACKS } from "@/lib/weddingMusic";
 const ASSET = "/themes/luxury-art-soft/";
 
 const GALLERY = [
-  `${ASSET}TEMA-M-3.jpg`,
-  `${ASSET}TEMA-M-4.jpg`,
-  `${ASSET}quote.jpg`,
-  `${ASSET}TEMA-M-10.jpg`,
-  `${ASSET}TEMA-M-19.jpg`,
-  `${ASSET}TEMA-M-2.jpg`,
-  `${ASSET}rsvp.jpg`,
-  `${ASSET}wishes.jpg`,
+  `${ASSET}ai-gallery-01.jpg`,
+  `${ASSET}ai-gallery-02.jpg`,
+  `${ASSET}ai-gallery-03.jpg`,
+  `${ASSET}ai-gallery-04.jpg`,
+  `${ASSET}ai-gallery-05.jpg`,
+  `${ASSET}ai-cover.jpg`,
+  `${ASSET}ai-rsvp.jpg`,
+  `${ASSET}ai-wishes.jpg`,
 ];
 
 export function withLuxuryArtSoftDemoAssets(
@@ -22,7 +22,7 @@ export function withLuxuryArtSoftDemoAssets(
 
   return {
     ...invitation,
-    coverImage: `${ASSET}TEMA-M-3.jpg`,
+    coverImage: `${ASSET}ai-cover.jpg`,
     musicUrl: WEDDING_VOCAL_TRACKS.indonesianBallad,
     videoUrl: `${ASSET}cover.mp4`,
     opening: {
@@ -39,7 +39,7 @@ export function withLuxuryArtSoftDemoAssets(
       name: "Saputra Mahendra",
       nickname: "Saputra",
       parents: "Putra pertama dari Bapak H. Mahendra & Ibu Hj. Sulastri",
-      photo: `${ASSET}TEMA-M-4.jpg`,
+      photo: `${ASSET}ai-groom.jpg`,
       instagram: "saputramahendra",
     },
     bride: {
@@ -47,7 +47,7 @@ export function withLuxuryArtSoftDemoAssets(
       name: "Juwita Anggraini",
       nickname: "Juwita",
       parents: "Putri kedua dari Bapak H. Anggraini & Ibu Hj. Ratna",
-      photo: `${ASSET}TEMA-M-3.jpg`,
+      photo: `${ASSET}ai-bride.jpg`,
       instagram: "juwitaanggraini",
     },
     events: [
