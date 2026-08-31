@@ -25,7 +25,8 @@ type IconName =
   | "music"
   | "mail"
   | "pin"
-  | "copy";
+  | "copy"
+  | "play";
 
 function Icon({ name }: { name: IconName }) {
   const line = {
@@ -104,6 +105,7 @@ function Icon({ name }: { name: IconName }) {
           <path {...line} d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h2" />
         </>
       )}
+      {name === "play" && <path {...line} fill="currentColor" stroke="none" d="m8 5 11 7-11 7Z" />}
     </svg>
   );
 }
@@ -164,13 +166,37 @@ function parseEventDate(event?: EventItem) {
 }
 
 function fallbackPhotos(invitation: InvitationData) {
-  return [
-    invitation.gallery[0] || `${ASSET}ai-gallery-01.jpg`,
-    invitation.gallery[1] || `${ASSET}ai-gallery-02.jpg`,
-    invitation.gallery[2] || `${ASSET}ai-gallery-03.jpg`,
-    invitation.gallery[3] || `${ASSET}ai-gallery-04.jpg`,
-    invitation.gallery[4] || `${ASSET}ai-gallery-05.jpg`,
+  const defaults = [
+    `${ASSET}ai-gallery-01.jpg`,
+    `${ASSET}ai-gallery-02.jpg`,
+    `${ASSET}ai-gallery-03.jpg`,
+    `${ASSET}ai-gallery-04.jpg`,
+    `${ASSET}ai-gallery-05.jpg`,
+    `${ASSET}ai-cover.jpg`,
+    `${ASSET}ai-groom.jpg`,
+    `${ASSET}ai-bride.jpg`,
   ];
+  const customPhotos = invitation.gallery.filter(Boolean);
+  const count = Math.max(customPhotos.length, defaults.length);
+  return Array.from({ length: count }, (_, index) => customPhotos[index] || defaults[index]);
+}
+
+function googleCalendarHref(event?: EventItem) {
+  const startMs = parseEventDate(event)?.getTime();
+  if (!event || startMs === undefined || !Number.isFinite(startMs)) return null;
+
+  const format = (value: number) => new Date(value).toISOString().replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z");
+  const params = new URLSearchParams({
+    action: "TEMPLATE",
+    text: event.name || "Wedding Event",
+    dates: `${format(startMs)}/${format(startMs + 2 * 60 * 60 * 1000)}`,
+    location: event.location || "",
+  });
+  return `https://calendar.google.com/calendar/render?${params.toString()}`;
+}
+
+function isExternalUrl(value: string | null) {
+  return Boolean(value && /^https?:\/\//i.test(value));
 }
 
 function Cover({ invitation, onOpen }: { invitation: InvitationData; onOpen: () => void }) {
@@ -223,6 +249,34 @@ function Cover({ invitation, onOpen }: { invitation: InvitationData; onOpen: () 
         </div>
       </div>
     </motion.section>
+  );
+}
+
+function Hero({ invitation }: { invitation: InvitationData }) {
+  const bride = firstName(invitation.bride.name, invitation.bride.nickname);
+  const groom = firstName(invitation.groom.name, invitation.groom.nickname);
+  const date = eventDateParts(invitation.events[0]);
+  const dateLabel = date.weekday
+    ? `${date.weekday.toUpperCase()}, ${date.day} ${date.month.toUpperCase()} ${date.year}`
+    : invitation.events[0]?.date || "SAVE THE DATE";
+
+  return (
+    <section className={styles.heroPanel} aria-label="Halaman pembuka undangan">
+      <Image src={`${ASSET}ai-cover.jpg`} alt="" fill priority sizes="(max-width: 450px) 100vw, 450px" className={styles.panelArt} />
+      <div className={styles.panelShade} />
+      <div className={styles.heroFrame}>
+        <motion.div
+          className={styles.panelCopy}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, ease: revealEase }}
+        >
+          <p>THE WEDDING OF</p>
+          <h2>{bride}<span>&amp;</span>{groom}</h2>
+          <time>{dateLabel}</time>
+        </motion.div>
+      </div>
+    </section>
   );
 }
 
@@ -343,6 +397,11 @@ function QuoteCountdown({ invitation }: { invitation: InvitationData }) {
             </span>
           ))}
         </div>
+        {googleCalendarHref(event) ? (
+          <a className={styles.saveDate} href={googleCalendarHref(event) || undefined} target="_blank" rel="noreferrer">
+            <Icon name="calendar" /> SAVE THE DATE
+          </a>
+        ) : null}
       </motion.div>
     </section>
   );
@@ -355,6 +414,32 @@ function Events({ invitation }: { invitation: InvitationData }) {
       <div className={styles.eventsHeading}><span>Wedding</span><em>Event</em></div>
       {events.map((event, index) => <EventCard key={`${event.name}-${event.date}`} event={event} reverse={index === 1} mapsUrl={invitation.mapsUrl} />)}
       {!events.length ? <EventCard event={{ name: "Wedding Event", date: "", rawDate: null, time: "", location: "" }} mapsUrl={null} /> : null}
+    </section>
+  );
+}
+
+function LiveStreaming({ invitation }: { invitation: InvitationData }) {
+  const liveUrl = isExternalUrl(invitation.videoUrl) ? invitation.videoUrl : null;
+
+  return (
+    <section id="live" className={styles.liveSection}>
+      <Image src={`${ASSET}ai-gallery-03.jpg`} alt="" fill sizes="(max-width: 450px) 100vw, 450px" className={styles.liveBackground} />
+      <div className={styles.liveShade} />
+      <motion.div
+        className={styles.liveContent}
+        initial={{ opacity: 0, y: 22 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.35 }}
+        transition={{ duration: 0.8, ease: revealEase }}
+      >
+        <div className={styles.liveHeading}><span>Live</span><em>Streaming</em></div>
+        <p>Saksikan momen bahagia kami melalui siaran langsung pada hari pernikahan.</p>
+        {liveUrl ? (
+          <a href={liveUrl} target="_blank" rel="noreferrer"><Icon name="play" /> Join Live</a>
+        ) : (
+          <span className={styles.livePending}>Link streaming menyusul</span>
+        )}
+      </motion.div>
     </section>
   );
 }
@@ -386,7 +471,7 @@ function EventCard({ event, reverse = false, mapsUrl }: { event: EventItem; reve
 
 function Gallery({ invitation }: { invitation: InvitationData }) {
   const [active, setActive] = useState<number | null>(null);
-  const photos = fallbackPhotos(invitation);
+  const photos = fallbackPhotos(invitation).slice(0, 8);
   return (
     <section id="gallery" className={styles.gallerySection}>
       <motion.div
@@ -397,14 +482,14 @@ function Gallery({ invitation }: { invitation: InvitationData }) {
         transition={{ duration: 0.9, ease: revealEase }}
       >
         <Image src={`${ASSET}ai-gallery-01.jpg`} alt="" fill sizes="(max-width: 450px) 100vw, 450px" />
-        <div><span>Our</span><strong>Gallery</strong></div>
+        <div><span>Wedding</span><strong>Gallery</strong></div>
       </motion.div>
       <div className={styles.galleryShelf}>
         {photos.map((photo, index) => (
           <motion.button
             type="button"
             key={`${photo}-${index}`}
-            className={index === 2 ? styles.galleryWide : ""}
+            className={index >= 6 ? styles.galleryWide : ""}
             onClick={() => setActive(index)}
             initial={{ opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -436,19 +521,21 @@ const defaultStories = [
 
 function Story({ invitation }: { invitation: InvitationData }) {
   const stories = invitation.story.length ? invitation.story.slice(0, 5) : defaultStories;
-  const photos = fallbackPhotos(invitation).slice(2, 5);
+  const photos = fallbackPhotos(invitation).slice(2, 2 + stories.length);
   return (
     <section id="story" className={styles.storySection}>
-      <div className={styles.storyHeader}><span>Our</span><h2>Love Story</h2></div>
-      <div className={styles.storyPhotoRail}>
-        {photos.map((photo, index) => <div key={`${photo}-${index}`} className={styles.storyPhoto}><Image src={photo} alt="Momen perjalanan" fill sizes="(max-width: 450px) 30vw, 145px" /></div>)}
-      </div>
+      <div className={styles.storyHeader}><span>Love</span><h2>Story</h2></div>
       <div className={styles.storyTimeline}>
         <span className={styles.timelineLine} aria-hidden="true" />
         {stories.map((story, index) => (
           <motion.article key={`${story.year}-${story.title}`} initial={{ opacity: 0, x: index % 2 ? 18 : -18 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ delay: index * 0.06, duration: 0.65, ease: revealEase }}>
-            <i>{index + 1}</i>
-            <div><small>{story.year}</small><h3>{story.title}</h3><p>{story.description}</p></div>
+            <i>♥</i>
+            <div className={styles.storyCard}>
+              <div className={styles.storyCardPhoto}>
+                <Image src={photos[index] || `${ASSET}ai-gallery-03.jpg`} alt={`Momen ${story.title}`} fill sizes="(max-width: 450px) 66vw, 300px" />
+              </div>
+              <div className={styles.storyCardCopy}><small>{story.year}</small><h3>{story.title}</h3><p>{story.description}</p></div>
+            </div>
           </motion.article>
         ))}
       </div>
@@ -470,24 +557,26 @@ function Gift({ invitation }: { invitation: InvitationData }) {
 
   return (
     <section id="gift" className={styles.giftSection}>
-      <div className={styles.giftCard}>
-        <div className={styles.scriptHeading}><span>Wedding</span><em>Gift</em></div>
-        <p>Tanpa mengurangi rasa hormat, bagi rekan-rekan dan sahabat yang hendak memberikan tanda kasih untuk kami, dapat melalui nomor rekening di bawah ini.</p>
-        <div className={styles.accounts}>
-          {invitation.gifts.length ? invitation.gifts.map((account, index) => (
-            <article key={`${account.owner}-${index}`}>
-              <small>{account.bankName || "Bank"}</small>
-              <strong>{account.accountNumber || "Nomor rekening belum diisi"}</strong>
-              <span>{account.accountName || account.owner}</span>
-              {account.accountNumber ? <button type="button" onClick={() => void copyAccount(account.accountNumber, index)}><Icon name="copy" /> {copied === index ? "Tersalin" : "Copy Rekening"}</button> : null}
-            </article>
-          )) : <p className={styles.emptyGift}>Informasi rekening akan ditampilkan di sini.</p>}
+      <div className={styles.giftPanel}>
+        <div className={styles.giftCard}>
+          <div className={styles.scriptHeading}><span>Wedding</span><em>Gift</em></div>
+          <p>Tanpa mengurangi rasa hormat, bagi rekan-rekan dan sahabat yang hendak memberikan tanda kasih untuk kami, dapat melalui nomor rekening di bawah ini.</p>
+          <div className={styles.accounts}>
+            {invitation.gifts.length ? invitation.gifts.map((account, index) => (
+              <article key={`${account.owner}-${index}`}>
+                <small>{account.bankName || "Bank"}</small>
+                <strong>{account.accountNumber || "Nomor rekening belum diisi"}</strong>
+                <span>{account.accountName || account.owner}</span>
+                {account.accountNumber ? <button type="button" onClick={() => void copyAccount(account.accountNumber, index)}><Icon name="copy" /> {copied === index ? "Tersalin" : "Copy Rekening"}</button> : null}
+              </article>
+            )) : <p className={styles.emptyGift}>Informasi rekening akan ditampilkan di sini.</p>}
+          </div>
         </div>
-      </div>
-      <div className={styles.confirmCard}>
-        <div className={styles.scriptHeading}><span>Gift</span><em>Confirm</em></div>
-        <p>Mohon konfirmasi untuk pengiriman gift. Terima kasih atas perhatian dan tanda kasih Anda.</p>
-        <a href={`https://wa.me/${ADMIN_WHATSAPP}?text=${message}`} target="_blank" rel="noreferrer"><Icon name="chat" /> Konfirmasi via WhatsApp</a>
+        <div className={styles.confirmCard}>
+          <div className={styles.scriptHeading}><span>Gift</span><em>Confirm</em></div>
+          <p>Mohon konfirmasi untuk pengiriman gift. Terima kasih atas perhatian dan tanda kasih Anda.</p>
+          <a href={`https://wa.me/${ADMIN_WHATSAPP}?text=${message}`} target="_blank" rel="noreferrer"><Icon name="chat" /> Konfirmasi via WhatsApp</a>
+        </div>
       </div>
     </section>
   );
@@ -584,6 +673,23 @@ function Footer({ invitation }: { invitation: InvitationData }) {
   );
 }
 
+function BrandFooter({ invitation }: { invitation: InvitationData }) {
+  const brandName = invitation.brand?.name || "Vistiq Invitation";
+  return (
+    <section className={styles.brandFooter} aria-label="Brand undangan">
+      <div>
+        <small>EXCLUSIVE WEB INVITATION</small>
+        <strong>{brandName}</strong>
+        <p>Dibuat dengan penuh cinta untuk hari yang istimewa.</p>
+        <div className={styles.brandFooterLinks}>
+          <a href="https://instagram.com/vistiqinvitation" target="_blank" rel="noreferrer">Instagram</a>
+          <a href={`https://wa.me/${ADMIN_WHATSAPP}`} target="_blank" rel="noreferrer">WhatsApp</a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 const nav: [string, IconName, string][] = [
   ["home", "home", "Home"],
   ["couple", "couple", "Mempelai"],
@@ -638,6 +744,9 @@ export default function LuxuryArtSoft({ invitation }: { invitation: InvitationDa
   }, [opened]);
 
   const openInvitation = async () => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
     setOpened(true);
     setContentReady(true);
     if (invitation.musicUrl && !fallbackMusic.current) {
@@ -651,14 +760,17 @@ export default function LuxuryArtSoft({ invitation }: { invitation: InvitationDa
       <div className={styles.invitation}>
         {invitation.musicUrl ? <audio ref={audioRef} src={invitation.musicUrl} loop preload="none" /> : null}
         <div id="home" className={`${styles.content} ${contentReady ? styles.contentVisible : styles.contentHidden}`} aria-hidden={!contentReady}>
+          <Hero invitation={invitation} />
           <Couple invitation={invitation} />
           <QuoteCountdown invitation={invitation} />
           <Events invitation={invitation} />
+          <LiveStreaming invitation={invitation} />
           <Gallery invitation={invitation} />
           <Story invitation={invitation} />
           <Gift invitation={invitation} />
           <RsvpAndWishes invitation={invitation} />
           <Footer invitation={invitation} />
+          <BrandFooter invitation={invitation} />
         </div>
         <AnimatePresence onExitComplete={() => setContentReady(true)}>{!opened ? <Cover invitation={invitation} onOpen={() => void openInvitation()} /> : null}</AnimatePresence>
         {contentReady ? <><FloatingControls isPlaying={isPlaying} toggle={toggle} /><BottomNav /></> : null}
