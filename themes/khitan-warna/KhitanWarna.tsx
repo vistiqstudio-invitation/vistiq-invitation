@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence } from "framer-motion";
+import { useSearchParams } from "next/navigation";
 import { useInvitation } from "@/components/InvitationProvider";
 import type { KhitanInvitationData } from "@/types/khitan";
 
@@ -24,12 +25,15 @@ import styles from "./style.module.css";
 
 export default function KhitanWarna({ invitation }: { invitation: KhitanInvitationData }) {
   const { opened } = useInvitation();
-  const [ready, setReady] = useState(false);
+  const searchParams = useSearchParams();
+  const isPreview = searchParams.get("preview") === "1";
+  const [ready, setReady] = useState(isPreview);
 
   useEffect(() => {
+    if (isPreview) return;
     const timer = setTimeout(() => setReady(true), 900);
     return () => clearTimeout(timer);
-  }, []);
+  }, [isPreview]);
 
   return (
     <div className={styles.root}>

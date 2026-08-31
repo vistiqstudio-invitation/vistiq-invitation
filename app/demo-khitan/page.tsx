@@ -34,6 +34,8 @@ export default function DemoKhitanPickerPage() {
                     coverImage={getThemeCoverImage(theme.key, "/demo-khitan")}
                     swatch={theme.swatch}
                     label={theme.label}
+                    demoPath="/demo-khitan"
+                    themeKey={theme.key}
                   />
                 </div>
 

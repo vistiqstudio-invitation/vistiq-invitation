@@ -173,6 +173,10 @@
   font-family: var(--font-display);
   font-weight: 600;
   font-size: clamp(30px, 6.4vw, 46px);
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+  line-height: 1.05;
   color: var(--cream);
   margin: 0 0 10px;
 }

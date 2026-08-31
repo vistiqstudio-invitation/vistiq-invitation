@@ -193,6 +193,10 @@
   position: relative;
   font-weight: 800;
   font-size: clamp(28px, 6.2vw, 42px);
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+  line-height: 1.05;
   color: var(--ink);
   background: #fff;
   padding: 6px 22px;

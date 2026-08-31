@@ -7,13 +7,22 @@ type Props = {
   coverImage?: string | null;
   label: string;
   swatch?: [string, string];
+  demoPath?: string;
+  themeKey?: string;
 };
 
 /** A motion-free preview of the theme's complete invitation opening screen. */
-export default function ThemeCoverPreview({ coverImage, label, swatch }: Props) {
+export default function ThemeCoverPreview({
+  coverImage,
+  label,
+  swatch,
+  demoPath,
+  themeKey,
+}: Props) {
   const normalizedLabel = label.toLowerCase();
   const isChampagneRomance = normalizedLabel.includes("champagne romance");
   const isLoveParadise = normalizedLabel.includes("love paradise");
+  const isLiveKhitanPreview = demoPath === "/demo-khitan" && Boolean(themeKey);
   const hasLiveCover = isChampagneRomance || isLoveParadise;
 
   return (
@@ -29,7 +38,17 @@ export default function ThemeCoverPreview({ coverImage, label, swatch }: Props) 
             }
       }
     >
-      {isChampagneRomance ? (
+      {isLiveKhitanPreview ? (
+        <iframe
+          src={`${demoPath}/${themeKey}?preview=1`}
+          title={`Preview cover tema ${label}`}
+          className={styles.liveFrame}
+          loading="lazy"
+          tabIndex={-1}
+          aria-hidden="true"
+          scrolling="no"
+        />
+      ) : isChampagneRomance ? (
         <ChampagneRomanceCatalogCover />
       ) : isLoveParadise ? (
         <LoveParadiseCatalogCover />
