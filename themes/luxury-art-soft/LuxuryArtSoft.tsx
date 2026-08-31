@@ -226,29 +226,6 @@ function Cover({ invitation, onOpen }: { invitation: InvitationData; onOpen: () 
   );
 }
 
-function Hero({ invitation }: { invitation: InvitationData }) {
-  const bride = firstName(invitation.bride.name, invitation.bride.nickname);
-  const groom = firstName(invitation.groom.name, invitation.groom.nickname);
-  const date = eventDateParts(invitation.events[0]);
-
-  return (
-    <section id="home" className={styles.heroPanel}>
-      <Image src={`${ASSET}ai-cover.jpg`} alt="" fill priority sizes="(max-width: 450px) 100vw, 450px" className={styles.panelArt} />
-      <div className={styles.panelShade} />
-      <motion.div
-        className={styles.panelCopy}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9, ease: revealEase }}
-      >
-        <p>THE WEDDING OF</p>
-        <h2>{bride}<span>&amp;</span>{groom}</h2>
-        <time>{date.weekday.toUpperCase()}, {date.day} {date.month.toUpperCase()} {date.year}</time>
-      </motion.div>
-    </section>
-  );
-}
-
 function Couple({ invitation }: { invitation: InvitationData }) {
   const bridePhoto = invitation.bride.photo || invitation.gallery[0] || `${ASSET}ai-bride.jpg`;
   const groomPhoto = invitation.groom.photo || invitation.gallery[1] || `${ASSET}ai-groom.jpg`;
@@ -673,8 +650,7 @@ export default function LuxuryArtSoft({ invitation }: { invitation: InvitationDa
     <main className={styles.root}>
       <div className={styles.invitation}>
         {invitation.musicUrl ? <audio ref={audioRef} src={invitation.musicUrl} loop preload="none" /> : null}
-        <div className={`${styles.content} ${contentReady ? styles.contentVisible : styles.contentHidden}`} aria-hidden={!contentReady}>
-          <Hero invitation={invitation} />
+        <div id="home" className={`${styles.content} ${contentReady ? styles.contentVisible : styles.contentHidden}`} aria-hidden={!contentReady}>
           <Couple invitation={invitation} />
           <QuoteCountdown invitation={invitation} />
           <Events invitation={invitation} />
