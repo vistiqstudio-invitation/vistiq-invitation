@@ -261,7 +261,7 @@ function Hero({ invitation }: { invitation: InvitationData }) {
 
   return (
     <section className={styles.heroPanel} aria-label="Halaman pembuka undangan">
-      <Image src={`${ASSET}ai-cover.jpg`} alt="" fill priority sizes="(max-width: 450px) 100vw, 450px" className={styles.panelArt} />
+      <Image src={`${ASSET}art-soft-opening.svg`} alt="" fill priority sizes="(max-width: 450px) 100vw, 450px" className={styles.panelArt} />
       <div className={styles.panelShade} />
       <div className={styles.heroFrame}>
         <motion.div
