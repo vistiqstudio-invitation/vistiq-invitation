@@ -27,9 +27,21 @@ const FAQ = [
 ];
 
 const HERO_COLUMNS = [
-  ["/photos/jawa-cover.png", "/photos/botanical-cover.png", "/photos/boho-cover.png"],
-  ["/photos/imperial-cover.png", "/photos/luxury-cover.png", "/photos/deco-cover.png"],
-  ["/photos/sakura-cover.png", "/photos/romance-cover.png", "/photos/floral-cover.png"],
+  [
+    "/theme-previews/wedding/luxury-art-garden.jpg",
+    "/theme-previews/wedding/royal-java.jpg",
+    "/theme-previews/wedding/luxury-art-java-heritage.jpg",
+  ],
+  [
+    "/theme-previews/wedding/luxury-art-sakura.jpg",
+    "/theme-previews/wedding/pastel-studio.jpg",
+    "/theme-previews/wedding/luxury-art-soft.jpg",
+  ],
+  [
+    "/theme-previews/wedding/luxury-art-champagne-romance.jpg",
+    "/theme-previews/wedding/royal-java.jpg",
+    "/theme-previews/wedding/pastel-studio.jpg",
+  ],
 ];
 
 export default function HomePage() {
