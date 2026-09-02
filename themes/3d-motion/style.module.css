@@ -499,7 +499,7 @@
 
 .quote {
   min-height: 980px;
-  padding-bottom: 112px;
+  padding-bottom: 220px;
   background: linear-gradient(180deg, var(--ivory) 0 33%, var(--paper) 33% 100%);
 }
 
@@ -602,12 +602,12 @@
 
 .quote .botanicalBottom {
   z-index: 2;
-  right: -58px;
-  bottom: 12px;
-  width: 300px;
-  height: 230px;
+  right: -64px;
+  bottom: 24px;
+  width: 270px;
+  height: 210px;
   transform: scaleX(-1) rotate(4deg);
-  opacity: 0.76;
+  opacity: 0.68;
 }
 
 .couple {
