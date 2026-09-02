@@ -71,7 +71,7 @@ type Transaction = {
 type Invitation = {
   id: number;
   slug: string;
-  category?: "wedding" | "aqiqah" | "khitan";
+  category?: "wedding" | "aqiqah" | "khitan" | "birthday";
   groom_name?: string;
   bride_name?: string;
   baby_name?: string;
@@ -254,10 +254,10 @@ export default function ResellerClientsPage() {
     const checklist = DATA_CHECKLIST[category];
 
     if (reseller?.package !== "reseller_brand" && newClientCredentials.paymentUrl) {
-      return `Halo ${newClientCredentials.name}, pesanan undangan digital Anda sudah dibuat.\n\nTotal pembayaran: Rp ${newClientCredentials.salePrice.toLocaleString("id-ID")}\nBayar aman melalui Midtrans di link berikut:\n${newClientCredentials.paymentUrl}\n\nSetelah pembayaran berhasil, akun dashboard bisa digunakan. Undangan menunggu verifikasi dan aktivasi oleh admin Vistiq.\n\nAkun dashboard:\nLink: ${window.location.origin}/login\nEmail: ${newClientCredentials.email}\nPassword: ${newClientCredentials.password}\n\nData yang perlu disiapkan:\n${checklist}\n\nTerima kasih!`;
+      return `Halo ${newClientCredentials.name}, pesanan undangan digital Anda sudah dibuat.\n\nTotal pembayaran: Rp ${newClientCredentials.salePrice.toLocaleString("id-ID")}\nBayar aman melalui Midtrans di link berikut:\n${newClientCredentials.paymentUrl}\n\nSebelum pembayaran, reseller dapat mengedit dan memperlihatkan preview draft undangan kepada Anda. Akun dashboard client dan link undangan publik baru dapat digunakan setelah pembayaran diverifikasi dan diaktifkan oleh Admin Vistiq.\n\nAkun dashboard yang sudah disiapkan:\nLink: ${window.location.origin}/login\nEmail: ${newClientCredentials.email}\nPassword: ${newClientCredentials.password}\n\nData yang perlu disiapkan:\n${checklist}\n\nTerima kasih!`;
     }
 
-    return `Halo ${newClientCredentials.name}, berikut akun login dashboard undangan Anda di ${dashboardBrand}:\n\nLink: ${window.location.origin}/login\nEmail: ${newClientCredentials.email}\nPassword: ${newClientCredentials.password}\n\nLewat dashboard ini Anda bisa generate link undangan per nama tamu, lihat RSVP, dan edit undangan.\n\nSupaya undangannya bisa langsung dipakai, mohon siapkan data berikut untuk diisi di dashboard:\n${checklist}\n\nUndangan akan tetap menjadi draft sampai diaktifkan oleh admin Vistiq.\n\nKalau ada pertanyaan, jangan sungkan hubungi kami ya. Terima kasih!`;
+    return `Halo ${newClientCredentials.name}, akun dashboard undangan Anda di ${dashboardBrand} sudah disiapkan.\n\nLink: ${window.location.origin}/login\nEmail: ${newClientCredentials.email}\nPassword: ${newClientCredentials.password}\n\nSebelum pembayaran, reseller dapat mengedit dan memperlihatkan preview draft undangan kepada Anda. Akun dashboard client dan link undangan publik baru dapat digunakan setelah pembayaran diverifikasi dan diaktifkan oleh Admin Vistiq.\n\nMohon siapkan data berikut:\n${checklist}\n\nKalau ada pertanyaan, jangan sungkan hubungi kami ya. Terima kasih!`;
   };
 
   const copyClientCredentials = async () => {
@@ -562,6 +562,16 @@ export default function ResellerClientsPage() {
                         <p className={styles.date}>{new Date(client.created_at).toLocaleDateString("id-ID")}</p>
 
                         <div className={styles.clientActions}>
+                          {clientInvitations.map((invitation) => (
+                            <Link
+                              key={invitation.id}
+                              href={`/reseller/invitations/${invitation.id}`}
+                              className={styles.button}
+                              style={{ fontSize: 11, padding: "6px 10px" }}
+                            >
+                              Edit Undangan
+                            </Link>
+                          ))}
                           {client.user_id ? (
                             <button
                               onClick={() => resetClientPassword(client)}

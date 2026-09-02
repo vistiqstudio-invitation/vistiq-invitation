@@ -1,10 +1,10 @@
-import { requireRole } from "@/lib/supabase/dal";
+import { requireActiveClient } from "@/lib/supabase/dal";
 
 export default async function ClientLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  await requireRole(["client"]);
+  await requireActiveClient();
   return children;
 }

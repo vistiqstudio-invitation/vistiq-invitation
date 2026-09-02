@@ -61,6 +61,22 @@ export default function LoginPage() {
       return;
     }
 
+    if (profile.role === "client") {
+      const { data: client } = await supabase
+        .from("clients")
+        .select("status")
+        .eq("user_id", data.user.id)
+        .maybeSingle();
+
+      if (client?.status !== "active") {
+        await supabase.auth.signOut();
+        alert(
+          "Akun client belum aktif. Silakan selesaikan pembayaran dan minta Admin Vistiq mengaktifkan akun. Reseller tetap dapat mengedit dan melihat preview draft dari Dashboard Reseller."
+        );
+        return;
+      }
+    }
+
     router.push(roleHome[profile.role] || "/");
   };
 

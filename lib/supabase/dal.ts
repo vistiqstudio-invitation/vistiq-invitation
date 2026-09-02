@@ -56,3 +56,23 @@ export async function requireRole(
 
   return profile;
 }
+
+/**
+ * Client dashboards are released only after the Owner activates the client.
+ * Resellers use their own dashboard to edit and preview drafts before payment.
+ */
+export async function requireActiveClient(): Promise<SessionProfile> {
+  const profile = await requireRole(["client"]);
+  const supabase = await createClient();
+  const { data: client } = await supabase
+    .from("clients")
+    .select("status")
+    .eq("user_id", profile.id)
+    .maybeSingle();
+
+  if (client?.status !== "active") {
+    redirect("/login?client=pending");
+  }
+
+  return profile;
+}
