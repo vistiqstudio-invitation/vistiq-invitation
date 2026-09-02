@@ -602,12 +602,12 @@
 
 .quote .botanicalBottom {
   z-index: 2;
-  right: -100px;
-  bottom: -145px;
-  width: 245px;
-  height: 185px;
+  right: -58px;
+  bottom: 12px;
+  width: 300px;
+  height: 230px;
   transform: scaleX(-1) rotate(4deg);
-  opacity: 0.72;
+  opacity: 0.76;
 }
 
 .couple {
@@ -698,7 +698,7 @@
 
 .coupleArtwork {
   position: absolute;
-  z-index: 4;
+  z-index: 1;
   inset: 11% auto 9%;
   width: 73%;
   height: 80%;
