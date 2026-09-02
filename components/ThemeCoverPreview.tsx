@@ -1,5 +1,6 @@
 import Image from "next/image";
 import BotanicalRomanceCatalogCover from "./BotanicalRomanceCatalogCover";
+import Premium3DMotionCatalogCover from "./Premium3DMotionCatalogCover";
 import ChampagneRomanceCatalogCover from "./ChampagneRomanceCatalogCover";
 import LoveParadiseCatalogCover from "./LoveParadiseCatalogCover";
 import styles from "./ThemeCoverPreview.module.css";
@@ -27,9 +28,14 @@ export default function ThemeCoverPreview({
     normalizedLabel.includes("botanical romance") ||
     normalizedLabel.includes("3d motion");
   const isChampagneRomance = normalizedLabel.includes("champagne romance");
+  const isPremium3DMotion =
+    themeKey === "3d-montion-2" ||
+    themeKey === "premium-3d-motion" ||
+    normalizedLabel.includes("lavender garden motion") ||
+    normalizedLabel.includes("premium 3d motion");
   const isLoveParadise = normalizedLabel.includes("love paradise");
   const isLiveKhitanPreview = demoPath === "/demo-khitan" && Boolean(themeKey);
-  const hasLiveCover = isBotanicalRomance || isChampagneRomance || isLoveParadise;
+  const hasLiveCover = isBotanicalRomance || isChampagneRomance || isLoveParadise || isPremium3DMotion;
 
   return (
     <div
@@ -58,6 +64,8 @@ export default function ThemeCoverPreview({
         <ChampagneRomanceCatalogCover />
       ) : isLoveParadise ? (
         <LoveParadiseCatalogCover />
+      ) : isPremium3DMotion ? (
+        <Premium3DMotionCatalogCover />
       ) : isBotanicalRomance ? (
         <BotanicalRomanceCatalogCover />
       ) : coverImage ? (

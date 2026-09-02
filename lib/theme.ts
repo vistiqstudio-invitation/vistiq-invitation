@@ -50,6 +50,7 @@ import LuxuryArtSakura from "@/themes/luxury-art-sakura/LuxuryArtSakura";
 import ChampagneRomance from "@/themes/luxury-art-champagne-romance/ChampagneRomance";
 import LuxuryArtSoft from "@/themes/luxury-art-soft/LuxuryArtSoft";
 import ThreeDMotion from "@/themes/3d-motion/ThreeDMotion";
+import Premium3DMotion from "@/themes/premium-3d-motion-2/Premium3DMotion";
 import LoveChronicle from "@/themes/love-chronicle/LoveChronicle";
 import VelvetCinema from "@/themes/velvet-cinema/VelvetCinema";
 import PrismaticVows from "@/themes/prismatic-vows/PrismaticVows";
@@ -101,6 +102,8 @@ export const themeRegistry: Record<
   "luxury-art-soft": LuxuryArtSoft,
   "3d-motion": ThreeDMotion,
   "3d-montion-1": ThreeDMotion,
+  "3d-montion-2": Premium3DMotion,
+  "premium-3d-motion": Premium3DMotion,
   "love-chronicle": LoveChronicle,
   "velvet-cinema": VelvetCinema,
   "prismatic-vows": PrismaticVows,
@@ -163,6 +166,7 @@ export const themeList: ThemeMeta[] = [
   { key: "luxury-art-sakura", label: "Luxury Art — Sakura Romance", description: "Ivory dan blush Sakura, lanskap watercolor Jepang, foto arch, kelopak jatuh dan transisi floral sinematik", swatch: ["#fff9f4", "#c98382"], tags: ["luxury-art", "premium"], addedAt: "2026-08-25" },
   { key: "luxury-art-soft", label: "Luxury Art — Art Soft", description: "Watercolor garden, frame arch, cover video sinematik, countdown, gift, RSVP dan wishes bergaya editorial", swatch: ["#efe6da", "#6c4435"], tags: ["luxury-art", "premium"], addedAt: "2026-08-30" },
   { key: "3d-motion", label: "Botanical Romance", description: "Sage, ivory dan floral transparan dengan cover sinematik, galeri masonry dan RSVP", swatch: ["#edf1e6", "#85a57a"], tags: ["luxury-art", "premium"], addedAt: "2026-09-02" },
+  { key: "3d-montion-2", label: "Lavender Garden Motion", description: "Lavender, ivory dan floral watercolor dengan cover video sinematik, galeri, gift, RSVP dan wishes", swatch: ["#fffcf3", "#9e99bf"], tags: ["premium", "premium-3d-motion"], addedAt: "2026-09-02" },
   { key: "porcelain-bloom", label: "Porcelain Bloom", description: "Ivory & powder blue, porselen klasik, mutiara, pita satin & floral biru", swatch: ["#fbfaf6", "#2d638f"], tags: ["premium"] },
   { key: "love-chronicle", label: "Love Chronicle", description: "Champagne & burgundy, wedding newspaper, cap pos, perangko & wax seal", swatch: ["#f4eddf", "#7a2433"], tags: ["premium"] },
   { key: "velvet-cinema", label: "Velvet Cinema", description: "Merah beludru & hitam, premiere film, marquee lights, tiket VIP & filmstrip", swatch: ["#0a0909", "#761423"], tags: ["premium"] },
