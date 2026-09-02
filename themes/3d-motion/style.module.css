@@ -699,19 +699,21 @@
 .coupleArtwork {
   position: absolute;
   z-index: 1;
-  inset: 11% auto 9%;
-  width: 73%;
-  height: 80%;
+  top: 65%;
+  right: 20%;
+  width: 60%;
+  height: 55%;
   object-fit: contain;
   pointer-events: none;
 }
 
 .portraitBride .coupleArtwork {
-  right: -3%;
+  right: 20%;
 }
 
 .portraitGroom .coupleArtwork {
-  left: -3%;
+  left: 20%;
+  right: auto;
 }
 
 .personContent {
