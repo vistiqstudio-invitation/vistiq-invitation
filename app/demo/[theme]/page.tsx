@@ -10,6 +10,7 @@ import { withLuxuryArtGardenDemoAssets } from "@/lib/luxuryArtGardenDemo";
 import { withLuxuryArtLoveParadiseDemoAssets } from "@/lib/luxuryArtLoveParadiseDemo";
 import { withLuxuryArtChampagneRomanceDemoAssets } from "@/lib/luxuryArtChampagneRomanceDemo";
 import { withLuxuryArtSoftDemoAssets } from "@/lib/luxuryArtSoftDemo";
+import { withThreeDMotionDemoAssets } from "@/lib/threeDMotionDemo";
 import WeddingThemeSafeArea from "@/components/WeddingThemeSafeArea";
 
 export default async function DemoThemePage({
@@ -22,23 +23,26 @@ export default async function DemoThemePage({
 
   if (!Theme) notFound();
 
-  const invitation = withLuxuryArtSoftDemoAssets(
+  const invitation = withThreeDMotionDemoAssets(
     theme,
-    withLuxuryArtChampagneRomanceDemoAssets(
+    withLuxuryArtSoftDemoAssets(
       theme,
-      withLuxuryArtLoveParadiseDemoAssets(
+      withLuxuryArtChampagneRomanceDemoAssets(
         theme,
-        withLuxuryArtGardenDemoAssets(
+        withLuxuryArtLoveParadiseDemoAssets(
           theme,
-          withPearlTideDemoAssets(
+          withLuxuryArtGardenDemoAssets(
             theme,
-            withPrismaticVowsDemoAssets(
+            withPearlTideDemoAssets(
               theme,
-              withVelvetCinemaDemoAssets(
+              withPrismaticVowsDemoAssets(
                 theme,
-                withLoveChronicleDemoAssets(
+                withVelvetCinemaDemoAssets(
                   theme,
-                  withPorcelainBloomDemoAssets(theme, getDemoInvitation(theme)),
+                  withLoveChronicleDemoAssets(
+                    theme,
+                    withPorcelainBloomDemoAssets(theme, getDemoInvitation(theme)),
+                  ),
                 ),
               ),
             ),
