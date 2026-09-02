@@ -85,6 +85,13 @@
   background: #f6faff;
 }
 
+/* Keep the selected sub-filter dark enough for its white label to remain readable. */
+.filterButtonSub.filterButtonActive {
+  background: #1167b2;
+  border-color: #1167b2;
+  color: #fff;
+}
+
 @media (max-width: 640px) {
   .subFilterRow {
     grid-template-columns: repeat(3, 1fr);
