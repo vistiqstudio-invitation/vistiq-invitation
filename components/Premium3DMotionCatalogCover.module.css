@@ -11,7 +11,7 @@
 .background {
   position: absolute;
   inset: 0;
-  background: url("https://undanganqu.net/wp-content/uploads/2025/09/ai-ungu-3.jpg") center / cover no-repeat;
+  background: url("/themes/premium-3d-motion-2/naya-farhan-cover.jpg") center / cover no-repeat;
   filter: saturate(0.8) contrast(0.92);
   animation: slowZoom 18s ease-in-out infinite alternate;
 }

@@ -1,13 +1,13 @@
 import type { InvitationData } from "@/types/invitation";
 import { WEDDING_VOCAL_TRACKS } from "@/lib/weddingMusic";
 
-const REFERENCE_COVER =
-  "https://undanganqu.net/wp-content/uploads/2025/09/ai-ungu-3.jpg";
+const ASSET_ROOT = "/themes/premium-3d-motion-2";
+const DEMO_COVER = ASSET_ROOT + "/naya-farhan-cover.jpg";
 const GALLERY = [
-  "https://undanganqu.net/wp-content/uploads/2025/09/ai-ungu-4.jpg",
-  "https://undanganqu.net/wp-content/uploads/2025/09/ai-ungu-3.jpg",
-  "https://undanganqu.net/wp-content/uploads/2025/09/ai-ungu-2.jpg",
-  "https://undanganqu.net/wp-content/uploads/2025/09/ai-ungu-1.jpg",
+  ASSET_ROOT + "/naya-farhan-gallery-courtyard.jpg",
+  ASSET_ROOT + "/naya-farhan-gallery-conservatory.jpg",
+  ASSET_ROOT + "/naya-farhan-gallery-staircase.jpg",
+  ASSET_ROOT + "/naya-farhan-gallery-flower-studio.jpg",
 ];
 
 export function withPremium3DMotionDemoAssets(
@@ -18,7 +18,7 @@ export function withPremium3DMotionDemoAssets(
 
   return {
     ...invitation,
-    coverImage: REFERENCE_COVER,
+    coverImage: DEMO_COVER,
     musicUrl: WEDDING_VOCAL_TRACKS.englishBallad,
     videoUrl: null,
     opening: {
@@ -32,68 +32,68 @@ export function withPremium3DMotionDemoAssets(
     },
     bride: {
       ...invitation.bride,
-      name: "Kirana Larasati",
-      nickname: "Kirana",
-      parents: "Putri pertama dari Bapak Hadi Pranata & Ibu Sari Wulandari",
-      instagram: "kiranalarasati",
-      photo: "https://undanganqu.net/wp-content/uploads/2025/09/ai-ungu-1-1.jpg",
+      name: "Nayla Azzahra",
+      nickname: "Nayla",
+      parents: "Putri pertama dari Bapak Arman Wijaya & Ibu Lestari Handayani",
+      instagram: "naylaazzahra",
+      photo: ASSET_ROOT + "/naya-farhan-bride.jpg",
     },
     groom: {
       ...invitation.groom,
-      name: "Raka Adinata",
-      nickname: "Raka",
-      parents: "Putra kedua dari Bapak Bima Adinata & Ibu Ratih Permata",
-      instagram: "rakaadinata",
-      photo: "https://undanganqu.net/wp-content/uploads/2025/09/ai-ungu-1-2.jpg",
+      name: "Farhan Mahesa",
+      nickname: "Farhan",
+      parents: "Putra kedua dari Bapak Rudi Mahesa & Ibu Sinta Permata",
+      instagram: "farhanmahesa",
+      photo: ASSET_ROOT + "/naya-farhan-groom.jpg",
     },
     events: [
       {
         name: "Akad Nikah",
-        date: "Sabtu, 24 Oktober 2026",
-        rawDate: "2026-10-24T08:00:00",
+        date: "Minggu, 15 November 2026",
+        rawDate: "2026-11-15T08:00:00",
         time: "08.00 WIB - 10.00 WIB",
-        location: "The Garden Hall, Jl. Merdeka No. 18, Samarinda",
+        location: "Pendopo Puspa Arum, Jl. Kenanga No. 27, Bandung",
       },
       {
         name: "Resepsi Pernikahan",
         date: "Sabtu, 24 Oktober 2026",
-        rawDate: "2026-10-24T11:00:00",
-        time: "11.00 WIB - Selesai",
+        rawDate: "2026-11-15T11:30:00",
+        time: "11.30 WIB - Selesai",
         location: "The Garden Hall, Jl. Merdeka No. 18, Samarinda",
       },
     ],
     story: [
       {
-        year: "2021",
-        title: "Pertama Bertemu",
+        year: "2020",
+        title: "Pertama Berjumpa",
         description:
-          "Sebuah pertemuan sederhana menjadi awal dari cerita yang tidak pernah kami duga.",
+          "Sebuah pertemuan sederhana di sebuah acara keluarga menjadi awal dari cerita yang terus kami syukuri.",
       },
       {
         year: "2022",
-        title: "Mulai Mengenal",
+        title: "Tumbuh Bersama",
         description:
-          "Dari percakapan kecil, kami belajar saling memahami dan tumbuh dalam doa yang sama.",
+          "Dari percakapan kecil, kami belajar saling memahami dan mulai menyusun mimpi yang sama.",
       },
       {
-        year: "2024",
+        year: "2025",
         title: "Hari Lamaran",
         description:
-          "Dengan restu keluarga, kami memilih untuk melangkah lebih jauh bersama.",
+          "Dengan restu keluarga, kami mengikat niat untuk melangkah lebih jauh bersama.",
       },
       {
         year: "2026",
-        title: "Janji Selamanya",
+        title: "Hari Pernikahan",
         description:
-          "Hari bahagia ini menjadi awal perjalanan baru sebagai pasangan dan sahabat seumur hidup.",
+          "Dengan doa keluarga, kami memulai perjalanan baru sebagai pasangan dan sahabat seumur hidup.",
       },
     ],
     gallery: GALLERY,
     gifts: invitation.gifts.map((account) =>
       account.owner === "Mempelai Pria"
-        ? { ...account, accountName: "Raka Adinata" }
+        ? { ...account, accountName: "Farhan Mahesa" }
         : account.owner === "Mempelai Wanita"
-          ? { ...account, accountName: "Kirana Larasati" }
+          ? { ...account, accountName: "Nayla Azzahra" }
           : account,
     ),
   };
