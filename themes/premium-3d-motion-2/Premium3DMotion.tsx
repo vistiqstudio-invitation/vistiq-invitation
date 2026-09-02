@@ -256,7 +256,7 @@ function Cover({ invitation, onOpen }: { invitation: InvitationData; onOpen: () 
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8, duration: 0.8 }}
         >
-          {handleName(invitation.bride)} &amp; {handleName(invitation.groom)}
+          {firstName(invitation.bride)} &amp; {firstName(invitation.groom)}
         </motion.h1>
         <div className={styles.coverSpacer} />
         <motion.div
