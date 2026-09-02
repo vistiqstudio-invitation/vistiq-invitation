@@ -19,7 +19,7 @@ export default function Premium3DMotionCatalogCover() {
 
       <div className={styles.title}>
         <p>The Wedding of</p>
-        <h3>Kirana <span>&amp;</span> Raka</h3>
+        <h3>Nayla <span>&amp;</span> Farhan</h3>
       </div>
 
       <div className={styles.guest}>

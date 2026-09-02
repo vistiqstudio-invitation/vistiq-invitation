@@ -10,31 +10,24 @@ import type { CSSProperties, FormEvent } from "react";
 import type { GiftAccount, InvitationData } from "@/types/invitation";
 import styles from "./style.module.css";
 
-const REFERENCE_COVER =
-  "https://undanganqu.net/wp-content/uploads/2025/09/ai-ungu-3.jpg";
+const ASSET_ROOT = "/themes/premium-3d-motion-2";
+const REFERENCE_COVER = ASSET_ROOT + "/naya-farhan-cover.jpg";
 const REFERENCE_VIDEO =
   "https://undanganqu.net/wp-content/uploads/2024/11/02.-Cottage-Garden.mp4";
-const REFERENCE_FALLBACK =
-  "https://undanganqu.net/wp-content/uploads/2024/11/Garden-02-Fallback.jpg";
+const REFERENCE_FALLBACK = REFERENCE_COVER;
 const REFERENCE_OVERLAY =
   "https://undanganqu.net/wp-content/uploads/2024/11/Garden-02-Overlay.jpg";
 const REFERENCE_GALLERY = [
-  "https://undanganqu.net/wp-content/uploads/2025/09/ai-ungu-4.jpg",
-  "https://undanganqu.net/wp-content/uploads/2025/09/ai-ungu-3.jpg",
-  "https://undanganqu.net/wp-content/uploads/2025/09/ai-ungu-2.jpg",
-  "https://undanganqu.net/wp-content/uploads/2025/09/ai-ungu-1.jpg",
+  ASSET_ROOT + "/naya-farhan-gallery-courtyard.jpg",
+  ASSET_ROOT + "/naya-farhan-gallery-conservatory.jpg",
+  ASSET_ROOT + "/naya-farhan-gallery-staircase.jpg",
+  ASSET_ROOT + "/naya-farhan-gallery-flower-studio.jpg",
 ];
-const REFERENCE_SLIDES = [
-  "https://undanganqu.net/wp-content/uploads/2025/09/ai-ungu-4.jpg.webp",
-  "https://undanganqu.net/wp-content/uploads/2025/09/ai-ungu-3.jpg.webp",
-  "https://undanganqu.net/wp-content/uploads/2025/09/ai-ungu-2.jpg.webp",
-  "https://undanganqu.net/wp-content/uploads/2025/09/ai-ungu-1.jpg.webp",
-];
+const REFERENCE_SLIDES = REFERENCE_GALLERY;
 const MANDIRI_ICON =
   "https://undanganqu.net/wp-content/uploads/2024/11/iconmandiri-1.png.webp";
 const FOOTER_LOGO =
   "https://undanganqu.net/wp-content/uploads/2025/09/logo-news-new.jpg.webp";
-const ASSET_ROOT = "/themes/premium-3d-motion-2";
 
 const revealEase = [0.22, 1, 0.36, 1] as const;
 const MONTHS = [
