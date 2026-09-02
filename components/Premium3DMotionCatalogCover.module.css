@@ -79,15 +79,15 @@
 
 .title p {
   margin: 0 0 5px;
-  font-family: var(--font-alex-brush), "Brush Script MT", cursive;
-  font-size: clamp(8px, 2.2vw, 14px);
+  font-family: "Pinyon Script", "Brush Script MT", cursive;
+  font-size: 24px;
   line-height: 1.1;
 }
 
 .title h3 {
   margin: 0;
-  font-family: var(--font-cormorant), Georgia, serif;
-  font-size: clamp(15px, 8.2cqw, 31px);
+  font-family: "Cormorant Infant", Georgia, serif;
+  font-size: 24px;
   font-weight: 600;
   line-height: 1.06;
   text-transform: uppercase;
@@ -116,11 +116,6 @@
   right: 13%;
   bottom: 6%;
   left: 13%;
-  padding: 5% 5% 5.8%;
-  border: 1px solid rgba(255, 255, 255, 0.58);
-  border-radius: 13px;
-  background: rgba(255, 252, 243, 0.88);
-  color: #2c2734;
   text-align: center;
   box-shadow: 0 8px 18px rgba(15, 8, 24, 0.24);
 }
@@ -147,9 +142,10 @@
   align-items: center;
   justify-content: center;
   gap: 4px;
-  width: 82%;
-  padding: 7% 6%;
-  border-radius: 999px;
+  width: auto;
+  padding: 10px 30px;
+  border: 1px solid #fff;
+  border-radius: 20px;
   background: #9e99bf;
   color: #fff;
   font-family: Arial, sans-serif;

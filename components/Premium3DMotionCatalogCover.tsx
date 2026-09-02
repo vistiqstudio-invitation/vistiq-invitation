@@ -20,7 +20,6 @@ export default function Premium3DMotionCatalogCover() {
       <div className={styles.title}>
         <p>The Wedding of</p>
         <h3>Kirana <span>&amp;</span> Raka</h3>
-        <small>SABTU, 24 OKTOBER 2026</small>
       </div>
 
       <div className={styles.guest}>
