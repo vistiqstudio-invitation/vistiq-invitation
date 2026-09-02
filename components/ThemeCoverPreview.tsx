@@ -1,4 +1,5 @@
 import Image from "next/image";
+import BotanicalRomanceCatalogCover from "./BotanicalRomanceCatalogCover";
 import ChampagneRomanceCatalogCover from "./ChampagneRomanceCatalogCover";
 import LoveParadiseCatalogCover from "./LoveParadiseCatalogCover";
 import styles from "./ThemeCoverPreview.module.css";
@@ -20,10 +21,11 @@ export default function ThemeCoverPreview({
   themeKey,
 }: Props) {
   const normalizedLabel = label.toLowerCase();
+  const isBotanicalRomance = normalizedLabel.includes("botanical romance");
   const isChampagneRomance = normalizedLabel.includes("champagne romance");
   const isLoveParadise = normalizedLabel.includes("love paradise");
   const isLiveKhitanPreview = demoPath === "/demo-khitan" && Boolean(themeKey);
-  const hasLiveCover = isChampagneRomance || isLoveParadise;
+  const hasLiveCover = isBotanicalRomance || isChampagneRomance || isLoveParadise;
 
   return (
     <div
@@ -52,6 +54,8 @@ export default function ThemeCoverPreview({
         <ChampagneRomanceCatalogCover />
       ) : isLoveParadise ? (
         <LoveParadiseCatalogCover />
+      ) : isBotanicalRomance ? (
+        <BotanicalRomanceCatalogCover />
       ) : coverImage ? (
         <Image
           src={coverImage}
