@@ -224,17 +224,19 @@
 .heroMonogram {
   position: absolute;
   z-index: 7;
-  left: 50%;
+  right: 0;
+  left: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-inline: auto;
   width: 112px;
   height: 112px;
   gap: 5px;
   border: 1px solid rgba(255, 255, 255, 0.76);
   border-radius: 50%;
   color: #fff;
-  transform: translateX(-50%);
+  transform: none;
   box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.08), 0 18px 35px rgba(16, 38, 30, 0.18);
 }
 
@@ -451,37 +453,51 @@
 
 .hero .botanicalTop,
 .footer .botanicalTop {
-  top: -75px;
-  left: -84px;
+  top: 12px;
+  left: -64px;
+  width: 245px;
+  height: 185px;
   transform: rotate(10deg);
+  opacity: 0.78;
 }
 
 .hero .botanicalBottom,
 .footer .botanicalBottom {
-  right: -84px;
-  bottom: -64px;
+  right: -64px;
+  bottom: 12px;
+  width: 245px;
+  height: 185px;
   transform: scaleX(-1) rotate(9deg);
+  opacity: 0.78;
 }
 
 .heroScroll {
   position: absolute;
   z-index: 8;
-  bottom: 48px;
+  bottom: 72px;
   left: 50%;
   display: grid;
   justify-items: center;
   gap: 8px;
-  color: rgba(255, 255, 255, 0.82);
+  padding: 7px 11px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 999px;
+  background: rgba(31, 60, 46, 0.72);
+  color: #fff;
   font-size: 10px;
   letter-spacing: 0.15em;
+  line-height: 1;
   text-transform: uppercase;
   transform: translateX(-50%);
+  text-shadow: 0 1px 5px rgba(11, 31, 22, 0.48);
+  box-shadow: 0 6px 16px rgba(16, 38, 30, 0.18);
+  backdrop-filter: blur(5px);
 }
 
 .heroScroll i {
   display: block;
   width: 1px;
-  height: 34px;
+  height: 28px;
   background: currentColor;
   animation: scrollLine 1.8s ease-in-out infinite;
 }
@@ -500,6 +516,7 @@
 }
 
 .quoteImage {
+  object-fit: cover;
   object-position: center 44%;
   filter: saturate(0.74) sepia(0.05);
 }
@@ -512,7 +529,7 @@
 
 .quoteBody {
   position: relative;
-  z-index: 5;
+  z-index: 6;
   width: 84%;
   margin: -10px auto 0;
   padding: 32px 20px 28px;
@@ -553,7 +570,7 @@
 
 .welcome {
   position: relative;
-  z-index: 5;
+  z-index: 6;
   width: 80%;
   margin: 54px auto 0;
   text-align: center;
@@ -589,12 +606,13 @@
 }
 
 .quote .botanicalBottom {
+  z-index: 2;
   right: -100px;
-  bottom: -86px;
-  width: 330px;
-  height: 250px;
+  bottom: -145px;
+  width: 245px;
+  height: 185px;
   transform: scaleX(-1) rotate(4deg);
-  opacity: 0.9;
+  opacity: 0.72;
 }
 
 .couple {
@@ -686,9 +704,19 @@
 .coupleArtwork {
   position: absolute;
   z-index: 4;
-  inset: 0;
+  inset: 11% auto 9%;
+  width: 73%;
+  height: 80%;
   object-fit: contain;
   pointer-events: none;
+}
+
+.portraitBride .coupleArtwork {
+  right: -3%;
+}
+
+.portraitGroom .coupleArtwork {
+  left: -3%;
 }
 
 .personContent {
@@ -696,6 +724,8 @@
   z-index: 8;
   width: min(360px, 88vw);
   margin: 2px auto 0;
+  padding-inline: 8px;
+  text-shadow: 0 1px 7px rgba(247, 247, 239, 0.9);
 }
 
 .personRole {
@@ -1054,12 +1084,12 @@
 }
 
 .gallery .botanicalTop {
-  top: -94px;
+  top: 8px;
   right: -90px;
-  width: 320px;
-  height: 240px;
+  width: 260px;
+  height: 195px;
   transform: scaleX(-1) rotate(3deg);
-  opacity: 0.85;
+  opacity: 0.78;
 }
 
 .lightbox {
@@ -1302,19 +1332,21 @@
 }
 
 .gift .botanicalTop {
-  top: -72px;
-  left: -93px;
-  width: 315px;
-  height: 235px;
+  top: 12px;
+  left: -64px;
+  width: 245px;
+  height: 185px;
   transform: rotate(13deg);
+  opacity: 0.78;
 }
 
 .gift .botanicalBottom {
-  right: -100px;
-  bottom: -75px;
-  width: 310px;
-  height: 235px;
+  right: -64px;
+  bottom: 12px;
+  width: 245px;
+  height: 185px;
   transform: scaleX(-1) rotate(7deg);
+  opacity: 0.78;
 }
 
 .rsvp {
@@ -1534,12 +1566,20 @@
 }
 
 .rsvp .botanicalBottom {
-  right: -102px;
-  bottom: -88px;
-  width: 325px;
-  height: 250px;
+  right: -64px;
+  bottom: 18px;
+  width: 245px;
+  height: 185px;
   transform: scaleX(-1) rotate(6deg);
-  opacity: 0.55;
+  opacity: 0.48;
+}
+
+.footer .botanicalTop {
+  z-index: 2;
+}
+
+.footer .botanicalBottom {
+  z-index: 2;
 }
 
 .footer {
@@ -1701,11 +1741,11 @@
   bottom: 9px;
   left: 50%;
   display: flex;
-  width: min(365px, calc(100vw - 30px));
-  gap: 3px;
-  padding: 6px;
+  width: min(320px, calc(100vw - 44px));
+  gap: 2px;
+  padding: 4px;
   border: 1px solid rgba(255, 255, 255, 0.75);
-  border-radius: 13px;
+  border-radius: 11px;
   background: rgba(85, 114, 92, 0.96);
   box-shadow: 0 7px 19px rgba(29, 47, 35, 0.25);
   transform: translateX(-50%);
@@ -1721,14 +1761,14 @@
   place-items: center;
   padding: 0;
   border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 8px;
+  border-radius: 6px;
   background: rgba(255, 255, 255, 0.05);
   color: #fff;
 }
 
 .nav button svg {
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
 }
 
 @keyframes slowZoom {

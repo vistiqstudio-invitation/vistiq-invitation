@@ -427,7 +427,7 @@ function Events({ invitation }: { invitation: InvitationData }) {
     <section id="events" className={styles.events}>
       <div className={styles.sectionHeading}>
         <span>Join us on our special day</span>
-        <h2>Save The Date</h2>
+        <h2>Wedding Details</h2>
         <i />
       </div>
       <div className={styles.eventList}>
