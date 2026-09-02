@@ -21,7 +21,11 @@ export default function ThemeCoverPreview({
   themeKey,
 }: Props) {
   const normalizedLabel = label.toLowerCase();
-  const isBotanicalRomance = normalizedLabel.includes("botanical romance");
+  const isBotanicalRomance =
+    themeKey === "3d-motion" ||
+    themeKey === "3d-montion-1" ||
+    normalizedLabel.includes("botanical romance") ||
+    normalizedLabel.includes("3d motion");
   const isChampagneRomance = normalizedLabel.includes("champagne romance");
   const isLoveParadise = normalizedLabel.includes("love paradise");
   const isLiveKhitanPreview = demoPath === "/demo-khitan" && Boolean(themeKey);
