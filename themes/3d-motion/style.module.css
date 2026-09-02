@@ -474,24 +474,18 @@
 .heroScroll {
   position: absolute;
   z-index: 8;
-  bottom: 72px;
+  bottom: 90px;
   left: 50%;
   display: grid;
   justify-items: center;
   gap: 8px;
-  padding: 7px 11px 8px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 999px;
-  background: rgba(31, 60, 46, 0.72);
   color: #fff;
   font-size: 10px;
   letter-spacing: 0.15em;
   line-height: 1;
   text-transform: uppercase;
   transform: translateX(-50%);
-  text-shadow: 0 1px 5px rgba(11, 31, 22, 0.48);
-  box-shadow: 0 6px 16px rgba(16, 38, 30, 0.18);
-  backdrop-filter: blur(5px);
+  text-shadow: 0 1px 5px rgba(11, 31, 22, 0.82), 0 0 12px rgba(11, 31, 22, 0.56);
 }
 
 .heroScroll i {
@@ -499,6 +493,7 @@
   width: 1px;
   height: 28px;
   background: currentColor;
+  box-shadow: 0 0 7px rgba(255, 255, 255, 0.65);
   animation: scrollLine 1.8s ease-in-out infinite;
 }
 
