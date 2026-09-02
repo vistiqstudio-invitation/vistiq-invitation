@@ -1246,8 +1246,8 @@
 }
 
 .gift {
-  min-height: 690px;
-  padding: 132px 28px 145px;
+  min-height: 580px;
+  padding: 132px 28px 82px;
   background: linear-gradient(180deg, #dbe9dc, #f7f7ef);
   text-align: center;
 }
@@ -1339,16 +1339,16 @@
 
 .gift .botanicalBottom {
   right: -64px;
-  bottom: 12px;
-  width: 245px;
-  height: 185px;
+  bottom: 10px;
+  width: 210px;
+  height: 158px;
   transform: scaleX(-1) rotate(7deg);
-  opacity: 0.78;
+  opacity: 0.7;
 }
 
 .rsvp {
   min-height: 890px;
-  padding: 86px 23px 135px;
+  padding: 56px 23px 135px;
   background: #2f5049;
 }
 
