@@ -4,6 +4,7 @@
   overflow: hidden;
   background: #243d38;
   color: #fff;
+  container-type: inline-size;
 }
 
 .background {
@@ -112,12 +113,15 @@
   display: flex;
   align-items: baseline;
   justify-content: center;
-  gap: 4px;
+  gap: 2px;
+  max-width: 100%;
   margin: 0;
   font-family: var(--font-alex-brush), "Brush Script MT", cursive;
-  font-size: clamp(24px, 8.8vw, 46px);
+  /* Size against the card, not the viewport, so small catalog cards stay readable. */
+  font-size: clamp(14px, 11cqw, 34px);
   font-weight: 400;
   line-height: 0.94;
+  letter-spacing: -0.01em;
   white-space: nowrap;
 }
 
