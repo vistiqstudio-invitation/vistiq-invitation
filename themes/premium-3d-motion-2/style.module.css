@@ -1398,3 +1398,146 @@
 
 .controls {
   position: fixed;
+  z-index: 120;
+  inset: 0;
+  width: min(100%, 500px);
+  margin: 0 auto;
+  pointer-events: none;
+}
+
+.bottomNav {
+  position: absolute;
+  right: 20px;
+  bottom: 12px;
+  left: 20px;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+  padding: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 7px;
+  background: rgba(51, 64, 58, 0.75);
+  pointer-events: auto;
+}
+
+.bottomNav button {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  height: 31px;
+  place-items: center;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.bottomNav button svg {
+  width: 15px;
+  height: 15px;
+}
+
+.floatingActions {
+  position: absolute;
+  right: 20px;
+  bottom: 72px;
+  display: grid;
+  gap: 9px;
+  pointer-events: auto;
+}
+
+.floatingActions button {
+  display: grid;
+  width: 35px;
+  height: 35px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #637b6d;
+  color: #fff;
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.24);
+}
+
+.floatingActions button svg {
+  width: 17px;
+  height: 17px;
+}
+
+@keyframes mouseScroll {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(10px);
+    opacity: 0.45;
+  }
+}
+
+@media (max-width: 420px) {
+  .coverStack {
+    padding-top: 60px;
+  }
+
+  .coverSpacer {
+    height: 46vh;
+    flex-basis: 46vh;
+  }
+
+  .quoteCard {
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+
+  .quoteCard blockquote p {
+    font-size: 13px;
+  }
+
+  .personPhoto {
+    width: 50%;
+  }
+
+  .personFloral {
+    width: 130px;
+  }
+
+  .liveCard {
+    margin-right: 0;
+    margin-left: 0;
+  }
+}
+
+@media (min-width: 900px) {
+  .root {
+    min-height: 100vh;
+  }
+
+  .desktopPhoto {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    display: block;
+    width: calc(50% - 250px);
+    min-width: 180px;
+    background-position: center;
+    background-size: cover;
+    filter: saturate(0.62);
+  }
+
+  .shell {
+    margin-right: 0;
+    margin-left: auto;
+  }
+
+  .cover,
+  .controls {
+    right: 0;
+    left: auto;
+    margin-right: 0;
+    margin-left: auto;
+  }
+}
