@@ -36,7 +36,7 @@ export function withPremium3DMotionDemoAssets(
       nickname: "Kirana",
       parents: "Putri pertama dari Bapak Hadi Pranata & Ibu Sari Wulandari",
       instagram: "kiranalarasati",
-      photo: GALLERY[2],
+      photo: "https://undanganqu.net/wp-content/uploads/2025/09/ai-ungu-1-1.jpg",
     },
     groom: {
       ...invitation.groom,
@@ -44,7 +44,7 @@ export function withPremium3DMotionDemoAssets(
       nickname: "Raka",
       parents: "Putra kedua dari Bapak Bima Adinata & Ibu Ratih Permata",
       instagram: "rakaadinata",
-      photo: GALLERY[3],
+      photo: "https://undanganqu.net/wp-content/uploads/2025/09/ai-ungu-1-2.jpg",
     },
     events: [
       {
