@@ -59,7 +59,7 @@ export function withPremium3DMotionDemoAssets(
         date: "Sabtu, 24 Oktober 2026",
         rawDate: "2026-11-15T11:30:00",
         time: "11.30 WIB - Selesai",
-        location: "The Garden Hall, Jl. Merdeka No. 18, Samarinda",
+        location: "Pendopo Puspa Arum, Jl. Kenanga No. 27, Bandung",
       },
     ],
     story: [
@@ -91,9 +91,19 @@ export function withPremium3DMotionDemoAssets(
     gallery: GALLERY,
     gifts: invitation.gifts.map((account) =>
       account.owner === "Mempelai Pria"
-        ? { ...account, accountName: "Farhan Mahesa" }
+        ? {
+            ...account,
+            bankName: "BRI",
+            accountNumber: "861203457788",
+            accountName: "Farhan Mahesa",
+          }
         : account.owner === "Mempelai Wanita"
-          ? { ...account, accountName: "Nayla Azzahra" }
+          ? {
+              ...account,
+              bankName: "BCA",
+              accountNumber: "19204578631",
+              accountName: "Nayla Azzahra",
+            }
           : account,
     ),
   };
