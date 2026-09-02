@@ -11,6 +11,7 @@ import { withLuxuryArtLoveParadiseDemoAssets } from "@/lib/luxuryArtLoveParadise
 import { withLuxuryArtChampagneRomanceDemoAssets } from "@/lib/luxuryArtChampagneRomanceDemo";
 import { withLuxuryArtSoftDemoAssets } from "@/lib/luxuryArtSoftDemo";
 import { withThreeDMotionDemoAssets } from "@/lib/threeDMotionDemo";
+import { withPremium3DMotionDemoAssets } from "@/lib/premium3DMotionDemo";
 import WeddingThemeSafeArea from "@/components/WeddingThemeSafeArea";
 
 export default async function DemoThemePage({
@@ -23,7 +24,9 @@ export default async function DemoThemePage({
 
   if (!Theme) notFound();
 
-  const invitation = withThreeDMotionDemoAssets(
+  const invitation = withPremium3DMotionDemoAssets(
+    theme,
+    withThreeDMotionDemoAssets(
     theme,
     withLuxuryArtSoftDemoAssets(
       theme,
@@ -50,6 +53,7 @@ export default async function DemoThemePage({
         ),
       ),
     ),
+  )
   );
 
   return (
