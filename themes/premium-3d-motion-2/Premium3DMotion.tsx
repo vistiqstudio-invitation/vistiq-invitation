@@ -255,7 +255,6 @@ function Cover({ invitation, onOpen }: { invitation: InvitationData; onOpen: () 
       <div className={styles.coverBackground} style={bg(invitation.bride.photo || REFERENCE_FALLBACK)} />
       <div className={styles.coverShade} />
       <div className={styles.coverGardenOverlay} aria-hidden="true" />
-      <div className={`${styles.coverFloral} ${styles.coverFloralLeft}`} aria-hidden="true" />
       <div className={`${styles.coverFloral} ${styles.coverFloralRight}`} aria-hidden="true" />
       <div className={styles.coverPortraitPair}>
         <div className={`${styles.coverPortraitFrame} ${styles.coverPortraitCouple}`}>
