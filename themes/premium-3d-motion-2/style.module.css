@@ -854,9 +854,14 @@
 }
 
 .countdownSection {
-  min-height: 620px;
+  z-index: 2;
+  min-height: 500px;
+  margin-bottom: -32px;
   padding: 0 20px 30px;
+  border-bottom-right-radius: 34px;
+  border-bottom-left-radius: 34px;
   background: var(--lavender);
+  box-shadow: 0 14px 28px rgba(62, 49, 78, 0.24);
 }
 
 .countdownInner {
@@ -923,6 +928,7 @@
 }
 
 .eventsSection {
+  z-index: 1;
   padding: 20px 20px 50px;
   background: var(--paper);
 }
