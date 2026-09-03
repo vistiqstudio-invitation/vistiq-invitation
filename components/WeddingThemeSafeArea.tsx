@@ -51,7 +51,21 @@ function frameDate(invitation?: InvitationFrameData) {
   return invitation.event?.date || invitation.child.birthDate || "";
 }
 
-function frameImage(invitation?: InvitationFrameData) {
+function isLavenderMotionTheme(theme: string) {
+  return [
+    "lavender-garden-motion",
+    "3d-montion-2",
+    "3d-motion-2",
+    "premium-3d-motion",
+  ].includes(theme);
+}
+
+function frameImage(invitation: InvitationFrameData | undefined, theme: string) {
+  if (isLavenderMotionTheme(theme) && invitation?.category === "wedding") {
+    const bridePhoto = invitation.bride.photo?.split("#", 1)[0];
+    if (bridePhoto) return bridePhoto;
+  }
+
   const configured = invitation?.coverImage?.split("#", 1)[0];
   return configured || "/themes/luxury-gold/cover.png";
 }
@@ -67,12 +81,29 @@ export default function WeddingThemeSafeArea({
 }) {
   const title = frameTitle(invitation);
   const date = frameDate(invitation);
+  const lavenderMotion = isLavenderMotionTheme(theme);
 
   return (
     <div className={styles.root} data-wedding-theme={theme}>
       <div className={styles.desktopBackdrop} aria-hidden="true">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={frameImage(invitation)} alt="" />
+        <img src={frameImage(invitation, theme)} alt="" />
+        {lavenderMotion && (
+          <>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              className={`${styles.desktopBackdropFloral} ${styles.desktopBackdropFloralLeft}`}
+              src="/themes/premium-3d-motion-2/Garden-02-Couple-1.png.webp"
+              alt=""
+            />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              className={`${styles.desktopBackdropFloral} ${styles.desktopBackdropFloralRight}`}
+              src="/themes/premium-3d-motion-2/Garden-02-Couple-2.png.webp"
+              alt=""
+            />
+          </>
+        )}
         <div className={styles.desktopBackdropShade} />
         {title && (
           <div className={styles.desktopBackdropCopy}>

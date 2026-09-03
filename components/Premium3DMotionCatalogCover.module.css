@@ -1,19 +1,18 @@
-
 .cover {
   position: absolute;
   inset: 0;
   overflow: hidden;
-  background: #09090d;
-  color: #fff;
+  background: linear-gradient(155deg, #fffdfb 0%, #f5f0f8 52%, #eee9f3 100%);
+  color: #3f3949;
   container-type: inline-size;
 }
 
 .background {
   position: absolute;
   inset: 0;
-  background: url("/themes/premium-3d-motion-2/naya-farhan-cover.jpg") center / cover no-repeat;
-  filter: saturate(0.8) contrast(0.92);
-  animation: slowZoom 18s ease-in-out infinite alternate;
+  background:
+    radial-gradient(circle at 50% 24%, rgba(255, 255, 255, 0.96), transparent 42%),
+    linear-gradient(160deg, #fffdfb, #eee9f3);
 }
 
 .shade {
@@ -21,26 +20,55 @@
   z-index: 1;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(12, 10, 18, 0.18), rgba(7, 6, 11, 0.78)),
-    linear-gradient(90deg, rgba(11, 8, 18, 0.36), rgba(17, 13, 28, 0.06) 50%, rgba(11, 8, 18, 0.42));
+    linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.48)),
+    linear-gradient(90deg, rgba(235, 228, 244, 0.34), rgba(255, 255, 255, 0.04) 52%, rgba(214, 203, 230, 0.25));
 }
 
-.grain {
+.floral {
   position: absolute;
   z-index: 2;
-  inset: 0;
-  opacity: 0.18;
+  width: 48%;
+  height: 76%;
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: 0.82;
   pointer-events: none;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.62) 0.65px, transparent 0.85px);
-  background-size: 5px 5px;
-  mix-blend-mode: soft-light;
+}
+
+.floralLeft {
+  top: 0;
+  left: -10%;
+  background-image: url("/themes/premium-3d-motion-2/Garden-02-Couple-1.png.webp");
+  background-position: left top;
+}
+
+.floralRight {
+  right: -10%;
+  bottom: -1%;
+  background-image: url("/themes/premium-3d-motion-2/Garden-02-Couple-2.png.webp");
+  background-position: right bottom;
+}
+
+.portrait {
+  position: absolute;
+  z-index: 3;
+  top: 21%;
+  left: 17%;
+  width: 66%;
+  height: 50%;
+  border: 5px solid rgba(255, 255, 255, 0.96);
+  border-radius: 50% 50% 47% 47%;
+  background: url("/themes/premium-3d-motion-2/naya-farhan-bride.jpg") center 18% / cover no-repeat;
+  box-shadow:
+    0 0 0 1px rgba(158, 153, 191, 0.44),
+    0 14px 30px rgba(85, 69, 101, 0.18);
 }
 
 .frame {
   position: absolute;
-  z-index: 3;
+  z-index: 4;
   inset: 4.5%;
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(126, 116, 148, 0.42);
   pointer-events: none;
 }
 
@@ -50,7 +78,7 @@
   width: 9%;
   height: 9%;
   content: "";
-  border-color: rgba(255, 255, 255, 0.86);
+  border-color: rgba(126, 116, 148, 0.62);
 }
 
 .frame::before {
@@ -69,16 +97,18 @@
 
 .title {
   position: absolute;
-  z-index: 5;
-  top: 8%;
+  z-index: 6;
+  top: 7%;
   right: 8%;
   left: 8%;
+  color: #453d50;
   text-align: center;
-  text-shadow: 0 2px 9px rgba(13, 7, 20, 0.46);
+  text-shadow: 0 1px 8px rgba(255, 255, 255, 0.7);
 }
 
 .title p {
   margin: 0 0 5px;
+  color: #4b4356;
   font-family: "Pinyon Script", "Brush Script MT", cursive;
   font-size: 24px;
   line-height: 1.1;
@@ -86,6 +116,7 @@
 
 .title h3 {
   margin: 0;
+  color: #70688d;
   font-family: "Cormorant Infant", Georgia, serif;
   font-size: 24px;
   font-weight: 600;
@@ -95,7 +126,7 @@
 }
 
 .title h3 span {
-  color: #c4bddf;
+  color: #9e99bf;
   font-family: var(--font-alex-brush), cursive;
   font-size: 0.8em;
   font-weight: 400;
@@ -105,6 +136,7 @@
 .title small {
   display: block;
   margin-top: 9px;
+  color: #574f63;
   font-family: var(--font-cormorant), Georgia, serif;
   font-size: clamp(6px, 1.8vw, 10px);
   letter-spacing: 0.2em;
@@ -116,8 +148,8 @@
   right: 13%;
   bottom: 6%;
   left: 13%;
+  color: #4b4356;
   text-align: center;
-  box-shadow: 0 8px 18px rgba(15, 8, 24, 0.24);
 }
 
 .guest p {
@@ -151,7 +183,7 @@
   font-family: Arial, sans-serif;
   font-size: clamp(6px, 1.8vw, 10px);
   line-height: 1;
-  box-shadow: 0 5px 13px rgba(53, 40, 76, 0.23);
+  box-shadow: 0 5px 13px rgba(53, 40, 76, 0.18);
 }
 
 .button svg {
@@ -169,7 +201,13 @@
   font-weight: 600;
 }
 
-@keyframes slowZoom {
-  from { transform: scale(1); }
-  to { transform: scale(1.06); }
+.grain {
+  position: absolute;
+  z-index: 5;
+  inset: 0;
+  opacity: 0.07;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(90, 75, 110, 0.38) 0.65px, transparent 0.85px);
+  background-size: 5px 5px;
+  mix-blend-mode: multiply;
 }

@@ -13,7 +13,7 @@ import styles from "./style.module.css";
 const ASSET_ROOT = "/themes/premium-3d-motion-2";
 const REFERENCE_COVER = ASSET_ROOT + "/naya-farhan-cover.jpg";
 const REFERENCE_VIDEO = ASSET_ROOT + "/opening-nayla-farhan.mp4";
-const REFERENCE_FALLBACK = REFERENCE_COVER;
+const REFERENCE_FALLBACK = ASSET_ROOT + "/naya-farhan-bride.jpg";
 const REFERENCE_OVERLAY =
   "https://undanganqu.net/wp-content/uploads/2024/11/Garden-02-Overlay.jpg";
 const REFERENCE_GALLERY = [
@@ -253,8 +253,16 @@ function Cover({ invitation, onOpen }: { invitation: InvitationData; onOpen: () 
 
   return (
     <motion.section className={styles.cover} exit={{ y: "-100%" }} transition={{ duration: 1.2, ease: revealEase }}>
-      <div className={styles.coverBackground} style={bg(invitation.coverImage || REFERENCE_COVER)} />
+      <div className={styles.coverBackground} style={bg(invitation.bride.photo || invitation.coverImage || REFERENCE_COVER)} />
       <div className={styles.coverShade} />
+      <div className={`${styles.coverFloral} ${styles.coverFloralLeft}`} aria-hidden="true" />
+      <div className={`${styles.coverFloral} ${styles.coverFloralRight}`} aria-hidden="true" />
+      <div className={styles.coverPortraitFrame}>
+        <div
+          className={styles.coverPortrait}
+          style={bg(invitation.bride.photo || REFERENCE_GALLERY[2])}
+        />
+      </div>
       <div className={styles.coverFrame} />
       <div className={styles.coverStack}>
         <motion.p

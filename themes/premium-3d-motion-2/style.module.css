@@ -168,8 +168,8 @@
   height: 100vh;
   height: 100svh;
   min-height: 600px;
-  color: #fff;
-  background: #000;
+  color: #3f3949;
+  background: #fbf8f8;
 }
 
 .coverBackground,
@@ -190,22 +190,82 @@
 }
 
 .coverBackground {
-  background-position: center;
+  background-position: center 20%;
   background-repeat: no-repeat;
   background-size: cover;
+  filter: blur(2px) saturate(0.72);
+  opacity: 0.16;
+  transform: scale(1.05);
 }
 
 .coverShade {
-  background: #000;
-  opacity: 0.5;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.82) 0%,
+      rgba(255, 252, 247, 0.38) 42%,
+      rgba(255, 255, 255, 0.88) 100%
+    ),
+    linear-gradient(90deg, rgba(244, 239, 249, 0.72), rgba(255, 255, 255, 0.18));
 }
 
 .coverFrame {
   z-index: 4;
   inset: 18px;
-  border: 1px solid rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(126, 116, 148, 0.35);
   pointer-events: none;
 }
+
+
+.coverFloral {
+  position: absolute;
+  z-index: 3;
+  width: 47%;
+  height: 72%;
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: 0.82;
+  pointer-events: none;
+}
+
+.coverFloralLeft {
+  top: 3%;
+  left: -10%;
+  background-image: url("/themes/premium-3d-motion-2/Garden-02-Couple-1.png.webp");
+  background-position: left top;
+}
+
+.coverFloralRight {
+  right: -10%;
+  bottom: 1%;
+  background-image: url("/themes/premium-3d-motion-2/Garden-02-Couple-2.png.webp");
+  background-position: right bottom;
+}
+
+.coverPortraitFrame {
+  position: absolute;
+  z-index: 2;
+  top: 20%;
+  left: 16%;
+  width: 68%;
+  height: 50%;
+  overflow: hidden;
+  border: 7px solid rgba(255, 255, 255, 0.95);
+  border-radius: 50% 50% 47% 47%;
+  background: #fff;
+  box-shadow:
+    0 0 0 1px rgba(158, 153, 191, 0.42),
+    0 18px 42px rgba(86, 70, 101, 0.18);
+}
+
+.coverPortrait {
+  position: absolute;
+  inset: 0;
+  background-position: center 18%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 
 .coverFrame::before,
 .coverFrame::after {
@@ -243,6 +303,7 @@
 
 .coverEyebrow {
   margin: 0;
+  color: #453d50;
   font-family: var(--script);
   font-size: 24px;
   font-weight: 500;
@@ -251,6 +312,7 @@
 
 .coverStack h1 {
   margin: 0;
+  color: #70688d;
   font-family: var(--serif);
   font-size: 24px;
   font-weight: 600;
@@ -273,7 +335,7 @@
 .coverGuest p,
 .coverGuest strong {
   margin: 0;
-  color: #fff;
+  color: #4a4353;
   font-family: var(--sans);
   font-size: 12px;
   font-weight: 600;
@@ -1556,15 +1618,7 @@
   }
 
   .desktopPhoto {
-    position: fixed;
-    top: 0;
-    right: 420px;
-    bottom: 0;
-    left: 0;
-    display: block;
-    width: auto;
-    background-position: center;
-    background-size: cover;
+    display: none;
   }
 
   .shell {
