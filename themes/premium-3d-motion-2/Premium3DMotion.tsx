@@ -12,8 +12,7 @@ import styles from "./style.module.css";
 
 const ASSET_ROOT = "/themes/premium-3d-motion-2";
 const REFERENCE_COVER = ASSET_ROOT + "/naya-farhan-cover.jpg";
-const REFERENCE_VIDEO =
-  "https://undanganqu.net/wp-content/uploads/2024/11/02.-Cottage-Garden.mp4";
+const REFERENCE_VIDEO = ASSET_ROOT + "/elysian-garden-motion.mp4";
 const REFERENCE_FALLBACK = REFERENCE_COVER;
 const REFERENCE_OVERLAY =
   "https://undanganqu.net/wp-content/uploads/2024/11/Garden-02-Overlay.jpg";
@@ -28,7 +27,7 @@ const MANDIRI_ICON =
   "https://undanganqu.net/wp-content/uploads/2024/11/iconmandiri-1.png.webp";
 const FOOTER_LOGO = "/vistiq-invitation-logo.png";
 const MANUAL_SCROLL_EVENT = "vistiq:auto-scroll-start";
-const FRAME_REVEAL_AT = 14.2;
+const FRAME_REVEAL_AT = 5.25;
 
 const revealEase = [0.22, 1, 0.36, 1] as const;
 
