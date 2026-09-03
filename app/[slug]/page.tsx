@@ -46,22 +46,22 @@ export default async function InvitationPage({ params }: Props) {
 
   if (invitation.category === "aqiqah") {
     const Theme = aqiqahThemeRegistry[invitation.theme] || aqiqahThemeRegistry["akikah-nur"];
-    return <WhiteLabelFrame brand={invitation.brand}><SmartCoverRuntime coverImage={invitation.coverImage} title={invitation.baby.name}><Theme invitation={invitation} /></SmartCoverRuntime></WhiteLabelFrame>;
+    return <WhiteLabelFrame brand={invitation.brand}><WeddingThemeSafeArea theme={invitation.theme} invitation={invitation}><SmartCoverRuntime coverImage={invitation.coverImage} title={invitation.baby.name}><Theme invitation={invitation} /></SmartCoverRuntime></WeddingThemeSafeArea></WhiteLabelFrame>;
   }
   if (invitation.category === "khitan") {
     const Theme = khitanThemeRegistry[invitation.theme] || khitanThemeRegistry["khitan-warna"];
-    return <WhiteLabelFrame brand={invitation.brand}><SmartCoverRuntime coverImage={invitation.coverImage} title={invitation.child.name}><Theme invitation={invitation} /></SmartCoverRuntime></WhiteLabelFrame>;
+    return <WhiteLabelFrame brand={invitation.brand}><WeddingThemeSafeArea theme={invitation.theme} invitation={invitation}><SmartCoverRuntime coverImage={invitation.coverImage} title={invitation.child.name}><Theme invitation={invitation} /></SmartCoverRuntime></WeddingThemeSafeArea></WhiteLabelFrame>;
   }
   if (invitation.category === "birthday") {
     const Theme = birthdayThemeRegistry[invitation.theme] || birthdayThemeRegistry["princess-fairytale"];
-    return <WhiteLabelFrame brand={invitation.brand}><SmartCoverRuntime coverImage={invitation.coverImage} title={invitation.child.name}><Theme invitation={invitation} /></SmartCoverRuntime></WhiteLabelFrame>;
+    return <WhiteLabelFrame brand={invitation.brand}><WeddingThemeSafeArea theme={invitation.theme} invitation={invitation}><SmartCoverRuntime coverImage={invitation.coverImage} title={invitation.child.name}><Theme invitation={invitation} /></SmartCoverRuntime></WeddingThemeSafeArea></WhiteLabelFrame>;
   }
 
   const resolvedTheme = invitation.theme === "luxury-art-lx005" ? "luxury-art-champagne-romance" : invitation.theme;
   const Theme = themeRegistry[resolvedTheme] || themeRegistry["luxury-gold"];
   return (
     <WhiteLabelFrame brand={invitation.brand}>
-      <WeddingThemeSafeArea theme={resolvedTheme}>
+      <WeddingThemeSafeArea theme={resolvedTheme} invitation={{ ...invitation, theme: resolvedTheme }}>
         <SmartCoverRuntime coverImage={invitation.coverImage} title={`${invitation.groom.nickname || invitation.groom.name} & ${invitation.bride.nickname || invitation.bride.name}`}>
           <Theme invitation={{ ...invitation, theme: resolvedTheme }} />
         </SmartCoverRuntime>

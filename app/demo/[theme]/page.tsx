@@ -57,7 +57,7 @@ export default async function DemoThemePage({
   );
 
   return (
-    <WeddingThemeSafeArea theme={theme}>
+    <WeddingThemeSafeArea theme={theme} invitation={invitation}>
       <Theme invitation={invitation} />
     </WeddingThemeSafeArea>
   );

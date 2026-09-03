@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { birthdayThemeRegistry } from "@/lib/theme";
 import { getDemoBirthdayInvitation } from "@/lib/demoBirthdayInvitation";
+import WeddingThemeSafeArea from "@/components/WeddingThemeSafeArea";
 
 export default async function DemoBirthdayThemePage({
   params,
@@ -10,5 +11,12 @@ export default async function DemoBirthdayThemePage({
   const { theme } = await params;
   const Theme = birthdayThemeRegistry[theme];
   if (!Theme) notFound();
-  return <Theme invitation={getDemoBirthdayInvitation(theme)} />;
+
+  const invitation = getDemoBirthdayInvitation(theme);
+
+  return (
+    <WeddingThemeSafeArea theme={theme} invitation={invitation}>
+      <Theme invitation={invitation} />
+    </WeddingThemeSafeArea>
+  );
 }

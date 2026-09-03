@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { khitanThemeRegistry } from "@/lib/theme";
 import { getDemoKhitanInvitation } from "@/lib/demoKhitanInvitation";
+import WeddingThemeSafeArea from "@/components/WeddingThemeSafeArea";
 
 export default async function DemoKhitanThemePage({
   params,
@@ -12,5 +13,11 @@ export default async function DemoKhitanThemePage({
 
   if (!Theme) notFound();
 
-  return <Theme invitation={getDemoKhitanInvitation(theme)} />;
+  const invitation = getDemoKhitanInvitation(theme);
+
+  return (
+    <WeddingThemeSafeArea theme={theme} invitation={invitation}>
+      <Theme invitation={invitation} />
+    </WeddingThemeSafeArea>
+  );
 }

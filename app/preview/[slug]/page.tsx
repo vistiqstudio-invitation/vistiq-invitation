@@ -55,18 +55,22 @@ export default async function PreviewPage({ params }: Props) {
   if (invitation.category === "aqiqah") {
     const Theme = aqiqahThemeRegistry[invitation.theme] || aqiqahThemeRegistry["akikah-nur"];
     return (
-      <SmartCoverRuntime coverImage={invitation.coverImage} title={invitation.baby.name}>
-        <Theme invitation={invitation} />
-      </SmartCoverRuntime>
+      <WeddingThemeSafeArea theme={invitation.theme} invitation={invitation}>
+        <SmartCoverRuntime coverImage={invitation.coverImage} title={invitation.baby.name}>
+          <Theme invitation={invitation} />
+        </SmartCoverRuntime>
+      </WeddingThemeSafeArea>
     );
   }
 
   if (invitation.category === "khitan") {
     const Theme = khitanThemeRegistry[invitation.theme] || khitanThemeRegistry["khitan-warna"];
     return (
-      <SmartCoverRuntime coverImage={invitation.coverImage} title={invitation.child.name}>
-        <Theme invitation={invitation} />
-      </SmartCoverRuntime>
+      <WeddingThemeSafeArea theme={invitation.theme} invitation={invitation}>
+        <SmartCoverRuntime coverImage={invitation.coverImage} title={invitation.child.name}>
+          <Theme invitation={invitation} />
+        </SmartCoverRuntime>
+      </WeddingThemeSafeArea>
     );
   }
 
@@ -75,19 +79,21 @@ export default async function PreviewPage({ params }: Props) {
       birthdayThemeRegistry[invitation.theme] ||
       birthdayThemeRegistry["princess-fairytale"];
     return (
-      <SmartCoverRuntime
-        coverImage={invitation.coverImage}
-        title={invitation.child.name}
-      >
-        <Theme invitation={invitation} />
-      </SmartCoverRuntime>
+      <WeddingThemeSafeArea theme={invitation.theme} invitation={invitation}>
+        <SmartCoverRuntime
+          coverImage={invitation.coverImage}
+          title={invitation.child.name}
+        >
+          <Theme invitation={invitation} />
+        </SmartCoverRuntime>
+      </WeddingThemeSafeArea>
     );
   }
 
   const Theme = themeRegistry[invitation.theme] || themeRegistry["luxury-gold"];
 
   return (
-    <WeddingThemeSafeArea theme={invitation.theme}>
+    <WeddingThemeSafeArea theme={invitation.theme} invitation={invitation}>
       <SmartCoverRuntime
         coverImage={invitation.coverImage}
         title={`${invitation.groom.nickname || invitation.groom.name} & ${
