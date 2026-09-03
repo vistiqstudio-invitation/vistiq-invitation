@@ -77,6 +77,50 @@
   display: none;
 }
 
+.desktopPhotoShade,
+.desktopPhotoCopy {
+  position: absolute;
+  inset: 0;
+}
+
+.desktopPhotoShade {
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(28, 22, 40, 0.06) 22%, rgba(18, 14, 28, 0.88) 100%);
+}
+
+.desktopPhotoCopy {
+  z-index: 2;
+  inset: auto 8% 27%;
+  color: #fff;
+  text-align: center;
+}
+
+.desktopPhotoCopy p {
+  margin: 0 0 5px;
+  font-family: var(--script);
+  font-size: clamp(24px, 2.3vw, 36px);
+  line-height: 1.15;
+}
+
+.desktopPhotoCopy h2 {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(30px, 3.2vw, 48px);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+.desktopPhotoCopy span {
+  display: block;
+  margin-top: 10px;
+  font-family: var(--sans);
+  font-size: clamp(12px, 1.1vw, 16px);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
 .shell {
   position: relative;
   z-index: 1;
@@ -129,6 +173,7 @@
 }
 
 .coverBackground,
+.desktopPhotoShade,
 .coverShade,
 .coverFrame,
 .heroFallback,
@@ -1513,23 +1558,24 @@
   .desktopPhoto {
     position: fixed;
     top: 0;
+    right: 420px;
     bottom: 0;
     left: 0;
     display: block;
-    width: calc(50% - 250px);
-    min-width: 180px;
+    width: auto;
     background-position: center;
     background-size: cover;
-    filter: saturate(0.62);
   }
 
   .shell {
+    max-width: 420px;
     margin-right: 0;
     margin-left: auto;
   }
 
   .cover,
   .controls {
+    width: min(100%, 420px);
     right: 0;
     left: auto;
     margin-right: 0;

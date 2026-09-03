@@ -898,7 +898,18 @@ export default function Premium3DMotion({ invitation }: { invitation: Invitation
 
   return (
     <main className={styles.root} data-auto-scroll-mode="manual">
-      <aside className={styles.desktopPhoto} style={bg(invitation.coverImage || REFERENCE_COVER)} aria-hidden="true" />
+      <aside className={styles.desktopPhoto} style={bg(invitation.coverImage || REFERENCE_COVER)} aria-hidden="true">
+        {!opened && (
+          <>
+            <div className={styles.desktopPhotoShade} />
+            <div className={styles.desktopPhotoCopy}>
+              <p>The Wedding of</p>
+              <h2>{firstName(invitation.bride)} &amp; {firstName(invitation.groom)}</h2>
+              <span>{invitation.events[0]?.date || ""}</span>
+            </div>
+          </>
+        )}
+      </aside>
       <div className={styles.shell}>
         <div className={styles.content} aria-hidden={!opened}>
           <OpeningHero invitation={invitation} opened={opened} />
