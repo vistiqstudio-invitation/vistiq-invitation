@@ -679,8 +679,13 @@
 }
 
 .coupleSection {
+  z-index: 2;
+  margin-bottom: -32px;
   padding: 0 0 30px;
+  border-bottom-right-radius: 34px;
+  border-bottom-left-radius: 34px;
   background: var(--paper);
+  box-shadow: 0 14px 28px rgba(62, 49, 78, 0.24);
 }
 
 .personBlock {
