@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useInvitation } from "@/components/InvitationProvider";
 import { useMusicPlayer } from "@/hooks/useMusicPlayer";
@@ -268,24 +268,41 @@ function Cover({ invitation, onOpen }: { invitation: InvitationData; onOpen: () 
   );
 }
 
-function OpeningHero({ invitation }: { invitation: InvitationData }) {
+function OpeningHero({ invitation, opened }: { invitation: InvitationData; opened: boolean }) {
   const event = invitation.events[0];
+  const videoRef = useRef<HTMLVideoElement | null>(null);
   const [frameReady, setFrameReady] = useState(false);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!opened) {
+      setFrameReady(false);
+      video?.pause();
+      if (video) video.currentTime = 0;
+      return;
+    }
+
+    void video?.play().catch(() => {
+      // The poster remains visible if the browser blocks video playback.
+    });
+    const frameTimer = window.setTimeout(() => setFrameReady(true), 1250);
+    return () => window.clearTimeout(frameTimer);
+  }, [opened]);
 
   return (
     <section id="home" className={styles.hero}>
       <div className={styles.heroFallback} style={bg(REFERENCE_FALLBACK)} />
-      <video className={styles.heroVideo} autoPlay muted playsInline poster={REFERENCE_FALLBACK} aria-hidden="true">
+      <video
+        ref={videoRef}
+        className={styles.heroVideo}
+        muted
+        playsInline
+        poster={REFERENCE_FALLBACK}
+        aria-hidden="true"
+      >
         <source src={REFERENCE_VIDEO} type="video/mp4" />
       </video>
       <div className={styles.heroShade} />
-      <motion.div
-        className={styles.heroFrame}
-        initial={{ opacity: 0, scale: 0.985 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.2, duration: 0.9, ease: revealEase }}
-        onAnimationComplete={() => setFrameReady(true)}
-      />
       <div className={styles.heroCopy}>
         <motion.div
           className={styles.heroCopyReveal}
@@ -313,7 +330,7 @@ function OpeningHero({ invitation }: { invitation: InvitationData }) {
           initial={{ opacity: 0, y: 10 }}
           animate={frameReady ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
           transition={frameReady ? { delay: 0.35, duration: 0.65, ease: revealEase } : { duration: 0 }}
-          onClick={() => document.getElementById("quote")?.scrollIntoView({ behavior: "smooth" })}
+          onClick={() => document.getElementById("quote")?.scrollIntoView({ behavior: "smooth", block: "start" })}
           aria-label="Scroll ke bagian berikutnya"
         >
           <span />
@@ -832,7 +849,6 @@ export default function Premium3DMotion({ invitation }: { invitation: Invitation
   useEffect(() => {
     const oldOverflow = document.body.style.overflow;
     if (!opened) {
-      window.scrollTo(0, 0);
       document.body.style.overflow = "hidden";
     }
     return () => {
@@ -856,7 +872,7 @@ export default function Premium3DMotion({ invitation }: { invitation: Invitation
       <aside className={styles.desktopPhoto} style={bg(invitation.coverImage || REFERENCE_COVER)} aria-hidden="true" />
       <div className={styles.shell}>
         <div className={styles.content} aria-hidden={!opened}>
-          <OpeningHero invitation={invitation} />
+          <OpeningHero invitation={invitation} opened={opened} />
           <Quote invitation={invitation} />
           <Welcome invitation={invitation} />
           <Couple invitation={invitation} />
