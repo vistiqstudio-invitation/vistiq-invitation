@@ -370,15 +370,13 @@
   text-transform: uppercase;
 }
 
-.coverSpacer {
-  width: 100%;
-  height: 50vh;
-  flex: 0 0 50vh;
-}
-
 .coverGuest {
+  position: absolute;
+  top: calc(20% + clamp(210px, 34vh, 320px) + 24px);
+  right: 22px;
+  left: 22px;
   width: min(100%, 340px);
-  margin-top: auto;
+  margin: 0 auto;
   text-align: center;
 }
 
@@ -1675,11 +1673,6 @@
 @media (max-width: 420px) {
   .coverStack {
     padding-top: 60px;
-  }
-
-  .coverSpacer {
-    height: 46vh;
-    flex-basis: 46vh;
   }
 
   .quoteCard {

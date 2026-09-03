@@ -281,7 +281,6 @@ function Cover({ invitation, onOpen }: { invitation: InvitationData; onOpen: () 
         >
           {firstName(invitation.bride)} &amp; {firstName(invitation.groom)}
         </motion.h1>
-        <div className={styles.coverSpacer} />
         <motion.div
           className={styles.coverGuest}
           initial={{ opacity: 0, y: 14 }}
