@@ -26,8 +26,7 @@ const REFERENCE_GALLERY = [
 const REFERENCE_SLIDES = REFERENCE_GALLERY;
 const MANDIRI_ICON =
   "https://undanganqu.net/wp-content/uploads/2024/11/iconmandiri-1.png.webp";
-const FOOTER_LOGO =
-  "https://undanganqu.net/wp-content/uploads/2025/09/logo-news-new.jpg.webp";
+const FOOTER_LOGO = "/vistiq-invitation-logo.png";
 
 const revealEase = [0.22, 1, 0.36, 1] as const;
 const MONTHS = [
@@ -757,7 +756,7 @@ function Footer({ invitation }: { invitation: InvitationData }) {
         <span>Kami Yang Berbahagia,</span>
         <h2>{firstName(invitation.bride)} <i>&amp;</i> {firstName(invitation.groom)}</h2>
         <img src={FOOTER_LOGO} alt="Vistiq Invitation" />
-        <small>Created By Undanganqu.net</small>
+        <small>Created By Vistiq Invitation</small>
       </div>
     </footer>
   );
