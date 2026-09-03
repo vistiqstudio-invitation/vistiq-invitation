@@ -14,8 +14,7 @@ const ASSET_ROOT = "/themes/premium-3d-motion-2";
 const REFERENCE_COVER = ASSET_ROOT + "/naya-farhan-couple-white.jpg";
 const REFERENCE_VIDEO = ASSET_ROOT + "/opening-nayla-farhan.mp4";
 const REFERENCE_FALLBACK = ASSET_ROOT + "/naya-farhan-bride.jpg";
-const REFERENCE_OVERLAY =
-  "https://undanganqu.net/wp-content/uploads/2024/11/Garden-02-Overlay.jpg";
+const REFERENCE_OVERLAY = ASSET_ROOT + "/Garden-02-Overlay.jpg";
 const REFERENCE_GALLERY = [
   ASSET_ROOT + "/naya-farhan-gallery-courtyard.jpg",
   ASSET_ROOT + "/naya-farhan-gallery-conservatory.jpg",
@@ -255,6 +254,7 @@ function Cover({ invitation, onOpen }: { invitation: InvitationData; onOpen: () 
     <motion.section className={styles.cover} exit={{ y: "-100%" }} transition={{ duration: 1.2, ease: revealEase }}>
       <div className={styles.coverBackground} style={bg(invitation.bride.photo || REFERENCE_FALLBACK)} />
       <div className={styles.coverShade} />
+      <div className={styles.coverGardenOverlay} aria-hidden="true" />
       <div className={`${styles.coverFloral} ${styles.coverFloralLeft}`} aria-hidden="true" />
       <div className={`${styles.coverFloral} ${styles.coverFloralRight}`} aria-hidden="true" />
       <div className={styles.coverPortraitPair}>
