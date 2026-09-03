@@ -541,7 +541,7 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! ðŸš
               }
               className={styles.input}
             >
-              <option value="reseller">Reseller (Rp 59.000 sekali bayar, 80% reseller / fee platform 20%)</option>
+              <option value="reseller">Reseller (Rp 149.000 sekali bayar, 80% reseller / fee platform 20%)</option>
               <option value="reseller_brand">Reseller Brand - White Label (Rp 59.000/bulan, 100%)</option>
             </select>
 

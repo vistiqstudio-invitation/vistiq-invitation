@@ -1,5 +1,5 @@
 -- New Reseller model:
--- - join fee is handled in lib/paymentPackages.ts (Rp59.000 once)
+-- - join fee is handled in lib/paymentPackages.ts (Rp149.000 once)
 -- - standard Reseller can sell without a client-count limit
 -- - standard Reseller keeps 80% of each tracked client transaction
 -- - the remaining 20% is the Vistiq platform fee

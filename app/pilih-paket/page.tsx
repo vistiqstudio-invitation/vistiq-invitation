@@ -50,13 +50,13 @@ const packageDetails: Array<{
     eyebrow: "Paket Reseller",
     description: "Untuk mulai jualan undangan digital Vistiq tanpa batas dengan modal join ringan.",
     features: [
-      "Rp59.000 sekali bayar, akses selamanya",
+      "Rp149.000 sekali bayar, akses selamanya",
       "Jual dan kelola client tanpa batas",
       "80% bagian reseller setiap transaksi client",
       "Fee platform 20% setiap transaksi client",
       "Dashboard khusus reseller",
     ],
-    button: "Join Reseller Rp59.000",
+    button: "Join Reseller Rp149.000",
     featured: true,
   },
   {
@@ -76,8 +76,8 @@ const packageDetails: Array<{
 ];
 
 const FAQS = [
-  ["Apa perbedaan Reseller dan Reseller Brand?", "Reseller memakai brand Vistiq, join Rp59.000 sekali bayar, dapat menjual tanpa batas, dan setiap transaksi client dikenakan fee platform 20%. Reseller Brand memakai identitas bisnis sendiri dan menyimpan 100% harga jualnya."],
-  ["Apakah Reseller ada biaya bulanan?", "Tidak. Paket Reseller Rp59.000 dibayar sekali dan aktif selamanya."],
+  ["Apa perbedaan Reseller dan Reseller Brand?", "Reseller memakai brand Vistiq, join Rp149.000 sekali bayar, dapat menjual tanpa batas, dan setiap transaksi client dikenakan fee platform 20%. Reseller Brand memakai identitas bisnis sendiri dan menyimpan 100% harga jualnya."],
+  ["Apakah Reseller ada biaya bulanan?", "Tidak. Paket Reseller Rp149.000 dibayar sekali dan aktif selamanya."],
   ["Apakah jumlah client Reseller dibatasi?", "Tidak. Reseller dapat menjual undangan dan mengelola client sebanyak yang dibutuhkan."],
   ["Bagaimana fee 20% dihitung?", "Pada transaksi client paket Reseller, 80% menjadi bagian reseller dan 20% menjadi fee platform Vistiq."],
   ["Apakah harus bisa desain atau coding?", "Tidak. Tema, dashboard, dan sistem sudah disiapkan."],

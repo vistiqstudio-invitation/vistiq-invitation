@@ -90,7 +90,7 @@ export default function GabungResellerBrandPage() {
 
       <section className="section">
         <div className="compare">
-          <div><p className="label">Belum Butuh White Label?</p><h2>Pilih Reseller Biasa</h2><p>Join Rp59.000 sekali bayar, jual undangan tanpa batas, dengan fee platform 20% setiap transaksi client.</p></div>
+          <div><p className="label">Belum Butuh White Label?</p><h2>Pilih Reseller Biasa</h2><p>Join Rp149.000 sekali bayar, jual undangan tanpa batas, dengan fee platform 20% setiap transaksi client.</p></div>
           <Link href="/gabung-reseller" className="primaryLink">Lihat Paket Reseller</Link>
         </div>
       </section>

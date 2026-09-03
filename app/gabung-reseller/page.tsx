@@ -13,7 +13,7 @@ const HERO_FAN = [
 
 const BENEFITS = [
   ["Jual undangan tanpa batas", "Buat dan jual undangan ke sebanyak mungkin client tanpa batas jumlah."],
-  ["Akses dashboard selamanya", "Cukup bayar Rp59.000 sekali. Tidak ada biaya join bulanan untuk paket Reseller."],
+  ["Akses dashboard selamanya", "Cukup bayar Rp149.000 sekali. Tidak ada biaya join bulanan untuk paket Reseller."],
   ["Fee platform hanya 20%", "Pada setiap transaksi client, 20% menjadi fee platform dan 80% menjadi bagian reseller."],
   ["Tema premium siap jual", "Wedding, aqiqah, khitan, ulang tahun, dan kategori lainnya sudah siap digunakan."],
   ["Client bisa edit sendiri", "Client dapat mengubah data dan mengunggah foto dari dashboard pribadinya."],
@@ -21,14 +21,14 @@ const BENEFITS = [
 ];
 
 const STEPS = [
-  ["1", "Join Rp59.000", "Bayar sekali untuk mengaktifkan akun Reseller Vistiq."],
+  ["1", "Join Rp149.000", "Bayar sekali untuk mengaktifkan akun Reseller Vistiq."],
   ["2", "Cari Client", "Tawarkan undangan digital ke calon pengantin atau siapa pun yang punya acara."],
   ["3", "Buat Undangan", "Pilih tema, masukkan data client, lalu bagikan link undangan."],
   ["4", "Jual Tanpa Batas", "Tidak ada batas jumlah client. Setiap transaksi dikenakan fee platform 20%."],
 ];
 
 const FAQS = [
-  ["Berapa biaya join Reseller?", "Rp59.000 sekali bayar dan akun Reseller aktif selamanya."],
+  ["Berapa biaya join Reseller?", "Rp149.000 sekali bayar dan akun Reseller aktif selamanya."],
   ["Apakah ada batas jumlah undangan?", "Tidak. Reseller dapat menjual dan membuat undangan sebanyak yang dibutuhkan."],
   ["Bagaimana pembagian setiap transaksi?", "80% menjadi bagian reseller dan 20% menjadi fee platform Vistiq pada setiap transaksi client."],
   ["Apakah harus bisa desain atau coding?", "Tidak. Tema dan sistem sudah tersedia; reseller cukup memilih tema dan mengisi data client."],
@@ -36,7 +36,7 @@ const FAQS = [
 ];
 
 const WHATSAPP_URL = `https://wa.me/6281371338032?text=${encodeURIComponent(
-  "Halo Vistiq Invitation, saya tertarik join Reseller Rp59.000 sekali bayar. Saya ingin daftar melalui WhatsApp. Mohon dibantu proses pendaftarannya.",
+  "Halo Vistiq Invitation, saya tertarik join Reseller Rp149.000 sekali bayar. Saya ingin daftar melalui WhatsApp. Mohon dibantu proses pendaftarannya.",
 )}`;
 
 export default function GabungResellerPage() {
@@ -49,13 +49,13 @@ export default function GabungResellerPage() {
       <section className="hero">
         <div className="heroCopy">
           <p className="badge">Paket Reseller · Sekali Bayar</p>
-          <h1>Mulai Usaha Undangan Digital Cuma Rp59.000</h1>
+          <h1>Mulai Usaha Undangan Digital Cuma Rp149.000</h1>
           <p className="lead">
             Tidak perlu bikin website dari nol. Dapatkan dashboard Reseller Vistiq,
             jual undangan digital sebebasnya tanpa batas, dan cukup bayar fee platform
             20% setiap ada transaksi client.
           </p>
-          <div className="price"><strong>Rp59.000</strong><span>sekali bayar · akses selamanya</span></div>
+          <div className="price"><strong>Rp149.000</strong><span>sekali bayar · akses selamanya</span></div>
           <div className="actions">
             <CheckoutButton packageId="reseller" label="Join Reseller Sekarang" featured production={midtransProduction} />
             <Link href="/demo" className="secondary">Lihat Demo Tema</Link>
@@ -97,7 +97,7 @@ export default function GabungResellerPage() {
       <section className="dark">
         <div className="section">
           <p className="label light">Yang Kamu Dapatkan</p>
-          <h2>Paket Reseller Rp59.000</h2>
+          <h2>Paket Reseller Rp149.000</h2>
           <div className="benefits">
             {BENEFITS.map(([title, desc]) => (
               <article className="benefit" key={title}>
@@ -147,7 +147,7 @@ export default function GabungResellerPage() {
 
       <section className="cta">
         <h2>Siap Mulai Jual Undangan Digital?</h2>
-        <p>Join Reseller Rp59.000 sekali bayar, jual undangan tanpa batas.</p>
+        <p>Join Reseller Rp149.000 sekali bayar, jual undangan tanpa batas.</p>
         <div className="actions centered ctaActions">
           <CheckoutButton
             packageId="reseller"

@@ -41,13 +41,13 @@ body {
 @media(max-width:640px){.navbar{height:104px}.brand img{width:205px}.navMenu .loginButton{display:flex}.navbar>.loginButton{display:flex}}
 
 /* Keep the existing homepage layout while the Reseller commercial model is
-   now Rp59.000 once + unlimited sales + 20% platform fee per client sale. */
+   now Rp149.000 once + unlimited sales + 20% platform fee per client sale. */
 .priceGrid > .priceCard.featured > strong {
   font-size: 0 !important;
 }
 
 .priceGrid > .priceCard.featured > strong::before {
-  content: "Rp 59.000";
+  content: "Rp 149.000";
   font-size: 30px;
 }
 
@@ -67,7 +67,7 @@ body {
 }
 
 .priceGrid > .priceCard.featured > p::after {
-  content: "Jual undangan digital dengan brand Vistiq tanpa batas. Join Rp59.000 sekali bayar; pada setiap transaksi client, 80% menjadi bagian reseller dan 20% menjadi fee platform.";
+  content: "Jual undangan digital dengan brand Vistiq tanpa batas. Join Rp149.000 sekali bayar; pada setiap transaksi client, 80% menjadi bagian reseller dan 20% menjadi fee platform.";
   display: block;
   font-size: 16px;
   line-height: 1.7;
