@@ -831,8 +831,15 @@
 
 .countdownSection {
   min-height: 620px;
-  padding: 0 20px 30px;
-  background: var(--lavender);
+  margin-top: -130px;
+  padding: 130px 20px 30px;
+  background: linear-gradient(
+    180deg,
+    rgba(158, 153, 191, 0) 0,
+    rgba(158, 153, 191, 0.28) 34%,
+    rgba(158, 153, 191, 0.82) 70%,
+    var(--lavender) 180px
+  );
 }
 
 .countdownInner {
