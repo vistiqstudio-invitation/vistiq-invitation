@@ -61,6 +61,18 @@
   cursor: pointer;
 }
 
+@keyframes mouseScroll {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(10px);
+    opacity: 0.45;
+  }
+}
+
 .desktopPhoto {
   display: none;
 }
@@ -293,10 +305,35 @@
   text-align: center;
 }
 
-.heroCopy > .heroCopyReveal {
+.heroCopyReveal {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.scrollMouse {
+  position: relative;
+  z-index: 7;
+  display: grid;
+  width: 24px;
+  height: 36px;
+  place-items: start center;
+  margin: 26px auto 0;
+  padding-top: 6px;
+  border: 2px solid rgba(0, 0, 0, 0.62);
+  border-radius: 14px;
+  appearance: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.scrollMouse span {
+  width: 3px;
+  height: 8px;
+  border-radius: 3px;
+  background: #000;
+  animation: mouseScroll 1.6s ease-in-out infinite;
 }
 
 .heroCopy p {
@@ -334,27 +371,6 @@
   font-weight: 700;
   letter-spacing: 3.5px;
   line-height: 1.3;
-}
-
-.scrollMouse {
-  position: relative;
-  z-index: 7;
-  display: grid;
-  width: 24px;
-  height: 36px;
-  place-items: start center;
-  margin: 26px auto 0;
-  padding-top: 6px;
-  border: 2px solid rgba(0, 0, 0, 0.62);
-  border-radius: 14px;
-}
-
-.scrollMouse span {
-  width: 3px;
-  height: 8px;
-  border-radius: 3px;
-  background: #000;
-  animation: mouseScroll 1.6s ease-in-out infinite;
 }
 
 .quoteSection {
@@ -1462,18 +1478,6 @@
 .floatingActions button svg {
   width: 17px;
   height: 17px;
-}
-
-@keyframes mouseScroll {
-  0%,
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-  50% {
-    transform: translateY(10px);
-    opacity: 0.45;
-  }
 }
 
 @media (max-width: 420px) {
