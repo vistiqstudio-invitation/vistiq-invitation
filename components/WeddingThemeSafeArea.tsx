@@ -82,12 +82,32 @@ export default function WeddingThemeSafeArea({
   const title = frameTitle(invitation);
   const date = frameDate(invitation);
   const lavenderMotion = isLavenderMotionTheme(theme);
+  const weddingInvitation = invitation?.category === "wedding" ? invitation : null;
 
   return (
     <div className={styles.root} data-wedding-theme={theme}>
       <div className={styles.desktopBackdrop} aria-hidden="true">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={frameImage(invitation, theme)} alt="" />
+        {lavenderMotion && weddingInvitation ? (
+          <div className={styles.desktopBackdropPortraitPair}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              className={`${styles.desktopBackdropPortrait} ${styles.desktopBackdropPortraitBride}`}
+              src={weddingInvitation.bride.photo || "/themes/premium-3d-motion-2/naya-farhan-bride.jpg"}
+              alt=""
+            />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              className={`${styles.desktopBackdropPortrait} ${styles.desktopBackdropPortraitGroom}`}
+              src={weddingInvitation.groom.photo || "/themes/premium-3d-motion-2/naya-farhan-groom.jpg"}
+              alt=""
+            />
+          </div>
+        ) : (
+          <>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={frameImage(invitation, theme)} alt="" />
+          </>
+        )}
         {lavenderMotion && (
           <>
             {/* eslint-disable-next-line @next/next/no-img-element */}

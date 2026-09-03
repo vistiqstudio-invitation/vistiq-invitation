@@ -16,7 +16,10 @@ export default function Premium3DMotionCatalogCover() {
       <div className={styles.shade} aria-hidden="true" />
       <div className={`${styles.floral} ${styles.floralLeft}`} aria-hidden="true" />
       <div className={`${styles.floral} ${styles.floralRight}`} aria-hidden="true" />
-      <div className={styles.portrait} aria-hidden="true" />
+      <div className={styles.portraits} aria-hidden="true">
+        <div className={`${styles.portrait} ${styles.portraitBride}`} />
+        <div className={`${styles.portrait} ${styles.portraitGroom}`} />
+      </div>
       <div className={styles.grain} aria-hidden="true" />
       <div className={styles.frame} aria-hidden="true" />
 

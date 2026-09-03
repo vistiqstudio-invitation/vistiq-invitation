@@ -253,15 +253,23 @@ function Cover({ invitation, onOpen }: { invitation: InvitationData; onOpen: () 
 
   return (
     <motion.section className={styles.cover} exit={{ y: "-100%" }} transition={{ duration: 1.2, ease: revealEase }}>
-      <div className={styles.coverBackground} style={bg(invitation.bride.photo || invitation.coverImage || REFERENCE_COVER)} />
+      <div className={styles.coverBackground} style={bg(invitation.bride.photo || REFERENCE_FALLBACK)} />
       <div className={styles.coverShade} />
       <div className={`${styles.coverFloral} ${styles.coverFloralLeft}`} aria-hidden="true" />
       <div className={`${styles.coverFloral} ${styles.coverFloralRight}`} aria-hidden="true" />
-      <div className={styles.coverPortraitFrame}>
-        <div
-          className={styles.coverPortrait}
-          style={bg(invitation.bride.photo || REFERENCE_GALLERY[2])}
-        />
+      <div className={styles.coverPortraitPair}>
+        <div className={`${styles.coverPortraitFrame} ${styles.coverPortraitBride}`}>
+          <div
+            className={styles.coverPortrait}
+            style={bg(invitation.bride.photo || REFERENCE_GALLERY[2])}
+          />
+        </div>
+        <div className={`${styles.coverPortraitFrame} ${styles.coverPortraitGroom}`}>
+          <div
+            className={styles.coverPortrait}
+            style={bg(invitation.groom.photo || REFERENCE_GALLERY[3])}
+          />
+        </div>
       </div>
       <div className={styles.coverFrame} />
       <div className={styles.coverStack}>
@@ -384,7 +392,16 @@ function Quote({ invitation }: { invitation: InvitationData }) {
   const source = invitation.opening.quoteSource || "QS. Ar-Rum : 21";
   return (
     <section id="quote" className={styles.quoteSection}>
-      <div className={styles.quotePhoto} style={bg(invitation.coverImage || REFERENCE_COVER)} />
+      <div className={styles.quotePhoto}>
+        <div
+          className={`${styles.quotePhotoPortrait} ${styles.quotePhotoBride}`}
+          style={bg(invitation.bride.photo || REFERENCE_GALLERY[2])}
+        />
+        <div
+          className={`${styles.quotePhotoPortrait} ${styles.quotePhotoGroom}`}
+          style={bg(invitation.groom.photo || REFERENCE_GALLERY[3])}
+        />
+      </div>
       <SectionReveal className={styles.quoteCard}>
         <div className={styles.quoteMonogram}>
           <span>{initials(firstName(invitation.bride)).slice(0, 1)}</span>

@@ -19,7 +19,9 @@
   display: none;
 }
 
-.desktopBackdropFloral {
+.desktopBackdropFloral,
+.desktopBackdropPortraitPair,
+.desktopBackdropPortrait {
   display: none;
 }
 
@@ -452,5 +454,80 @@
     .desktopBackdropCopy
     span {
     color: #514b60;
+  }
+}
+
+
+@media (min-width: 768px) {
+  .root:is(
+      [data-wedding-theme="lavender-garden-motion"],
+      [data-wedding-theme="3d-montion-2"],
+      [data-wedding-theme="3d-motion-2"],
+      [data-wedding-theme="premium-3d-motion"]
+    )
+    .desktopBackdropPortraitPair {
+    position: absolute;
+    z-index: 0;
+    top: 8%;
+    right: 12%;
+    bottom: 16%;
+    left: 12%;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    gap: clamp(18px, 2.6vw, 34px);
+  }
+
+  .root:is(
+      [data-wedding-theme="lavender-garden-motion"],
+      [data-wedding-theme="3d-montion-2"],
+      [data-wedding-theme="3d-motion-2"],
+      [data-wedding-theme="premium-3d-motion"]
+    )
+    .desktopBackdropPortrait {
+    position: relative !important;
+    inset: auto !important;
+    width: auto !important;
+    height: 100% !important;
+    min-width: 0;
+    flex: 1 1 0;
+    border: 7px solid rgba(255, 255, 255, 0.92);
+    border-radius: 50% 50% 44% 44%;
+    object-fit: cover;
+    box-shadow:
+      0 0 0 1px rgba(158, 153, 191, 0.32),
+      0 22px 46px rgba(93, 76, 108, 0.2);
+  }
+
+  .root:is(
+      [data-wedding-theme="lavender-garden-motion"],
+      [data-wedding-theme="3d-montion-2"],
+      [data-wedding-theme="3d-motion-2"],
+      [data-wedding-theme="premium-3d-motion"]
+    )
+    .desktopBackdropPortraitBride {
+    object-position: center 18%;
+    transform: rotate(-2deg);
+  }
+
+  .root:is(
+      [data-wedding-theme="lavender-garden-motion"],
+      [data-wedding-theme="3d-montion-2"],
+      [data-wedding-theme="3d-motion-2"],
+      [data-wedding-theme="premium-3d-motion"]
+    )
+    .desktopBackdropPortraitGroom {
+    object-position: center 16%;
+    transform: rotate(2deg);
+  }
+
+  .root:is(
+      [data-wedding-theme="lavender-garden-motion"],
+      [data-wedding-theme="3d-montion-2"],
+      [data-wedding-theme="3d-motion-2"],
+      [data-wedding-theme="premium-3d-motion"]
+    )
+    .desktopBackdropCopy {
+    z-index: 3;
   }
 }

@@ -49,19 +49,42 @@
   background-position: right bottom;
 }
 
-.portrait {
+.portraits {
   position: absolute;
   z-index: 3;
   top: 21%;
-  left: 17%;
-  width: 66%;
-  height: 50%;
+  right: 11%;
+  left: 11%;
+  display: flex;
+  height: 49%;
+  align-items: stretch;
+  gap: 4%;
+}
+
+.portrait {
+  position: relative;
+  min-width: 0;
+  flex: 1 1 0;
   border: 5px solid rgba(255, 255, 255, 0.96);
-  border-radius: 50% 50% 47% 47%;
-  background: url("/themes/premium-3d-motion-2/naya-farhan-bride.jpg") center 18% / cover no-repeat;
+  border-radius: 50% 50% 44% 44%;
+  background-color: #fff;
+  background-position: center 14%;
+  background-repeat: no-repeat;
+  background-size: cover;
   box-shadow:
     0 0 0 1px rgba(158, 153, 191, 0.44),
     0 14px 30px rgba(85, 69, 101, 0.18);
+}
+
+.portraitBride {
+  background-image: url("/themes/premium-3d-motion-2/naya-farhan-bride.jpg");
+  transform: rotate(-2deg);
+}
+
+.portraitGroom {
+  background-image: url("/themes/premium-3d-motion-2/naya-farhan-groom-lavender.png");
+  background-position: center 16%;
+  transform: rotate(2deg);
 }
 
 .frame {
