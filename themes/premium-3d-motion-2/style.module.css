@@ -679,7 +679,7 @@
 }
 
 .coupleSection {
-  z-index: 2;
+  z-index: 11;
   margin-bottom: -32px;
   padding: 0 0 30px;
   border-bottom-right-radius: 34px;
@@ -818,6 +818,7 @@
 }
 
 .memorySection {
+  z-index: 10;
   min-height: 577px;
   background: #687080;
 }
@@ -854,7 +855,7 @@
 }
 
 .countdownSection {
-  z-index: 2;
+  z-index: 9;
   min-height: 500px;
   margin-bottom: -32px;
   padding: 0 20px 30px;
@@ -928,7 +929,7 @@
 }
 
 .eventsSection {
-  z-index: 1;
+  z-index: 8;
   padding: 20px 20px 50px;
   background: var(--paper);
 }
@@ -1061,8 +1062,13 @@
 }
 
 .liveSection {
+  z-index: 7;
+  margin-bottom: -32px;
   padding: 20px 20px;
+  border-bottom-right-radius: 34px;
+  border-bottom-left-radius: 34px;
   background: var(--paper);
+  box-shadow: 0 14px 28px rgba(62, 49, 78, 0.24);
 }
 
 .liveCard {
@@ -1128,9 +1134,14 @@
 }
 
 .gallerySection {
+  z-index: 6;
+  margin-bottom: -32px;
   min-height: 100vh;
   padding: 100px 20px 40px;
+  border-bottom-right-radius: 34px;
+  border-bottom-left-radius: 34px;
   background: var(--lavender);
+  box-shadow: 0 14px 28px rgba(62, 49, 78, 0.24);
 }
 
 .galleryBackdrop {
@@ -1220,8 +1231,13 @@
 }
 
 .storySection {
+  z-index: 5;
+  margin-bottom: -32px;
   padding: 50px 20px;
+  border-bottom-right-radius: 34px;
+  border-bottom-left-radius: 34px;
   background: var(--paper);
+  box-shadow: 0 14px 28px rgba(62, 49, 78, 0.24);
 }
 
 .storyCard {
@@ -1280,8 +1296,13 @@
 }
 
 .giftSection {
+  z-index: 4;
+  margin-bottom: -32px;
   padding: 20px;
+  border-bottom-right-radius: 34px;
+  border-bottom-left-radius: 34px;
   background: var(--lavender);
+  box-shadow: 0 14px 28px rgba(62, 49, 78, 0.24);
 }
 
 .giftInner {
@@ -1405,9 +1426,18 @@
 
 .rsvpSection,
 .wishesSection {
+  z-index: 3;
   min-height: 100vh;
   padding: 100px 20px;
   background: rgba(255, 255, 255, 0.82);
+}
+
+.wishesSection {
+  z-index: 2;
+  margin-bottom: -32px;
+  border-bottom-right-radius: 34px;
+  border-bottom-left-radius: 34px;
+  box-shadow: 0 14px 28px rgba(62, 49, 78, 0.24);
 }
 
 .rsvpCard,
@@ -1568,6 +1598,7 @@
 }
 
 .footerSection {
+  z-index: 1;
   display: flex;
   min-height: 100vh;
   align-items: flex-end;
