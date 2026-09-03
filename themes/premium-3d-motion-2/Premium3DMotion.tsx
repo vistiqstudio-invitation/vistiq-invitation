@@ -28,6 +28,7 @@ const MANDIRI_ICON =
   "https://undanganqu.net/wp-content/uploads/2024/11/iconmandiri-1.png.webp";
 const FOOTER_LOGO = "/vistiq-invitation-logo.png";
 const MANUAL_SCROLL_EVENT = "vistiq:auto-scroll-start";
+const FRAME_REVEAL_AT = 14.2;
 
 const revealEase = [0.22, 1, 0.36, 1] as const;
 const MONTHS = [
@@ -288,9 +289,14 @@ function OpeningHero({ invitation, opened }: { invitation: InvitationData; opene
         // The poster remains visible if the browser blocks video playback.
       });
     }
-    const frameTimer = window.setTimeout(() => setFrameReady(true), 1250);
-    return () => window.clearTimeout(frameTimer);
   }, [opened]);
+
+  function revealAfterWhiteFrame() {
+    const video = videoRef.current;
+    if (video && video.currentTime >= FRAME_REVEAL_AT) {
+      setFrameReady(true);
+    }
+  }
 
   return (
     <section id="home" data-opening-hero className={styles.hero}>
@@ -301,6 +307,7 @@ function OpeningHero({ invitation, opened }: { invitation: InvitationData; opene
         muted
         playsInline
         poster={REFERENCE_FALLBACK}
+        onTimeUpdate={revealAfterWhiteFrame}
         aria-hidden="true"
       >
         <source src={REFERENCE_VIDEO} type="video/mp4" />
