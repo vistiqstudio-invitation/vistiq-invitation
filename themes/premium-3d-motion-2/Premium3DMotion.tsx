@@ -282,9 +282,11 @@ function OpeningHero({ invitation, opened }: { invitation: InvitationData; opene
       return;
     }
 
-    void video?.play().catch(() => {
-      // The poster remains visible if the browser blocks video playback.
-    });
+    if (video) {
+      void video.play().catch(() => {
+        // The poster remains visible if the browser blocks video playback.
+      });
+    }
     const frameTimer = window.setTimeout(() => setFrameReady(true), 1250);
     return () => window.clearTimeout(frameTimer);
   }, [opened]);
