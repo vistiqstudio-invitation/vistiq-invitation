@@ -817,6 +817,24 @@
   background: #687080;
 }
 
+.memorySection::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  height: 190px;
+  content: "";
+  background: linear-gradient(
+    180deg,
+    rgba(158, 153, 191, 0) 0%,
+    rgba(158, 153, 191, 0.18) 34%,
+    rgba(158, 153, 191, 0.62) 70%,
+    var(--lavender) 100%
+  );
+  pointer-events: none;
+}
+
 .memorySlide {
   background-position: center;
   background-repeat: no-repeat;
@@ -826,20 +844,14 @@
 }
 
 .memoryShade {
+  z-index: 1;
   background: rgba(0, 0, 0, 0.3);
 }
 
 .countdownSection {
   min-height: 620px;
-  margin-top: -130px;
-  padding: 130px 20px 30px;
-  background: linear-gradient(
-    180deg,
-    rgba(158, 153, 191, 0) 0,
-    rgba(158, 153, 191, 0.28) 34%,
-    rgba(158, 153, 191, 0.82) 70%,
-    var(--lavender) 180px
-  );
+  padding: 0 20px 30px;
+  background: var(--lavender);
 }
 
 .countdownInner {
