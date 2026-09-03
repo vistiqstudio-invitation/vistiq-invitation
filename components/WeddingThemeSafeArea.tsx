@@ -44,10 +44,6 @@ function frameDate(invitation?: InvitationFrameData) {
     return invitation.events[0]?.date || "";
   }
 
-  if (invitation.category === "aqiqah") {
-    return invitation.event?.date || invitation.baby.birthDate || "";
-  }
-
   return invitation.event?.date || invitation.child.birthDate || "";
 }
 

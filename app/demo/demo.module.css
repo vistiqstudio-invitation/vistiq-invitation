@@ -171,6 +171,9 @@
 
 .card {
   position: relative;
+  width: 100%;
+  max-width: 320px;
+  justify-self: start;
   background: white;
   border-radius: 20px;
   overflow: hidden;
