@@ -615,10 +615,29 @@
 }
 
 .welcomeSection {
+  position: relative;
   background: rgba(255, 252, 243, 0.93);
 }
 
+.welcomeSection::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 96px;
+  content: "";
+  background: linear-gradient(
+    180deg,
+    rgba(158, 153, 191, 0.62) 0%,
+    rgba(181, 171, 210, 0.34) 42%,
+    rgba(255, 252, 243, 0) 100%
+  );
+  pointer-events: none;
+}
+
 .welcomeInner {
+  position: relative;
+  z-index: 1;
   padding: 100px 40px 30px;
   text-align: center;
 }
