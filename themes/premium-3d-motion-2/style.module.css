@@ -276,6 +276,14 @@
   transform: rotate(2deg);
 }
 
+.coverPortraitCouple {
+  flex: 0 1 min(100%, 300px);
+}
+
+.coverPortraitCouple .coverPortrait {
+  background-position: center 14%;
+}
+
 .coverPortrait {
   position: absolute;
   inset: 0;
@@ -537,6 +545,10 @@
 
 .quotePhotoGroom {
   background-position: center 16%;
+}
+
+.quotePhotoCouple {
+  background-position: center 14%;
 }
 
 .quoteCard {

@@ -2,7 +2,7 @@ import type { InvitationData } from "@/types/invitation";
 import { WEDDING_VOCAL_TRACKS } from "@/lib/weddingMusic";
 
 const ASSET_ROOT = "/themes/premium-3d-motion-2";
-const DEMO_COVER = ASSET_ROOT + "/naya-farhan-bride.jpg";
+const DEMO_COVER = ASSET_ROOT + "/naya-farhan-couple-white.jpg";
 const DEMO_GROOM = ASSET_ROOT + "/naya-farhan-groom-lavender.png";
 const GALLERY = [
   ASSET_ROOT + "/naya-farhan-gallery-courtyard.jpg",

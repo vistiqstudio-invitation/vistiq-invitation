@@ -11,7 +11,7 @@ import type { GiftAccount, InvitationData } from "@/types/invitation";
 import styles from "./style.module.css";
 
 const ASSET_ROOT = "/themes/premium-3d-motion-2";
-const REFERENCE_COVER = ASSET_ROOT + "/naya-farhan-cover.jpg";
+const REFERENCE_COVER = ASSET_ROOT + "/naya-farhan-couple-white.jpg";
 const REFERENCE_VIDEO = ASSET_ROOT + "/opening-nayla-farhan.mp4";
 const REFERENCE_FALLBACK = ASSET_ROOT + "/naya-farhan-bride.jpg";
 const REFERENCE_OVERLAY =
@@ -258,16 +258,10 @@ function Cover({ invitation, onOpen }: { invitation: InvitationData; onOpen: () 
       <div className={`${styles.coverFloral} ${styles.coverFloralLeft}`} aria-hidden="true" />
       <div className={`${styles.coverFloral} ${styles.coverFloralRight}`} aria-hidden="true" />
       <div className={styles.coverPortraitPair}>
-        <div className={`${styles.coverPortraitFrame} ${styles.coverPortraitBride}`}>
+        <div className={`${styles.coverPortraitFrame} ${styles.coverPortraitCouple}`}>
           <div
             className={styles.coverPortrait}
-            style={bg(invitation.bride.photo || REFERENCE_GALLERY[2])}
-          />
-        </div>
-        <div className={`${styles.coverPortraitFrame} ${styles.coverPortraitGroom}`}>
-          <div
-            className={styles.coverPortrait}
-            style={bg(invitation.groom.photo || REFERENCE_GALLERY[3])}
+            style={bg(invitation.coverImage || REFERENCE_COVER)}
           />
         </div>
       </div>
@@ -394,12 +388,8 @@ function Quote({ invitation }: { invitation: InvitationData }) {
     <section id="quote" className={styles.quoteSection}>
       <div className={styles.quotePhoto}>
         <div
-          className={`${styles.quotePhotoPortrait} ${styles.quotePhotoBride}`}
-          style={bg(invitation.bride.photo || REFERENCE_GALLERY[2])}
-        />
-        <div
-          className={`${styles.quotePhotoPortrait} ${styles.quotePhotoGroom}`}
-          style={bg(invitation.groom.photo || REFERENCE_GALLERY[3])}
+          className={`${styles.quotePhotoPortrait} ${styles.quotePhotoCouple}`}
+          style={bg(invitation.coverImage || REFERENCE_COVER)}
         />
       </div>
       <SectionReveal className={styles.quoteCard}>
