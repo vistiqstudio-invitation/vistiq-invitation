@@ -307,6 +307,17 @@ function OpeningHero({ invitation }: { invitation: InvitationData }) {
           <h2>{firstName(invitation.groom)}</h2>
           <small>{shortDate(event?.rawDate || null, event?.date || "")}</small>
         </motion.div>
+        <motion.button
+          type="button"
+          className={styles.scrollMouse}
+          initial={{ opacity: 0, y: 10 }}
+          animate={frameReady ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+          transition={frameReady ? { delay: 0.35, duration: 0.65, ease: revealEase } : { duration: 0 }}
+          onClick={() => document.getElementById("quote")?.scrollIntoView({ behavior: "smooth" })}
+          aria-label="Scroll ke bagian berikutnya"
+        >
+          <span />
+        </motion.button>
       </div>
     </section>
   );
