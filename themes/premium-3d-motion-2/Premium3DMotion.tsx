@@ -31,6 +31,27 @@ const MANUAL_SCROLL_EVENT = "vistiq:auto-scroll-start";
 const FRAME_REVEAL_AT = 14.2;
 
 const revealEase = [0.22, 1, 0.36, 1] as const;
+
+const heroCopyVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      delayChildren: 0.1,
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const heroCopyItemVariants = {
+  hidden: { opacity: 0, y: 14, filter: "blur(7px)" },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { duration: 0.8, ease: revealEase },
+  },
+};
 const MONTHS = [
   "jan",
   "feb",
@@ -317,24 +338,26 @@ function OpeningHero({ invitation, opened }: { invitation: InvitationData; opene
         {frameReady && (
           <motion.div
             className={styles.heroCopyReveal}
-            initial={{ opacity: 0, y: 20, filter: "blur(6px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            transition={{ delay: 0.08, duration: 0.85, ease: revealEase }}
+            variants={heroCopyVariants}
+            initial="hidden"
+            animate="visible"
           >
-            <p>The Wedding of</p>
-            <h2>{firstName(invitation.bride)}</h2>
-            <span>&amp;</span>
-            <h2>{firstName(invitation.groom)}</h2>
-            <small>{shortDate(event?.rawDate || null, event?.date || "")}</small>
+            <motion.p variants={heroCopyItemVariants}>The Wedding of</motion.p>
+            <motion.h2 variants={heroCopyItemVariants}>{firstName(invitation.bride)}</motion.h2>
+            <motion.span variants={heroCopyItemVariants}>&amp;</motion.span>
+            <motion.h2 variants={heroCopyItemVariants}>{firstName(invitation.groom)}</motion.h2>
+            <motion.small variants={heroCopyItemVariants}>
+              {shortDate(event?.rawDate || null, event?.date || "")}
+            </motion.small>
           </motion.div>
         )}
         {frameReady && (
           <motion.button
             type="button"
             className={styles.scrollMouse}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.35, duration: 0.65, ease: revealEase }}
+            initial={{ opacity: 0, y: 12, scale: 0.92, filter: "blur(4px)" }}
+            animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+            transition={{ delay: 0.78, duration: 0.8, ease: revealEase }}
             onClick={() => window.dispatchEvent(new Event(MANUAL_SCROLL_EVENT))}
             aria-label="Mulai scroll otomatis"
             title="Mulai scroll otomatis"
