@@ -1427,14 +1427,19 @@
 .rsvpSection,
 .wishesSection {
   z-index: 3;
-  min-height: 100vh;
   padding: 100px 20px;
   background: rgba(255, 255, 255, 0.82);
+}
+
+.rsvpSection {
+  min-height: auto;
+  padding-bottom: 36px;
 }
 
 .wishesSection {
   z-index: 2;
   margin-bottom: -32px;
+  padding-top: 60px;
   border-bottom-right-radius: 34px;
   border-bottom-left-radius: 34px;
   box-shadow: 0 14px 28px rgba(62, 49, 78, 0.24);
