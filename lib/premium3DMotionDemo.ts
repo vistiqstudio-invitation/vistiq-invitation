@@ -14,7 +14,12 @@ export function withPremium3DMotionDemoAssets(
   theme: string,
   invitation: InvitationData,
 ): InvitationData {
-  if (theme !== "3d-montion-2" && theme !== "premium-3d-motion") return invitation;
+  if (
+    theme !== "lavender-garden-motion" &&
+    theme !== "3d-montion-2" &&
+    theme !== "3d-motion-2" &&
+    theme !== "premium-3d-motion"
+  ) return invitation;
 
   return {
     ...invitation,

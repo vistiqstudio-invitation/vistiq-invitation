@@ -29,7 +29,9 @@ export default function ThemeCoverPreview({
     normalizedLabel.includes("3d motion");
   const isChampagneRomance = normalizedLabel.includes("champagne romance");
   const isPremium3DMotion =
+    themeKey === "lavender-garden-motion" ||
     themeKey === "3d-montion-2" ||
+    themeKey === "3d-motion-2" ||
     themeKey === "premium-3d-motion" ||
     normalizedLabel.includes("lavender garden motion") ||
     normalizedLabel.includes("premium 3d motion");
