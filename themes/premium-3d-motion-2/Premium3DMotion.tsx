@@ -50,6 +50,29 @@ const heroCopyItemVariants = {
     transition: { duration: 0.8, ease: revealEase },
   },
 };
+
+const scrollItemVariants = {
+  hidden: { opacity: 0, y: 18, filter: "blur(5px)" },
+  visible: (delay = 0) => ({
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { delay, duration: 0.72, ease: revealEase },
+  }),
+};
+
+const scrollImageVariants = {
+  hidden: { opacity: 0, y: 22, scale: 0.96, filter: "blur(5px)" },
+  visible: (delay = 0) => ({
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    filter: "blur(0px)",
+    transition: { delay, duration: 0.9, ease: revealEase },
+  }),
+};
+
+const scrollViewport = { once: true, amount: 0.14 } as const;
 const MONTHS = [
   "jan",
   "feb",
@@ -385,21 +408,43 @@ function Quote({ invitation }: { invitation: InvitationData }) {
   return (
     <section id="quote" className={styles.quoteSection}>
       <div className={styles.quotePhoto}>
-        <div
+        <motion.div
           className={`${styles.quotePhotoPortrait} ${styles.quotePhotoCouple}`}
           style={bg(invitation.coverImage || REFERENCE_COVER)}
+          variants={scrollImageVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={scrollViewport}
+          custom={0}
         />
       </div>
       <SectionReveal className={styles.quoteCard}>
-        <div className={styles.quoteMonogram}>
+        <motion.div
+          className={styles.quoteMonogram}
+          variants={scrollItemVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={scrollViewport}
+          custom={0.08}
+        >
           <span>{initials(firstName(invitation.bride)).slice(0, 1)}</span>
           <i>&amp;</i>
           <span>{initials(firstName(invitation.groom)).slice(0, 1)}</span>
-        </div>
-        <blockquote>
-          <p>"{quote}"</p>
-          <cite>- {source} -</cite>
-        </blockquote>
+        </motion.div>
+        <motion.blockquote
+          variants={scrollItemVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={scrollViewport}
+          custom={0.18}
+        >
+          <motion.p variants={scrollItemVariants} custom={0.08}>
+            "{quote}"
+          </motion.p>
+          <motion.cite variants={scrollItemVariants} custom={0.16}>
+            - {source} -
+          </motion.cite>
+        </motion.blockquote>
       </SectionReveal>
     </section>
   );
@@ -409,11 +454,13 @@ function Welcome({ invitation }: { invitation: InvitationData }) {
   return (
     <section id="welcome" className={styles.welcomeSection}>
       <SectionReveal className={styles.welcomeInner}>
-        <h2>We Are<br />Getting Married!</h2>
-        <p>
+        <motion.h2 variants={scrollItemVariants} initial="hidden" whileInView="visible" viewport={scrollViewport} custom={0.06}>
+          We Are<br />Getting Married!
+        </motion.h2>
+        <motion.p variants={scrollItemVariants} initial="hidden" whileInView="visible" viewport={scrollViewport} custom={0.18}>
           {invitation.opening.description ||
             "Maha Suci Allah yang telah menciptakan makhluk-Nya berpasang-pasangan. Ya Allah semoga ridho-Mu tercurah mengiringi pernikahan kami:"}
-        </p>
+        </motion.p>
       </SectionReveal>
     </section>
   );
@@ -436,20 +483,52 @@ function Person({
   return (
     <SectionReveal className={styles.personBlock}>
       <div className={styles.personStage} style={bg(branch)}>
-        <div className={styles.personPhoto} style={bg(person.photo || fallback)} />
-        <img className={styles.personFloral} src={floral} alt="" />
+        <motion.div
+          className={styles.personPhoto}
+          style={bg(person.photo || fallback)}
+          variants={scrollImageVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={scrollViewport}
+          custom={0.02}
+        />
+        <motion.img
+          className={styles.personFloral}
+          src={floral}
+          alt=""
+          variants={scrollImageVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={scrollViewport}
+          custom={0.16}
+        />
       </div>
-      <div className={styles.personText}>
-        <span className={styles.personRole}>The {role}</span>
-        <h3>{firstName(person)}</h3>
-        <p className={styles.personFullName}>{handleName(person)}</p>
-        {person.parents && <p className={styles.personParents}>{person.parents}</p>}
-        {instagram && (
-          <a href={instagramUrl(instagram)} target="_blank" rel="noreferrer">
-            <Icon name="instagram" /> @{instagram}
-          </a>
+      <motion.div
+        className={styles.personText}
+        variants={scrollItemVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={scrollViewport}
+        custom={0.08}
+      >
+        <motion.span className={styles.personRole} variants={scrollItemVariants} custom={0.08}>
+          The {role}
+        </motion.span>
+        <motion.h3 variants={scrollItemVariants} custom={0.16}>{firstName(person)}</motion.h3>
+        <motion.p className={styles.personFullName} variants={scrollItemVariants} custom={0.24}>
+          {handleName(person)}
+        </motion.p>
+        {person.parents && (
+          <motion.p className={styles.personParents} variants={scrollItemVariants} custom={0.32}>
+            {person.parents}
+          </motion.p>
         )}
-      </div>
+        {instagram && (
+          <motion.a href={instagramUrl(instagram)} target="_blank" rel="noreferrer" variants={scrollItemVariants} custom={0.4}>
+            <Icon name="instagram" /> @{instagram}
+          </motion.a>
+        )}
+      </motion.div>
     </SectionReveal>
   );
 }
@@ -464,7 +543,16 @@ function Couple({ invitation }: { invitation: InvitationData }) {
         branch={ASSET_ROOT + "/Garden-02-Couple-1.png.webp"}
         floral={ASSET_ROOT + "/Garden-02-Couple-2.png.webp"}
       />
-      <div className={styles.coupleAmpersand}>&amp;</div>
+      <motion.div
+        className={styles.coupleAmpersand}
+        variants={scrollItemVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={scrollViewport}
+        custom={0.08}
+      >
+        &amp;
+      </motion.div>
       <Person
         person={invitation.groom}
         role="groom"
@@ -483,12 +571,19 @@ function MemorySlideshow() {
     return () => window.clearInterval(timer);
   }, []);
   return (
-    <section className={styles.memorySection} aria-label="Momen pernikahan">
+    <motion.section
+      className={styles.memorySection}
+      aria-label="Momen pernikahan"
+      initial={{ opacity: 0, scale: 1.02 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={scrollViewport}
+      transition={{ duration: 1, ease: revealEase }}
+    >
       {REFERENCE_SLIDES.map((slide, index) => (
         <div className={styles.memorySlide} key={slide} style={{ ...bg(slide), opacity: active === index ? 1 : 0 }} />
       ))}
       <div className={styles.memoryShade} />
-    </section>
+    </motion.section>
   );
 }
 
@@ -514,19 +609,44 @@ function Countdown({ event }: { event?: InvitationData["events"][number] }) {
   return (
     <section id="countdown" className={styles.countdownSection}>
       <SectionReveal className={styles.countdownInner}>
-        <img src={ASSET_ROOT + "/Garden-02-Bouquet.png.webp"} alt="" className={styles.countdownBouquet} />
-        <h2>Save The Date</h2>
-        <div className={styles.countdownGrid}>
-          {values.map(([value, label]) => (
-            <span key={label}>
+        <motion.img
+          src={ASSET_ROOT + "/Garden-02-Bouquet.png.webp"}
+          alt=""
+          className={styles.countdownBouquet}
+          variants={scrollImageVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={scrollViewport}
+          custom={0}
+        />
+        <motion.h2 variants={scrollItemVariants} initial="hidden" whileInView="visible" viewport={scrollViewport} custom={0.12}>
+          Save The Date
+        </motion.h2>
+        <motion.div
+          className={styles.countdownGrid}
+          variants={scrollItemVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={scrollViewport}
+          custom={0.2}
+        >
+          {values.map(([value, label], index) => (
+            <motion.span
+              key={label}
+              variants={scrollItemVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={scrollViewport}
+              custom={0.1 + index * 0.08}
+            >
               <strong>{value}</strong>
               <small>{label}</small>
-            </span>
+            </motion.span>
           ))}
-        </div>
-        <p>
+        </motion.div>
+        <motion.p variants={scrollItemVariants} initial="hidden" whileInView="visible" viewport={scrollViewport} custom={0.28}>
           Dengan memohon rahmat dan ridho Allah SWT, kami mengundang Bapak/Ibu/Saudara/i, untuk menghadiri acara pernikahan kami:
-        </p>
+        </motion.p>
       </SectionReveal>
     </section>
   );
@@ -545,22 +665,37 @@ function EventCard({
   const location = eventLocation(event.location);
   return (
     <SectionReveal className={styles.eventOuter}>
-      <article className={styles.eventCard} style={bg(REFERENCE_OVERLAY)}>
-        <div className={styles.eventCardInner}>
-          <h3>{event.name || (index === 0 ? "Akad Nikah" : "Resepsi Pernikahan")}</h3>
-          <p className={styles.eventWeekday}>{dates.weekday}</p>
-          <p className={styles.eventDate}>{dates.date}</p>
-          <p className={styles.eventTime}>{event.time}</p>
-          <span className={styles.eventIcon}><Icon name="pin" /></span>
-          <h4>{location.venue}</h4>
-          {location.address && <p className={styles.eventAddress}>{location.address}</p>}
+      <motion.article
+        className={styles.eventCard}
+        style={bg(REFERENCE_OVERLAY)}
+        variants={scrollImageVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={scrollViewport}
+        custom={0}
+      >
+        <motion.div
+          className={styles.eventCardInner}
+          variants={scrollItemVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={scrollViewport}
+          custom={0.08}
+        >
+          <motion.h3 variants={scrollItemVariants} custom={0.06}>{event.name || (index === 0 ? "Akad Nikah" : "Resepsi Pernikahan")}</motion.h3>
+          <motion.p className={styles.eventWeekday} variants={scrollItemVariants} custom={0.14}>{dates.weekday}</motion.p>
+          <motion.p className={styles.eventDate} variants={scrollItemVariants} custom={0.2}>{dates.date}</motion.p>
+          <motion.p className={styles.eventTime} variants={scrollItemVariants} custom={0.26}>{event.time}</motion.p>
+          <motion.span className={styles.eventIcon} variants={scrollItemVariants} custom={0.32}><Icon name="pin" /></motion.span>
+          <motion.h4 variants={scrollItemVariants} custom={0.38}>{location.venue}</motion.h4>
+          {location.address && <motion.p className={styles.eventAddress} variants={scrollItemVariants} custom={0.44}>{location.address}</motion.p>}
           {mapsUrl && (
-            <a href={mapsUrl} target="_blank" rel="noreferrer" className={styles.pillButton}>
+            <motion.a href={mapsUrl} target="_blank" rel="noreferrer" className={styles.pillButton} variants={scrollItemVariants} custom={0.5}>
               <Icon name="pin" /> Google Map
-            </a>
+            </motion.a>
           )}
-        </div>
-      </article>
+        </motion.div>
+      </motion.article>
     </SectionReveal>
   );
 }
@@ -585,18 +720,32 @@ function LiveStreaming({ invitation }: { invitation: InvitationData }) {
   return (
     <section id="live" className={styles.liveSection}>
       <SectionReveal className={styles.liveCard}>
-        <h2>Live Streaming</h2>
-        <p>Temui kami secara virtual untuk menyaksikan acara pernikahan kami melalui tautan di bawah ini:</p>
+        <motion.h2 variants={scrollItemVariants} initial="hidden" whileInView="visible" viewport={scrollViewport} custom={0.06}>
+          Live Streaming
+        </motion.h2>
+        <motion.p variants={scrollItemVariants} initial="hidden" whileInView="visible" viewport={scrollViewport} custom={0.16}>
+          Temui kami secara virtual untuk menyaksikan acara pernikahan kami melalui tautan di bawah ini:
+        </motion.p>
         {invitation.videoUrl && (
-          <iframe className={styles.liveFrame} src={invitation.videoUrl} title="Live streaming pernikahan" allow="autoplay; encrypted-media; picture-in-picture" />
+          <motion.iframe
+            className={styles.liveFrame}
+            src={invitation.videoUrl}
+            title="Live streaming pernikahan"
+            allow="autoplay; encrypted-media; picture-in-picture"
+            variants={scrollImageVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={scrollViewport}
+            custom={0.2}
+          />
         )}
-        <div className={styles.liveButtons}>
+        <motion.div className={styles.liveButtons} variants={scrollItemVariants} initial="hidden" whileInView="visible" viewport={scrollViewport} custom={0.26}>
           {(accounts.length ? accounts : ["username", "username"]).map((account, index) => (
-            <a key={account + index} href={instagramUrl(account)} target="_blank" rel="noreferrer">
+            <motion.a key={account + index} href={instagramUrl(account)} target="_blank" rel="noreferrer" variants={scrollItemVariants} custom={0.08 + index * 0.1}>
               <Icon name="instagram" /> @{account.replace(/^@/, "")}
-            </a>
+            </motion.a>
           ))}
-        </div>
+        </motion.div>
       </SectionReveal>
     </section>
   );
@@ -610,14 +759,26 @@ function Gallery({ invitation }: { invitation: InvitationData }) {
       <div className={styles.galleryBackdrop} style={bg(photos[0] || REFERENCE_GALLERY[0])} />
       <div className={styles.galleryOverlay} />
       <SectionReveal className={styles.galleryInner}>
-        <h2>Our Gallery</h2>
-        <div className={styles.galleryGrid}>
+        <motion.h2 variants={scrollItemVariants} initial="hidden" whileInView="visible" viewport={scrollViewport} custom={0.06}>
+          Our Gallery
+        </motion.h2>
+        <motion.div className={styles.galleryGrid} variants={scrollItemVariants} initial="hidden" whileInView="visible" viewport={scrollViewport} custom={0.16}>
           {photos.map((photo, index) => (
-            <button key={photo + index} type="button" onClick={() => setActive(index)} aria-label={"Buka foto " + (index + 1)}>
-              <img src={photo} alt="" loading="lazy" />
-            </button>
+            <motion.button
+              key={photo + index}
+              type="button"
+              onClick={() => setActive(index)}
+              aria-label={"Buka foto " + (index + 1)}
+              variants={scrollImageVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={scrollViewport}
+              custom={0.08 + index * 0.1}
+            >
+              <motion.img src={photo} alt="" loading="lazy" variants={scrollImageVariants} custom={0.06} />
+            </motion.button>
           ))}
-        </div>
+        </motion.div>
       </SectionReveal>
       <AnimatePresence>
         {active !== null && photos[active] && (
@@ -667,16 +828,27 @@ function LoveStory({ invitation }: { invitation: InvitationData }) {
   return (
     <section id="story" className={styles.storySection}>
       <SectionReveal className={styles.storyCard}>
-        <img src={ASSET_ROOT + "/Garden-02-Bouquet.png.webp"} alt="" className={styles.storyBouquet} />
-        <h2>Love Story</h2>
-        <div className={styles.storyItems}>
+        <motion.img
+          src={ASSET_ROOT + "/Garden-02-Bouquet.png.webp"}
+          alt=""
+          className={styles.storyBouquet}
+          variants={scrollImageVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={scrollViewport}
+          custom={0}
+        />
+        <motion.h2 variants={scrollItemVariants} initial="hidden" whileInView="visible" viewport={scrollViewport} custom={0.14}>
+          Love Story
+        </motion.h2>
+        <motion.div className={styles.storyItems} variants={scrollItemVariants} initial="hidden" whileInView="visible" viewport={scrollViewport} custom={0.22}>
           {story.slice(0, 3).map((item, index) => (
-            <article key={item.title + index}>
-              <h3>{item.title}</h3>
-              <p>{item.description}</p>
-            </article>
+            <motion.article key={item.title + index} variants={scrollItemVariants} initial="hidden" whileInView="visible" viewport={scrollViewport} custom={0.08 + index * 0.12}>
+              <motion.h3 variants={scrollItemVariants} custom={0.06}>{item.title}</motion.h3>
+              <motion.p variants={scrollItemVariants} custom={0.12}>{item.description}</motion.p>
+            </motion.article>
           ))}
-        </div>
+        </motion.div>
       </SectionReveal>
     </section>
   );
@@ -697,39 +869,45 @@ function Gifts({ invitation }: { invitation: InvitationData }) {
   return (
     <section id="gift" className={styles.giftSection}>
       <SectionReveal className={styles.giftInner}>
-        <div className={styles.giftIcon}><Icon name="gift" /></div>
-        <h2>Love Gift</h2>
-        <p className={styles.giftIntro}>
+        <motion.div className={styles.giftIcon} variants={scrollItemVariants} initial="hidden" whileInView="visible" viewport={scrollViewport} custom={0}>
+          <Icon name="gift" />
+        </motion.div>
+        <motion.h2 variants={scrollItemVariants} initial="hidden" whileInView="visible" viewport={scrollViewport} custom={0.12}>
+          Love Gift
+        </motion.h2>
+        <motion.p className={styles.giftIntro} variants={scrollItemVariants} initial="hidden" whileInView="visible" viewport={scrollViewport} custom={0.2}>
           Tanpa mengurangi rasa hormat, bagi Bapak/Ibu/Saudara/i yang ingin memberikan tanda kasih untuk kami, dapat melalui:
-        </p>
-        <div className={styles.giftCards}>
+        </motion.p>
+        <motion.div className={styles.giftCards} variants={scrollItemVariants} initial="hidden" whileInView="visible" viewport={scrollViewport} custom={0.28}>
           {invitation.gifts.map((account, index) => (
-            <article className={styles.giftCard} key={account.owner + index}>
-              <img src={MANDIRI_ICON} alt={account.bankName || "Bank"} />
-              <p>
+            <motion.article className={styles.giftCard} key={account.owner + index} variants={scrollItemVariants} initial="hidden" whileInView="visible" viewport={scrollViewport} custom={0.1 + index * 0.1}>
+              <motion.img src={MANDIRI_ICON} alt={account.bankName || "Bank"} variants={scrollImageVariants} initial="hidden" whileInView="visible" viewport={scrollViewport} custom={0.06} />
+              <motion.p variants={scrollItemVariants} custom={0.14}>
                 {account.bankName || "Bank"}<br />
                 No. Rekening {account.accountNumber || "—"}<br />
                 a.n <b>{account.accountName || account.owner}</b>
-              </p>
+              </motion.p>
               {account.accountNumber && (
-                <button type="button" onClick={() => void copy(account)}>
+                <motion.button type="button" onClick={() => void copy(account)} variants={scrollItemVariants} custom={0.22}>
                   <Icon name="copy" /> {copied === account.accountNumber ? "Berhasil disalin" : "Copy Nomor Rekening"}
-                </button>
+                </motion.button>
               )}
-            </article>
+            </motion.article>
           ))}
-        </div>
-        <div className={styles.physicalGift}>
-          <Icon name="gift" />
-          <h3>Kirim Kado:</h3>
-          <p>
+        </motion.div>
+        <motion.div className={styles.physicalGift} variants={scrollItemVariants} initial="hidden" whileInView="visible" viewport={scrollViewport} custom={0.34}>
+          <motion.div className={styles.physicalGiftIcon} variants={scrollItemVariants} initial="hidden" whileInView="visible" viewport={scrollViewport} custom={0.06}>
+            <Icon name="gift" />
+          </motion.div>
+          <motion.h3 variants={scrollItemVariants} custom={0.12}>Kirim Kado:</motion.h3>
+          <motion.p variants={scrollItemVariants} custom={0.18}>
             <b>{handleName(invitation.bride)}</b><br />
             {invitation.events[0]?.location || "Alamat pengiriman kado dapat ditanyakan kepada keluarga."}
-          </p>
-          <button type="button" onClick={() => void navigator.clipboard?.writeText(invitation.events[0]?.location || "")}>
+          </motion.p>
+          <motion.button type="button" onClick={() => void navigator.clipboard?.writeText(invitation.events[0]?.location || "")} variants={scrollItemVariants} custom={0.24}>
             <Icon name="copy" /> Copy Alamat
-          </button>
-        </div>
+          </motion.button>
+        </motion.div>
       </SectionReveal>
     </section>
   );
@@ -749,25 +927,31 @@ function Rsvp() {
   return (
     <section id="rsvp" className={styles.rsvpSection}>
       <SectionReveal className={styles.rsvpCard}>
-        <h2>Rsvp</h2>
-        <p className={styles.rsvpLabel}>Buku Tamu</p>
+        <motion.h2 variants={scrollItemVariants} initial="hidden" whileInView="visible" viewport={scrollViewport} custom={0.06}>
+          Rsvp
+        </motion.h2>
+        <motion.p className={styles.rsvpLabel} variants={scrollItemVariants} initial="hidden" whileInView="visible" viewport={scrollViewport} custom={0.14}>
+          Buku Tamu
+        </motion.p>
         {sent ? (
-          <div className={styles.success}>Terima kasih, konfirmasi Anda sudah dicatat.</div>
+          <motion.div className={styles.success} variants={scrollItemVariants} initial="hidden" whileInView="visible" viewport={scrollViewport} custom={0.22}>
+            Terima kasih, konfirmasi Anda sudah dicatat.
+          </motion.div>
         ) : (
-          <form onSubmit={submit} className={styles.rsvpForm}>
-            <label>Nama<input value={name} onChange={(event) => setName(event.target.value)} required /></label>
-            <label>Jumlah<input value={amount} onChange={(event) => setAmount(event.target.value)} required /></label>
-            <label>Pesan<textarea value={message} onChange={(event) => setMessage(event.target.value)} rows={4} required /></label>
-            <div className={styles.radioList}>
+          <motion.form onSubmit={submit} className={styles.rsvpForm} variants={scrollItemVariants} initial="hidden" whileInView="visible" viewport={scrollViewport} custom={0.22}>
+            <motion.label variants={scrollItemVariants} custom={0.06}>Nama<input value={name} onChange={(event) => setName(event.target.value)} required /></motion.label>
+            <motion.label variants={scrollItemVariants} custom={0.14}>Jumlah<input value={amount} onChange={(event) => setAmount(event.target.value)} required /></motion.label>
+            <motion.label variants={scrollItemVariants} custom={0.22}>Pesan<textarea value={message} onChange={(event) => setMessage(event.target.value)} rows={4} required /></motion.label>
+            <motion.div className={styles.radioList} variants={scrollItemVariants} initial="hidden" whileInView="visible" viewport={scrollViewport} custom={0.3}>
               {(["Hadir", "Masih Ragu", "Tidak Hadir"] as Attendance[]).map((option) => (
-                <label key={option}>
+                <motion.label key={option} variants={scrollItemVariants} custom={0.06}>
                   <input type="radio" name="attendance" checked={attendance === option} onChange={() => setAttendance(option)} />
                   {option === "Hadir" ? "Iya, Saya akan Datang" : option === "Masih Ragu" ? "Saya Masih Ragu" : "Maaf, Saya Tidak Bisa Datang"}
-                </label>
+                </motion.label>
               ))}
-            </div>
-            <button type="submit" className={styles.submitButton}>Reservasi via Whatsapp</button>
-          </form>
+            </motion.div>
+            <motion.button type="submit" className={styles.submitButton} variants={scrollItemVariants} custom={0.38}>Reservasi via Whatsapp</motion.button>
+          </motion.form>
         )}
       </SectionReveal>
     </section>
@@ -797,34 +981,40 @@ function Wishes({ invitation }: { invitation: InvitationData }) {
   return (
     <section id="wishes" className={styles.wishesSection}>
       <SectionReveal className={styles.wishesCard}>
-        <h2>Wishes</h2>
-        <p className={styles.wishesLabel}>Ucapan Selamat &amp; Do'a</p>
+        <motion.h2 variants={scrollItemVariants} initial="hidden" whileInView="visible" viewport={scrollViewport} custom={0.06}>
+          Wishes
+        </motion.h2>
+        <motion.p className={styles.wishesLabel} variants={scrollItemVariants} initial="hidden" whileInView="visible" viewport={scrollViewport} custom={0.14}>
+          Ucapan Selamat &amp; Do'a
+        </motion.p>
         {submitted ? (
-          <div className={styles.success}>Ucapan Anda telah terkirim. Terima kasih.</div>
+          <motion.div className={styles.success} variants={scrollItemVariants} initial="hidden" whileInView="visible" viewport={scrollViewport} custom={0.22}>
+            Ucapan Anda telah terkirim. Terima kasih.
+          </motion.div>
         ) : (
-          <form onSubmit={send} className={styles.wishesForm}>
-            <label>Nama<input value={name} onChange={(event) => setName(event.target.value)} required /></label>
-            <label>Pesan<textarea value={message} onChange={(event) => setMessage(event.target.value)} rows={4} required /></label>
-            <button type="submit" className={styles.submitButton} disabled={submitting}>{submitting ? "Mengirim..." : "Kirimkan Ucapan"}</button>
-            {error && <small className={styles.formError}>{error}</small>}
-          </form>
+          <motion.form onSubmit={send} className={styles.wishesForm} variants={scrollItemVariants} initial="hidden" whileInView="visible" viewport={scrollViewport} custom={0.22}>
+            <motion.label variants={scrollItemVariants} custom={0.06}>Nama<input value={name} onChange={(event) => setName(event.target.value)} required /></motion.label>
+            <motion.label variants={scrollItemVariants} custom={0.14}>Pesan<textarea value={message} onChange={(event) => setMessage(event.target.value)} rows={4} required /></motion.label>
+            <motion.button type="submit" className={styles.submitButton} variants={scrollItemVariants} custom={0.22} disabled={submitting}>{submitting ? "Mengirim..." : "Kirimkan Ucapan"}</motion.button>
+            {error && <motion.small className={styles.formError} variants={scrollItemVariants} custom={0.3}>{error}</motion.small>}
+          </motion.form>
         )}
-        <div className={styles.wishCounts}>
-          <span>{counts.hadir} Hadir</span>
-          <span>{counts.tidakHadir} Tidak Hadir</span>
-          <span>{counts.raguRagu} Ragu</span>
-        </div>
+        <motion.div className={styles.wishCounts} variants={scrollItemVariants} initial="hidden" whileInView="visible" viewport={scrollViewport} custom={0.32}>
+          <motion.span variants={scrollItemVariants} custom={0.06}>{counts.hadir} Hadir</motion.span>
+          <motion.span variants={scrollItemVariants} custom={0.12}>{counts.tidakHadir} Tidak Hadir</motion.span>
+          <motion.span variants={scrollItemVariants} custom={0.18}>{counts.raguRagu} Ragu</motion.span>
+        </motion.div>
         {entries.length > 0 && (
-          <div className={styles.wishList}>
+          <motion.div className={styles.wishList} variants={scrollItemVariants} initial="hidden" whileInView="visible" viewport={scrollViewport} custom={0.38}>
             {entries.map((entry) => (
-              <article key={entry.id}>
-                <strong>{entry.name}</strong>
-                <small>{entry.attendance}</small>
-                <p>{entry.message}</p>
-              </article>
+              <motion.article key={entry.id} variants={scrollItemVariants} initial="hidden" whileInView="visible" viewport={scrollViewport} custom={0.08}>
+                <motion.strong variants={scrollItemVariants} custom={0.04}>{entry.name}</motion.strong>
+                <motion.small variants={scrollItemVariants} custom={0.08}>{entry.attendance}</motion.small>
+                <motion.p variants={scrollItemVariants} custom={0.12}>{entry.message}</motion.p>
+              </motion.article>
             ))}
-            {hasMore && <button type="button" onClick={loadMore}>Lihat ucapan lainnya</button>}
-          </div>
+            {hasMore && <motion.button type="button" onClick={loadMore} variants={scrollItemVariants} custom={0.18}>Lihat ucapan lainnya</motion.button>}
+          </motion.div>
         )}
       </SectionReveal>
     </section>
@@ -835,17 +1025,23 @@ function Footer({ invitation }: { invitation: InvitationData }) {
   return (
     <footer className={styles.footerSection} style={bg(REFERENCE_GALLERY[0])}>
       <div className={styles.footerShade} />
-      <div className={styles.footerContent}>
-        <p>
+      <SectionReveal className={styles.footerContent}>
+        <motion.p variants={scrollItemVariants} initial="hidden" whileInView="visible" viewport={scrollViewport} custom={0.06}>
           Suatu kebahagiaan &amp; kehormatan bagi kami,<br />
           apabila Bapak/Ibu/Saudara/i, berkenan hadir<br />
           dan memberikan do'a restu kepada kami
-        </p>
-        <span>Kami Yang Berbahagia,</span>
-        <h2>{firstName(invitation.bride)} <i>&amp;</i> {firstName(invitation.groom)}</h2>
-        <img src={FOOTER_LOGO} alt="Vistiq Invitation" />
-        <small>Created By Vistiq Invitation</small>
-      </div>
+        </motion.p>
+        <motion.span variants={scrollItemVariants} initial="hidden" whileInView="visible" viewport={scrollViewport} custom={0.16}>
+          Kami Yang Berbahagia,
+        </motion.span>
+        <motion.h2 variants={scrollItemVariants} initial="hidden" whileInView="visible" viewport={scrollViewport} custom={0.24}>
+          {firstName(invitation.bride)} <i>&amp;</i> {firstName(invitation.groom)}
+        </motion.h2>
+        <motion.img src={FOOTER_LOGO} alt="Vistiq Invitation" variants={scrollImageVariants} initial="hidden" whileInView="visible" viewport={scrollViewport} custom={0.32} />
+        <motion.small variants={scrollItemVariants} initial="hidden" whileInView="visible" viewport={scrollViewport} custom={0.42}>
+          Created By Vistiq Invitation
+        </motion.small>
+      </SectionReveal>
     </footer>
   );
 }
