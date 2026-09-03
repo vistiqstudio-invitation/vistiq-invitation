@@ -270,6 +270,8 @@ function Cover({ invitation, onOpen }: { invitation: InvitationData; onOpen: () 
 
 function OpeningHero({ invitation }: { invitation: InvitationData }) {
   const event = invitation.events[0];
+  const [frameReady, setFrameReady] = useState(false);
+
   return (
     <section id="home" className={styles.hero}>
       <div className={styles.heroFallback} style={bg(REFERENCE_FALLBACK)} />
@@ -282,28 +284,28 @@ function OpeningHero({ invitation }: { invitation: InvitationData }) {
         initial={{ opacity: 0, scale: 0.985 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.2, duration: 0.9, ease: revealEase }}
+        onAnimationComplete={() => setFrameReady(true)}
       />
       <div className={styles.heroCopy}>
         <motion.div
           className={styles.heroCopyReveal}
           initial={{ opacity: 0, y: 20, filter: "blur(6px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          transition={{ delay: 0.32, duration: 0.85, ease: revealEase }}
+          animate={
+            frameReady
+              ? { opacity: 1, y: 0, filter: "blur(0px)" }
+              : { opacity: 0, y: 20, filter: "blur(6px)" }
+          }
+          transition={
+            frameReady
+              ? { delay: 0.08, duration: 0.85, ease: revealEase }
+              : { duration: 0 }
+          }
         >
           <p>The Wedding of</p>
           <h2>{firstName(invitation.bride)}</h2>
           <span>&amp;</span>
           <h2>{firstName(invitation.groom)}</h2>
           <small>{shortDate(event?.rawDate || null, event?.date || "")}</small>
-        </motion.div>
-        <motion.div
-          className={styles.scrollMouse}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.05, duration: 0.65, ease: revealEase }}
-          aria-hidden="true"
-        >
-          <span />
         </motion.div>
       </div>
     </section>
