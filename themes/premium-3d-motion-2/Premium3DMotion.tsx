@@ -277,18 +277,34 @@ function OpeningHero({ invitation }: { invitation: InvitationData }) {
         <source src={REFERENCE_VIDEO} type="video/mp4" />
       </video>
       <div className={styles.heroShade} />
-      <div className={styles.heroFrame} />
+      <motion.div
+        className={styles.heroFrame}
+        initial={{ opacity: 0, scale: 0.985 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.2, duration: 0.9, ease: revealEase }}
+      />
       <div className={styles.heroCopy}>
-        <SectionReveal>
+        <motion.div
+          className={styles.heroCopyReveal}
+          initial={{ opacity: 0, y: 20, filter: "blur(6px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          transition={{ delay: 0.32, duration: 0.85, ease: revealEase }}
+        >
           <p>The Wedding of</p>
           <h2>{firstName(invitation.bride)}</h2>
           <span>&amp;</span>
           <h2>{firstName(invitation.groom)}</h2>
           <small>{shortDate(event?.rawDate || null, event?.date || "")}</small>
-        </SectionReveal>
-      </div>
-      <div className={styles.scrollMouse} aria-hidden="true">
-        <span />
+        </motion.div>
+        <motion.div
+          className={styles.scrollMouse}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.05, duration: 0.65, ease: revealEase }}
+          aria-hidden="true"
+        >
+          <span />
+        </motion.div>
       </div>
     </section>
   );
