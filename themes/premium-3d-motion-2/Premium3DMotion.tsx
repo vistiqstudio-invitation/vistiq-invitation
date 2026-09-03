@@ -27,6 +27,7 @@ const REFERENCE_SLIDES = REFERENCE_GALLERY;
 const MANDIRI_ICON =
   "https://undanganqu.net/wp-content/uploads/2024/11/iconmandiri-1.png.webp";
 const FOOTER_LOGO = "/vistiq-invitation-logo.png";
+const MANUAL_SCROLL_EVENT = "vistiq:auto-scroll-start";
 
 const revealEase = [0.22, 1, 0.36, 1] as const;
 const MONTHS = [
@@ -278,7 +279,7 @@ function OpeningHero({ invitation, opened }: { invitation: InvitationData; opene
     if (!opened) {
       setFrameReady(false);
       video?.pause();
-      if (video) video.currentTime = 0;
+      if (video && video.readyState > 0) video.currentTime = 0;
       return;
     }
 
@@ -292,7 +293,7 @@ function OpeningHero({ invitation, opened }: { invitation: InvitationData; opene
   }, [opened]);
 
   return (
-    <section id="home" className={styles.hero}>
+    <section id="home" data-opening-hero className={styles.hero}>
       <div className={styles.heroFallback} style={bg(REFERENCE_FALLBACK)} />
       <video
         ref={videoRef}
@@ -306,37 +307,34 @@ function OpeningHero({ invitation, opened }: { invitation: InvitationData; opene
       </video>
       <div className={styles.heroShade} />
       <div className={styles.heroCopy}>
-        <motion.div
-          className={styles.heroCopyReveal}
-          initial={{ opacity: 0, y: 20, filter: "blur(6px)" }}
-          animate={
-            frameReady
-              ? { opacity: 1, y: 0, filter: "blur(0px)" }
-              : { opacity: 0, y: 20, filter: "blur(6px)" }
-          }
-          transition={
-            frameReady
-              ? { delay: 0.08, duration: 0.85, ease: revealEase }
-              : { duration: 0 }
-          }
-        >
-          <p>The Wedding of</p>
-          <h2>{firstName(invitation.bride)}</h2>
-          <span>&amp;</span>
-          <h2>{firstName(invitation.groom)}</h2>
-          <small>{shortDate(event?.rawDate || null, event?.date || "")}</small>
-        </motion.div>
-        <motion.button
-          type="button"
-          className={styles.scrollMouse}
-          initial={{ opacity: 0, y: 10 }}
-          animate={frameReady ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
-          transition={frameReady ? { delay: 0.35, duration: 0.65, ease: revealEase } : { duration: 0 }}
-          onClick={() => document.getElementById("quote")?.scrollIntoView({ behavior: "smooth", block: "start" })}
-          aria-label="Scroll ke bagian berikutnya"
-        >
-          <span />
-        </motion.button>
+        {frameReady && (
+          <motion.div
+            className={styles.heroCopyReveal}
+            initial={{ opacity: 0, y: 20, filter: "blur(6px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            transition={{ delay: 0.08, duration: 0.85, ease: revealEase }}
+          >
+            <p>The Wedding of</p>
+            <h2>{firstName(invitation.bride)}</h2>
+            <span>&amp;</span>
+            <h2>{firstName(invitation.groom)}</h2>
+            <small>{shortDate(event?.rawDate || null, event?.date || "")}</small>
+          </motion.div>
+        )}
+        {frameReady && (
+          <motion.button
+            type="button"
+            className={styles.scrollMouse}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.35, duration: 0.65, ease: revealEase }}
+            onClick={() => window.dispatchEvent(new Event(MANUAL_SCROLL_EVENT))}
+            aria-label="Mulai scroll otomatis"
+            title="Mulai scroll otomatis"
+          >
+            <span />
+          </motion.button>
+        )}
       </div>
     </section>
   );
@@ -870,7 +868,7 @@ export default function Premium3DMotion({ invitation }: { invitation: Invitation
   }
 
   return (
-    <main className={styles.root}>
+    <main className={styles.root} data-auto-scroll-mode="manual">
       <aside className={styles.desktopPhoto} style={bg(invitation.coverImage || REFERENCE_COVER)} aria-hidden="true" />
       <div className={styles.shell}>
         <div className={styles.content} aria-hidden={!opened}>

@@ -4,11 +4,14 @@ import { useEffect, useRef, useState } from "react";
 import { useInvitation } from "@/components/InvitationProvider";
 
 const SCROLL_SPEED = 24;
+const MANUAL_START_EVENT = "vistiq:auto-scroll-start";
+const MANUAL_MODE_SELECTOR = '[data-auto-scroll-mode="manual"]';
 
 export default function AutoScrollController() {
   const { opened } = useInvitation();
   const [running, setRunning] = useState(false);
   const [available, setAvailable] = useState(false);
+  const [manualOnly, setManualOnly] = useState(false);
   const [heroVisible, setHeroVisible] = useState(false);
   const frameRef = useRef<number | null>(null);
   const lastTimeRef = useRef<number | null>(null);
@@ -20,9 +23,19 @@ export default function AutoScrollController() {
         setRunning(false);
         setAvailable(false);
         setHeroVisible(false);
+        setManualOnly(false);
         startedRef.current = false;
       }, 0);
       return () => window.clearTimeout(resetTimer);
+    }
+
+    const isManualOnly = Boolean(document.querySelector(MANUAL_MODE_SELECTOR));
+    setManualOnly(isManualOnly);
+    if (isManualOnly) {
+      setRunning(false);
+      setAvailable(false);
+      startedRef.current = false;
+      return;
     }
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -39,6 +52,23 @@ export default function AutoScrollController() {
     }, 1400);
 
     return () => window.clearTimeout(timer);
+  }, [opened]);
+
+  useEffect(() => {
+    if (!opened) return;
+
+    const startManualScroll = () => {
+      if (!document.querySelector(MANUAL_MODE_SELECTOR)) return;
+      const canScroll = document.documentElement.scrollHeight > window.innerHeight + 80;
+      if (!canScroll) return;
+      setManualOnly(true);
+      setAvailable(true);
+      startedRef.current = true;
+      setRunning(true);
+    };
+
+    window.addEventListener(MANUAL_START_EVENT, startManualScroll);
+    return () => window.removeEventListener(MANUAL_START_EVENT, startManualScroll);
   }, [opened]);
 
   useEffect(() => {
@@ -118,7 +148,7 @@ export default function AutoScrollController() {
     };
   }, [opened]);
 
-  if (!opened || !available || heroVisible) return null;
+  if (!opened || !available || heroVisible || manualOnly) return null;
 
   return (
     <>
