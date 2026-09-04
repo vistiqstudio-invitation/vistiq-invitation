@@ -1046,28 +1046,6 @@ function Footer({ invitation }: { invitation: InvitationData }) {
   );
 }
 
-const nav: [string, IconName, string][] = [
-  ["home", "home", "Home"],
-  ["couple", "couple", "Mempelai"],
-  ["events", "calendar", "Acara"],
-  ["gallery", "gallery", "Galeri"],
-  ["story", "heart", "Cerita"],
-  ["wishes", "chat", "Ucapan"],
-  ["gift", "gift", "Hadiah"],
-];
-
-function FloatingNav() {
-  return (
-    <nav className={styles.bottomNav} aria-label="Navigasi undangan">
-      {nav.map(([id, icon, label]) => (
-        <button key={id} type="button" onClick={() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })} aria-label={label}>
-          <Icon name={icon} />
-        </button>
-      ))}
-    </nav>
-  );
-}
-
 function FloatingActions({ isPlaying, toggle }: { isPlaying: boolean; toggle: () => void }) {
   return (
     <div className={styles.floatingActions}>
@@ -1143,7 +1121,6 @@ export default function Premium3DMotion({ invitation }: { invitation: Invitation
         {opened && (
           <div className={styles.controls}>
             <FloatingActions isPlaying={isPlaying} toggle={() => void toggle()} />
-            <FloatingNav />
           </div>
         )}
       </div>
