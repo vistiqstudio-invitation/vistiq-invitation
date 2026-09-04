@@ -502,7 +502,7 @@ function Person({
               rotate: [0, 0.35 * swayDirection, 0, -0.35 * swayDirection, 0],
             }}
             viewport={scrollViewport}
-            transition={{ delay: 1.65, duration: 9, repeat: Infinity, ease: "easeInOut" }}
+            transition={{ delay: 1.65, duration: 6, repeat: Infinity, ease: "easeInOut" }}
           />
         </motion.div>
         <motion.div
@@ -533,7 +533,7 @@ function Person({
               rotate: [0, 0.6 * swayDirection, 0, -0.6 * swayDirection, 0],
             }}
             viewport={scrollViewport}
-            transition={{ delay: 1.05, duration: 7, repeat: Infinity, ease: "easeInOut" }}
+            transition={{ delay: 1.05, duration: 5, repeat: Infinity, ease: "easeInOut" }}
           />
         </motion.div>
       </div>
