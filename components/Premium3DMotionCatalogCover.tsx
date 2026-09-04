@@ -12,32 +12,34 @@ function EnvelopeIcon() {
 export default function Premium3DMotionCatalogCover() {
   return (
     <div className={styles.cover}>
-      <div className={styles.background} aria-hidden="true" />
-      <div className={styles.shade} aria-hidden="true" />
-      <div className={`${styles.floral} ${styles.floralLeft}`} aria-hidden="true" />
-      <div className={`${styles.floral} ${styles.floralRight}`} aria-hidden="true" />
-      <div className={styles.portraits} aria-hidden="true">
-        <div className={`${styles.portrait} ${styles.portraitBride}`} />
-        <div className={`${styles.portrait} ${styles.portraitGroom}`} />
-      </div>
-      <div className={styles.grain} aria-hidden="true" />
-      <div className={styles.frame} aria-hidden="true" />
+      <div className={styles.coverBackground} aria-hidden="true" />
+      <div className={styles.coverShade} aria-hidden="true" />
+      <div className={styles.coverGardenOverlay} aria-hidden="true" />
+      <div className={styles.coverFloral} aria-hidden="true" />
 
-      <div className={styles.title}>
-        <p>The Wedding of</p>
-        <h3>Nayla <span>&amp;</span> Farhan</h3>
-      </div>
-
-      <div className={styles.guest}>
-        <p>
-          <span>Kepada Yth.</span>
-          <strong>Bapak/Ibu/Saudara/i</strong>
-        </p>
-        <div className={styles.button}>
-          <EnvelopeIcon />
-          <b>Buka Undangan</b>
+      <div className={styles.coverPortraitPair} aria-hidden="true">
+        <div className={styles.coverPortraitFrame}>
+          <div className={styles.coverPortrait} />
         </div>
       </div>
+
+      <div className={styles.coverFrame} aria-hidden="true" />
+
+      <div className={styles.coverStack}>
+        <p className={styles.coverEyebrow}>The Wedding of</p>
+        <h3>Nayla &amp; Farhan</h3>
+        <div className={styles.coverGuest}>
+          <p>
+            <span>Kepada Yth:</span>
+            <strong>Bapak/Ibu/Saudara/i</strong>
+          </p>
+          <div className={styles.button}>
+            <EnvelopeIcon />
+            <b>Buka Undangan</b>
+          </div>
+        </div>
+      </div>
+
     </div>
   );
 }
