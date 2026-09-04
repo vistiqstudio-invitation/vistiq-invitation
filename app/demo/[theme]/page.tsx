@@ -12,6 +12,7 @@ import { withLuxuryArtChampagneRomanceDemoAssets } from "@/lib/luxuryArtChampagn
 import { withLuxuryArtSoftDemoAssets } from "@/lib/luxuryArtSoftDemo";
 import { withThreeDMotionDemoAssets } from "@/lib/threeDMotionDemo";
 import { withPremium3DMotionDemoAssets } from "@/lib/premium3DMotionDemo";
+import { withNoorAlQamarMotionDemoAssets } from "@/lib/noorAlQamarMotionDemo";
 import WeddingThemeSafeArea from "@/components/WeddingThemeSafeArea";
 
 export default async function DemoThemePage({
@@ -24,27 +25,31 @@ export default async function DemoThemePage({
 
   if (!Theme) notFound();
 
-  const invitation = withPremium3DMotionDemoAssets(
+  const invitation = withNoorAlQamarMotionDemoAssets(
     theme,
-    withThreeDMotionDemoAssets(
-    theme,
-    withLuxuryArtSoftDemoAssets(
+    withPremium3DMotionDemoAssets(
       theme,
-      withLuxuryArtChampagneRomanceDemoAssets(
+      withThreeDMotionDemoAssets(
         theme,
-        withLuxuryArtLoveParadiseDemoAssets(
+        withLuxuryArtSoftDemoAssets(
           theme,
-          withLuxuryArtGardenDemoAssets(
+          withLuxuryArtChampagneRomanceDemoAssets(
             theme,
-            withPearlTideDemoAssets(
+            withLuxuryArtLoveParadiseDemoAssets(
               theme,
-              withPrismaticVowsDemoAssets(
+              withLuxuryArtGardenDemoAssets(
                 theme,
-                withVelvetCinemaDemoAssets(
+                withPearlTideDemoAssets(
                   theme,
-                  withLoveChronicleDemoAssets(
+                  withPrismaticVowsDemoAssets(
                     theme,
-                    withPorcelainBloomDemoAssets(theme, getDemoInvitation(theme)),
+                    withVelvetCinemaDemoAssets(
+                      theme,
+                      withLoveChronicleDemoAssets(
+                        theme,
+                        withPorcelainBloomDemoAssets(theme, getDemoInvitation(theme)),
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -53,7 +58,6 @@ export default async function DemoThemePage({
         ),
       ),
     ),
-  )
   );
 
   return (

@@ -28,6 +28,7 @@ export const WEDDING_COVER_BY_THEME: Record<string, string> = {
   "luxury-art-soft": "/themes/luxury-art-soft/ai-cover.jpg",
   "3d-motion": "/photos/luxury-art-love-paradise/couple-cover.webp",
   "3d-montion-1": "/photos/luxury-art-love-paradise/couple-cover.webp",
+  "noor-al-qamar-motion": "/themes/noor-al-qamar-motion/opening-poster.jpg",
   "jawa-coklat": "/photos/jawa-gallery-4.png",
   "jawa-sepia": "/photos/jawa-cover.png",
   "sage-green": "/photos/floral-cover.png",
