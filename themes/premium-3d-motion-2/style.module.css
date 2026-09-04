@@ -698,12 +698,24 @@
   position: relative;
   min-height: 370px;
   margin-bottom: -150px;
+}
+
+.personBranchMotion {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.personBranch {
+  position: absolute;
+  inset: 0;
   background-position: 20% 0;
   background-repeat: no-repeat;
   background-size: 60% auto;
 }
 
-.personBlock:nth-of-type(3) .personStage {
+.personBlock:nth-of-type(3) .personBranch {
   background-position: 80% 0;
 }
 
@@ -729,6 +741,12 @@
   height: auto;
   margin-top: -190px;
   pointer-events: none;
+}
+
+.personFloralImage {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 .personBlock:first-of-type .personFloral {

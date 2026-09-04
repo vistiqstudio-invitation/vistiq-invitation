@@ -480,9 +480,31 @@ function Person({
   branch: string;
 }) {
   const instagram = person.instagram?.replace(/^@/, "");
+  const branchOffset = role === "bride" ? -46 : 46;
+  const swayDirection = role === "bride" ? -1 : 1;
   return (
     <SectionReveal className={styles.personBlock}>
-      <div className={styles.personStage} style={bg(branch)}>
+      <div className={styles.personStage}>
+        <motion.div
+          className={styles.personBranchMotion}
+          initial={{ opacity: 0, x: branchOffset, scale: 0.96 }}
+          whileInView={{ opacity: 1, x: 0, scale: 1 }}
+          viewport={scrollViewport}
+          transition={{ delay: 0.68, duration: 0.9, ease: revealEase }}
+        >
+          <motion.div
+            className={styles.personBranch}
+            style={bg(branch)}
+            initial={{ x: 0, y: 0, rotate: 0 }}
+            whileInView={{
+              x: [0, 1.4 * swayDirection, 0, -1.4 * swayDirection, 0],
+              y: [0, -1, 0, 1, 0],
+              rotate: [0, 0.35 * swayDirection, 0, -0.35 * swayDirection, 0],
+            }}
+            viewport={scrollViewport}
+            transition={{ delay: 1.65, duration: 9, repeat: Infinity, ease: "easeInOut" }}
+          />
+        </motion.div>
         <motion.div
           className={styles.personPhoto}
           style={bg(person.photo || fallback)}
@@ -490,18 +512,30 @@ function Person({
           initial="hidden"
           whileInView="visible"
           viewport={scrollViewport}
-          custom={0.02}
+          custom={0.3}
         />
-        <motion.img
+        <motion.div
           className={styles.personFloral}
-          src={floral}
-          alt=""
           variants={scrollImageVariants}
           initial="hidden"
           whileInView="visible"
           viewport={scrollViewport}
-          custom={0.16}
-        />
+          custom={0}
+        >
+          <motion.img
+            className={styles.personFloralImage}
+            src={floral}
+            alt=""
+            initial={{ x: 0, y: 0, rotate: 0 }}
+            whileInView={{
+              x: [0, -1.5 * swayDirection, 0, 1.5 * swayDirection, 0],
+              y: [0, -1.2, 0, 1.2, 0],
+              rotate: [0, 0.6 * swayDirection, 0, -0.6 * swayDirection, 0],
+            }}
+            viewport={scrollViewport}
+            transition={{ delay: 1.05, duration: 7, repeat: Infinity, ease: "easeInOut" }}
+          />
+        </motion.div>
       </div>
       <motion.div
         className={styles.personText}
