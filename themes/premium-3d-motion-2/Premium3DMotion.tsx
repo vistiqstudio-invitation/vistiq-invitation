@@ -36,43 +36,40 @@ const heroCopyVariants = {
     opacity: 1,
     transition: {
       delayChildren: 0.1,
-      staggerChildren: 0.1,
+      staggerChildren: 0.07,
     },
   },
 };
 
 const heroCopyItemVariants = {
-  hidden: { opacity: 0, y: 14, filter: "blur(7px)" },
+  hidden: { opacity: 0, y: 10 },
   visible: {
     opacity: 1,
     y: 0,
-    filter: "blur(0px)",
-    transition: { duration: 0.8, ease: revealEase },
+    transition: { duration: 0.62, ease: revealEase },
   },
 };
 
 const scrollItemVariants = {
-  hidden: { opacity: 0, y: 18, filter: "blur(5px)" },
+  hidden: { opacity: 0, y: 12 },
   visible: (delay = 0) => ({
     opacity: 1,
     y: 0,
-    filter: "blur(0px)",
-    transition: { delay, duration: 0.72, ease: revealEase },
+    transition: { delay: Math.min(delay, 0.28), duration: 0.52, ease: revealEase },
   }),
 };
 
 const scrollImageVariants = {
-  hidden: { opacity: 0, y: 22, scale: 0.96, filter: "blur(5px)" },
+  hidden: { opacity: 0, y: 14, scale: 0.98 },
   visible: (delay = 0) => ({
     opacity: 1,
     y: 0,
     scale: 1,
-    filter: "blur(0px)",
-    transition: { delay, duration: 0.9, ease: revealEase },
+    transition: { delay: Math.min(delay, 0.3), duration: 0.64, ease: revealEase },
   }),
 };
 
-const scrollViewport = { once: true, amount: 0.14 } as const;
+const scrollViewport = { once: true, amount: 0.06 } as const;
 const MONTHS = [
   "jan",
   "feb",
@@ -257,17 +254,7 @@ function eventLocation(location: string) {
 }
 
 function SectionReveal({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  return (
-    <motion.div
-      className={className}
-      initial={{ opacity: 0, y: 22 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.18 }}
-      transition={{ duration: 0.75, ease: revealEase }}
-    >
-      {children}
-    </motion.div>
-  );
+  return <div className={className}>{children}</div>;
 }
 
 function Cover({ invitation, onOpen }: { invitation: InvitationData; onOpen: () => void }) {
@@ -385,8 +372,8 @@ function OpeningHero({ invitation, opened }: { invitation: InvitationData; opene
           <motion.button
             type="button"
             className={styles.scrollMouse}
-            initial={{ opacity: 0, y: 12, scale: 0.92, filter: "blur(4px)" }}
-            animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+            initial={{ opacity: 0, y: 12, scale: 0.92 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ delay: 0.78, duration: 0.8, ease: revealEase }}
             onClick={() => window.dispatchEvent(new Event(MANUAL_SCROLL_EVENT))}
             aria-label="Mulai scroll otomatis"
