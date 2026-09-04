@@ -14,8 +14,6 @@ const ASSET_ROOT = "/themes/noor-al-qamar-motion";
 const REFERENCE_COVER = "/photos/green-gallery-2.png";
 const REFERENCE_VIDEO = ASSET_ROOT + "/opening-noor-al-qamar.mp4";
 const REFERENCE_POSTER = ASSET_ROOT + "/opening-poster.jpg";
-const REFERENCE_FALLBACK = "/photos/green-bride.png";
-const REFERENCE_OVERLAY = "/photos/green-gallery-3.png";
 const REFERENCE_GALLERY = [
   "/photos/green-gallery-1.png",
   "/photos/green-gallery-2.png",
@@ -264,20 +262,30 @@ function Cover({ invitation, onOpen }: { invitation: InvitationData; onOpen: () 
 
   return (
     <motion.section className={styles.cover} exit={{ y: "-100%" }} transition={{ duration: 1.2, ease: revealEase }}>
-      <div className={styles.coverBackground} style={bg(invitation.bride.photo || REFERENCE_FALLBACK)} />
+      <video
+        className={styles.coverVideo}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        poster={REFERENCE_POSTER}
+        aria-hidden="true"
+      >
+        <source src={REFERENCE_VIDEO} type="video/mp4" />
+      </video>
       <div className={styles.coverShade} />
       <div className={styles.coverGardenOverlay} aria-hidden="true" />
-      <div className={`${styles.coverFloral} ${styles.coverFloralRight}`} aria-hidden="true" />
-      <div className={styles.coverPortraitPair}>
-        <div className={`${styles.coverPortraitFrame} ${styles.coverPortraitCouple}`}>
-          <div
-            className={styles.coverPortrait}
-            style={bg(invitation.coverImage || REFERENCE_COVER)}
-          />
-        </div>
-      </div>
       <div className={styles.coverFrame} />
       <div className={styles.coverStack}>
+        <motion.span
+          className={styles.coverArabic}
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.32, duration: 0.8 }}
+        >
+          بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
+        </motion.span>
         <motion.p
           className={styles.coverEyebrow}
           initial={{ opacity: 0, y: -12 }}
@@ -293,6 +301,14 @@ function Cover({ invitation, onOpen }: { invitation: InvitationData; onOpen: () 
         >
           {firstName(invitation.bride)} &amp; {firstName(invitation.groom)}
         </motion.h1>
+        <motion.small
+          className={styles.coverDate}
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.96, duration: 0.8 }}
+        >
+          {shortDate(invitation.events[0]?.rawDate || null, invitation.events[0]?.date || "Dengan memohon ridho Allah SWT")}
+        </motion.small>
         <motion.div
           className={styles.coverGuest}
           initial={{ opacity: 0, y: 14 }}
@@ -339,7 +355,7 @@ function OpeningHero({ invitation, opened }: { invitation: InvitationData; opene
 
   return (
     <section id="home" data-opening-hero className={styles.hero}>
-      <div className={styles.heroFallback} style={bg(REFERENCE_FALLBACK)} />
+      <div className={styles.heroFallback} style={bg(REFERENCE_POSTER)} />
       <video
         ref={videoRef}
         className={styles.heroVideo}
@@ -349,6 +365,7 @@ function OpeningHero({ invitation, opened }: { invitation: InvitationData; opene
         poster={REFERENCE_POSTER}
         onTimeUpdate={revealAfterWhiteFrame}
         onEnded={() => setFrameReady(true)}
+        onError={() => setFrameReady(true)}
         aria-hidden="true"
       >
         <source src={REFERENCE_VIDEO} type="video/mp4" />
@@ -460,41 +477,15 @@ function Person({
   person,
   role,
   fallback,
-  floral,
-  branch,
 }: {
   person: InvitationData["bride"] | InvitationData["groom"];
   role: "bride" | "groom";
   fallback: string;
-  floral: string;
-  branch: string;
 }) {
   const instagram = person.instagram?.replace(/^@/, "");
-  const branchOffset = role === "bride" ? -46 : 46;
-  const swayDirection = role === "bride" ? -1 : 1;
   return (
     <SectionReveal className={styles.personBlock}>
       <div className={styles.personStage}>
-        <motion.div
-          className={styles.personBranchMotion}
-          initial={{ opacity: 0, x: branchOffset, scale: 0.96 }}
-          whileInView={{ opacity: 1, x: 0, scale: 1 }}
-          viewport={scrollViewport}
-          transition={{ delay: 0.68, duration: 0.9, ease: revealEase }}
-        >
-          <motion.div
-            className={styles.personBranch}
-            style={bg(branch)}
-            initial={{ x: 0, y: 0, rotate: 0 }}
-            whileInView={{
-              x: [0, 1.4 * swayDirection, 0, -1.4 * swayDirection, 0],
-              y: [0, -1, 0, 1, 0],
-              rotate: [0, 0.35 * swayDirection, 0, -0.35 * swayDirection, 0],
-            }}
-            viewport={scrollViewport}
-            transition={{ delay: 1.65, duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          />
-        </motion.div>
         <motion.div
           className={styles.personPhoto}
           style={bg(person.photo || fallback)}
@@ -505,27 +496,13 @@ function Person({
           custom={0.3}
         />
         <motion.div
-          className={styles.personFloral}
+          className={styles.personOrnament}
           variants={scrollImageVariants}
           initial="hidden"
           whileInView="visible"
           viewport={scrollViewport}
           custom={0}
-        >
-          <motion.img
-            className={styles.personFloralImage}
-            src={floral}
-            alt=""
-            initial={{ x: 0, y: 0, rotate: 0 }}
-            whileInView={{
-              x: [0, -1.5 * swayDirection, 0, 1.5 * swayDirection, 0],
-              y: [0, -1.2, 0, 1.2, 0],
-              rotate: [0, 0.6 * swayDirection, 0, -0.6 * swayDirection, 0],
-            }}
-            viewport={scrollViewport}
-            transition={{ delay: 1.05, duration: 5, repeat: Infinity, ease: "easeInOut" }}
-          />
-        </motion.div>
+        />
       </div>
       <motion.div
         className={styles.personText}
@@ -564,8 +541,6 @@ function Couple({ invitation }: { invitation: InvitationData }) {
         person={invitation.bride}
         role="bride"
         fallback={REFERENCE_GALLERY[2]}
-        branch={ASSET_ROOT + "/rosette.svg"}
-        floral={ASSET_ROOT + "/rosette.svg"}
       />
       <motion.div
         className={styles.coupleAmpersand}
@@ -581,8 +556,6 @@ function Couple({ invitation }: { invitation: InvitationData }) {
         person={invitation.groom}
         role="groom"
         fallback={REFERENCE_GALLERY[3]}
-        branch={ASSET_ROOT + "/rosette.svg"}
-        floral={ASSET_ROOT + "/rosette.svg"}
       />
     </section>
   );
@@ -691,7 +664,6 @@ function EventCard({
     <SectionReveal className={styles.eventOuter}>
       <motion.article
         className={styles.eventCard}
-        style={bg(REFERENCE_OVERLAY)}
         variants={scrollImageVariants}
         initial="hidden"
         whileInView="visible"
@@ -741,6 +713,7 @@ function Events({ invitation }: { invitation: InvitationData }) {
 
 function LiveStreaming({ invitation }: { invitation: InvitationData }) {
   const accounts = [invitation.bride.instagram, invitation.groom.instagram].filter(Boolean) as string[];
+  if (!invitation.videoUrl && accounts.length === 0) return null;
   return (
     <section id="live" className={styles.liveSection}>
       <SectionReveal className={styles.liveCard}>
@@ -764,7 +737,7 @@ function LiveStreaming({ invitation }: { invitation: InvitationData }) {
           />
         )}
         <motion.div className={styles.liveButtons} variants={scrollItemVariants} initial="hidden" whileInView="visible" viewport={scrollViewport} custom={0.26}>
-          {(accounts.length ? accounts : ["username", "username"]).map((account, index) => (
+          {accounts.map((account, index) => (
             <motion.a key={account + index} href={instagramUrl(account)} target="_blank" rel="noreferrer" variants={scrollItemVariants} custom={0.08 + index * 0.1}>
               <Icon name="instagram" /> @{account.replace(/^@/, "")}
             </motion.a>
@@ -1047,7 +1020,7 @@ function Wishes({ invitation }: { invitation: InvitationData }) {
 
 function Footer({ invitation }: { invitation: InvitationData }) {
   return (
-    <footer className={styles.footerSection} style={bg(REFERENCE_GALLERY[0])}>
+    <footer className={styles.footerSection} style={bg(REFERENCE_POSTER)}>
       <div className={styles.footerShade} />
       <SectionReveal className={styles.footerContent}>
         <motion.p variants={scrollItemVariants} initial="hidden" whileInView="visible" viewport={scrollViewport} custom={0.06}>
@@ -1109,7 +1082,7 @@ export default function NoorAlQamarMotion({ invitation }: { invitation: Invitati
 
   return (
     <main className={styles.root} data-auto-scroll-mode="manual">
-      <aside className={styles.desktopPhoto} style={bg(invitation.coverImage || REFERENCE_COVER)} aria-hidden="true">
+      <aside className={styles.desktopPhoto} style={bg(REFERENCE_POSTER)} aria-hidden="true">
         {!opened && (
           <>
             <div className={styles.desktopPhotoShade} />
