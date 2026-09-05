@@ -358,3 +358,16 @@ export default function ThemeBrowser({
               priceLabel={priceLabel}
               priceWasLabel={priceWasLabel}
               discountLabel={discountLabel}
+              waNumber={waNumber}
+              brandName={brandName}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className={styles.grid}>
+          <ComingSoonCard {...COMING_SOON[occasion]} />
+        </div>
+      )}
+    </div>
+  );
+}
