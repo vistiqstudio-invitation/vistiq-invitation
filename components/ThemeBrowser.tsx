@@ -6,10 +6,6 @@ import Link from "next/link";
 import PhoneMockup from "@/components/PhoneMockup";
 import { themeList, aqiqahThemeList, khitanThemeList, birthdayThemeList, isThemeNew, type ThemeMeta } from "@/lib/theme";
 import { getThemeCoverImage } from "@/lib/themeCoverImages";
-import { getDemoInvitation } from "@/lib/demoInvitation";
-import { getDemoKhitanInvitation } from "@/lib/demoKhitanInvitation";
-import { getDemoAqiqahInvitation } from "@/lib/demoAqiqahInvitation";
-import { getDemoBirthdayInvitation } from "@/lib/demoBirthdayInvitation";
 import styles from "@/app/demo/demo.module.css";
 
 function SendIcon() {
@@ -54,26 +50,17 @@ const COMING_SOON: Record<string, { label: string; description: string }> = {
 };
 
 const SCREENSHOT_VARIANTS = [
-  { label: "Cover", objectPosition: "50% 7%", transform: "scale(1)" },
-  { label: "Kisah", objectPosition: "34% 34%", transform: "scale(1.16)" },
-  { label: "Acara", objectPosition: "67% 62%", transform: "scale(1.16)" },
-  { label: "Galeri", objectPosition: "50% 94%", transform: "scale(1.1)" },
+  { label: "Cover", objectPosition: "50% 0%", transform: "scale(1)" },
+  { label: "Kisah", objectPosition: "50% 33%", transform: "scale(1.08)" },
+  { label: "Acara", objectPosition: "50% 66%", transform: "scale(1.08)" },
+  { label: "Galeri", objectPosition: "50% 100%", transform: "scale(1.04)" },
 ] as const;
 
-function getThemeScreenshotImages(themeKey: string, demoPath: string, coverImage: string | null) {
-  const gallery =
-    demoPath === "/demo-khitan"
-      ? getDemoKhitanInvitation(themeKey).gallery
-      : demoPath === "/demo-akikah"
-        ? getDemoAqiqahInvitation(themeKey).gallery
-        : demoPath === "/demo-ulang-tahun"
-          ? getDemoBirthdayInvitation(themeKey).gallery
-          : getDemoInvitation(themeKey).gallery;
-  const sources = [coverImage, ...gallery].filter((source): source is string => Boolean(source));
-
-  if (sources.length === 0) return SCREENSHOT_VARIANTS.map(() => null);
-
-  return SCREENSHOT_VARIANTS.map((_, index) => sources[index % sources.length] || null);
+function getThemeScreenshotImages(coverImage: string | null) {
+  // The catalog cards must show screenshots of the invitation website itself.
+  // Reuse the portrait website preview and crop different vertical sections;
+  // the invitation gallery contains raw couple photos and must not be used here.
+  return SCREENSHOT_VARIANTS.map(() => coverImage);
 }
 
 function ThemeScreenshotCard({
@@ -167,7 +154,7 @@ function ThemeCard({
 }) {
   const orderText = encodeURIComponent(`Halo ${brandName}, saya ingin order undangan tema ${theme.label}`);
   const coverImage = getThemeCoverImage(theme.key, demoPath);
-  const previewImages = getThemeScreenshotImages(theme.key, demoPath, coverImage);
+  const previewImages = getThemeScreenshotImages(coverImage);
 
   return (
     <div className={styles.card}>
