@@ -41,6 +41,7 @@ export const WEDDING_COVER_BY_THEME: Record<string, string> = {
   "velvet-cinema": "/photos/deco-cover.png",
   "prismatic-vows": "/photos/pastel-cover.png",
   "pearl-tide": "/photos/white-cover.png",
+  "fizan-islamic-motion": "/themes/fizan-islamic-motion/poster.jpg",
 };
 
 const KHITAN_COVER = "/photos/khitan-warna-cover.jpg";

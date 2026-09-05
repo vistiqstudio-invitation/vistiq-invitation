@@ -1,0 +1,275 @@
+.root {
+  --sage: #6e9277;
+  --sage-dark: #4d7059;
+  --gold: #fac213;
+  --paper: #faf3e7;
+  --paper-deep: #eee1cf;
+  --ink: #151914;
+  --muted: #5f655c;
+  --white: #fffdf8;
+  position: relative;
+  min-height: 100vh;
+  overflow-x: clip;
+  background: #1a211c;
+  color: var(--ink);
+  font-family: var(--font-playfair), "Playfair Display", Georgia, serif;
+}
+
+.root * { box-sizing: border-box; }
+.root button, .root input, .root select, .root textarea { font: inherit; }
+.root button { cursor: pointer; }
+.page {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 450px;
+  min-height: 100vh;
+  margin: 0 auto;
+  overflow: hidden;
+  background: var(--paper);
+  box-shadow: 0 0 42px rgba(0, 0, 0, .28);
+}
+.content { position: relative; overflow: hidden; }
+.content > section,
+.content > footer { position: relative; isolation: isolate; overflow: hidden; }
+
+/* Cover: the exact reference flow is retained - locked screen, guest label,
+   invitation button, then the cover lifts away to reveal the page. */
+.cover {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  width: min(100%, 450px);
+  height: 100vh;
+  height: 100svh;
+  min-height: 600px;
+  margin: 0 auto;
+  overflow: hidden;
+  color: #fffdf8;
+  background: #1c3329;
+}
+.coverVideo, .coverShade { position: absolute; inset: 0; width: 100%; height: 100%; }
+.coverVideo { object-fit: cover; object-position: center; }
+.coverShade {
+  background:
+    linear-gradient(180deg, rgba(9, 28, 21, .45), rgba(10, 28, 20, .04) 38%, rgba(9, 25, 18, .7) 100%),
+    linear-gradient(90deg, rgba(9, 28, 21, .42), transparent 58%);
+}
+.coverHeader {
+  position: absolute;
+  top: 7%;
+  right: 28px;
+  left: 28px;
+  z-index: 2;
+  text-align: left;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, .45);
+}
+.coverHeader p { max-width: 265px; margin: 0 0 8px; font-size: 12px; font-weight: 600; line-height: 1.18; }
+.coverHeader h1 { margin: 0; color: #fff; font-size: clamp(26px, 7vw, 38px); font-weight: 600; line-height: 1; }
+.coverHeader h1 span { color: var(--gold); font-style: italic; }
+.coverGuest {
+  position: absolute;
+  right: 25px;
+  bottom: max(5%, env(safe-area-inset-bottom));
+  left: 25px;
+  z-index: 2;
+  padding: 16px 18px 18px;
+  border: 1px solid rgba(255, 255, 255, .34);
+  border-radius: 10px;
+  background: rgba(24, 48, 37, .38);
+  backdrop-filter: blur(8px);
+  text-align: left;
+  box-shadow: 0 14px 30px rgba(4, 15, 10, .16);
+}
+.coverGuest p { margin: 0 0 3px; font-size: 12px; line-height: 1.25; }
+.coverGuest strong { display: block; margin-bottom: 3px; color: #fff; font-size: 19px; font-weight: 600; }
+.coverGuest button,
+.greenButton,
+.lightButton,
+.giftCard button,
+.physicalGift button,
+.musicButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 0;
+  border-radius: 8px;
+  transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
+}
+.coverGuest button { margin-top: 12px; padding: 12px 18px; border: 2px solid var(--gold); background: var(--sage); color: #fff; font-size: 14px; }
+.coverGuest button:hover, .greenButton:hover, .lightButton:hover, .giftCard button:hover, .physicalGift button:hover { transform: translateY(-2px); }
+.coverGuest button svg, .greenButton svg, .lightButton svg, .giftCard button svg, .physicalGift button svg, .musicButton svg { width: 16px; height: 16px; }
+
+.openingSection {
+  min-height: 100svh;
+  padding: 34px 25px 48px;
+  background:
+    linear-gradient(rgba(250, 243, 231, .92), rgba(250, 243, 231, .94)),
+    url("/themes/fizan-islamic-motion/poster.jpg") center / cover;
+  text-align: center;
+}
+.openingIntro { position: relative; z-index: 1; }
+.kicker, .sectionTitle > span, .eventLabel, .personInfo > span { color: var(--sage); font-size: 12px; font-weight: 600; letter-spacing: .13em; text-transform: uppercase; }
+.kicker { margin: 0 0 4px; }
+.openingIntro h2 { margin: 0; color: var(--sage); font-size: 34px; font-weight: 600; line-height: 1; }
+.openingIntro h2 span { color: var(--gold); font-style: italic; }
+.portraitPair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 26px 0 20px; }
+.portraitCard { min-height: 214px; background-position: center; background-size: cover; box-shadow: 0 11px 22px rgba(52, 62, 47, .12); }
+.portraitCard:first-child { border-radius: 0 72px; }
+.portraitCard:last-child { border-radius: 72px 0; }
+.openingDescription { max-width: 340px; margin: 0 auto; color: var(--muted); font-size: 14px; line-height: 1.65; }
+.glassCard, .countdownCard, .formCard, .storyCard, .giftInner, .liveCard {
+  position: relative;
+  z-index: 1;
+  margin-top: 26px;
+  padding: 26px 24px;
+  border: 1px solid rgba(110, 146, 119, .28);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, .54);
+  box-shadow: 0 12px 28px rgba(63, 82, 57, .09);
+  backdrop-filter: blur(5px);
+}
+.cardOrnament { display: block; margin-bottom: 12px; color: var(--sage); font-family: var(--font-cormorant), Georgia, serif; font-size: 27px; }
+.cardOrnament i { color: var(--gold); font-size: .8em; }
+.glassCard blockquote { margin: 0; color: #29352b; font-size: 14px; line-height: 1.75; }
+.glassCard cite { display: block; margin-top: 12px; color: var(--sage); font-size: 12px; font-style: normal; }
+.countdownCard { padding: 18px 24px 22px; }
+.countdownCard h3 { margin: 0 0 14px; color: var(--sage); font-size: 22px; font-weight: 500; }
+.countdown { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin-bottom: 18px; }
+.countdown div { padding: 4px 2px; }
+.countdown strong { display: block; color: var(--sage); font-size: 22px; font-weight: 400; line-height: 1.1; }
+.countdown span { display: block; margin-top: 4px; color: var(--sage); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
+.greenButton { padding: 11px 16px; background: var(--sage); color: #fff; font-size: 13px; }
+
+.coupleSection, .storySection, .gallerySection, .giftSection, .confirmSection, .rsvpSection, .wishesSection, .liveSection { padding: 56px 25px; background: var(--paper); }
+.sectionTitle { text-align: center; }
+.sectionTitle > span { display: block; margin-bottom: 7px; line-height: 1.25; }
+.sectionTitle h2 { margin: 0; color: var(--sage); font-size: 26px; font-weight: 500; letter-spacing: .02em; text-transform: uppercase; }
+.sectionTitle i { display: inline-grid; width: 24px; height: 24px; margin-top: 12px; place-items: center; color: var(--gold); font-style: normal; }
+.sectionTitle i svg { width: 17px; height: 17px; }
+.peopleGrid { display: grid; gap: 25px; margin-top: 28px; }
+.personCard { background: rgba(255, 255, 255, .48); }
+.personPhoto { height: 260px; background-position: center; background-size: cover; }
+.personCard:first-child .personPhoto { border-radius: 108px 0 0 0; }
+.personCard:last-child .personPhoto { border-radius: 0 0 108px 0; }
+.personInfo { padding: 16px 17px 19px; text-align: center; }
+.personInfo h3 { margin: 7px 0 7px; color: var(--sage); font-size: 22px; font-weight: 600; }
+.personInfo p { margin: 0 auto 9px; color: var(--muted); font-size: 13px; line-height: 1.5; }
+.personInfo a { color: var(--sage-dark); font-size: 12px; text-decoration: none; }
+
+.eventSection { min-height: 720px; padding: 54px 25px; background-position: center; background-size: cover; }
+.sectionBackdrop { position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(250, 243, 231, .84), rgba(250, 243, 231, .55) 45%, rgba(15, 31, 21, .72)); }
+.sectionContent { position: relative; z-index: 1; }
+.eventList { display: grid; gap: 22px; margin-top: 26px; }
+.eventCard { padding: 24px 20px 22px; border: 1px solid rgba(110, 146, 119, .34); border-radius: 18px 0 18px 0; background: rgba(255, 255, 255, .83); text-align: center; box-shadow: 0 12px 25px rgba(26, 45, 28, .14); backdrop-filter: blur(4px); }
+.eventLabel { font-size: 10px; letter-spacing: .16em; }
+.eventCard h3 { margin: 7px 0 9px; color: var(--sage); font-size: 23px; font-weight: 600; text-transform: uppercase; }
+.eventDate, .eventTime, .eventVenue, .eventAddress { margin: 0; color: #263229; font-size: 13px; line-height: 1.5; }
+.eventTime { margin-top: 4px; color: var(--sage); }
+.eventHeart { display: block; margin: 12px 0 9px; color: var(--gold); font-size: 17px; }
+.eventVenue { font-weight: 600; }
+.eventAddress { margin-top: 2px; color: var(--muted); font-size: 12px; }
+.lightButton { margin-top: 16px; padding: 10px 15px; border: 1px solid var(--sage); background: transparent; color: var(--sage-dark); font-size: 12px; }
+
+.liveSection { background: var(--paper-deep); }
+.liveCard { margin-top: 0; padding: 25px 22px; background: rgba(255, 255, 255, .45); text-align: center; }
+.liveCard > p { margin: 17px 0 0; color: var(--muted); font-size: 13px; line-height: 1.65; }
+.socialLinks { display: grid; gap: 9px; margin-top: 18px; }
+.socialLinks a, .socialLinks span { display: block; padding: 11px 14px; border: 1px solid rgba(110, 146, 119, .4); border-radius: 8px; color: var(--sage-dark); font-size: 12px; text-decoration: none; }
+
+.storySection { background: linear-gradient(180deg, var(--paper) 0%, #f4eadb 100%); }
+.storyCard { margin-top: 0; padding: 29px 22px; }
+.storyList { position: relative; display: grid; gap: 0; margin-top: 29px; }
+.storyList::before { position: absolute; top: 5px; bottom: 4px; left: 25px; width: 1px; background: rgba(110, 146, 119, .45); content: ""; }
+.storyList article { position: relative; display: grid; grid-template-columns: 51px 1fr; gap: 16px; padding: 0 0 23px; }
+.storyList article:last-child { padding-bottom: 0; }
+.storyList article > span { position: relative; z-index: 1; display: grid; width: 51px; height: 51px; place-items: center; border: 1px solid var(--gold); border-radius: 50%; background: var(--paper); color: var(--sage); font-size: 12px; }
+.storyList h3 { margin: 3px 0 6px; color: var(--sage); font-size: 18px; font-weight: 600; }
+.storyList p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.65; }
+
+.gallerySection { background: var(--paper); }
+.galleryInner { position: relative; }
+.galleryGrid { display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: 118px; gap: 9px; margin-top: 28px; }
+.galleryGrid button { position: relative; min-width: 0; overflow: hidden; padding: 0; border: 0; background: #ddd; }
+.galleryGrid button:nth-child(1), .galleryGrid button:nth-child(4) { grid-row: span 2; }
+.galleryGrid button:nth-child(2) { grid-column: span 2; }
+.galleryGrid img { width: 100%; height: 100%; display: block; object-fit: cover; transition: transform .45s ease; }
+.galleryGrid button:hover img { transform: scale(1.05); }
+.galleryGrid button span { position: absolute; right: 7px; bottom: 6px; color: #fff; font-size: 10px; text-shadow: 0 1px 8px rgba(0, 0, 0, .75); }
+.lightbox { position: fixed; inset: 0; z-index: 1100; display: grid; place-items: center; padding: 22px; background: rgba(12, 18, 14, .85); backdrop-filter: blur(8px); }
+.lightbox img { max-width: min(100%, 620px); max-height: 84vh; object-fit: contain; box-shadow: 0 20px 60px rgba(0, 0, 0, .35); }
+.lightbox button { position: absolute; top: 20px; right: 20px; display: grid; width: 38px; height: 38px; place-items: center; border: 1px solid rgba(255, 255, 255, .4); border-radius: 50%; background: transparent; color: #fff; }
+.lightbox button svg { width: 19px; height: 19px; }
+
+.giftSection { background: var(--paper-deep); }
+.giftInner { margin-top: 0; padding: 28px 22px; background: rgba(255, 255, 255, .44); }
+.giftIntro, .formCard > p { margin: 17px 0 0; color: var(--muted); font-size: 13px; line-height: 1.65; text-align: center; }
+.giftGrid { display: grid; gap: 13px; margin-top: 22px; }
+.giftCard { padding: 19px 16px; border: 1px solid rgba(110, 146, 119, .32); border-radius: 13px; background: rgba(255, 255, 255, .68); text-align: center; }
+.giftIcon, .physicalGift > span { display: grid; width: 43px; height: 43px; margin: 0 auto 12px; place-items: center; border-radius: 50%; background: var(--sage); color: #fff; }
+.giftIcon svg, .physicalGift > span svg { width: 22px; height: 22px; }
+.giftCard p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
+.giftCard p b { color: var(--sage); font-size: 16px; }
+.giftCard button, .physicalGift button { margin-top: 14px; padding: 9px 12px; background: var(--sage); color: #fff; font-size: 11px; }
+.physicalGift { display: grid; justify-items: center; gap: 10px; margin-top: 22px; padding: 21px 17px; border: 1px solid rgba(110, 146, 119, .28); border-radius: 12px; background: rgba(250, 243, 231, .75); text-align: center; }
+.physicalGift > span { margin: 0; }
+.physicalGift h3 { margin: 0 0 6px; color: var(--sage); font-size: 19px; }
+.physicalGift p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
+
+.confirmSection, .rsvpSection, .wishesSection { background: var(--paper); }
+.formCard { margin-top: 0; padding: 28px 22px; }
+.formCard form { display: grid; gap: 11px; margin-top: 20px; }
+.formCard input, .formCard select, .formCard textarea { width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid rgba(110, 146, 119, .38); border-radius: 7px; outline: none; background: rgba(255, 255, 255, .76); color: var(--ink); font-family: var(--font-inter), Arial, sans-serif; font-size: 13px; }
+.formCard textarea { min-height: 104px; resize: vertical; }
+.formCard input:focus, .formCard select:focus, .formCard textarea:focus { border-color: var(--sage); box-shadow: 0 0 0 3px rgba(110, 146, 119, .14); }
+.formCard .greenButton { justify-self: center; }
+.success { margin-top: 20px; padding: 14px; border-radius: 8px; background: rgba(110, 146, 119, .13); color: var(--sage-dark); font-size: 13px; line-height: 1.5; text-align: center; }
+.formError { color: #a33d34; font-family: var(--font-inter), Arial, sans-serif; font-size: 12px; text-align: center; }
+.wishCounts { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 19px; }
+.wishCounts span { padding: 7px 10px; border-radius: 999px; background: rgba(110, 146, 119, .11); color: var(--sage-dark); font-family: var(--font-inter), Arial, sans-serif; font-size: 11px; }
+.wishList { display: grid; gap: 9px; margin-top: 18px; }
+.wishList article { padding: 13px; border-left: 2px solid var(--gold); background: rgba(255, 255, 255, .62); }
+.wishList strong { color: var(--sage); font-size: 13px; }
+.wishList small { display: block; margin-top: 2px; color: var(--muted); font-family: var(--font-inter), Arial, sans-serif; font-size: 10px; }
+.wishList p { margin: 7px 0 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
+.wishList > button { justify-self: center; border: 0; background: transparent; color: var(--sage-dark); font-size: 12px; text-decoration: underline; }
+
+.footer {
+  padding: 64px 25px 28px;
+  background:
+    linear-gradient(rgba(23, 54, 36, .78), rgba(18, 42, 28, .82)),
+    url("/themes/fizan-islamic-motion/poster.jpg") center / cover;
+  color: #fff;
+  text-align: center;
+}
+.footer p { max-width: 320px; margin: 0 auto 20px; color: rgba(255, 255, 255, .86); font-size: 13px; line-height: 1.7; }
+.footer > div > span { color: rgba(255, 255, 255, .76); font-size: 12px; }
+.footer h2 { margin: 8px 0 25px; color: #fff; font-size: 29px; font-weight: 500; }
+.footer h2 i { color: var(--gold); font-style: italic; }
+.footer img { width: 112px; max-height: 56px; object-fit: contain; filter: brightness(0) invert(1); }
+.footer small { display: block; margin-top: 14px; color: rgba(255, 255, 255, .64); font-family: var(--font-inter), Arial, sans-serif; font-size: 10px; }
+.musicButton { position: fixed; right: 18px; bottom: max(18px, env(safe-area-inset-bottom)); z-index: 1050; width: 40px; height: 40px; padding: 0; border-radius: 50%; background: var(--sage); color: #fff; box-shadow: 0 7px 18px rgba(0, 0, 0, .18); }
+.musicButton svg { width: 19px; height: 19px; }
+.musicPlaying { animation: rotateDisc 4s linear infinite; }
+@keyframes rotateDisc { to { transform: rotate(360deg); } }
+
+@media (max-width: 390px) {
+  .coverHeader { top: 5%; right: 22px; left: 22px; }
+  .coverHeader p { max-width: 220px; font-size: 10px; }
+  .coverHeader h1 { font-size: 29px; }
+  .coverGuest { right: 18px; bottom: max(4%, env(safe-area-inset-bottom)); left: 18px; }
+  .openingSection, .coupleSection, .storySection, .gallerySection, .giftSection, .confirmSection, .rsvpSection, .wishesSection, .liveSection { padding-right: 19px; padding-left: 19px; }
+  .portraitCard { min-height: 190px; }
+}
+
+@media (min-width: 768px) {
+  .page { max-width: 420px; margin-right: 0; margin-left: auto; }
+  .cover { right: 0; left: auto; width: min(100%, 420px); margin: 0; }
+  .musicButton { right: 24px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .musicPlaying { animation: none; }
+  .root * { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+}
