@@ -26,7 +26,7 @@ export function withFizanIslamicMotionDemoAssets(theme: string, invitation: Invi
       nickname: "Nabila",
       parents: "Putri pertama dari Bapak Ahmad & Ibu Siti",
       instagram: "nabilaputri",
-      photo: ASSET_ROOT + "/gallery-3.jpg",
+      photo: ASSET_ROOT + "/nabila-portrait.jpg",
     },
     groom: {
       ...invitation.groom,
@@ -34,7 +34,7 @@ export function withFizanIslamicMotionDemoAssets(theme: string, invitation: Invi
       nickname: "Rizky",
       parents: "Putra pertama dari Bapak Yusuf & Ibu Fatimah",
       instagram: "rizkypratama",
-      photo: ASSET_ROOT + "/gallery-2.jpg",
+      photo: ASSET_ROOT + "/rizky-portrait.jpg",
     },
     gallery: [
       ASSET_ROOT + "/gallery-1.jpg",
