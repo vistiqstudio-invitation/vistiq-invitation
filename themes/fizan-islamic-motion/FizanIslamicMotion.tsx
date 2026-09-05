@@ -11,6 +11,7 @@ import styles from "./style.module.css";
 
 const ASSET_ROOT = "/themes/fizan-islamic-motion";
 const POSTER = ASSET_ROOT + "/poster.jpg";
+const COVER_PHOTO = ASSET_ROOT + "/gallery-1.jpg";
 const VIDEO_PARTS = Array.from({ length: 33 }, (_, index) =>
   `${ASSET_ROOT}/opening-fizan-parts/part-${String(index).padStart(2, "0")}`,
 );
@@ -163,6 +164,7 @@ function Cover({ invitation, onOpen, onBegin }: { invitation: InvitationData; on
   const [showDetails, setShowDetails] = useState(false);
   const videoSource = useChunkedOpeningVideo();
   const event = invitation.events[0];
+  const coverPhoto = invitation.coverImage || COVER_PHOTO;
 
   useEffect(() => {
     if (!started || !videoSource) return;
@@ -199,7 +201,7 @@ function Cover({ invitation, onOpen, onBegin }: { invitation: InvitationData; on
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      <video ref={videoRef} className={styles.coverVideo} autoPlay={started} muted playsInline poster={POSTER} aria-hidden="true" src={videoSource ?? undefined} onEnded={() => setShowDetails(true)} />
+      <video ref={videoRef} className={styles.coverVideo} autoPlay={started} muted playsInline poster={coverPhoto} aria-hidden="true" src={videoSource ?? undefined} onEnded={() => setShowDetails(true)} />
       <div className={styles.coverShade} aria-hidden="true" />
       <AnimatePresence mode="wait">
         {!started && (

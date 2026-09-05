@@ -8,7 +8,7 @@ export function withFizanIslamicMotionDemoAssets(theme: string, invitation: Invi
 
   return {
     ...invitation,
-    coverImage: ASSET_ROOT + "/poster.jpg",
+    coverImage: ASSET_ROOT + "/gallery-1.jpg",
     musicUrl: WEDDING_VOCAL_TRACKS.islamicPrayer,
     videoUrl: null,
     opening: {
