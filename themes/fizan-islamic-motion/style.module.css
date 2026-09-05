@@ -183,10 +183,9 @@
 .peopleGrid { display: grid; gap: 25px; margin-top: 28px; }
 .personCard {
   overflow: hidden;
+  border-radius: 108px 0 108px 0;
   background: rgba(255, 255, 255, .48);
 }
-.personCard:first-child { border-radius: 108px 0 0 0; }
-.personCard:last-child { border-radius: 0 0 108px 0; }
 .personPhoto {
   aspect-ratio: 4 / 5;
   min-height: 0;
