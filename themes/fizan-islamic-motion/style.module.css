@@ -54,7 +54,10 @@
   background:
     linear-gradient(180deg, rgba(9, 28, 21, .45), rgba(10, 28, 20, .04) 38%, rgba(9, 25, 18, .7) 100%),
     linear-gradient(90deg, rgba(9, 28, 21, .42), transparent 58%);
+  transition: opacity .7s ease;
 }
+.coverStarted .coverShade { opacity: 0; }
+.coverInvite { position: absolute; inset: 0; z-index: 2; }
 .coverHeader {
   position: absolute;
   top: 7%;
@@ -100,6 +103,27 @@
 .coverGuest button { margin-top: 12px; padding: 12px 18px; border: 2px solid var(--gold); background: var(--sage); color: #fff; font-size: 14px; }
 .coverGuest button:hover, .greenButton:hover, .lightButton:hover, .giftCard button:hover, .physicalGift button:hover { transform: translateY(-2px); }
 .coverGuest button svg, .greenButton svg, .lightButton svg, .giftCard button svg, .physicalGift button svg, .musicButton svg { width: 16px; height: 16px; }
+.openingDetails {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 34px 25px;
+  color: var(--sage-dark);
+  text-align: center;
+  pointer-events: auto;
+}
+.openingKicker { margin: 0 0 9px; color: var(--sage); font-size: 14px; letter-spacing: .14em; text-transform: uppercase; }
+.openingDetails h1 { margin: 0; color: var(--sage-dark); font-size: clamp(31px, 8vw, 43px); font-weight: 600; line-height: 1.05; }
+.openingDetails h1 span { color: var(--gold); font-style: italic; }
+.openingDate { margin: 13px 0 0; color: var(--muted); font-size: 14px; letter-spacing: .03em; }
+.scrollCue { display: grid; justify-items: center; gap: 8px; margin-top: 55px; border: 0; background: transparent; color: var(--sage-dark); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; }
+.mouseIcon { position: relative; display: block; width: 24px; height: 38px; border: 1.5px solid var(--sage); border-radius: 16px; }
+.mouseIcon i { position: absolute; top: 7px; left: 50%; width: 3px; height: 7px; border-radius: 3px; background: var(--gold); transform: translateX(-50%); animation: mouseWheel 1.6s ease-in-out infinite; }
+@keyframes mouseWheel { 0%, 100% { opacity: .45; transform: translate(-50%, 0); } 50% { opacity: 1; transform: translate(-50%, 7px); } }
 
 .openingSection {
   min-height: 100svh;
@@ -271,5 +295,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .musicPlaying { animation: none; }
+  .mouseIcon i { animation: none; }
   .root * { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
 }

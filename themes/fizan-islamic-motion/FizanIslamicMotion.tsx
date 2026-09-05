@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useMemo, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type FormEvent, type ReactNode, type TouchEvent, type WheelEvent } from "react";
 import { useSearchParams } from "next/navigation";
 import { useInvitation } from "@/components/InvitationProvider";
 import { useMusicPlayer } from "@/hooks/useMusicPlayer";
@@ -155,31 +155,81 @@ function useChunkedOpeningVideo() {
   return source;
 }
 
-function Cover({ invitation, onOpen }: { invitation: InvitationData; onOpen: () => void }) {
+function Cover({ invitation, onOpen, onBegin }: { invitation: InvitationData; onOpen: () => void; onBegin: () => void }) {
   const guest = useSearchParams().get("to") || "Bapak/Ibu/Saudara/i";
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const touchStartY = useRef<number | null>(null);
+  const [started, setStarted] = useState(false);
+  const [showDetails, setShowDetails] = useState(false);
   const videoSource = useChunkedOpeningVideo();
+  const event = invitation.events[0];
 
   useEffect(() => {
+    if (!started || !videoSource) return;
     void videoRef.current?.play().catch(() => undefined);
-  }, []);
+  }, [started, videoSource]);
+
+  function beginOpening() {
+    setStarted(true);
+    onBegin();
+    window.setTimeout(() => void videoRef.current?.play().catch(() => undefined), 0);
+  }
+
+  function handleWheel(event: WheelEvent<HTMLElement>) {
+    if (showDetails && event.deltaY > 8) onOpen();
+  }
+
+  function handleTouchStart(event: TouchEvent<HTMLElement>) {
+    touchStartY.current = event.touches[0]?.clientY ?? null;
+  }
+
+  function handleTouchEnd(event: TouchEvent<HTMLElement>) {
+    const startY = touchStartY.current;
+    const endY = event.changedTouches[0]?.clientY ?? null;
+    touchStartY.current = null;
+    if (showDetails && startY !== null && endY !== null && startY - endY > 18) onOpen();
+  }
 
   return (
-    <motion.section className={styles.cover} exit={{ opacity: 0, y: "-100%" }} transition={{ duration: 1.15, ease }}>
-      <video ref={videoRef} className={styles.coverVideo} autoPlay loop muted playsInline poster={POSTER} aria-hidden="true" src={videoSource ?? undefined} />
+    <motion.section
+      className={`${styles.cover} ${started ? styles.coverStarted : ""}`}
+      exit={{ opacity: 0, y: "-100%" }}
+      transition={{ duration: 1.15, ease }}
+      onWheel={handleWheel}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+    >
+      <video ref={videoRef} className={styles.coverVideo} autoPlay={started} muted playsInline poster={POSTER} aria-hidden="true" src={videoSource ?? undefined} onEnded={() => setShowDetails(true)} />
       <div className={styles.coverShade} aria-hidden="true" />
-      <div className={styles.coverHeader}>
-        <p>Tanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara pernikahan kami :</p>
-        <h1>{firstName(invitation.bride)} <span>&amp;</span> {firstName(invitation.groom)}</h1>
-      </div>
-      <div className={styles.coverGuest}>
-        <p>Kepada Bapak/Ibu/Saudara/i</p>
-        <strong>{guest}</strong>
-        <p>Di Tempat</p>
-        <motion.button type="button" whileTap={{ scale: 0.96 }} onClick={onOpen}>
-          <Icon name="mail" /> Buka Undangan
-        </motion.button>
-      </div>
+      <AnimatePresence mode="wait">
+        {!started && (
+          <motion.div key="cover-invite" className={styles.coverInvite} initial={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: .55 }}>
+            <div className={styles.coverHeader}>
+              <p>Tanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara pernikahan kami :</p>
+              <h1>{firstName(invitation.bride)} <span>&amp;</span> {firstName(invitation.groom)}</h1>
+            </div>
+            <div className={styles.coverGuest}>
+              <p>Kepada Bapak/Ibu/Saudara/i</p>
+              <strong>{guest}</strong>
+              <p>Di Tempat</p>
+              <motion.button type="button" whileTap={{ scale: 0.96 }} onClick={beginOpening}>
+                <Icon name="mail" /> Buka Undangan
+              </motion.button>
+            </div>
+          </motion.div>
+        )}
+        {showDetails && (
+          <motion.div key="opening-details" className={styles.openingDetails} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .9, ease }}>
+            <p className={styles.openingKicker}>The Wedding Of</p>
+            <h1>{firstName(invitation.bride)} <span>&amp;</span> {firstName(invitation.groom)}</h1>
+            <p className={styles.openingDate}>{event ? formatDate(event) : "Tanggal acara"}</p>
+            <motion.button type="button" className={styles.scrollCue} onClick={onOpen} animate={{ y: [0, 8, 0] }} transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }} aria-label="Scroll ke bawah untuk membuka undangan">
+              <span className={styles.mouseIcon}><i /></span>
+              <span>Scroll ke bawah</span>
+            </motion.button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.section>
   );
 }
@@ -470,6 +520,9 @@ export default function FizanIslamicMotion({ invitation }: { invitation: Invitat
   async function openInvitation() {
     setOpened(true);
     window.setTimeout(() => window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior }), 30);
+  }
+
+  async function beginOpening() {
     if (invitation.musicUrl && !isPlaying) {
       try { await toggle(); } catch { /* autoplay can still be blocked */ }
     }
@@ -493,7 +546,7 @@ export default function FizanIslamicMotion({ invitation }: { invitation: Invitat
         </div>
         {invitation.musicUrl && <audio ref={audioRef} src={invitation.musicUrl} loop />}
         {opened && invitation.musicUrl && <button type="button" className={`${styles.musicButton} ${isPlaying ? styles.musicPlaying : ""}`} onClick={() => void toggle()} aria-label={isPlaying ? "Jeda musik" : "Putar musik"}><Icon name="music" /></button>}
-        <AnimatePresence>{!opened && <Cover key="fizan-cover" invitation={invitation} onOpen={() => void openInvitation()} />}</AnimatePresence>
+        <AnimatePresence>{!opened && <Cover key="fizan-cover" invitation={invitation} onOpen={() => void openInvitation()} onBegin={() => void beginOpening()} />}</AnimatePresence>
       </div>
     </main>
   );
