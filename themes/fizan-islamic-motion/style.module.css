@@ -233,6 +233,7 @@
 .galleryGrid button { position: relative; min-width: 0; overflow: hidden; padding: 0; border: 0; background: #ddd; }
 .galleryGrid button:nth-child(1), .galleryGrid button:nth-child(4) { grid-row: span 2; }
 .galleryGrid button:nth-child(2) { grid-column: span 2; }
+.galleryGrid button:nth-child(5) { grid-column: span 2; }
 .galleryGrid img { width: 100%; height: 100%; display: block; object-fit: cover; transition: transform .45s ease; }
 .galleryGrid button:hover img { transform: scale(1.05); }
 .galleryGrid button span { position: absolute; right: 7px; bottom: 6px; color: #fff; font-size: 10px; text-shadow: 0 1px 8px rgba(0, 0, 0, .75); }

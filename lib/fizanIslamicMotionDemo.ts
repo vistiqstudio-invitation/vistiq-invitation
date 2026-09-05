@@ -41,6 +41,7 @@ export function withFizanIslamicMotionDemoAssets(theme: string, invitation: Invi
       ASSET_ROOT + "/gallery-2.jpg",
       ASSET_ROOT + "/gallery-3.jpg",
       ASSET_ROOT + "/gallery-4.jpg",
+      ASSET_ROOT + "/gallery-5.jpg",
     ],
   };
 }

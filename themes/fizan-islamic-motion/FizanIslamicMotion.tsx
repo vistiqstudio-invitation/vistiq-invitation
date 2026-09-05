@@ -20,6 +20,7 @@ const FALLBACK_GALLERY = [
   ASSET_ROOT + "/gallery-2.jpg",
   ASSET_ROOT + "/gallery-3.jpg",
   ASSET_ROOT + "/gallery-4.jpg",
+  ASSET_ROOT + "/gallery-5.jpg",
 ];
 
 const ease = [0.22, 1, 0.36, 1] as const;
