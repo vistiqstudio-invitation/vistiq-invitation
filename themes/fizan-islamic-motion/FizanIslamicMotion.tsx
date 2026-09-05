@@ -23,6 +23,14 @@ const FALLBACK_GALLERY = [
 ];
 
 const ease = [0.22, 1, 0.36, 1] as const;
+const OPENING_TEXT_START = 5.85;
+const OPENING_TEXT_FADE_DURATION = 1.35;
+const OPENING_TEXT_SCALE_START = 0.72;
+const OPENING_TEXT_SCALE_END = 1.06;
+
+function clamp(value: number, min: number, max: number) {
+  return Math.min(max, Math.max(min, value));
+}
 
 function firstName(person: InvitationData["bride"] | InvitationData["groom"]) {
   return person.nickname || person.name.trim().split(/\s+/)[0] || person.name;
@@ -161,10 +169,26 @@ function Cover({ invitation, onOpen, onBegin }: { invitation: InvitationData; on
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const touchStartY = useRef<number | null>(null);
   const [started, setStarted] = useState(false);
-  const [showDetails, setShowDetails] = useState(false);
+  const [detailsVisible, setDetailsVisible] = useState(false);
+  const [videoFinished, setVideoFinished] = useState(false);
+  const [videoTime, setVideoTime] = useState(0);
+  const [videoDuration, setVideoDuration] = useState(14.42);
   const videoSource = useChunkedOpeningVideo();
   const event = invitation.events[0];
   const coverPhoto = invitation.coverImage || COVER_PHOTO;
+
+  const openingProgress = clamp(
+    (videoTime - OPENING_TEXT_START) / Math.max(videoDuration - OPENING_TEXT_START, 0.1),
+    0,
+    1,
+  );
+  const openingOpacity = clamp(
+    (videoTime - OPENING_TEXT_START) / OPENING_TEXT_FADE_DURATION,
+    0,
+    1,
+  );
+  const openingScale = OPENING_TEXT_SCALE_START + (OPENING_TEXT_SCALE_END - OPENING_TEXT_SCALE_START) * openingProgress;
+  const openingY = 18 * (1 - openingProgress);
 
   useEffect(() => {
     if (!started || !videoSource) return;
@@ -178,7 +202,7 @@ function Cover({ invitation, onOpen, onBegin }: { invitation: InvitationData; on
   }
 
   function handleWheel(event: WheelEvent<HTMLElement>) {
-    if (showDetails && event.deltaY > 8) onOpen();
+    if (videoFinished && event.deltaY > 8) onOpen();
   }
 
   function handleTouchStart(event: TouchEvent<HTMLElement>) {
@@ -189,7 +213,13 @@ function Cover({ invitation, onOpen, onBegin }: { invitation: InvitationData; on
     const startY = touchStartY.current;
     const endY = event.changedTouches[0]?.clientY ?? null;
     touchStartY.current = null;
-    if (showDetails && startY !== null && endY !== null && startY - endY > 18) onOpen();
+    if (videoFinished && startY !== null && endY !== null && startY - endY > 18) onOpen();
+  }
+
+  function handleVideoTimeUpdate() {
+    const currentTime = videoRef.current?.currentTime ?? 0;
+    setVideoTime(currentTime);
+    if (currentTime >= OPENING_TEXT_START) setDetailsVisible(true);
   }
 
   return (
@@ -201,7 +231,23 @@ function Cover({ invitation, onOpen, onBegin }: { invitation: InvitationData; on
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      <video ref={videoRef} className={styles.coverVideo} autoPlay={started} muted playsInline poster={coverPhoto} aria-hidden="true" src={videoSource ?? undefined} onEnded={() => setShowDetails(true)} />
+      <video
+        ref={videoRef}
+        className={styles.coverVideo}
+        autoPlay={started}
+        muted
+        playsInline
+        poster={coverPhoto}
+        aria-hidden="true"
+        src={videoSource ?? undefined}
+        onLoadedMetadata={(event) => setVideoDuration(event.currentTarget.duration || 14.42)}
+        onTimeUpdate={handleVideoTimeUpdate}
+        onEnded={() => {
+          setVideoTime(videoRef.current?.duration || videoDuration);
+          setDetailsVisible(true);
+          setVideoFinished(true);
+        }}
+      />
       <div className={styles.coverShade} aria-hidden="true" />
       <AnimatePresence mode="wait">
         {!started && (
@@ -220,15 +266,27 @@ function Cover({ invitation, onOpen, onBegin }: { invitation: InvitationData; on
             </div>
           </motion.div>
         )}
-        {showDetails && (
-          <motion.div key="opening-details" className={styles.openingDetails} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .9, ease }}>
-            <p className={styles.openingKicker}>The Wedding Of</p>
-            <h1>{firstName(invitation.bride)} <span>&amp;</span> {firstName(invitation.groom)}</h1>
-            <p className={styles.openingDate}>{event ? formatDate(event) : "Tanggal acara"}</p>
-            <motion.button type="button" className={styles.scrollCue} onClick={onOpen} animate={{ y: [0, 8, 0] }} transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }} aria-label="Scroll ke bawah untuk membuka undangan">
-              <span className={styles.mouseIcon}><i /></span>
-              <span>Scroll ke bawah</span>
-            </motion.button>
+        {detailsVisible && (
+          <motion.div
+            key="opening-details"
+            className={styles.openingDetails}
+            style={{ pointerEvents: videoFinished ? "auto" : "none" }}
+            aria-hidden={!videoFinished}
+          >
+            <motion.div
+              className={styles.openingDetailsContent}
+              initial={{ opacity: 0, y: 18, scale: OPENING_TEXT_SCALE_START }}
+              animate={{ opacity: openingOpacity, y: openingY, scale: openingScale }}
+              transition={{ duration: .18, ease: "linear" }}
+            >
+              <p className={styles.openingKicker}>The Wedding Of</p>
+              <h1>{firstName(invitation.bride)} <span>&amp;</span> {firstName(invitation.groom)}</h1>
+              <p className={styles.openingDate}>{event ? formatDate(event) : "Tanggal acara"}</p>
+              <motion.button type="button" className={styles.scrollCue} onClick={onOpen} animate={{ y: [0, 8, 0] }} transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }} aria-label="Scroll ke bawah untuk membuka undangan">
+                <span className={styles.mouseIcon}><i /></span>
+                <span>Scroll ke bawah</span>
+              </motion.button>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

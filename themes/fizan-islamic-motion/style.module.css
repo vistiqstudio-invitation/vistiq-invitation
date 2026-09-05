@@ -117,6 +117,13 @@
   text-align: center;
   pointer-events: auto;
 }
+.openingDetailsContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-origin: center center;
+  will-change: opacity, transform;
+}
 .openingKicker { margin: 0 0 9px; color: var(--sage); font-size: 14px; letter-spacing: .14em; text-transform: uppercase; }
 .openingDetails h1 { margin: 0; color: var(--sage-dark); font-size: clamp(31px, 8vw, 43px); font-weight: 600; line-height: 1.05; }
 .openingDetails h1 span { color: var(--gold); font-style: italic; }
