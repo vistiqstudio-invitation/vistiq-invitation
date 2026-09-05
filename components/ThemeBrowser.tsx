@@ -1,27 +1,16 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
-import ThemeCoverPreview from "@/components/ThemeCoverPreview";
+import PhoneMockup from "@/components/PhoneMockup";
 import { themeList, aqiqahThemeList, khitanThemeList, birthdayThemeList, isThemeNew, type ThemeMeta } from "@/lib/theme";
 import { getThemeCoverImage } from "@/lib/themeCoverImages";
+import { getDemoInvitation } from "@/lib/demoInvitation";
+import { getDemoKhitanInvitation } from "@/lib/demoKhitanInvitation";
+import { getDemoAqiqahInvitation } from "@/lib/demoAqiqahInvitation";
+import { getDemoBirthdayInvitation } from "@/lib/demoBirthdayInvitation";
 import styles from "@/app/demo/demo.module.css";
-
-function CartIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path
-        d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.6L21 8H6"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <circle cx="10" cy="21" r="1.4" fill="currentColor" />
-      <circle cx="18" cy="21" r="1.4" fill="currentColor" />
-    </svg>
-  );
-}
 
 function SendIcon() {
   return (
@@ -64,6 +53,99 @@ const COMING_SOON: Record<string, { label: string; description: string }> = {
   wisuda: { label: "Wisuda", description: "Tema undangan wisuda digital - segera hadir." },
 };
 
+const SCREENSHOT_VARIANTS = [
+  { label: "Cover", objectPosition: "50% 7%", transform: "scale(1)" },
+  { label: "Kisah", objectPosition: "34% 34%", transform: "scale(1.16)" },
+  { label: "Acara", objectPosition: "67% 62%", transform: "scale(1.16)" },
+  { label: "Galeri", objectPosition: "50% 94%", transform: "scale(1.1)" },
+] as const;
+
+function getThemeScreenshotImages(themeKey: string, demoPath: string, coverImage: string | null) {
+  const gallery =
+    demoPath === "/demo-khitan"
+      ? getDemoKhitanInvitation(themeKey).gallery
+      : demoPath === "/demo-akikah"
+        ? getDemoAqiqahInvitation(themeKey).gallery
+        : demoPath === "/demo-ulang-tahun"
+          ? getDemoBirthdayInvitation(themeKey).gallery
+          : getDemoInvitation(themeKey).gallery;
+  const sources = [coverImage, ...gallery].filter((source): source is string => Boolean(source));
+
+  if (sources.length === 0) return SCREENSHOT_VARIANTS.map(() => null);
+
+  return SCREENSHOT_VARIANTS.map((_, index) => sources[index % sources.length] || null);
+}
+
+function ThemeScreenshotCard({
+  theme,
+  image,
+  variant,
+}: {
+  theme: ThemeMeta;
+  image: string | null;
+  variant: (typeof SCREENSHOT_VARIANTS)[number];
+}) {
+  return (
+    <div className={styles.screenshotCard} role="img" aria-label={`Preview ${variant.label} tema ${theme.label}`}>
+      <div className={styles.screenshotChrome} aria-hidden="true">
+        <span />
+        <span />
+        <span />
+      </div>
+      <div
+        className={styles.screenshotViewport}
+        style={{ background: `linear-gradient(155deg, ${theme.swatch[0]}, ${theme.swatch[1]})` }}
+      >
+        {image ? (
+          <Image
+            src={image}
+            alt=""
+            fill
+            sizes="(max-width: 640px) 28vw, 100px"
+            className={styles.screenshotImage}
+            style={{ objectPosition: variant.objectPosition, transform: variant.transform }}
+          />
+        ) : (
+          <span className={styles.screenshotFallback}>{variant.label}</span>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function ThemeCatalogPreview({
+  theme,
+  demoPath,
+  coverImage,
+  previewImages,
+}: {
+  theme: ThemeMeta;
+  demoPath: string;
+  coverImage: string | null;
+  previewImages: Array<string | null>;
+}) {
+  return (
+    <div className={styles.catalogPreview} role="img" aria-label={`Mockup HP dan empat preview halaman tema ${theme.label}`}>
+      <div className={styles.screenshotDeck} aria-hidden="true">
+        {SCREENSHOT_VARIANTS.map((variant, index) => (
+          <ThemeScreenshotCard key={variant.label} theme={theme} image={previewImages[index] || null} variant={variant} />
+        ))}
+      </div>
+      <div className={styles.catalogPhone} aria-hidden="true">
+        <PhoneMockup
+          themeKey={theme.key}
+          demoPath={demoPath}
+          mode="static"
+          width={74}
+          coverImage={coverImage}
+          swatch={theme.swatch}
+          label={theme.label}
+        />
+      </div>
+    </div>
+  );
+}
+
 function ThemeCard({
   theme,
   demoPath,
@@ -84,39 +166,43 @@ function ThemeCard({
   brandName: string;
 }) {
   const orderText = encodeURIComponent(`Halo ${brandName}, saya ingin order undangan tema ${theme.label}`);
+  const coverImage = getThemeCoverImage(theme.key, demoPath);
+  const previewImages = getThemeScreenshotImages(theme.key, demoPath, coverImage);
 
   return (
     <div className={styles.card}>
       {isThemeNew(theme) && <span className={styles.newBadge}>Baru</span>}
 
       <div className={styles.cardPreview}>
-        <ThemeCoverPreview
-          coverImage={getThemeCoverImage(theme.key, demoPath)}
-          swatch={theme.swatch}
-          label={theme.label}
+        <ThemeCatalogPreview
+          theme={theme}
           demoPath={demoPath}
-          themeKey={theme.key}
+          coverImage={coverImage}
+          previewImages={previewImages}
         />
-        {priceWasLabel && discountLabel && <span className={styles.discountBadge}>DISC. {discountLabel}</span>}
       </div>
 
       <div className={styles.cardBody}>
         <p className={styles.cardEyebrow}>{eyebrowLabel}</p>
-        <h2 className={styles.cardTitle}>
-          <CartIcon /> {theme.label}
-        </h2>
+        <h2 className={styles.cardTitle}>{theme.label}</h2>
         <p className={styles.cardDesc}>{theme.description}</p>
 
         <div className={styles.priceRow}>
-          {priceWasLabel && <span className={styles.priceWas}>{priceWasLabel}</span>}
           <span className={styles.priceNow}>{priceLabel}</span>
+          {priceWasLabel && <span className={styles.priceWas}>{priceWasLabel}</span>}
+          {discountLabel && <span className={styles.priceBadge}>Disc. {discountLabel}</span>}
         </div>
 
         <div className={styles.cardActions}>
           <Link href={`${demoPath}/${theme.key}`} className={styles.cardButton}>
             <SendIcon /> Lihat Tema
           </Link>
-          <a href={`https://wa.me/${waNumber}?text=${orderText}`} target="_blank" className={styles.orderButton}>
+          <a
+            href={`https://wa.me/${waNumber}?text=${orderText}`}
+            target="_blank"
+            rel="noreferrer"
+            className={styles.orderButton}
+          >
             Order
           </a>
         </div>
@@ -272,16 +358,3 @@ export default function ThemeBrowser({
               priceLabel={priceLabel}
               priceWasLabel={priceWasLabel}
               discountLabel={discountLabel}
-              waNumber={waNumber}
-              brandName={brandName}
-            />
-          ))}
-        </div>
-      ) : (
-        <div className={styles.grid}>
-          <ComingSoonCard {...COMING_SOON[occasion]} />
-        </div>
-      )}
-    </div>
-  );
-}
