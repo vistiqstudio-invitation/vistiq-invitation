@@ -182,7 +182,12 @@
 .sectionTitle i svg { width: 17px; height: 17px; }
 .peopleGrid { display: grid; gap: 25px; margin-top: 28px; }
 .personCard { background: rgba(255, 255, 255, .48); }
-.personPhoto { height: 260px; background-position: center; background-size: cover; }
+.personPhoto {
+  aspect-ratio: 4 / 5;
+  min-height: 0;
+  background-position: center top;
+  background-size: cover;
+}
 .personCard:first-child .personPhoto { border-radius: 108px 0 0 0; }
 .personCard:last-child .personPhoto { border-radius: 0 0 108px 0; }
 .personInfo { padding: 16px 17px 19px; text-align: center; }
