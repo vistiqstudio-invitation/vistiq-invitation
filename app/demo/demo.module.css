@@ -227,7 +227,7 @@
 .catalogPreview {
   position: relative;
   width: 100%;
-  aspect-ratio: 1.42;
+  aspect-ratio: 1 / 1;
   overflow: hidden;
   isolation: isolate;
   background:
@@ -254,8 +254,8 @@
 
 .screenshotCard {
   position: absolute;
-  width: 34%;
-  height: 38%;
+  width: 27%;
+  height: 46%;
   overflow: hidden;
   border: 3px solid rgba(255, 255, 255, 0.96);
   border-radius: 6px;
@@ -264,26 +264,26 @@
 }
 
 .screenshotCard:nth-child(1) {
-  top: 8%;
-  left: 1%;
+  top: 4%;
+  left: 2%;
   transform: rotate(-7deg);
 }
 
 .screenshotCard:nth-child(2) {
-  top: 8%;
-  right: 1%;
+  top: 4%;
+  right: 2%;
   transform: rotate(7deg);
 }
 
 .screenshotCard:nth-child(3) {
-  bottom: 8%;
-  left: 1%;
+  bottom: 4%;
+  left: 2%;
   transform: rotate(6deg);
 }
 
 .screenshotCard:nth-child(4) {
-  right: 1%;
-  bottom: 8%;
+  right: 2%;
+  bottom: 4%;
   transform: rotate(-6deg);
 }
 
@@ -465,14 +465,19 @@
   }
 
   .grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
     gap: 8px;
     margin: 0 -4px;
     padding: 8px 4px 16px;
   }
 
+  .card {
+    width: min(100%, 460px);
+    justify-self: center;
+  }
+
   .catalogPreview {
-    aspect-ratio: 1.28;
+    aspect-ratio: 1.15 / 1;
   }
 
   .screenshotDeck {
