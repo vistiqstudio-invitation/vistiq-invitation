@@ -278,8 +278,8 @@
 .footer {
   padding: 64px 25px 28px;
   background:
-    linear-gradient(rgba(23, 54, 36, .78), rgba(18, 42, 28, .82)),
-    url("/themes/fizan-islamic-motion/poster.jpg") center / cover;
+    linear-gradient(rgba(23, 54, 36, .6), rgba(18, 42, 28, .72)),
+    url("/themes/fizan-islamic-motion/gallery-1.jpg") center 30% / cover;
   color: #fff;
   text-align: center;
 }
@@ -287,7 +287,7 @@
 .footer > div > span { color: rgba(255, 255, 255, .76); font-size: 12px; }
 .footer h2 { margin: 8px 0 25px; color: #fff; font-size: 29px; font-weight: 500; }
 .footer h2 i { color: var(--gold); font-style: italic; }
-.footer img { width: 112px; max-height: 56px; object-fit: contain; filter: brightness(0) invert(1); }
+.footer img { display: block; width: 112px; max-height: 56px; margin: 0 auto; object-fit: contain; filter: brightness(0) invert(1); }
 .footer small { display: block; margin-top: 14px; color: rgba(255, 255, 255, .64); font-family: var(--font-inter), Arial, sans-serif; font-size: 10px; }
 .musicButton { position: fixed; right: 18px; bottom: max(18px, env(safe-area-inset-bottom)); z-index: 1050; width: 40px; height: 40px; padding: 0; border-radius: 50%; background: var(--sage); color: #fff; box-shadow: 0 7px 18px rgba(0, 0, 0, .18); }
 .musicButton svg { width: 19px; height: 19px; }
