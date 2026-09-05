@@ -181,15 +181,18 @@
 .sectionTitle i { display: inline-grid; width: 24px; height: 24px; margin-top: 12px; place-items: center; color: var(--gold); font-style: normal; }
 .sectionTitle i svg { width: 17px; height: 17px; }
 .peopleGrid { display: grid; gap: 25px; margin-top: 28px; }
-.personCard { background: rgba(255, 255, 255, .48); }
+.personCard {
+  overflow: hidden;
+  background: rgba(255, 255, 255, .48);
+}
+.personCard:first-child { border-radius: 108px 0 0 0; }
+.personCard:last-child { border-radius: 0 0 108px 0; }
 .personPhoto {
   aspect-ratio: 4 / 5;
   min-height: 0;
   background-position: center top;
   background-size: cover;
 }
-.personCard:first-child .personPhoto { border-radius: 108px 0 0 0; }
-.personCard:last-child .personPhoto { border-radius: 0 0 108px 0; }
 .personInfo { padding: 16px 17px 19px; text-align: center; }
 .personInfo h3 { margin: 7px 0 7px; color: var(--sage); font-size: 22px; font-weight: 600; }
 .personInfo p { margin: 0 auto 9px; color: var(--muted); font-size: 13px; line-height: 1.5; }
