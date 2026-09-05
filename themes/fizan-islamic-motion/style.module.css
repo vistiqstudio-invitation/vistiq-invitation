@@ -60,7 +60,8 @@
 .coverInvite { position: absolute; inset: 0; z-index: 2; }
 .coverHeader {
   position: absolute;
-  top: 7%;
+  top: auto;
+  bottom: 30%;
   right: 28px;
   left: 28px;
   z-index: 2;
@@ -279,7 +280,7 @@
 @keyframes rotateDisc { to { transform: rotate(360deg); } }
 
 @media (max-width: 390px) {
-  .coverHeader { top: 5%; right: 22px; left: 22px; }
+  .coverHeader { top: auto; right: 22px; bottom: 30%; left: 22px; }
   .coverHeader p { max-width: 220px; font-size: 10px; }
   .coverHeader h1 { font-size: 29px; }
   .coverGuest { right: 18px; bottom: max(4%, env(safe-area-inset-bottom)); left: 18px; }
