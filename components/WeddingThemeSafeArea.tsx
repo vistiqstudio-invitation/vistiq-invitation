@@ -61,10 +61,6 @@ function isLavenderMotionTheme(theme: string) {
 }
 
 function frameImage(invitation: InvitationFrameData | undefined, theme: string) {
-  if (theme === "noor-al-qamar-motion" && invitation?.category === "wedding") {
-    return "/themes/noor-al-qamar-motion/opening-poster.jpg";
-  }
-
   if (isLavenderMotionTheme(theme) && invitation?.category === "wedding") {
     const bridePhoto = invitation.bride.photo?.split("#", 1)[0];
     if (bridePhoto) return bridePhoto;
