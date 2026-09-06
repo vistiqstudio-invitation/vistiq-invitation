@@ -25,7 +25,7 @@ export const WEDDING_COVER_BY_THEME: Record<string, string> = {
   "luxury-art-sakura": "/photos/sakura-cover.webp",
   "luxury-art-champagne-romance": "/theme-previews/wedding/luxury-art-champagne-romance.jpg",
   "luxury-art-soft": "/themes/luxury-art-soft/ai-cover.jpg",
-  "velora-editorial": "/themes/velora-editorial/ai-cover.jpg",
+  "emerald-elan": "/themes/emerald-elan/emerald-cover.jpg",
   "3d-motion": "/photos/luxury-art-love-paradise/couple-cover.webp",
   "3d-montion-1": "/photos/luxury-art-love-paradise/couple-cover.webp",
   "jawa-coklat": "/photos/jawa-gallery-4.webp",
@@ -49,7 +49,7 @@ export const THEME_CARD_PREVIEW_BY_THEME: Record<string, string> = {
   "luxury-gold": "/theme-previews/wedding/luxury-gold-card.jpg",
   "minimal-white": "/theme-previews/wedding/minimal-white-card.jpg",
   "islamic-green": "/theme-previews/wedding/islamic-green-card.jpg",
-  "velora-editorial": "/theme-previews/wedding/velora-editorial.jpg",
+  "emerald-elan": "/theme-previews/wedding/emerald-elan.jpg",
 };
 
 const KHITAN_COVER = "/photos/khitan-warna-cover.jpg";
