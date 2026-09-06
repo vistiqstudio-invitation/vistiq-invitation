@@ -48,6 +48,7 @@ export const THEME_CARD_PREVIEW_BY_THEME: Record<string, string> = {
   "lavender-garden-motion": "/theme-previews/wedding/lavender-garden-motion-card.jpg",
   "luxury-gold": "/theme-previews/wedding/luxury-gold-card.jpg",
   "minimal-white": "/theme-previews/wedding/minimal-white-card.jpg",
+  "islamic-green": "/theme-previews/wedding/islamic-green-card.jpg",
 };
 
 const KHITAN_COVER = "/photos/khitan-warna-cover.jpg";
