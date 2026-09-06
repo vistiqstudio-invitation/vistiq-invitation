@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { useSearchParams } from "next/navigation";
 import { useInvitation } from "@/components/InvitationProvider";
 import type { InvitationData } from "@/types/invitation";
-import IslamicMotif from "./IslamicMotif";
 import styles from "./style.module.css";
 
 export default function Cover({ invitation }: { invitation: InvitationData }) {
@@ -32,9 +31,6 @@ export default function Cover({ invitation }: { invitation: InvitationData }) {
       )}
 
       <div className={styles.coverOverlay} />
-
-      <IslamicMotif className={`${styles.cornerMotif} ${styles.cornerMotifTop}`} />
-      <IslamicMotif className={`${styles.cornerMotif} ${styles.cornerMotifBottom}`} />
 
       <motion.div
         className={styles.coverHeader}
