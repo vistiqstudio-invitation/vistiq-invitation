@@ -7,6 +7,7 @@ import type { InvitationData } from "@/types/invitation";
 
 import Loading from "./Loading";
 import Cover from "./Cover";
+import OpeningIntro from "./OpeningIntro";
 import Hero from "./Hero";
 import Couple from "./Couple";
 import Story from "./Story";
@@ -45,7 +46,9 @@ export default function MinimalWhite({ invitation }: { invitation: InvitationDat
         <>
           <FloatingPetals />
 
-          <section id="home" className={styles.pageSection}>
+          <OpeningIntro invitation={invitation} />
+
+          <section className={styles.pageSection}>
             <Hero invitation={invitation} />
           </section>
 
