@@ -384,6 +384,7 @@
 /* ---------- Intro / hero ---------- */
 
 .hero {
+  padding: clamp(28px, 7vw, 44px) 24px 0;
   text-align: center;
 }
 
