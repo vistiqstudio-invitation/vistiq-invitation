@@ -27,7 +27,7 @@ export default function AkikahZaitun({ invitation }: { invitation: AqiqahInvitat
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setReady(true), 900);
+    const timer = setTimeout(() => setReady(true), 250);
     return () => clearTimeout(timer);
   }, []);
 

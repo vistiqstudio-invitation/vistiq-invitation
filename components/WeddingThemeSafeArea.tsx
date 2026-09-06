@@ -67,7 +67,7 @@ function frameImage(invitation: InvitationFrameData | undefined, theme: string) 
   }
 
   const configured = invitation?.coverImage?.split("#", 1)[0];
-  return configured || "/themes/luxury-gold/cover.png";
+  return configured || "/themes/luxury-gold/cover.webp";
 }
 
 export default function WeddingThemeSafeArea({

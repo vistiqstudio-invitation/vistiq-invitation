@@ -3,6 +3,7 @@ import CheckoutButton from "@/components/CheckoutButton";
 import PhoneMockup from "@/components/PhoneMockup";
 import SiteNavbar from "@/components/SiteNavbar";
 import ThemeBrowser from "@/components/ThemeBrowser";
+import { getThemeCoverImage } from "@/lib/themeCoverImages";
 
 const HERO_FAN = [
   { key: "jawa-merah", rotate: -18, x: -108, y: 20, scale: 0.82, z: 1 },
@@ -58,7 +59,15 @@ export default function GabungResellerBrandPage() {
         <div className="visual">
           <div className="phoneFan">
             {HERO_FAN.map((item) => (
-              <PhoneMockup key={item.key} themeKey={item.key} width={128} className="phone" style={{ transform: `translate(calc(-50% + ${item.x}px), calc(-50% + ${item.y}px)) rotate(${item.rotate}deg) scale(${item.scale})`, zIndex: item.z }} />
+              <PhoneMockup
+                key={item.key}
+                themeKey={item.key}
+                width={128}
+                mode="static"
+                coverImage={getThemeCoverImage(item.key, "/demo")}
+                className="phone"
+                style={{ transform: `translate(calc(-50% + ${item.x}px), calc(-50% + ${item.y}px)) rotate(${item.rotate}deg) scale(${item.scale})`, zIndex: item.z }}
+              />
             ))}
           </div>
         </div>

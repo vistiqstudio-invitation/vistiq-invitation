@@ -28,7 +28,7 @@ export default function PastelStudio({ invitation }: { invitation: InvitationDat
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setReady(true), 700);
+    const timer = setTimeout(() => setReady(true), 250);
     return () => clearTimeout(timer);
   }, []);
 

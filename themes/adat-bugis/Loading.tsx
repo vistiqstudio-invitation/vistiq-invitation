@@ -9,7 +9,7 @@ export default function Loading() {
     <motion.div
       className={styles.loading}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.7, ease: "easeInOut" }}
+      transition={{ duration: 0.25, ease: "easeInOut" }}
     >
       <motion.div
         initial={{ opacity: 0, y: -8 }}

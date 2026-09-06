@@ -605,7 +605,7 @@ export default function FizanIslamicMotion({ invitation }: { invitation: Invitat
           <WishesSection invitation={invitation} />
           <Footer invitation={invitation} />
         </div>
-        {invitation.musicUrl && <audio ref={audioRef} src={invitation.musicUrl} loop />}
+        {invitation.musicUrl && <audio ref={audioRef} src={invitation.musicUrl} loop preload="none" />}
         {opened && invitation.musicUrl && <button type="button" className={`${styles.musicButton} ${isPlaying ? styles.musicPlaying : ""}`} onClick={() => void toggle()} aria-label={isPlaying ? "Jeda musik" : "Putar musik"}><Icon name="music" /></button>}
         <AnimatePresence>{!opened && <Cover key="fizan-cover" invitation={invitation} onOpen={() => void openInvitation()} onBegin={() => void beginOpening()} />}</AnimatePresence>
       </div>

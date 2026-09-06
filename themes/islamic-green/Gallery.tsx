@@ -54,7 +54,7 @@ export default function Gallery({ invitation }: { invitation: InvitationData }) 
                   className={styles.galleryItem}
                   onClick={() => setActiveIndex(index)}
                 >
-                  <img src={photo} alt="" loading="lazy" />
+                  <img src={photo} alt="" loading="lazy" decoding="async" />
                 </div>
               </SwiperSlide>
             ))}
@@ -83,6 +83,8 @@ export default function Gallery({ invitation }: { invitation: InvitationData }) 
               className={styles.lightboxImage}
               src={photos[activeIndex]}
               alt=""
+              loading="lazy"
+              decoding="async"
               initial={{ scale: 0.92, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.3 }}

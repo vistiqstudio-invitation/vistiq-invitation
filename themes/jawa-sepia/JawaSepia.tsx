@@ -26,7 +26,7 @@ export default function JawaSepia({ invitation }: { invitation: InvitationData }
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setReady(true), 2200);
+    const timer = setTimeout(() => setReady(true), 250);
     return () => clearTimeout(timer);
   }, []);
 

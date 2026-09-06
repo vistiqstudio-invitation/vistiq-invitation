@@ -26,7 +26,6 @@ gallery where noted) - all real photography, not stock.
 | Luxury Gold | `luxury-` | Minang traditional bridal attire (suntiang, marun-gold songket) |
 | Islamic Green | `green-` | Emerald and gold Islamic bridal attire, arabesque architecture |
 | Minimal White | `white-` | Black formal attire, white studio backdrop |
-| Royal Black | `black-` | Black and gold ballroom bridal attire, candelabras and mirrors |
 | Floral Garden | `floral-` | Cream/beige garden attire, rose arch and pergola |
 | Emerald Lantern | `lantern-` | Emerald ball gown and suit, jade-green paper lanterns, night garden |
 | Sakura | `sakura-` | Blush pink hanbok-style gown, cherry blossom garden, stone lantern |
@@ -43,8 +42,6 @@ gallery where noted) - all real photography, not stock.
 Notes on gallery length and reuse:
 
 - `minimal-white`'s own gallery is only 3 photos (`white-gallery-7..9.png`)
-  - fewer were supplied for this theme.
-- `royal-black`'s own gallery is only 5 photos (`black-gallery-7..11.png`)
   - fewer were supplied for this theme.
 - `floral-garden` and `rustic` gallery files are numbered 7-12 rather than
   1-6, a leftover from when other themes still borrowed their original

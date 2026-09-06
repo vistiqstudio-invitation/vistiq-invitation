@@ -816,7 +816,7 @@ export default function ThreeDMotion({ invitation }: { invitation: InvitationDat
           <Guestbook invitation={invitation} />
           <Footer invitation={invitation} />
         </div>
-        {invitation.musicUrl && <audio ref={audioRef} src={invitation.musicUrl} loop />}
+        {invitation.musicUrl && <audio ref={audioRef} src={invitation.musicUrl} loop preload="none" />}
         <AnimatePresence>{!opened && <Cover key="cover" invitation={invitation} onOpen={() => void openInvitation()} />}</AnimatePresence>
         <AnimatePresence>
           {opened && (

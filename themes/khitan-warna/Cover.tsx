@@ -19,7 +19,7 @@ export default function Cover({ invitation }: { invitation: KhitanInvitationData
       exit={{ opacity: 0 }}
       transition={{ duration: 1 }}
     >
-      <img className={styles.coverDecor} src="/photos/khitan-warna-decor.png" alt="" aria-hidden="true" />
+      <img className={styles.coverDecor} src="/photos/khitan-warna-decor.webp" alt="" aria-hidden="true" />
 
       <motion.p
         className={styles.coverEyebrow}

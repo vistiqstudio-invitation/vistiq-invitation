@@ -28,7 +28,7 @@ export default function ModernElegant({ invitation }: { invitation: InvitationDa
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setReady(true), 900);
+    const timer = setTimeout(() => setReady(true), 250);
     return () => clearTimeout(timer);
   }, []);
 

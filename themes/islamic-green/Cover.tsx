@@ -24,6 +24,9 @@ export default function Cover({ invitation }: { invitation: InvitationData }) {
           className={styles.coverImage}
           src={invitation.coverImage}
           alt=""
+          loading="eager"
+          decoding="async"
+          fetchPriority="high"
           initial={{ scale: 1.15 }}
           animate={{ scale: 1 }}
           transition={{ duration: 2.4, ease: "easeOut" }}

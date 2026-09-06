@@ -8,7 +8,7 @@ export default function Footer({ invitation }: { invitation: KhitanInvitationDat
   return (
     <footer className={styles.footer}>
       <Reveal>
-        <img className={styles.coverDecor} src="/photos/khitan-warna-bismillah.png" alt="" aria-hidden="true" style={{ position: "static", width: 64, margin: "0 auto 20px" }} />
+        <img className={styles.coverDecor} src="/photos/khitan-warna-bismillah.webp" alt="" aria-hidden="true" style={{ position: "static", width: 64, margin: "0 auto 20px" }} />
 
         <p className={styles.footerQuote}>
           Demikian undangan ini kami sampaikan. Merupakan suatu kehormatan

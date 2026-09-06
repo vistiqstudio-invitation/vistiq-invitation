@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import styles from "./PhoneMockup.module.css";
 
 const DESIGN_WIDTH = 375;
@@ -131,8 +132,14 @@ export default function PhoneMockup({
       <div className={styles.screen} style={{ width, height: screenHeight, borderRadius: screenRadius }}>
         {mode === "static" ? (
           coverImage ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={coverImage} alt={label || themeKey} className={styles.staticImage} loading="lazy" />
+            <Image
+              src={coverImage}
+              alt={label || themeKey}
+              fill
+              sizes="(max-width: 640px) 36vw, 160px"
+              className={styles.staticImage}
+              loading="lazy"
+            />
           ) : (
             <div
               className={styles.staticFallback}

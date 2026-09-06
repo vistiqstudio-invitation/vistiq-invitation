@@ -11,8 +11,8 @@ export default function Event({ invitation }: { invitation: AqiqahInvitationData
 
   return (
     <div className={styles.section}>
-      <img className={styles.eventCornerTL} src="/photos/akikah-zaitun-floral-b.png" alt="" aria-hidden="true" />
-      <img className={styles.eventCornerBR} src="/photos/akikah-zaitun-floral-b.png" alt="" aria-hidden="true" />
+      <img className={styles.eventCornerTL} src="/photos/akikah-zaitun-floral-b.webp" alt="" aria-hidden="true" />
+      <img className={styles.eventCornerBR} src="/photos/akikah-zaitun-floral-b.webp" alt="" aria-hidden="true" />
 
       <Reveal>
         <div className={styles.eventCard}>

@@ -29,7 +29,7 @@ export default function FloralGarden({ invitation }: { invitation: InvitationDat
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setReady(true), 900);
+    const timer = setTimeout(() => setReady(true), 250);
     return () => clearTimeout(timer);
   }, []);
 

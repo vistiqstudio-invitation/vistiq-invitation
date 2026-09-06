@@ -28,7 +28,7 @@ export default function VintageBotanical({ invitation }: { invitation: Invitatio
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setReady(true), 900);
+    const timer = setTimeout(() => setReady(true), 250);
     return () => clearTimeout(timer);
   }, []);
 

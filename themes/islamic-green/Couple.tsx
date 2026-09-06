@@ -21,7 +21,7 @@ function Person({
     <div className={styles.person}>
       {photo && (
         <div className={styles.photoFrame}>
-          <img src={photo} alt={name} />
+          <img src={photo} alt={name} loading="lazy" decoding="async" />
         </div>
       )}
 

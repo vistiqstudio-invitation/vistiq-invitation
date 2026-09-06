@@ -18,7 +18,7 @@ import KhitanElang from "@/themes/khitan-elang/KhitanElang";
 import LuxuryGold from "@/themes/luxury-gold/LuxuryGold";
 import MinimalWhite from "@/themes/minimal-white/MinimalWhite";
 import IslamicGreen from "@/themes/islamic-green/IslamicGreen";
-import RoyalBlack from "@/themes/royal-black/RoyalBlack";
+import VeloraEditorial from "@/themes/velora-editorial/VeloraEditorial";
 import FloralGarden from "@/themes/floral-garden/FloralGarden";
 import EmeraldLantern from "@/themes/emerald-lantern/EmeraldLantern";
 import Sakura from "@/themes/sakura/Sakura";
@@ -70,7 +70,7 @@ export const themeRegistry: Record<
   "luxury-gold": LuxuryGold,
   "minimal-white": MinimalWhite,
   "islamic-green": IslamicGreen,
-  "royal-black": RoyalBlack,
+  "velora-editorial": VeloraEditorial,
   "floral-garden": FloralGarden,
   "emerald-lantern": EmeraldLantern,
   sakura: Sakura,
@@ -137,7 +137,7 @@ export const themeList: ThemeMeta[] = [
   { key: "luxury-gold", label: "Luxury Gold", description: "Dark & glamorous, aksen gold, glassmorphism", swatch: ["#0b0b0b", "#d4af37"], tags: ["premium"] },
   { key: "minimal-white", label: "Minimal White", description: "Putih bersih, editorial, elegan minimalis", swatch: ["#ffffff", "#96742a"], tags: ["reguler"] },
   { key: "islamic-green", label: "Islamic Green", description: "Krem hangat, hijau emerald & emas, motif islami", swatch: ["#faf6ec", "#0b5d42"], tags: ["adat"] },
-  { key: "royal-black", label: "Royal Black", description: "Hitam pekat & emas, formal, bingkai crest kerajaan", swatch: ["#000000", "#d4af37"], tags: ["premium"] },
+  { key: "velora-editorial", label: "Velora Editorial", description: "Ivory, emerald & gold dengan cover foto sinematik, galeri masonry dan layout editorial", swatch: ["#f4f5f1", "#1d5944"], tags: ["premium"], addedAt: "2026-09-06" },
   { key: "floral-garden", label: "Floral Garden", description: "Krem lembut, sage & blush, motif bunga natural", swatch: ["#fdf9f3", "#8a9a7e"], tags: ["reguler"] },
   { key: "emerald-lantern", label: "Emerald Lantern", description: "Nuansa malam taman, awan lembut & lampion hijau jade", swatch: ["#fbfaf6", "#5b8266"], tags: ["reguler"] },
   { key: "sakura", label: "Sakura", description: "Pink lembut, bunga sakura melayang, soft & feminin", swatch: ["#fffaf9", "#c2607a"], tags: ["reguler"] },

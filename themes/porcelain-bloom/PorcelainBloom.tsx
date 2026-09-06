@@ -663,7 +663,7 @@ function MusicPlayer({ url }: { url: string | null }) {
   if (!url) return null;
   return (
     <>
-      <audio ref={audioRef} src={url} loop />
+      <audio ref={audioRef} src={url} loop preload="none" />
       <button
         className={`${styles.musicButton} ${isPlaying ? styles.musicPlaying : ""}`}
         onClick={toggle}
@@ -707,7 +707,7 @@ export default function PorcelainBloom({ invitation }: { invitation: InvitationD
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const timer = window.setTimeout(() => setReady(true), 850);
+    const timer = window.setTimeout(() => setReady(true), 250);
     return () => window.clearTimeout(timer);
   }, []);
 

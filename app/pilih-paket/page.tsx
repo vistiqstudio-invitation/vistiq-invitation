@@ -3,6 +3,7 @@ import Link from "next/link";
 import CheckoutButton from "@/components/CheckoutButton";
 import PhoneMockup from "@/components/PhoneMockup";
 import ThemeBrowser from "@/components/ThemeBrowser";
+import { getThemeCoverImage } from "@/lib/themeCoverImages";
 import { PAYMENT_PACKAGES, type PaymentPackageId } from "@/lib/paymentPackages";
 
 export const metadata: Metadata = {
@@ -117,7 +118,15 @@ export default async function PilihPaketPage({ searchParams }: PageProps) {
         </div>
         <div className="visual">
           {HERO_FAN.map((item) => (
-            <PhoneMockup key={item.key} themeKey={item.key} width={122} className="phone" style={{ transform: `translate(calc(-50% + ${item.x}px), calc(-50% + ${item.y}px)) rotate(${item.rotate}deg) scale(${item.scale})`, zIndex: item.z }} />
+            <PhoneMockup
+              key={item.key}
+              themeKey={item.key}
+              width={122}
+              mode="static"
+              coverImage={getThemeCoverImage(item.key, "/demo")}
+              className="phone"
+              style={{ transform: `translate(calc(-50% + ${item.x}px), calc(-50% + ${item.y}px)) rotate(${item.rotate}deg) scale(${item.scale})`, zIndex: item.z }}
+            />
           ))}
         </div>
       </section>

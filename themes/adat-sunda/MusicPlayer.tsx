@@ -10,7 +10,7 @@ export default function MusicPlayer({ url }: { url: string | null }) {
 
   return (
     <>
-      <audio ref={audioRef} src={url} loop />
+      <audio ref={audioRef} src={url} loop preload="none" />
 
       <button
         className={styles.musicButton}

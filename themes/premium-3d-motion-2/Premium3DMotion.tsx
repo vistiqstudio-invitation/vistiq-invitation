@@ -1135,7 +1135,7 @@ export default function Premium3DMotion({ invitation }: { invitation: Invitation
           <Wishes invitation={invitation} />
           <Footer invitation={invitation} />
         </div>
-        {invitation.musicUrl && <audio ref={audioRef} src={invitation.musicUrl} loop />}
+        {invitation.musicUrl && <audio ref={audioRef} src={invitation.musicUrl} loop preload="none" />}
         <AnimatePresence>
           {!opened && <Cover key="cover" invitation={invitation} onOpen={() => void openInvitation()} />}
         </AnimatePresence>

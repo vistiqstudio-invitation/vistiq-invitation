@@ -12,5 +12,5 @@ const PEARL_GALLERY = [
 
 export function withPearlTideDemoAssets(theme:string,invitation:InvitationData):InvitationData {
   if(theme!=="pearl-tide") return invitation;
-  return {...invitation,coverImage:"/photos/white-cover.png",musicUrl:WEDDING_VOCAL_TRACKS.englishBallad,groom:{...invitation.groom,photo:"/photos/white-groom.png"},bride:{...invitation.bride,photo:"/photos/white-bride.png"},gallery:PEARL_GALLERY};
+  return {...invitation,coverImage:"/photos/white-cover.webp",musicUrl:WEDDING_VOCAL_TRACKS.englishBallad,groom:{...invitation.groom,photo:"/photos/white-groom.webp"},bride:{...invitation.bride,photo:"/photos/white-bride.webp"},gallery:PEARL_GALLERY};
 }

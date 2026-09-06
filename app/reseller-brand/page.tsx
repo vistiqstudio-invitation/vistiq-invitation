@@ -2,6 +2,7 @@ import Link from "next/link";
 import PhoneMockup from "@/components/PhoneMockup";
 import SiteNavbar from "@/components/SiteNavbar";
 import ThemeBrowser from "@/components/ThemeBrowser";
+import { getThemeCoverImage } from "@/lib/themeCoverImages";
 
 const WA_NUMBER = "6281371338032";
 
@@ -136,6 +137,8 @@ export default function ResellerBrandPage() {
                 key={item.key}
                 themeKey={item.key}
                 width={128}
+                mode="static"
+                coverImage={getThemeCoverImage(item.key, "/demo")}
                 className="phoneFanItem"
                 style={{
                   transform: `translate(calc(-50% + ${item.x}px), calc(-50% + ${item.y}px)) rotate(${item.rotate}deg) scale(${item.scale})`,

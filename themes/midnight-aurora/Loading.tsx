@@ -8,7 +8,7 @@ export default function Loading() {
     <motion.div
       className={styles.loading}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.7, ease: "easeInOut" }}
+      transition={{ duration: 0.25, ease: "easeInOut" }}
     >
       <div className={styles.loadingOrbit} aria-hidden="true" />
       <motion.span

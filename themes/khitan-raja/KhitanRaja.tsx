@@ -31,7 +31,7 @@ export default function KhitanRaja({ invitation }: { invitation: KhitanInvitatio
 
   useEffect(() => {
     if (isPreview) return;
-    const timer = setTimeout(() => setReady(true), 900);
+    const timer = setTimeout(() => setReady(true), 250);
     return () => clearTimeout(timer);
   }, [isPreview]);
 
