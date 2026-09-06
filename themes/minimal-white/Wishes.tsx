@@ -9,7 +9,7 @@ export default function Wishes({ invitation }: { invitation: InvitationData }) {
   const { entries, hasMore, loadMore, totalCount } = useRsvpWishes(invitation.id);
 
   return (
-    <div className={styles.section}>
+    <div className={`${styles.section} ${styles.wishesSection}`}>
       <Reveal>
         <p className={styles.eyebrow}>Wedding Wishes</p>
         <h2 className={styles.title}>Ucapan &amp; Doa</h2>

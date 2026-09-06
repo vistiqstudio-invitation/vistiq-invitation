@@ -2,18 +2,22 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
 import Reveal from "@/components/Reveal";
 import type { InvitationData } from "@/types/invitation";
 import styles from "./style.module.css";
 
 export default function Gallery({ invitation }: { invitation: InvitationData }) {
   const photos = invitation.gallery.slice(0, 10);
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
+  const showPrevious = () => {
+    setSelectedIndex((current) => (current - 1 + photos.length) % photos.length);
+  };
+
+  const showNext = () => {
+    setSelectedIndex((current) => (current + 1) % photos.length);
+  };
 
   useEffect(() => {
     if (activeIndex === null) return;
@@ -36,29 +40,46 @@ export default function Gallery({ invitation }: { invitation: InvitationData }) 
 
       <Reveal delay={0.1}>
         <div className={styles.gallerySlider}>
-          <Swiper
-            modules={[Navigation, Pagination]}
-            navigation
-            pagination={{ clickable: true }}
-            spaceBetween={18}
-            slidesPerView={1.15}
-            centeredSlides
-            breakpoints={{
-              640: { slidesPerView: 2.2, centeredSlides: false },
-              1024: { slidesPerView: 3.2, centeredSlides: false },
-            }}
+          <div className={styles.galleryShowcase}>
+            <button
+              className={styles.galleryMain}
+              type="button"
+              onClick={() => setActiveIndex(selectedIndex)}
+              aria-label={`Buka foto ${selectedIndex + 1}`}
+            >
+              <img src={photos[selectedIndex]} alt="Momen pasangan" />
+              <span className={styles.galleryCounter}>
+                {String(selectedIndex + 1).padStart(2, "0")} / {String(photos.length).padStart(2, "0")}
+              </span>
+            </button>
+
+            {photos.length > 1 && (
+              <div className={styles.galleryArrows}>
+                <button type="button" onClick={showPrevious} aria-label="Foto sebelumnya">‹</button>
+                <button type="button" onClick={showNext} aria-label="Foto berikutnya">›</button>
+              </div>
+            )}
+          </div>
+
+          <div
+            className={styles.galleryThumbs}
+            role="tablist"
+            aria-label="Pilih foto galeri"
+            style={{ gridTemplateColumns: `repeat(${Math.min(photos.length, 5)}, minmax(0, 1fr))` }}
           >
             {photos.map((photo, index) => (
-              <SwiperSlide key={photo}>
-                <div
-                  className={styles.galleryItem}
-                  onClick={() => setActiveIndex(index)}
-                >
-                  <img src={photo} alt="" loading="lazy" />
-                </div>
-              </SwiperSlide>
+              <button
+                key={photo}
+                type="button"
+                role="tab"
+                aria-selected={selectedIndex === index}
+                className={`${styles.galleryThumb} ${selectedIndex === index ? styles.galleryThumbActive : ""}`}
+                onClick={() => setSelectedIndex(index)}
+              >
+                <img src={photo} alt={`Momen ${index + 1}`} loading="lazy" />
+              </button>
             ))}
-          </Swiper>
+          </div>
         </div>
       </Reveal>
 

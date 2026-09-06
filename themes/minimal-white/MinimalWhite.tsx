@@ -45,49 +45,51 @@ export default function MinimalWhite({ invitation }: { invitation: InvitationDat
         <>
           <FloatingPetals />
 
-          <section id="home">
+          <section id="home" className={styles.pageSection}>
             <Hero invitation={invitation} />
           </section>
 
-          <section id="couple">
+          <section id="couple" className={styles.pageSection}>
             <Couple invitation={invitation} />
           </section>
 
-          {invitation.story.length > 0 && (
-            <section id="story">
-              <Story invitation={invitation} />
-            </section>
-          )}
-
           {weddingDate && (
-            <section id="countdown">
+            <section id="countdown" className={styles.pageSection}>
               <Countdown targetDate={weddingDate} />
             </section>
           )}
 
-          <section id="event">
+          <section id="event" className={styles.pageSection}>
             <Event invitation={invitation} />
           </section>
 
+          <Video invitation={invitation} />
+
+          {invitation.story.length > 0 && (
+            <section id="story" className={styles.pageSection}>
+              <Story invitation={invitation} />
+            </section>
+          )}
+
           {invitation.gallery.length > 0 && (
-            <section id="gallery">
+            <section id="gallery" className={styles.gallerySection}>
               <Gallery invitation={invitation} />
             </section>
           )}
 
-          <Video invitation={invitation} />
-
-          <section id="maps">
-            <Maps invitation={invitation} />
-          </section>
+          {!invitation.mapsUrl && (
+            <section id="maps" className={styles.pageSection}>
+              <Maps invitation={invitation} />
+            </section>
+          )}
 
           {invitation.gifts.length > 0 && (
-            <section id="gift">
+            <section id="gift" className={styles.pageSection}>
               <Gift invitation={invitation} />
             </section>
           )}
 
-          <section id="rsvp">
+          <section id="rsvp" className={styles.rsvpSection}>
             <RSVP invitation={invitation} />
           </section>
 

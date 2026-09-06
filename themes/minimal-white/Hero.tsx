@@ -11,7 +11,7 @@ export default function Hero({ invitation }: { invitation: InvitationData }) {
     <div className={styles.hero}>
       <Reveal>
         <p className={styles.heroLabel}>
-          {opening?.greeting || "Assalamu'alaikum Warahmatullahi Wabarakatuh"}
+          {opening?.greeting || "We Are Getting Married"}
         </p>
 
         {opening?.title ? (

@@ -4,12 +4,10 @@ import styles from "./style.module.css";
 
 const items = [
   { id: "home", icon: "⌂", label: "Home" },
-  { id: "couple", icon: "♥", label: "Couple" },
-  { id: "story", icon: "❁", label: "Story" },
-  { id: "event", icon: "☰", label: "Event" },
-  { id: "gallery", icon: "▦", label: "Gallery" },
-  { id: "gift", icon: "✦", label: "Gift" },
-  { id: "rsvp", icon: "✉", label: "RSVP" },
+  { id: "couple", icon: "♡", label: "Mempelai" },
+  { id: "event", icon: "▦", label: "Acara" },
+  { id: "gallery", icon: "▧", label: "Galeri" },
+  { id: "rsvp", icon: "✉", label: "Ucapan" },
 ];
 
 export default function FloatingMenu() {
