@@ -258,3 +258,123 @@ export default function ThemeBrowser({
 
   return (
     <div>
+      <div className={styles.filterRow}>
+        {OCCASIONS.map((item) => (
+          <button
+            key={item.key}
+            type="button"
+            onClick={() => {
+              setOccasion((current) => (current === item.key ? null : item.key));
+              if (item.key === "wedding") setWeddingSub("semua");
+            }}
+            aria-pressed={occasion === item.key}
+            className={`${styles.filterButton} ${occasion === item.key ? styles.filterButtonActive : ""}`}
+          >
+            {item.label}
+          </button>
+        ))}
+      </div>
+
+      {occasion === "wedding" && (
+        <div className={`${styles.filterRow} ${styles.subFilterRow}`}>
+          {WEDDING_SUBFILTERS.map((item) => (
+            <button
+              key={item.key}
+              type="button"
+              onClick={() => setWeddingSub(item.key)}
+              className={`${styles.filterButton} ${styles.filterButtonSub} ${
+                weddingSub === item.key ? styles.filterButtonActive : ""
+              }`}
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {occasion === null ? (
+        <div className={styles.emptyState}>
+          <p className={styles.emptyStateTitle}>Pilih Jenis Undangan</p>
+          <p className={styles.emptyStateDesc}>
+            Klik Wedding, Khitan, Wisuda, Akikah, atau Ulang Tahun untuk melihat pilihan temanya.
+          </p>
+        </div>
+      ) : occasion === "wedding" && weddingSub === "tanpa-foto" ? (
+        <div className={styles.emptyState}>
+          <p className={styles.emptyStateTitle}>Segera Hadir</p>
+          <p className={styles.emptyStateDesc}>
+            Tema tanpa foto sedang kami siapkan. Hubungi kami di WhatsApp untuk info lebih lanjut.
+          </p>
+        </div>
+      ) : occasion === "wedding" ? (
+        <div className={styles.grid}>
+          {filteredWeddingThemes.map((theme) => (
+            <ThemeCard
+              key={theme.key}
+              theme={theme}
+              demoPath="/demo"
+              eyebrowLabel="Indonesian Wedding"
+              priceLabel={priceLabel}
+              priceWasLabel={priceWasLabel}
+              discountLabel={discountLabel}
+              waNumber={waNumber}
+              brandName={brandName}
+            />
+          ))}
+        </div>
+      ) : occasion === "khitan" ? (
+        <div className={styles.grid}>
+          {khitanThemeList.map((theme) => (
+            <ThemeCard
+              key={theme.key}
+              theme={theme}
+              demoPath="/demo-khitan"
+              eyebrowLabel="Indonesian Khitan"
+              priceLabel={priceLabel}
+              priceWasLabel={priceWasLabel}
+              discountLabel={discountLabel}
+              waNumber={waNumber}
+              brandName={brandName}
+            />
+          ))}
+        </div>
+      ) : occasion === "akikah" ? (
+        <div className={styles.grid}>
+          {aqiqahThemeList.map((theme) => (
+            <ThemeCard
+              key={theme.key}
+              theme={theme}
+              demoPath="/demo-akikah"
+              eyebrowLabel="Indonesian Aqiqah"
+              priceLabel={priceLabel}
+              priceWasLabel={priceWasLabel}
+              discountLabel={discountLabel}
+              waNumber={waNumber}
+              brandName={brandName}
+            />
+          ))}
+        </div>
+      ) : occasion === "ulang-tahun" ? (
+        <div className={styles.grid}>
+          {birthdayThemeList.map((theme) => (
+            <ThemeCard
+              key={theme.key}
+              theme={theme}
+              demoPath="/demo-ulang-tahun"
+              eyebrowLabel="Kids Birthday"
+              priceLabel={priceLabel}
+              priceWasLabel={priceWasLabel}
+              discountLabel={discountLabel}
+              waNumber={waNumber}
+              brandName={brandName}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className={styles.grid}>
+          <ComingSoonCard {...COMING_SOON[occasion]} />
+        </div>
+      )}
+    </div>
+  );
+}
