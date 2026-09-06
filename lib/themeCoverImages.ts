@@ -44,6 +44,10 @@ export const WEDDING_COVER_BY_THEME: Record<string, string> = {
   "fizan-islamic-motion": "/themes/fizan-islamic-motion/poster.jpg",
 };
 
+export const THEME_CARD_PREVIEW_BY_THEME: Record<string, string> = {
+  "lavender-garden-motion": "/theme-previews/wedding/lavender-garden-motion-card.jpg",
+};
+
 const KHITAN_COVER = "/photos/khitan-warna-cover.jpg";
 
 export const KHITAN_COVER_BY_THEME: Record<string, string> = Object.fromEntries(
@@ -72,4 +76,9 @@ export function getThemeCoverImage(themeKey: string, demoPath: string): string |
   if (demoPath === "/demo-akikah") return AQIQAH_COVER_BY_THEME[themeKey] ? `/theme-previews/akikah/${themeKey}.jpg` : null;
   if (demoPath === "/demo-ulang-tahun") return BIRTHDAY_COVER_BY_THEME[themeKey] ? `/theme-previews/birthday/${themeKey}.jpg` : null;
   return WEDDING_COVER_BY_THEME[themeKey] ? `/theme-previews/wedding/${themeKey}.jpg` : null;
+}
+
+export function getThemeCardPreviewImage(themeKey: string, demoPath: string): string | null {
+  if (demoPath !== "/demo") return null;
+  return THEME_CARD_PREVIEW_BY_THEME[themeKey] ?? null;
 }

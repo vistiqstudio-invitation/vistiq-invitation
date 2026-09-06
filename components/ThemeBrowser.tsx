@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import PhoneMockup from "@/components/PhoneMockup";
 import { themeList, aqiqahThemeList, khitanThemeList, birthdayThemeList, isThemeNew, type ThemeMeta } from "@/lib/theme";
-import { getThemeCoverImage } from "@/lib/themeCoverImages";
+import { getThemeCardPreviewImage, getThemeCoverImage } from "@/lib/themeCoverImages";
 import styles from "@/app/demo/demo.module.css";
 
 function SendIcon() {
@@ -105,30 +105,48 @@ function ThemeCatalogPreview({
   demoPath,
   coverImage,
   previewImages,
+  cardImage,
 }: {
   theme: ThemeMeta;
   demoPath: string;
   coverImage: string | null;
   previewImages: Array<string | null>;
+  cardImage: string | null;
 }) {
   return (
-    <div className={styles.catalogPreview} role="img" aria-label={`Mockup HP dan empat preview halaman tema ${theme.label}`}>
-      <div className={styles.screenshotDeck} aria-hidden="true">
-        {SCREENSHOT_VARIANTS.map((variant, index) => (
-          <ThemeScreenshotCard key={variant.label} theme={theme} image={previewImages[index] || null} variant={variant} />
-        ))}
-      </div>
-      <div className={styles.catalogPhone} aria-hidden="true">
-        <PhoneMockup
-          themeKey={theme.key}
-          demoPath={demoPath}
-          mode="static"
-          width={74}
-          coverImage={coverImage}
-          swatch={theme.swatch}
-          label={theme.label}
+    <div
+      className={`${styles.catalogPreview} ${cardImage ? styles.catalogPreviewCustom : ""}`}
+      role="img"
+      aria-label={`Preview katalog tema ${theme.label}`}
+    >
+      {cardImage ? (
+        <Image
+          src={cardImage}
+          alt=""
+          fill
+          sizes="(max-width: 640px) 50vw, (max-width: 1040px) 33vw, 260px"
+          className={styles.catalogImage}
         />
-      </div>
+      ) : (
+        <>
+          <div className={styles.screenshotDeck} aria-hidden="true">
+            {SCREENSHOT_VARIANTS.map((variant, index) => (
+              <ThemeScreenshotCard key={variant.label} theme={theme} image={previewImages[index] || null} variant={variant} />
+            ))}
+          </div>
+          <div className={styles.catalogPhone} aria-hidden="true">
+            <PhoneMockup
+              themeKey={theme.key}
+              demoPath={demoPath}
+              mode="static"
+              width={74}
+              coverImage={coverImage}
+              swatch={theme.swatch}
+              label={theme.label}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 }
@@ -154,6 +172,7 @@ function ThemeCard({
 }) {
   const orderText = encodeURIComponent(`Halo ${brandName}, saya ingin order undangan tema ${theme.label}`);
   const coverImage = getThemeCoverImage(theme.key, demoPath);
+  const cardImage = getThemeCardPreviewImage(theme.key, demoPath);
   const previewImages = getThemeScreenshotImages(coverImage);
 
   return (
@@ -166,6 +185,7 @@ function ThemeCard({
           demoPath={demoPath}
           coverImage={coverImage}
           previewImages={previewImages}
+          cardImage={cardImage}
         />
       </div>
 
@@ -238,123 +258,3 @@ export default function ThemeBrowser({
 
   return (
     <div>
-      <div className={styles.filterRow}>
-        {OCCASIONS.map((item) => (
-          <button
-            key={item.key}
-            type="button"
-            onClick={() => {
-              setOccasion((current) => (current === item.key ? null : item.key));
-              if (item.key === "wedding") setWeddingSub("semua");
-            }}
-            aria-pressed={occasion === item.key}
-            className={`${styles.filterButton} ${occasion === item.key ? styles.filterButtonActive : ""}`}
-          >
-            {item.label}
-          </button>
-        ))}
-      </div>
-
-      {occasion === "wedding" && (
-        <div className={`${styles.filterRow} ${styles.subFilterRow}`}>
-          {WEDDING_SUBFILTERS.map((item) => (
-            <button
-              key={item.key}
-              type="button"
-              onClick={() => setWeddingSub(item.key)}
-              className={`${styles.filterButton} ${styles.filterButtonSub} ${
-                weddingSub === item.key ? styles.filterButtonActive : ""
-              }`}
-            >
-              {item.label}
-            </button>
-          ))}
-        </div>
-      )}
-
-      {occasion === null ? (
-        <div className={styles.emptyState}>
-          <p className={styles.emptyStateTitle}>Pilih Jenis Undangan</p>
-          <p className={styles.emptyStateDesc}>
-            Klik Wedding, Khitan, Wisuda, Akikah, atau Ulang Tahun untuk melihat pilihan temanya.
-          </p>
-        </div>
-      ) : occasion === "wedding" && weddingSub === "tanpa-foto" ? (
-        <div className={styles.emptyState}>
-          <p className={styles.emptyStateTitle}>Segera Hadir</p>
-          <p className={styles.emptyStateDesc}>
-            Tema tanpa foto sedang kami siapkan. Hubungi kami di WhatsApp untuk info lebih lanjut.
-          </p>
-        </div>
-      ) : occasion === "wedding" ? (
-        <div className={styles.grid}>
-          {filteredWeddingThemes.map((theme) => (
-            <ThemeCard
-              key={theme.key}
-              theme={theme}
-              demoPath="/demo"
-              eyebrowLabel="Indonesian Wedding"
-              priceLabel={priceLabel}
-              priceWasLabel={priceWasLabel}
-              discountLabel={discountLabel}
-              waNumber={waNumber}
-              brandName={brandName}
-            />
-          ))}
-        </div>
-      ) : occasion === "khitan" ? (
-        <div className={styles.grid}>
-          {khitanThemeList.map((theme) => (
-            <ThemeCard
-              key={theme.key}
-              theme={theme}
-              demoPath="/demo-khitan"
-              eyebrowLabel="Indonesian Khitan"
-              priceLabel={priceLabel}
-              priceWasLabel={priceWasLabel}
-              discountLabel={discountLabel}
-              waNumber={waNumber}
-              brandName={brandName}
-            />
-          ))}
-        </div>
-      ) : occasion === "akikah" ? (
-        <div className={styles.grid}>
-          {aqiqahThemeList.map((theme) => (
-            <ThemeCard
-              key={theme.key}
-              theme={theme}
-              demoPath="/demo-akikah"
-              eyebrowLabel="Indonesian Aqiqah"
-              priceLabel={priceLabel}
-              priceWasLabel={priceWasLabel}
-              discountLabel={discountLabel}
-              waNumber={waNumber}
-              brandName={brandName}
-            />
-          ))}
-        </div>
-      ) : occasion === "ulang-tahun" ? (
-        <div className={styles.grid}>
-          {birthdayThemeList.map((theme) => (
-            <ThemeCard
-              key={theme.key}
-              theme={theme}
-              demoPath="/demo-ulang-tahun"
-              eyebrowLabel="Kids Birthday"
-              priceLabel={priceLabel}
-              priceWasLabel={priceWasLabel}
-              discountLabel={discountLabel}
-              waNumber={waNumber}
-              brandName={brandName}
-            />
-          ))}
-        </div>
-      ) : (
-        <div className={styles.grid}>
-          <ComingSoonCard {...COMING_SOON[occasion]} />
-        </div>
-      )}
-    </div>
-  );
-}
