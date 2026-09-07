@@ -215,6 +215,25 @@
   width: min(92%, 560px);
   padding: 40px 32px 0;
   text-align: center;
+  isolation: isolate;
+  text-shadow: 0 1px 0 rgba(253, 249, 243, 0.88), 0 3px 12px rgba(28, 48, 39, 0.18);
+}
+
+.coverHeader::before {
+  position: absolute;
+  z-index: -1;
+  inset: -14px -24px;
+  content: "";
+  border: 1px solid rgba(253, 249, 243, 0.58);
+  border-radius: 24px;
+  background: linear-gradient(
+    180deg,
+    rgba(253, 249, 243, 0.7),
+    rgba(253, 249, 243, 0.42)
+  );
+  box-shadow: 0 8px 24px rgba(34, 57, 46, 0.16);
+  backdrop-filter: blur(3px);
+  pointer-events: none;
 }
 
 .coverContent {
@@ -232,16 +251,17 @@
   font-size: 12px;
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: var(--sage-deep);
+  color: #294638;
+  font-weight: 700;
   margin: 0 0 22px;
 }
 
 .coverTitle {
   font-family: var(--font-heading);
-  font-weight: 500;
+  font-weight: 600;
   font-size: clamp(40px, 9vw, 76px);
   line-height: 1.08;
-  color: var(--ink);
+  color: #24392f;
   margin: 0 0 18px;
 }
 
@@ -257,7 +277,8 @@
 .coverDate {
   font-size: 15px;
   letter-spacing: 0.1em;
-  color: var(--muted);
+  color: #3b5547;
+  font-weight: 600;
   margin: 0;
 }
 
