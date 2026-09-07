@@ -37,6 +37,11 @@
 .panelCopy h2{display:flex;flex-direction:column;align-items:center;gap:0;margin:0;font-family:var(--font-montserrat),Arial,sans-serif;font-size:46px;font-weight:300;line-height:.84}
 .panelCopy h2 span{margin:6px 0 4px;font-family:var(--font-cormorant),serif;font-size:.48em;line-height:1}
 .panelCopy time{margin-top:18px;font-family:var(--font-playfair),serif;font-size:8px;font-weight:600;letter-spacing:.1em}
+.scrollCue{position:absolute;z-index:4;left:50%;bottom:max(24px,env(safe-area-inset-bottom));display:flex;flex-direction:column;align-items:center;gap:7px;transform:translateX(-50%);color:#fff;text-align:center;text-shadow:0 2px 7px rgba(8,35,28,.65);pointer-events:none}
+.scrollCue>span:first-child{font-family:var(--font-playfair),serif;font-size:11px;letter-spacing:.08em;white-space:nowrap}
+.scrollMouse{position:relative;display:block;width:21px;height:33px;border:1.5px solid rgba(255,255,255,.9);border-radius:999px;box-shadow:0 0 0 1px rgba(19,55,42,.12)}
+.scrollMouse>span{position:absolute;top:6px;left:50%;width:3px;height:7px;border-radius:999px;background:#fff;transform:translateX(-50%);animation:scrollWheel 1.7s ease-in-out infinite}
+@keyframes scrollWheel{0%{opacity:0;transform:translate(-50%,-1px)}25%{opacity:1}75%{opacity:1}100%{opacity:0;transform:translate(-50%,12px)}}
 .coupleSection{position:relative;min-height:auto;padding:52px 22px 58px;overflow:hidden;background:linear-gradient(rgba(10,61,45,.82),rgba(14,56,44,.94)),url('/themes/emerald-elan/emerald-cover.jpg') center/cover no-repeat;text-align:center;color:#fff}
 .coupleTexture{position:absolute;z-index:0;inset:0;background:url('/themes/emerald-elan/emerald-gallery-05.jpg') center/cover no-repeat;opacity:.13;mix-blend-mode:screen}
 .coupleIntro,.personCard{position:relative;z-index:1}

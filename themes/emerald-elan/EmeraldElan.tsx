@@ -276,6 +276,18 @@ function Hero({ invitation }: { invitation: InvitationData }) {
           <time>{dateLabel}</time>
         </motion.div>
       </div>
+      <motion.div
+        className={styles.scrollCue}
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1.1, duration: 0.7, ease: revealEase }}
+        aria-hidden="true"
+      >
+        <span>Scroll ke bawah</span>
+        <span className={styles.scrollMouse}>
+          <span />
+        </span>
+      </motion.div>
     </section>
   );
 }
