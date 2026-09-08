@@ -597,6 +597,10 @@ function buildReferenceDocument(source: string) {
     .elementor-33329 .elementor-element.elementor-element-19bee63b > .elementor-motion-effects-container > .elementor-motion-effects-layer {
       background-image: url("${REFERENCE_PROFILE}") !important;
     }
+    .elementor-33329 .elementor-element.elementor-element-3da322da,
+    .elementor-33329 .elementor-element.elementor-element-3da322da .elementor-widget-container {
+      line-height: 1.5 !important;
+    }
   `;
   parsed.head.append(overrides);
 
