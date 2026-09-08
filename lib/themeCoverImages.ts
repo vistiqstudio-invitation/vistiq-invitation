@@ -42,6 +42,7 @@ export const WEDDING_COVER_BY_THEME: Record<string, string> = {
   "prismatic-vows": "/photos/pastel-cover.webp",
   "pearl-tide": "/photos/white-cover.webp",
   "fizan-islamic-motion": "/themes/fizan-islamic-motion/poster.jpg",
+  "azure-bloom": "/photos/luxury-art-love-paradise/couple-cover.webp",
 };
 
 export const THEME_CARD_PREVIEW_BY_THEME: Record<string, string> = {

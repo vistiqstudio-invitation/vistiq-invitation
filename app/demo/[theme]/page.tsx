@@ -13,6 +13,7 @@ import { withLuxuryArtSoftDemoAssets } from "@/lib/luxuryArtSoftDemo";
 import { withThreeDMotionDemoAssets } from "@/lib/threeDMotionDemo";
 import { withPremium3DMotionDemoAssets } from "@/lib/premium3DMotionDemo";
 import { withFizanIslamicMotionDemoAssets } from "@/lib/fizanIslamicMotionDemo";
+import { withAzureBloomDemoAssets } from "@/lib/azureBloomDemo";
 import WeddingThemeSafeArea from "@/components/WeddingThemeSafeArea";
 
 export default async function DemoThemePage({
@@ -25,40 +26,20 @@ export default async function DemoThemePage({
 
   if (!Theme) notFound();
 
-  const invitation = withFizanIslamicMotionDemoAssets(
-    theme,
-    withPremium3DMotionDemoAssets(
-      theme,
-      withThreeDMotionDemoAssets(
-        theme,
-        withLuxuryArtSoftDemoAssets(
-          theme,
-          withLuxuryArtChampagneRomanceDemoAssets(
-            theme,
-            withLuxuryArtLoveParadiseDemoAssets(
-              theme,
-              withLuxuryArtGardenDemoAssets(
-                theme,
-                withPearlTideDemoAssets(
-                  theme,
-                  withPrismaticVowsDemoAssets(
-                    theme,
-                    withVelvetCinemaDemoAssets(
-                      theme,
-                      withLoveChronicleDemoAssets(
-                        theme,
-                        withPorcelainBloomDemoAssets(theme, getDemoInvitation(theme)),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-      ),
-  );
+  let invitation = getDemoInvitation(theme);
+  invitation = withPorcelainBloomDemoAssets(theme, invitation);
+  invitation = withLoveChronicleDemoAssets(theme, invitation);
+  invitation = withVelvetCinemaDemoAssets(theme, invitation);
+  invitation = withPrismaticVowsDemoAssets(theme, invitation);
+  invitation = withPearlTideDemoAssets(theme, invitation);
+  invitation = withLuxuryArtGardenDemoAssets(theme, invitation);
+  invitation = withLuxuryArtLoveParadiseDemoAssets(theme, invitation);
+  invitation = withLuxuryArtChampagneRomanceDemoAssets(theme, invitation);
+  invitation = withLuxuryArtSoftDemoAssets(theme, invitation);
+  invitation = withThreeDMotionDemoAssets(theme, invitation);
+  invitation = withPremium3DMotionDemoAssets(theme, invitation);
+  invitation = withFizanIslamicMotionDemoAssets(theme, invitation);
+  invitation = withAzureBloomDemoAssets(theme, invitation);
 
   return (
     <WeddingThemeSafeArea theme={theme} invitation={invitation}>
