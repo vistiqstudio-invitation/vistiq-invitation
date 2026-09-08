@@ -114,10 +114,10 @@ function setAudioSource(doc: Document, musicUrl: string | null | undefined) {
   if (!source) return;
 
   doc.querySelectorAll<HTMLAudioElement>(".idb-audio-el").forEach((audio) => {
+    audio.preload = "none";
     const sourceElement = audio.querySelector<HTMLSourceElement>("source");
     if (sourceElement) sourceElement.src = source;
     audio.src = source;
-    audio.load();
   });
 }
 
@@ -576,6 +576,11 @@ function prepareReference(
 function buildReferenceDocument(source: string) {
   const parsed = new DOMParser().parseFromString(source, "text/html");
   parsed.querySelectorAll("script, noscript").forEach((element) => element.remove());
+  parsed.querySelectorAll<HTMLAudioElement>("audio").forEach((audio) => {
+    audio.preload = "none";
+    audio.removeAttribute("src");
+    audio.querySelectorAll("source").forEach((sourceElement) => sourceElement.removeAttribute("src"));
+  });
 
   const base = parsed.createElement("base");
   base.href = REFERENCE_DIRECTORY;
@@ -610,6 +615,7 @@ function buildReferenceDocument(source: string) {
 export default function AzureBloom({ invitation }: { invitation: InvitationData }) {
   const { setOpened } = useInvitation();
   const rsvp = useRsvpWishes(invitation.id);
+  const motionCouple = coupleName(invitation);
   const [referenceDocument, setReferenceDocument] = useState("");
   const [loadError, setLoadError] = useState(false);
   const [motionPlaying, setMotionPlaying] = useState(false);
@@ -702,6 +708,7 @@ export default function AzureBloom({ invitation }: { invitation: InvitationData 
     const video = motionRef.current;
     if (!video) return;
 
+    video.load();
     video.currentTime = 0;
     video.play().catch(() => {
       window.setTimeout(finishOpening, 800);
@@ -764,11 +771,24 @@ export default function AzureBloom({ invitation }: { invitation: InvitationData 
           ref={motionRef}
           className={styles.motionVideo}
           src={OPENING_MOTION}
+          poster={REFERENCE_COVER}
           playsInline
-          preload="auto"
+          preload="none"
           onEnded={finishOpening}
           onError={() => window.setTimeout(finishOpening, 800)}
         />
+        <div className={styles.motionIntro} aria-hidden={!motionPlaying}>
+          <div className={styles.motionCopy}>
+            <p className={styles.motionKicker}>THE WEDDING OF</p>
+            <p className={styles.motionCouple}>{motionCouple}</p>
+          </div>
+          <div className={styles.motionScrollCue}>
+            <span>Scroll ke bawah</span>
+            <span className={styles.mouseIcon} aria-hidden="true">
+              <span />
+            </span>
+          </div>
+        </div>
       </div>
     </main>
   );
