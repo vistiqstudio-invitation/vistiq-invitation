@@ -51,6 +51,7 @@ export const THEME_CARD_PREVIEW_BY_THEME: Record<string, string> = {
   "minimal-white": "/theme-previews/wedding/minimal-white-card.jpg",
   "islamic-green": "/theme-previews/wedding/islamic-green-card.jpg",
   "emerald-elan": "/theme-previews/wedding/emerald-elan.jpg",
+  "fizan-islamic-motion": "/theme-previews/wedding/fizan-islamic-motion.jpg",
 };
 
 const KHITAN_COVER = "/photos/khitan-warna-cover.jpg";
