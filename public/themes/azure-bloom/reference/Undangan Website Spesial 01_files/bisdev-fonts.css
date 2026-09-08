@@ -1,0 +1,1750 @@
+@font-face {
+  font-family: 'Activists';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/activists-0Hc2Ak.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Activists 0Hc2Ak';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/activists-0Hc2Ak.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Adinekir';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/adinekir-7MbTQV.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Adinekir 7Mb Tqv';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/adinekir-7MbTQV.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Agency Fb';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/agency-fb-G63c3U.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Agency Fb G63C3U';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/agency-fb-G63c3U.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Akaya Kanadaka Regula';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/akaya-kanadaka-regula-PKPqd6.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Akaya Kanadaka Regula Pkpqd6';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/akaya-kanadaka-regula-PKPqd6.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Alcantera Serif';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/alcantera-serif-RquOrG.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Alcantera Serif Rqu Or G';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/alcantera-serif-RquOrG.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Alumatica';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/alumatica-XIm1KF.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Alumatica Xim1Kf';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/alumatica-XIm1KF.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Anabele';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/anabele-A5lVHe.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Anabele A5L Vhe';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/anabele-A5lVHe.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Analogue';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/analogue-puwr1u.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Analogue Puwr1U';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/analogue-puwr1u.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Anydore';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/anydore-iGAS4d.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Anydore I Gas4D';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/anydore-iGAS4d.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Aphrodite Slim Text';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/aphrodite-slim-text-Fkg0h3.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Aphrodite Slim Text Fkg0H3';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/aphrodite-slim-text-Fkg0h3.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Aston Script';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/aston-script-E9Ndd7.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Aston Script E9Ndd7';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/aston-script-E9Ndd7.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Autumn';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/autumn-pzzLXE.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Autumn Pzz Lxe';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/autumn-pzzLXE.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Back To School';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/back-to-school-UuCNwo.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Back To School Uu Cnwo';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/back-to-school-UuCNwo.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Baskerville Old Face';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/baskerville-old-face-UyeGTH.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Baskerville Old Face Uye Gth';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/baskerville-old-face-UyeGTH.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Bavaria Gates';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/bavaria-gates-w0c3jg.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Bavaria Gates W0C3Jg';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/bavaria-gates-w0c3jg.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Bebas Neue';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/bebas-neue-NZe28O.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Bebas Neue Nze28O';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/bebas-neue-NZe28O.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Belgan Aesthetic';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/belgan-aesthetic-YWzzbt.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Belgan Aesthetic Ywzzbt';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/belgan-aesthetic-YWzzbt.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Belisha';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/belisha-siCjcL.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Belisha Si Cjc L';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/belisha-siCjcL.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Bernardo';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/bernardo-fYt11x.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Bernardo F Yt11X';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/bernardo-fYt11x.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Biancha Script Demo';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/biancha-script-demo-V7i7Vv.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Biancha Script Demo V7I7Vv';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/biancha-script-demo-V7i7Vv.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Bickham Script Pro R';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/bickham-script-pro-r-or3CHS.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Bickham Script Pro R Or3Chs';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/bickham-script-pro-r-or3CHS.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Black Rotela';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/black-rotela-KAUb7S.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Black Rotela Kaub7S';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/black-rotela-KAUb7S.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Bodebeck';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/bodebeck-O3Jph3.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Bodebeck O3Jph3';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/bodebeck-O3Jph3.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Boheme Floral';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/boheme-floral-yycQ4X.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Boheme Floral Yyc Q4X';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/boheme-floral-yycQ4X.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Bohemian';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/bohemian-ezUyCh.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Bohemian Ez Uy Ch';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/bohemian-ezUyCh.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Bon Vivan';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/bon-vivan-qTfvpb.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Bon Vivan Q Tfvpb';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/bon-vivan-qTfvpb.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Brigend Signature';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/brigend-signature-Pnxsjh.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Brigend Signature Pnxsjh';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/brigend-signature-Pnxsjh.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Brittany Signature';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/brittany-signature-266EKT.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Brittany Signature 266Ekt';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/brittany-signature-266EKT.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Brown Sugar';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/brown-sugar-fLqFeI.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Brown Sugar F Lq Fe I';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/brown-sugar-fLqFeI.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Calibri';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/calibri-JPcHZg.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Calibri Jpc Hzg';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/calibri-JPcHZg.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Calisto Mtfett';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/calisto-mtfett-KlcQZJ.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Calisto Mtfett Klc Qzj';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/calisto-mtfett-KlcQZJ.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Calvino';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/calvino-sPlktJ.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Calvino S Plkt J';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/calvino-sPlktJ.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Cambria';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/cambria-mtuyql.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Cambria Mtuyql';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/cambria-mtuyql.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Carolyna Pro';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/carolyna-pro-neL2xF.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Carolyna Pro Ne L2X F';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/carolyna-pro-neL2xF.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Chilanka';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/chilanka-gPmqhc.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Chilanka G Pmqhc';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/chilanka-gPmqhc.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Coffe For Breakfast';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/coffe-for-breakfast-8qZihL.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Coffe For Breakfast 8Q Zih L';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/coffe-for-breakfast-8qZihL.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Coffee Extra';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/coffee-extra-ZHn6pt.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Coffee Extra Zhn6Pt';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/coffee-extra-ZHn6pt.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Collina';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/collina-MVpSq6.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Collina Mvp Sq6';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/collina-MVpSq6.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Cormorant';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/cormorant-vmja6K.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Cormorant Vmja6K';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/cormorant-vmja6K.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Cream Cake';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/cream-cake-9V3qR0.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Cream Cake 9V3Q R0';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/cream-cake-9V3qR0.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Creattion';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/creattion-39NC4q.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Creattion 39Nc4Q';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/creattion-39NC4q.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Dear Sarah';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/dear-sarah-4JRwRm.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Dear Sarah 4Jrw Rm';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/dear-sarah-4JRwRm.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Dear Sarah';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/dear-sarah-pwFA96.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Dear Sarah Pw Fa96';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/dear-sarah-pwFA96.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Delius Swash Caps Regu';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/delius-swash-caps-regu-dReSWV.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Delius Swash Caps Regu D Re Swv';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/delius-swash-caps-regu-dReSWV.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Desirable Bursh Texture';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/desirable-bursh-texture-zvUsV2.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Desirable Bursh Texture Zv Us V2';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/desirable-bursh-texture-zvUsV2.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Dk Plague Master';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/dk-plague-master-eG0jL3.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Dk Plague Master E G0J L3';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/dk-plague-master-eG0jL3.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Edensor';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/edensor-Gpu3bh.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Edensor Gpu3Bh';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/edensor-Gpu3bh.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Editors';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/editors-9z65E3.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Editors 9Z65E3';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/editors-9z65E3.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Edwardian Script';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/edwardian-script-qCrIuT.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Edwardian Script Q Cr Iu T';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/edwardian-script-qCrIuT.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Elsie Swash Caps';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/elsie-swash-caps-yktqwh.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Elsie Swash Caps Yktqwh';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/elsie-swash-caps-yktqwh.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Free Sans';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/free-sans-FciQiR.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Free Sans Fci Qi R';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/free-sans-FciQiR.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Freestyle';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/freestyle-NkHlwh.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Freestyle Nk Hlwh';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/freestyle-NkHlwh.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Gallerymodern Webfon';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/gallerymodern-webfon-JoEIOE.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Gallerymodern Webfon Jo Eioe';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/gallerymodern-webfon-JoEIOE.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Garlicha';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/garlicha-vTwLqC.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Garlicha V Tw Lq C';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/garlicha-vTwLqC.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Greatness';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/greatness-zlJOah.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Greatness Zl Joah';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/greatness-zlJOah.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Greatness Demo';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/greatness-demo-KsyxV9.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Greatness Demo Ksyx V9';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/greatness-demo-KsyxV9.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Grithani';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/grithani-HyQ6qv.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Grithani Hy Q6Qv';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/grithani-HyQ6qv.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Happiness';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/happiness-bi5gQm.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Happiness Bi5G Qm';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/happiness-bi5gQm.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Hashiba';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/hashiba-AJ3qsy.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Hashiba Aj3Qsy';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/hashiba-AJ3qsy.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Hatolie';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/hatolie-QxZWoa.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Hatolie Qx Zwoa';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/hatolie-QxZWoa.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Hello Amelia';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/hello-amelia-mTkTWM.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Hello Amelia M Tk Twm';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/hello-amelia-mTkTWM.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Henny Penny';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/henny-penny-MdBSQL.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Henny Penny Md Bsql';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/henny-penny-MdBSQL.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'High Spirited';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/high-spirited-AdyPG0.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'High Spirited Ady Pg0';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/high-spirited-AdyPG0.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Histeagin';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/histeagin-qpwP6s.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Histeagin Qpw P6S';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/histeagin-qpwP6s.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Iskry';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/iskry-fuR9hh.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Iskry Fu R9Hh';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/iskry-fuR9hh.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Italiana';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/italiana-jIq93A.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Italiana J Iq93A';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/italiana-jIq93A.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Italianno';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/italianno-jp6rKR.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Italianno Jp6R Kr';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/italianno-jp6rKR.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Ivy Mode';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/ivy-mode-hIsoMQ.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Ivy Mode H Iso Mq';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/ivy-mode-hIsoMQ.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'La Luxes Script Regula';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/la-luxes-script-regula-xULMIi.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'La Luxes Script Regula X Ulmii';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/la-luxes-script-regula-xULMIi.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Lilita One';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/lilita-one-GZ9TCo.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Lilita One Gz9Tco';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/lilita-one-GZ9TCo.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Maglonyfreeversion R';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/maglonyfreeversion-r-Ln6GaZ.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Maglonyfreeversion R Ln6Ga Z';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/maglonyfreeversion-r-Ln6GaZ.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Mainstay';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/mainstay-l6Y6jz.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Mainstay L6Y6Jz';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/mainstay-l6Y6jz.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Matrix';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/matrix-1yPwLf.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Matrix 1Y Pw Lf';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/matrix-1yPwLf.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Mishka';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/mishka-ISOy6K.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Mishka Isoy6K';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/mishka-ISOy6K.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Monoline';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/monoline-TCLQZZ.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Monoline Tclqzz';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/monoline-TCLQZZ.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Monotype Corsiva';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/monotype-corsiva-PdBF9a.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Monotype Corsiva Pd Bf9A';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/monotype-corsiva-PdBF9a.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Month Glade';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/month-glade-rnPT2x.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Month Glade Rn Pt2X';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/month-glade-rnPT2x.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Monthoers';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/monthoers-gYL0Oc.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Monthoers G Yl0Oc';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/monthoers-gYL0Oc.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Mr Gabe';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/mr-gabe-4Qv8bp.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Mr Gabe 4Qv8Bp';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/mr-gabe-4Qv8bp.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Muthiara';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/muthiara-Q74OU7.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Muthiara Q74Ou7';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/muthiara-Q74OU7.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Mutiara';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/mutiara-nd1s7D.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Mutiara Nd1S7D';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/mutiara-nd1s7D.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Mvboli';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/mvboli-PUUkKZ.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Mvboli Puuk Kz';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/mvboli-PUUkKZ.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'New York';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/new-york-CbJFgn.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'New York Cb Jfgn';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/new-york-CbJFgn.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Nomark';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/nomark-djOfsz.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Nomark Dj Ofsz';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/nomark-djOfsz.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Nunito';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/nunito-N1kRLZ.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Nunito N1K Rlz';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/nunito-N1kRLZ.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Oakes Grotesk Regula';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/oakes-grotesk-regula-vAPp5V.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Oakes Grotesk Regula V App5V';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/oakes-grotesk-regula-vAPp5V.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Paris';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/paris-pefrbZ.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Paris Pefrb Z';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/paris-pefrbZ.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Parisienne';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/parisienne-uKAgRL.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Parisienne U Kag Rl';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/parisienne-uKAgRL.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Photograph';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/photograph-hBm8eB.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Photograph H Bm8E B';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/photograph-hBm8eB.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Pinyon Script';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/pinyon-script-iVYwHv.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Pinyon Script I Vyw Hv';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/pinyon-script-iVYwHv.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Pinyon Script';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/pinyon-script-1ow8nA.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Pinyon Script 1Ow8N A';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/pinyon-script-1ow8nA.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Playball (2)';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/playball-2-OiABqi.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Playball 2 Oi Abqi';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/playball-2-OiABqi.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Playball';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/playball-6GaKvh.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Playball 6Ga Kvh';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/playball-6GaKvh.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Poor Story';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/poor-story-hBnAYf.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Poor Story H Bn Ayf';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/poor-story-hBnAYf.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Power';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/power-kXlotU.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Power K Xlot U';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/power-kXlotU.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Praise';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/praise-rQ8Qgz.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Praise R Q8Qgz';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/praise-rQ8Qgz.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Quatera';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/quatera-SrI59z.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Quatera Sr I59Z';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/quatera-SrI59z.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Rainbow In June';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/rainbow-in-june-JE60Hn.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Rainbow In June Je60Hn';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/rainbow-in-june-JE60Hn.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Redrains Demo';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/redrains-demo-OdTG2y.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Redrains Demo Od Tg2Y';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/redrains-demo-OdTG2y.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Revania';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/revania-ywRt7i.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Revania Yw Rt7I';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/revania-ywRt7i.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Rolasansignature';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/rolasansignature-9UooCc.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Rolasansignature 9Uoo Cc';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/rolasansignature-9UooCc.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Romaunt Gaolines';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/romaunt-gaolines-OCfpbN.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Romaunt Gaolines Ocfpb N';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/romaunt-gaolines-OCfpbN.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Roserri';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/roserri-uJ7bKm.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Roserri U J7B Km';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/roserri-uJ7bKm.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Rubber Duck';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/rubber-duck-IoTMxp.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Rubber Duck Io Tmxp';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/rubber-duck-IoTMxp.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Rum Raisin';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/rum-raisin-rRdYa8.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Rum Raisin R Rd Ya8';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/rum-raisin-rRdYa8.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'San Miguel';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/san-miguel-Zt8UYd.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'San Miguel Zt8Uyd';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/san-miguel-Zt8UYd.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Saudagar';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/saudagar-L6mXkx.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Saudagar L6M Xkx';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/saudagar-L6mXkx.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Senja Mentari Demo';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/senja-mentari-demo-ufgOsd.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Senja Mentari Demo Ufg Osd';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/senja-mentari-demo-ufgOsd.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Sinoreta';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/sinoreta-2LY0v3.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Sinoreta 2Ly0V3';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/sinoreta-2LY0v3.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Sinoreta Personal Us';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/sinoreta-personal-us-hVfSqV.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Sinoreta Personal Us H Vf Sq V';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/sinoreta-personal-us-hVfSqV.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Skranji';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/skranji-EXnrbN.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Skranji Exnrb N';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/skranji-EXnrbN.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Snell Bt';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/snell-bt-BhxPgw.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Snell Bt Bhx Pgw';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/snell-bt-BhxPgw.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'South';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/south-3myqQh.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'South 3Myq Qh';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/south-3myqQh.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Spring In May';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/spring-in-may-jYUjm4.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Spring In May J Yujm4';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/spring-in-may-jYUjm4.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Strawberry Cupcakes';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/strawberry-cupcakes-Pdzgr9.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Strawberry Cupcakes Pdzgr9';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/strawberry-cupcakes-Pdzgr9.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Sweet Saturday';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/sweet-saturday-KWMW5q.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Sweet Saturday Kwmw5Q';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/sweet-saturday-KWMW5q.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tangerine';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/tangerine-itYb8a.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tangerine It Yb8A';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/tangerine-itYb8a.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tangerine';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/tangerine-sPlcbS.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tangerine S Plcb S';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/tangerine-sPlcbS.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tempting';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/tempting-zCh2De.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tempting Z Ch2De';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/tempting-zCh2De.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'The Bernardo';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/the-bernardo-sgoKzd.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'The Bernardo Sgo Kzd';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/the-bernardo-sgoKzd.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'The Californication';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/the-californication-uGDdAv.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'The Californication U Gdd Av';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/the-californication-uGDdAv.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Traditional Arabic';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/traditional-arabic-y24VsK.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Traditional Arabic Y24Vs K';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/traditional-arabic-y24VsK.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Trajan';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/trajan-YUo2D3.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Trajan Yuo2D3';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/trajan-YUo2D3.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Vogue';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/vogue-KGWPAJ.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Vogue Kgwpaj';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/vogue-KGWPAJ.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Walbaum Display';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/walbaum-display-Grf6pq.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Walbaum Display Grf6Pq';
+  src: url('https://inv.nikustory.com/wp-content/uploads/bisdev-fonts/walbaum-display-Grf6pq.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
