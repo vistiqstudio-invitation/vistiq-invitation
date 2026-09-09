@@ -20,7 +20,7 @@
   display: grid;
   min-height: 100vh;
   place-items: center;
-  color: #21457c;
+  color: #7046a3;
   background: #fffbf8;
   font: 500 14px/1.5 Arial, sans-serif;
 }
@@ -32,7 +32,7 @@
   display: grid;
   overflow: hidden;
   place-items: center;
-  background: #0c1a2b;
+  background: #261638;
   opacity: 0;
   pointer-events: none;
   transition: opacity 180ms ease;
@@ -43,7 +43,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  background: #0c1a2b;
+  background: #261638;
 }
 
 .motionIntro {
@@ -55,7 +55,7 @@
   align-items: center;
   justify-content: center;
   padding: 1.5rem;
-  color: #21457c;
+  color: #7046a3;
   text-align: center;
   opacity: 0;
   transform: translate3d(0, 1.25rem, 0) scale(0.985);
