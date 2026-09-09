@@ -445,7 +445,8 @@ function prepareReference(
   const countdownCleanup = updateCountdown(doc, firstEvent);
 
   const gift = doc.getElementById("amplop");
-  const giftToggle = doc.querySelector<HTMLElement>("#klik .elementor-button");
+  const giftToggle =
+    doc.querySelector<HTMLElement>("#klik .elementor-button") || doc.getElementById("klik");
   const giftCardsToReveal = gift
     ? Array.from(gift.querySelectorAll<HTMLElement>(".idb-copy-rek, .idb-kirim-hadiah"))
     : [];
@@ -612,13 +613,20 @@ function prepareReference(
       return;
     }
 
-    if (target.closest("#klik")) {
+    if (target.closest("#klik") && !giftToggle) {
       event.preventDefault();
       event.stopPropagation();
       toggleGift();
     }
   };
   doc.addEventListener("click", clickHandler, true);
+
+  const giftClickHandler = (event: MouseEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+    toggleGift();
+  };
+  giftToggle?.addEventListener("click", giftClickHandler);
 
   const giftKeydownHandler = (event: KeyboardEvent) => {
     if (event.key !== "Enter" && event.key !== " ") return;
@@ -665,6 +673,7 @@ function prepareReference(
     observer?.disconnect();
     view?.removeEventListener("resize", resizeHandler);
     doc.removeEventListener("click", clickHandler, true);
+    giftToggle?.removeEventListener("click", giftClickHandler);
     giftToggle?.removeEventListener("keydown", giftKeydownHandler);
     pillHandlers.forEach(({ pill, handler }) => pill.removeEventListener("click", handler));
     copyHandlers.forEach(({ button, handler }) => button.removeEventListener("click", handler));
