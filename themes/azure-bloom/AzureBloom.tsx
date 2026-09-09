@@ -77,6 +77,43 @@ function setImage(
   image.alt = alt;
 }
 
+type ReferenceIconKind = "envelope" | "location" | "instagram" | "gift";
+
+const REFERENCE_ICON_MARKUP: Record<ReferenceIconKind, string> = {
+  envelope:
+    '<path d="M3.75 5.25h16.5A1.75 1.75 0 0 1 22 7v10a1.75 1.75 0 0 1-1.75 1.75H3.75A1.75 1.75 0 0 1 2 17V7a1.75 1.75 0 0 1 1.75-1.75Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="m3 6.5 9 6.25 9-6.25" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>',
+  location:
+    '<path d="M12 21s7-6.15 7-11a7 7 0 1 0-14 0c0 4.85 7 11 7 11Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.35" fill="none" stroke="currentColor" stroke-width="1.8"/>',
+  instagram:
+    '<rect x="3.25" y="3.25" width="17.5" height="17.5" rx="4.5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4.1" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.45" cy="6.65" r="1.05" fill="currentColor"/>',
+  gift:
+    '<path d="M3.25 10.25h17.5v10.5H3.25zM2.5 6.75h19v3.5h-19zM12 6.75v14M12 6.75H8.65A2.65 2.65 0 1 1 12 4.1v2.65Zm0 0h3.35A2.65 2.65 0 1 0 12 4.1v2.65Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>',
+};
+
+function replaceReferenceIcons(doc: Document) {
+  doc.querySelectorAll<HTMLElement>("i").forEach((icon) => {
+    const className = icon.className;
+    let kind: ReferenceIconKind | null = null;
+
+    if (className.includes("fa-envelope")) kind = "envelope";
+    else if (className.includes("fa-map-marker")) kind = "location";
+    else if (className.includes("fa-instagram")) kind = "instagram";
+    else if (className.includes("fa-gift")) kind = "gift";
+
+    if (!kind) return;
+
+    const svg = doc.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("class", `vistiq-inline-icon vistiq-inline-icon-${kind}`);
+    svg.setAttribute("viewBox", "0 0 24 24");
+    svg.setAttribute("width", "1em");
+    svg.setAttribute("height", "1em");
+    svg.setAttribute("aria-hidden", "true");
+    svg.setAttribute("focusable", "false");
+    svg.innerHTML = REFERENCE_ICON_MARKUP[kind];
+    icon.replaceWith(svg);
+  });
+}
+
 function setEventPlace(doc: Document, selector: string, location: string) {
   const element = doc.querySelector<HTMLElement>(selector);
   if (!element) return;
@@ -582,6 +619,7 @@ function prepareReference(
 function buildReferenceDocument(source: string) {
   const parsed = new DOMParser().parseFromString(source, "text/html");
   parsed.querySelectorAll("script, noscript").forEach((element) => element.remove());
+  replaceReferenceIcons(parsed);
   parsed.querySelectorAll<HTMLAudioElement>("audio").forEach((audio) => {
     audio.preload = "none";
     audio.removeAttribute("src");
@@ -666,6 +704,42 @@ function buildReferenceDocument(source: string) {
     .elementor-33329 #ucapan > .e-con-inner,
     .elementor-33329 #ucapan > .e-con-inner > .elementor-element-17f9a3b0 {
       background-color: var(--vistiq-purple-dark) !important;
+    }
+    .elementor-33329 .elementor-element.elementor-element-6adad5bd:not(.elementor-motion-effects-element-type-background),
+    .elementor-33329 .elementor-element.elementor-element-6adad5bd > .elementor-motion-effects-container > .elementor-motion-effects-layer,
+    .elementor-33329 .elementor-element.elementor-element-9137c13:not(.elementor-motion-effects-element-type-background),
+    .elementor-33329 .elementor-element.elementor-element-9137c13 > .elementor-motion-effects-container > .elementor-motion-effects-layer,
+    .elementor-33329 .elementor-element.elementor-element-17f9a3b0:not(.elementor-motion-effects-element-type-background),
+    .elementor-33329 .elementor-element.elementor-element-17f9a3b0 > .elementor-motion-effects-container > .elementor-motion-effects-layer {
+      background-image: linear-gradient(180deg, var(--vistiq-purple) 0%, var(--vistiq-purple-dark) 100%) !important;
+      background-color: var(--vistiq-purple-dark) !important;
+      background-blend-mode: normal !important;
+    }
+    .elementor-33329 .elementor-element.elementor-element-452f91a:not(.elementor-motion-effects-element-type-background),
+    .elementor-33329 .elementor-element.elementor-element-452f91a > .elementor-motion-effects-container > .elementor-motion-effects-layer,
+    .elementor-33329 .elementor-element.elementor-element-452f91a::before,
+    .elementor-33329 .elementor-element.elementor-element-452f91a > .elementor-background-video-container::before,
+    .elementor-33329 .elementor-element.elementor-element-452f91a > .e-con-inner > .elementor-background-video-container::before,
+    .elementor-33329 .elementor-element.elementor-element-50ec0594:not(.elementor-motion-effects-element-type-background),
+    .elementor-33329 .elementor-element.elementor-element-50ec0594 > .elementor-motion-effects-container > .elementor-motion-effects-layer {
+      background-color: var(--vistiq-purple-dark) !important;
+      background-image: none !important;
+    }
+    .elementor-33329 .vistiq-inline-icon {
+      display: inline-block !important;
+      width: 1em !important;
+      height: 1em !important;
+      flex: 0 0 auto !important;
+      vertical-align: middle !important;
+      overflow: visible !important;
+    }
+    .elementor-33329 .elementor-button-icon .vistiq-inline-icon {
+      width: 1.05em !important;
+      height: 1.05em !important;
+    }
+    .elementor-33329 .idb-social-icons__item > .vistiq-inline-icon {
+      width: 1.05em !important;
+      height: 1.05em !important;
     }
     .elementor-33329 #ucapan > .e-con-inner > .elementor-element-17f9a3b0:not(.elementor-motion-effects-element-type-background),
     .elementor-33329 #ucapan > .e-con-inner > .elementor-element-17f9a3b0 > .elementor-motion-effects-container > .elementor-motion-effects-layer {
