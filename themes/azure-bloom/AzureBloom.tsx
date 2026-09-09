@@ -9,11 +9,13 @@ import styles from "./style.module.css";
 const REFERENCE_SOURCE = "/themes/azure-bloom/reference/source.html";
 const REFERENCE_DIRECTORY = "/themes/azure-bloom/reference/";
 const OPENING_MOTION = "/themes/azure-bloom/opening-motion.mp4";
+const OUR_PHOTO_DIRECTORY = "/photos/luxury-art-love-paradise/";
+const THEME_COVER = `${OUR_PHOTO_DIRECTORY}couple-cover.webp`;
+const THEME_LOVE_STORY = `${OUR_PHOTO_DIRECTORY}hero.webp`;
 const THEME_PURPLE = "#7046a3";
 const THEME_PURPLE_DARK = "#59367f";
 const THEME_PURPLE_LIGHT = "#9876c2";
 
-const REFERENCE_COVER = `${REFERENCE_DIRECTORY}cover-bg.jpg`;
 const REFERENCE_PAPER = `${REFERENCE_DIRECTORY}paper-bg.webp`;
 const REFERENCE_PROFILE = `${REFERENCE_DIRECTORY}profile-bg-1.webp`;
 
@@ -322,6 +324,7 @@ function prepareReference(
   setText(doc, "#mempelai .elementor-element-35980867 .elementor-widget-container", invitation.bride.parents || "");
 
   setImage(doc, "#home .elementor-element-2277f517 img", invitation.coverImage, couple);
+  setImage(doc, ".elementor-element-65a5beb8.story img", THEME_LOVE_STORY, "Love Story");
   setImage(doc, "#mempelai .elementor-element-19be02e5 img", invitation.groom.photo, invitation.groom.name);
   setImage(doc, "#mempelai .elementor-element-7d0c7c16 img", invitation.bride.photo, invitation.bride.name);
   setImage(doc, ".elementor-element-2f3b2d9a img", invitation.coverImage, couple);
@@ -601,7 +604,9 @@ function buildReferenceDocument(source: string) {
     html, body { background: #fffbf8; }
     .elementor-33329 .elementor-element.elementor-element-1c0fb2ff:not(.elementor-motion-effects-element-type-background),
     .elementor-33329 .elementor-element.elementor-element-1c0fb2ff > .elementor-motion-effects-container > .elementor-motion-effects-layer {
-      background-image: url("${REFERENCE_COVER}") !important;
+      background-image: url("${THEME_COVER}") !important;
+      background-position: center center !important;
+      background-size: cover !important;
     }
     .elementor-33329 .elementor-element.elementor-element-36f18f91:not(.elementor-motion-effects-element-type-background),
     .elementor-33329 .elementor-element.elementor-element-36f18f91 > .elementor-motion-effects-container > .elementor-motion-effects-layer {
@@ -650,6 +655,37 @@ function buildReferenceDocument(source: string) {
     .elementor-33329 .elementor-element.elementor-element-5ef3be7f .idb-social-icons:not(.is-location-buttons):not(.is-streaming-buttons) .idb-social-icons__item,
     .elementor-33329 .elementor-element.elementor-element-695230ea .idb-audio-box .elementor-icon {
       background-color: var(--vistiq-purple-dark) !important;
+    }
+    .elementor-33329 .stream-con,
+    .elementor-33329 .stream-con > .e-con-inner,
+    .elementor-33329 .stream-con > .e-con-inner > .elementor-element-6adad5bd,
+    .elementor-33329 .amplop-section,
+    .elementor-33329 .amplop-section > .e-con-inner,
+    .elementor-33329 .amplop-section > .e-con-inner > .elementor-element-9137c13,
+    .elementor-33329 #ucapan,
+    .elementor-33329 #ucapan > .e-con-inner,
+    .elementor-33329 #ucapan > .e-con-inner > .elementor-element-17f9a3b0 {
+      background-color: var(--vistiq-purple-dark) !important;
+    }
+    .elementor-33329 #ucapan > .e-con-inner > .elementor-element-17f9a3b0:not(.elementor-motion-effects-element-type-background),
+    .elementor-33329 #ucapan > .e-con-inner > .elementor-element-17f9a3b0 > .elementor-motion-effects-container > .elementor-motion-effects-layer {
+      background-image: linear-gradient(180deg, rgba(89, 54, 127, 0.94), rgba(38, 22, 56, 0.98)) !important;
+    }
+    .elementor-33329 .stream-con .elementor-shape-fill,
+    .elementor-33329 .amplop-section .elementor-shape-fill,
+    .elementor-33329 #ucapan .elementor-shape-fill {
+      fill: var(--vistiq-purple-dark) !important;
+    }
+    .elementor-33329 .stream-con .idb-social-icons.is-streaming-buttons .idb-social-icons__item,
+    .elementor-33329 .amplop-section .idb-social-icons.is-streaming-buttons .idb-social-icons__item,
+    .elementor-33329 .elementor-element.elementor-element-6cf6ef95 .idb-social-icons.is-streaming-buttons .idb-social-icons__item,
+    .elementor-33329 .elementor-element.elementor-element-5e3a7247 .idb-social-icons.is-streaming-buttons .idb-social-icons__item,
+    .elementor-33329 .elementor-element.elementor-element-3a2d5e32 .idb-social-icons.is-streaming-buttons .idb-social-icons__item,
+    .elementor-33329 .elementor-element.elementor-element-4a8e37fd .idb-social-icons.is-streaming-buttons .idb-social-icons__item {
+      background-image: linear-gradient(180deg, var(--vistiq-purple-light) 0%, var(--vistiq-purple-dark) 100%) !important;
+    }
+    .elementor-33329 .elementor-element.elementor-element-78228d40 .idb-social-icons.is-streaming-buttons .idb-social-icons__item {
+      --idb-loc-btn-text: var(--vistiq-purple-dark) !important;
     }
     .elementor-33329 .elementor-element.elementor-element-246ca4f5 .elementor-button,
     .elementor-33329 .elementor-element.elementor-element-9ffa1e4 .elementor-button {
@@ -879,7 +915,7 @@ export default function AzureBloom({ invitation }: { invitation: InvitationData 
           ref={motionRef}
           className={styles.motionVideo}
           src={OPENING_MOTION}
-          poster={REFERENCE_COVER}
+          poster={THEME_COVER}
           playsInline
           preload="none"
           onEnded={finishOpening}
