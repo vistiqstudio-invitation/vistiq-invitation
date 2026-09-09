@@ -600,7 +600,12 @@ function buildReferenceDocument(source: string) {
     }
     .elementor-33329 .elementor-element.elementor-element-19bee63b:not(.elementor-motion-effects-element-type-background),
     .elementor-33329 .elementor-element.elementor-element-19bee63b > .elementor-motion-effects-container > .elementor-motion-effects-layer {
-      background-image: url("${REFERENCE_PROFILE}") !important;
+      background-image: linear-gradient(#8656b5, #8656b5), url("${REFERENCE_PROFILE}") !important;
+      background-blend-mode: hue, normal !important;
+    }
+    .elementor-33329 img[src*="TEMA-01-BUNGA"],
+    .elementor-33329 img[src*="bunga-akhir"] {
+      filter: hue-rotate(52deg) saturate(1.18) !important;
     }
     .elementor-33329 .elementor-element.elementor-element-3da322da,
     .elementor-33329 .elementor-element.elementor-element-3da322da .elementor-widget-container {
