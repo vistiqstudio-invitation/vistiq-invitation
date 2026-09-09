@@ -58,22 +58,26 @@
   color: #21457c;
   text-align: center;
   opacity: 0;
-  transform: translateY(0.75rem) scale(0.98);
+  transform: translate3d(0, 1.25rem, 0) scale(0.985);
   pointer-events: none;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9), 0 5px 22px rgba(255, 255, 255, 0.7);
-  transition: opacity 700ms ease, transform 900ms ease;
+  transition:
+    opacity 1.4s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1.8s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
 }
 
 .root[data-motion-playing="true"] .motionIntro {
   opacity: 1;
-  transform: translateY(0) scale(1);
+  transform: translate3d(0, 0, 0) scale(1);
 }
 
 .motionCopy {
   display: grid;
   justify-items: center;
   gap: 0.55rem;
-  animation: motionCopyReveal 1.2s 650ms both ease-out;
+  animation: motionCopyReveal 2s 2.4s both cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
 }
 
 .motionKicker,
@@ -100,7 +104,8 @@
   gap: 0.7rem;
   font: 500 0.8rem/1.3 Arial, sans-serif;
   letter-spacing: 0.08em;
-  animation: motionCueReveal 900ms 1.35s both ease-out;
+  animation: motionCueReveal 1.7s 4.7s both cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
 }
 
 .mouseIcon {
@@ -121,7 +126,7 @@
   border-radius: 999px;
   background: currentColor;
   transform: translateX(-50%);
-  animation: mouseWheel 1.5s ease-in-out infinite;
+  animation: mouseWheel 2.2s ease-in-out infinite;
 }
 
 .root[data-motion-playing="true"] .motionLayer {
@@ -154,22 +159,22 @@
 @keyframes motionCopyReveal {
   from {
     opacity: 0;
-    transform: translateY(0.7rem) scale(0.96);
+    transform: translate3d(0, 1rem, 0) scale(0.985);
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translate3d(0, 0, 0) scale(1);
   }
 }
 
 @keyframes motionCueReveal {
   from {
     opacity: 0;
-    transform: translateY(0.65rem);
+    transform: translate3d(0, 0.8rem, 0);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
   }
 }
 
