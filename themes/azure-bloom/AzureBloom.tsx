@@ -9,6 +9,9 @@ import styles from "./style.module.css";
 const REFERENCE_SOURCE = "/themes/azure-bloom/reference/source.html";
 const REFERENCE_DIRECTORY = "/themes/azure-bloom/reference/";
 const OPENING_MOTION = "/themes/azure-bloom/opening-motion.mp4";
+const THEME_PURPLE = "#7046a3";
+const THEME_PURPLE_DARK = "#59367f";
+const THEME_PURPLE_LIGHT = "#9876c2";
 
 const REFERENCE_COVER = `${REFERENCE_DIRECTORY}cover-bg.jpg`;
 const REFERENCE_PAPER = `${REFERENCE_DIRECTORY}paper-bg.webp`;
@@ -586,6 +589,12 @@ function buildReferenceDocument(source: string) {
   base.href = REFERENCE_DIRECTORY;
   parsed.head.prepend(base);
 
+  parsed
+    .querySelectorAll<HTMLMetaElement>(
+      'meta[name="theme-color"], meta[name="apple-mobile-web-app-status-bar-style"], meta[name="msapplication-navbutton-color"]',
+    )
+    .forEach((meta) => meta.setAttribute("content", THEME_PURPLE));
+
   const overrides = parsed.createElement("style");
   overrides.id = "vistiq-reference-overrides";
   overrides.textContent = `
@@ -606,6 +615,100 @@ function buildReferenceDocument(source: string) {
     .elementor-33329 img[src*="TEMA-01-BUNGA"],
     .elementor-33329 img[src*="bunga-akhir"] {
       filter: hue-rotate(52deg) saturate(1.18) !important;
+    }
+    :root {
+      --vistiq-purple: ${THEME_PURPLE};
+      --vistiq-purple-dark: ${THEME_PURPLE_DARK};
+      --vistiq-purple-light: ${THEME_PURPLE_LIGHT};
+      --idb-tl-title-divider-color: ${THEME_PURPLE} !important;
+    }
+    .elementor-33329 .elementor-element.elementor-element-6f74381e,
+    .elementor-33329 .elementor-element.elementor-element-2609fb97,
+    .elementor-33329 .elementor-element.elementor-element-1f702859,
+    .elementor-33329 .elementor-element.elementor-element-1b81d2a1 .elementor-heading-title,
+    .elementor-33329 .elementor-element.elementor-element-271e263d .elementor-heading-title,
+    .elementor-33329 .elementor-element.elementor-element-5db6a90 .elementor-heading-title,
+    .elementor-33329 .elementor-element.elementor-element-4081578 .elementor-heading-title,
+    .elementor-33329 .elementor-element.elementor-element-22eb6350 .elementor-heading-title,
+    .elementor-33329 .elementor-element.elementor-element-553b327 .elementor-heading-title,
+    .elementor-33329 .elementor-element.elementor-element-76c781d0,
+    .elementor-33329 .elementor-element.elementor-element-14f7c491 .idb-timeline__title {
+      color: var(--vistiq-purple-dark) !important;
+    }
+    .elementor-33329 .elementor-element.elementor-element-a4ac9e8 .idb-countdown__item,
+    .elementor-33329 .elementor-element.elementor-element-452f91a:not(.elementor-motion-effects-element-type-background),
+    .elementor-33329 .elementor-element.elementor-element-452f91a > .elementor-motion-effects-container > .elementor-motion-effects-layer,
+    .elementor-33329 .elementor-element.elementor-element-452f91a::before,
+    .elementor-33329 .elementor-element.elementor-element-452f91a > .elementor-background-video-container::before,
+    .elementor-33329 .elementor-element.elementor-element-452f91a > .e-con-inner > .elementor-background-video-container::before,
+    .elementor-33329 .elementor-element.elementor-element-452f91a > .elementor-background-slideshow::before,
+    .elementor-33329 .elementor-element.elementor-element-452f91a > .e-con-inner > .elementor-background-slideshow::before,
+    .elementor-33329 .elementor-element.elementor-element-452f91a > .elementor-motion-effects-container > .elementor-motion-effects-layer::before,
+    .elementor-33329 .elementor-element.elementor-element-50ec0594:not(.elementor-motion-effects-element-type-background),
+    .elementor-33329 .elementor-element.elementor-element-50ec0594 > .elementor-motion-effects-container > .elementor-motion-effects-layer,
+    .elementor-33329 .elementor-element.elementor-element-68904f21 .idb-social-icons:not(.is-location-buttons):not(.is-streaming-buttons) .idb-social-icons__item,
+    .elementor-33329 .elementor-element.elementor-element-5ef3be7f .idb-social-icons:not(.is-location-buttons):not(.is-streaming-buttons) .idb-social-icons__item,
+    .elementor-33329 .elementor-element.elementor-element-695230ea .idb-audio-box .elementor-icon {
+      background-color: var(--vistiq-purple-dark) !important;
+    }
+    .elementor-33329 .elementor-element.elementor-element-246ca4f5 .elementor-button,
+    .elementor-33329 .elementor-element.elementor-element-9ffa1e4 .elementor-button {
+      background-image: linear-gradient(180deg, var(--vistiq-purple-light) 0%, var(--vistiq-purple-dark) 100%) !important;
+    }
+    .elementor-33329 .elementor-element.elementor-element-6cf6ef95 .idb-social-icons.is-location-buttons .idb-social-icons__item,
+    .elementor-33329 .elementor-element.elementor-element-6cf6ef95 .idb-social-icons.is-streaming-buttons .idb-social-icons__item,
+    .elementor-33329 .elementor-element.elementor-element-5e3a7247 .idb-social-icons.is-location-buttons .idb-social-icons__item,
+    .elementor-33329 .elementor-element.elementor-element-5e3a7247 .idb-social-icons.is-streaming-buttons .idb-social-icons__item,
+    .elementor-33329 .elementor-element.elementor-element-3a2d5e32 .idb-social-icons.is-location-buttons .idb-social-icons__item,
+    .elementor-33329 .elementor-element.elementor-element-3a2d5e32 .idb-social-icons.is-streaming-buttons .idb-social-icons__item,
+    .elementor-33329 .elementor-element.elementor-element-4a8e37fd .idb-social-icons.is-location-buttons .idb-social-icons__item,
+    .elementor-33329 .elementor-element.elementor-element-4a8e37fd .idb-social-icons.is-streaming-buttons .idb-social-icons__item {
+      background-image: linear-gradient(180deg, var(--vistiq-purple-light) 0%, var(--vistiq-purple-dark) 100%) !important;
+    }
+    .elementor-33329 .idb-social-icons.is-location-buttons,
+    .elementor-33329 .idb-social-icons.is-streaming-buttons {
+      --idb-loc-btn-text: var(--vistiq-purple-dark) !important;
+    }
+    .elementor-33329 .elementor-element.elementor-element-78228d40 .idb-social-icons.is-location-buttons .idb-social-icons__item,
+    .elementor-33329 .elementor-element.elementor-element-78228d40 .idb-social-icons.is-streaming-buttons .idb-social-icons__item,
+    .elementor-33329 .elementor-element.elementor-element-78228d40 .idb-social-icons.is-location-buttons .idb-social-icons__text,
+    .elementor-33329 .elementor-element.elementor-element-78228d40 .idb-social-icons.is-streaming-buttons .idb-social-icons__text,
+    .elementor-33329 .elementor-element.elementor-element-78228d40 .idb-social-icons.is-location-buttons .idb-social-icons__item i,
+    .elementor-33329 .elementor-element.elementor-element-78228d40 .idb-social-icons.is-streaming-buttons .idb-social-icons__item i,
+    .elementor-33329 .elementor-element.elementor-element-78228d40 .idb-social-icons.is-location-buttons .idb-social-icons__item svg,
+    .elementor-33329 .elementor-element.elementor-element-78228d40 .idb-social-icons.is-streaming-buttons .idb-social-icons__item svg {
+      color: var(--vistiq-purple-dark) !important;
+      fill: var(--vistiq-purple-dark) !important;
+      --idb-loc-btn-text: var(--vistiq-purple-dark) !important;
+    }
+    .elementor-33329 .elementor-element.elementor-element-78228d40 .idb-social-icons.is-location-buttons .elementor-icon svg path,
+    .elementor-33329 .elementor-element.elementor-element-78228d40 .idb-social-icons.is-streaming-buttons .elementor-icon svg path {
+      fill: var(--vistiq-purple-dark) !important;
+      stroke: var(--vistiq-purple-dark) !important;
+    }
+    .elementor-33329 .elementor-element.elementor-element-120502b6 .elementor-button {
+      color: var(--vistiq-purple-dark) !important;
+      fill: var(--vistiq-purple-dark) !important;
+    }
+    .elementor-33329 .elementor-element.elementor-element-69f8173c .idb-konfirmasi-transfer__btn {
+      background-color: var(--vistiq-purple-dark) !important;
+    }
+    .elementor-33329 .elementor-element.elementor-element-69f8173c .idb-konfirmasi-transfer__btn:hover {
+      background-color: var(--vistiq-purple) !important;
+    }
+    .elementor-33329 .elementor-element.elementor-element-14f7c491 .idb-timeline {
+      --idb-tl-title-divider-color: var(--vistiq-purple) !important;
+    }
+    .elementor-33329 .elementor-element.elementor-element-4c06f5c5 .rsvp-ava,
+    .elementor-33329 .rsvp-card input.rsvp-input:hover,
+    .elementor-33329 .rsvp-card textarea.rsvp-textarea:hover,
+    .elementor-33329 .rsvp-card input.rsvp-input:focus,
+    .elementor-33329 .rsvp-card textarea.rsvp-textarea:focus {
+      border-color: var(--vistiq-purple) !important;
+      color: var(--vistiq-purple-dark) !important;
+    }
+    .elementor-33329 .rsvp-pill[data-active="1"] {
+      border-color: var(--vistiq-purple) !important;
     }
     .elementor-33329 .elementor-element.elementor-element-3da322da,
     .elementor-33329 .elementor-element.elementor-element-3da322da .elementor-widget-container {
