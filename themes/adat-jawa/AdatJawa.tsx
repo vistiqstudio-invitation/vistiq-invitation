@@ -816,6 +816,9 @@ function prepareReference(
     coverColumn.style.transform = "translateY(0)";
     coverColumn.style.transition = "1.5s ease-in-out";
   }
+  doc.querySelectorAll<HTMLElement>(".idb-reveal.idb-ef").forEach((element) => {
+    element.classList.add("active");
+  });
 
   setCoverPhoto(doc, invitation);
   setText(doc, "#sec .elementor-element-405fbc8c .elementor-widget-container", name);
@@ -1109,6 +1112,10 @@ function buildReferenceDocument(source: string) {
       iframe.src = "about:blank";
     }
   });
+
+  const base = parsed.createElement("base");
+  base.href = "/themes/adat-jawa/reference/";
+  parsed.head.prepend(base);
 
   const stylesheet = parsed.createElement("link");
   stylesheet.rel = "stylesheet";
