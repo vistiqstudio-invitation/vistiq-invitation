@@ -445,35 +445,45 @@ function prepareReference(
   const countdownCleanup = updateCountdown(doc, firstEvent);
 
   const gift = doc.getElementById("amplop");
-  const giftToggle =
-    doc.querySelector<HTMLElement>("#klik .elementor-button") || doc.getElementById("klik");
+  const giftButton = doc.querySelector<HTMLElement>("#klik .elementor-button");
+  const giftClickTarget = doc.getElementById("klik") || giftButton;
+  const giftKeyboardTarget = giftButton || giftClickTarget;
   const giftCardsToReveal = gift
     ? Array.from(gift.querySelectorAll<HTMLElement>(".idb-copy-rek, .idb-kirim-hadiah"))
     : [];
+  let giftVisible = false;
+  let lastGiftActivation = 0;
+
   const setGiftVisibility = (visible: boolean) => {
+    giftVisible = visible;
     if (!gift) return;
 
-    gift.style.display = visible ? "" : "none";
+    gift.style.setProperty("display", visible ? "flex" : "none", "important");
     gift.setAttribute("aria-hidden", visible ? "false" : "true");
-    giftCardsToReveal.forEach((card, index) => {
+    giftCardsToReveal.forEach((card) => {
       card.classList.toggle("elementor-invisible", !visible);
       if (visible) {
-        card.classList.add("animated", "zoomIn");
-        card.style.animationDelay = `${index * 120}ms`;
-      } else {
         card.classList.remove("animated", "zoomIn");
+        card.style.setProperty("visibility", "visible", "important");
+        card.style.setProperty("opacity", "1", "important");
+        card.style.setProperty("transform", "none", "important");
+        card.style.animationDelay = "";
+      } else {
+        card.style.removeProperty("visibility");
+        card.style.removeProperty("opacity");
+        card.style.removeProperty("transform");
         card.style.animationDelay = "";
       }
     });
-    giftToggle?.setAttribute("aria-expanded", String(visible));
+    giftKeyboardTarget?.setAttribute("aria-expanded", String(visible));
   };
   const toggleGift = () => {
-    setGiftVisibility(gift?.style.display === "none");
+    setGiftVisibility(!giftVisible);
   };
-  if (giftToggle) {
-    giftToggle.setAttribute("role", "button");
-    giftToggle.setAttribute("tabindex", "0");
-    giftToggle.setAttribute("aria-controls", "amplop");
+  if (giftKeyboardTarget) {
+    giftKeyboardTarget.setAttribute("role", "button");
+    giftKeyboardTarget.setAttribute("tabindex", "0");
+    giftKeyboardTarget.setAttribute("aria-controls", "amplop");
   }
   setGiftVisibility(false);
 
@@ -613,7 +623,7 @@ function prepareReference(
       return;
     }
 
-    if (target.closest("#klik") && !giftToggle) {
+    if (target.closest("#klik") && !giftClickTarget) {
       event.preventDefault();
       event.stopPropagation();
       toggleGift();
@@ -621,19 +631,22 @@ function prepareReference(
   };
   doc.addEventListener("click", clickHandler, true);
 
-  const giftClickHandler = (event: MouseEvent) => {
+  const activateGift = (event: Event) => {
     event.preventDefault();
     event.stopPropagation();
+    const now = Date.now();
+    if (now - lastGiftActivation < 350) return;
+    lastGiftActivation = now;
     toggleGift();
   };
-  giftToggle?.addEventListener("click", giftClickHandler);
+  giftClickTarget?.addEventListener("pointerup", activateGift);
+  giftClickTarget?.addEventListener("click", activateGift);
 
   const giftKeydownHandler = (event: KeyboardEvent) => {
     if (event.key !== "Enter" && event.key !== " ") return;
-    event.preventDefault();
-    toggleGift();
+    activateGift(event);
   };
-  giftToggle?.addEventListener("keydown", giftKeydownHandler);
+  giftKeyboardTarget?.addEventListener("keydown", giftKeydownHandler);
 
   const pillHandlers: Array<{ pill: HTMLElement; handler: () => void }> = [];
   doc.querySelectorAll<HTMLElement>("[data-rsvp-pill]").forEach((pill) => {
@@ -673,8 +686,9 @@ function prepareReference(
     observer?.disconnect();
     view?.removeEventListener("resize", resizeHandler);
     doc.removeEventListener("click", clickHandler, true);
-    giftToggle?.removeEventListener("click", giftClickHandler);
-    giftToggle?.removeEventListener("keydown", giftKeydownHandler);
+    giftClickTarget?.removeEventListener("pointerup", activateGift);
+    giftClickTarget?.removeEventListener("click", activateGift);
+    giftKeyboardTarget?.removeEventListener("keydown", giftKeydownHandler);
     pillHandlers.forEach(({ pill, handler }) => pill.removeEventListener("click", handler));
     copyHandlers.forEach(({ button, handler }) => button.removeEventListener("click", handler));
     rsvpSend?.removeEventListener("click", submitForm);
