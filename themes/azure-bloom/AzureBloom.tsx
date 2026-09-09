@@ -15,6 +15,8 @@ const THEME_LOVE_STORY = `${OUR_PHOTO_DIRECTORY}hero.webp`;
 const THEME_PURPLE = "#7046a3";
 const THEME_PURPLE_DARK = "#59367f";
 const THEME_PURPLE_LIGHT = "#9876c2";
+const ADMIN_WHATSAPP_URL = "https://wa.me/6281371338032";
+const ADMIN_WHATSAPP_MESSAGE = "Saya mau pesan undangan seperti ini juga";
 
 const REFERENCE_PAPER = `${REFERENCE_DIRECTORY}paper-bg.webp`;
 const REFERENCE_PROFILE = `${REFERENCE_DIRECTORY}profile-bg-1.webp`;
@@ -77,7 +79,7 @@ function setImage(
   image.alt = alt;
 }
 
-type ReferenceIconKind = "envelope" | "location" | "instagram" | "gift";
+type ReferenceIconKind = "envelope" | "location" | "instagram" | "gift" | "whatsapp";
 
 const REFERENCE_ICON_MARKUP: Record<ReferenceIconKind, string> = {
   envelope:
@@ -88,7 +90,21 @@ const REFERENCE_ICON_MARKUP: Record<ReferenceIconKind, string> = {
     '<rect x="3.25" y="3.25" width="17.5" height="17.5" rx="4.5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4.1" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.45" cy="6.65" r="1.05" fill="currentColor"/>',
   gift:
     '<path d="M3.25 10.25h17.5v10.5H3.25zM2.5 6.75h19v3.5h-19zM12 6.75v14M12 6.75H8.65A2.65 2.65 0 1 1 12 4.1v2.65Zm0 0h3.35A2.65 2.65 0 1 0 12 4.1v2.65Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>',
+  whatsapp:
+    '<path fill="currentColor" d="M16.04 3C8.86 3 3.03 8.73 3.03 15.79c0 2.25.6 4.45 1.74 6.38L3 28.55l6.6-1.7a13.1 13.1 0 0 0 6.43 1.63h.01c7.17 0 13.01-5.74 13.01-12.79C29.05 8.64 23.21 3 16.04 3Zm0 23.32h-.01a10.9 10.9 0 0 1-5.55-1.49l-.4-.23-3.92 1.01 1.05-3.75-.26-.39a10.5 10.5 0 0 1-1.68-5.68c0-5.87 4.83-10.64 10.78-10.64 5.94 0 10.77 4.77 10.77 10.64 0 5.86-4.84 10.53-10.78 10.53Zm5.91-7.98c-.32-.16-1.92-.93-2.22-1.03-.29-.11-.51-.16-.72.16-.22.31-.84 1.03-1.03 1.24-.19.21-.38.23-.7.08-.33-.16-1.37-.5-2.61-1.56a9.7 9.7 0 0 1-1.81-2.22c-.19-.32-.02-.49.14-.65.15-.14.33-.37.49-.55.16-.19.22-.32.32-.53.11-.21.06-.4-.02-.56-.08-.15-.73-1.72-.99-2.36-.27-.63-.53-.54-.73-.55h-.62c-.22 0-.57.08-.86.4-.3.31-1.14 1.09-1.14 2.67 0 1.57 1.16 3.09 1.32 3.3.16.21 2.29 3.44 5.54 4.82.78.33 1.38.52 1.85.67.78.24 1.48.21 2.04.13.62-.09 1.92-.78 2.19-1.52.27-.73.27-1.36.19-1.49-.08-.13-.3-.21-.63-.37Z"/>',
 };
+
+function createReferenceIcon(doc: Document, kind: ReferenceIconKind) {
+  const svg = doc.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("class", `vistiq-inline-icon vistiq-inline-icon-${kind}`);
+  svg.setAttribute("viewBox", kind === "whatsapp" ? "0 0 32 32" : "0 0 24 24");
+  svg.setAttribute("width", "1em");
+  svg.setAttribute("height", "1em");
+  svg.setAttribute("aria-hidden", "true");
+  svg.setAttribute("focusable", "false");
+  svg.innerHTML = REFERENCE_ICON_MARKUP[kind];
+  return svg;
+}
 
 function replaceReferenceIcons(doc: Document) {
   doc.querySelectorAll<HTMLElement>("i").forEach((icon) => {
@@ -99,18 +115,11 @@ function replaceReferenceIcons(doc: Document) {
     else if (className.includes("fa-map-marker")) kind = "location";
     else if (className.includes("fa-instagram")) kind = "instagram";
     else if (className.includes("fa-gift")) kind = "gift";
+    else if (className.includes("fa-whatsapp")) kind = "whatsapp";
 
     if (!kind) return;
 
-    const svg = doc.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svg.setAttribute("class", `vistiq-inline-icon vistiq-inline-icon-${kind}`);
-    svg.setAttribute("viewBox", "0 0 24 24");
-    svg.setAttribute("width", "1em");
-    svg.setAttribute("height", "1em");
-    svg.setAttribute("aria-hidden", "true");
-    svg.setAttribute("focusable", "false");
-    svg.innerHTML = REFERENCE_ICON_MARKUP[kind];
-    icon.replaceWith(svg);
+    icon.replaceWith(createReferenceIcon(doc, kind));
   });
 }
 
@@ -417,13 +426,55 @@ function prepareReference(
     giftRecipient.textContent = invitation.gifts[0].accountName;
   }
 
+  const footerSocial = doc.querySelector<HTMLElement>(".elementor-element-4a8e37fd .idb-social-icons");
+  if (footerSocial) {
+    const adminLink = doc.createElement("a");
+    adminLink.className = "idb-social-icons__item elementor-animation-grow";
+    adminLink.href = `${ADMIN_WHATSAPP_URL}?text=${encodeURIComponent(ADMIN_WHATSAPP_MESSAGE)}`;
+    adminLink.target = "_blank";
+    adminLink.rel = "nofollow noopener noreferrer";
+    adminLink.setAttribute("aria-label", "Pesan undangan melalui WhatsApp");
+    adminLink.title = "Pesan undangan melalui WhatsApp";
+    adminLink.append(createReferenceIcon(doc, "whatsapp"));
+    footerSocial.replaceChildren(adminLink);
+  }
+
   setText(doc, ".elementor-element-76c781d0 .elementor-widget-container", couple);
   setWatermark(doc, brandName);
 
   const countdownCleanup = updateCountdown(doc, firstEvent);
 
   const gift = doc.getElementById("amplop");
-  if (gift) gift.style.display = "none";
+  const giftToggle = doc.querySelector<HTMLElement>("#klik .elementor-button");
+  const giftCardsToReveal = gift
+    ? Array.from(gift.querySelectorAll<HTMLElement>(".idb-copy-rek, .idb-kirim-hadiah"))
+    : [];
+  const setGiftVisibility = (visible: boolean) => {
+    if (!gift) return;
+
+    gift.style.display = visible ? "" : "none";
+    gift.setAttribute("aria-hidden", visible ? "false" : "true");
+    giftCardsToReveal.forEach((card, index) => {
+      card.classList.toggle("elementor-invisible", !visible);
+      if (visible) {
+        card.classList.add("animated", "zoomIn");
+        card.style.animationDelay = `${index * 120}ms`;
+      } else {
+        card.classList.remove("animated", "zoomIn");
+        card.style.animationDelay = "";
+      }
+    });
+    giftToggle?.setAttribute("aria-expanded", String(visible));
+  };
+  const toggleGift = () => {
+    setGiftVisibility(gift?.style.display === "none");
+  };
+  if (giftToggle) {
+    giftToggle.setAttribute("role", "button");
+    giftToggle.setAttribute("tabindex", "0");
+    giftToggle.setAttribute("aria-controls", "amplop");
+  }
+  setGiftVisibility(false);
 
   let attendance: Attendance | null = null;
   const rsvpCard = doc.querySelector<HTMLElement>(".rsvp-card");
@@ -563,10 +614,18 @@ function prepareReference(
 
     if (target.closest("#klik")) {
       event.preventDefault();
-      if (gift) gift.style.display = gift.style.display === "none" ? "" : "none";
+      event.stopPropagation();
+      toggleGift();
     }
   };
   doc.addEventListener("click", clickHandler, true);
+
+  const giftKeydownHandler = (event: KeyboardEvent) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    event.preventDefault();
+    toggleGift();
+  };
+  giftToggle?.addEventListener("keydown", giftKeydownHandler);
 
   const pillHandlers: Array<{ pill: HTMLElement; handler: () => void }> = [];
   doc.querySelectorAll<HTMLElement>("[data-rsvp-pill]").forEach((pill) => {
@@ -606,6 +665,7 @@ function prepareReference(
     observer?.disconnect();
     view?.removeEventListener("resize", resizeHandler);
     doc.removeEventListener("click", clickHandler, true);
+    giftToggle?.removeEventListener("keydown", giftKeydownHandler);
     pillHandlers.forEach(({ pill, handler }) => pill.removeEventListener("click", handler));
     copyHandlers.forEach(({ button, handler }) => button.removeEventListener("click", handler));
     rsvpSend?.removeEventListener("click", submitForm);
@@ -823,6 +883,41 @@ function buildReferenceDocument(source: string) {
     .elementor-33329 .elementor-element.elementor-element-3da322da,
     .elementor-33329 .elementor-element.elementor-element-3da322da .elementor-widget-container {
       line-height: 1.5 !important;
+    }
+    .elementor-33329 .elementor-element.elementor-element-78228d40 .idb-social-icons.is-streaming-buttons .idb-social-icons__item,
+    .elementor-33329 .elementor-element.elementor-element-78228d40 .idb-social-icons.is-streaming-buttons .idb-social-icons__text {
+      color: #ffffff !important;
+      --idb-loc-btn-text: #ffffff !important;
+    }
+    .elementor-33329 .elementor-element.elementor-element-78228d40 .idb-social-icons.is-streaming-buttons .idb-social-icons__item svg {
+      color: #ffffff !important;
+      fill: none !important;
+      stroke: #ffffff !important;
+    }
+    .elementor-33329 .elementor-element.elementor-element-78228d40 .idb-social-icons.is-streaming-buttons .idb-social-icons__item svg * {
+      stroke: #ffffff !important;
+    }
+    .elementor-33329 .elementor-element.elementor-element-4a8e37fd .idb-social-icons {
+      justify-content: center !important;
+      gap: 12px !important;
+    }
+    .elementor-33329 .elementor-element.elementor-element-4a8e37fd .idb-social-icons__item {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 30px !important;
+      height: 30px !important;
+      padding: 0 !important;
+      color: #ffffff !important;
+      background: transparent !important;
+      background-image: none !important;
+    }
+    .elementor-33329 .elementor-element.elementor-element-4a8e37fd .idb-social-icons__item .vistiq-inline-icon {
+      width: 22px !important;
+      height: 22px !important;
+      color: #ffffff !important;
+      fill: #ffffff !important;
+      stroke: #ffffff !important;
     }
   `;
   parsed.head.append(overrides);
