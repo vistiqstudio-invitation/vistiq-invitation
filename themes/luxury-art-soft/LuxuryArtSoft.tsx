@@ -181,7 +181,7 @@ function customerPhotos(invitation: InvitationData) {
 
 function sectionPhotoStyle(photo: string | null | undefined) {
   return photo
-    ? ({ "--section-photo": `url("\${photo}")` } as CSSProperties)
+    ? ({ "--section-photo": `url("${photo}")` } as CSSProperties)
     : undefined;
 }
 
