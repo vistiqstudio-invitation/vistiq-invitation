@@ -453,6 +453,7 @@ function WeddingVideo({ invitation }: { invitation: InvitationData }) {
 
 function EventCard({ event, reverse = false, mapsUrl }: { event: EventItem; reverse?: boolean; mapsUrl: string | null }) {
   const date = eventDateParts(event);
+  const scheduleContainsDate = /\\b(?:senin|selasa|rabu|kamis|jumat|jum'at|sabtu|minggu|januari|februari|maret|april|mei|juni|juli|agustus|september|oktober|november|desember|\\d{4})\\b/i.test(event.time);
   const mapHref = mapsUrl || (event.location ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.location)}` : null);
   return (
     <motion.article
@@ -465,8 +466,14 @@ function EventCard({ event, reverse = false, mapsUrl }: { event: EventItem; reve
       <div className={styles.eventFrame}>
         <div className={styles.eventContent}>
           <h2>{event.name}</h2>
-          {date.weekday ? <p>{date.weekday.toUpperCase()}, {date.day} {date.month.toUpperCase()} {date.year}</p> : <p>{event.date}</p>}
-          {event.time ? <strong>{event.time}</strong> : null}
+          {scheduleContainsDate ? (
+            <p>{event.time}</p>
+          ) : (
+            <>
+              {date.weekday ? <p>{date.weekday.toUpperCase()}, {date.day} {date.month.toUpperCase()} {date.year}</p> : <p>{event.date}</p>}
+              {event.time ? <strong>{event.time}</strong> : null}
+            </>
+          )}
           <span className={styles.eventDivider}>♥</span>
           {event.location ? <b>{event.location}</b> : null}
           {mapHref ? <a href={mapHref} target="_blank" rel="noreferrer"><Icon name="pin" /> Google Map</a> : null}
