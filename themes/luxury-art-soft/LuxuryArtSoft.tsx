@@ -117,7 +117,12 @@ function firstName(name: string, nickname?: string | null) {
 function eventDateParts(event?: EventItem) {
   if (!event) return { day: "", weekday: "", month: "", year: "" };
 
-  const parsed = event.rawDate ? new Date(event.rawDate) : null;
+  // rawDate represents an Indonesian wall-clock time. Parsing that value in
+  // the browser and then formatting it in UTC shifts midnight events back one
+  // day (18 September became 17 September in this theme). Anchor the calendar
+  // portion to UTC because these labels describe a date, not an instant.
+  const calendarDate = event.rawDate?.match(/^\d{4}-\d{2}-\d{2}/)?.[0];
+  const parsed = calendarDate ? new Date(`${calendarDate}T00:00:00Z`) : null;
   if (!parsed || Number.isNaN(parsed.getTime())) {
     return { day: event.date, weekday: "", month: "", year: "" };
   }
