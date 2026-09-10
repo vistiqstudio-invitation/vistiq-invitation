@@ -117,7 +117,8 @@ function firstName(name: string, nickname?: string | null) {
 function eventDateParts(event?: EventItem) {
   if (!event) return { day: "", weekday: "", month: "", year: "" };
 
-  const parsed = event.rawDate ? new Date(event.rawDate) : null;
+  const calendarDate = event.rawDate?.match(/^\d{4}-\d{2}-\d{2}/)?.[0];
+  const parsed = calendarDate ? new Date(`${calendarDate}T00:00:00Z`) : null;
   if (!parsed || Number.isNaN(parsed.getTime())) {
     return { day: event.date, weekday: "", month: "", year: "" };
   }
