@@ -1,0 +1,35 @@
+name: Stage Golden Romance catalog asset
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/stage-golden-romance-card.yml
+
+permissions:
+  contents: write
+
+jobs:
+  stage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Download uploaded cover
+        env:
+          ASSET_URL: "https://oaisdmntprwestus3.blob.core.windows.net/files/00000000-2f00-81fd-959b-daa1b131616e/raw?se=2026-09-14T15%3A21%3A13Z&sp=r&sv=2026-02-06&sr=b&scid=01a0a048-4398-7208-846d-e4409535c05a&skoid=b7fc319f-b93c-4fac-ba5f-14fdc3f9209f&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-09-13T20%3A55%3A16Z&ske=2026-09-14T20%3A55%3A16Z&sks=b&skv=2026-02-06&sig=D9q2qKA6%2BVeROGpnWf%2Be2PB7IXoYyhHfmLVTLb/mRmw%3D"
+        run: |
+          mkdir -p public/theme-previews/wedding
+          curl --fail --silent --show-error --location --retry 5 --retry-delay 2 "$ASSET_URL"             --output public/theme-previews/wedding/golden-romance-card.jpg
+          test -s public/theme-previews/wedding/golden-romance-card.jpg
+
+      - name: Commit asset and remove temporary workflow
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/theme-previews/wedding/golden-romance-card.jpg
+          git rm .github/workflows/stage-golden-romance-card.yml
+          git commit -m "Add Golden Romance catalog cover"
+          git push origin HEAD:main
