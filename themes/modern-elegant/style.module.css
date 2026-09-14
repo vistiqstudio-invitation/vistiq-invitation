@@ -219,6 +219,73 @@
   }
 }
 
+
+/*
+ * In the desktop preview the theme is rendered inside a narrow right-hand
+ * panel. Keep the entire cover (including guest name and CTA) within one
+ * viewport without changing the standalone mobile layout.
+ */
+@media (min-width: 860px) {
+  @container (max-width: 520px) {
+    .cover {
+      height: 100svh;
+      min-height: 100svh;
+    }
+
+    .coverPhotoHalf {
+      flex: 0 0 38svh;
+      height: 38svh;
+    }
+
+    .coverTextHalf {
+      min-height: 0;
+      padding: 14px 22px 18px;
+    }
+
+    .coverTextHalf > div {
+      width: 100%;
+    }
+
+    .coverEyebrow {
+      margin-bottom: 7px;
+      font-size: 9px;
+    }
+
+    .coverTitle {
+      font-size: 34px;
+      line-height: 0.96;
+      margin-bottom: 9px;
+    }
+
+    .coverTitle span {
+      margin: 4px 0;
+    }
+
+    .coverDate {
+      font-size: 11px;
+    }
+
+    .coverDivider {
+      margin: 12px auto;
+    }
+
+    .guestLabel {
+      font-size: 9px;
+      margin-bottom: 5px;
+    }
+
+    .guestName {
+      font-size: 22px;
+      margin-bottom: 14px;
+    }
+
+    .coverTextHalf .button {
+      padding: 13px 28px;
+      font-size: 10px;
+    }
+  }
+}
+
 .coverTitle {
   font-family: var(--font-heading);
   font-weight: 800;
