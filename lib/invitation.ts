@@ -199,6 +199,7 @@ function normalizeInvitation(raw: Record<string, any>): InvitationData {
     category: "wedding",
 
     brand: resolveBrand(raw),
+    contactWhatsapp: firstNonEmpty(raw.clients?.whatsapp),
 
     coverImage: firstNonEmpty(raw.cover_image, raw.cover_photo),
     musicUrl: raw.music_url || null,
@@ -480,7 +481,7 @@ export async function getInvitationBySlug(
   const { data, error } = await supabase
     .from("invitations")
     .select(
-      "*, clients:client_id(resellers:reseller_id(brand_name, logo_url, brand_color, brand_active, brand_expires_at, package, status))"
+      "*, clients:client_id(whatsapp, resellers:reseller_id(brand_name, logo_url, brand_color, brand_active, brand_expires_at, package, status))"
     )
     .eq("slug", slug)
     .single();
