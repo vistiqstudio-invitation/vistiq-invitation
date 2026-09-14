@@ -8,6 +8,8 @@ import styles from "./style.module.css";
 const REFERENCE_PAGE = "/themes/ivory-botanica/reference/index.html";
 const REFERENCE_DATE = "Minggu, 20 September 2026";
 const LEGACY_REFERENCE_DATE = "Senin, 28 Desember 2026";
+const VISTIQ_INSTAGRAM_URL = "https://www.instagram.com/vistiqinvitation/";
+const VISTIQ_ADMIN_WHATSAPP_URL = "https://wa.me/6281371338032";
 
 type TimerElement = HTMLElement & { __idbTimer?: number };
 
@@ -127,6 +129,23 @@ function setAudioSource(documentRoot: Document, musicUrl: string | null) {
   });
 }
 
+function setFooterBranding(documentRoot: Document) {
+  const footer = documentRoot.querySelector<HTMLElement>(".elementor-element-12b47c4c");
+  if (!footer) return;
+
+  const whatsapp = footer.querySelector<HTMLAnchorElement>('a[aria-label="WhatsApp"]');
+  if (whatsapp) whatsapp.href = VISTIQ_ADMIN_WHATSAPP_URL;
+
+  const instagram = footer.querySelector<HTMLAnchorElement>('a[aria-label="Instagram"]');
+  if (instagram) instagram.href = VISTIQ_INSTAGRAM_URL;
+
+  const watermark = documentRoot.querySelector<HTMLElement>(".idb-watermark-text");
+  if (watermark && !watermark.querySelector(".vistiq-footer-logo")) {
+    watermark.innerHTML =
+      'Made with <img draggable="false" role="img" class="emoji" alt="❤" src="./Undangan Website Spesial 02 Animasi_files/2764.svg"> by <img class="vistiq-footer-logo" src="/vistiq-invitation-logo.png" alt="Vistiq Invitation" style="display:inline-block;width:92px;height:auto;max-height:28px;object-fit:contain;vertical-align:middle;margin-left:4px;">';
+  }
+}
+
 function applyInvitationData(documentRoot: Document, invitation: InvitationData, guest: string) {
   const groomShort = shortName(invitation.groom);
   const brideShort = shortName(invitation.bride);
@@ -207,6 +226,7 @@ function applyInvitationData(documentRoot: Document, invitation: InvitationData,
   setAudioSource(documentRoot, invitation.musicUrl);
   setCountdown(documentRoot, firstEvent?.rawDate || null);
   localizeInternalLinks(documentRoot);
+  setFooterBranding(documentRoot);
 
   if (!documentRoot.getElementById("ivory-botanica-frame-overrides")) {
     const style = documentRoot.createElement("style");
