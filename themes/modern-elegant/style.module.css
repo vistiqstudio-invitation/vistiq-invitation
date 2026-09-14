@@ -233,13 +233,13 @@
     }
 
     .coverPhotoHalf {
-      flex: 0 0 38svh;
-      height: 38svh;
+      flex: 0 0 46svh;
+      height: 46svh;
     }
 
     .coverTextHalf {
       min-height: 0;
-      padding: 14px 22px 18px;
+      padding: 8px 22px 10px;
     }
 
     .coverTextHalf > div {
@@ -247,18 +247,18 @@
     }
 
     .coverEyebrow {
-      margin-bottom: 7px;
+      margin-bottom: 4px;
       font-size: 9px;
     }
 
     .coverTitle {
-      font-size: 34px;
-      line-height: 0.96;
-      margin-bottom: 9px;
+      font-size: 32px;
+      line-height: 0.92;
+      margin-bottom: 7px;
     }
 
     .coverTitle span {
-      margin: 4px 0;
+      margin: 2px 0;
     }
 
     .coverDate {
@@ -266,7 +266,7 @@
     }
 
     .coverDivider {
-      margin: 12px auto;
+      margin: 8px auto;
     }
 
     .guestLabel {
@@ -275,13 +275,13 @@
     }
 
     .guestName {
-      font-size: 22px;
-      margin-bottom: 14px;
+      font-size: 21px;
+      margin-bottom: 10px;
     }
 
     .coverTextHalf .button {
-      padding: 13px 28px;
-      font-size: 10px;
+      padding: 11px 26px;
+      font-size: 9px;
     }
   }
 }
