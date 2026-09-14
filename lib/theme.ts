@@ -154,6 +154,7 @@ const HIDDEN_BASIC_THEME_KEYS = new Set([
   "art-deco-glam",
   "sahara",
   "midnight-aurora",
+  "royal-java",
 ]);
 
 const allWeddingThemes: ThemeMeta[] = [
