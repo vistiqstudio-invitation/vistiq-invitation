@@ -199,7 +199,7 @@ function normalizeInvitation(raw: Record<string, any>): InvitationData {
     category: "wedding",
 
     brand: resolveBrand(raw),
-    contactWhatsapp: firstNonEmpty(raw.clients?.whatsapp),
+    contactWhatsapp: firstNonEmpty(raw.gift_whatsapp, raw.clients?.whatsapp),
 
     coverImage: firstNonEmpty(raw.cover_image, raw.cover_photo),
     musicUrl: raw.music_url || null,
