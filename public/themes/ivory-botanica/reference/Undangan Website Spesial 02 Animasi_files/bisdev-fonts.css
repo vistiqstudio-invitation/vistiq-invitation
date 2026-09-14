@@ -1,0 +1,2254 @@
+@font-face {
+  font-family: 'Activists-Regular';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/activists-regular-VCdGXj.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Activists';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/activists-regular-VCdGXj.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Activists Regular Vcd Gxj';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/activists-regular-VCdGXj.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Adinekir';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/adinekir-VBuYpn.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Adinekir Vbu Ypn';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/adinekir-VBuYpn.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'AgencyFB-Bold';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/agencyfb-bold-fXhd4A.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Agency Fb';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/agencyfb-bold-fXhd4A.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Agencyfb Bold F Xhd4A';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/agencyfb-bold-fXhd4A.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'AkayaKanadaka-Regula';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/akayakanadaka-regula-c114iU.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Akaya Kanadaka Regula';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/akayakanadaka-regula-c114iU.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Akayakanadaka Regula C114I U';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/akayakanadaka-regula-c114iU.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Alcantera Serif';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/alcantera-serif-0EMblU.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Alcantera Serif 0Embl U';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/alcantera-serif-0EMblU.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Alumatica-Regular';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/alumatica-regular-ALKXXv.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Alumatica';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/alumatica-regular-ALKXXv.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Alumatica Regular Alkxxv';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/alumatica-regular-ALKXXv.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Anabele';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/anabele-W4pyoU.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Anabele W4Pyo U';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/anabele-W4pyoU.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Analogue';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/analogue-Nw5T2R.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Analogue Nw5T2R';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/analogue-Nw5T2R.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Anydore';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/anydore-niaEcu.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Anydore Nia Ecu';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/anydore-niaEcu.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Aphrodite-Slim-Text';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/aphrodite-slim-text-f0PdC4.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Aphrodite Slim Text';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/aphrodite-slim-text-f0PdC4.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Aphrodite Slim Text F0Pd C4';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/aphrodite-slim-text-f0PdC4.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Aston-Script';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/aston-script-MHkaqt.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Aston Script';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/aston-script-MHkaqt.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Aston Script Mhkaqt';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/aston-script-MHkaqt.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Autumn';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/autumn-MTNI3O.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Autumn Mtni3O';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/autumn-MTNI3O.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Back-to-School';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/back-to-school-0UCAYX.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Back To School';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/back-to-school-0UCAYX.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Back To School 0Ucayx';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/back-to-school-0UCAYX.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'baskerville-old-face';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/baskerville-old-face-lBBe06.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Baskerville Old Face';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/baskerville-old-face-lBBe06.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Baskerville Old Face L Bbe06';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/baskerville-old-face-lBBe06.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Bavaria-Gates';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/bavaria-gates-PKyU9P.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Bavaria Gates';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/bavaria-gates-PKyU9P.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Bavaria Gates Pky U9P';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/bavaria-gates-PKyU9P.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'BebasNeue-Regular';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/bebasneue-regular-R87b0o.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Bebas Neue';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/bebasneue-regular-R87b0o.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Bebasneue Regular R87B0O';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/bebasneue-regular-R87b0o.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Belgan-Aesthetic';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/belgan-aesthetic-NSr2YE.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Belgan Aesthetic';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/belgan-aesthetic-NSr2YE.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Belgan Aesthetic Nsr2Ye';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/belgan-aesthetic-NSr2YE.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Belisha';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/belisha-HSZO8J.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Belisha Hszo8J';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/belisha-HSZO8J.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Bernardo';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/bernardo-xzR3kb.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Bernardo Xz R3Kb';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/bernardo-xzR3kb.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Biancha-Script-Demo';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/biancha-script-demo-2IeBBZ.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Biancha Script Demo';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/biancha-script-demo-2IeBBZ.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Biancha Script Demo 2Ie Bbz';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/biancha-script-demo-2IeBBZ.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Bickham-Script-Pro-R';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/bickham-script-pro-r-jEBDLh.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Bickham Script Pro R';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/bickham-script-pro-r-jEBDLh.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Bickham Script Pro R J Ebdlh';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/bickham-script-pro-r-jEBDLh.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Black-Rotela';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/black-rotela-NITXXK.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Black Rotela';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/black-rotela-NITXXK.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Black Rotela Nitxxk';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/black-rotela-NITXXK.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Bodebeck';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/bodebeck-z42WVO.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Bodebeck Z42Wvo';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/bodebeck-z42WVO.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Boheme-Floral';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/boheme-floral-rTJfN8.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Boheme Floral';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/boheme-floral-rTJfN8.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Boheme Floral R Tjf N8';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/boheme-floral-rTJfN8.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Bohemian';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/bohemian-LGMFo1.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Bohemian Lgmfo1';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/bohemian-LGMFo1.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'bon-vivan-regular';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/bon-vivan-regular-a1NCaB.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Bon Vivan';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/bon-vivan-regular-a1NCaB.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Bon Vivan Regular A1Nca B';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/bon-vivan-regular-a1NCaB.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Brigend-Signature';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/brigend-signature-xmUfuq.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Brigend Signature';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/brigend-signature-xmUfuq.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Brigend Signature Xm Ufuq';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/brigend-signature-xmUfuq.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Brittany-Signature';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/brittany-signature-9Pqb75.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Brittany Signature';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/brittany-signature-9Pqb75.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Brittany Signature 9Pqb75';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/brittany-signature-9Pqb75.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Brown Sugar';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/brown-sugar-ZsIdJO.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Brown Sugar Zs Id Jo';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/brown-sugar-ZsIdJO.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Calibri-Italic';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/calibri-italic-HW5Mce.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Calibri';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/calibri-italic-HW5Mce.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Calibri Italic Hw5Mce';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/calibri-italic-HW5Mce.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'CalistoMTFett';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/calistomtfett-nMry0Q.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Calisto Mtfett';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/calistomtfett-nMry0Q.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Calistomtfett N Mry0Q';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/calistomtfett-nMry0Q.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Calvino';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/calvino-buQClt.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Calvino Bu Qclt';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/calvino-buQClt.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Cambria';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/cambria-iEiGPd.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Cambria I Ei Gpd';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/cambria-iEiGPd.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Carolyna-Pro-Black';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/carolyna-pro-black-bFe1Xm.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Carolyna Pro';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/carolyna-pro-black-bFe1Xm.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Carolyna Pro Black B Fe1Xm';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/carolyna-pro-black-bFe1Xm.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Chilanka-Regular';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/chilanka-regular-ebEu0i.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Chilanka';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/chilanka-regular-ebEu0i.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Chilanka Regular Eb Eu0I';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/chilanka-regular-ebEu0i.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Coffe-for-breakfast';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/coffe-for-breakfast-B5QNH1.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Coffe For Breakfast';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/coffe-for-breakfast-B5QNH1.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Coffe For Breakfast B5Qnh1';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/coffe-for-breakfast-B5QNH1.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Coffee-Extra';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/coffee-extra-dm8XHf.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Coffee Extra';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/coffee-extra-dm8XHf.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Coffee Extra Dm8Xhf';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/coffee-extra-dm8XHf.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Collina-Regular';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/collina-regular-xDMWPg.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Collina';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/collina-regular-xDMWPg.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Collina Regular X Dmwpg';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/collina-regular-xDMWPg.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Cormorant';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/cormorant-yS26pX.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Cormorant Y S26P X';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/cormorant-yS26pX.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Cream-Cake';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/cream-cake-nH2NE3.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Cream Cake';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/cream-cake-nH2NE3.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Cream Cake N H2Ne3';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/cream-cake-nH2NE3.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Creattion';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/creattion-TjHyOa.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Creattion Tj Hy Oa';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/creattion-TjHyOa.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Dear-Sarah';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/dear-sarah-buAc17.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Dear Sarah';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/dear-sarah-buAc17.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Dear Sarah Bu Ac17';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/dear-sarah-buAc17.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'DearSarah';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/dearsarah-iH6Rku.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Dear Sarah';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/dearsarah-iH6Rku.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Dearsarah I H6Rku';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/dearsarah-iH6Rku.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'DeliusSwashCaps-Regu';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/deliusswashcaps-regu-yrQxjc.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Delius Swash Caps Regu';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/deliusswashcaps-regu-yrQxjc.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Deliusswashcaps Regu Yr Qxjc';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/deliusswashcaps-regu-yrQxjc.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Desirable Bursh Texture';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/desirable-bursh-texture-RbQCWR.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Desirable Bursh Texture Rb Qcwr';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/desirable-bursh-texture-RbQCWR.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'DK-Plague-Master';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/dk-plague-master-BDeXdK.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Dk Plague Master';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/dk-plague-master-BDeXdK.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Dk Plague Master Bde Xd K';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/dk-plague-master-BDeXdK.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Edensor';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/edensor-NCKSfj.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Edensor Ncksfj';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/edensor-NCKSfj.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Editors-Light';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/editors-light-idlQba.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Editors';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/editors-light-idlQba.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Editors Light Idl Qba';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/editors-light-idlQba.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Edwardian-Script';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/edwardian-script-5cjzUB.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Edwardian Script';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/edwardian-script-5cjzUB.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Edwardian Script 5Cjz Ub';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/edwardian-script-5cjzUB.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Elsie Swash Caps';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/elsie-swash-caps-UgG52d.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Elsie Swash Caps Ug G52D';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/elsie-swash-caps-UgG52d.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'FreeSansBold';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/freesansbold-8T0p8H.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Free Sans';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/freesansbold-8T0p8H.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Freesansbold 8T0P8H';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/freesansbold-8T0p8H.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Freestyle';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/freestyle-S44PWT.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Freestyle S44Pwt';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/freestyle-S44PWT.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'gallerymodern-webfon';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/gallerymodern-webfon-pxVtZs.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Gallerymodern Webfon';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/gallerymodern-webfon-pxVtZs.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Gallerymodern Webfon Px Vt Zs';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/gallerymodern-webfon-pxVtZs.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Garlicha';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/garlicha-OYe3bf.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Garlicha Oye3Bf';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/garlicha-OYe3bf.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Greatness Regular';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/greatness-regular-8IJt81.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Greatness';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/greatness-regular-8IJt81.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Greatness Regular 8Ijt81';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/greatness-regular-8IJt81.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'GreatnessDemoRegular';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/greatnessdemoregular-xi5tqU.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Greatness Demo';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/greatnessdemoregular-xi5tqU.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Greatnessdemoregular Xi5Tq U';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/greatnessdemoregular-xi5tqU.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Grithani';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/grithani-kG9Z92.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Grithani K G9Z92';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/grithani-kG9Z92.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Happiness';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/happiness-MQUEhQ.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Happiness Mqueh Q';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/happiness-MQUEhQ.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Hashiba';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/hashiba-qVUt4o.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Hashiba Q Vut4O';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/hashiba-qVUt4o.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Hatolie';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/hatolie-lrmaPi.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Hatolie Lrma Pi';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/hatolie-lrmaPi.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'hello-amelia';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/hello-amelia-M9223c.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Hello Amelia';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/hello-amelia-M9223c.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Hello Amelia M9223C';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/hello-amelia-M9223c.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'HennyPenny-Regular';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/hennypenny-regular-iwbhVC.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Henny Penny';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/hennypenny-regular-iwbhVC.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Hennypenny Regular Iwbh Vc';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/hennypenny-regular-iwbhVC.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'high_spirited';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/high_spirited-ZYjHWg.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'High Spirited';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/high_spirited-ZYjHWg.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'High Spirited Zyj Hwg';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/high_spirited-ZYjHWg.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Histeagin';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/histeagin-2JKOMj.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Histeagin 2Jkomj';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/histeagin-2JKOMj.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Iskry-Regular';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/iskry-regular-GpWgN4.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Iskry';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/iskry-regular-GpWgN4.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Iskry Regular Gp Wg N4';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/iskry-regular-GpWgN4.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Italiana-Regular';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/italiana-regular-x0OnMS.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Italiana';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/italiana-regular-x0OnMS.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Italiana Regular X0On Ms';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/italiana-regular-x0OnMS.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Italianno';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/italianno-SPcayg.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Italianno Spcayg';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/italianno-SPcayg.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Ivy-Mode';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/ivy-mode-jTHOqB.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Ivy Mode';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/ivy-mode-jTHOqB.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Ivy Mode J Thoq B';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/ivy-mode-jTHOqB.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'LaLuxesScript-Regula';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/laluxesscript-regula-TCEsAx.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'La Luxes Script Regula';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/laluxesscript-regula-TCEsAx.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Laluxesscript Regula Tces Ax';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/laluxesscript-regula-TCEsAx.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Lilita-One';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/lilita-one-zbwwVU.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Lilita One';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/lilita-one-zbwwVU.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Lilita One Zbww Vu';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/lilita-one-zbwwVU.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Maglonyfreeversion-R';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/maglonyfreeversion-r-gOUygy.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Maglonyfreeversion R';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/maglonyfreeversion-r-gOUygy.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Maglonyfreeversion R G Ouygy';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/maglonyfreeversion-r-gOUygy.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Mainstay';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/mainstay-ERoJeh.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Mainstay Ero Jeh';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/mainstay-ERoJeh.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Matrix';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/matrix-dgPje0.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Matrix Dg Pje0';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/matrix-dgPje0.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Mishka';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/mishka-myRtXW.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Mishka My Rt Xw';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/mishka-myRtXW.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Monoline';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/monoline-C8JEms.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Monoline C8Jems';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/monoline-C8JEms.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Monotype-Corsiva';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/monotype-corsiva-v2jTbA.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Monotype Corsiva';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/monotype-corsiva-v2jTbA.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Monotype Corsiva V2J Tb A';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/monotype-corsiva-v2jTbA.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'month-glade';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/month-glade-gH8iOL.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Month Glade';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/month-glade-gH8iOL.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Month Glade G H8I Ol';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/month-glade-gH8iOL.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Monthoers';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/monthoers-Xobaha.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Monthoers Xobaha';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/monthoers-Xobaha.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'MrGabe-Regular';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/mrgabe-regular-hE8EE2.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Mr Gabe';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/mrgabe-regular-hE8EE2.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Mrgabe Regular H E8Ee2';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/mrgabe-regular-hE8EE2.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Muthiara';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/muthiara-efxMg4.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Muthiara Efx Mg4';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/muthiara-efxMg4.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Mutiara';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/mutiara-xxFMsR.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Mutiara Xx Fms R';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/mutiara-xxFMsR.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Mvboli';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/mvboli-kNWwVX.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Mvboli K Nww Vx';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/mvboli-kNWwVX.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'NewYork';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/newyork-kgCnXb.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'New York';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/newyork-kgCnXb.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Newyork Kg Cn Xb';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/newyork-kgCnXb.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Nomark';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/nomark-j5jNM8.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Nomark J5J Nm8';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/nomark-j5jNM8.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Nunito-Regular';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/nunito-regular-dMEbcc.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Nunito';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/nunito-regular-dMEbcc.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Nunito Regular D Mebcc';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/nunito-regular-dMEbcc.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Oakes-Grotesk-Regula';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/oakes-grotesk-regula-I91mk8.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Oakes Grotesk Regula';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/oakes-grotesk-regula-I91mk8.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Oakes Grotesk Regula I91Mk8';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/oakes-grotesk-regula-I91mk8.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Paris';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/paris-Lths1y.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Paris Lths1Y';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/paris-Lths1y.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Parisienne';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/parisienne-hH5kNB.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Parisienne H H5K Nb';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/parisienne-hH5kNB.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Photograph';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/photograph-PF2CY2.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Photograph Pf2Cy2';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/photograph-PF2CY2.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'PinyonScript-Regular';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/pinyonscript-regular-Ebowsk.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Pinyon Script';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/pinyonscript-regular-Ebowsk.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Pinyonscript Regular Ebowsk';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/pinyonscript-regular-Ebowsk.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'PinyonScript';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/pinyonscript-38Pkoa.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Pinyon Script';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/pinyonscript-38Pkoa.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Pinyonscript 38Pkoa';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/pinyonscript-38Pkoa.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Playball (2)';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/playball-2-Wx3wOp.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Playball 2 Wx3W Op';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/playball-2-Wx3wOp.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Playball';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/playball-DEWDVj.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Playball Dewdvj';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/playball-DEWDVj.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'PoorStory-Regular';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/poorstory-regular-TCUfNk.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Poor Story';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/poorstory-regular-TCUfNk.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Poorstory Regular Tcuf Nk';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/poorstory-regular-TCUfNk.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Power';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/power-Pm8piy.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Power Pm8Piy';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/power-Pm8piy.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Praise';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/praise-1lQjiF.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Praise 1L Qji F';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/praise-1lQjiF.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Quatera';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/quatera-eHlJj3.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Quatera E Hl Jj3';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/quatera-eHlJj3.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Rainbow-in-June';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/rainbow-in-june-R7EaXE.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Rainbow In June';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/rainbow-in-june-R7EaXE.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Rainbow In June R7Ea Xe';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/rainbow-in-june-R7EaXE.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'redrains-demo';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/redrains-demo-C1AnLa.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Redrains Demo';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/redrains-demo-C1AnLa.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Redrains Demo C1An La';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/redrains-demo-C1AnLa.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Revania';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/revania-kQCHfW.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Revania K Qchf W';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/revania-kQCHfW.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Rolasansignature';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/rolasansignature-erllAR.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Rolasansignature Erll Ar';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/rolasansignature-erllAR.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'RomauntGaolines';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/romauntgaolines-fgNZzb.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Romaunt Gaolines';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/romauntgaolines-fgNZzb.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Romauntgaolines Fg Nzzb';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/romauntgaolines-fgNZzb.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Roserri';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/roserri-72KoAU.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Roserri 72Ko Au';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/roserri-72KoAU.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Rubber-Duck';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/rubber-duck-H10hZ2.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Rubber Duck';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/rubber-duck-H10hZ2.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Rubber Duck H10H Z2';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/rubber-duck-H10hZ2.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'RumRaisin-Regular';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/rumraisin-regular-bPZLhD.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Rum Raisin';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/rumraisin-regular-bPZLhD.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Rumraisin Regular B Pzlh D';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/rumraisin-regular-bPZLhD.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'San-Miguel';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/san-miguel-vIJORQ.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'San Miguel';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/san-miguel-vIJORQ.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'San Miguel V Ijorq';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/san-miguel-vIJORQ.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Saudagar';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/saudagar-R43Pud.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Saudagar R43Pud';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/saudagar-R43Pud.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Senja-Mentari-Demo';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/senja-mentari-demo-sUkN0a.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Senja Mentari Demo';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/senja-mentari-demo-sUkN0a.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Senja Mentari Demo S Uk N0A';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/senja-mentari-demo-sUkN0a.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Sinoreta';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/sinoreta-QGdvSp.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Sinoreta Qgdv Sp';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/sinoreta-QGdvSp.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Sinoreta_PERSONAL_US';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/sinoreta_personal_us-7Ux02Y.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Sinoreta Personal Us';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/sinoreta_personal_us-7Ux02Y.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Sinoreta Personal Us 7Ux02Y';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/sinoreta_personal_us-7Ux02Y.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Skranji-Regular';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/skranji-regular-Zuem8K.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Skranji';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/skranji-regular-Zuem8K.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Skranji Regular Zuem8K';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/skranji-regular-Zuem8K.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'SnellBT';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/snellbt-M4dYjr.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Snell Bt';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/snellbt-M4dYjr.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Snellbt M4D Yjr';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/snellbt-M4dYjr.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'South';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/south-Dt5USp.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'South Dt5Usp';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/south-Dt5USp.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Spring-in-may';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/spring-in-may-XlTEyu.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Spring In May';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/spring-in-may-XlTEyu.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Spring In May Xl Teyu';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/spring-in-may-XlTEyu.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'StrawberryCupcakes';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/strawberrycupcakes-7Yknkr.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Strawberry Cupcakes';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/strawberrycupcakes-7Yknkr.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Strawberrycupcakes 7Yknkr';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/strawberrycupcakes-7Yknkr.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Sweet-Saturday';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/sweet-saturday-zPqsjq.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Sweet Saturday';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/sweet-saturday-zPqsjq.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Sweet Saturday Z Pqsjq';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/sweet-saturday-zPqsjq.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tangerine';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/tangerine-jRsccM.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tangerine J Rscc M';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/tangerine-jRsccM.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tangerine_Regular';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/tangerine_regular-2bGPua.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tangerine';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/tangerine_regular-2bGPua.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tangerine Regular 2B Gpua';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/tangerine_regular-2bGPua.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tempting';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/tempting-pDnHvl.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tempting P Dn Hvl';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/tempting-pDnHvl.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'The-bernardo';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/the-bernardo-zkzG7Z.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'The Bernardo';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/the-bernardo-zkzG7Z.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'The Bernardo Zkz G7Z';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/the-bernardo-zkzG7Z.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'The-Californication';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/the-californication-Fb04jk.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'The Californication';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/the-californication-Fb04jk.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'The Californication Fb04Jk';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/the-californication-Fb04jk.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'traditional-arabic';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/traditional-arabic-mF1XPz.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Traditional Arabic';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/traditional-arabic-mF1XPz.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Traditional Arabic M F1Xpz';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/traditional-arabic-mF1XPz.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Trajan';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/trajan-1YOJiJ.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Trajan 1Yoji J';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/trajan-1YOJiJ.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Vogue';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/vogue-DPUOpB.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Vogue Dpuop B';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/vogue-DPUOpB.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'WalbaumDisplay';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/walbaumdisplay-65yaJg.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Walbaum Display';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/walbaumdisplay-65yaJg.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Walbaumdisplay 65Ya Jg';
+  src: url('https://inv.wekita.id/wp-content/uploads/bisdev-fonts/walbaumdisplay-65yaJg.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
