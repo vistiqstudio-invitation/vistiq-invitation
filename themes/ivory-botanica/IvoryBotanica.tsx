@@ -11,6 +11,15 @@ const LEGACY_REFERENCE_DATE = "Senin, 28 Desember 2026";
 const VISTIQ_INSTAGRAM_URL = "https://www.instagram.com/vistiqinvitation/";
 const VISTIQ_ADMIN_WHATSAPP_URL = "https://wa.me/6281371338032";
 
+type FooterIconKind = "instagram" | "whatsapp";
+
+const FOOTER_ICON_MARKUP: Record<FooterIconKind, string> = {
+  instagram:
+    '<rect x="3.25" y="3.25" width="17.5" height="17.5" rx="4.5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4.1" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.45" cy="6.65" r="1.05" fill="currentColor"/>',
+  whatsapp:
+    '<path fill="currentColor" d="M16.04 3C8.86 3 3.03 8.73 3.03 15.79c0 2.25.6 4.45 1.74 6.38L3 28.55l6.6-1.7a13.1 13.1 0 0 0 6.43 1.63h.01c7.17 0 13.01-5.74 13.01-12.79C29.05 8.64 23.21 3 16.04 3Zm0 23.32h-.01a10.9 10.9 0 0 1-5.55-1.49l-.4-.23-3.92 1.01 1.05-3.75-.26-.39a10.5 10.5 0 0 1-1.68-5.68c0-5.87 4.83-10.64 10.78-10.64 5.94 0 10.77 4.77 10.77 10.64 0 5.86-4.84 10.53-10.78 10.53Zm5.91-7.98c-.32-.16-1.92-.93-2.22-1.03-.29-.11-.51-.16-.72.16-.22.31-.84 1.03-1.03 1.24-.19.21-.38.23-.7.08-.33-.16-1.37-.5-2.61-1.56a9.7 9.7 0 0 1-1.81-2.22c-.19-.32-.02-.49.14-.65.15-.14.33-.37.49-.55.16-.19.22-.32.32-.53.11-.21.06-.4-.02-.56-.08-.15-.73-1.72-.99-2.36-.27-.63-.53-.54-.73-.55h-.62c-.22 0-.57.08-.86.4-.3.31-1.14 1.09-1.14 2.67 0 1.57 1.16 3.09 1.32 3.3.16.21 2.29 3.44 5.54 4.82.78.33 1.38.52 1.85.67.78.24 1.48.21 2.04.13.62-.09 1.92-.78 2.19-1.52.27-.73.27-1.36.19-1.49-.08-.13-.3-.21-.63-.37Z"/>',
+};
+
 type TimerElement = HTMLElement & { __idbTimer?: number };
 
 function shortName(person: InvitationData["groom"]) {
@@ -129,15 +138,33 @@ function setAudioSource(documentRoot: Document, musicUrl: string | null) {
   });
 }
 
+function createFooterIcon(documentRoot: Document, kind: FooterIconKind) {
+  const svg = documentRoot.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("class", `vistiq-footer-icon vistiq-footer-icon-${kind}`);
+  svg.setAttribute("viewBox", kind === "whatsapp" ? "0 0 32 32" : "0 0 24 24");
+  svg.setAttribute("width", "24");
+  svg.setAttribute("height", "24");
+  svg.setAttribute("aria-hidden", "true");
+  svg.setAttribute("focusable", "false");
+  svg.innerHTML = FOOTER_ICON_MARKUP[kind];
+  return svg;
+}
+
 function setFooterBranding(documentRoot: Document) {
   const footer = documentRoot.querySelector<HTMLElement>(".elementor-element-12b47c4c");
   if (!footer) return;
 
   const whatsapp = footer.querySelector<HTMLAnchorElement>('a[aria-label="WhatsApp"]');
-  if (whatsapp) whatsapp.href = VISTIQ_ADMIN_WHATSAPP_URL;
+  if (whatsapp) {
+    whatsapp.href = VISTIQ_ADMIN_WHATSAPP_URL;
+    whatsapp.replaceChildren(createFooterIcon(documentRoot, "whatsapp"));
+  }
 
   const instagram = footer.querySelector<HTMLAnchorElement>('a[aria-label="Instagram"]');
-  if (instagram) instagram.href = VISTIQ_INSTAGRAM_URL;
+  if (instagram) {
+    instagram.href = VISTIQ_INSTAGRAM_URL;
+    instagram.replaceChildren(createFooterIcon(documentRoot, "instagram"));
+  }
 
   const watermark = documentRoot.querySelector<HTMLElement>(".idb-watermark-text");
   if (watermark && !watermark.querySelector(".vistiq-footer-logo")) {
