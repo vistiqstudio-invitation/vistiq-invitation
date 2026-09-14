@@ -252,6 +252,19 @@ export default function ThemeBrowser({
 
   const filteredWeddingThemes = useMemo(() => {
     if (weddingSub === "semua") return themeList;
+
+    // Category catalogs are intentionally exclusive. Luxury Art and 3D Motion
+    // themes must never leak into the generic Premium catalog, even if legacy
+    // metadata or a stale data source still contains an old premium tag.
+    if (weddingSub === "premium") {
+      return themeList.filter(
+        (theme) =>
+          theme.tags?.includes("premium") &&
+          !theme.tags.includes("luxury-art") &&
+          !theme.tags.includes("premium-3d-motion")
+      );
+    }
+
     return themeList.filter((theme) => theme.tags?.includes(weddingSub));
   }, [weddingSub]);
 
