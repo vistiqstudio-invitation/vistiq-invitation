@@ -11,7 +11,6 @@ import type { EventItem, InvitationData } from "@/types/invitation";
 import styles from "./style.module.css";
 
 const ASSET = "/themes/luxury-art-soft/";
-const ADMIN_WHATSAPP = "6281371338032";
 const revealEase = [0.22, 1, 0.36, 1] as const;
 
 type IconName =
@@ -241,7 +240,7 @@ function Cover({ invitation, onOpen }: { invitation: InvitationData; onOpen: () 
         <span className={styles.coverPause} aria-hidden="true">Ⅱ</span>
         <div className={styles.coverTitle}>
           <p>The Wedding Of</p>
-          <h1>{bride} <em>&amp;</em> {groom}</h1>
+          <h1>{groom} <em>&amp;</em> {bride}</h1>
         </div>
         <div className={styles.coverGuest}>
           <span>Kepada Bapak/Ibu/Saudara/i</span>
@@ -276,7 +275,7 @@ function Hero({ invitation }: { invitation: InvitationData }) {
           transition={{ duration: 0.9, ease: revealEase }}
         >
           <p>THE WEDDING OF</p>
-          <h2>{bride}<span>&amp;</span>{groom}</h2>
+          <h2>{groom}<span>&amp;</span>{bride}</h2>
           <time>{dateLabel}</time>
         </motion.div>
       </div>
@@ -309,8 +308,8 @@ function Couple({ invitation }: { invitation: InvitationData }) {
         </p>
       </motion.header>
 
-      <PersonCard person={invitation.bride} role="THE BRIDE" photo={bridePhoto} />
-      <PersonCard person={invitation.groom} role="THE GROOM" photo={groomPhoto} reverse />
+      <PersonCard person={invitation.groom} role="THE GROOM" photo={groomPhoto} />
+      <PersonCard person={invitation.bride} role="THE BRIDE" photo={bridePhoto} reverse />
     </section>
   );
 }
@@ -563,7 +562,10 @@ function Gift({ invitation }: { invitation: InvitationData }) {
   const [copied, setCopied] = useState<number | null>(null);
   const bride = firstName(invitation.bride.name, invitation.bride.nickname);
   const groom = firstName(invitation.groom.name, invitation.groom.nickname);
-  const message = encodeURIComponent(`Halo Admin Vistiq, saya ingin mengonfirmasi gift untuk undangan ${groom} & ${bride}.`);
+  const whatsapp = invitation.contactWhatsapp
+    ? invitation.contactWhatsapp.replace(/\D/g, "").replace(/^0/, "62")
+    : null;
+  const message = encodeURIComponent(`Halo ${groom} & ${bride}, saya ingin mengonfirmasi pengiriman gift.`);
   const copyAccount = async (accountNumber: string | null, index: number) => {
     if (!accountNumber) return;
     await navigator.clipboard?.writeText(accountNumber);
@@ -591,7 +593,7 @@ function Gift({ invitation }: { invitation: InvitationData }) {
         <div className={styles.confirmCard}>
           <div className={styles.scriptHeading}><span>Gift</span><em>Confirm</em></div>
           <p>Mohon konfirmasi untuk pengiriman gift. Terima kasih atas perhatian dan tanda kasih Anda.</p>
-          <a href={`https://wa.me/${ADMIN_WHATSAPP}?text=${message}`} target="_blank" rel="noreferrer"><Icon name="chat" /> Konfirmasi via WhatsApp</a>
+          {whatsapp ? <a href={`https://wa.me/${whatsapp}?text=${message}`} target="_blank" rel="noreferrer"><Icon name="chat" /> Konfirmasi via WhatsApp</a> : null}
         </div>
       </div>
     </section>
@@ -683,7 +685,7 @@ function Footer({ invitation }: { invitation: InvitationData }) {
         <p>Atas kehadiran dan doa restu dari Bapak/Ibu/Saudara/i sekalian, kami mengucapkan terima kasih.</p>
         <strong>Wassalamu’alaikum Wr. Wb.</strong>
         <small>Kami yang berbahagia</small>
-        <h2>{bride} <em>&amp;</em> {groom}</h2>
+        <h2>{groom} <em>&amp;</em> {bride}</h2>
       </motion.div>
     </footer>
   );
