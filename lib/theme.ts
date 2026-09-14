@@ -137,7 +137,26 @@ export function isThemeNew(theme: ThemeMeta): boolean {
   return days >= 0 && days <= NEW_BADGE_WINDOW_DAYS;
 }
 
-export const themeList: ThemeMeta[] = [
+const HIDDEN_BASIC_THEME_KEYS = new Set([
+  "pearl-tide",
+  "prismatic-vows",
+  "velvet-cinema",
+  "love-chronicle",
+  "porcelain-bloom",
+  "emerald-lantern",
+  "sakura",
+  "rustic",
+  "bohemian",
+  "royal-imperial",
+  "menara-cahaya",
+  "santorini",
+  "vintage-botanical",
+  "art-deco-glam",
+  "sahara",
+  "midnight-aurora",
+]);
+
+const allWeddingThemes: ThemeMeta[] = [
   { key: "luxury-gold", label: "Luxury Gold", description: "Dark & glamorous, aksen gold, glassmorphism", swatch: ["#0b0b0b", "#d4af37"], tags: ["premium"] },
   { key: "minimal-white", label: "Minimal White", description: "Putih bersih, editorial, elegan minimalis", swatch: ["#ffffff", "#96742a"], tags: ["reguler"] },
   { key: "islamic-green", label: "Islamic Green", description: "Krem hangat, hijau emerald & emas, motif islami", swatch: ["#faf6ec", "#0b5d42"], tags: ["adat"] },
@@ -184,6 +203,10 @@ export const themeList: ThemeMeta[] = [
   { key: "pearl-tide", label: "Pearl Tide", description: "Deep ocean & seafoam, kerang, mutiara, riak air & bingkai pesisir organik", swatch: ["#071f29", "#dcebea"], tags: ["reguler"] },
   { key: "ivory-botanica", label: "Ivory Botanica", description: "Sage, ivory & gold dengan komposisi botanical editorial tanpa foto", swatch: ["#fbf8f0", "#6f8974"], tags: ["tanpa-foto"], addedAt: "2026-09-14" },
 ];
+
+export const themeList: ThemeMeta[] = allWeddingThemes.filter(
+  (theme) => !HIDDEN_BASIC_THEME_KEYS.has(theme.key)
+);
 
 export const aqiqahThemeRegistry: Record<string,(props:{invitation:AqiqahInvitationData})=>React.JSX.Element> = {
   "akikah-nur": AkikahNur,"akikah-zaitun": AkikahZaitun,"akikah-ceria": AkikahCeria,"akikah-anugerah": AkikahAnugerah,"akikah-safir": AkikahSafir,"akikah-kasih": AkikahKasih,"akikah-damai": AkikahDamai,
