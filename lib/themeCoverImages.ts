@@ -54,6 +54,7 @@ export const THEME_CARD_PREVIEW_BY_THEME: Record<string, string> = {
   "emerald-elan": "/theme-previews/wedding/emerald-elan.jpg",
   "fizan-islamic-motion": "/theme-previews/wedding/fizan-islamic-motion.jpg",
   "azure-bloom": "/theme-previews/wedding/azure-bloom-motion.jpg",
+  "golden-romance": "/theme-previews/wedding/golden-romance-card.jpg",
 };
 
 const KHITAN_COVER = "/photos/khitan-warna-cover.jpg";
