@@ -6,7 +6,8 @@ import type { InvitationData } from "@/types/invitation";
 import styles from "./style.module.css";
 
 const REFERENCE_PAGE = "/themes/ivory-botanica/reference/index.html";
-const REFERENCE_DATE = "Senin, 28 Desember 2026";
+const REFERENCE_DATE = "Minggu, 20 September 2026";
+const LEGACY_REFERENCE_DATE = "Senin, 28 Desember 2026";
 
 type TimerElement = HTMLElement & { __idbTimer?: number };
 
@@ -17,6 +18,10 @@ function shortName(person: InvitationData["groom"]) {
 function instagramUrl(value: string | null) {
   const handle = value?.trim().replace(/^@/, "");
   return handle ? `https://instagram.com/${handle}` : "https://www.instagram.com/";
+}
+
+function instagramHandle(value: string | null) {
+  return value?.trim().replace(/^@/, "") || "";
 }
 
 function parentParts(value: string | null) {
@@ -126,16 +131,30 @@ function applyInvitationData(documentRoot: Document, invitation: InvitationData,
   const groomShort = shortName(invitation.groom);
   const brideShort = shortName(invitation.bride);
   const firstEvent = invitation.events[0];
+  const groomNameToken = "__IVORY_BOTANICA_GROOM_NAME__";
+  const brideNameToken = "__IVORY_BOTANICA_BRIDE_NAME__";
 
   documentRoot.title = `${groomShort} & ${brideShort} — Ivory Botanica`;
   documentRoot.documentElement.lang = "id";
 
   replaceText(documentRoot, "Habib & Adiba", `${groomShort} & ${brideShort}`);
-  replaceText(documentRoot, "Habib Yulianto", invitation.groom.name);
-  replaceText(documentRoot, "Adiba Putri Syakila", invitation.bride.name);
+  replaceText(documentRoot, "Rizky & Nabila", `${groomShort} & ${brideShort}`);
+  replaceText(documentRoot, "Habib Yulianto", groomNameToken);
+  replaceText(documentRoot, "Rizky Pratama", groomNameToken);
+  replaceText(documentRoot, "Adiba Putri Syakila", brideNameToken);
+  replaceText(documentRoot, "Nabila Putri", brideNameToken);
   replaceText(documentRoot, "Habib", groomShort);
   replaceText(documentRoot, "Adiba", brideShort);
+  replaceText(documentRoot, "Rizky", groomShort);
+  replaceText(documentRoot, "Nabila", brideShort);
+  replaceText(documentRoot, groomNameToken, invitation.groom.name);
+  replaceText(documentRoot, brideNameToken, invitation.bride.name);
   replaceText(documentRoot, "Nama Tamu", guest);
+  const guestMarker = documentRoot.querySelector<HTMLElement>(
+    ".elementor-element-633aaeac .elementor-widget-container",
+  );
+  if (guestMarker) guestMarker.textContent = guest;
+  replaceText(documentRoot, LEGACY_REFERENCE_DATE, firstEvent?.date || REFERENCE_DATE);
   replaceText(documentRoot, REFERENCE_DATE, firstEvent?.date || REFERENCE_DATE);
 
   setParents(documentRoot, "pria", invitation.groom.parents);
@@ -159,9 +178,14 @@ function applyInvitationData(documentRoot: Document, invitation: InvitationData,
   const instagramAnchors = Array.from(
     documentRoot.querySelectorAll<HTMLAnchorElement>('.elementor-widget-bisdev_social_icons a[aria-label="Instagram"]'),
   );
-  if (instagramAnchors[0]) instagramAnchors[0].href = instagramUrl(invitation.groom.instagram);
-  if (instagramAnchors[1]) instagramAnchors[1].href = instagramUrl(invitation.bride.instagram);
-  if (instagramAnchors[2]) instagramAnchors[2].href = instagramUrl(invitation.groom.instagram);
+  const instagramValues = [invitation.groom.instagram, invitation.bride.instagram, invitation.groom.instagram];
+  instagramAnchors.forEach((anchor, index) => {
+    const value = instagramValues[index] || null;
+    anchor.href = instagramUrl(value);
+    const label = anchor.querySelector<HTMLElement>(".idb-social-icons__text");
+    const handle = instagramHandle(value);
+    if (label && handle) label.textContent = `@${handle}`;
+  });
 
   const giftCards = Array.from(documentRoot.querySelectorAll<HTMLElement>(".idb-copy-rek"));
   invitation.gifts.slice(0, giftCards.length).forEach((gift, index) => {
