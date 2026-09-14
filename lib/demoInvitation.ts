@@ -408,6 +408,7 @@ const MUSIC_BY_THEME: Record<string, string> = {
   "velvet-cinema": WEDDING_VOCAL_TRACKS.englishBallad,
   "prismatic-vows": WEDDING_VOCAL_TRACKS.englishBallad,
   "pearl-tide": WEDDING_VOCAL_TRACKS.englishBallad,
+  "ivory-botanica": WEDDING_VOCAL_TRACKS.indonesianBallad,
 };
 
 // One shared sample invitation used to demo every theme. Only the `theme`,
@@ -415,6 +416,8 @@ const MUSIC_BY_THEME: Record<string, string> = {
 // identical on purpose, so switching themes in the picker is an
 // apples-to-apples comparison.
 export function getDemoInvitation(theme: string): InvitationData {
+  const noPhotoTheme = theme === "ivory-botanica";
+
   return {
     id: 0,
     slug: `demo-${theme}`,
@@ -424,7 +427,7 @@ export function getDemoInvitation(theme: string): InvitationData {
 
     brand: null,
 
-    coverImage: optimizedDemoImage(COVER_BY_THEME[theme] || "/themes/luxury-gold/cover.png"),
+    coverImage: noPhotoTheme ? null : optimizedDemoImage(COVER_BY_THEME[theme] || "/themes/luxury-gold/cover.png"),
     musicUrl: MUSIC_BY_THEME[theme] || DEFAULT_WEDDING_VOCAL_TRACK,
     videoUrl: null,
 
@@ -437,7 +440,7 @@ export function getDemoInvitation(theme: string): InvitationData {
       name: "Rizky Pratama",
       nickname: "Rizky",
       parents: "Bapak Yusuf & Ibu Fatimah",
-      photo: optimizedDemoImage(GROOM_PHOTO_BY_THEME[theme] || "/themes/luxury-gold/groom.png"),
+      photo: noPhotoTheme ? null : optimizedDemoImage(GROOM_PHOTO_BY_THEME[theme] || "/themes/luxury-gold/groom.png"),
       instagram: "rizkypratama",
     },
 
@@ -445,7 +448,7 @@ export function getDemoInvitation(theme: string): InvitationData {
       name: "Nabila Putri",
       nickname: "Nabila",
       parents: "Bapak Ahmad & Ibu Siti",
-      photo: optimizedDemoImage(BRIDE_PHOTO_BY_THEME[theme] || "/themes/luxury-gold/bride.png"),
+      photo: noPhotoTheme ? null : optimizedDemoImage(BRIDE_PHOTO_BY_THEME[theme] || "/themes/luxury-gold/bride.png"),
       instagram: "nabilaputri",
     },
 
@@ -499,7 +502,7 @@ export function getDemoInvitation(theme: string): InvitationData {
       },
     ],
 
-    gallery: optimizedDemoImages(GALLERY_BY_THEME[theme] || [
+    gallery: noPhotoTheme ? [] : optimizedDemoImages(GALLERY_BY_THEME[theme] || [
       "/gallery/1.jpg",
       "/gallery/2.jpg",
       "/gallery/3.jpg",

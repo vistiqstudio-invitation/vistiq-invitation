@@ -57,6 +57,7 @@ import LoveChronicle from "@/themes/love-chronicle/LoveChronicle";
 import VelvetCinema from "@/themes/velvet-cinema/VelvetCinema";
 import PrismaticVows from "@/themes/prismatic-vows/PrismaticVows";
 import PearlTide from "@/themes/pearl-tide/PearlTide";
+import IvoryBotanica from "@/themes/ivory-botanica/IvoryBotanica";
 import JawaSepia from "@/themes/jawa-sepia/JawaSepia";
 import RoyalJava from "@/themes/royal-java/RoyalJava";
 import PrincessBirthday from "@/themes/princess-fairytale/PrincessBirthday";
@@ -114,6 +115,7 @@ export const themeRegistry: Record<
   "velvet-cinema": VelvetCinema,
   "prismatic-vows": PrismaticVows,
   "pearl-tide": PearlTide,
+  "ivory-botanica": IvoryBotanica,
   "jawa-sepia": JawaSepia,
   "royal-java": RoyalJava,
 };
@@ -180,6 +182,7 @@ export const themeList: ThemeMeta[] = [
   { key: "velvet-cinema", label: "Velvet Cinema", description: "Merah beludru & hitam, premiere film, marquee lights, tiket VIP & filmstrip", swatch: ["#0a0909", "#761423"], tags: ["premium"] },
   { key: "prismatic-vows", label: "Prismatic Vows", description: "Indigo, lilac & cyan, kaca holografik, prisma cahaya & galeri refraksi", swatch: ["#0c0b1d", "#76e7ef"], tags: ["premium"] },
   { key: "pearl-tide", label: "Pearl Tide", description: "Deep ocean & seafoam, kerang, mutiara, riak air & bingkai pesisir organik", swatch: ["#071f29", "#dcebea"], tags: ["reguler"] },
+  { key: "ivory-botanica", label: "Ivory Botanica", description: "Sage, ivory & gold dengan komposisi botanical editorial tanpa foto", swatch: ["#fbf8f0", "#6f8974"], tags: ["tanpa-foto"], addedAt: "2026-09-14" },
 ];
 
 export const aqiqahThemeRegistry: Record<string,(props:{invitation:AqiqahInvitationData})=>React.JSX.Element> = {

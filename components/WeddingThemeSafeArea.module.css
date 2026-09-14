@@ -21,7 +21,8 @@
 
 .desktopBackdropFloral,
 .desktopBackdropPortraitPair,
-.desktopBackdropPortrait {
+.desktopBackdropPortrait,
+.desktopBackdropNoPhoto {
   display: none;
 }
 
@@ -251,6 +252,21 @@
     overflow: hidden;
     background: #2b2932;
     pointer-events: none;
+  }
+
+  .desktopBackdropNoPhoto {
+    position: absolute;
+    inset: 0;
+    display: block;
+    background:
+      radial-gradient(circle at 50% 32%, rgba(169, 184, 162, 0.48), transparent 25%),
+      linear-gradient(145deg, #233b31 0%, #6f8974 51%, #d8c28f 100%);
+  }
+
+  .root[data-wedding-theme="ivory-botanica"] .desktopBackdropShade {
+    background:
+      linear-gradient(180deg, rgba(24, 51, 38, 0.04), rgba(19, 43, 31, 0.78) 100%),
+      linear-gradient(90deg, rgba(25, 48, 36, 0.42), transparent 80%);
   }
 
   .desktopBackdrop img {

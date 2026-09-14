@@ -253,7 +253,6 @@ export default function ThemeBrowser({
 
   const filteredWeddingThemes = useMemo(() => {
     if (weddingSub === "semua") return themeList;
-    if (weddingSub === "tanpa-foto") return [];
     return themeList.filter((theme) => theme.tags?.includes(weddingSub));
   }, [weddingSub]);
 
@@ -298,13 +297,6 @@ export default function ThemeBrowser({
           <p className={styles.emptyStateTitle}>Pilih Jenis Undangan</p>
           <p className={styles.emptyStateDesc}>
             Klik Wedding, Khitan, Wisuda, Akikah, atau Ulang Tahun untuk melihat pilihan temanya.
-          </p>
-        </div>
-      ) : occasion === "wedding" && weddingSub === "tanpa-foto" ? (
-        <div className={styles.emptyState}>
-          <p className={styles.emptyStateTitle}>Segera Hadir</p>
-          <p className={styles.emptyStateDesc}>
-            Tema tanpa foto sedang kami siapkan. Hubungi kami di WhatsApp untuk info lebih lanjut.
           </p>
         </div>
       ) : occasion === "wedding" ? (

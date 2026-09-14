@@ -60,7 +60,13 @@ function isLavenderMotionTheme(theme: string) {
   ].includes(theme);
 }
 
+function isNoPhotoTheme(theme: string) {
+  return theme === "ivory-botanica";
+}
+
 function frameImage(invitation: InvitationFrameData | undefined, theme: string) {
+  if (isNoPhotoTheme(theme)) return null;
+
   if (isLavenderMotionTheme(theme) && invitation?.category === "wedding") {
     const bridePhoto = invitation.bride.photo?.split("#", 1)[0];
     if (bridePhoto) return bridePhoto;
@@ -82,6 +88,8 @@ export default function WeddingThemeSafeArea({
   const title = frameTitle(invitation);
   const date = frameDate(invitation);
   const lavenderMotion = isLavenderMotionTheme(theme);
+  const noPhoto = isNoPhotoTheme(theme);
+  const backdropImage = frameImage(invitation, theme);
   const weddingInvitation = invitation?.category === "wedding" ? invitation : null;
 
   return (
@@ -102,11 +110,13 @@ export default function WeddingThemeSafeArea({
               alt=""
             />
           </div>
+        ) : noPhoto ? (
+          <div className={styles.desktopBackdropNoPhoto} />
+        ) : backdropImage ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={backdropImage} alt="" />
         ) : (
-          <>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={frameImage(invitation, theme)} alt="" />
-          </>
+          <div className={styles.desktopBackdropNoPhoto} />
         )}
         {lavenderMotion && (
           <>
