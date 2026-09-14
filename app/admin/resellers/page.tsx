@@ -89,6 +89,13 @@ export default function ResellersPage() {
   const [resettingId, setResettingId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [creatingOrderId, setCreatingOrderId] = useState<string | null>(null);
+  const [editingReseller, setEditingReseller] = useState<Reseller | null>(null);
+  const [editForm, setEditForm] = useState({
+    name: "",
+    whatsapp: "",
+    brand_name: "",
+  });
+  const [savingEdit, setSavingEdit] = useState(false);
 
   const getWelcomeMessage = (account: CreatedCredentials) => {
     const isBrand = account.package === "reseller_brand";
@@ -250,6 +257,42 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! ðŸš
     fetchResellers();
   };
 
+  const openEditReseller = (reseller: Reseller) => {
+    setEditingReseller(reseller);
+    setEditForm({
+      name: reseller.name || "",
+      whatsapp: reseller.whatsapp || "",
+      brand_name: reseller.brand_name || "",
+    });
+  };
+
+  const saveResellerEdit = async () => {
+    if (!editingReseller) return;
+    if (!editForm.name.trim()) {
+      alert("Nama reseller wajib diisi.");
+      return;
+    }
+
+    setSavingEdit(true);
+    const { error } = await supabase
+      .from("resellers")
+      .update({
+        name: editForm.name.trim(),
+        whatsapp: editForm.whatsapp.trim(),
+        brand_name: editForm.brand_name.trim() || null,
+      })
+      .eq("id", editingReseller.id);
+    setSavingEdit(false);
+
+    if (error) {
+      alert(`Gagal memperbarui reseller: ${error.message}`);
+      return;
+    }
+
+    setEditingReseller(null);
+    await fetchResellers();
+  };
+
   const updateCommission = async (id: string, commission_percent: number) => {
     const { error } = await supabase
       .from("resellers")
@@ -401,6 +444,74 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! ðŸš
       />
 
       <section className={styles.content}>
+        {editingReseller && (
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="edit-reseller-title"
+            style={{
+              position: "fixed",
+              inset: 0,
+              zIndex: 1000,
+              display: "grid",
+              placeItems: "center",
+              padding: 20,
+              background: "rgba(15, 23, 42, 0.55)",
+            }}
+          >
+            <div
+              className={styles.formCard}
+              style={{ width: "min(100%, 520px)", margin: 0, boxShadow: "0 24px 70px rgba(15, 23, 42, 0.25)" }}
+            >
+              <h2 id="edit-reseller-title" className={styles.sectionTitle}>Edit Data Reseller</h2>
+              <div style={{ display: "grid", gap: 12, marginBottom: 18 }}>
+                <label>
+                  <span style={{ display: "block", marginBottom: 6, fontSize: 13, fontWeight: 700 }}>Nama Reseller</span>
+                  <input
+                    value={editForm.name}
+                    onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
+                    className={styles.input}
+                    autoFocus
+                  />
+                </label>
+                <label>
+                  <span style={{ display: "block", marginBottom: 6, fontSize: 13, fontWeight: 700 }}>Nomor WhatsApp</span>
+                  <input
+                    value={editForm.whatsapp}
+                    onChange={(e) => setEditForm({ ...editForm, whatsapp: e.target.value })}
+                    className={styles.input}
+                    inputMode="tel"
+                    placeholder="Contoh: 081234567890"
+                  />
+                </label>
+                <label>
+                  <span style={{ display: "block", marginBottom: 6, fontSize: 13, fontWeight: 700 }}>Nama Brand</span>
+                  <input
+                    value={editForm.brand_name}
+                    onChange={(e) => setEditForm({ ...editForm, brand_name: e.target.value })}
+                    className={styles.input}
+                    placeholder="Kosongkan jika tidak memakai brand"
+                  />
+                </label>
+              </div>
+              <div style={{ display: "flex", justifyContent: "flex-end", gap: 8 }}>
+                <button
+                  type="button"
+                  onClick={() => setEditingReseller(null)}
+                  className={styles.button}
+                  style={{ background: "#64748b" }}
+                  disabled={savingEdit}
+                >
+                  Batal
+                </button>
+                <button type="button" onClick={saveResellerEdit} className={styles.button} disabled={savingEdit}>
+                  {savingEdit ? "Menyimpan..." : "Simpan Perubahan"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         <header className={styles.header}>
           <div>
             <p className={styles.label}>OWNER MENU</p>
@@ -657,6 +768,15 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! ðŸš
                   </p>
 
                   <div className={styles.resellerActions}>
+                    <button
+                      type="button"
+                      onClick={() => openEditReseller(reseller)}
+                      className={styles.button}
+                      style={{ fontSize: 11, padding: "6px 10px", background: "#2563eb" }}
+                    >
+                      Edit
+                    </button>
+
                     <button
                       onClick={() => resetPassword(reseller)}
                       disabled={resettingId === reseller.user_id}
