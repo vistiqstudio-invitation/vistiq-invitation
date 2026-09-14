@@ -42,6 +42,9 @@ export type InvitationData = {
   // default Vistiq Invitation branding".
   brand: Brand;
 
+  // Nomor WhatsApp pemesan/tuan rumah untuk konfirmasi gift.
+  contactWhatsapp?: string | null;
+
   coverImage: string | null;
   musicUrl: string | null;
   videoUrl: string | null;
