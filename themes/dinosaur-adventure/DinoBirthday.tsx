@@ -222,7 +222,7 @@ export default function DinoBirthday({
             {invitation.child.name}
           </h2>
           <p className={styles.copyright}>
-            {invitation.brand?.logoUrl && <img src={invitation.brand.logoUrl} alt="" />}
+
             © {new Date().getFullYear()} {invitation.brand?.name ?? "Vistiq Invitation"}
           </p>
         </Reveal>
