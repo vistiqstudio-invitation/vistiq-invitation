@@ -336,15 +336,13 @@ export default function ResellerClientsPage() {
         ),
       );
 
-      if (status === "active") {
-        setInvitations((current) =>
-          current.map((invitation) =>
-            invitation.client_id === String(id)
-              ? { ...invitation, is_active: true }
-              : invitation,
-          ),
-        );
-      }
+      setInvitations((current) =>
+        current.map((invitation) =>
+          invitation.client_id === String(id)
+            ? { ...invitation, is_active: status === "active" }
+            : invitation,
+        ),
+      );
     } else if (target === "invitation") {
       setInvitations((current) =>
         current.map((invitation) =>
@@ -368,6 +366,8 @@ export default function ResellerClientsPage() {
       alert(result.error || "Perubahan status gagal disimpan.");
       return;
     }
+
+    await fetchData(reseller.id);
 
     setStatusNotice(
       target === "client"

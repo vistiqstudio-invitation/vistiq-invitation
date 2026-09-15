@@ -97,42 +97,37 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Status akun client gagal disimpan." }, { status: 500 });
     }
 
-    let invitationsActivated = 0;
-    if (nextStatus === "active") {
-      const { data: activatedInvitations, error: invitationError } = await supabaseAdmin
-        .from("invitations")
-        .update({ is_active: true })
-        .eq("client_id", ownedClient.id)
-        .select("id");
+    const { data: syncedInvitations, error: invitationError } = await supabaseAdmin
+      .from("invitations")
+      .update({ is_active: nextStatus === "active" })
+      .eq("client_id", ownedClient.id)
+      .select("id");
 
-      if (invitationError) {
-        const { error: rollbackError } = await supabaseAdmin
-          .from("clients")
-          .update({ status: ownedClient.status })
-          .eq("id", ownedClient.id)
-          .eq("reseller_id", reseller.id);
+    if (invitationError) {
+      const { error: rollbackError } = await supabaseAdmin
+        .from("clients")
+        .update({ status: ownedClient.status })
+        .eq("id", ownedClient.id)
+        .eq("reseller_id", reseller.id);
 
-        if (rollbackError) {
-          console.error("reseller client activation rollback failed", {
-            clientId: ownedClient.id,
-            error: rollbackError.message,
-          });
-        }
-
-        return NextResponse.json(
-          { error: "Akun client belum diaktifkan karena undangannya gagal diaktifkan." },
-          { status: 500 },
-        );
+      if (rollbackError) {
+        console.error("reseller client activation rollback failed", {
+          clientId: ownedClient.id,
+          error: rollbackError.message,
+        });
       }
 
-      invitationsActivated = activatedInvitations?.length ?? 0;
+      return NextResponse.json(
+        { error: "Status akun client belum diubah karena status undangannya gagal disinkronkan." },
+        { status: 500 },
+      );
     }
 
     return NextResponse.json({
       success: true,
       target,
       status: nextStatus,
-      invitationsActivated,
+      invitationsUpdated: syncedInvitations?.length ?? 0,
     });
   }
 
