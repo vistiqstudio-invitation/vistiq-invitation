@@ -35,7 +35,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Konfigurasi server belum lengkap." }, { status: 500 });
   }
 
-  const body = (await request.json()) as { target?: ActivationTarget; id?: string | number };
+  const body = (await request.json()) as {
+    target?: ActivationTarget;
+    id?: string | number;
+    status?: "active" | "inactive";
+  };
   const target = body.target;
   const id = String(body.id ?? "").trim();
 
@@ -65,6 +69,11 @@ export async function POST(request: Request) {
   }
 
   if (target === "client") {
+    if (body.status && body.status !== "active" && body.status !== "inactive") {
+      return NextResponse.json({ error: "Status client tidak valid." }, { status: 400 });
+    }
+
+    const nextStatus = body.status ?? "active";
     const { data: ownedClient } = await supabaseAdmin
       .from("clients")
       .select("id")
@@ -78,7 +87,7 @@ export async function POST(request: Request) {
 
     const { error } = await supabaseAdmin
       .from("clients")
-      .update({ status: "active" })
+      .update({ status: nextStatus })
       .eq("id", ownedClient.id)
       .eq("reseller_id", reseller.id);
 
@@ -86,7 +95,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Gagal mengaktifkan akun client." }, { status: 500 });
     }
 
-    return NextResponse.json({ success: true, target });
+    return NextResponse.json({ success: true, target, status: nextStatus });
   }
 
   const invitationId = Number(id);
