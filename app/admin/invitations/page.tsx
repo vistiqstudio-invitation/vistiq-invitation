@@ -39,6 +39,8 @@ type Invitation = {
 type ClientInfo = {
   name: string;
   resellerName: string | null;
+  resellerBrandName: string | null;
+  resellerPackage: "reseller" | "reseller_brand" | null;
 };
 
 export default function InvitationsPage() {
@@ -85,12 +87,21 @@ export default function InvitationsPage() {
     // not scattered across the clients/resellers/transactions pages.
     const { data: clientsData } = await supabase
       .from("clients")
-      .select("id, name, resellers:reseller_id(name)");
+      .select("id, name, resellers:reseller_id(name, brand_name, package)");
 
     const clientMap: Record<string, ClientInfo> = {};
     for (const c of clientsData ?? []) {
-      const reseller = c.resellers as unknown as { name: string } | null;
-      clientMap[c.id] = { name: c.name, resellerName: reseller?.name ?? null };
+      const reseller = c.resellers as unknown as {
+        name: string;
+        brand_name: string | null;
+        package: "reseller" | "reseller_brand";
+      } | null;
+      clientMap[c.id] = {
+        name: c.name,
+        resellerName: reseller?.name ?? null,
+        resellerBrandName: reseller?.brand_name ?? null,
+        resellerPackage: reseller?.package ?? null,
+      };
     }
     setClientsById(clientMap);
 
@@ -464,7 +475,9 @@ export default function InvitationsPage() {
                     {client ? (
                       <p style={{ fontSize: 12, opacity: 0.75 }}>
                         Client: {client.name}
-                        {client.resellerName ? ` · Reseller: ${client.resellerName}` : " · Direct (Owner)"}
+                        {client.resellerName
+                          ? ` · ${client.resellerPackage === "reseller_brand" ? "Mitra Brand" : "Reseller"}: ${client.resellerBrandName || client.resellerName}`
+                          : " · Pengelola: Admin Vistiq"}
                       </p>
                     ) : (
                       <p style={{ fontSize: 12, opacity: 0.75 }}>Tanpa client (dibuat manual)</p>
