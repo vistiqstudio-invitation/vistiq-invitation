@@ -85,14 +85,16 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Client tidak ditemukan." }, { status: 404 });
     }
 
-    const { error } = await supabaseAdmin
+    const { data: updatedClient, error } = await supabaseAdmin
       .from("clients")
       .update({ status: nextStatus })
       .eq("id", ownedClient.id)
-      .eq("reseller_id", reseller.id);
+      .eq("reseller_id", reseller.id)
+      .select("id, status")
+      .maybeSingle();
 
-    if (error) {
-      return NextResponse.json({ error: "Gagal mengubah status akun client." }, { status: 500 });
+    if (error || !updatedClient || updatedClient.status !== nextStatus) {
+      return NextResponse.json({ error: "Status akun client gagal disimpan." }, { status: 500 });
     }
 
     let invitationsActivated = 0;
