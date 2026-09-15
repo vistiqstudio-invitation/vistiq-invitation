@@ -21,6 +21,11 @@ type Storefront = {
   logo_url: string | null;
   brand_color: string | null;
   starting_price: number | null;
+  wedding_price: number | null;
+  khitan_price: number | null;
+  graduation_price: number | null;
+  aqiqah_price: number | null;
+  birthday_price: number | null;
   whatsapp: string | null;
 };
 
@@ -60,9 +65,26 @@ export default function ResellerPromoPage() {
   }
 
   const brandName = store.brand_name || "Vistiq Invitation";
-  const priceLabel = store.starting_price
-    ? `Mulai dari Rp ${Number(store.starting_price).toLocaleString("id-ID")}`
+  const configuredPrices = [
+    store.wedding_price,
+    store.khitan_price,
+    store.graduation_price,
+    store.aqiqah_price,
+    store.birthday_price,
+  ].filter((price): price is number => Number(price) > 0);
+  const lowestPrice = configuredPrices.length > 0
+    ? Math.min(...configuredPrices.map(Number))
+    : Number(store.starting_price || 0);
+  const priceLabel = lowestPrice
+    ? `Mulai dari Rp ${lowestPrice.toLocaleString("id-ID")}`
     : "Hubungi untuk harga";
+  const categoryPriceLabels = {
+    wedding: store.wedding_price ? `Rp ${Number(store.wedding_price).toLocaleString("id-ID")}` : priceLabel,
+    khitan: store.khitan_price ? `Rp ${Number(store.khitan_price).toLocaleString("id-ID")}` : priceLabel,
+    wisuda: store.graduation_price ? `Rp ${Number(store.graduation_price).toLocaleString("id-ID")}` : priceLabel,
+    akikah: store.aqiqah_price ? `Rp ${Number(store.aqiqah_price).toLocaleString("id-ID")}` : priceLabel,
+    "ulang-tahun": store.birthday_price ? `Rp ${Number(store.birthday_price).toLocaleString("id-ID")}` : priceLabel,
+  };
   const waNumber = normalizeWhatsapp(store.whatsapp);
 
   return (
@@ -110,7 +132,12 @@ export default function ResellerPromoPage() {
         <p className={hero.sectionLabel}>Pilih Tema Undangan</p>
         <p className={hero.sectionSub}>Lihat langsung tampilan setiap tema, lalu order dari tema yang Anda suka.</p>
 
-        <ThemeBrowser waNumber={waNumber} brandName={brandName} priceLabel={priceLabel} />
+        <ThemeBrowser
+          waNumber={waNumber}
+          brandName={brandName}
+          priceLabel={priceLabel}
+          priceLabels={categoryPriceLabels}
+        />
       </div>
     </main>
   );

@@ -218,7 +218,7 @@ function ThemeCard({
   );
 }
 
-function ComingSoonCard({ label, description }: { label: string; description: string }) {
+function ComingSoonCard({ label, description, priceLabel }: { label: string; description: string; priceLabel?: string }) {
   return (
     <div className={`${styles.card} ${styles.cardComingSoon}`}>
       <div className={styles.cardPreview}>
@@ -227,6 +227,11 @@ function ComingSoonCard({ label, description }: { label: string; description: st
       <div className={styles.cardBody}>
         <h2 className={styles.cardTitle}>{label}</h2>
         <p className={styles.cardDesc}>{description}</p>
+        {priceLabel && (
+          <div className={styles.priceRow}>
+            <span className={styles.priceNow}>{priceLabel}</span>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -236,6 +241,7 @@ export default function ThemeBrowser({
   waNumber = "6281371338032",
   brandName = "Vistiq Invitation",
   priceLabel = "Rp 99.000",
+  priceLabels,
   priceWasLabel,
   discountLabel,
   defaultOccasion,
@@ -243,6 +249,7 @@ export default function ThemeBrowser({
   waNumber?: string;
   brandName?: string;
   priceLabel?: string;
+  priceLabels?: Partial<Record<OccasionKey, string>>;
   priceWasLabel?: string;
   discountLabel?: string;
   defaultOccasion?: OccasionKey;
@@ -319,7 +326,7 @@ export default function ThemeBrowser({
               theme={theme}
               demoPath="/demo"
               eyebrowLabel="Indonesian Wedding"
-              priceLabel={priceLabel}
+              priceLabel={priceLabels?.wedding || priceLabel}
               priceWasLabel={priceWasLabel}
               discountLabel={discountLabel}
               waNumber={waNumber}
@@ -335,7 +342,7 @@ export default function ThemeBrowser({
               theme={theme}
               demoPath="/demo-khitan"
               eyebrowLabel="Indonesian Khitan"
-              priceLabel={priceLabel}
+              priceLabel={priceLabels?.khitan || priceLabel}
               priceWasLabel={priceWasLabel}
               discountLabel={discountLabel}
               waNumber={waNumber}
@@ -351,7 +358,7 @@ export default function ThemeBrowser({
               theme={theme}
               demoPath="/demo-akikah"
               eyebrowLabel="Indonesian Aqiqah"
-              priceLabel={priceLabel}
+              priceLabel={priceLabels?.akikah || priceLabel}
               priceWasLabel={priceWasLabel}
               discountLabel={discountLabel}
               waNumber={waNumber}
@@ -367,7 +374,7 @@ export default function ThemeBrowser({
               theme={theme}
               demoPath="/demo-ulang-tahun"
               eyebrowLabel="Kids Birthday"
-              priceLabel={priceLabel}
+              priceLabel={priceLabels?.["ulang-tahun"] || priceLabel}
               priceWasLabel={priceWasLabel}
               discountLabel={discountLabel}
               waNumber={waNumber}
@@ -377,7 +384,10 @@ export default function ThemeBrowser({
         </div>
       ) : (
         <div className={styles.grid}>
-          <ComingSoonCard {...COMING_SOON[occasion]} />
+          <ComingSoonCard
+            {...COMING_SOON[occasion]}
+            priceLabel={priceLabels?.[occasion] || priceLabel}
+          />
         </div>
       )}
     </div>

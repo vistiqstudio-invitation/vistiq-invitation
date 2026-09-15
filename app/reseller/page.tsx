@@ -30,6 +30,11 @@ type Reseller = {
   brand_active?: boolean;
   package?: "reseller" | "reseller_brand";
   starting_price?: number | null;
+  wedding_price?: number | null;
+  khitan_price?: number | null;
+  graduation_price?: number | null;
+  aqiqah_price?: number | null;
+  birthday_price?: number | null;
   brand_expires_at?: string | null;
   custom_domain?: string | null;
   free_subdomain?: string | null;
@@ -51,7 +56,15 @@ export default function ResellerPage() {
   const [clientCount, setClientCount] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  const [brandForm, setBrandForm] = useState({ brand_name: "", brand_color: "#d4af37", starting_price: "" });
+  const [brandForm, setBrandForm] = useState({
+    brand_name: "",
+    brand_color: "#d4af37",
+    wedding_price: "",
+    khitan_price: "",
+    graduation_price: "",
+    aqiqah_price: "",
+    birthday_price: "",
+  });
   const [savingBrand, setSavingBrand] = useState(false);
   const [uploadingLogo, setUploadingLogo] = useState(false);
 
@@ -73,7 +86,11 @@ export default function ResellerPage() {
     setBrandForm({
       brand_name: currentReseller.brand_name || "",
       brand_color: currentReseller.brand_color || "#d4af37",
-      starting_price: currentReseller.starting_price != null ? String(currentReseller.starting_price) : "",
+      wedding_price: currentReseller.wedding_price != null ? String(currentReseller.wedding_price) : "",
+      khitan_price: currentReseller.khitan_price != null ? String(currentReseller.khitan_price) : "",
+      graduation_price: currentReseller.graduation_price != null ? String(currentReseller.graduation_price) : "",
+      aqiqah_price: currentReseller.aqiqah_price != null ? String(currentReseller.aqiqah_price) : "",
+      birthday_price: currentReseller.birthday_price != null ? String(currentReseller.birthday_price) : "",
     });
 
     const { count } = await supabase
@@ -132,7 +149,11 @@ export default function ResellerPage() {
       .update({
         brand_name: brandForm.brand_name || null,
         brand_color: brandForm.brand_color || null,
-        starting_price: brandForm.starting_price ? Number(brandForm.starting_price) : null,
+        wedding_price: brandForm.wedding_price ? Number(brandForm.wedding_price) : null,
+        khitan_price: brandForm.khitan_price ? Number(brandForm.khitan_price) : null,
+        graduation_price: brandForm.graduation_price ? Number(brandForm.graduation_price) : null,
+        aqiqah_price: brandForm.aqiqah_price ? Number(brandForm.aqiqah_price) : null,
+        birthday_price: brandForm.birthday_price ? Number(brandForm.birthday_price) : null,
       })
       .eq("id", reseller.id);
 
@@ -354,24 +375,34 @@ export default function ResellerPage() {
                     style={{ padding: 4, height: 44 }}
                   />
 
-                  {isBrandPackage && (
-                    <input
-                      type="number"
-                      min="0"
-                      step="1000"
-                      placeholder="Harga Mulai Dari, contoh: 59000"
-                      value={brandForm.starting_price}
-                      onChange={(e) => setBrandForm({ ...brandForm, starting_price: e.target.value })}
-                      className={styles.input}
-                    />
-                  )}
+                  {[
+                    ["wedding_price", "Harga Wedding"],
+                    ["khitan_price", "Harga Khitan"],
+                    ["graduation_price", "Harga Wisuda"],
+                    ["aqiqah_price", "Harga Akikah"],
+                    ["birthday_price", "Harga Ulang Tahun"],
+                  ].map(([field, label]) => (
+                    <label key={field}>
+                      <span style={{ display: "block", marginBottom: 6, fontSize: 12, fontWeight: 700, color: "#475569" }}>
+                        {label}
+                      </span>
+                      <input
+                        type="number"
+                        min="0"
+                        step="1000"
+                        placeholder="Contoh: 99000"
+                        value={brandForm[field as keyof typeof brandForm]}
+                        onChange={(e) => setBrandForm({ ...brandForm, [field]: e.target.value })}
+                        className={styles.input}
+                      />
+                    </label>
+                  ))}
                 </div>
 
-                {isBrandPackage && (
-                  <p className={styles.helpText} style={{ marginTop: -8 }}>
-                    Harga ini yang tampil di halaman katalog Anda - bebas Anda tentukan sendiri, tidak terikat harga Vistiq.
-                  </p>
-                )}
+                <p className={styles.helpText} style={{ marginTop: 10 }}>
+                  Setiap harga akan tampil pada kategori yang sesuai di landing page Anda.
+                  {isBrandPackage && " Harga bebas Anda tentukan sendiri dan 100% milik Anda."}
+                </p>
 
                 <div style={{ display: "flex", alignItems: "center", gap: 16, margin: "16px 0" }}>
                   {reseller.logo_url && (
