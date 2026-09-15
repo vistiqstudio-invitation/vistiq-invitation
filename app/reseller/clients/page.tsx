@@ -582,14 +582,21 @@ export default function ResellerClientsPage() {
                           {reseller.package !== "reseller_brand" && (
                             <span className={styles.badge}>{isPaid ? "LUNAS" : "MENUNGGU BAYAR"}</span>
                           )}
+                          <span className={styles.status}>
+                            {client.status === "active"
+                              ? "AKUN CLIENT AKTIF"
+                              : canSelfActivate
+                              ? "AKUN CLIENT BELUM AKTIF"
+                              : "AKUN CLIENT MENUNGGU ADMIN"}
+                          </span>
                           <span className={styles.badge}>
                             {clientInvitations.length === 0
                               ? "BELUM ADA UNDANGAN"
                               : activeInvitation
-                              ? "AKTIF"
+                              ? "UNDANGAN AKTIF"
                               : canSelfActivate
-                              ? "SIAP DIAKTIFKAN"
-                              : "MENUNGGU AKTIVASI ADMIN"}
+                              ? "UNDANGAN SIAP DIAKTIFKAN"
+                              : "UNDANGAN MENUNGGU ADMIN"}
                           </span>
                         </div>
 
