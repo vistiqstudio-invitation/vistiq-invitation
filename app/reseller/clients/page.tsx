@@ -344,7 +344,9 @@ export default function ResellerClientsPage() {
     await fetchData(reseller.id);
     alert(
       target === "client"
-        ? `Status akun client berhasil diubah menjadi ${status === "inactive" ? "Inactive" : "Active"}.`
+        ? status === "inactive"
+          ? "Akun client berhasil dinonaktifkan."
+          : "Akun client dan seluruh undangannya berhasil diaktifkan."
         : "Undangan berhasil diaktifkan.",
     );
   };
