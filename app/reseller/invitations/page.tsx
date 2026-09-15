@@ -565,9 +565,11 @@ export default function ResellerInvitationsPage() {
                   </button>
                 </div>
 
-                <div className={styles.input} style={{ display: "flex", alignItems: "center", color: "#92400e" }}>
-                  Menunggu Aktivasi Admin — setelah data dan pembayaran client siap, hubungi Admin Vistiq melalui WhatsApp.
-                </div>
+                {reseller?.package !== "reseller_brand" && (
+                  <div className={styles.input} style={{ display: "flex", alignItems: "center", color: "#92400e" }}>
+                    Menunggu Aktivasi Admin — setelah data dan pembayaran client siap, hubungi Admin Vistiq melalui WhatsApp.
+                  </div>
+                )}
 
                 {reseller?.package === "reseller_brand" && (
                   <input
@@ -1183,7 +1185,9 @@ export default function ResellerInvitationsPage() {
 
                       <span className={styles.status}>
                         {item.is_active === false
-                          ? canSelfActivate ? "Siap Diaktifkan" : "Menunggu Aktivasi Admin"
+                          ? reseller?.package === "reseller_brand"
+                            ? canSelfActivate ? "Siap Diaktifkan" : "Aktivasi Mandiri Belum Tersedia"
+                            : "Menunggu Aktivasi Admin"
                           : "Aktif"}
                       </span>
 
@@ -1196,7 +1200,7 @@ export default function ResellerInvitationsPage() {
                           >
                             {activatingId === item.id ? "Mengaktifkan..." : "Aktifkan Undangan"}
                           </button>
-                        ) : (
+                        ) : reseller?.package !== "reseller_brand" ? (
                           <a
                             href={adminActivationLink(item, client?.name)}
                             target="_blank"
@@ -1206,7 +1210,7 @@ export default function ResellerInvitationsPage() {
                             <WhatsAppIcon />
                             Hubungi Admin untuk Aktivasi
                           </a>
-                        )
+                        ) : null
                       )}
 
                       <div className={styles.actions}>
