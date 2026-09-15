@@ -49,6 +49,11 @@ type Client = {
   package_name?: string;
   status?: string;
   created_at: string;
+  reseller?: {
+    name: string;
+    brand_name?: string | null;
+    package?: "reseller" | "reseller_brand";
+  } | null;
 };
 
 export default function ClientsPage() {
@@ -78,7 +83,7 @@ export default function ClientsPage() {
   const fetchClients = async () => {
     const { data, error } = await supabase
       .from("clients")
-      .select("*")
+      .select("*, reseller:reseller_id(name, brand_name, package)")
       .order("created_at", { ascending: false });
 
     if (error) {
@@ -360,8 +365,24 @@ export default function ClientsPage() {
               {clients.map((client) => (
                 <div key={client.id} className={styles.row}>
                   <div>
+                    <span style={{ display: "block", fontSize: 11, fontWeight: 700, color: "#64748b", marginBottom: 3 }}>
+                      CLIENT
+                    </span>
                     <strong>{client.name}</strong>
                     <p>{client.whatsapp || "-"}</p>
+                    <p style={{ marginTop: 8, fontSize: 12, color: "#475569" }}>
+                      <strong>
+                        {client.reseller?.package === "reseller_brand"
+                          ? "Mitra Brand"
+                          : client.reseller
+                          ? "Reseller"
+                          : "Pengelola"}
+                        :
+                      </strong>{" "}
+                      {client.reseller
+                        ? client.reseller.brand_name || client.reseller.name
+                        : "Admin Vistiq"}
+                    </p>
                   </div>
 
                   <span className={styles.packageBadge}>
