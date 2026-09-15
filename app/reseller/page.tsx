@@ -44,6 +44,7 @@ type Reseller = {
   brand_expires_at?: string | null;
   custom_domain?: string | null;
   free_subdomain?: string | null;
+  landing_whatsapp?: string | null;
 };
 
 const LOGO_BUCKET = "invitation-assets";
@@ -75,6 +76,7 @@ export default function ResellerPage() {
 
   const [brandForm, setBrandForm] = useState({
     brand_name: "",
+    landing_whatsapp: "",
     brand_color: "#d4af37",
     wedding_price: "",
     khitan_price: "",
@@ -109,6 +111,7 @@ export default function ResellerPage() {
 
     setBrandForm({
       brand_name: currentReseller.brand_name || "",
+      landing_whatsapp: currentReseller.landing_whatsapp || "",
       brand_color: currentReseller.brand_color || "#d4af37",
       wedding_price: currentReseller.wedding_price != null ? String(currentReseller.wedding_price) : "",
       khitan_price: currentReseller.khitan_price != null ? String(currentReseller.khitan_price) : "",
@@ -178,6 +181,7 @@ export default function ResellerPage() {
       .from("resellers")
       .update({
         brand_name: brandForm.brand_name || null,
+        landing_whatsapp: brandForm.landing_whatsapp.trim() || null,
         brand_color: brandForm.brand_color || null,
         wedding_price: brandForm.wedding_price ? Number(brandForm.wedding_price) : null,
         khitan_price: brandForm.khitan_price ? Number(brandForm.khitan_price) : null,
@@ -403,6 +407,23 @@ export default function ResellerPage() {
                     className={styles.input}
                   />
 
+                  <label>
+                    <span style={{ display: "block", marginBottom: 6, fontSize: 12, fontWeight: 700, color: "#475569" }}>
+                      WhatsApp Landing Page
+                    </span>
+                    <input
+                      type="tel"
+                      inputMode="tel"
+                      placeholder="Contoh: 081234567890"
+                      value={brandForm.landing_whatsapp}
+                      onChange={(e) => setBrandForm({ ...brandForm, landing_whatsapp: e.target.value })}
+                      className={styles.input}
+                    />
+                    <span className={styles.helpText}>
+                      Nomor khusus untuk tombol Chat dan Order. Boleh berbeda dari nomor akun.
+                    </span>
+                  </label>
+
                   <input
                     type="color"
                     value={brandForm.brand_color}
@@ -507,7 +528,7 @@ export default function ResellerPage() {
                 <h2 className={styles.sectionTitle}>Landing Page Anda</h2>
                 <p style={{ margin: "0 0 16px", fontSize: 13.5, color: "#64748b" }}>
                   Halaman promosi lengkap dengan nama, logo, dan harga Anda sendiri - tombol
-                  Order akan chat langsung ke WhatsApp Anda, bukan ke Vistiq. Ini juga bisa
+                  Order akan chat ke nomor WhatsApp Landing Page yang Anda tentukan. Ini juga bisa
                   dibuka lewat menu &quot;Landing Page&quot; di samping. Bagikan link ini ke calon client Anda.
                 </p>
 
