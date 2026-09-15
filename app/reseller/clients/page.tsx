@@ -43,7 +43,9 @@ type Reseller = {
   logo_url?: string | null;
   brand_color?: string | null;
   brand_active?: boolean;
+  brand_expires_at?: string | null;
   package?: "reseller" | "reseller_brand";
+  status?: string;
 };
 
 type Client = {
@@ -110,6 +112,7 @@ export default function ResellerClientsPage() {
   const [addingClient, setAddingClient] = useState(false);
   const [newClientCredentials, setNewClientCredentials] = useState<NewClientInfo | null>(null);
   const [resettingId, setResettingId] = useState<string | null>(null);
+  const [activatingKey, setActivatingKey] = useState<string | null>(null);
 
   const fetchData = async (resellerId: string) => {
     const { data: clientsData } = await supabase
@@ -257,7 +260,7 @@ export default function ResellerClientsPage() {
       return `Halo ${newClientCredentials.name}, pesanan undangan digital Anda sudah dibuat.\n\nTotal pembayaran: Rp ${newClientCredentials.salePrice.toLocaleString("id-ID")}\nBayar aman melalui Midtrans di link berikut:\n${newClientCredentials.paymentUrl}\n\nSebelum pembayaran, reseller dapat mengedit dan memperlihatkan preview draft undangan kepada Anda. Akun dashboard client dan link undangan publik baru dapat digunakan setelah pembayaran diverifikasi dan diaktifkan oleh Admin Vistiq.\n\nAkun dashboard yang sudah disiapkan:\nLink: ${window.location.origin}/login\nEmail: ${newClientCredentials.email}\nPassword: ${newClientCredentials.password}\n\nData yang perlu disiapkan:\n${checklist}\n\nTerima kasih!`;
     }
 
-    return `Halo ${newClientCredentials.name}, akun dashboard undangan Anda di ${dashboardBrand} sudah disiapkan.\n\nLink: ${window.location.origin}/login\nEmail: ${newClientCredentials.email}\nPassword: ${newClientCredentials.password}\n\nSebelum pembayaran, reseller dapat mengedit dan memperlihatkan preview draft undangan kepada Anda. Akun dashboard client dan link undangan publik baru dapat digunakan setelah pembayaran diverifikasi dan diaktifkan oleh Admin Vistiq.\n\nMohon siapkan data berikut:\n${checklist}\n\nKalau ada pertanyaan, jangan sungkan hubungi kami ya. Terima kasih!`;
+    return `Halo ${newClientCredentials.name}, akun dashboard undangan Anda di ${dashboardBrand} sudah disiapkan.\n\nLink: ${window.location.origin}/login\nEmail: ${newClientCredentials.email}\nPassword: ${newClientCredentials.password}\n\nAkun client dan link undangan akan dapat digunakan setelah diaktifkan oleh reseller brand Anda.\n\nMohon siapkan data berikut:\n${checklist}\n\nKalau ada pertanyaan, jangan sungkan hubungi kami ya. Terima kasih!`;
   };
 
   const copyClientCredentials = async () => {
@@ -315,6 +318,29 @@ export default function ResellerClientsPage() {
     });
   };
 
+  const activateOwnedItem = async (target: "client" | "invitation", id: string | number) => {
+    if (!reseller) return;
+
+    const key = `${target}:${id}`;
+    setActivatingKey(key);
+
+    const response = await fetch("/api/reseller/activate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ target, id }),
+    });
+    const result = await response.json();
+    setActivatingKey(null);
+
+    if (!response.ok) {
+      alert(result.error || "Aktivasi gagal.");
+      return;
+    }
+
+    await fetchData(reseller.id);
+    alert(target === "client" ? "Akun client berhasil diaktifkan." : "Undangan berhasil diaktifkan.");
+  };
+
   const invitationLabel = (item: Invitation) =>
     item.category === "aqiqah" || item.category === "khitan"
       ? item.baby_name || "-"
@@ -325,6 +351,10 @@ export default function ResellerClientsPage() {
     router.push("/login");
   };
 
+  const brandNotExpired =
+    !reseller?.brand_expires_at || new Date(reseller.brand_expires_at) > new Date();
+  const canSelfActivate = reseller?.package === "reseller_brand"
+    && reseller?.status === "active" && Boolean(reseller?.brand_active) && brandNotExpired;
   const brandingEnabled = reseller?.package === "reseller" || Boolean(reseller?.brand_active);
   const brandName = brandingEnabled && reseller?.brand_name ? reseller.brand_name : null;
   const brandStyle = brandingEnabled && reseller?.brand_color
@@ -373,7 +403,7 @@ export default function ResellerClientsPage() {
               <h2 className={styles.sectionTitle}>Tambah Client Baru</h2>
               <p style={{ marginTop: -8, marginBottom: 16, fontSize: 13, opacity: 0.75 }}>
                 {reseller.package === "reseller_brand"
-                  ? "Email dipakai untuk membuat akun login dashboard client secara otomatis. Client dan undangan tetap menunggu aktivasi admin Vistiq."
+                  ? "Email dipakai untuk membuat akun login dashboard client secara otomatis. Anda dapat mengaktifkan akun client dan undangannya sendiri dari daftar di bawah."
                   : "Setelah disimpan, sistem otomatis membuat tagihan Midtrans. Client dan undangan menunggu pembayaran serta aktivasi admin Vistiq."}
               </p>
 
@@ -408,10 +438,12 @@ export default function ResellerClientsPage() {
                         Kirim ke WA Otomatis
                       </a>
                     )}
-                    <a href={adminActivationLinkForNewClient()} target="_blank" rel="noreferrer" className={styles.adminActivationButton}>
-                      <WhatsAppIcon />
-                      Hubungi Admin untuk Aktivasi
-                    </a>
+                    {reseller.package !== "reseller_brand" && (
+                      <a href={adminActivationLinkForNewClient()} target="_blank" rel="noreferrer" className={styles.adminActivationButton}>
+                        <WhatsAppIcon />
+                        Hubungi Admin untuk Aktivasi
+                      </a>
+                    )}
                   </div>
                 </div>
               )}
@@ -532,7 +564,7 @@ export default function ResellerClientsPage() {
                             </>
                           )}
 
-                          {!activeInvitation && (
+                          {!activeInvitation && !canSelfActivate && (
                             <a
                               href={adminActivationLink(client, invitationForActivation)}
                               target="_blank"
@@ -555,6 +587,8 @@ export default function ResellerClientsPage() {
                               ? "BELUM ADA UNDANGAN"
                               : activeInvitation
                               ? "AKTIF"
+                              : canSelfActivate
+                              ? "SIAP DIAKTIFKAN"
                               : "MENUNGGU AKTIVASI ADMIN"}
                           </span>
                         </div>
@@ -562,15 +596,34 @@ export default function ResellerClientsPage() {
                         <p className={styles.date}>{new Date(client.created_at).toLocaleDateString("id-ID")}</p>
 
                         <div className={styles.clientActions}>
-                          {clientInvitations.map((invitation) => (
-                            <Link
-                              key={invitation.id}
-                              href={`/reseller/invitations/${invitation.id}`}
-                              className={styles.button}
-                              style={{ fontSize: 11, padding: "6px 10px" }}
+                          {canSelfActivate && client.status !== "active" && (
+                            <button
+                              onClick={() => activateOwnedItem("client", client.id)}
+                              disabled={activatingKey === `client:${client.id}`}
+                              className={styles.miniButtonGreen}
                             >
-                              Edit Undangan
-                            </Link>
+                              {activatingKey === `client:${client.id}` ? "Mengaktifkan..." : "Aktifkan Akun Client"}
+                            </button>
+                          )}
+                          {clientInvitations.map((invitation) => (
+                            <span key={invitation.id} style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                              <Link
+                                href={`/reseller/invitations/${invitation.id}`}
+                                className={styles.button}
+                                style={{ fontSize: 11, padding: "6px 10px" }}
+                              >
+                                Edit Undangan
+                              </Link>
+                              {canSelfActivate && !invitation.is_active && (
+                                <button
+                                  onClick={() => activateOwnedItem("invitation", invitation.id)}
+                                  disabled={activatingKey === `invitation:${invitation.id}`}
+                                  className={styles.miniButtonGreen}
+                                >
+                                  {activatingKey === `invitation:${invitation.id}` ? "Mengaktifkan..." : "Aktifkan Undangan"}
+                                </button>
+                              )}
+                            </span>
                           ))}
                           {client.user_id ? (
                             <button
