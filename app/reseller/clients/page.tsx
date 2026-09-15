@@ -318,7 +318,11 @@ export default function ResellerClientsPage() {
     });
   };
 
-  const activateOwnedItem = async (target: "client" | "invitation", id: string | number) => {
+  const activateOwnedItem = async (
+    target: "client" | "invitation",
+    id: string | number,
+    status?: "active" | "inactive",
+  ) => {
     if (!reseller) return;
 
     const key = `${target}:${id}`;
@@ -327,7 +331,7 @@ export default function ResellerClientsPage() {
     const response = await fetch("/api/reseller/activate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ target, id }),
+      body: JSON.stringify({ target, id, status }),
     });
     const result = await response.json();
     setActivatingKey(null);
@@ -338,7 +342,11 @@ export default function ResellerClientsPage() {
     }
 
     await fetchData(reseller.id);
-    alert(target === "client" ? "Akun client berhasil diaktifkan." : "Undangan berhasil diaktifkan.");
+    alert(
+      target === "client"
+        ? `Status akun client berhasil diubah menjadi ${status === "inactive" ? "Inactive" : "Active"}.`
+        : "Undangan berhasil diaktifkan.",
+    );
   };
 
   const invitationLabel = (item: Invitation) =>
@@ -582,13 +590,30 @@ export default function ResellerClientsPage() {
                           {reseller.package !== "reseller_brand" && (
                             <span className={styles.badge}>{isPaid ? "LUNAS" : "MENUNGGU BAYAR"}</span>
                           )}
-                          <span className={styles.status}>
-                            {client.status === "active"
-                              ? "AKUN CLIENT AKTIF"
-                              : canSelfActivate
-                              ? "AKUN CLIENT BELUM AKTIF"
-                              : "AKUN CLIENT MENUNGGU ADMIN"}
-                          </span>
+                          {canSelfActivate ? (
+                            <select
+                              value={client.status === "active" ? "active" : "inactive"}
+                              onChange={(e) =>
+                                activateOwnedItem(
+                                  "client",
+                                  client.id,
+                                  e.target.value as "active" | "inactive",
+                                )
+                              }
+                              disabled={activatingKey === `client:${client.id}`}
+                              className={styles.statusSelect}
+                              aria-label={`Status akun client ${client.name}`}
+                            >
+                              <option value="active">Active</option>
+                              <option value="inactive">Inactive</option>
+                            </select>
+                          ) : (
+                            <span className={styles.status}>
+                              {client.status === "active"
+                                ? "AKUN CLIENT AKTIF"
+                                : "AKUN CLIENT MENUNGGU ADMIN"}
+                            </span>
+                          )}
                           <span className={styles.badge}>
                             {clientInvitations.length === 0
                               ? "BELUM ADA UNDANGAN"
@@ -603,15 +628,6 @@ export default function ResellerClientsPage() {
                         <p className={styles.date}>{new Date(client.created_at).toLocaleDateString("id-ID")}</p>
 
                         <div className={styles.clientActions}>
-                          {canSelfActivate && client.status !== "active" && (
-                            <button
-                              onClick={() => activateOwnedItem("client", client.id)}
-                              disabled={activatingKey === `client:${client.id}`}
-                              className={styles.miniButtonGreen}
-                            >
-                              {activatingKey === `client:${client.id}` ? "Mengaktifkan..." : "Aktifkan Akun Client"}
-                            </button>
-                          )}
                           {clientInvitations.map((invitation) => (
                             <span key={invitation.id} style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
                               <Link
