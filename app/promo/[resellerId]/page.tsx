@@ -26,6 +26,12 @@ type Storefront = {
   graduation_price: number | null;
   aqiqah_price: number | null;
   birthday_price: number | null;
+  wedding_premium_price: number | null;
+  wedding_motion_price: number | null;
+  wedding_luxury_art_price: number | null;
+  wedding_regular_price: number | null;
+  wedding_adat_price: number | null;
+  wedding_no_photo_price: number | null;
   whatsapp: string | null;
 };
 
@@ -71,6 +77,12 @@ export default function ResellerPromoPage() {
     store.graduation_price,
     store.aqiqah_price,
     store.birthday_price,
+    store.wedding_premium_price,
+    store.wedding_motion_price,
+    store.wedding_luxury_art_price,
+    store.wedding_regular_price,
+    store.wedding_adat_price,
+    store.wedding_no_photo_price,
   ].filter((price): price is number => Number(price) > 0);
   const lowestPrice = configuredPrices.length > 0
     ? Math.min(...configuredPrices.map(Number))
@@ -84,6 +96,14 @@ export default function ResellerPromoPage() {
     wisuda: store.graduation_price ? `Rp ${Number(store.graduation_price).toLocaleString("id-ID")}` : priceLabel,
     akikah: store.aqiqah_price ? `Rp ${Number(store.aqiqah_price).toLocaleString("id-ID")}` : priceLabel,
     "ulang-tahun": store.birthday_price ? `Rp ${Number(store.birthday_price).toLocaleString("id-ID")}` : priceLabel,
+  };
+  const weddingPriceLabels = {
+    premium: store.wedding_premium_price ? `Rp ${Number(store.wedding_premium_price).toLocaleString("id-ID")}` : categoryPriceLabels.wedding,
+    "premium-3d-motion": store.wedding_motion_price ? `Rp ${Number(store.wedding_motion_price).toLocaleString("id-ID")}` : categoryPriceLabels.wedding,
+    "luxury-art": store.wedding_luxury_art_price ? `Rp ${Number(store.wedding_luxury_art_price).toLocaleString("id-ID")}` : categoryPriceLabels.wedding,
+    reguler: store.wedding_regular_price ? `Rp ${Number(store.wedding_regular_price).toLocaleString("id-ID")}` : categoryPriceLabels.wedding,
+    adat: store.wedding_adat_price ? `Rp ${Number(store.wedding_adat_price).toLocaleString("id-ID")}` : categoryPriceLabels.wedding,
+    "tanpa-foto": store.wedding_no_photo_price ? `Rp ${Number(store.wedding_no_photo_price).toLocaleString("id-ID")}` : categoryPriceLabels.wedding,
   };
   const waNumber = normalizeWhatsapp(store.whatsapp);
 
@@ -137,6 +157,7 @@ export default function ResellerPromoPage() {
           brandName={brandName}
           priceLabel={priceLabel}
           priceLabels={categoryPriceLabels}
+          weddingPriceLabels={weddingPriceLabels}
         />
       </div>
     </main>

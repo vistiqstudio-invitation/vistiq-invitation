@@ -44,6 +44,7 @@ const WEDDING_SUBFILTERS = [
 ] as const;
 
 type WeddingSubKey = (typeof WEDDING_SUBFILTERS)[number]["key"];
+type WeddingPriceKey = Exclude<WeddingSubKey, "semua">;
 
 const COMING_SOON: Record<string, { label: string; description: string }> = {
   wisuda: { label: "Wisuda", description: "Tema undangan wisuda digital - segera hadir." },
@@ -242,6 +243,7 @@ export default function ThemeBrowser({
   brandName = "Vistiq Invitation",
   priceLabel = "Rp 99.000",
   priceLabels,
+  weddingPriceLabels,
   priceWasLabel,
   discountLabel,
   defaultOccasion,
@@ -250,6 +252,7 @@ export default function ThemeBrowser({
   brandName?: string;
   priceLabel?: string;
   priceLabels?: Partial<Record<OccasionKey, string>>;
+  weddingPriceLabels?: Partial<Record<WeddingPriceKey, string>>;
   priceWasLabel?: string;
   discountLabel?: string;
   defaultOccasion?: OccasionKey;
@@ -274,6 +277,23 @@ export default function ThemeBrowser({
 
     return themeList.filter((theme) => theme.tags?.includes(weddingSub));
   }, [weddingSub]);
+
+  const weddingPriceForTheme = (theme: ThemeMeta) => {
+    const tags = theme.tags || [];
+    const category: WeddingPriceKey = tags.includes("premium-3d-motion")
+      ? "premium-3d-motion"
+      : tags.includes("luxury-art")
+      ? "luxury-art"
+      : tags.includes("tanpa-foto")
+      ? "tanpa-foto"
+      : tags.includes("adat")
+      ? "adat"
+      : tags.includes("premium")
+      ? "premium"
+      : "reguler";
+
+    return weddingPriceLabels?.[category] || priceLabels?.wedding || priceLabel;
+  };
 
   return (
     <div>
@@ -326,7 +346,7 @@ export default function ThemeBrowser({
               theme={theme}
               demoPath="/demo"
               eyebrowLabel="Indonesian Wedding"
-              priceLabel={priceLabels?.wedding || priceLabel}
+              priceLabel={weddingPriceForTheme(theme)}
               priceWasLabel={priceWasLabel}
               discountLabel={discountLabel}
               waNumber={waNumber}

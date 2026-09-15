@@ -35,6 +35,12 @@ type Reseller = {
   graduation_price?: number | null;
   aqiqah_price?: number | null;
   birthday_price?: number | null;
+  wedding_premium_price?: number | null;
+  wedding_motion_price?: number | null;
+  wedding_luxury_art_price?: number | null;
+  wedding_regular_price?: number | null;
+  wedding_adat_price?: number | null;
+  wedding_no_photo_price?: number | null;
   brand_expires_at?: string | null;
   custom_domain?: string | null;
   free_subdomain?: string | null;
@@ -46,6 +52,17 @@ const PACKAGE_LABELS: Record<string, string> = {
   reseller: "Reseller",
   reseller_brand: "Mitra Brand (White Label)",
 };
+
+const WEDDING_PRICE_OPTIONS = [
+  { field: "wedding_premium_price", label: "Tema Premium" },
+  { field: "wedding_motion_price", label: "Tema Premium 3D Motion" },
+  { field: "wedding_luxury_art_price", label: "Luxury Art" },
+  { field: "wedding_regular_price", label: "Tema Reguler" },
+  { field: "wedding_adat_price", label: "Tema Adat" },
+  { field: "wedding_no_photo_price", label: "Tanpa Foto" },
+] as const;
+
+type WeddingPriceField = (typeof WEDDING_PRICE_OPTIONS)[number]["field"];
 
 export default function ResellerPage() {
   const router = useRouter();
@@ -64,7 +81,14 @@ export default function ResellerPage() {
     graduation_price: "",
     aqiqah_price: "",
     birthday_price: "",
+    wedding_premium_price: "",
+    wedding_motion_price: "",
+    wedding_luxury_art_price: "",
+    wedding_regular_price: "",
+    wedding_adat_price: "",
+    wedding_no_photo_price: "",
   });
+  const [selectedWeddingPrice, setSelectedWeddingPrice] = useState<WeddingPriceField>("wedding_premium_price");
   const [savingBrand, setSavingBrand] = useState(false);
   const [uploadingLogo, setUploadingLogo] = useState(false);
 
@@ -91,6 +115,12 @@ export default function ResellerPage() {
       graduation_price: currentReseller.graduation_price != null ? String(currentReseller.graduation_price) : "",
       aqiqah_price: currentReseller.aqiqah_price != null ? String(currentReseller.aqiqah_price) : "",
       birthday_price: currentReseller.birthday_price != null ? String(currentReseller.birthday_price) : "",
+      wedding_premium_price: currentReseller.wedding_premium_price != null ? String(currentReseller.wedding_premium_price) : "",
+      wedding_motion_price: currentReseller.wedding_motion_price != null ? String(currentReseller.wedding_motion_price) : "",
+      wedding_luxury_art_price: currentReseller.wedding_luxury_art_price != null ? String(currentReseller.wedding_luxury_art_price) : "",
+      wedding_regular_price: currentReseller.wedding_regular_price != null ? String(currentReseller.wedding_regular_price) : "",
+      wedding_adat_price: currentReseller.wedding_adat_price != null ? String(currentReseller.wedding_adat_price) : "",
+      wedding_no_photo_price: currentReseller.wedding_no_photo_price != null ? String(currentReseller.wedding_no_photo_price) : "",
     });
 
     const { count } = await supabase
@@ -154,6 +184,12 @@ export default function ResellerPage() {
         graduation_price: brandForm.graduation_price ? Number(brandForm.graduation_price) : null,
         aqiqah_price: brandForm.aqiqah_price ? Number(brandForm.aqiqah_price) : null,
         birthday_price: brandForm.birthday_price ? Number(brandForm.birthday_price) : null,
+        wedding_premium_price: brandForm.wedding_premium_price ? Number(brandForm.wedding_premium_price) : null,
+        wedding_motion_price: brandForm.wedding_motion_price ? Number(brandForm.wedding_motion_price) : null,
+        wedding_luxury_art_price: brandForm.wedding_luxury_art_price ? Number(brandForm.wedding_luxury_art_price) : null,
+        wedding_regular_price: brandForm.wedding_regular_price ? Number(brandForm.wedding_regular_price) : null,
+        wedding_adat_price: brandForm.wedding_adat_price ? Number(brandForm.wedding_adat_price) : null,
+        wedding_no_photo_price: brandForm.wedding_no_photo_price ? Number(brandForm.wedding_no_photo_price) : null,
       })
       .eq("id", reseller.id);
 
@@ -375,8 +411,32 @@ export default function ResellerPage() {
                     style={{ padding: 4, height: 44 }}
                   />
 
+                  <label>
+                    <span style={{ display: "block", marginBottom: 6, fontSize: 12, fontWeight: 700, color: "#475569" }}>
+                      Harga Wedding
+                    </span>
+                    <select
+                      value={selectedWeddingPrice}
+                      onChange={(e) => setSelectedWeddingPrice(e.target.value as WeddingPriceField)}
+                      className={styles.input}
+                      style={{ marginBottom: 8 }}
+                    >
+                      {WEDDING_PRICE_OPTIONS.map((option) => (
+                        <option key={option.field} value={option.field}>{option.label}</option>
+                      ))}
+                    </select>
+                    <input
+                      type="number"
+                      min="0"
+                      step="1000"
+                      placeholder="Contoh: 99000"
+                      value={brandForm[selectedWeddingPrice]}
+                      onChange={(e) => setBrandForm({ ...brandForm, [selectedWeddingPrice]: e.target.value })}
+                      className={styles.input}
+                    />
+                  </label>
+
                   {[
-                    ["wedding_price", "Harga Wedding"],
                     ["khitan_price", "Harga Khitan"],
                     ["graduation_price", "Harga Wisuda"],
                     ["aqiqah_price", "Harga Akikah"],
