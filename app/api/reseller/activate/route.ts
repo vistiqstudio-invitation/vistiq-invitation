@@ -76,7 +76,7 @@ export async function POST(request: Request) {
     const nextStatus = body.status ?? "active";
     const { data: ownedClient } = await supabaseAdmin
       .from("clients")
-      .select("id")
+      .select("id, status")
       .eq("id", id)
       .eq("reseller_id", reseller.id)
       .maybeSingle();
@@ -92,10 +92,46 @@ export async function POST(request: Request) {
       .eq("reseller_id", reseller.id);
 
     if (error) {
-      return NextResponse.json({ error: "Gagal mengaktifkan akun client." }, { status: 500 });
+      return NextResponse.json({ error: "Gagal mengubah status akun client." }, { status: 500 });
     }
 
-    return NextResponse.json({ success: true, target, status: nextStatus });
+    let invitationsActivated = 0;
+    if (nextStatus === "active") {
+      const { data: activatedInvitations, error: invitationError } = await supabaseAdmin
+        .from("invitations")
+        .update({ is_active: true })
+        .eq("client_id", ownedClient.id)
+        .select("id");
+
+      if (invitationError) {
+        const { error: rollbackError } = await supabaseAdmin
+          .from("clients")
+          .update({ status: ownedClient.status })
+          .eq("id", ownedClient.id)
+          .eq("reseller_id", reseller.id);
+
+        if (rollbackError) {
+          console.error("reseller client activation rollback failed", {
+            clientId: ownedClient.id,
+            error: rollbackError.message,
+          });
+        }
+
+        return NextResponse.json(
+          { error: "Akun client belum diaktifkan karena undangannya gagal diaktifkan." },
+          { status: 500 },
+        );
+      }
+
+      invitationsActivated = activatedInvitations?.length ?? 0;
+    }
+
+    return NextResponse.json({
+      success: true,
+      target,
+      status: nextStatus,
+      invitationsActivated,
+    });
   }
 
   const invitationId = Number(id);
