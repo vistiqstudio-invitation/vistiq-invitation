@@ -663,11 +663,10 @@ export default function ResellerClientsPage() {
 
                         <div className={styles.clientActions}>
                           {clientInvitations.map((invitation) => (
-                            <span key={invitation.id} style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                            <span key={invitation.id} className={styles.clientActionGroup}>
                               <Link
                                 href={`/reseller/invitations/${invitation.id}`}
-                                className={styles.button}
-                                style={{ fontSize: 11, padding: "6px 10px" }}
+                                className={styles.clientActionButton}
                               >
                                 Edit Undangan
                               </Link>
@@ -675,7 +674,7 @@ export default function ResellerClientsPage() {
                                 <button
                                   onClick={() => activateOwnedItem("invitation", invitation.id)}
                                   disabled={activatingKey === `invitation:${invitation.id}`}
-                                  className={styles.miniButtonGreen}
+                                  className={styles.clientActionButtonGreen}
                                 >
                                   {activatingKey === `invitation:${invitation.id}` ? "Mengaktifkan..." : "Aktifkan Undangan"}
                                 </button>
@@ -686,8 +685,7 @@ export default function ResellerClientsPage() {
                             <button
                               onClick={() => resetClientPassword(client)}
                               disabled={resettingId === client.id}
-                              className={styles.button}
-                              style={{ fontSize: 11, padding: "6px 10px" }}
+                              className={styles.clientActionButton}
                             >
                               {resettingId === client.id ? "Membuat..." : "Reset Password"}
                             </button>
