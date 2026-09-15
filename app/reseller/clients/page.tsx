@@ -113,6 +113,7 @@ export default function ResellerClientsPage() {
   const [newClientCredentials, setNewClientCredentials] = useState<NewClientInfo | null>(null);
   const [resettingId, setResettingId] = useState<string | null>(null);
   const [activatingKey, setActivatingKey] = useState<string | null>(null);
+  const [statusNotice, setStatusNotice] = useState("");
 
   const fetchData = async (resellerId: string) => {
     const { data: clientsData } = await supabase
@@ -326,6 +327,32 @@ export default function ResellerClientsPage() {
     if (!reseller) return;
 
     const key = `${target}:${id}`;
+    setStatusNotice("");
+
+    if (target === "client" && status) {
+      setClients((current) =>
+        current.map((client) =>
+          client.id === String(id) ? { ...client, status } : client,
+        ),
+      );
+
+      if (status === "active") {
+        setInvitations((current) =>
+          current.map((invitation) =>
+            invitation.client_id === String(id)
+              ? { ...invitation, is_active: true }
+              : invitation,
+          ),
+        );
+      }
+    } else if (target === "invitation") {
+      setInvitations((current) =>
+        current.map((invitation) =>
+          invitation.id === Number(id) ? { ...invitation, is_active: true } : invitation,
+        ),
+      );
+    }
+
     setActivatingKey(key);
 
     const response = await fetch("/api/reseller/activate", {
@@ -337,15 +364,15 @@ export default function ResellerClientsPage() {
     setActivatingKey(null);
 
     if (!response.ok) {
-      alert(result.error || "Aktivasi gagal.");
+      await fetchData(reseller.id);
+      alert(result.error || "Perubahan status gagal disimpan.");
       return;
     }
 
-    await fetchData(reseller.id);
-    alert(
+    setStatusNotice(
       target === "client"
         ? status === "inactive"
-          ? "Akun client berhasil dinonaktifkan."
+          ? "Status akun client berhasil diubah menjadi Inactive."
           : "Akun client dan seluruh undangannya berhasil diaktifkan."
         : "Undangan berhasil diaktifkan.",
     );
@@ -527,6 +554,11 @@ export default function ResellerClientsPage() {
 
             <section className={styles.tableWrap}>
               <h2 className={styles.sectionTitle}>Client Saya</h2>
+              {statusNotice && (
+                <p className={styles.status} style={{ marginBottom: 12 }}>
+                  {statusNotice}
+                </p>
+              )}
 
               {clients.length === 0 ? (
                 <p>Belum ada client.</p>
