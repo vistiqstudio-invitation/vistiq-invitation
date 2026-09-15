@@ -488,8 +488,30 @@ export async function getInvitationBySlug(
 
   if (error || !data) return null;
 
-  if (data.category === "aqiqah") return normalizeAqiqahInvitation(data);
-  if (data.category === "khitan") return normalizeKhitanInvitation(data);
-  if (data.category === "birthday") return normalizeBirthdayInvitation(data);
-  return normalizeInvitation(data);
+  // Public invitation requests can read the invitation itself, but RLS may
+  // hide the nested reseller row. Read only the approved public branding
+  // fields through a security-definer RPC so published and preview pages
+  // resolve the same reseller/Mitra Brand identity.
+  const { data: publicBrand } = await supabase
+    .rpc("get_invitation_brand_by_slug", { p_slug: slug })
+    .maybeSingle();
+
+  const invitation =
+    data.category === "aqiqah"
+      ? normalizeAqiqahInvitation(data)
+      : data.category === "khitan"
+      ? normalizeKhitanInvitation(data)
+      : data.category === "birthday"
+      ? normalizeBirthdayInvitation(data)
+      : normalizeInvitation(data);
+
+  if (publicBrand?.brand_name) {
+    invitation.brand = {
+      name: publicBrand.brand_name,
+      logoUrl: publicBrand.logo_url || null,
+      color: publicBrand.brand_color || null,
+    };
+  }
+
+  return invitation;
 }
