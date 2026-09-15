@@ -69,7 +69,7 @@ export async function POST(request: Request) {
     const context = await currentReseller();
     if (!context) return NextResponse.json({ error: "Tidak diizinkan." }, { status: 403 });
     if (!packageIsActive(context.reseller)) {
-      return NextResponse.json({ error: "Custom domain hanya tersedia untuk paket Reseller Brand yang aktif." }, { status: 403 });
+      return NextResponse.json({ error: "Custom domain hanya tersedia untuk paket Mitra Brand yang aktif." }, { status: 403 });
     }
 
     const body = await request.json();

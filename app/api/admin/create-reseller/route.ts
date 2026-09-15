@@ -42,7 +42,7 @@ export async function POST(request: Request) {
   const whatsapp = (body.whatsapp || "").trim();
   const pkg = body.package === "reseller_brand" ? "reseller_brand" : "reseller";
   // Package rules are fixed: standard reseller keeps 80% and Vistiq takes
-  // a 20% platform fee. Reseller Brand keeps 100%. Do not trust a stale
+  // a 20% platform fee. Mitra Brand keeps 100%. Do not trust a stale
   // browser value for this field.
   const commission_percent = pkg === "reseller_brand" ? 100 : 80;
   // Accounts created directly by Vistiq Owner are already approved. Ignore

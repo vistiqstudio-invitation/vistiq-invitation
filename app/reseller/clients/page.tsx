@@ -260,7 +260,7 @@ export default function ResellerClientsPage() {
       return `Halo ${newClientCredentials.name}, pesanan undangan digital Anda sudah dibuat.\n\nTotal pembayaran: Rp ${newClientCredentials.salePrice.toLocaleString("id-ID")}\nBayar aman melalui Midtrans di link berikut:\n${newClientCredentials.paymentUrl}\n\nSebelum pembayaran, reseller dapat mengedit dan memperlihatkan preview draft undangan kepada Anda. Akun dashboard client dan link undangan publik baru dapat digunakan setelah pembayaran diverifikasi dan diaktifkan oleh Admin Vistiq.\n\nAkun dashboard yang sudah disiapkan:\nLink: ${window.location.origin}/login\nEmail: ${newClientCredentials.email}\nPassword: ${newClientCredentials.password}\n\nData yang perlu disiapkan:\n${checklist}\n\nTerima kasih!`;
     }
 
-    return `Halo ${newClientCredentials.name}, akun dashboard undangan Anda di ${dashboardBrand} sudah disiapkan.\n\nLink: ${window.location.origin}/login\nEmail: ${newClientCredentials.email}\nPassword: ${newClientCredentials.password}\n\nAkun client dan link undangan akan dapat digunakan setelah diaktifkan oleh reseller brand Anda.\n\nMohon siapkan data berikut:\n${checklist}\n\nKalau ada pertanyaan, jangan sungkan hubungi kami ya. Terima kasih!`;
+    return `Halo ${newClientCredentials.name}, akun dashboard undangan Anda di ${dashboardBrand} sudah disiapkan.\n\nLink: ${window.location.origin}/login\nEmail: ${newClientCredentials.email}\nPassword: ${newClientCredentials.password}\n\nAkun client dan link undangan akan dapat digunakan setelah diaktifkan oleh Mitra Brand Anda.\n\nMohon siapkan data berikut:\n${checklist}\n\nKalau ada pertanyaan, jangan sungkan hubungi kami ya. Terima kasih!`;
   };
 
   const copyClientCredentials = async () => {
@@ -365,7 +365,7 @@ export default function ResellerClientsPage() {
     <main className={styles.page} style={brandStyle}>
       <DashboardSidebar
         brandTop={brandName ? brandName.toUpperCase() : "VISTIQ"}
-        brandBottom={reseller?.package === "reseller_brand" ? "Reseller Brand" : "Reseller"}
+        brandBottom={reseller?.package === "reseller_brand" ? "Mitra Brand" : "Reseller"}
         logoUrl={brandingEnabled ? reseller?.logo_url : null}
         accentColor={brandingEnabled ? reseller?.brand_color : null}
         items={getResellerNavItems(reseller?.package, reseller?.id)}

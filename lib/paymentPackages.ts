@@ -13,10 +13,10 @@ export const PAYMENT_PACKAGES = {
   },
   "reseller-brand": {
     code: "RB",
-    name: "Paket Reseller Brand",
+    name: "Paket Mitra Brand",
     description: "Dashboard reseller white label, update tema & konten promosi tiap bulan",
     // Rp59.000/bulan, ditagih manual (lihat provisionPaidOrder.ts untuk
-    // brand_expires_at 1 bulan dari pembelian). 10 reseller brand pertama
+    // brand_expires_at 1 bulan dari pembelian). 10 Mitra Brand pertama
     // (sebelum harga ini berlaku) tetap lifetime - brand_expires_at null.
     amount: 59000,
   },

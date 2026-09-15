@@ -460,7 +460,7 @@ export default function ClientEditPage() {
 
     setInvitationId(inserted.id);
     alert(
-      "Undangan berhasil dibuat dan dapat dilengkapi. Aktivasi dilakukan oleh admin Vistiq atau pengelola Reseller Brand Anda setelah pembayaran dikonfirmasi."
+      "Undangan berhasil dibuat dan dapat dilengkapi. Aktivasi dilakukan oleh admin Vistiq atau pengelola Mitra Brand Anda setelah pembayaran dikonfirmasi."
     );
   };
 

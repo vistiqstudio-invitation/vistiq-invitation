@@ -21,7 +21,7 @@ export default function JoinAffiliatePage() {
     <Link href="/" style={s.back}>← Kembali ke Vistiq Invitation</Link>
     <span style={s.badge}>PROGRAM AFFILIATE · GRATIS</span>
     <h1 style={s.title}>Dapatkan Komisi 10%</h1>
-    <p style={s.lead}>Bagikan link referral Anda dan dapatkan komisi dari setiap pembelian paket Client, Reseller, maupun Reseller Brand.</p>
+    <p style={s.lead}>Bagikan link referral Anda dan dapatkan komisi dari setiap pembelian paket Client, Reseller, maupun Mitra Brand.</p>
     <div style={s.info}><b>Komisi 10%</b><span>Ditahan 7 hari</span><span>Minimal pencairan Rp100.000</span></div>
     {done ? <div style={s.success}><h2>Pendaftaran berhasil 🎉</h2><p>Data Anda sedang diperiksa Admin. Informasi login akan dikirim setelah pendaftaran disetujui.</p></div> :
       <form onSubmit={submit} style={s.form}>

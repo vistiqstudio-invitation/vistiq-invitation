@@ -1,6 +1,6 @@
 // Licensed background-music library (AI-generated via Suno for vistiqstudio,
 // see the 2026-07-26 copyright review) - browsable/downloadable from
-// /admin/musik and /reseller/musik (Reseller Brand only), and assignable
+// /admin/musik and /reseller/musik (Mitra Brand only), and assignable
 // directly to any invitation's music_url from there.
 export type MusicTrack = {
   id: string;

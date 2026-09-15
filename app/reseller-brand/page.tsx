@@ -57,11 +57,11 @@ const FAQS = [
   },
   {
     q: "Apa bedanya dengan paket Reseller biasa?",
-    a: "Reseller biasa jual di bawah brand Vistiq Invitation dan dapat komisi 40%. Reseller Brand pakai identitas brand kamu sendiri dan kamu simpan 100% dari harga yang kamu tetapkan.",
+    a: "Reseller biasa jual di bawah brand Vistiq Invitation dan dapat komisi 40%. Mitra Brand pakai identitas brand kamu sendiri dan kamu simpan 100% dari harga yang kamu tetapkan.",
   },
   {
     q: "Saya sudah reseller biasa, bisa upgrade?",
-    a: "Bisa kapan saja. Tinggal hubungi tim Vistiq lewat WhatsApp untuk upgrade akun reseller kamu ke Reseller Brand.",
+    a: "Bisa kapan saja. Tinggal hubungi tim Vistiq lewat WhatsApp untuk upgrade akun reseller kamu ke Mitra Brand.",
   },
   {
     q: "Berapa biayanya?",
@@ -79,7 +79,7 @@ const FAQS = [
 
 export default function ResellerBrandPage() {
   const ctaText = (context: string) =>
-    encodeURIComponent(`Halo Vistiq Invitation, saya ingin aktifkan Reseller Brand (dari landing page ${context})`);
+    encodeURIComponent(`Halo Vistiq Invitation, saya ingin aktifkan Mitra Brand (dari landing page ${context})`);
 
   return (
     <main className="page">
@@ -94,7 +94,7 @@ export default function ResellerBrandPage() {
           <h1>Punya Bisnis Undangan Digital dengan Nama Kamu Sendiri</h1>
 
           <p>
-            Reseller Brand: logo, nama, dan warna brand kamu tampil di setiap
+            Mitra Brand: logo, nama, dan warna brand kamu tampil di setiap
             undangan yang kamu jual. <strong>Rp59.000/bulan</strong>, dapat
             update tema dan konten promosi baru tiap bulan, dan 100%
             keuntungan jadi milikmu.
@@ -165,7 +165,7 @@ export default function ResellerBrandPage() {
           </div>
 
           <div className="baCard baHighlight">
-            <small>Reseller Brand</small>
+            <small>Mitra Brand</small>
             <p className="baFooterLine">© 2026 [Nama Brand Kamu]</p>
             <p className="baDesc">
               Footer undangan, dashboard, sampai warna tampilan otomatis
@@ -181,14 +181,14 @@ export default function ResellerBrandPage() {
       </section>
 
       <section className="section">
-        <p className="label">Reseller vs Reseller Brand</p>
-        <h2>Kenapa Upgrade ke Reseller Brand?</h2>
+        <p className="label">Reseller vs Mitra Brand</p>
+        <h2>Kenapa Upgrade ke Mitra Brand?</h2>
 
         <div className="compareTable">
           <div className="compareRow compareHead">
             <span></span>
             <span>Reseller</span>
-            <span>Reseller Brand</span>
+            <span>Mitra Brand</span>
           </div>
           {COMPARISON.map((row) => (
             <div className="compareRow" key={row[0]}>
@@ -237,7 +237,7 @@ export default function ResellerBrandPage() {
             <p>dari total penjualan Rp2.000.000</p>
           </div>
           <div className="simCompareCard simCompareHighlight">
-            <small>Reseller Brand (100%)</small>
+            <small>Mitra Brand (100%)</small>
             <strong>Rp 2.000.000</strong>
             <p>seluruh penjualan jadi milikmu</p>
           </div>
@@ -292,7 +292,7 @@ export default function ResellerBrandPage() {
 
       <section className="section">
         <div className="priceHighlight">
-          <p className="label white">Reseller Brand</p>
+          <p className="label white">Mitra Brand</p>
           <p className="promoBadge">Layaknya Member Premium</p>
           <h2>
             Rp 59.000<span>/bulan</span>
@@ -1040,7 +1040,7 @@ html, body {
   }
 
   .compareRow span:nth-child(3)::before {
-    content: "Reseller Brand: ";
+    content: "Mitra Brand: ";
     font-weight: 700;
   }
 

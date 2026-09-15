@@ -124,7 +124,7 @@ export default function ResellerTransactionsPage() {
     <main className={styles.page} style={brandStyle}>
       <DashboardSidebar
         brandTop={brandName ? brandName.toUpperCase() : "VISTIQ"}
-        brandBottom={reseller?.package === "reseller_brand" ? "Reseller Brand" : "Reseller"}
+        brandBottom={reseller?.package === "reseller_brand" ? "Mitra Brand" : "Reseller"}
         logoUrl={brandingEnabled ? reseller?.logo_url : null}
         accentColor={brandingEnabled ? reseller?.brand_color : null}
         items={getResellerNavItems(reseller?.package, reseller?.id)}
@@ -151,8 +151,8 @@ export default function ResellerTransactionsPage() {
           <section className={styles.warningBox}><h2>Akun reseller belum terhubung.</h2></section>
         ) : reseller.package === "reseller_brand" ? (
           <section className={styles.warningBox}>
-            <h2>Reseller Brand menyimpan 100% harga jual.</h2>
-            <p>Reseller Brand tidak menggunakan skema pembayaran 80/20 milik paket Reseller standar.</p>
+            <h2>Mitra Brand menyimpan 100% harga jual.</h2>
+            <p>Mitra Brand tidak menggunakan skema pembayaran 80/20 milik paket Reseller standar.</p>
           </section>
         ) : (
           <>

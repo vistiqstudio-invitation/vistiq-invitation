@@ -23,7 +23,7 @@ const FAQ = [
   ["Apakah link undangan bisa diberi nama tamu?", "Bisa. Dashboard menyediakan pembuat tautan personal untuk satu atau banyak nama tamu sekaligus."],
   ["Apakah undangan bisa direvisi?", "Bisa. Data acara, foto, musik, galeri, dan informasi lain dapat diperbarui melalui akun client selama undangan aktif."],
   ["Bagaimana cara memantau RSVP?", "Konfirmasi hadir dan ucapan tamu masuk ke dashboard secara otomatis dan dapat dipantau kapan saja."],
-  ["Apakah tersedia paket untuk menjual kembali?", "Tersedia paket Reseller dan Reseller Brand, termasuk pilihan white-label dengan identitas brand sendiri."],
+  ["Apakah tersedia paket untuk menjual kembali?", "Tersedia paket Reseller dan Mitra Brand, termasuk pilihan white-label dengan identitas brand sendiri."],
 ];
 
 const HERO_COLUMNS = [
@@ -70,7 +70,7 @@ export default function HomePage() {
     <section id="harga" className={styles.pricing}><div className={styles.centerHeading}><p className={styles.eyebrow}>PAKET VISTIQ</p><h2>Pilih cara terbaik untuk memulai.</h2><p>Untuk satu acara, penghasilan tambahan, atau membangun platform dengan brand sendiri.</p></div><div className={styles.priceGrid}>
       <article className={styles.priceCard}><p>CLIENT</p><h3>Rp99.000</h3><span>Satu undangan premium</span><ul><li>Dashboard client mandiri</li><li>Semua fitur undangan aktif</li><li>Nama tamu tanpa batas</li></ul><CheckoutButton packageId="client" label="Buat Undangan" production={production}/></article>
       <article className={`${styles.priceCard} ${styles.featured}`}><b>PALING POPULER</b><p>RESELLER</p><h3>Rp149.000</h3><span>Sekali bayar, aktif selamanya</span><ul><li>Jual undangan tanpa batas</li><li>Dashboard reseller lengkap</li><li>80% hasil penjualan untuk Anda</li></ul><CheckoutButton packageId="reseller" label="Gabung Reseller" featured production={production}/></article>
-      <article className={styles.priceCard}><p>RESELLER BRAND</p><h3>Rp59.000<small>/bulan</small></h3><span>White-label untuk brand Anda</span><ul><li>Nama, logo, dan warna sendiri</li><li>Keuntungan 100% milik Anda</li><li>Subdomain dan custom domain</li></ul><CheckoutButton packageId="reseller-brand" label="Bangun Brand Sendiri" production={production}/></article>
+      <article className={styles.priceCard}><p>MITRA BRAND</p><h3>Rp59.000<small>/bulan</small></h3><span>White-label untuk brand Anda</span><ul><li>Nama, logo, dan warna sendiri</li><li>Keuntungan 100% milik Anda</li><li>Subdomain dan custom domain</li></ul><CheckoutButton packageId="reseller-brand" label="Bangun Brand Sendiri" production={production}/></article>
       <article className={styles.priceCard}><p>AFFILIATE</p><h3>Gratis</h3><span>Promosikan melalui link</span><ul><li>Komisi 30% semua paket</li><li>Pencairan mulai Rp100.000</li><li>Dashboard komisi transparan</li></ul><Link className={styles.planLink} href="/gabung-affiliate">Gabung Affiliate</Link></article>
     </div></section>
     <section className={styles.faq}><div className={styles.centerHeading}><p className={styles.eyebrow}>PERTANYAAN UMUM</p><h2>Yang sering ditanyakan.</h2></div><div className={styles.faqGrid}>{FAQ.map(([q,a],i)=><details key={q} open={i===0}><summary>{q}<span>+</span></summary><p>{a}</p></details>)}</div></section>

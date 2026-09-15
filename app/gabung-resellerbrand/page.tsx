@@ -23,10 +23,10 @@ const BENEFITS = [
 ];
 
 const FAQS = [
-  ["Berapa harga Reseller Brand?", "Rp59.000 per bulan untuk fitur white label dan benefit premium Reseller Brand."],
-  ["Apa bedanya dengan Reseller biasa?", "Reseller biasa memakai brand Vistiq dan dikenakan fee platform 20% per transaksi client. Reseller Brand memakai brand sendiri dan menyimpan 100% harga jualnya."],
-  ["Apakah saya bisa memakai domain sendiri?", "Ya. Reseller Brand mendukung subdomain gratis dan custom domain sesuai pengaturan akun."],
-  ["Apakah saya bebas menentukan harga jual?", "Ya. Reseller Brand dapat menentukan harga jual sendiri ke client."],
+  ["Berapa harga Mitra Brand?", "Rp59.000 per bulan untuk fitur white label dan benefit premium Mitra Brand."],
+  ["Apa bedanya dengan Reseller biasa?", "Reseller biasa memakai brand Vistiq dan dikenakan fee platform 20% per transaksi client. Mitra Brand memakai brand sendiri dan menyimpan 100% harga jualnya."],
+  ["Apakah saya bisa memakai domain sendiri?", "Ya. Mitra Brand mendukung subdomain gratis dan custom domain sesuai pengaturan akun."],
+  ["Apakah saya bebas menentukan harga jual?", "Ya. Mitra Brand dapat menentukan harga jual sendiri ke client."],
 ];
 
 export default function GabungResellerBrandPage() {
@@ -39,7 +39,7 @@ export default function GabungResellerBrandPage() {
 
       <section className="hero">
         <div>
-          <p className="badge">Reseller Brand · White Label</p>
+          <p className="badge">Mitra Brand · White Label</p>
           <h1>Bangun Bisnis Undangan Digital dengan Brand Sendiri</h1>
           <p className="lead">
             Gunakan nama, logo, warna, subdomain atau custom domain sendiri.
@@ -47,7 +47,7 @@ export default function GabungResellerBrandPage() {
           </p>
           <div className="price"><strong>Rp59.000</strong><span>/bulan</span></div>
           <div className="actions">
-            <CheckoutButton packageId="reseller-brand" label="Join Reseller Brand" featured production={midtransProduction} />
+            <CheckoutButton packageId="reseller-brand" label="Join Mitra Brand" featured production={midtransProduction} />
             <Link href="/demo" className="secondary">Lihat Demo Tema</Link>
           </div>
           <div className="facts">
@@ -81,7 +81,7 @@ export default function GabungResellerBrandPage() {
 
       <section className="dark">
         <div className="section">
-          <p className="label light">Benefit Reseller Brand</p>
+          <p className="label light">Benefit Mitra Brand</p>
           <h2>Semua yang Dibutuhkan untuk Bangun Brand</h2>
           <div className="benefits">
             {BENEFITS.map(([title, desc]) => <article key={title}><span>✓</span><div><h3>{title}</h3><p>{desc}</p></div></article>)}
@@ -111,8 +111,8 @@ export default function GabungResellerBrandPage() {
 
       <section className="cta">
         <h2>Siap Punya Brand Undangan Digital Sendiri?</h2>
-        <p>Aktifkan Reseller Brand Rp59.000/bulan dan mulai jualan dengan identitas bisnis Anda.</p>
-        <div className="actions centered"><CheckoutButton packageId="reseller-brand" label="Join Reseller Brand" featured production={midtransProduction} /></div>
+        <p>Aktifkan Mitra Brand Rp59.000/bulan dan mulai jualan dengan identitas bisnis Anda.</p>
+        <div className="actions centered"><CheckoutButton packageId="reseller-brand" label="Join Mitra Brand" featured production={midtransProduction} /></div>
       </section>
 
       <footer>© 2026 Vistiq Invitation. All rights reserved.</footer>

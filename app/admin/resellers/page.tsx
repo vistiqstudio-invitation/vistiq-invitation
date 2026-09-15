@@ -43,7 +43,7 @@ type CreatedCredentials = {
 
 const PACKAGE_LABELS: Record<string, string> = {
   reseller: "Reseller (80% reseller / 20% fee platform)",
-  reseller_brand: "Reseller Brand - White Label (100%)",
+  reseller_brand: "Mitra Brand - White Label (100%)",
 };
 
 function brandExpiryStatus(reseller: Reseller): { label: string; color: string } {
@@ -111,7 +111,7 @@ Setelah login, silakan buka menu *Brand Saya* untuk:
 
     return `Halo Kak *${account.name}* 👋
 
-Selamat! Akun *${isBrand ? "Reseller Brand" : "Reseller"}* Kakak sudah berhasil dibuat dan aktif. 🎉
+Selamat! Akun *${isBrand ? "Mitra Brand" : "Reseller"}* Kakak sudah berhasil dibuat dan aktif. 🎉
 
 Berikut akses login Kakak:
 
@@ -653,7 +653,7 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! �
               className={styles.input}
             >
               <option value="reseller">Reseller (Rp 149.000 sekali bayar, 80% reseller / fee platform 20%)</option>
-              <option value="reseller_brand">Reseller Brand - White Label (Rp 59.000/bulan, 100%)</option>
+              <option value="reseller_brand">Mitra Brand - White Label (Rp 59.000/bulan, 100%)</option>
             </select>
 
             <input

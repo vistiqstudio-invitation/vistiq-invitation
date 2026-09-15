@@ -39,7 +39,7 @@ const LOGO_BUCKET = "invitation-assets";
 
 const PACKAGE_LABELS: Record<string, string> = {
   reseller: "Reseller",
-  reseller_brand: "Reseller Brand (White Label)",
+  reseller_brand: "Mitra Brand (White Label)",
 };
 
 export default function ResellerPage() {
@@ -206,18 +206,18 @@ export default function ResellerPage() {
     : undefined;
 
   const upgradeText = encodeURIComponent(
-    `Halo Vistiq Invitation, saya ${user?.name || "reseller"} (${user?.email || ""}) ingin upgrade ke paket Reseller Brand (white label, Rp59.000/bulan, layaknya member premium).`
+    `Halo Vistiq Invitation, saya ${user?.name || "reseller"} (${user?.email || ""}) ingin upgrade ke paket Mitra Brand (white label, Rp59.000/bulan, layaknya member premium).`
   );
 
   const renewText = encodeURIComponent(
-    `Halo Vistiq Invitation, saya ${user?.name || "reseller"} (${user?.email || ""}) ingin memperpanjang paket Reseller Brand saya yang ${brandExpired ? "sudah berakhir" : "akan berakhir"}${brandExpiryLabel ? ` (${brandExpiryLabel})` : ""}. Mohon info pembayarannya.`
+    `Halo Vistiq Invitation, saya ${user?.name || "reseller"} (${user?.email || ""}) ingin memperpanjang paket Mitra Brand saya yang ${brandExpired ? "sudah berakhir" : "akan berakhir"}${brandExpiryLabel ? ` (${brandExpiryLabel})` : ""}. Mohon info pembayarannya.`
   );
 
   return (
     <main className={styles.page} style={brandStyle}>
       <DashboardSidebar
         brandTop={brandName ? brandName.toUpperCase() : "VISTIQ"}
-        brandBottom={reseller?.package === "reseller_brand" ? "Reseller Brand" : "Reseller"}
+        brandBottom={reseller?.package === "reseller_brand" ? "Mitra Brand" : "Reseller"}
         logoUrl={brandingEnabled ? reseller?.logo_url : null}
         accentColor={brandingEnabled ? reseller?.brand_color : null}
         items={getResellerNavItems(reseller?.package, reseller?.id)}
@@ -256,10 +256,10 @@ export default function ResellerPage() {
             {isBrandPackage && brandExpired && (
               <section className={styles.formCard} style={{ borderLeft: "4px solid #dc2626" }}>
                 <h2 className={styles.sectionTitle} style={{ color: "#dc2626" }}>
-                  Masa Aktif Reseller Brand Sudah Berakhir
+                  Masa Aktif Mitra Brand Sudah Berakhir
                 </h2>
                 <p style={{ margin: "0 0 16px", fontSize: 13.5, color: "#64748b" }}>
-                  Langganan Reseller Brand Anda berakhir pada{" "}
+                  Langganan Mitra Brand Anda berakhir pada{" "}
                   <strong>{brandExpiryLabel}</strong>. Brand Anda (nama, logo,
                   warna) untuk sementara tidak tampil di undangan client
                   sampai diperpanjang. Hubungi admin Vistiq dan lakukan
@@ -282,7 +282,7 @@ export default function ResellerPage() {
                 style={brandDaysLeft <= 7 ? { borderLeft: "4px solid #f59e0b" } : undefined}
               >
                 <p style={{ margin: 0, fontSize: 13.5, color: brandDaysLeft <= 7 ? "#b45309" : "#64748b" }}>
-                  Masa aktif Reseller Brand Anda hingga{" "}
+                  Masa aktif Mitra Brand Anda hingga{" "}
                   <strong>{brandExpiryLabel}</strong>
                   {brandDaysLeft <= 7 ? ` - tinggal ${brandDaysLeft} hari lagi.` : "."}
                   {brandDaysLeft <= 7 && (
@@ -330,12 +330,12 @@ export default function ResellerPage() {
 
                 <p style={{ margin: "0 0 16px", fontSize: 13.5, color: brandingEnabled ? "#15803d" : "#b45309" }}>
                   {!isBrandPackage
-                    ? "Nama dan logo brand Anda akan tampil di dashboard serta undangan client. Fitur domain sendiri tetap khusus Reseller Brand."
+                    ? "Nama dan logo brand Anda akan tampil di dashboard serta undangan client. Fitur domain sendiri tetap khusus Mitra Brand."
                     : brandActive
                     ? "Paket brand aktif - nama & logo di bawah tampil di undangan client Anda."
                     : brandExpired
                     ? "Masa aktif habis - lengkapi data tetap bisa disimpan, tapi brand baru tampil lagi setelah admin memperpanjang."
-                    : "Paket brand belum aktif. Lengkapi data di bawah lalu hubungi admin untuk mengaktifkan paket Reseller Brand."}
+                    : "Paket brand belum aktif. Lengkapi data di bawah lalu hubungi admin untuk mengaktifkan paket Mitra Brand."}
                 </p>
 
                 <div className={styles.formGrid}>
@@ -439,7 +439,7 @@ export default function ResellerPage() {
 
             {!isBrandPackage && (
               <section className={styles.formCard}>
-                <h2 className={styles.sectionTitle}>Upgrade ke Reseller Brand</h2>
+                <h2 className={styles.sectionTitle}>Upgrade ke Mitra Brand</h2>
                 <p style={{ margin: "0 0 16px", fontSize: 13.5, color: "#64748b" }}>
                   Gunakan subdomain atau domain sendiri, dapatkan fitur premium,
                   update tema dan konten promosi baru setiap bulan, serta nikmati
@@ -450,7 +450,7 @@ export default function ResellerPage() {
                   target="_blank"
                   className={styles.button}
                 >
-                  Upgrade ke Reseller Brand
+                  Upgrade ke Mitra Brand
                 </a>
               </section>
             )}

@@ -144,14 +144,14 @@ export default function ResellerMusikPage() {
   const brandingEnabled = reseller?.package === "reseller" || Boolean(reseller?.brand_active);
   const brandName = brandingEnabled && reseller?.brand_name ? reseller.brand_name : null;
   const upgradeText = encodeURIComponent(
-    "Halo Vistiq Invitation, saya ingin upgrade ke paket Reseller Brand (white label, Rp59.000/bulan) untuk akses perpustakaan musik dan fitur lainnya."
+    "Halo Vistiq Invitation, saya ingin upgrade ke paket Mitra Brand (white label, Rp59.000/bulan) untuk akses perpustakaan musik dan fitur lainnya."
   );
 
   return (
     <main className={styles.page}>
       <DashboardSidebar
         brandTop={brandName ? brandName.toUpperCase() : "VISTIQ"}
-        brandBottom={reseller?.package === "reseller_brand" ? "Reseller Brand" : "Reseller"}
+        brandBottom={reseller?.package === "reseller_brand" ? "Mitra Brand" : "Reseller"}
         logoUrl={brandingEnabled ? reseller?.logo_url : null}
         accentColor={brandingEnabled ? reseller?.brand_color : null}
         items={getResellerNavItems(reseller?.package, reseller?.id)}
@@ -163,7 +163,7 @@ export default function ResellerMusikPage() {
       <section className={styles.content}>
         <header className={styles.header}>
           <div>
-            <p className={styles.label}>RESELLER BRAND MENU</p>
+            <p className={styles.label}>MITRA BRAND MENU</p>
             <h1 className={styles.title}>Perpustakaan Musik</h1>
             <p className={styles.subtitle}>
               Musik latar berlisensi (aman hak cipta) - dengarkan, unduh, atau langsung terapkan ke undangan client Anda.
@@ -175,9 +175,9 @@ export default function ResellerMusikPage() {
           <p>Memuat...</p>
         ) : !isBrandPackage ? (
           <section className={styles.formCard}>
-            <h2 className={styles.sectionTitle}>Khusus Reseller Brand</h2>
+            <h2 className={styles.sectionTitle}>Khusus Mitra Brand</h2>
             <p style={{ margin: "0 0 16px", fontSize: 13.5, color: "#64748b" }}>
-              Perpustakaan musik adalah salah satu benefit member premium paket Reseller Brand -
+              Perpustakaan musik adalah salah satu benefit member premium paket Mitra Brand -
               update tema dan konten baru setiap bulan, termasuk koleksi musik latar berlisensi ini.
             </p>
             <a
@@ -185,7 +185,7 @@ export default function ResellerMusikPage() {
               target="_blank"
               className={styles.button}
             >
-              Upgrade ke Reseller Brand
+              Upgrade ke Mitra Brand
             </a>
           </section>
         ) : (

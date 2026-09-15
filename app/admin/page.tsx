@@ -212,14 +212,14 @@ export default function AdminPage() {
 
   // Aturan omzet Vistiq:
   // 1. Pembayaran paket yang benar-benar paid masuk 100% sebagai omzet
-  //    (Reseller sekali bayar, Reseller Brand langganan bulanan, dan paket
+  //    (Reseller sekali bayar, Mitra Brand langganan bulanan, dan paket
   //    direct-client bila ada). Nilai yang dipakai adalah amount transaksi
   //    aktual, sehingga histori harga lama tetap tercatat sesuai pembayaran.
   // 2. Penjualan undangan oleh Reseller standar baru masuk setelah client
   //    benar-benar membayar (transactions.status === "paid"). Harga jual penuh
   //    adalah omzet penjualan; 80% adalah komisi reseller dan 20% hak Vistiq.
-  // 3. Penjualan undangan oleh Reseller Brand tidak masuk omzet Vistiq karena
-  //    100% hasil penjualan tersebut milik Reseller Brand.
+  // 3. Penjualan undangan oleh Mitra Brand tidak masuk omzet Vistiq karena
+  //    100% hasil penjualan tersebut milik Mitra Brand.
   const paidStandardResellerSales = transactions.filter(
     (item) => item.status === "paid" && !isBrandResellerTransaction(item),
   );
@@ -238,7 +238,7 @@ export default function AdminPage() {
   // Komisi reseller hanya lahir dari penjualan undangan Reseller standar yang
   // sudah dibayar client. Transaksi pending belum menjadi omzet/komisi. Komisi
   // affiliate yang masih menjadi kewajiban tetap digabung ke kartu total
-  // komisi; penjualan Reseller Brand tidak pernah menghasilkan komisi Vistiq.
+  // komisi; penjualan Mitra Brand tidak pernah menghasilkan komisi Vistiq.
   const resellerCommission = paidStandardResellerSales.reduce(
     (sum, item) => sum + Number(item.commission || 0),
     0,

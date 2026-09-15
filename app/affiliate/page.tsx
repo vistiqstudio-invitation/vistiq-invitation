@@ -99,7 +99,7 @@ export default function AffiliatePage() {
           key: "all",
           title: "Link Referral Utama",
           description:
-            "Berisi pilihan paket Client, Reseller, dan Reseller Brand.",
+            "Berisi pilihan paket Client, Reseller, dan Mitra Brand.",
           url: `https://www.vistiqinvitation.com/pilih-paket?ref=${code}`,
         },
       ]

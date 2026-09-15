@@ -8,7 +8,7 @@ import { PAYMENT_PACKAGES, type PaymentPackageId } from "@/lib/paymentPackages";
 
 export const metadata: Metadata = {
   title: "Pilih Paket & Mulai Bisnis Undangan Digital | Vistiq Invitation",
-  description: "Pilih paket Client, Reseller, atau Reseller Brand Vistiq Invitation.",
+  description: "Pilih paket Client, Reseller, atau Mitra Brand Vistiq Invitation.",
 };
 
 type PageProps = {
@@ -63,7 +63,7 @@ const packageDetails: Array<{
   {
     id: "reseller-brand",
     title: "Bangun Brand Sendiri",
-    eyebrow: "Paket Reseller Brand",
+    eyebrow: "Paket Mitra Brand",
     description: "Untuk membangun usaha undangan white label dengan identitas bisnis sendiri.",
     features: [
       "Nama, logo, dan warna brand sendiri",
@@ -72,12 +72,12 @@ const packageDetails: Array<{
       "Update tema dan konten promosi",
       "Rp59.000 per bulan",
     ],
-    button: "Pilih Reseller Brand",
+    button: "Pilih Mitra Brand",
   },
 ];
 
 const FAQS = [
-  ["Apa perbedaan Reseller dan Reseller Brand?", "Reseller memakai brand Vistiq, join Rp149.000 sekali bayar, dapat menjual tanpa batas, dan setiap transaksi client dikenakan fee platform 20%. Reseller Brand memakai identitas bisnis sendiri dan menyimpan 100% harga jualnya."],
+  ["Apa perbedaan Reseller dan Mitra Brand?", "Reseller memakai brand Vistiq, join Rp149.000 sekali bayar, dapat menjual tanpa batas, dan setiap transaksi client dikenakan fee platform 20%. Mitra Brand memakai identitas bisnis sendiri dan menyimpan 100% harga jualnya."],
   ["Apakah Reseller ada biaya bulanan?", "Tidak. Paket Reseller Rp149.000 dibayar sekali dan aktif selamanya."],
   ["Apakah jumlah client Reseller dibatasi?", "Tidak. Reseller dapat menjual undangan dan mengelola client sebanyak yang dibutuhkan."],
   ["Bagaimana fee 20% dihitung?", "Pada transaksi client paket Reseller, 80% menjadi bagian reseller dan 20% menjadi fee platform Vistiq."],
@@ -113,7 +113,7 @@ export default async function PilihPaketPage({ searchParams }: PageProps) {
         <div className="heroCopy">
           <p className="badge">Platform Undangan Digital Siap Pakai</p>
           <h1>Pilih Paket Sesuai Tujuan Anda</h1>
-          <p className="lead">Buat undangan sendiri, mulai jualan sebagai Reseller, atau bangun bisnis white label dengan Reseller Brand.</p>
+          <p className="lead">Buat undangan sendiri, mulai jualan sebagai Reseller, atau bangun bisnis white label dengan Mitra Brand.</p>
           <a href="#paket" className="primary">Lihat Pilihan Paket</a>
         </div>
         <div className="visual">
@@ -152,7 +152,7 @@ export default async function PilihPaketPage({ searchParams }: PageProps) {
                 <CheckoutButton packageId={item.id} label={item.button} featured={item.featured} production={midtransProduction} autoOpen={isSelected} referralCode={referralCode} />
                 <small className="payment">QRIS · Virtual Account · E-Wallet</small>
                 {item.id === "reseller" && <Link className="learn" href="/gabung-reseller">Pelajari paket Reseller →</Link>}
-                {item.id === "reseller-brand" && <Link className="learn" href="/gabung-resellerbrand">Pelajari Reseller Brand →</Link>}
+                {item.id === "reseller-brand" && <Link className="learn" href="/gabung-resellerbrand">Pelajari Mitra Brand →</Link>}
               </article>
             );
           })}

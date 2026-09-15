@@ -59,7 +59,7 @@ export async function POST(request: Request) {
 
   if (!isBrandAccessActive(reseller)) {
     return NextResponse.json(
-      { error: "Aktivasi mandiri hanya tersedia untuk Reseller Brand yang aktif." },
+      { error: "Aktivasi mandiri hanya tersedia untuk Mitra Brand yang aktif." },
       { status: 403 },
     );
   }

@@ -112,7 +112,7 @@ export default function AdminTransactionsPage() {
   const selectedManualReseller = resellers.find((item) => item.id === manualResellerId);
 
   const packageLabel = (packageId?: string | null) => {
-    if (packageId === "reseller-brand") return "Reseller Brand";
+    if (packageId === "reseller-brand") return "Mitra Brand";
     if (packageId === "reseller") return "Reseller";
     return "Paket";
   };
@@ -264,7 +264,7 @@ export default function AdminTransactionsPage() {
         <section className={styles.formCard}>
           <h2 className={styles.sectionTitle}>Catat Order Paket Manual</h2>
           <p style={{ margin: "0 0 16px", fontSize: 13.5, color: "#64748b" }}>
-            Gunakan untuk akun reseller yang sudah dibuat sebelumnya atau perpanjangan Reseller Brand. Order tetap pending sampai pembayaran dikonfirmasi.
+            Gunakan untuk akun reseller yang sudah dibuat sebelumnya atau perpanjangan Mitra Brand. Order tetap pending sampai pembayaran dikonfirmasi.
           </p>
           <div className={styles.formGrid}>
             <select
@@ -284,7 +284,7 @@ export default function AdminTransactionsPage() {
               <option value="">Pilih reseller</option>
               {resellers.map((item) => (
                 <option key={item.id} value={item.id}>
-                  {item.name} · {item.package === "reseller_brand" ? "Reseller Brand" : "Reseller"}
+                  {item.name} · {item.package === "reseller_brand" ? "Mitra Brand" : "Reseller"}
                 </option>
               ))}
             </select>
@@ -300,7 +300,7 @@ export default function AdminTransactionsPage() {
           </div>
           {selectedManualReseller && (
             <p style={{ margin: "10px 0 0", fontSize: 12.5, color: "#475569" }}>
-              Paket yang dicatat: {selectedManualReseller.package === "reseller_brand" ? "Reseller Brand (bulanan)" : "Reseller (sekali bayar)"}. Nominal dapat disesuaikan untuk histori harga lama.
+              Paket yang dicatat: {selectedManualReseller.package === "reseller_brand" ? "Mitra Brand (bulanan)" : "Reseller (sekali bayar)"}. Nominal dapat disesuaikan untuk histori harga lama.
             </p>
           )}
           <button onClick={createManualOrder} className={styles.button} disabled={creatingManualOrder} style={{ marginTop: 14 }}>

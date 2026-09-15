@@ -33,7 +33,7 @@ const FAQS = [
   ["Apakah ada batas jumlah undangan?", "Tidak. Reseller dapat menjual dan membuat undangan sebanyak yang dibutuhkan."],
   ["Bagaimana pembagian setiap transaksi?", "80% menjadi bagian reseller dan 20% menjadi fee platform Vistiq pada setiap transaksi client."],
   ["Apakah harus bisa desain atau coding?", "Tidak. Tema dan sistem sudah tersedia; reseller cukup memilih tema dan mengisi data client."],
-  ["Apakah Reseller bisa memakai logo sendiri?", "Paket Reseller memakai brand Vistiq. Untuk white label, logo, warna, dan domain sendiri gunakan Reseller Brand."],
+  ["Apakah Reseller bisa memakai logo sendiri?", "Paket Reseller memakai brand Vistiq. Untuk white label, logo, warna, dan domain sendiri gunakan Mitra Brand."],
 ];
 
 const WHATSAPP_URL = `https://wa.me/6281371338032?text=${encodeURIComponent(
@@ -133,10 +133,10 @@ export default function GabungResellerPage() {
         <div className="brandCallout">
           <div>
             <p className="label">Mau Punya Brand Sendiri?</p>
-            <h2>Upgrade ke Reseller Brand</h2>
+            <h2>Upgrade ke Mitra Brand</h2>
             <p>Gunakan nama, logo, warna, subdomain atau custom domain sendiri dan nikmati fitur white label.</p>
           </div>
-          <Link href="/gabung-resellerbrand" className="primaryLink">Lihat Reseller Brand</Link>
+          <Link href="/gabung-resellerbrand" className="primaryLink">Lihat Mitra Brand</Link>
         </div>
       </section>
 
