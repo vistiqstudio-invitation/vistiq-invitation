@@ -492,9 +492,14 @@ export async function getInvitationBySlug(
   // hide the nested reseller row. Read only the approved public branding
   // fields through a security-definer RPC so published and preview pages
   // resolve the same reseller/Mitra Brand identity.
-  const { data: publicBrand } = await supabase
+  const { data: publicBrandRow } = await supabase
     .rpc("get_invitation_brand_by_slug", { p_slug: slug })
     .maybeSingle();
+  const publicBrand = publicBrandRow as {
+    brand_name: string | null;
+    logo_url: string | null;
+    brand_color: string | null;
+  } | null;
 
   const invitation =
     data.category === "aqiqah"
