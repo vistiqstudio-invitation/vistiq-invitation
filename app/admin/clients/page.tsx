@@ -66,6 +66,7 @@ export default function ClientsPage() {
     status: "active",
   });
   const [addingClient, setAddingClient] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const [newClientCredentials, setNewClientCredentials] = useState<{
     name: string;
     email: string;
@@ -191,6 +192,33 @@ export default function ClientsPage() {
     }
 
     fetchClients();
+  };
+
+  const deleteClient = async (client: Client) => {
+    if (
+      !confirm(
+        `Hapus client "${client.name}" secara permanen? Akun login dan seluruh undangannya juga akan dihapus. Tindakan ini tidak bisa dibatalkan.`
+      )
+    ) {
+      return;
+    }
+
+    setDeletingId(client.id);
+    const response = await fetch("/api/admin/delete-client", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ clientId: client.id }),
+    });
+    const result = await response.json();
+    setDeletingId(null);
+
+    if (!response.ok) {
+      alert(result.error || "Gagal menghapus client.");
+      return;
+    }
+
+    await fetchClients();
+    alert("Client berhasil dihapus.");
   };
 
   const logout = async () => {
@@ -350,9 +378,20 @@ export default function ClientsPage() {
                     <option value="inactive">Inactive</option>
                   </select>
 
-                  <p className={styles.date}>
-                    {new Date(client.created_at).toLocaleDateString("id-ID")}
-                  </p>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+                    <p className={styles.date}>
+                      {new Date(client.created_at).toLocaleDateString("id-ID")}
+                    </p>
+
+                    <button
+                      onClick={() => deleteClient(client)}
+                      disabled={deletingId === client.id}
+                      className={styles.dangerButton}
+                      style={{ fontSize: 11, padding: "6px 10px" }}
+                    >
+                      {deletingId === client.id ? "Menghapus..." : "Hapus"}
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
