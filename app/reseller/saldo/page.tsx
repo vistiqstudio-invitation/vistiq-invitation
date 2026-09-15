@@ -7,8 +7,11 @@ import DashboardSidebar from "@/components/admin/DashboardSidebar";
 import { getResellerNavItems } from "@/components/reseller/navItems";
 import styles from "@/styles/dashboard.module.css";
 
+const ADMIN_WHATSAPP = "6281371338032";
+
 type Reseller = {
   id: string;
+  name?: string | null;
   package?: "reseller" | "reseller_brand";
   brand_name?: string | null;
   logo_url?: string | null;
@@ -139,8 +142,26 @@ export default function ResellerSaldoPage() {
       return;
     }
 
-    alert("Permintaan penarikan berhasil dikirim ke owner Vistiq.");
+    alert("Permintaan penarikan berhasil dibuat. Silakan konfirmasi ke Admin Vistiq melalui tombol WhatsApp pada riwayat penarikan.");
     if (reseller) fetchData(reseller.id);
+  };
+
+  const withdrawalWhatsappUrl = (item: Withdrawal) => {
+    const resellerName = reseller?.name || reseller?.brand_name || "Reseller";
+    const message = [
+      "Halo Admin Vistiq, saya ingin mengonfirmasi permintaan penarikan saldo reseller.",
+      "",
+      `Nama reseller: ${resellerName}`,
+      `Nominal: Rp ${Number(item.amount).toLocaleString("id-ID")}`,
+      `Bank: ${item.bank_name}`,
+      `Nomor rekening: ${item.bank_account_number}`,
+      `Nama pemilik rekening: ${item.bank_account_holder}`,
+      `ID penarikan: ${item.id}`,
+      "",
+      "Mohon permintaan penarikan ini diperiksa. Terima kasih.",
+    ].join("\n");
+
+    return `https://wa.me/${ADMIN_WHATSAPP}?text=${encodeURIComponent(message)}`;
   };
 
   const logout = async () => { await supabase.auth.signOut(); router.push("/login"); };
@@ -214,6 +235,16 @@ export default function ResellerSaldoPage() {
                       <span className={styles.badge}>
                         {item.status === "paid" ? "Sudah Dibayar" : item.status === "rejected" ? "Ditolak" : "Menunggu Owner"}
                       </span>
+                      {item.status === "pending" && (
+                        <a
+                          className={styles.withdrawWaButton}
+                          href={withdrawalWhatsappUrl(item)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Konfirmasi ke Admin WhatsApp
+                        </a>
+                      )}
                       <p className={styles.date}>{new Date(item.requested_at).toLocaleDateString("id-ID")}</p>
                     </div>
                   ))}

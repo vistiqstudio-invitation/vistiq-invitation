@@ -456,6 +456,26 @@
   font-weight: 700;
 }
 
+.withdrawWaButton {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #25d366, #16a34a);
+  color: #fff;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.25;
+  box-shadow: 0 8px 20px rgba(22, 163, 74, 0.2);
+}
+
+.withdrawWaButton:hover {
+  filter: brightness(0.96);
+}
+
 .secondaryButton {
   border: none;
   background: #e2e8f0;
