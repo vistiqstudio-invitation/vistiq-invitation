@@ -53,11 +53,13 @@ type Transaction = {
   status?: string;
 };
 
+type InvitationCategory = "wedding" | "aqiqah" | "khitan" | "birthday";
+
 const initialForm = {
   client_id: "",
-  category: "wedding" as "wedding" | "aqiqah" | "khitan" | "birthday",
+  category: "" as "" | InvitationCategory,
   slug: "",
-  theme: "luxury-gold",
+  theme: "",
   // Only used/shown for reseller_brand package resellers - they keep 100%
   // of this, no commission tracked. Empty string = not set yet.
   client_price: "",
@@ -267,18 +269,11 @@ export default function ResellerInvitationsPage() {
     set("slug", makeSlug(text));
   };
 
-  const setCategory = (category: "wedding" | "aqiqah" | "khitan" | "birthday") => {
+  const setCategory = (category: "" | InvitationCategory) => {
     setForm((prev) => ({
       ...prev,
       category,
-      theme:
-        category === "aqiqah"
-          ? aqiqahThemeList[0]?.key || ""
-          : category === "khitan"
-          ? khitanThemeList[0]?.key || ""
-          : category === "birthday"
-          ? birthdayThemeList[0]?.key || ""
-          : "luxury-gold",
+      theme: "",
     }));
   };
 
@@ -341,6 +336,16 @@ export default function ResellerInvitationsPage() {
   const addInvitation = async () => {
     if (!form.client_id) {
       alert("Pilih client terlebih dahulu.");
+      return;
+    }
+
+    if (!form.category) {
+      alert("Pilih kategori terlebih dahulu.");
+      return;
+    }
+
+    if (!form.theme) {
+      alert("Pilih tema terlebih dahulu.");
       return;
     }
 
@@ -516,7 +521,7 @@ export default function ResellerInvitationsPage() {
                   onChange={(e) => set("client_id", e.target.value)}
                   className={styles.input}
                 >
-                  <option value="">Pilih Client</option>
+                  <option value="" disabled>Pilih Client</option>
                   {clients.map((c) => (
                     <option key={c.id} value={c.id}>
                       {c.name}
@@ -526,16 +531,24 @@ export default function ResellerInvitationsPage() {
 
                 <select
                   value={form.category}
-                  onChange={(e) => setCategory(e.target.value as "wedding" | "aqiqah" | "khitan" | "birthday")}
+                  onChange={(e) => setCategory(e.target.value as "" | InvitationCategory)}
                   className={styles.input}
                 >
+                  <option value="" disabled>Pilih Kategori</option>
                   <option value="wedding">Pernikahan</option>
                   <option value="aqiqah">Aqiqah</option>
                   <option value="khitan">Khitan</option>
                   <option value="birthday">Ulang Tahun</option>
                 </select>
 
-                <select value={form.theme} onChange={(e) => set("theme", e.target.value)} className={styles.input}>
+                <select
+                  value={form.theme}
+                  onChange={(e) => set("theme", e.target.value)}
+                  className={styles.input}
+                  style={{ alignSelf: "start" }}
+                  disabled={!form.category}
+                >
+                  <option value="" disabled>Pilih Tema</option>
                   {(form.category === "aqiqah"
                     ? aqiqahThemeList
                     : form.category === "khitan"
@@ -550,7 +563,11 @@ export default function ResellerInvitationsPage() {
                   ))}
                 </select>
 
-                <ThemePreviewPanel category={form.category} themeKey={form.theme} />
+                {form.category && form.theme ? (
+                  <ThemePreviewPanel category={form.category} themeKey={form.theme} />
+                ) : (
+                  <div aria-hidden="true" />
+                )}
 
                 <div className={styles.slugRow}>
                   <input
