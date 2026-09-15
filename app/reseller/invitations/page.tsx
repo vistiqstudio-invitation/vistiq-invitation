@@ -144,6 +144,7 @@ export default function ResellerInvitationsPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [activatingId, setActivatingId] = useState<number | null>(null);
 
   const [form, setForm] = useState<FormState>(initialForm);
 
@@ -390,7 +391,11 @@ export default function ResellerInvitationsPage() {
 
     setForm(initialForm);
     if (reseller) fetchData(reseller.id);
-    alert("Undangan berhasil dibuat sebagai draft. Hubungi admin Vistiq untuk verifikasi dan aktivasi.");
+    alert(
+      reseller?.package === "reseller_brand"
+        ? "Undangan berhasil dibuat sebagai draft. Aktifkan melalui tombol Aktifkan Undangan pada daftar di bawah."
+        : "Undangan berhasil dibuat sebagai draft. Hubungi admin Vistiq untuk verifikasi dan aktivasi.",
+    );
   };
 
   const copyLink = async (slug: string) => {
@@ -401,6 +406,27 @@ export default function ResellerInvitationsPage() {
 
   const openPreview = (slug: string) => {
     window.open(`/preview/${slug}`, "_blank");
+  };
+
+  const activateInvitation = async (id: number) => {
+    if (!reseller) return;
+
+    setActivatingId(id);
+    const response = await fetch("/api/reseller/activate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ target: "invitation", id }),
+    });
+    const result = await response.json();
+    setActivatingId(null);
+
+    if (!response.ok) {
+      alert(result.error || "Gagal mengaktifkan undangan.");
+      return;
+    }
+
+    await fetchData(reseller.id);
+    alert("Undangan berhasil diaktifkan.");
   };
 
   const deleteInvitation = async (id: number, name: string) => {
@@ -425,8 +451,9 @@ export default function ResellerInvitationsPage() {
 
   const brandNotExpired =
     !reseller?.brand_expires_at || new Date(reseller.brand_expires_at) > new Date();
-  const canDeleteInvitation = reseller?.package === "reseller_brand"
+  const canSelfActivate = reseller?.package === "reseller_brand"
     && reseller?.status === "active" && Boolean(reseller?.brand_active) && brandNotExpired;
+  const canDeleteInvitation = canSelfActivate;
 
   const adminActivationLink = (invitation: Invitation, clientName?: string) => {
     const message = `Halo Admin Vistiq, mohon bantu verifikasi dan aktivasi client reseller saya.\n\nClient: ${clientName || "-"}\nUndangan: /${invitation.slug}\n\nMohon diperiksa dan diaktifkan. Terima kasih.`;
@@ -1155,19 +1182,31 @@ export default function ResellerInvitationsPage() {
                       )}
 
                       <span className={styles.status}>
-                        {item.is_active === false ? "Menunggu Aktivasi Admin" : "Aktif"}
+                        {item.is_active === false
+                          ? canSelfActivate ? "Siap Diaktifkan" : "Menunggu Aktivasi Admin"
+                          : "Aktif"}
                       </span>
 
                       {item.is_active === false && (
-                        <a
-                          href={adminActivationLink(item, client?.name)}
-                          target="_blank"
-                          rel="noreferrer"
-                          className={styles.adminActivationButton}
-                        >
-                          <WhatsAppIcon />
-                          Hubungi Admin untuk Aktivasi
-                        </a>
+                        canSelfActivate ? (
+                          <button
+                            onClick={() => activateInvitation(item.id)}
+                            disabled={activatingId === item.id}
+                            className={styles.miniButtonGreen}
+                          >
+                            {activatingId === item.id ? "Mengaktifkan..." : "Aktifkan Undangan"}
+                          </button>
+                        ) : (
+                          <a
+                            href={adminActivationLink(item, client?.name)}
+                            target="_blank"
+                            rel="noreferrer"
+                            className={styles.adminActivationButton}
+                          >
+                            <WhatsAppIcon />
+                            Hubungi Admin untuk Aktivasi
+                          </a>
+                        )
                       )}
 
                       <div className={styles.actions}>
