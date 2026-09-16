@@ -21,6 +21,7 @@ type Reseller = {
   id: string;
   user_id: string;
   name: string;
+  email?: string;
   whatsapp?: string;
   commission_percent?: number;
   status?: string;
@@ -92,6 +93,7 @@ export default function ResellersPage() {
   const [editingReseller, setEditingReseller] = useState<Reseller | null>(null);
   const [editForm, setEditForm] = useState({
     name: "",
+    email: "",
     whatsapp: "",
     brand_name: "",
   });
@@ -158,18 +160,16 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! ðŸš
   };
 
   const fetchResellers = async () => {
-    const { data, error } = await supabase
-      .from("resellers")
-      .select("*")
-      .order("created_at", { ascending: false });
-
-    if (error) {
+    try {
+      const response = await fetch("/api/admin/resellers", { cache: "no-store" });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Gagal memuat reseller.");
+      setResellers(result.resellers ?? []);
+    } catch (error) {
       console.error(error);
-    } else {
-      setResellers(data ?? []);
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -261,6 +261,7 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! ðŸš
     setEditingReseller(reseller);
     setEditForm({
       name: reseller.name || "",
+      email: reseller.email || "",
       whatsapp: reseller.whatsapp || "",
       brand_name: reseller.brand_name || "",
     });
@@ -268,24 +269,28 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! ðŸš
 
   const saveResellerEdit = async () => {
     if (!editingReseller) return;
-    if (!editForm.name.trim()) {
-      alert("Nama reseller wajib diisi.");
+    if (!editForm.name.trim() || !editForm.email.trim()) {
+      alert("Nama dan email reseller wajib diisi.");
       return;
     }
 
     setSavingEdit(true);
-    const { error } = await supabase
-      .from("resellers")
-      .update({
+    const response = await fetch("/api/admin/resellers", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        resellerId: editingReseller.id,
         name: editForm.name.trim(),
+        email: editForm.email.trim(),
         whatsapp: editForm.whatsapp.trim(),
         brand_name: editForm.brand_name.trim() || null,
-      })
-      .eq("id", editingReseller.id);
+      }),
+    });
+    const result = await response.json();
     setSavingEdit(false);
 
-    if (error) {
-      alert(`Gagal memperbarui reseller: ${error.message}`);
+    if (!response.ok) {
+      alert(result.error || "Gagal memperbarui reseller.");
       return;
     }
 
@@ -472,6 +477,17 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! ðŸš
                     onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
                     className={styles.input}
                     autoFocus
+                  />
+                </label>
+                <label>
+                  <span style={{ display: "block", marginBottom: 6, fontSize: 13, fontWeight: 700 }}>Email Login</span>
+                  <input
+                    type="email"
+                    value={editForm.email}
+                    onChange={(e) => setEditForm({ ...editForm, email: e.target.value })}
+                    className={styles.input}
+                    autoComplete="email"
+                    placeholder="nama@email.com"
                   />
                 </label>
                 <label>
@@ -689,6 +705,7 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! ðŸš
                 <div key={reseller.id} className={styles.resellerRow}>
                   <div className={styles.resellerName}>
                     <strong>{reseller.name}</strong>
+                    <p>{reseller.email || "Email belum tersedia"}</p>
                     <p>{reseller.whatsapp || "-"}</p>
                   </div>
 
