@@ -10,7 +10,7 @@ import Footer from "@/themes/jawa-merah/Footer";
 import styles from "./premium.module.css";
 
 export default function PremiumContent({ invitation }: { invitation: InvitationData }) {
-  const weddingDate = invitation.events[0]?.date;
+  const weddingDate = invitation.coverEvent?.date;
 
   const reveal = {
     initial: { opacity: 0, y: 32 },

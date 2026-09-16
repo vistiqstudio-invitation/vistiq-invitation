@@ -502,6 +502,14 @@ export function getDemoInvitation(theme: string): InvitationData {
       },
     ],
 
+    coverEvent: {
+      name: "Resepsi",
+      date: "Minggu, 20 September 2026",
+      rawDate: "2026-09-20T11:00:00",
+      time: "11.00 WIB",
+      location: "Gedung Serbaguna Vistiq, Jakarta",
+    },
+
     gallery: noPhotoTheme ? [] : optimizedDemoImages(GALLERY_BY_THEME[theme] || [
       "/gallery/1.jpg",
       "/gallery/2.jpg",

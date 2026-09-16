@@ -1113,7 +1113,7 @@ export default function Premium3DMotion({ invitation }: { invitation: Invitation
             <div className={styles.desktopPhotoCopy}>
               <p>The Wedding of</p>
               <h2>{firstName(invitation.bride)} &amp; {firstName(invitation.groom)}</h2>
-              <span>{invitation.events[0]?.date || ""}</span>
+              <span>{invitation.coverEvent?.date || ""}</span>
             </div>
           </>
         )}

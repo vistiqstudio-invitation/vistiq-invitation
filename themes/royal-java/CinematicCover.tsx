@@ -11,7 +11,7 @@ export default function CinematicCover({ invitation }: { invitation: InvitationD
   const { setOpened } = useInvitation();
   const searchParams = useSearchParams();
   const guestName = searchParams.get("to") || "Bapak/Ibu/Saudara/i";
-  const weddingDate = invitation.events[0]?.date;
+  const weddingDate = invitation.coverEvent?.date;
 
   const openInvitation = () => {
     setOpened(true);

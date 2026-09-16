@@ -46,8 +46,8 @@ export default function OpeningIntro({ invitation }: { invitation: InvitationDat
           {brideName}
         </h1>
 
-        {invitation.events[0]?.date && (
-          <p className={styles.openingDate}>{invitation.events[0].date}</p>
+        {invitation.coverEvent?.date && (
+          <p className={styles.openingDate}>{invitation.coverEvent.date}</p>
         )}
       </motion.div>
     </motion.section>

@@ -72,6 +72,9 @@ export type InvitationData = {
 
   story: StoryItem[];
   events: EventItem[];
+  // Acara utama yang ditampilkan pada cover. Resepsi diprioritaskan,
+  // lalu fallback ke acara pertama bila data resepsi belum tersedia.
+  coverEvent: EventItem | null;
   gallery: string[];
 
   gifts: GiftAccount[];

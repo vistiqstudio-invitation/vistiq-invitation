@@ -36,7 +36,7 @@ export default function Cover({ invitation }: { invitation: InvitationData }) {
           <b>&amp;</b>
           <span>{(invitation.bride.nickname || invitation.bride.name)}</span>
         </h1>
-        {invitation.events[0]?.date && <p className={styles.sepiaDate}>{invitation.events[0].date}</p>}
+        {invitation.coverEvent?.date && <p className={styles.sepiaDate}>{invitation.coverEvent.date}</p>}
 
         <motion.div className={styles.sepiaGuest} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2, duration: 1 }}>
           <p>Kepada Yth. Bapak/Ibu/Saudara/i</p>

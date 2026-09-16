@@ -41,7 +41,7 @@ function Cover({ invitation }: { invitation: InvitationData }) {
         <div className={styles.doubleRule} />
         <p className={styles.coverLead}>Two hearts write the headline of a lifetime</p>
         <h2 className={styles.coverNames}>{(invitation.groom.nickname || invitation.groom.name)}<span>&amp;</span>{(invitation.bride.nickname || invitation.bride.name)}</h2>
-        <div className={styles.coverInfo}><b>{invitation.events[0]?.date}</b><span>Special Wedding Edition</span></div>
+        <div className={styles.coverInfo}><b>{invitation.coverEvent?.date}</b><span>Special Wedding Edition</span></div>
         <div className={styles.guestBox}><small>EXCLUSIVELY DELIVERED TO</small><strong>{guest}</strong><button onClick={() => setOpened(true)}>Baca Undangan <span>→</span></button></div>
         <WaxSeal className={styles.coverSeal} initials={`${(invitation.groom.nickname || invitation.groom.name)[0]}${(invitation.bride.nickname || invitation.bride.name)[0]}`} />
       </motion.div>

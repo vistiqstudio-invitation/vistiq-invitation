@@ -171,7 +171,7 @@ function Cover({ invitation, onOpen }: { invitation: InvitationData; onOpen: () 
   const guest = useSearchParams().get("to") || "Bapak/Ibu/Saudara/i";
   const bride = invitation.bride.nickname || invitation.bride.name.split(" ")[0];
   const groom = invitation.groom.nickname || invitation.groom.name.split(" ")[0];
-  const date = invitation.events[0]?.date;
+  const date = invitation.coverEvent?.date;
 
   return (
     <motion.section className={styles.cover} exit={{ y: "-120%" }} transition={{ duration: 1.65, ease: coverEase }}>
@@ -264,7 +264,7 @@ function OpeningHero({ invitation, active }: { invitation: InvitationData; activ
           <span>&amp;</span>
           <em>{groom}</em>
         </h2>
-        <p className={styles.heroDate}>{invitation.events[0]?.date || "With joy and gratitude"}</p>
+        <p className={styles.heroDate}>{invitation.coverEvent?.date || "With joy and gratitude"}</p>
       </motion.div>
 
       <motion.div

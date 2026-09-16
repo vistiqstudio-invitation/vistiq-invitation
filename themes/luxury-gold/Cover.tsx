@@ -11,13 +11,7 @@ export default function Cover({ invitation }: { invitation: InvitationData }) {
   const searchParams = useSearchParams();
   const guestName = searchParams.get("to") || "Bapak/Ibu/Saudara/i";
 
-  // This invitation specifically uses the reception date on its cover.
-  // Other Luxury Gold invitations keep using their first event date.
-  const coverEvent =
-    invitation.slug === "yulli-wahyu"
-      ? invitation.events.find((event) => event.name === "Resepsi") ||
-        invitation.events[0]
-      : invitation.events[0];
+  const coverEvent = invitation.coverEvent;
 
   return (
     <motion.section

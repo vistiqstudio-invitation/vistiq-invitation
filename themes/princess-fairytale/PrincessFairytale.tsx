@@ -116,8 +116,8 @@ function Cover({ invitation }: { invitation: InvitationData }) {
           {(invitation.groom.nickname || invitation.groom.name)}
         </h1>
         <PrincessDivider className={styles.coverDivider} />
-        {invitation.events[0]?.date && (
-          <p className={styles.coverDate}>{invitation.events[0].date}</p>
+        {invitation.coverEvent?.date && (
+          <p className={styles.coverDate}>{invitation.coverEvent.date}</p>
         )}
 
         <div className={styles.guestPanel}>

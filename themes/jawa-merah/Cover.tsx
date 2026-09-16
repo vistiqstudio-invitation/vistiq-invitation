@@ -56,8 +56,8 @@ export default function Cover({ invitation }: { invitation: InvitationData }) {
           {(invitation.bride.nickname || invitation.bride.name.split(" ")[0])}
         </h1>
 
-        {invitation.events[0]?.date && (
-          <p className={styles.coverDate}>{invitation.events[0].date}</p>
+        {invitation.coverEvent?.date && (
+          <p className={styles.coverDate}>{invitation.coverEvent.date}</p>
         )}
 
         <div className={styles.coverGuestBlock}>

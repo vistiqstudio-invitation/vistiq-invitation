@@ -52,8 +52,8 @@ export default function Cover({ invitation }: { invitation: InvitationData }) {
           <MeruRoof className={styles.coverMark} />
           <h1 className={styles.coverTitle}>{(invitation.bride.nickname || invitation.bride.name)}</h1>
 
-          {invitation.events[0]?.date && (
-            <p className={styles.coverDate}>{invitation.events[0].date}</p>
+          {invitation.coverEvent?.date && (
+            <p className={styles.coverDate}>{invitation.coverEvent.date}</p>
           )}
         </div>
       </motion.div>

@@ -52,14 +52,14 @@ export default function Cover({ invitation }: { invitation: InvitationData }) {
         {(invitation.bride.nickname || invitation.bride.name).split(" ")[0]}
       </motion.h1>
 
-      {invitation.events[0]?.date && (
+      {invitation.coverEvent?.date && (
         <motion.p
           className={styles.coverDate}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.6 }}
         >
-          {invitation.events[0].date}
+          {invitation.coverEvent.date}
         </motion.p>
       )}
 

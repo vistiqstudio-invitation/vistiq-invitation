@@ -238,6 +238,7 @@ function normalizeInvitation(raw: Record<string, any>): InvitationData {
 
     story,
     events,
+    coverEvent: events.find((event) => event.name === "Resepsi") || events[0] || null,
     gallery,
 
     gifts,

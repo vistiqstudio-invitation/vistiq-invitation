@@ -14,7 +14,7 @@ export default function Cover({ invitation }: { invitation: InvitationData }) {
   const searchParams = useSearchParams();
   const guestName = searchParams.get("to") || "Bapak/Ibu/Saudara/i";
 
-  const weddingDate = invitation.events[0]?.rawDate || null;
+  const weddingDate = invitation.coverEvent?.rawDate || null;
   const time = useCountdown(weddingDate);
 
   const items = [
@@ -63,8 +63,8 @@ export default function Cover({ invitation }: { invitation: InvitationData }) {
           {(invitation.bride.nickname || invitation.bride.name)}
         </h1>
 
-        {invitation.events[0]?.date && (
-          <p className={styles.coverDate}>{invitation.events[0].date}</p>
+        {invitation.coverEvent?.date && (
+          <p className={styles.coverDate}>{invitation.coverEvent.date}</p>
         )}
 
         {weddingDate && !time.isPast && (

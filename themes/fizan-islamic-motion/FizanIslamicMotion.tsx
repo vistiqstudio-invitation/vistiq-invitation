@@ -175,7 +175,7 @@ function Cover({ invitation, onOpen, onBegin }: { invitation: InvitationData; on
   const [videoTime, setVideoTime] = useState(0);
   const [videoDuration, setVideoDuration] = useState(14.42);
   const videoSource = useChunkedOpeningVideo();
-  const event = invitation.events[0];
+  const event = invitation.coverEvent;
   const coverPhoto = invitation.coverImage || COVER_PHOTO;
 
   const openingProgress = clamp(
