@@ -11,6 +11,14 @@ export default function Cover({ invitation }: { invitation: InvitationData }) {
   const searchParams = useSearchParams();
   const guestName = searchParams.get("to") || "Bapak/Ibu/Saudara/i";
 
+  // This invitation specifically uses the reception date on its cover.
+  // Other Luxury Gold invitations keep using their first event date.
+  const coverEvent =
+    invitation.slug === "yulli-wahyu"
+      ? invitation.events.find((event) => event.name === "Resepsi") ||
+        invitation.events[0]
+      : invitation.events[0];
+
   return (
     <motion.section
       className={styles.cover}
@@ -46,8 +54,8 @@ export default function Cover({ invitation }: { invitation: InvitationData }) {
           {(invitation.bride.nickname || invitation.bride.name)}
         </h1>
 
-        {invitation.events[0]?.date && (
-          <p className={styles.coverDate}>{invitation.events[0].date}</p>
+        {coverEvent?.date && (
+          <p className={styles.coverDate}>{coverEvent.date}</p>
         )}
       </motion.div>
 
