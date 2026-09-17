@@ -76,7 +76,7 @@ function Hero({ invitation, active }: { invitation: InvitationData; active: bool
       <GardenScene staged active={active}/>
       <motion.div className={styles.heroTitle} initial={{ opacity: 0, y: -24 }} animate={active ? { opacity: 1, y: 0 } : { opacity: 0, y: -24 }} transition={{ delay: .65, duration: .8, ease: revealEase }}><p>The Wedding of</p><h2><em>{bride}</em><span>&amp;</span><em>{groom}</em></h2></motion.div>
       <div className={styles.heroPortrait}><motion.div initial={{ opacity: 0, scale: 1.25, filter: "blur(10px)" }} animate={active ? { opacity: 1, scale: 1, filter: "blur(0px)" } : { opacity: 0, scale: 1.25, filter: "blur(10px)" }} transition={{ delay: 1.05, duration: 1.25, ease: revealEase }}><OvalPortrait src={invitation.gallery[0] || invitation.coverImage} alt={`${bride} dan ${groom}`} priority/></motion.div></div>
-      <motion.p className={styles.heroDate} initial={{ opacity: 0, y: 16 }} animate={active ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }} transition={{ delay: 1.75, duration: .75, ease: revealEase }}>{invitation.events[0]?.date}</motion.p>
+      <motion.p className={styles.heroDate} initial={{ opacity: 0, y: 16 }} animate={active ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }} transition={{ delay: 1.75, duration: .75, ease: revealEase }}>{invitation.coverEvent?.date}</motion.p>
     </section>
   );
 }

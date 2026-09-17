@@ -41,7 +41,7 @@ function frameDate(invitation?: InvitationFrameData) {
   if (!invitation) return "";
 
   if (invitation.category === "wedding") {
-    return invitation.events[0]?.date || "";
+    return invitation.coverEvent?.date || invitation.events[0]?.date || "";
   }
 
   if (invitation.category === "aqiqah") {

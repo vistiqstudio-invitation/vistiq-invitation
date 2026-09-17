@@ -88,7 +88,7 @@ function Hero({ invitation, active }: { invitation: InvitationData; active: bool
     <div className={styles.paperLandscape} /><Branch className={styles.heroBranchLeft} /><Branch className={styles.heroBranchRight} />
     <motion.div className={styles.heroArch} initial={{ opacity: 0, y: 34 }} animate={active ? { opacity: 1, y: 0 } : { opacity: 0, y: 34 }} transition={{ duration: 1.25, delay: .45, ease }}>
       <small>The Wedding of</small><ArchPhoto src={invitation.coverImage} alt={`${bride} dan ${groom}`} />
-      <h1>{bride} &amp; {groom}</h1><p>{invitation.events[0]?.date}</p>
+      <h1>{bride} &amp; {groom}</h1><p>{invitation.coverEvent?.date}</p>
     </motion.div>
   </section>;
 }

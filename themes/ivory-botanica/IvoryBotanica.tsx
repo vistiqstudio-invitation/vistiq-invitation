@@ -177,6 +177,7 @@ function applyInvitationData(documentRoot: Document, invitation: InvitationData,
   const groomShort = shortName(invitation.groom);
   const brideShort = shortName(invitation.bride);
   const firstEvent = invitation.events[0];
+  const coverEvent = invitation.coverEvent || firstEvent;
   const groomNameToken = "__IVORY_BOTANICA_GROOM_NAME__";
   const brideNameToken = "__IVORY_BOTANICA_BRIDE_NAME__";
 
@@ -200,8 +201,8 @@ function applyInvitationData(documentRoot: Document, invitation: InvitationData,
     ".elementor-element-633aaeac .elementor-widget-container",
   );
   if (guestMarker) guestMarker.textContent = guest;
-  replaceText(documentRoot, LEGACY_REFERENCE_DATE, firstEvent?.date || REFERENCE_DATE);
-  replaceText(documentRoot, REFERENCE_DATE, firstEvent?.date || REFERENCE_DATE);
+  replaceText(documentRoot, LEGACY_REFERENCE_DATE, coverEvent?.date || REFERENCE_DATE);
+  replaceText(documentRoot, REFERENCE_DATE, coverEvent?.date || REFERENCE_DATE);
 
   setParents(documentRoot, "pria", invitation.groom.parents);
   setParents(documentRoot, "wanita", invitation.bride.parents);

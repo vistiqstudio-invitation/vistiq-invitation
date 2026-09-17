@@ -256,10 +256,10 @@ function Cover({ invitation, onOpen }: { invitation: InvitationData; onOpen: () 
 function Hero({ invitation }: { invitation: InvitationData }) {
   const bride = firstName(invitation.bride.name, invitation.bride.nickname);
   const groom = firstName(invitation.groom.name, invitation.groom.nickname);
-  const date = eventDateParts(invitation.events[0]);
+  const date = eventDateParts(invitation.coverEvent || undefined);
   const dateLabel = date.weekday
     ? `${date.weekday.toUpperCase()}, ${date.day} ${date.month.toUpperCase()} ${date.year}`
-    : invitation.events[0]?.date || "SAVE THE DATE";
+    : invitation.coverEvent?.date || "SAVE THE DATE";
 
   return (
     <section className={styles.heroPanel} data-opening-hero aria-label="Halaman pembuka undangan">

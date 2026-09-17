@@ -122,7 +122,7 @@ function Cover({ invitation, onOpen, staticMode = false }: { invitation: Invitat
 function Hero({ invitation }: { invitation: InvitationData }) {
   const bride = firstName(invitation.bride.name, invitation.bride.nickname);
   const groom = firstName(invitation.groom.name, invitation.groom.nickname);
-  const p = dateParts(invitation.events[0]?.rawDate || invitation.events[0]?.date);
+  const p = dateParts(invitation.coverEvent?.rawDate || invitation.coverEvent?.date);
   const slides = useMemo(() => Array.from(new Set([invitation.gallery[0], invitation.gallery[1], invitation.gallery[2], invitation.coverImage].filter(Boolean) as string[])).slice(0, 3), [invitation.gallery, invitation.coverImage]);
   const [active, setActive] = useState(0);
   useEffect(() => {

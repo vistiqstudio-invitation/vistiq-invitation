@@ -837,7 +837,7 @@ function prepareReference(
   setText(
     doc,
     "#home .elementor-element-37111d94 .elementor-widget-container",
-    firstEvent?.date || ""
+    invitation.coverEvent?.date || firstEvent?.date || ""
   );
   setLink(doc, "#home .elementor-element-6bc8e42c a", "#date", "Save The Date");
 

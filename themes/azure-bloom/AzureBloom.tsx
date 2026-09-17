@@ -360,7 +360,7 @@ function prepareReference(
     "#home .elementor-element-3da322da .elementor-widget-container",
     invitation.opening.description?.trim() || "Kami berharap Anda menjadi bagian dari hari istimewa kami.",
   );
-  setText(doc, "#home .elementor-element-31d6eccf .elementor-widget-container", firstEvent?.date || "");
+  setText(doc, "#home .elementor-element-31d6eccf .elementor-widget-container", invitation.coverEvent?.date || firstEvent?.date || "");
 
   setText(doc, "#mempelai .elementor-element-5db6a90 .elementor-heading-title", invitation.opening.greeting?.trim() || "Assalamu'alaikum Wr. Wb");
   setText(doc, "#mempelai .elementor-element-54f7706b .elementor-widget-container", PLACEHOLDER_INTRO);
