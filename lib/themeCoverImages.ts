@@ -54,6 +54,17 @@ export const THEME_CARD_PREVIEW_BY_THEME: Record<string, string> = {
   "emerald-elan": "/theme-previews/wedding/emerald-elan.jpg",
   "fizan-islamic-motion": "/theme-previews/wedding/fizan-islamic-motion-card.jpg",
   "azure-bloom": "/theme-previews/wedding/azure-bloom-motion-card.jpg",
+
+  // Dedicated catalog cover for every Luxury Art theme. These paths are intentionally
+  // separate from each theme's portrait screenshot so one theme's cover cannot leak
+  // into another theme or repeat across the screenshot deck.
+  "3d-motion": "/theme-previews/wedding/luxury-art-botanical-romance-card.jpg",
+  "luxury-art-champagne-romance": "/theme-previews/wedding/luxury-art-champagne-romance-card.jpg",
+  "luxury-art-garden": "/theme-previews/wedding/luxury-art-garden-valley-card.jpg",
+  "luxury-art-java-heritage": "/theme-previews/wedding/luxury-art-java-heritage-card.jpg",
+  "luxury-art-love-paradise": "/theme-previews/wedding/luxury-art-love-paradise-card.jpg",
+  "luxury-art-soft": "/theme-previews/wedding/luxury-art-soft-card.jpg",
+  "luxury-art-sakura": "/theme-previews/wedding/luxury-art-sakura-romance-card.jpg",
   "golden-romance": "/theme-previews/wedding/golden-romance-card.jpg",
   "ivory-botanica": "/theme-previews/wedding/ivory-botanica-card.jpg",
 };
