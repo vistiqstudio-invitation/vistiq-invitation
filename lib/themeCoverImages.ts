@@ -67,6 +67,13 @@ export const THEME_CARD_PREVIEW_BY_THEME: Record<string, string> = {
   "luxury-art-sakura": "/theme-previews/wedding/luxury-art-sakura-romance-card.jpg",
   "golden-romance": "/theme-previews/wedding/golden-romance-card.jpg",
   "ivory-botanica": "/theme-previews/wedding/ivory-botanica-card.jpg",
+
+  // Dedicated catalog cover for every Reguler theme. Keep these separate from
+  // the portrait screenshot assets so each category card stays matched to its theme.
+  "floral-garden": "/theme-previews/wedding/reguler-floral-garden-card.jpg",
+  "minimal-white": "/theme-previews/wedding/reguler-minimal-white-card.jpg",
+  "pastel-studio": "/theme-previews/wedding/reguler-pastel-studio-card.jpg",
+  "sage-green": "/theme-previews/wedding/reguler-sage-green-card.jpg",
 };
 
 const KHITAN_COVER = "/photos/khitan-warna-cover.jpg";
