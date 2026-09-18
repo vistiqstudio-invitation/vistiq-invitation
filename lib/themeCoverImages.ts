@@ -52,8 +52,8 @@ export const THEME_CARD_PREVIEW_BY_THEME: Record<string, string> = {
   "minimal-white": "/theme-previews/wedding/minimal-white-card.jpg",
   "islamic-green": "/theme-previews/wedding/islamic-green-card.jpg",
   "emerald-elan": "/theme-previews/wedding/emerald-elan.jpg",
-  "fizan-islamic-motion": "/theme-previews/wedding/fizan-islamic-motion.jpg",
-  "azure-bloom": "/theme-previews/wedding/azure-bloom-motion.jpg",
+  "fizan-islamic-motion": "/theme-previews/wedding/fizan-islamic-motion-card.jpg",
+  "azure-bloom": "/theme-previews/wedding/azure-bloom-motion-card.jpg",
   "golden-romance": "/theme-previews/wedding/golden-romance-card.jpg",
   "ivory-botanica": "/theme-previews/wedding/ivory-botanica-card.jpg",
 };
