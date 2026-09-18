@@ -189,10 +189,6 @@ function setGallery(documentRoot: Document, gallery: string[], stories: Invitati
     }
   });
 
-  documentRoot.querySelectorAll<HTMLElement>(".elementor-background-slideshow__slide__image").forEach((slide, index) => {
-    slide.style.backgroundImage = `url("${photos[index % photos.length]}")`;
-  });
-
   const storySlots: StorySlot[] = [
     { image: "3d7eb3af", title: "747796af", description: "44652b1a" },
     { image: "579a9a8b", title: "2fb093e1", description: "7b9aa61a" },
@@ -204,7 +200,7 @@ function setGallery(documentRoot: Document, gallery: string[], stories: Invitati
     const story = stories[index];
     if (!story) return;
     setWidgetImage(documentRoot, slot.image, photos[index % photos.length], `Cerita ${story.title}`);
-    setWidgetText(documentRoot, slot.title, `${story.year} — ${story.title}`);
+    setWidgetText(documentRoot, slot.title, story.year ? `${story.year} — ${story.title}` : story.title);
     setWidgetText(documentRoot, slot.description, story.description);
   });
 }
@@ -282,7 +278,13 @@ function setSocialLinks(documentRoot: Document, invitation: InvitationData) {
 
   documentRoot.querySelectorAll<HTMLAnchorElement>("a").forEach((anchor) => {
     if (anchor.querySelector("i.fa-whatsapp, i.fab.fa-whatsapp")) {
-      setAnchor(anchor, VISTIQ_ADMIN_WHATSAPP_URL);
+      const raw = invitation.contactWhatsapp?.trim() || "";
+      const whatsapp = raw.startsWith("http")
+        ? raw
+        : raw
+          ? `https://wa.me/${raw.replace(/\D/g, "").replace(/^0/, "62")}`
+          : VISTIQ_ADMIN_WHATSAPP_URL;
+      setAnchor(anchor, whatsapp);
       replaceFontAwesomeIcon(documentRoot, anchor, "whatsapp");
     }
   });
@@ -396,6 +398,10 @@ function applyInvitationData(documentRoot: Document, invitation: InvitationData,
   if (coverEvent) setWidgetText(documentRoot, "a160f53", coverEvent.date);
   setGuestWidget(documentRoot, "16c0cd89", guest);
 
+  if (invitation.coverImage) {
+    setWidgetImage(documentRoot, "10d02f95", invitation.coverImage, coupleTitle);
+  }
+
   setWidgetImage(documentRoot, "514ffad0", invitation.bride.photo || "/photos/adat-bali-bride.webp", invitation.bride.name);
   setWidgetImage(documentRoot, "3c269c52", invitation.groom.photo || "/photos/adat-bali-groom.webp", invitation.groom.name);
   setWidgetText(documentRoot, "5b0f10f9", brideShort);
@@ -407,6 +413,8 @@ function applyInvitationData(documentRoot: Document, invitation: InvitationData,
 
   if (invitation.opening.quote) setWidgetText(documentRoot, "6bf6ebb7", invitation.opening.quote);
   if (invitation.opening.quoteSource) setWidgetText(documentRoot, "13a55786", invitation.opening.quoteSource);
+  if (invitation.opening.greeting) setWidgetText(documentRoot, "5f174049", invitation.opening.greeting);
+  if (invitation.opening.description) setWidgetText(documentRoot, "269f6844", invitation.opening.description);
 
   if (invitation.events[0]) {
     setEventBlock(documentRoot, invitation.events[0], {
@@ -424,6 +432,7 @@ function applyInvitationData(documentRoot: Document, invitation: InvitationData,
   setCountdown(documentRoot, coverEvent?.rawDate || firstEvent?.rawDate || null);
 
   setGallery(documentRoot, invitation.gallery, invitation.story);
+  setBackgroundVideo(documentRoot, invitation.videoUrl);
   setGiftData(documentRoot, invitation, coupleTitle);
   setSocialLinks(documentRoot, invitation);
   setAudioSource(documentRoot, invitation.musicUrl);
@@ -436,6 +445,14 @@ function applyInvitationData(documentRoot: Document, invitation: InvitationData,
   if (titleMeta) titleMeta.content = coupleTitle;
   const imageMeta = documentRoot.querySelector<HTMLMetaElement>('meta[property="og:image"]');
   if (imageMeta && invitation.coverImage) imageMeta.content = invitation.coverImage;
+}
+
+function setBackgroundVideo(documentRoot: Document, videoUrl: string | null) {
+  if (!videoUrl) return;
+  const video = documentRoot.querySelector<HTMLVideoElement>("#bukaUndangan video.elementor-background-video-hosted");
+  if (!video) return;
+  video.src = videoUrl;
+  video.load();
 }
 
 function setAudioSource(documentRoot: Document, musicUrl: string | null) {

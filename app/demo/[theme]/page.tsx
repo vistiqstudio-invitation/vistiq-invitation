@@ -14,6 +14,7 @@ import { withThreeDMotionDemoAssets } from "@/lib/threeDMotionDemo";
 import { withPremium3DMotionDemoAssets } from "@/lib/premium3DMotionDemo";
 import { withFizanIslamicMotionDemoAssets } from "@/lib/fizanIslamicMotionDemo";
 import { withAzureBloomDemoAssets } from "@/lib/azureBloomDemo";
+import { withAdatBaliMotionDemoAssets } from "@/lib/adatBaliMotionDemo";
 import WeddingThemeSafeArea from "@/components/WeddingThemeSafeArea";
 
 export default async function DemoThemePage({
@@ -40,6 +41,7 @@ export default async function DemoThemePage({
   invitation = withPremium3DMotionDemoAssets(theme, invitation);
   invitation = withFizanIslamicMotionDemoAssets(theme, invitation);
   invitation = withAzureBloomDemoAssets(theme, invitation);
+  invitation = withAdatBaliMotionDemoAssets(theme, invitation);
 
   return (
     <WeddingThemeSafeArea theme={theme} invitation={invitation}>
