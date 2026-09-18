@@ -37,6 +37,7 @@ const WEDDING_SUBFILTERS = [
   { key: "semua", label: "Semua Tema" },
   { key: "premium", label: "Tema Premium" },
   { key: "premium-3d-motion", label: "Tema Premium 3D Motion" },
+  { key: "3d-motion-adat", label: "3D Motion Adat" },
   { key: "luxury-art", label: "Luxury Art" },
   { key: "reguler", label: "Tema Reguler" },
   { key: "adat", label: "Tema Adat" },
