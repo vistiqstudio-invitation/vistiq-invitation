@@ -25,7 +25,7 @@ export function withAdatBaliMotionDemoAssets(
   return {
     ...invitation,
     coverImage: coverPhoto,
-        // Use Vistiq's own Adat Bali opening video instead of the reference video's asset.
+    // Use Vistiq's own Adat Bali opening video instead of the reference video's asset.
     videoUrl: OPENING_VIDEO,
     opening: {
       ...invitation.opening,

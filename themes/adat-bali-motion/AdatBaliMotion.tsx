@@ -335,12 +335,28 @@ function wireLocalForms(documentRoot: Document) {
   );
 }
 
+function removeThirdPartyVideo(documentRoot: Document) {
+  documentRoot.querySelector<HTMLElement>('[data-id="7fb120df"]')?.remove();
+
+  documentRoot.querySelectorAll<HTMLIFrameElement>(
+    'iframe[src*="youtube.com"], iframe[src*="youtu.be"], iframe[src*="pWtP7PPaQtI"]',
+  ).forEach((frame) => frame.remove());
+
+  documentRoot.querySelectorAll<HTMLAnchorElement>('a[href*="youtube.com"], a[href*="youtu.be"]').forEach((anchor) => {
+    anchor.closest<HTMLElement>('[data-id="5a9868e"]')?.remove();
+    if (anchor.isConnected) anchor.remove();
+  });
+}
+
 function appendOverrides(documentRoot: Document, coupleTitle: string) {
   if (documentRoot.getElementById("vistiq-adat-bali-motion-overrides")) return;
   const style = documentRoot.createElement("style");
   style.id = "vistiq-adat-bali-motion-overrides";
   style.textContent = `
     :root, body { background: ${PURPLE_DEEP} !important; }
+    body, body[unresolved] { opacity: 1 !important; visibility: visible !important; display: block !important; }
+    .elementor-invisible, [data-aos] { visibility: visible !important; opacity: 1 !important; }
+    [data-id="7fb120df"] { display: none !important; }
     [data-id="2ea54e2e"], [data-id="217a781e"] { background-color: ${PURPLE} !important; }
     [data-id="38e771dc"] .elementor-button,
     [data-id="26d7ca8f"] .elementor-button,
@@ -472,6 +488,7 @@ function applyInvitationData(documentRoot: Document, invitation: InvitationData,
   setCountdown(documentRoot, coverEvent?.rawDate || firstEvent?.rawDate || null);
 
   setGallery(documentRoot, invitation.gallery, invitation.story);
+  removeThirdPartyVideo(documentRoot);
   setBackgroundVideo(documentRoot, invitation.videoUrl);
   setGiftData(documentRoot, invitation, coupleTitle);
   setSocialLinks(documentRoot, invitation);
@@ -492,7 +509,14 @@ function setBackgroundVideo(documentRoot: Document, videoUrl: string | null) {
   const video = documentRoot.querySelector<HTMLVideoElement>("#bukaUndangan video.elementor-background-video-hosted");
   if (!video) return;
   video.src = videoUrl;
+  video.muted = true;
+  video.autoplay = true;
+  video.playsInline = true;
+  video.style.setProperty("display", "block", "important");
+  video.style.setProperty("visibility", "visible", "important");
+  video.style.setProperty("opacity", "1", "important");
   video.load();
+  void video.play().catch(() => undefined);
 }
 
 function setAudioSource(documentRoot: Document, musicUrl: string | null) {
@@ -511,8 +535,14 @@ export default function AdatBaliMotion({ invitation }: { invitation: InvitationD
   const guest = searchParams.get("to")?.trim() || "Bapak/Ibu/Saudara/i";
 
   const handleLoad = useCallback(() => {
-    const documentRoot = iframeRef.current?.contentDocument;
-    if (documentRoot) applyInvitationData(documentRoot, invitation, guest);
+    const hydrate = () => {
+      const documentRoot = iframeRef.current?.contentDocument;
+      if (documentRoot) applyInvitationData(documentRoot, invitation, guest);
+    };
+
+    hydrate();
+    window.setTimeout(hydrate, 250);
+    window.setTimeout(hydrate, 1000);
   }, [guest, invitation]);
 
   return (
