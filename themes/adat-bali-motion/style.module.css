@@ -1,0 +1,17 @@
+.root {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  min-height: 100svh;
+  overflow: hidden;
+  background: #2b0b46;
+}
+
+.frame {
+  display: block;
+  width: 100%;
+  height: 100svh;
+  min-height: 100vh;
+  border: 0;
+  background: #2b0b46;
+}

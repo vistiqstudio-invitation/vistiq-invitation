@@ -42,6 +42,7 @@ const GROOM_PHOTO_BY_THEME: Record<string, string> = {
   "sage-green": "/photos/floral-groom.webp",
   sahara: "/photos/rustic-groom.webp",
   "adat-bali": "/photos/adat-bali-groom.webp",
+  "adat-bali-motion": "/photos/adat-bali-groom.webp",
   "adat-sunda": "/photos/adat-sunda-groom.webp",
 };
 
@@ -64,6 +65,7 @@ const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
   "golden-romance": "/photos/romance-bride.webp",
   "adat-jawa": "/photos/jawa-bride.webp",
   "adat-bali": "/photos/adat-bali-bride.webp",
+  "adat-bali-motion": "/photos/adat-bali-bride.webp",
   "adat-sunda": "/photos/adat-sunda-bride.webp",
   "adat-minang": "/photos/luxury-bride.webp",
   "adat-bugis": "/photos/lantern-bride.webp",
@@ -358,6 +360,14 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
     "/photos/adat-bali-gallery-5.webp",
     "/photos/adat-bali-gallery-6.webp",
   ],
+  "adat-bali-motion": [
+    "/photos/adat-bali-gallery-1.webp",
+    "/photos/adat-bali-gallery-2.webp",
+    "/photos/adat-bali-gallery-3.webp",
+    "/photos/adat-bali-gallery-4.webp",
+    "/photos/adat-bali-gallery-5.webp",
+    "/photos/adat-bali-gallery-6.webp",
+  ],
   "adat-sunda": [
     "/photos/adat-sunda-gallery-1.webp",
     "/photos/adat-sunda-gallery-2.webp",
@@ -387,6 +397,7 @@ const MUSIC_BY_THEME: Record<string, string> = {
   "luxury-art-java-heritage": WEDDING_VOCAL_TRACKS.islamicRomance,
   "luxury-art-sakura": WEDDING_VOCAL_TRACKS.englishBallad,
   "adat-bali": WEDDING_VOCAL_TRACKS.indonesianBallad,
+  "adat-bali-motion": "/music/adat-bali.mp3",
   "adat-sunda": WEDDING_VOCAL_TRACKS.indonesianBallad,
   "adat-minang": WEDDING_VOCAL_TRACKS.minangWedding,
   "adat-bugis": WEDDING_VOCAL_TRACKS.indonesianBallad,

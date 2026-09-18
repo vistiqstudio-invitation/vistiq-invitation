@@ -33,6 +33,7 @@ export const WEDDING_COVER_BY_THEME: Record<string, string> = {
   "sage-green": "/photos/floral-cover.webp",
   sahara: "/photos/rustic-cover.webp",
   "adat-bali": "/photos/adat-bali-cover.webp",
+  "adat-bali-motion": "/photos/adat-bali-cover.webp",
   "adat-sunda": "/photos/adat-sunda-cover.webp",
   "midnight-aurora": "/photos/black-cover.webp",
   "luxury-art-garden": "/photos/floral-cover.webp",
@@ -70,6 +71,7 @@ export const THEME_CARD_PREVIEW_BY_THEME: Record<string, string> = {
   "luxury-art-sakura": "/theme-previews/wedding/luxury-art-sakura-romance-card.jpg",
   "golden-romance": "/theme-previews/wedding/golden-romance-card.jpg",
   "ivory-botanica": "/theme-previews/wedding/ivory-botanica-card.jpg",
+  "adat-bali-motion": "/theme-previews/wedding/adat-bali-motion.jpg",
 
 };
 
