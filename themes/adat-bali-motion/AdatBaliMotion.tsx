@@ -369,6 +369,45 @@ function localizeLinks(documentRoot: Document) {
   });
 }
 
+function initialiseScrollMotion(documentRoot: Document) {
+  const body = documentRoot.body;
+  body?.removeAttribute("unresolved");
+  if (body) {
+    body.style.opacity = "1";
+    body.style.visibility = "visible";
+  }
+
+  documentRoot.querySelectorAll<HTMLElement>(".elementor-invisible").forEach((element) => {
+    element.classList.remove("elementor-invisible");
+  });
+
+  const animated = Array.from(documentRoot.querySelectorAll<HTMLElement>("[data-aos]"));
+  animated.forEach((element) => {
+    element.classList.add("aos-init");
+    element.style.visibility = "visible";
+  });
+
+  const reveal = (element: HTMLElement) => element.classList.add("aos-animate");
+  const view = documentRoot.defaultView;
+  if (!animated.length || !view || !view.IntersectionObserver) {
+    animated.forEach(reveal);
+    return;
+  }
+
+  const observer = new view.IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      const element = entry.target as HTMLElement;
+      if (entry.isIntersecting) {
+        reveal(element);
+      } else {
+        element.classList.remove("aos-animate");
+      }
+    });
+  }, { rootMargin: "0px 0px -10% 0px", threshold: 0.08 });
+
+  animated.forEach((element) => observer.observe(element));
+}
+
 function applyInvitationData(documentRoot: Document, invitation: InvitationData, guest: string) {
   const groomShort = shortName(invitation.groom);
   const brideShort = shortName(invitation.bride);
@@ -379,6 +418,7 @@ function applyInvitationData(documentRoot: Document, invitation: InvitationData,
 
   documentRoot.title = `${coupleTitle} — 3D Motion Adat Bali`;
   documentRoot.documentElement.lang = "id";
+  initialiseScrollMotion(documentRoot);
 
   replaceText(documentRoot, "Elyana & Syahril", coupleTitle);
   replaceText(documentRoot, "Elyana Azkiya Nur", invitation.bride.name);

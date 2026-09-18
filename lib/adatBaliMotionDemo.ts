@@ -1,21 +1,19 @@
 import type { InvitationData } from "@/types/invitation";
 
-const ASSET_ROOT = "/themes/adat-bali-motion/reference/Tema 3d Adat Bali 2_files";
-const REFERENCE_MEDIA_ROOT = "https://hallomoment.my.id/wp-content/uploads/2026/05";
+const PHOTO_ROOT = "/photos";
+const OPENING_VIDEO = "/video/adat-bali-opening.mp4";
 
-const coverPhoto = `${ASSET_ROOT}/01_aDAT_BALI-3.jpg`;
-const bridePhoto = `${ASSET_ROOT}/01_aDAT_BALI-1.jpg`;
-const groomPhoto = `${ASSET_ROOT}/01_aDAT_BALI-2.jpg`;
+const coverPhoto = `${PHOTO_ROOT}/adat-bali-cover.webp`;
+const bridePhoto = `${PHOTO_ROOT}/adat-bali-bride.webp`;
+const groomPhoto = `${PHOTO_ROOT}/adat-bali-groom.webp`;
 
 const gallery = [
-  `${ASSET_ROOT}/01_aDAT_BALI-10.jpg`,
-  `${REFERENCE_MEDIA_ROOT}/01_aDAT_BALI-9.jpg`,
-  `${REFERENCE_MEDIA_ROOT}/01_aDAT_BALI-8.jpg`,
-  `${ASSET_ROOT}/01_aDAT_BALI-7.jpg`,
-  `${ASSET_ROOT}/01_aDAT_BALI-6.jpg`,
-  `${ASSET_ROOT}/01_aDAT_BALI-3.jpg`,
-  `${REFERENCE_MEDIA_ROOT}/01_aDAT_BALI-4.jpg`,
-  `${ASSET_ROOT}/01_aDAT_BALI-5.jpg`,
+  `${PHOTO_ROOT}/adat-bali-gallery-1.webp`,
+  `${PHOTO_ROOT}/adat-bali-gallery-2.webp`,
+  `${PHOTO_ROOT}/adat-bali-gallery-3.webp`,
+  `${PHOTO_ROOT}/adat-bali-gallery-4.webp`,
+  `${PHOTO_ROOT}/adat-bali-gallery-5.webp`,
+  `${PHOTO_ROOT}/adat-bali-gallery-6.webp`,
 ];
 
 export function withAdatBaliMotionDemoAssets(
@@ -27,9 +25,8 @@ export function withAdatBaliMotionDemoAssets(
   return {
     ...invitation,
     coverImage: coverPhoto,
-    // Keep the reference's Bali opening video in the static reference page.
-    // A custom invitation video, when supplied, is still applied by the theme.
-    videoUrl: null,
+        // Use Vistiq's own Adat Bali opening video instead of the reference video's asset.
+    videoUrl: OPENING_VIDEO,
     opening: {
       ...invitation.opening,
       greeting: "Om Swastyastu",
