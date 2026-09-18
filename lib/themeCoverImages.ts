@@ -49,7 +49,7 @@ export const THEME_CARD_PREVIEW_BY_THEME: Record<string, string> = {
   "lavender-garden-motion": "/theme-previews/wedding/lavender-garden-motion-card.jpg",
   "luxury-gold": "/theme-previews/wedding/luxury-gold-card.jpg",
   "modern-elegant": "/theme-previews/wedding/modern-elegant-card.jpg",
-  "minimal-white": "/theme-previews/wedding/minimal-white-card.jpg",
+  "minimal-white": "/theme-previews/wedding/reguler-minimal-white-card.jpg",
   "islamic-green": "/theme-previews/wedding/islamic-green-card.jpg",
   "emerald-elan": "/theme-previews/wedding/emerald-elan.jpg",
   "fizan-islamic-motion": "/theme-previews/wedding/fizan-islamic-motion-card.jpg",
@@ -68,12 +68,6 @@ export const THEME_CARD_PREVIEW_BY_THEME: Record<string, string> = {
   "golden-romance": "/theme-previews/wedding/golden-romance-card.jpg",
   "ivory-botanica": "/theme-previews/wedding/ivory-botanica-card.jpg",
 
-  // Dedicated catalog cover for every Reguler theme. Keep these separate from
-  // the portrait screenshot assets so each category card stays matched to its theme.
-  "floral-garden": "/theme-previews/wedding/reguler-floral-garden-card.jpg",
-  "minimal-white": "/theme-previews/wedding/reguler-minimal-white-card.jpg",
-  "pastel-studio": "/theme-previews/wedding/reguler-pastel-studio-card.jpg",
-  "sage-green": "/theme-previews/wedding/reguler-sage-green-card.jpg",
 };
 
 const KHITAN_COVER = "/photos/khitan-warna-cover.jpg";
