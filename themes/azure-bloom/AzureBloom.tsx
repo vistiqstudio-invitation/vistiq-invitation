@@ -237,6 +237,55 @@ function setGallery(doc: Document, invitation: InvitationData) {
   });
 }
 
+function setLoveStory(doc: Document, invitation: InvitationData) {
+  const stories = invitation.story.filter(
+    (item) => item.year?.trim() || item.title?.trim() || item.description?.trim(),
+  );
+  if (stories.length === 0) return;
+
+  const list = doc.querySelector<HTMLElement>(
+    ".elementor-element-14f7c491 .idb-timeline__list",
+  );
+  const template = list?.querySelector<HTMLElement>(".idb-timeline__item");
+  if (!list || !template) return;
+
+  list.replaceChildren();
+
+  stories.forEach((story, index) => {
+    const item = template.cloneNode(true) as HTMLElement;
+    const content = item.querySelector<HTMLElement>(".idb-timeline__content");
+    const title = item.querySelector<HTMLElement>(".idb-timeline__title");
+    const description = item.querySelector<HTMLElement>(".idb-timeline__desc");
+
+    if (content) {
+      const delay = String(index * 180);
+      content.dataset.revealDelay = delay;
+      content.style.setProperty("--idb-tl-reveal-delay", `${delay}ms`);
+    }
+
+    if (title) {
+      title.textContent = story.title?.trim() || story.year?.trim() || "";
+      const year = story.year?.trim();
+      if (year && year !== title.textContent) {
+        const yearElement = doc.createElement("p");
+        yearElement.className = "vistiq-story-year";
+        yearElement.textContent = year;
+        title.before(yearElement);
+      }
+    }
+
+    if (description) {
+      description.replaceChildren();
+      const copy = doc.createElement("span");
+      copy.className = "niku-multiline";
+      copy.textContent = story.description?.trim() || "";
+      description.append(copy);
+    }
+
+    list.append(item);
+  });
+}
+
 function updateCountdown(doc: Document, event: EventItem | undefined) {
   if (!event?.rawDate) return () => undefined;
 
@@ -467,6 +516,7 @@ function prepareReference(
 
   setAudioSource(doc, invitation.musicUrl);
   setGallery(doc, invitation);
+  setLoveStory(doc, invitation);
 
   const quoteVideo = doc.querySelector<HTMLIFrameElement>(".bisdev-invite-video__iframe");
   const quoteVideoWidget = quoteVideo?.closest<HTMLElement>(
