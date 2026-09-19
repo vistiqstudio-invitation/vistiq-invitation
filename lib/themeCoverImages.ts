@@ -71,7 +71,7 @@ export const THEME_CARD_PREVIEW_BY_THEME: Record<string, string> = {
   "luxury-art-sakura": "/theme-previews/wedding/luxury-art-sakura-romance-card.jpg",
   "golden-romance": "/theme-previews/wedding/golden-romance-card.jpg",
   "ivory-botanica": "/theme-previews/wedding/ivory-botanica-card.jpg",
-  "adat-bali-motion": "/theme-previews/wedding/adat-bali-motion.jpg",
+  "adat-bali-motion": "/theme-previews/wedding/adat-bali-motion-card.jpg",
   // Dedicated Khitan catalog covers stay separate from each theme live demo preview.
   "khitan-warna": "/theme-previews/khitan/khitan-warna-card.jpg",
   "khitan-ksatria": "/theme-previews/khitan/khitan-ksatria-card.jpg",
