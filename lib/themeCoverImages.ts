@@ -72,6 +72,13 @@ export const THEME_CARD_PREVIEW_BY_THEME: Record<string, string> = {
   "golden-romance": "/theme-previews/wedding/golden-romance-card.jpg",
   "ivory-botanica": "/theme-previews/wedding/ivory-botanica-card.jpg",
   "adat-bali-motion": "/theme-previews/wedding/adat-bali-motion.jpg",
+  // Dedicated Khitan catalog covers stay separate from each theme live demo preview.
+  "khitan-warna": "/theme-previews/khitan/khitan-warna-card.jpg",
+  "khitan-ksatria": "/theme-previews/khitan/khitan-ksatria-card.jpg",
+  "khitan-raja": "/theme-previews/khitan/khitan-raja-card.jpg",
+  "khitan-berani": "/theme-previews/khitan/khitan-berani-card.jpg",
+  "khitan-petualang": "/theme-previews/khitan/khitan-petualang-card.jpg",
+  "khitan-elang": "/theme-previews/khitan/khitan-elang-card.jpg",
 
 };
 
@@ -106,6 +113,6 @@ export function getThemeCoverImage(themeKey: string, demoPath: string): string |
 }
 
 export function getThemeCardPreviewImage(themeKey: string, demoPath: string): string | null {
-  if (demoPath !== "/demo") return null;
+  if (demoPath !== "/demo" && demoPath !== "/demo-khitan") return null;
   return THEME_CARD_PREVIEW_BY_THEME[themeKey] ?? null;
 }

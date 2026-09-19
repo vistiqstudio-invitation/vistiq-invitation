@@ -36,7 +36,12 @@ export default function ThemeCoverPreview({
     normalizedLabel.includes("lavender garden motion") ||
     normalizedLabel.includes("premium 3d motion");
   const isLoveParadise = normalizedLabel.includes("love paradise");
-  const isLiveKhitanPreview = demoPath === "/demo-khitan" && Boolean(themeKey);
+  const isDedicatedKhitanCover =
+    demoPath === "/demo-khitan" &&
+    Boolean(coverImage?.includes("/theme-previews/khitan/")) &&
+    Boolean(coverImage?.endsWith("-card.jpg"));
+  const isLiveKhitanPreview =
+    demoPath === "/demo-khitan" && Boolean(themeKey) && !isDedicatedKhitanCover;
   const hasLiveCover = isBotanicalRomance || isChampagneRomance || isLoveParadise || isPremium3DMotion;
 
   return (

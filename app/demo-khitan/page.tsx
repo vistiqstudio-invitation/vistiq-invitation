@@ -1,7 +1,7 @@
 import Link from "next/link";
 import ThemeCoverPreview from "@/components/ThemeCoverPreview";
 import { khitanThemeList } from "@/lib/theme";
-import { getThemeCoverImage } from "@/lib/themeCoverImages";
+import { getThemeCardPreviewImage, getThemeCoverImage } from "@/lib/themeCoverImages";
 import styles from "../demo/demo.module.css";
 
 const WA_NUMBER = "6281371338032";
@@ -31,7 +31,10 @@ export default function DemoKhitanPickerPage() {
               <div className={styles.card} key={theme.key}>
                 <div className={styles.cardPreview}>
                   <ThemeCoverPreview
-                    coverImage={getThemeCoverImage(theme.key, "/demo-khitan")}
+                    coverImage={
+                      getThemeCardPreviewImage(theme.key, "/demo-khitan") ??
+                      getThemeCoverImage(theme.key, "/demo-khitan")
+                    }
                     swatch={theme.swatch}
                     label={theme.label}
                     demoPath="/demo-khitan"
