@@ -29,6 +29,7 @@ export function withAdatBaliMotionDemoAssets(
     musicUrl: WEDDING_VOCAL_TRACKS.indonesianBallad,
     // Use Vistiq's own Adat Bali opening video instead of the reference video's asset.
     videoUrl: OPENING_VIDEO,
+    liveStreamingUrl: "https://instagram.com/vistiqinvitation",
     opening: {
       ...invitation.opening,
       greeting: "Om Swastyastu",

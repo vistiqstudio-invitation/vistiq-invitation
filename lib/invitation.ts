@@ -204,6 +204,14 @@ function normalizeInvitation(raw: Record<string, any>): InvitationData {
     coverImage: firstNonEmpty(raw.cover_image, raw.cover_photo),
     musicUrl: raw.music_url || null,
     videoUrl: firstNonEmpty(raw.video_url, raw.youtube_url),
+    liveStreamingUrl: firstNonEmpty(
+      raw.live_streaming_url,
+      raw.livestream_url,
+      raw.streaming_url,
+      raw.instagram_live_url,
+      raw.tiktok_live_url,
+      raw.youtube_live_url
+    ),
 
     mapsUrl: firstNonEmpty(raw.maps_url, raw.location, raw.map_link),
     mapsEmbedUrl: firstNonEmpty(raw.maps_embed, raw.map_embed),

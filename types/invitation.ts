@@ -48,6 +48,8 @@ export type InvitationData = {
   coverImage: string | null;
   musicUrl: string | null;
   videoUrl: string | null;
+  // Optional external Instagram, TikTok, YouTube, or other live-stream URL.
+  liveStreamingUrl?: string | null;
 
   mapsUrl: string | null;
   mapsEmbedUrl: string | null;

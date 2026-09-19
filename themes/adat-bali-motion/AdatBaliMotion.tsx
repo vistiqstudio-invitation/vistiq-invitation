@@ -60,6 +60,10 @@ function MusicIcon({ className }: IconProps) {
   return <svg className={className} viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l11-2v13" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"/><circle cx="6" cy="18" r="3" fill="currentColor"/><circle cx="17" cy="16" r="3" fill="currentColor"/></svg>;
 }
 
+function LiveIcon({ className }: IconProps) {
+  return <svg className={className} viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3" fill="currentColor"/><path d="M7.8 7.8a6 6 0 0 0 0 8.4m8.4 0a6 6 0 0 0 0-8.4M4.9 4.9a10 10 0 0 0 0 14.2m14.2 0a10 10 0 0 0 0-14.2" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>;
+}
+
 function PauseIcon({ className }: IconProps) {
   return <svg className={className} viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14m8-14v14" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round"/></svg>;
 }
@@ -580,6 +584,14 @@ function ReferenceWishes({ invitation }: { invitation: InvitationData }) {
   );
 }
 
+function streamingPlatformLabel(url: string) {
+  const value = url.toLowerCase();
+  if (value.includes("instagram.com")) return "Instagram";
+  if (value.includes("tiktok.com")) return "TikTok";
+  if (value.includes("youtube.com") || value.includes("youtu.be")) return "YouTube";
+  return "Live Streaming";
+}
+
 function ReferenceInvitation({ invitation }: { invitation: InvitationData }) {
   const first = shortName(invitation.groom.name, invitation.groom.nickname);
   const second = shortName(invitation.bride.name, invitation.bride.nickname);
@@ -615,6 +627,18 @@ function ReferenceInvitation({ invitation }: { invitation: InvitationData }) {
         <div className={styles.eventStack}>
           {invitation.events.map((event) => <ReferenceEventCard invitation={invitation} event={event} key={event.name} />)}
         </div>
+        {invitation.liveStreamingUrl && (() => {
+          const platform = streamingPlatformLabel(invitation.liveStreamingUrl);
+          return (
+            <div className={styles.videoTeaser}>
+              <h2>Live Streaming</h2>
+              <p>Saksikan siaran langsung pernikahan kami melalui {platform}.</p>
+              <a className={styles.purpleButton} href={invitation.liveStreamingUrl} target="_blank" rel="noreferrer">
+                <LiveIcon className={styles.inlineIcon} /> Buka {platform}
+              </a>
+            </div>
+          );
+        })()}
       </section>
 
       <ReferenceRsvp invitation={invitation} />
