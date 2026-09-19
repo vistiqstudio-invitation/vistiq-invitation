@@ -1,4 +1,5 @@
 import type { InvitationData } from "@/types/invitation";
+import { WEDDING_VOCAL_TRACKS } from "@/lib/weddingMusic";
 
 const PHOTO_ROOT = "/photos";
 const OPENING_VIDEO = "/video/adat-bali-opening.mp4";
@@ -25,6 +26,7 @@ export function withAdatBaliMotionDemoAssets(
   return {
     ...invitation,
     coverImage: coverPhoto,
+    musicUrl: WEDDING_VOCAL_TRACKS.indonesianBallad,
     // Use Vistiq's own Adat Bali opening video instead of the reference video's asset.
     videoUrl: OPENING_VIDEO,
     opening: {

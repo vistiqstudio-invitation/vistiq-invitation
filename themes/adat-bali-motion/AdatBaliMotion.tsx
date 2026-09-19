@@ -4,17 +4,16 @@ import { useCallback, useEffect, useRef, useState, type CSSProperties } from "re
 import { useSearchParams } from "next/navigation";
 import { useInvitation } from "@/components/InvitationProvider";
 import { useCountdown } from "@/hooks/useCountdown";
+import { useMusicPlayer } from "@/hooks/useMusicPlayer";
 import { useRsvpWishes, type Attendance } from "@/hooks/useRsvpWishes";
 import type { EventItem, GiftAccount, InvitationData } from "@/types/invitation";
 import baseStyles from "../adat-bali/style.module.css";
 import Loading from "../adat-bali/Loading";
-import MusicPlayer from "../adat-bali/MusicPlayer";
-import FloatingMenu from "../adat-bali/FloatingMenu";
 import styles from "./style.module.css";
 
 const themeVariables = {
-  "--maroon": "#3a125b",
-  "--maroon-bright": "#6e2ca0",
+  "--maroon": "#8f7398",
+  "--maroon-bright": "#b9a0bf",
   "--black": "#100719",
   "--gold": "#d8b872",
   "--cream": "rgba(255, 255, 255, 0.95)",
@@ -26,6 +25,60 @@ const themeVariables = {
   "--reference-sans": "var(--font-poppins), Arial, sans-serif",
   "--reference-roboto": "var(--font-roboto), Arial, sans-serif",
 } as CSSProperties;
+
+type IconProps = { className?: string };
+
+function EnvelopeIcon({ className }: IconProps) {
+  return <svg className={className} viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 6.5h17v11h-17z" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/><path d="m4 7 8 6 8-6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg>;
+}
+
+function InstagramIcon({ className }: IconProps) {
+  return <svg className={className} viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" strokeWidth="1.8"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" strokeWidth="1.8"/><circle cx="17.4" cy="6.7" r="1" fill="currentColor"/></svg>;
+}
+
+function MapPinIcon({ className }: IconProps) {
+  return <svg className={className} viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/><circle cx="12" cy="10" r="2.6" fill="none" stroke="currentColor" strokeWidth="1.8"/></svg>;
+}
+
+function CalendarIcon({ className }: IconProps) {
+  return <svg className={className} viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2" fill="none" stroke="currentColor" strokeWidth="1.8"/><path d="M7 3v4m10-4v4M3 10h18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>;
+}
+
+function SendIcon({ className }: IconProps) {
+  return <svg className={className} viewBox="0 0 24 24" aria-hidden="true"><path d="m21 3-7 18-4-7-7-4 18-7Z" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/><path d="m10 14 5-5" fill="none" stroke="currentColor" strokeWidth="1.8"/></svg>;
+}
+
+function GiftIcon({ className }: IconProps) {
+  return <svg className={className} viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10h18v11H3zm-1-5h20v5H2zM12 5v16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/><path d="M12 5c-1.5 0-5-.4-5-2.4C7 .8 10.7 1.3 12 5Zm0 0c1.5 0 5-.4 5-2.4 0-1.8-3.7-1.3-5 2.4Z" fill="none" stroke="currentColor" strokeWidth="1.8"/></svg>;
+}
+
+function CopyIcon({ className }: IconProps) {
+  return <svg className={className} viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2" fill="none" stroke="currentColor" strokeWidth="1.8"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" fill="none" stroke="currentColor" strokeWidth="1.8"/></svg>;
+}
+
+function MusicIcon({ className }: IconProps) {
+  return <svg className={className} viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l11-2v13" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"/><circle cx="6" cy="18" r="3" fill="currentColor"/><circle cx="17" cy="16" r="3" fill="currentColor"/></svg>;
+}
+
+function PauseIcon({ className }: IconProps) {
+  return <svg className={className} viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14m8-14v14" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round"/></svg>;
+}
+
+function PlayIcon({ className }: IconProps) {
+  return <svg className={className} viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z" fill="currentColor"/></svg>;
+}
+
+function CompactMusicPlayer({ url }: { url: string | null }) {
+  const { audioRef, isPlaying, toggle } = useMusicPlayer(url);
+  if (!url) return null;
+
+  return <>
+    <audio ref={audioRef} src={url} loop preload="none" />
+    <button className={`${styles.musicControl} ${isPlaying ? styles.musicControlPlaying : ""}`} type="button" onClick={() => void toggle()} aria-label={isPlaying ? "Jeda musik" : "Putar musik"}>
+      {isPlaying ? <PauseIcon /> : <MusicIcon />}
+    </button>
+  </>;
+}
 
 const MONTHS = [
   "Januari",
@@ -102,24 +155,26 @@ function ReferenceCover({ invitation }: { invitation: InvitationData }) {
       <div className={styles.coverOverlay} />
 
       <div className={styles.coverPanel}>
-        <div className={styles.coverTitleGroup}>
-          <h2>The Wedding of</h2>
-          <h1>
-            {groom} <span>&amp;</span> {bride}
-          </h1>
-        </div>
+        <div className={styles.coverBottom}>
+          <div className={styles.coverTitleGroup}>
+            <h2>The Wedding of</h2>
+            <h1>
+              {groom} <span>&amp;</span> {bride}
+            </h1>
+          </div>
 
-        <div className={styles.coverGuest}>
-          <p>
-            Kepada Yth.
-            <br />
-            {guest}
-          </p>
-          <button type="button" onClick={() => setOpened(true)}>
-            <span className={styles.envelope} aria-hidden="true">✉</span>
-            <span>Buka Undangan</span>
-          </button>
-          <small>Mohon maaf apabila ada kesalahan penulisan nama/gelar</small>
+          <div className={styles.coverGuest}>
+            <p>
+              Kepada Yth.
+              <br />
+              {guest}
+            </p>
+            <button type="button" onClick={() => setOpened(true)}>
+              <EnvelopeIcon className={styles.envelope} />
+              <span>Buka Undangan</span>
+            </button>
+            <small>Mohon maaf apabila ada kesalahan penulisan nama/gelar</small>
+          </div>
         </div>
       </div>
     </section>
@@ -199,7 +254,10 @@ function OpeningVideo({
         <p className={styles.openingAmpersand}>&amp;</p>
         <h1>{bride}</h1>
         {date && <p className={styles.openingDate}>{date}</p>}
-        <span className={styles.scrollCue} aria-hidden="true"><i /></span>
+        <div className={styles.scrollPrompt} aria-hidden="true">
+          <span className={styles.scrollCue}><i /></span>
+          <small>Scroll ke bawah</small>
+        </div>
       </div>
     </section>
   );
@@ -230,7 +288,8 @@ function ReferencePerson({
           target="_blank"
           rel="noreferrer"
         >
-          ◎ {person.instagram.replace("@", "")}
+          <InstagramIcon className={styles.inlineIcon} />
+          {person.instagram.replace("@", "")}
         </a>
       )}
     </article>
@@ -262,7 +321,7 @@ function ReferenceCountdown({ invitation }: { invitation: InvitationData }) {
         </div>
         {mainEvent && calendarUrl(mainEvent) && (
           <a className={styles.goldButton} href={calendarUrl(mainEvent) || "#"} target="_blank" rel="noreferrer">
-            ▣ &nbsp; Save on the calendar
+            <CalendarIcon className={styles.inlineIcon} /> Save on the calendar
           </a>
         )}
         <p>
@@ -287,13 +346,13 @@ function ReferenceEventCard({ invitation, event }: { invitation: InvitationData;
       </div>
       <p className={styles.eventTime}>Pukul {event.time || "11.00 WIB s/d selesai"}</p>
       <div className={styles.eventLocation}>
-        <b>⌖</b>
+        <b><MapPinIcon /></b>
         <strong>{event.location || "Tempat acara"}</strong>
         <span>Lokasi acara mempelai</span>
       </div>
       {(invitation.mapsUrl || invitation.mapsEmbedUrl) && (
         <a className={styles.purpleButton} href={invitation.mapsUrl || invitation.mapsEmbedUrl || "#"} target="_blank" rel="noreferrer">
-          ⌖ &nbsp; Google Maps
+          <MapPinIcon className={styles.inlineIcon} /> Google Maps
         </a>
       )}
     </article>
@@ -350,7 +409,7 @@ function ReferenceRsvp({ invitation }: { invitation: InvitationData }) {
               </select>
             </label>
             <button className={styles.purpleButton} type="submit" disabled={submitting}>
-              ✈ &nbsp; {submitting ? "Mengirim..." : "Kirim"}
+              <SendIcon className={styles.inlineIcon} /> {submitting ? "Mengirim..." : "Kirim"}
             </button>
             {error && <small className={styles.formError}>{error}</small>}
           </form>
@@ -429,7 +488,7 @@ function ReferenceGiftCard({ account }: { account: GiftAccount }) {
       <strong>{account.accountNumber || "—"}</strong>
       <small>a.n {account.accountName || account.owner}</small>
       <button type="button" onClick={copyNumber}>
-        {copied ? "Tersalin" : "Salin Nomor Rekening"}
+        <CopyIcon className={styles.inlineIcon} /> {copied ? "Tersalin" : "Salin Nomor Rekening"}
       </button>
     </article>
   );
@@ -447,13 +506,13 @@ function ReferenceGift({ invitation }: { invitation: InvitationData }) {
           Kehadiran Anda merupakan hadiah terindah. Namun, apabila Anda hendak memberikan tanda kasih kepada kami, dapat melalui fitur di bawah ini.
         </p>
         <button className={styles.purpleButton} type="button" onClick={() => setShowAccounts((value) => !value)}>
-          {showAccounts ? "◉  Sembunyikan" : "◉  Lihat Rekening"}
+          <GiftIcon className={styles.inlineIcon} /> {showAccounts ? "Sembunyikan" : "Lihat Rekening"}
         </button>
         {showAccounts && (
           <>
             {invitation.gifts.map((account) => <ReferenceGiftCard account={account} key={account.owner} />)}
             <div className={styles.giftAddress}>
-              <span aria-hidden="true">🎁</span>
+              <GiftIcon className={styles.giftAddressIcon} />
               <strong>{shortName(invitation.groom.name, invitation.groom.nickname)} &amp; {shortName(invitation.bride.name, invitation.bride.nickname)}</strong>
               <small>Gedung Serbaguna Vistiq, Jakarta</small>
             </div>
@@ -501,7 +560,7 @@ function ReferenceWishes({ invitation }: { invitation: InvitationData }) {
             <textarea value={message} onChange={(event) => setMessage(event.target.value)} rows={5} placeholder="Tulis Ucapan" />
           </label>
           <button className={styles.purpleButton} type="submit" disabled={submitting}>
-            ✈ &nbsp; {submitted ? "Terkirim" : submitting ? "Mengirim..." : "Kirim"}
+            <SendIcon className={styles.inlineIcon} /> {submitted ? "Terkirim" : submitting ? "Mengirim..." : "Kirim"}
           </button>
           {error && <small className={styles.formError}>{error}</small>}
         </form>
@@ -563,7 +622,7 @@ function ReferenceInvitation({ invitation }: { invitation: InvitationData }) {
         <div className={styles.videoTeaser}>
           <h2>Video Opening</h2>
           <p>Saksikan video opening resmi Adat Bali dari Vistiq Invitation.</p>
-          <a className={styles.purpleButton} href="#bukaUndangan">▶ &nbsp; Lihat Video Opening</a>
+          <a className={styles.purpleButton} href="#bukaUndangan"><PlayIcon className={styles.inlineIcon} /> Lihat Video Opening</a>
         </div>
       </section>
 
@@ -623,8 +682,7 @@ export default function AdatBaliMotion({ invitation }: { invitation: InvitationD
         <>
           <OpeningVideo invitation={invitation} onFinished={handleOpeningFinished} />
           <ReferenceInvitation invitation={invitation} />
-          <MusicPlayer url={invitation.musicUrl} />
-          <FloatingMenu />
+          <CompactMusicPlayer url={invitation.musicUrl} />
         </>
       )}
     </div>
