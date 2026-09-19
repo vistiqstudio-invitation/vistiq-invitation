@@ -349,11 +349,29 @@ function removeThirdPartyVideo(documentRoot: Document) {
 }
 
 function removeThirdPartyAudio(documentRoot: Document) {
-  documentRoot.querySelector('[data-widget_type="wds_audio.default"]')?.remove();
-  documentRoot.querySelector("#wds_audio_play")?.closest<HTMLElement>('[data-widget_type="wds_audio.default"]')?.remove();
+  documentRoot.querySelectorAll<HTMLElement>([
+    '[data-widget_type="wds_audio.default"]',
+    ".elementor-widget-wds_audio",
+    '[data-id="5b3083b9"]',
+    "#wds_audio_play",
+  ].join(", ")).forEach((element) => element.remove());
+
   documentRoot.querySelectorAll<HTMLScriptElement>("script").forEach((script) => {
     if (script.textContent?.includes("WdsAudio")) script.remove();
   });
+
+  const textWalker = documentRoot.createTreeWalker(
+    documentRoot.body,
+    documentRoot.defaultView?.NodeFilter.SHOW_TEXT ?? 4,
+  );
+  const brokenTextNodes: Text[] = [];
+  while (textWalker.nextNode()) {
+    const node = textWalker.currentNode as Text;
+    if (/[�\u0000-\u0008\u000B\u000C\u000E-\u001F]/.test(node.nodeValue || "")) {
+      brokenTextNodes.push(node);
+    }
+  }
+  brokenTextNodes.forEach((node) => node.remove());
 }
 
 function appendOverrides(documentRoot: Document, coupleTitle: string) {
@@ -368,7 +386,7 @@ function appendOverrides(documentRoot: Document, coupleTitle: string) {
     html.vistiq-cover-open #bukaUndangan .elementor-background-video-hosted { display: block !important; visibility: visible !important; opacity: 1 !important; }
     #bukaUndangan .elementor-widget-heading { animation: none !important; visibility: hidden !important; opacity: 0 !important; }
     #bukaUndangan .elementor-widget-heading.vistiq-opening-reveal { animation-delay: 0ms !important; visibility: visible !important; opacity: 1 !important; }
-    #wds_audio_play { display: none !important; }
+    [data-widget_type="wds_audio.default"], .elementor-widget-wds_audio, [data-id="5b3083b9"], #wds_audio_play { display: none !important; visibility: hidden !important; }
     [data-id="7fb120df"] { display: none !important; }
     [data-id="2ea54e2e"], [data-id="217a781e"] { background-color: ${PURPLE} !important; }
     [data-id="38e771dc"] .elementor-button,
@@ -562,6 +580,9 @@ function applyInvitationData(documentRoot: Document, invitation: InvitationData,
   setGallery(documentRoot, invitation.gallery, invitation.story);
   removeThirdPartyVideo(documentRoot);
   removeThirdPartyAudio(documentRoot);
+  [100, 500, 1500].forEach((delay) => {
+    documentRoot.defaultView?.setTimeout(() => removeThirdPartyAudio(documentRoot), delay);
+  });
   setBackgroundVideo(documentRoot, invitation.videoUrl);
   setGiftData(documentRoot, invitation, coupleTitle);
   setSocialLinks(documentRoot, invitation);
