@@ -11,7 +11,6 @@ const REFERENCE_DIRECTORY = "/themes/azure-bloom/reference/";
 const OPENING_MOTION = "/themes/azure-bloom/opening-motion.mp4";
 const OUR_PHOTO_DIRECTORY = "/photos/luxury-art-love-paradise/";
 const THEME_COVER = `${OUR_PHOTO_DIRECTORY}couple-cover.webp`;
-const THEME_LOVE_STORY = `${OUR_PHOTO_DIRECTORY}hero.webp`;
 const THEME_PURPLE = "#7046a3";
 const THEME_PURPLE_DARK = "#59367f";
 const THEME_PURPLE_LIGHT = "#9876c2";
@@ -317,6 +316,8 @@ function prepareReference(
   const guestName = guest || "Nama Tamu";
   const instagram = invitation.groom.instagram || invitation.bride.instagram;
   const brandName = invitation.brand?.name || "Vistiq Invitation";
+  const coverPhoto = sourceWithoutHash(invitation.coverImage) || THEME_COVER;
+  const storyPhoto = sourceWithoutHash(invitation.gallery[0]) || coverPhoto;
 
   const root = doc.querySelector<HTMLElement>(".elementor-33329");
   const cover = doc.getElementById("sec");
@@ -352,6 +353,16 @@ function prepareReference(
     element.classList.add("active");
   });
 
+  doc
+    .querySelectorAll<HTMLElement>(
+      ".elementor-element-1c0fb2ff, .elementor-element-1c0fb2ff > .elementor-motion-effects-container > .elementor-motion-effects-layer",
+    )
+    .forEach((element) => {
+      element.style.setProperty("background-image", `url("${coverPhoto}")`, "important");
+      element.style.setProperty("background-position", "center center", "important");
+      element.style.setProperty("background-size", "cover", "important");
+    });
+
   setText(doc, "#sec .elementor-element-2609fb97 .elementor-widget-container", couple);
   setText(doc, "#sec .elementor-element-609919c9 .elementor-widget-container", guestName);
   setText(doc, "#home .elementor-element-1b81d2a1 .elementor-heading-title", couple);
@@ -370,7 +381,7 @@ function prepareReference(
   setText(doc, "#mempelai .elementor-element-35980867 .elementor-widget-container", invitation.bride.parents || "");
 
   setImage(doc, "#home .elementor-element-2277f517 img", invitation.coverImage, couple);
-  setImage(doc, ".elementor-element-65a5beb8.story img", THEME_LOVE_STORY, "Love Story");
+  setImage(doc, ".elementor-element-65a5beb8.story img", storyPhoto, "Love Story");
   setImage(doc, "#mempelai .elementor-element-19be02e5 img", invitation.groom.photo, invitation.groom.name);
   setImage(doc, "#mempelai .elementor-element-7d0c7c16 img", invitation.bride.photo, invitation.bride.name);
   setImage(doc, ".elementor-element-2f3b2d9a img", invitation.coverImage, couple);
