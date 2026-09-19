@@ -190,6 +190,7 @@ function OpeningVideo({
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [revealed, setRevealed] = useState(false);
+  const [playbackBlocked, setPlaybackBlocked] = useState(false);
   const finishedRef = useRef(false);
 
   useEffect(() => {
@@ -202,28 +203,68 @@ function OpeningVideo({
       onFinished();
     };
 
-    if (!video) {
-      const fallbackTimer = window.setTimeout(finish, 900);
-      return () => window.clearTimeout(fallbackTimer);
-    }
+    if (!video) return;
 
     const handleTimeUpdate = () => {
-      const duration = Number.isFinite(video.duration) && video.duration > 0 ? video.duration : 20;
-      if (video.currentTime >= Math.max(0, duration - 2)) reveal();
+      if (video.currentTime >= 18) reveal();
+    };
+
+    const tryToPlay = () => {
+      video.muted = true;
+      video.defaultMuted = true;
+      video.setAttribute("muted", "");
+      video.setAttribute("playsinline", "");
+      void video.play()
+        .then(() => setPlaybackBlocked(false))
+        .catch(() => setPlaybackBlocked(true));
+    };
+
+    const handlePlaying = () => setPlaybackBlocked(false);
+    const handleError = () => setPlaybackBlocked(true);
+    const handleVisibility = () => {
+      if (document.visibilityState === "visible" && video.paused && !video.ended) tryToPlay();
     };
 
     video.currentTime = 0;
     video.addEventListener("timeupdate", handleTimeUpdate);
+    video.addEventListener("loadeddata", tryToPlay);
+    video.addEventListener("canplay", tryToPlay);
+    video.addEventListener("playing", handlePlaying);
     video.addEventListener("ended", finish, { once: true });
-    video.addEventListener("error", finish, { once: true });
-    const fallbackTimer = window.setTimeout(finish, 22_000);
-    void video.play().catch(() => undefined);
+    video.addEventListener("error", handleError);
+    document.addEventListener("visibilitychange", handleVisibility);
+    const blockedTimer = window.setTimeout(() => {
+      if (video.paused && !video.ended) setPlaybackBlocked(true);
+    }, 1200);
+    const errorRevealTimer = window.setTimeout(() => {
+      if (video.error) reveal();
+    }, 18_000);
+    const errorFinishTimer = window.setTimeout(() => {
+      if (video.error) finish();
+    }, 20_500);
+    tryToPlay();
 
     return () => {
       video.removeEventListener("timeupdate", handleTimeUpdate);
-      window.clearTimeout(fallbackTimer);
+      video.removeEventListener("loadeddata", tryToPlay);
+      video.removeEventListener("canplay", tryToPlay);
+      video.removeEventListener("playing", handlePlaying);
+      video.removeEventListener("error", handleError);
+      document.removeEventListener("visibilitychange", handleVisibility);
+      window.clearTimeout(blockedTimer);
+      window.clearTimeout(errorRevealTimer);
+      window.clearTimeout(errorFinishTimer);
     };
   }, [invitation.videoUrl, onFinished]);
+
+  const resumeVideo = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.muted = true;
+    void video.play()
+      .then(() => setPlaybackBlocked(false))
+      .catch(() => setPlaybackBlocked(true));
+  };
 
   const groom = shortName(invitation.groom.name, invitation.groom.nickname);
   const bride = shortName(invitation.bride.name, invitation.bride.nickname);
@@ -238,6 +279,7 @@ function OpeningVideo({
           src={invitation.videoUrl}
           poster={invitation.coverImage || undefined}
           muted
+          disablePictureInPicture
           playsInline
           autoPlay
           preload="auto"
@@ -248,6 +290,11 @@ function OpeningVideo({
       )}
 
       <div className={styles.openingShade} />
+      {playbackBlocked && (
+        <button className={styles.playOpeningButton} type="button" onClick={resumeVideo}>
+          Putar Animasi
+        </button>
+      )}
       <div className={`${styles.openingCopy} ${revealed ? styles.openingCopyVisible : ""}`}>
         <h2>The Wedding of</h2>
         <h1>{groom}</h1>

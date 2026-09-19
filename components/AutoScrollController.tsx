@@ -10,6 +10,7 @@ const AUTO_SCROLL_DISABLED_SELECTOR = [
   '[data-wedding-theme="adat-bali-motion"]',
   '[data-wedding-theme="adat-minang-motion"]',
 ].join(",");
+const AUTO_SCROLL_DISABLED_PATHS = ["/adat-bali-motion", "/adat-minang-motion"];
 
 export default function AutoScrollController() {
   const { opened } = useInvitation();
@@ -33,7 +34,9 @@ export default function AutoScrollController() {
       return () => window.clearTimeout(resetTimer);
     }
 
-    const autoScrollDisabled = Boolean(document.querySelector(AUTO_SCROLL_DISABLED_SELECTOR));
+    const autoScrollDisabled =
+      AUTO_SCROLL_DISABLED_PATHS.some((path) => window.location.pathname.includes(path)) ||
+      Boolean(document.querySelector(AUTO_SCROLL_DISABLED_SELECTOR));
     if (autoScrollDisabled) {
       const disabledTimer = window.setTimeout(() => {
         setRunning(false);
@@ -46,13 +49,17 @@ export default function AutoScrollController() {
     }
 
     const isManualOnly = Boolean(document.querySelector(MANUAL_MODE_SELECTOR));
-    setManualOnly(isManualOnly);
     if (isManualOnly) {
-      setRunning(false);
-      setAvailable(false);
-      startedRef.current = false;
-      return;
+      const manualTimer = window.setTimeout(() => {
+        setManualOnly(true);
+        setRunning(false);
+        setAvailable(false);
+        startedRef.current = false;
+      }, 0);
+      return () => window.clearTimeout(manualTimer);
     }
+
+    const manualResetTimer = window.setTimeout(() => setManualOnly(false), 0);
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const timer = window.setTimeout(() => {
@@ -67,7 +74,10 @@ export default function AutoScrollController() {
       }
     }, 1400);
 
-    return () => window.clearTimeout(timer);
+    return () => {
+      window.clearTimeout(manualResetTimer);
+      window.clearTimeout(timer);
+    };
   }, [opened]);
 
   useEffect(() => {
