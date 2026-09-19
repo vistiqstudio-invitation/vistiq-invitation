@@ -64,10 +64,6 @@ function PauseIcon({ className }: IconProps) {
   return <svg className={className} viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14m8-14v14" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round"/></svg>;
 }
 
-function PlayIcon({ className }: IconProps) {
-  return <svg className={className} viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z" fill="currentColor"/></svg>;
-}
-
 function CompactMusicPlayer({ url }: { url: string | null }) {
   const { audioRef, isPlaying, toggle } = useMusicPlayer(url);
   if (!url) return null;
@@ -618,11 +614,6 @@ function ReferenceInvitation({ invitation }: { invitation: InvitationData }) {
       <section className={styles.eventSection}>
         <div className={styles.eventStack}>
           {invitation.events.map((event) => <ReferenceEventCard invitation={invitation} event={event} key={event.name} />)}
-        </div>
-        <div className={styles.videoTeaser}>
-          <h2>Video Opening</h2>
-          <p>Saksikan video opening resmi Adat Bali dari Vistiq Invitation.</p>
-          <a className={styles.purpleButton} href="#bukaUndangan"><PlayIcon className={styles.inlineIcon} /> Lihat Video Opening</a>
         </div>
       </section>
 
