@@ -1,4 +1,4 @@
-import { Abril_Fatface, Alice, Cormorant_Garamond, Playfair_Display, Inter, Montserrat, Alex_Brush, Suranna, Readex_Pro, Chelsea_Market, Noto_Sans_Balinese, Noto_Serif_Display, Raleway, Orbitron, Baloo_2, Bangers } from "next/font/google";
+import { Abril_Fatface, Alice, Cormorant_Garamond, Cormorant_Infant, Playfair_Display, Inter, Montserrat, Alex_Brush, Pinyon_Script, Poppins, Roboto, Inria_Serif, Suranna, Readex_Pro, Chelsea_Market, Noto_Sans_Balinese, Noto_Serif_Display, Raleway, Orbitron, Baloo_2, Bangers } from "next/font/google";
 
 export const abrilFatface = Abril_Fatface({
   variable: "--font-abril-fatface",
@@ -47,6 +47,41 @@ export const alexBrush = Alex_Brush({
   variable: "--font-alex-brush",
   subsets: ["latin"],
   weight: ["400"],
+  display: "swap",
+});
+
+export const pinyonScript = Pinyon_Script({
+  variable: "--font-pinyon-script",
+  subsets: ["latin"],
+  weight: ["400"],
+  display: "swap",
+});
+
+export const inriaSerif = Inria_Serif({
+  variable: "--font-inria-serif",
+  subsets: ["latin"],
+  weight: ["300", "400", "700"],
+  display: "swap",
+});
+
+export const cormorantInfant = Cormorant_Infant({
+  variable: "--font-cormorant-infant",
+  subsets: ["latin"],
+  weight: ["300", "400", "700"],
+  display: "swap",
+});
+
+export const poppins = Poppins({
+  variable: "--font-poppins",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
+export const roboto = Roboto({
+  variable: "--font-roboto",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
   display: "swap",
 });
 
