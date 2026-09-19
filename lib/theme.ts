@@ -59,6 +59,7 @@ import PrismaticVows from "@/themes/prismatic-vows/PrismaticVows";
 import PearlTide from "@/themes/pearl-tide/PearlTide";
 import IvoryBotanica from "@/themes/ivory-botanica/IvoryBotanica";
 import AdatBaliMotion from "@/themes/adat-bali-motion/AdatBaliMotion";
+import AdatMinangMotion from "@/themes/adat-minang-motion/AdatMinangMotion";
 import JawaSepia from "@/themes/jawa-sepia/JawaSepia";
 import RoyalJava from "@/themes/royal-java/RoyalJava";
 import PrincessBirthday from "@/themes/princess-fairytale/PrincessBirthday";
@@ -118,6 +119,7 @@ export const themeRegistry: Record<
   "pearl-tide": PearlTide,
   "ivory-botanica": IvoryBotanica,
   "adat-bali-motion": AdatBaliMotion,
+  "adat-minang-motion": AdatMinangMotion,
   "jawa-sepia": JawaSepia,
   "royal-java": RoyalJava,
 };
@@ -200,6 +202,7 @@ const allWeddingThemes: ThemeMeta[] = [
   { key: "fizan-islamic-motion", label: "Fizan Islamic 3D Motion", description: "Opening video masjid 3D, bingkai putih-emas, hijau sage, ayat, event, gallery, gift, RSVP dan ucapan", swatch: ["#faf3e7", "#6e9277"], tags: ["premium-3d-motion"], addedAt: "2026-09-05" },
   { key: "azure-bloom", label: "Azure Bloom Motion", description: "Ungu watercolor, ivory dan botanical floral dengan opening video 3D, galeri masonry, gift, RSVP dan ucapan", swatch: ["#f5fbfc", "#7046a3"], tags: ["premium-3d-motion"], addedAt: "2026-09-08" },
   { key: "adat-bali-motion", label: "Adat Bali 3D Motion", description: "Duplikasi 3D Motion Adat Bali dengan nuansa Bali, aksen ungu & emas, opening video, galeri, gift, RSVP dan ucapan", swatch: ["#2b0b46", "#7c2aa7"], tags: ["premium-3d-motion", "3d-motion-adat"], addedAt: "2026-09-18" },
+  { key: "adat-minang-motion", label: "Adat Minang 3D Motion", description: "Nuansa Rumah Gadang, songket marun dan emas dengan opening video 3D, galeri, live streaming, gift, RSVP dan ucapan", swatch: ["#5b111b", "#d5ab52"], tags: ["premium-3d-motion", "3d-motion-adat"], addedAt: "2026-09-19" },
   { key: "porcelain-bloom", label: "Porcelain Bloom", description: "Ivory & powder blue, porselen klasik, mutiara, pita satin & floral biru", swatch: ["#fbfaf6", "#2d638f"], tags: ["premium"] },
   { key: "love-chronicle", label: "Love Chronicle", description: "Champagne & burgundy, wedding newspaper, cap pos, perangko & wax seal", swatch: ["#f4eddf", "#7a2433"], tags: ["premium"] },
   { key: "velvet-cinema", label: "Velvet Cinema", description: "Merah beludru & hitam, premiere film, marquee lights, tiket VIP & filmstrip", swatch: ["#0a0909", "#761423"], tags: ["premium"] },

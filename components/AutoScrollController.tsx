@@ -6,7 +6,10 @@ import { useInvitation } from "@/components/InvitationProvider";
 const SCROLL_SPEED = 24;
 const MANUAL_START_EVENT = "vistiq:auto-scroll-start";
 const MANUAL_MODE_SELECTOR = '[data-auto-scroll-mode="manual"]';
-const AUTO_SCROLL_DISABLED_SELECTOR = '[data-wedding-theme="adat-bali-motion"]';
+const AUTO_SCROLL_DISABLED_SELECTOR = [
+  '[data-wedding-theme="adat-bali-motion"]',
+  '[data-wedding-theme="adat-minang-motion"]',
+].join(",");
 
 export default function AutoScrollController() {
   const { opened } = useInvitation();
@@ -32,12 +35,14 @@ export default function AutoScrollController() {
 
     const autoScrollDisabled = Boolean(document.querySelector(AUTO_SCROLL_DISABLED_SELECTOR));
     if (autoScrollDisabled) {
-      setRunning(false);
-      setAvailable(false);
-      setHeroVisible(false);
-      setManualOnly(false);
-      startedRef.current = false;
-      return;
+      const disabledTimer = window.setTimeout(() => {
+        setRunning(false);
+        setAvailable(false);
+        setHeroVisible(false);
+        setManualOnly(false);
+        startedRef.current = false;
+      }, 0);
+      return () => window.clearTimeout(disabledTimer);
     }
 
     const isManualOnly = Boolean(document.querySelector(MANUAL_MODE_SELECTOR));
