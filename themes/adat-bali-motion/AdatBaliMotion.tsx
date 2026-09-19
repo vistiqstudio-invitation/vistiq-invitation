@@ -366,7 +366,8 @@ function appendOverrides(documentRoot: Document, coupleTitle: string) {
     .elementor-invisible, [data-aos] { visibility: visible !important; opacity: 1 !important; }
     html.vistiq-cover-locked, html.vistiq-cover-locked body { height: 100% !important; overflow: hidden !important; touch-action: none !important; }
     html.vistiq-cover-open #bukaUndangan .elementor-background-video-hosted { display: block !important; visibility: visible !important; opacity: 1 !important; }
-    html.vistiq-cover-open #bukaUndangan .elementor-widget-heading { animation-delay: 0ms !important; visibility: visible !important; opacity: 1 !important; }
+    #bukaUndangan .elementor-widget-heading { animation: none !important; visibility: hidden !important; opacity: 0 !important; }
+    #bukaUndangan .elementor-widget-heading.vistiq-opening-reveal { animation-delay: 0ms !important; visibility: visible !important; opacity: 1 !important; }
     #wds_audio_play { display: none !important; }
     [data-id="7fb120df"] { display: none !important; }
     [data-id="2ea54e2e"], [data-id="217a781e"] { background-color: ${PURPLE} !important; }
@@ -411,21 +412,36 @@ function initialiseCoverFlow(documentRoot: Document) {
     body.style.touchAction = "auto";
 
     const video = opening.querySelector<HTMLVideoElement>("video.elementor-background-video-hosted");
+    const openingHeadings = Array.from(opening.querySelectorAll<HTMLElement>(".elementor-widget-heading"));
+    const revealOpeningText = () => {
+      openingHeadings.forEach((element) => {
+        element.classList.add("vistiq-opening-reveal");
+        element.classList.remove("elementor-invisible");
+      });
+    };
+
+    openingHeadings.forEach((element) => {
+      element.classList.remove("vistiq-opening-reveal");
+      element.classList.remove("elementor-invisible");
+    });
+
     if (video) {
       video.autoplay = true;
       video.style.setProperty("display", "block", "important");
       video.style.setProperty("visibility", "visible", "important");
       video.style.setProperty("opacity", "1", "important");
       video.currentTime = 0;
+      const revealAtEnd = () => {
+        if (video.currentTime >= 18 || video.ended) {
+          revealOpeningText();
+          video.removeEventListener("timeupdate", revealAtEnd);
+        }
+      };
+      video.addEventListener("timeupdate", revealAtEnd);
+      video.addEventListener("ended", revealOpeningText, { once: true });
+      window.setTimeout(revealOpeningText, 18_000);
       void video.play().catch(() => undefined);
     }
-
-    opening.querySelectorAll<HTMLElement>(".elementor-widget-heading").forEach((element) => {
-      element.classList.remove("elementor-invisible");
-      element.style.animationDelay = "0ms";
-      element.style.visibility = "visible";
-      element.style.opacity = "1";
-    });
 
     window.setTimeout(() => opening.scrollIntoView({ behavior: "auto", block: "start" }), 30);
   });
