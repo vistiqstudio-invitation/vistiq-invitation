@@ -8,9 +8,6 @@ import styles from "./style.module.css";
 
 const REFERENCE_SOURCE = "/themes/azure-bloom/reference/source.html";
 const REFERENCE_DIRECTORY = "/themes/azure-bloom/reference/";
-const OPENING_MOTION = "/themes/azure-bloom/opening-motion.mp4";
-const OUR_PHOTO_DIRECTORY = "/photos/luxury-art-love-paradise/";
-const THEME_COVER = `${OUR_PHOTO_DIRECTORY}couple-cover.webp`;
 const THEME_PURPLE = "#7046a3";
 const THEME_PURPLE_DARK = "#59367f";
 const THEME_PURPLE_LIGHT = "#9876c2";
@@ -70,7 +67,13 @@ function setImage(
 ) {
   const image = doc.querySelector<HTMLImageElement>(selector);
   const value = sourceWithoutHash(src);
-  if (!image || !value) return;
+  if (!image) return;
+  if (!value) {
+    image
+      .closest<HTMLElement>(".elementor-widget-image")
+      ?.style.setProperty("display", "none", "important");
+    return;
+  }
 
   image.src = value;
   image.removeAttribute("srcset");
@@ -316,7 +319,11 @@ function prepareReference(
   const guestName = guest || "Nama Tamu";
   const instagram = invitation.groom.instagram || invitation.bride.instagram;
   const brandName = invitation.brand?.name || "Vistiq Invitation";
-  const coverPhoto = sourceWithoutHash(invitation.coverImage) || THEME_COVER;
+  const coverPhoto =
+    sourceWithoutHash(invitation.coverImage) ||
+    sourceWithoutHash(invitation.gallery[0]) ||
+    sourceWithoutHash(invitation.groom.photo) ||
+    sourceWithoutHash(invitation.bride.photo);
   const storyPhoto = sourceWithoutHash(invitation.gallery[0]) || coverPhoto;
 
   const root = doc.querySelector<HTMLElement>(".elementor-33329");
@@ -353,15 +360,17 @@ function prepareReference(
     element.classList.add("active");
   });
 
-  doc
-    .querySelectorAll<HTMLElement>(
-      ".elementor-element-1c0fb2ff, .elementor-element-1c0fb2ff > .elementor-motion-effects-container > .elementor-motion-effects-layer",
-    )
-    .forEach((element) => {
-      element.style.setProperty("background-image", `url("${coverPhoto}")`, "important");
-      element.style.setProperty("background-position", "center center", "important");
-      element.style.setProperty("background-size", "cover", "important");
-    });
+  if (coverPhoto) {
+    doc
+      .querySelectorAll<HTMLElement>(
+        ".elementor-element-1c0fb2ff, .elementor-element-1c0fb2ff > .elementor-motion-effects-container > .elementor-motion-effects-layer",
+      )
+      .forEach((element) => {
+        element.style.setProperty("background-image", `url("${coverPhoto}")`, "important");
+        element.style.setProperty("background-position", "center center", "important");
+        element.style.setProperty("background-size", "cover", "important");
+      });
+  }
 
   setText(doc, "#sec .elementor-element-2609fb97 .elementor-widget-container", couple);
   setText(doc, "#sec .elementor-element-609919c9 .elementor-widget-container", guestName);
@@ -416,7 +425,17 @@ function prepareReference(
   setGallery(doc, invitation);
 
   const quoteVideo = doc.querySelector<HTMLIFrameElement>(".bisdev-invite-video__iframe");
-  if (quoteVideo && sourceWithoutHash(invitation.videoUrl)) quoteVideo.src = sourceWithoutHash(invitation.videoUrl);
+  const quoteVideoWidget = quoteVideo?.closest<HTMLElement>(
+    ".elementor-widget-bisdev_invite_video",
+  );
+  const quoteVideoUrl = sourceWithoutHash(invitation.videoUrl);
+  if (quoteVideo && quoteVideoUrl) {
+    quoteVideo.src = quoteVideoUrl;
+    quoteVideoWidget?.style.removeProperty("display");
+  } else {
+    quoteVideo?.removeAttribute("src");
+    quoteVideoWidget?.style.setProperty("display", "none", "important");
+  }
 
   const giftCards = Array.from(doc.querySelectorAll<HTMLElement>(".no-rekening-marker"));
   giftCards.forEach((marker, index) => {
@@ -736,7 +755,7 @@ function buildReferenceDocument(source: string) {
     html, body { background: #fffbf8; }
     .elementor-33329 .elementor-element.elementor-element-1c0fb2ff:not(.elementor-motion-effects-element-type-background),
     .elementor-33329 .elementor-element.elementor-element-1c0fb2ff > .elementor-motion-effects-container > .elementor-motion-effects-layer {
-      background-image: url("${THEME_COVER}") !important;
+      background-image: none !important;
       background-position: center center !important;
       background-size: cover !important;
     }
@@ -962,10 +981,8 @@ function buildReferenceDocument(source: string) {
 export default function AzureBloom({ invitation }: { invitation: InvitationData }) {
   const { setOpened } = useInvitation();
   const rsvp = useRsvpWishes(invitation.id);
-  const motionCouple = coupleName(invitation);
   const [referenceDocument, setReferenceDocument] = useState("");
   const [loadError, setLoadError] = useState(false);
-  const [motionPlaying, setMotionPlaying] = useState(false);
   const [frameReady, setFrameReady] = useState(false);
   const [guest] = useState(() => {
     if (typeof window === "undefined") return "";
@@ -973,11 +990,8 @@ export default function AzureBloom({ invitation }: { invitation: InvitationData 
   });
 
   const frameRef = useRef<HTMLIFrameElement>(null);
-  const motionRef = useRef<HTMLVideoElement>(null);
   const frameDocumentRef = useRef<Document | null>(null);
   const frameCleanupRef = useRef<FrameCleanup | null>(null);
-  const openingStartedRef = useRef(false);
-  const openingTimerRef = useRef<number | null>(null);
   const rsvpRef = useRef(rsvp);
 
   useEffect(() => {
@@ -1004,14 +1018,7 @@ export default function AzureBloom({ invitation }: { invitation: InvitationData 
     };
   }, []);
 
-  const finishOpening = useCallback(() => {
-    if (!openingStartedRef.current) return;
-    openingStartedRef.current = false;
-    if (openingTimerRef.current !== null) {
-      window.clearTimeout(openingTimerRef.current);
-      openingTimerRef.current = null;
-    }
-
+  const openInvitation = useCallback(() => {
     const doc = frameDocumentRef.current;
     if (doc) {
       const cover = doc.getElementById("sec");
@@ -1042,25 +1049,8 @@ export default function AzureBloom({ invitation }: { invitation: InvitationData 
       doc.querySelector<HTMLAudioElement>(".idb-audio-el")?.play().catch(() => undefined);
     }
 
-    setMotionPlaying(false);
     setOpened(true);
   }, [setOpened]);
-
-  const startOpening = useCallback(() => {
-    if (openingStartedRef.current) return;
-    openingStartedRef.current = true;
-    setMotionPlaying(true);
-
-    openingTimerRef.current = window.setTimeout(finishOpening, 11500);
-    const video = motionRef.current;
-    if (!video) return;
-
-    video.load();
-    video.currentTime = 0;
-    video.play().catch(() => {
-      window.setTimeout(finishOpening, 800);
-    });
-  }, [finishOpening]);
 
   const handleFrameLoad = useCallback(() => {
     const doc = frameRef.current?.contentDocument;
@@ -1073,12 +1063,12 @@ export default function AzureBloom({ invitation }: { invitation: InvitationData 
       doc,
       invitation,
       guest || queryGuest,
-      startOpening,
+      openInvitation,
       async (input) => rsvpRef.current.submit(input),
       () => rsvpRef.current.submitting,
     );
     setFrameReady(true);
-  }, [guest, invitation, startOpening]);
+  }, [guest, invitation, openInvitation]);
 
   useEffect(() => {
     if (!frameReady || !frameDocumentRef.current) return;
@@ -1088,7 +1078,6 @@ export default function AzureBloom({ invitation }: { invitation: InvitationData 
   useEffect(() => {
     return () => {
       frameCleanupRef.current?.();
-      if (openingTimerRef.current !== null) window.clearTimeout(openingTimerRef.current);
     };
   }, []);
 
@@ -1096,7 +1085,7 @@ export default function AzureBloom({ invitation }: { invitation: InvitationData 
     <main
       className={styles.root}
       data-reference-ready={frameReady ? "true" : "false"}
-      data-motion-playing={motionPlaying ? "true" : "false"}
+      data-motion-playing="false"
     >
       {referenceDocument ? (
         <iframe
@@ -1113,30 +1102,6 @@ export default function AzureBloom({ invitation }: { invitation: InvitationData 
         </div>
       )}
 
-      <div className={styles.motionLayer} aria-hidden={!motionPlaying}>
-        <video
-          ref={motionRef}
-          className={styles.motionVideo}
-          src={OPENING_MOTION}
-          poster={THEME_COVER}
-          playsInline
-          preload="none"
-          onEnded={finishOpening}
-          onError={() => window.setTimeout(finishOpening, 800)}
-        />
-        <div className={styles.motionIntro} aria-hidden={!motionPlaying}>
-          <div className={styles.motionCopy}>
-            <p className={styles.motionKicker}>THE WEDDING OF</p>
-            <p className={styles.motionCouple}>{motionCouple}</p>
-          </div>
-          <div className={styles.motionScrollCue}>
-            <span>Scroll ke bawah</span>
-            <span className={styles.mouseIcon} aria-hidden="true">
-              <span />
-            </span>
-          </div>
-        </div>
-      </div>
     </main>
   );
 }
