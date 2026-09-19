@@ -66,7 +66,24 @@ function setOptionalSocialLink(
 ) {
   const element = doc.querySelector<HTMLAnchorElement>(selector);
   const widget = element?.closest<HTMLElement>(".elementor-widget-bisdev_social_icons");
-  const normalizedUsername = username?.trim().replace(/^@+/, "") || "";
+  const rawUsername = username?.trim() || "";
+  let normalizedUsername = rawUsername.replace(/^@+/, "");
+
+  if (/^https?:\/\//i.test(normalizedUsername)) {
+    try {
+      const url = new URL(normalizedUsername);
+      normalizedUsername = /(^|\.)instagram\.com$/i.test(url.hostname)
+        ? url.pathname.split("/").filter(Boolean)[0] || ""
+        : "";
+    } catch {
+      normalizedUsername = "";
+    }
+  }
+
+  normalizedUsername = normalizedUsername
+    .replace(/^@+/, "")
+    .split(/[/?#]/, 1)[0]
+    .trim();
 
   if (!normalizedUsername) {
     element?.removeAttribute("href");
