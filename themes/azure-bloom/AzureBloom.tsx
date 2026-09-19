@@ -59,6 +59,25 @@ function setLink(doc: Document, selector: string, href: string | null | undefine
   element.rel = "nofollow noopener noreferrer";
 }
 
+function setOptionalSocialLink(
+  doc: Document,
+  selector: string,
+  username: string | null | undefined,
+) {
+  const element = doc.querySelector<HTMLAnchorElement>(selector);
+  const widget = element?.closest<HTMLElement>(".elementor-widget-bisdev_social_icons");
+  const normalizedUsername = username?.trim().replace(/^@+/, "") || "";
+
+  if (!normalizedUsername) {
+    element?.removeAttribute("href");
+    widget?.style.setProperty("display", "none", "important");
+    return;
+  }
+
+  widget?.style.removeProperty("display");
+  setLink(doc, selector, `https://www.instagram.com/${normalizedUsername}`);
+}
+
 function setImage(
   doc: Document,
   selector: string,
@@ -395,8 +414,16 @@ function prepareReference(
   setImage(doc, "#mempelai .elementor-element-7d0c7c16 img", invitation.bride.photo, invitation.bride.name);
   setImage(doc, ".elementor-element-2f3b2d9a img", invitation.coverImage, couple);
 
-  setLink(doc, "#mempelai .elementor-element-68904f21 a", invitation.groom.instagram ? `https://www.instagram.com/${invitation.groom.instagram}` : null);
-  setLink(doc, "#mempelai .elementor-element-5ef3be7f a", invitation.bride.instagram ? `https://www.instagram.com/${invitation.bride.instagram}` : null);
+  setOptionalSocialLink(
+    doc,
+    "#mempelai .elementor-element-68904f21 a",
+    invitation.groom.instagram,
+  );
+  setOptionalSocialLink(
+    doc,
+    "#mempelai .elementor-element-5ef3be7f a",
+    invitation.bride.instagram,
+  );
 
   setText(doc, "#date .elementor-element-157099ba .elementor-widget-container", firstEvent?.date || "");
   setText(doc, "#date .elementor-element-71face8a .elementor-widget-container", firstEvent ? `Pukul : ${firstEvent.time}` : "");
