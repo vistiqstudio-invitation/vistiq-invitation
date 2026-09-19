@@ -348,6 +348,14 @@ function removeThirdPartyVideo(documentRoot: Document) {
   });
 }
 
+function removeThirdPartyAudio(documentRoot: Document) {
+  documentRoot.querySelector('[data-widget_type="wds_audio.default"]')?.remove();
+  documentRoot.querySelector("#wds_audio_play")?.closest<HTMLElement>('[data-widget_type="wds_audio.default"]')?.remove();
+  documentRoot.querySelectorAll<HTMLScriptElement>("script").forEach((script) => {
+    if (script.textContent?.includes("WdsAudio")) script.remove();
+  });
+}
+
 function appendOverrides(documentRoot: Document, coupleTitle: string) {
   if (documentRoot.getElementById("vistiq-adat-bali-motion-overrides")) return;
   const style = documentRoot.createElement("style");
@@ -356,6 +364,10 @@ function appendOverrides(documentRoot: Document, coupleTitle: string) {
     :root, body { background: ${PURPLE_DEEP} !important; }
     body, body[unresolved] { opacity: 1 !important; visibility: visible !important; display: block !important; }
     .elementor-invisible, [data-aos] { visibility: visible !important; opacity: 1 !important; }
+    html.vistiq-cover-locked, html.vistiq-cover-locked body { height: 100% !important; overflow: hidden !important; touch-action: none !important; }
+    html.vistiq-cover-open #bukaUndangan .elementor-background-video-hosted { display: block !important; visibility: visible !important; opacity: 1 !important; }
+    html.vistiq-cover-open #bukaUndangan .elementor-widget-heading { animation-delay: 0ms !important; visibility: visible !important; opacity: 1 !important; }
+    #wds_audio_play { display: none !important; }
     [data-id="7fb120df"] { display: none !important; }
     [data-id="2ea54e2e"], [data-id="217a781e"] { background-color: ${PURPLE} !important; }
     [data-id="38e771dc"] .elementor-button,
@@ -373,6 +385,50 @@ function appendOverrides(documentRoot: Document, coupleTitle: string) {
   `;
   documentRoot.head.append(style);
   documentRoot.body.dataset.vistiqCouple = coupleTitle;
+}
+
+function initialiseCoverFlow(documentRoot: Document) {
+  const html = documentRoot.documentElement;
+  const body = documentRoot.body;
+  const button = documentRoot.querySelector<HTMLAnchorElement>("#tombolBuka a");
+  const opening = documentRoot.querySelector<HTMLElement>("#bukaUndangan");
+  if (!html || !body || !button || !opening) return;
+
+  html.classList.add("vistiq-cover-locked");
+  body.style.overflowY = "hidden";
+  body.style.touchAction = "none";
+
+  if (button.dataset.vistiqCoverFlowBound === "true") return;
+  button.dataset.vistiqCoverFlowBound = "true";
+
+  button.addEventListener("click", (event) => {
+    event.preventDefault();
+    if (html.classList.contains("vistiq-cover-open")) return;
+
+    html.classList.remove("vistiq-cover-locked");
+    html.classList.add("vistiq-cover-open");
+    body.style.overflowY = "auto";
+    body.style.touchAction = "auto";
+
+    const video = opening.querySelector<HTMLVideoElement>("video.elementor-background-video-hosted");
+    if (video) {
+      video.autoplay = true;
+      video.style.setProperty("display", "block", "important");
+      video.style.setProperty("visibility", "visible", "important");
+      video.style.setProperty("opacity", "1", "important");
+      video.currentTime = 0;
+      void video.play().catch(() => undefined);
+    }
+
+    opening.querySelectorAll<HTMLElement>(".elementor-widget-heading").forEach((element) => {
+      element.classList.remove("elementor-invisible");
+      element.style.animationDelay = "0ms";
+      element.style.visibility = "visible";
+      element.style.opacity = "1";
+    });
+
+    window.setTimeout(() => opening.scrollIntoView({ behavior: "auto", block: "start" }), 30);
+  });
 }
 
 function localizeLinks(documentRoot: Document) {
@@ -489,6 +545,7 @@ function applyInvitationData(documentRoot: Document, invitation: InvitationData,
 
   setGallery(documentRoot, invitation.gallery, invitation.story);
   removeThirdPartyVideo(documentRoot);
+  removeThirdPartyAudio(documentRoot);
   setBackgroundVideo(documentRoot, invitation.videoUrl);
   setGiftData(documentRoot, invitation, coupleTitle);
   setSocialLinks(documentRoot, invitation);
@@ -497,6 +554,7 @@ function applyInvitationData(documentRoot: Document, invitation: InvitationData,
   wireLocalForms(documentRoot);
   addVistiqFooter(documentRoot);
   appendOverrides(documentRoot, coupleTitle);
+  initialiseCoverFlow(documentRoot);
 
   const titleMeta = documentRoot.querySelector<HTMLMetaElement>('meta[property="og:title"]');
   if (titleMeta) titleMeta.content = coupleTitle;
@@ -510,13 +568,14 @@ function setBackgroundVideo(documentRoot: Document, videoUrl: string | null) {
   if (!video) return;
   video.src = videoUrl;
   video.muted = true;
-  video.autoplay = true;
+  video.autoplay = false;
   video.playsInline = true;
   video.style.setProperty("display", "block", "important");
   video.style.setProperty("visibility", "visible", "important");
   video.style.setProperty("opacity", "1", "important");
   video.load();
-  void video.play().catch(() => undefined);
+  video.pause();
+  video.currentTime = 0;
 }
 
 function setAudioSource(documentRoot: Document, musicUrl: string | null) {
