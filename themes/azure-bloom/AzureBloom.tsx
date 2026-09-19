@@ -270,6 +270,8 @@ function setLoveStory(doc: Document, invitation: InvitationData) {
         const yearElement = doc.createElement("p");
         yearElement.className = "vistiq-story-year";
         yearElement.textContent = year;
+        yearElement.style.textAlign = "center";
+        yearElement.style.width = "100%";
         title.before(yearElement);
       }
     }
