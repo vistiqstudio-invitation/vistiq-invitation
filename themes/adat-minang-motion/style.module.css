@@ -355,6 +355,7 @@
   width: min(100%, 400px);
   padding: 18px 10px 0;
   text-align: center;
+  transform: translateY(-82px);
 }
 
 .initials {
