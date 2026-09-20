@@ -348,7 +348,7 @@
   padding: 38px 10px 50px;
   background:
     linear-gradient(180deg, rgba(26, 19, 31, 0.12) 58%, rgba(112, 87, 118, 0.56) 82%, var(--soft-lilac) 100%),
-    url("/photos/luxury-gallery-3.webp") center / cover;
+    url("/themes/adat-minang-motion/minang-verse-background.png") center bottom / cover;
 }
 
 .quotePanel {
@@ -399,22 +399,13 @@
 }
 
 .coupleSection {
-  padding: 72px 10px 50px;
+  padding: 48px 10px 50px;
   background:
     linear-gradient(180deg, var(--soft-lilac) 0%, rgba(245, 238, 231, 0.78) 18%, rgba(245, 238, 231, 0.7) 78%, var(--cream-tone) 100%),
     url("/photos/luxury-cover.webp") center / cover;
   color: #000;
 }
 
-.coupleSection::before {
-  content: "";
-  display: block;
-  width: min(58vw, 230px);
-  aspect-ratio: 2 / 1;
-  margin: 0 auto 26px;
-  background: url("/themes/adat-minang-motion/minang-1.png") center / contain no-repeat;
-  pointer-events: none;
-}
 
 .coupleIntro,
 .coupleGrid {
@@ -1343,7 +1334,7 @@
       rgba(174, 138, 108, 0.28) 88%,
       var(--cream-tone) 100%
     ),
-    url("/photos/luxury-gallery-3.webp") center / cover;
+    url("/themes/adat-minang-motion/minang-verse-background.png") center bottom / cover;
 }
 
 .initials span,
