@@ -399,11 +399,21 @@
 }
 
 .coupleSection {
-  padding: 100px 10px 50px;
+  padding: 72px 10px 50px;
   background:
     linear-gradient(180deg, var(--soft-lilac) 0%, rgba(245, 238, 231, 0.78) 18%, rgba(245, 238, 231, 0.7) 78%, var(--cream-tone) 100%),
     url("/photos/luxury-cover.webp") center / cover;
   color: #000;
+}
+
+.coupleSection::before {
+  content: "";
+  display: block;
+  width: min(58vw, 230px);
+  aspect-ratio: 2 / 1;
+  margin: 0 auto 26px;
+  background: url("/themes/adat-minang-motion/minang-1.png") center / contain no-repeat;
+  pointer-events: none;
 }
 
 .coupleIntro,
@@ -1353,9 +1363,7 @@
   position: relative;
 }
 
-.couplePerson::before,
-.couplePerson::after,
-.eventCardReference::before {
+ .eventCardReference::before {
   content: "";
   position: absolute;
   z-index: 2;
@@ -1364,9 +1372,6 @@
   background: url("/themes/adat-minang-motion/minang-1.png") center / contain no-repeat;
   pointer-events: none;
 }
-
-.couplePerson::before { top: 18px; left: 3px; }
-.couplePerson::after { top: 18px; right: 3px; transform: scaleX(-1); }
 
 .eventCardReference { overflow: hidden; }
 .eventCardReference::before { top: -8px; right: -8px; width: 96px; height: 96px; opacity: 0.35; }
