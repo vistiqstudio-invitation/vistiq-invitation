@@ -3,6 +3,8 @@ import type { InvitationData } from "@/types/invitation";
 import type { AqiqahInvitationData } from "@/types/aqiqah";
 import type { KhitanInvitationData } from "@/types/khitan";
 import type { BirthdayInvitationData } from "@/types/birthday";
+import InvitationPreloader from "./InvitationPreloader";
+import { invitationPreloadData } from "@/lib/invitationPreload";
 import styles from "./WeddingThemeSafeArea.module.css";
 
 type InvitationFrameData =
@@ -92,7 +94,7 @@ export default function WeddingThemeSafeArea({
   const backdropImage = frameImage(invitation, theme);
   const weddingInvitation = invitation?.category === "wedding" ? invitation : null;
 
-  return (
+  const content = (
     <div className={styles.root} data-wedding-theme={theme}>
       <div className={styles.desktopBackdrop} aria-hidden="true">
         {lavenderMotion && weddingInvitation ? (
@@ -145,5 +147,12 @@ export default function WeddingThemeSafeArea({
       </div>
       <div className={styles.stage}>{children}</div>
     </div>
+  );
+
+  if (!invitation) return content;
+  return (
+    <InvitationPreloader key={`${theme}:${invitation.id}:${invitation.slug}`} {...invitationPreloadData(invitation, theme)}>
+      {content}
+    </InvitationPreloader>
   );
 }
