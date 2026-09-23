@@ -20,11 +20,25 @@ type Props = {
   reseller: Reseller | null;
   profileWhatsapp: string | null;
   catalogs: Catalog[];
+  isOwner?: boolean;
 };
 type Mode = "vistiq" | "sendiri";
 type Tab = "poster" | "video" | "caption" | "katalog" | "panduan";
 
 const ADMIN_WA = "0813 7133 8032";
+
+const adminNavItems = [
+  { key: "dashboard", label: "Dashboard", href: "/admin" },
+  { key: "clients", label: "Client", href: "/admin/clients" },
+  { key: "resellers", label: "Reseller", href: "/admin/resellers" },
+  { key: "affiliates", label: "Affiliate", href: "/admin/affiliates" },
+  { key: "invitations", label: "Undangan", href: "/admin/invitations" },
+  { key: "marketing-kit", label: "Marketing Kit", href: "/admin/marketing-kit" },
+  { key: "musik", label: "Musik", href: "/admin/musik" },
+  { key: "rsvp", label: "RSVP", href: "/admin/rsvp" },
+  { key: "transactions", label: "Transaksi", href: "/admin/transactions" },
+  { key: "withdrawals", label: "Penarikan Reseller", href: "/admin/withdrawals" },
+];
 const categories = [
   { id: "wedding", name: "Wedding", headline: "UNDANGAN DIGITAL PERNIKAHAN", detail: "Momen istimewa, undangan berkesan.", image: "/theme-previews/wedding/luxury-gold-card.jpg", accent: "#d5b878", backdrop: "#152d52" },
   { id: "khitan", name: "Khitan", headline: "UNDANGAN DIGITAL KHITAN", detail: "Rayakan hari spesial si kecil.", image: "/theme-previews/khitan/khitan-warna.jpg", accent: "#f1cf82", backdrop: "#203c54" },
@@ -101,14 +115,14 @@ function downloadCanvas(canvas: HTMLCanvasElement, filename: string) {
   }, "image/png");
 }
 
-export default function MarketingKit({ reseller, profileWhatsapp, catalogs }: Props) {
+export default function MarketingKit({ reseller, profileWhatsapp, catalogs, isOwner = false }: Props) {
   const router = useRouter();
   const [tab, setTab] = useState<Tab>("poster");
   const [mode, setMode] = useState<Mode>("vistiq");
   const [category, setCategory] = useState<string>("wedding");
   const [size, setSize] = useState<"feed" | "story">("feed");
-  const [ownName, setOwnName] = useState(reseller?.brand_name || reseller?.name || "");
-  const [ownWhatsapp, setOwnWhatsapp] = useState(reseller?.landing_whatsapp || profileWhatsapp || "");
+  const [ownName, setOwnName] = useState(reseller?.brand_name || reseller?.name || (isOwner ? "Vistiq Invitation" : ""));
+  const [ownWhatsapp, setOwnWhatsapp] = useState(reseller?.landing_whatsapp || profileWhatsapp || (isOwner ? ADMIN_WA : ""));
   const [saving, setSaving] = useState(false);
   const [search, setSearch] = useState("");
   const [catalogFilter, setCatalogFilter] = useState("all");
@@ -238,25 +252,25 @@ export default function MarketingKit({ reseller, profileWhatsapp, catalogs }: Pr
   return (
     <main className={dashboard.page} style={brandStyle}>
       <DashboardSidebar
-        brandTop={reseller?.brand_name || "VISTIQ"}
-        brandBottom={reseller?.package === "reseller_brand" ? "Mitra Brand" : "Reseller"}
+        brandTop={isOwner ? "VISTIQ" : reseller?.brand_name || "VISTIQ"}
+        brandBottom={isOwner ? "Invitation" : reseller?.package === "reseller_brand" ? "Mitra Brand" : "Reseller"}
         logoUrl={reseller?.logo_url}
         accentColor={reseller?.brand_color}
-        items={getResellerNavItems(reseller?.package, reseller?.id)}
+        items={isOwner ? adminNavItems : getResellerNavItems(reseller?.package, reseller?.id)}
         activeKey="marketing-kit"
-        notificationRole="reseller"
+        notificationRole={isOwner ? "owner" : "reseller"}
         onLogout={logout}
       />
       <section className={dashboard.content}>
         <header className={dashboard.header}>
           <div>
-            <p className={dashboard.label}>PUSAT MATERI RESELLER</p>
+            <p className={dashboard.label}>{isOwner ? "PUSAT MATERI ADMIN" : "PUSAT MATERI RESELLER"}</p>
             <h1 className={dashboard.title}>Marketing Kit</h1>
             <p className={dashboard.subtitle}>Poster siap unduh, cuplikan video, template pesan, katalog tema, dan panduan promosi dalam satu tempat.</p>
           </div>
         </header>
 
-        {!reseller ? (
+        {!reseller && !isOwner ? (
           <div className={dashboard.warningBox}>Akun reseller belum terhubung. Hubungi admin Vistiq untuk memeriksa profil akun Anda.</div>
         ) : (
           <>
@@ -274,7 +288,7 @@ export default function MarketingKit({ reseller, profileWhatsapp, catalogs }: Pr
                   <label>Nama brand<input value={ownName} maxLength={70} onChange={e => setOwnName(e.target.value)} placeholder="Nama usaha Anda" /></label>
                   <label>WhatsApp jualan<input value={ownWhatsapp} inputMode="tel" onChange={e => setOwnWhatsapp(e.target.value)} placeholder="08xxxxxxxxxx" /></label>
                   {!validOwnNumber && <small>Isi nomor WhatsApp agar poster dan template chat mengarah ke kontak Anda.</small>}
-                  <small>Pengaturan ini untuk materi promosi. Untuk menyimpan perubahan profil brand, buka menu Dashboard → Brand Saya.</small>
+                  <small>Pengaturan ini hanya untuk materi promosi{isOwner ? " (tidak mengubah brand reseller)" : ". Untuk menyimpan perubahan profil brand, buka menu Dashboard → Brand Saya"}.</small>
                 </div>
               )}
             </div>
@@ -383,7 +397,7 @@ export default function MarketingKit({ reseller, profileWhatsapp, catalogs }: Pr
                   </label>
                 </div>
                 <div className={kit.catalogActions}>
-                  <a className={kit.primary} href={catalogLink} target="_blank" rel="noreferrer">Buka {mode === "sendiri" ? "Landing Saya" : "Katalog Vistiq"}</a>
+                  <a className={kit.primary} href={catalogLink} target="_blank" rel="noreferrer">Buka {mode === "sendiri" && reseller?.id ? "Landing Saya" : "Katalog Vistiq"}</a>
                   <button className={kit.secondary} onClick={() => void copyText(catalogLink)}>Salin link katalog</button>
                 </div>
                 {catalogs.filter(g => catalogFilter === "all" || catalogFilter === g.category).map(group => {
@@ -423,8 +437,8 @@ export default function MarketingKit({ reseller, profileWhatsapp, catalogs }: Pr
                   <li><strong>Proses dan cek undangan.</strong><span>Isi data client di dashboard, cek nama, foto, tanggal, maps, RSVP, dan branding di preview sebelum membagikan link.</span></li>
                 </ol>
                 <div className={kit.catalogActions}>
-                  <a href="/reseller/invitations" className={kit.primary}>Buat Undangan</a>
-                  <a href="/reseller/clients" className={kit.secondary}>Daftar Client</a>
+                  <a href={isOwner ? "/admin/invitations" : "/reseller/invitations"} className={kit.primary}>Buat Undangan</a>
+                  <a href={isOwner ? "/admin/clients" : "/reseller/clients"} className={kit.secondary}>Daftar Client</a>
                 </div>
               </section>
             )}
