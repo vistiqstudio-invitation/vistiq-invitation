@@ -117,7 +117,7 @@ export async function PATCH(request: Request) {
       for (let attempt = 0; attempt < 3; attempt += 1) {
         const result = await context.client.auth.admin.updateUserById(
           reseller.user_id,
-          { email, email_confirm: true },
+          { email },
         );
         authUpdateError = result.error;
         if (!authUpdateError) break;
