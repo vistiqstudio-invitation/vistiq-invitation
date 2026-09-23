@@ -55,76 +55,134 @@ export async function GET() {
 }
 
 export async function PATCH(request: Request) {
-  const context = await ownerAdminClient();
-  if (context.error === "forbidden") {
-    return NextResponse.json({ error: "Tidak diizinkan." }, { status: 403 });
-  }
-  if (!context.client) {
-    return NextResponse.json({ error: "Env var server belum diset." }, { status: 500 });
-  }
+  try {
+    const context = await ownerAdminClient();
+    if (context.error === "forbidden") {
+      return NextResponse.json({ error: "Tidak diizinkan." }, { status: 403 });
+    }
+    if (!context.client) {
+      return NextResponse.json({ error: "Konfigurasi server belum lengkap." }, { status: 500 });
+    }
 
-  const body = await request.json();
-  const resellerId = String(body.resellerId || "").trim();
-  const name = String(body.name || "").trim();
-  const email = String(body.email || "").trim().toLowerCase();
-  const whatsapp = String(body.whatsapp || "").trim();
-  const brandName = String(body.brand_name || "").trim() || null;
+    let body: Record<string, unknown>;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json({ error: "Data permintaan tidak valid." }, { status: 400 });
+    }
 
-  if (!resellerId || !name || !email) {
-    return NextResponse.json({ error: "Nama dan email reseller wajib diisi." }, { status: 400 });
-  }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return NextResponse.json({ error: "Format email tidak valid." }, { status: 400 });
-  }
+    const resellerId = String(body.resellerId || "").trim();
+    const name = String(body.name || "").trim();
+    const email = String(body.email || "").trim().toLowerCase();
+    const whatsapp = String(body.whatsapp || "").trim();
+    const brandName = String(body.brand_name || "").trim() || null;
 
-  const { data: reseller, error: resellerError } = await context.client
-    .from("resellers")
-    .select("id, user_id, name, whatsapp, brand_name")
-    .eq("id", resellerId)
-    .single();
+    if (!resellerId || !name || !email) {
+      return NextResponse.json({ error: "Nama dan email reseller wajib diisi." }, { status: 400 });
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return NextResponse.json({ error: "Format email tidak valid." }, { status: 400 });
+    }
 
-  if (resellerError || !reseller?.user_id) {
-    return NextResponse.json({ error: "Data reseller tidak ditemukan." }, { status: 404 });
-  }
+    const { data: reseller, error: resellerError } = await context.client
+      .from("resellers")
+      .select("id, user_id, name, whatsapp, brand_name")
+      .eq("id", resellerId)
+      .single();
 
-  const { data: existingAuth, error: existingAuthError } =
-    await context.client.auth.admin.getUserById(reseller.user_id);
-  if (existingAuthError || !existingAuth.user) {
-    return NextResponse.json({ error: "Akun login reseller tidak ditemukan." }, { status: 404 });
-  }
+    if (resellerError || !reseller?.user_id) {
+      return NextResponse.json({ error: "Data reseller tidak ditemukan." }, { status: 404 });
+    }
 
-  const previousEmail = existingAuth.user.email || "";
-  const previousMetadata = existingAuth.user.user_metadata || {};
-  const { error: authUpdateError } = await context.client.auth.admin.updateUserById(
-    reseller.user_id,
-    {
-      email,
-      email_confirm: true,
-      user_metadata: { ...previousMetadata, name, whatsapp },
-    },
-  );
+    const { data: authData, error: authReadError } =
+      await context.client.auth.admin.getUserById(reseller.user_id);
+    if (authReadError || !authData?.user) {
+      console.error("reseller_edit_auth_read_failed", authReadError);
+      return NextResponse.json({ error: "Akun login reseller tidak ditemukan atau gagal dibaca." }, { status: 500 });
+    }
 
-  if (authUpdateError) {
-    const duplicate = /already|registered|exists/i.test(authUpdateError.message);
+    const previousEmail = authData.user.email || "";
+    const previousMetadata = authData.user.user_metadata || {};
+    const oldName = reseller.name || "";
+    const oldWhatsapp = reseller.whatsapp || "";
+    const oldBrandName = reseller.brand_name ?? null;
+    const nextMetadata = { ...previousMetadata, name, whatsapp };
+    const emailChanged = email !== previousEmail.toLowerCase();
+    const metadataChanged = previousMetadata.name !== name || previousMetadata.whatsapp !== whatsapp;
+
+    // Do not rewrite the Auth email for edits that only change name/phone/brand.
+    // This avoids unnecessary Auth email updates and makes regular edits reliable.
+    if (emailChanged || metadataChanged) {
+      const { error: authUpdateError } = await context.client.auth.admin.updateUserById(
+        reseller.user_id,
+        {
+          ...(emailChanged ? { email, email_confirm: true } : {}),
+          ...(metadataChanged ? { user_metadata: nextMetadata } : {}),
+        },
+      );
+
+      if (authUpdateError) {
+        console.error("reseller_edit_auth_update_failed", authUpdateError);
+        const message = typeof authUpdateError.message === "string" ? authUpdateError.message : "";
+        const duplicate = /already|registered|exists|duplicate|unique/i.test(message);
+        return NextResponse.json(
+          { error: duplicate ? "Email tersebut sudah digunakan akun lain." : "Gagal memperbarui akun login reseller. Silakan coba lagi." },
+          { status: 400 },
+        );
+      }
+    }
+
+    const { error: updateError } = await context.client
+      .from("resellers")
+      .update({ name, whatsapp, brand_name: brandName })
+      .eq("id", resellerId);
+
+    if (updateError) {
+      console.error("reseller_edit_reseller_update_failed", updateError);
+      if (emailChanged || metadataChanged) {
+        const { error: rollbackError } = await context.client.auth.admin.updateUserById(
+          reseller.user_id,
+          {
+            ...(emailChanged ? { email: previousEmail, email_confirm: true } : {}),
+            ...(metadataChanged ? { user_metadata: previousMetadata } : {}),
+          },
+        );
+        if (rollbackError) console.error("reseller_edit_auth_rollback_failed", rollbackError);
+      }
+      return NextResponse.json({ error: "Gagal menyimpan data reseller. Tidak ada perubahan yang berhasil disimpan." }, { status: 500 });
+    }
+
+    // Dashboard greeting uses public.profiles, while the list uses resellers;
+    // keep both in sync after an owner edits the reseller.
+    const { error: profileError } = await context.client
+      .from("profiles")
+      .update({ name, whatsapp })
+      .eq("id", reseller.user_id);
+    if (profileError) {
+      console.error("reseller_edit_profile_update_failed", profileError);
+      // Do not falsely claim that everything succeeded if the profile update fails.
+      await context.client.from("resellers").update({
+        name: oldName, whatsapp: oldWhatsapp, brand_name: oldBrandName,
+      }).eq("id", resellerId);
+      if (emailChanged || metadataChanged) {
+        const { error: rollbackError } = await context.client.auth.admin.updateUserById(
+          reseller.user_id,
+          {
+            ...(emailChanged ? { email: previousEmail, email_confirm: true } : {}),
+            ...(metadataChanged ? { user_metadata: previousMetadata } : {}),
+          },
+        );
+        if (rollbackError) console.error("reseller_edit_auth_rollback_failed", rollbackError);
+      }
+      return NextResponse.json({ error: "Gagal menyinkronkan profil reseller. Silakan coba lagi." }, { status: 500 });
+    }
+
+    return NextResponse.json({ success: true, email });
+  } catch (error) {
+    console.error("reseller_edit_unexpected_error", error);
     return NextResponse.json(
-      { error: duplicate ? "Email tersebut sudah digunakan akun lain." : authUpdateError.message },
-      { status: 400 },
+      { error: "Terjadi gangguan saat menyimpan. Silakan coba lagi atau hubungi admin teknis." },
+      { status: 500 },
     );
   }
-
-  const { error: updateError } = await context.client
-    .from("resellers")
-    .update({ name, whatsapp, brand_name: brandName })
-    .eq("id", resellerId);
-
-  if (updateError) {
-    await context.client.auth.admin.updateUserById(reseller.user_id, {
-      email: previousEmail,
-      email_confirm: true,
-      user_metadata: previousMetadata,
-    });
-    return NextResponse.json({ error: "Gagal menyimpan data reseller." }, { status: 500 });
-  }
-
-  return NextResponse.json({ success: true, email });
 }

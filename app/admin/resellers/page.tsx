@@ -269,34 +269,48 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! ðŸš
   };
 
   const saveResellerEdit = async () => {
-    if (!editingReseller) return;
+    if (!editingReseller || savingEdit) return;
     if (!editForm.name.trim() || !editForm.email.trim()) {
       alert("Nama dan email reseller wajib diisi.");
       return;
     }
-
-    setSavingEdit(true);
-    const response = await fetch("/api/admin/resellers", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        resellerId: editingReseller.id,
-        name: editForm.name.trim(),
-        email: editForm.email.trim(),
-        whatsapp: editForm.whatsapp.trim(),
-        brand_name: editForm.brand_name.trim() || null,
-      }),
-    });
-    const result = await response.json();
-    setSavingEdit(false);
-
-    if (!response.ok) {
-      alert(result.error || "Gagal memperbarui reseller.");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(editForm.email.trim())) {
+      alert("Format email tidak valid.");
       return;
     }
 
-    setEditingReseller(null);
-    await fetchResellers();
+    setSavingEdit(true);
+    try {
+      const response = await fetch("/api/admin/resellers", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          resellerId: editingReseller.id,
+          name: editForm.name.trim(),
+          email: editForm.email.trim(),
+          whatsapp: editForm.whatsapp.trim(),
+          brand_name: editForm.brand_name.trim() || null,
+        }),
+      });
+
+      const result = await response.json().catch(() => null);
+      if (!response.ok || !result?.success) {
+        const message = typeof result?.error === "string" && result.error.trim() && result.error !== "{}"
+          ? result.error
+          : "Gagal memperbarui reseller. Silakan coba lagi.";
+        alert(message);
+        return;
+      }
+
+      setEditingReseller(null);
+      await fetchResellers();
+      alert("Nama, email, dan nomor WhatsApp reseller berhasil diperbarui.");
+    } catch (error) {
+      console.error("Gagal memperbarui reseller:", error);
+      alert("Koneksi terputus atau server tidak dapat dihubungi. Silakan coba lagi.");
+    } finally {
+      setSavingEdit(false);
+    }
   };
 
   const updateCommission = async (id: string, commission_percent: number) => {
