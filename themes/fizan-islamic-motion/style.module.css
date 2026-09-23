@@ -277,9 +277,11 @@
 
 .footer {
   padding: 64px 25px 28px;
-  background:
-    linear-gradient(rgba(23, 54, 36, .6), rgba(18, 42, 28, .72)),
-    url("/themes/fizan-islamic-motion/gallery-1.jpg") center 30% / cover;
+  /* Footer photo is supplied by the invitation's first gallery image. */
+  background-color: #173624;
+  background-image: linear-gradient(rgba(23, 54, 36, .6), rgba(18, 42, 28, .72));
+  background-position: center 30%;
+  background-size: cover;
   color: #fff;
   text-align: center;
 }
