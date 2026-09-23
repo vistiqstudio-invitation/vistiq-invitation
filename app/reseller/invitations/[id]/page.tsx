@@ -73,6 +73,7 @@ const initialForm = {
   gallery_photos: [] as string[],
 
   baby_name: "",
+  child_nickname: "",
   baby_gender: "",
   father_name: "",
   mother_name: "",
@@ -234,6 +235,7 @@ export default function ResellerInvitationEditPage() {
           : [],
 
         baby_name: invitation.baby_name || "",
+        child_nickname: invitation.child_nickname || "",
         baby_gender: invitation.baby_gender || "",
         father_name: invitation.father_name || "",
         mother_name: invitation.mother_name || "",
@@ -329,6 +331,7 @@ export default function ResellerInvitationEditPage() {
       ...form,
       groom_nickname: form.groom_nickname.trim() || null,
       bride_nickname: form.bride_nickname.trim() || null,
+      child_nickname: form.category === "khitan" ? (form.child_nickname.trim() || null) : null,
       akad_date: form.akad_date || null,
       resepsi_date: form.resepsi_date || null,
       aqiqah_date: form.aqiqah_date || null,
@@ -459,6 +462,16 @@ export default function ResellerInvitationEditPage() {
                 onChange={(e) => set("baby_name", e.target.value)}
                 className={styles.input}
               />
+
+              {form.category === "khitan" && (
+                <input
+                  placeholder="Nama Panggilan Anak (opsional), contoh: Sandika"
+                  aria-label="Nama Panggilan Anak"
+                  value={form.child_nickname}
+                  onChange={(e) => set("child_nickname", e.target.value)}
+                  className={styles.input}
+                />
+              )}
 
               {form.category === "aqiqah" && (
                 <select

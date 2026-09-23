@@ -120,6 +120,7 @@ const initialForm = {
   // Aqiqah-only fields - a separate, much smaller field set for the
   // "aqiqah" category (see supabase/sql/019_add_aqiqah_category.sql).
   baby_name: "",
+  child_nickname: "",
   baby_gender: "",
   father_name: "",
   mother_name: "",
@@ -377,6 +378,7 @@ export default function ResellerInvitationsPage() {
       slug: cleanSlug,
       groom_nickname: form.groom_nickname.trim() || null,
       bride_nickname: form.bride_nickname.trim() || null,
+      child_nickname: form.category === "khitan" ? (form.child_nickname.trim() || null) : null,
       akad_date: form.akad_date || null,
       resepsi_date: form.resepsi_date || null,
       aqiqah_date: form.aqiqah_date || null,
@@ -620,6 +622,16 @@ export default function ResellerInvitationsPage() {
                       onChange={(e) => set("baby_name", e.target.value)}
                       className={styles.input}
                     />
+
+                    {form.category === "khitan" && (
+                      <input
+                        placeholder="Nama Panggilan Anak (opsional), contoh: Sandika"
+                        aria-label="Nama Panggilan Anak"
+                        value={form.child_nickname}
+                        onChange={(e) => set("child_nickname", e.target.value)}
+                        className={styles.input}
+                      />
+                    )}
 
                     {form.category === "aqiqah" && (
                       <select

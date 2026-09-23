@@ -59,6 +59,7 @@ export default function InvitationsPage() {
     groom_name: "",
     bride_name: "",
     baby_name: "",
+    child_nickname: "",
     event_date: "",
     akad_location: "",
     reception_location: "",
@@ -213,6 +214,7 @@ export default function InvitationsPage() {
 
     const payload = {
       ...form,
+      child_nickname: form.category === "khitan" ? (form.child_nickname.trim() || null) : null,
       slug: cleanSlug,
       event_date: form.event_date || null,
     };
@@ -318,13 +320,25 @@ export default function InvitationsPage() {
             </select>
 
             {form.category !== "wedding" ? (
-              <input
-                placeholder={form.category === "aqiqah" ? "Nama Bayi" : "Nama Anak"}
-                value={form.baby_name}
-                onChange={(e) => setForm({ ...form, baby_name: e.target.value })}
-                className={styles.input}
-                style={{ gridColumn: "span 2" }}
-              />
+              <>
+                <input
+                  placeholder={form.category === "aqiqah" ? "Nama Bayi" : "Nama Anak"}
+                  value={form.baby_name}
+                  onChange={(e) => setForm({ ...form, baby_name: e.target.value })}
+                  className={styles.input}
+                  style={{ gridColumn: "span 2" }}
+                />
+                {form.category === "khitan" && (
+                  <input
+                    placeholder="Nama Panggilan Anak (opsional), contoh: Sandika"
+                    aria-label="Nama Panggilan Anak"
+                    value={form.child_nickname}
+                    onChange={(e) => setForm({ ...form, child_nickname: e.target.value })}
+                    className={styles.input}
+                    style={{ gridColumn: "span 2" }}
+                  />
+                )}
+              </>
             ) : (
               <>
                 <input

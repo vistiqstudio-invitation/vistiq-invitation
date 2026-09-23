@@ -7,9 +7,8 @@ import styles from "./style.module.css";
 export default function Child({ invitation }: { invitation: KhitanInvitationData }) {
   const { child, parents } = invitation;
 
-  // No dedicated nickname field in the schema - last word of the full name
-  // stands in for the Indonesian "panggilan" convention.
-  const nickname = child.name.trim().split(/\s+/).pop() || child.name;
+  // Existing invitations retain the last-name fallback until a nickname is set.
+  const nickname = child.nickname?.trim() || child.name.trim().split(/\s+/).pop() || child.name;
 
   return (
     <div className={styles.section}>

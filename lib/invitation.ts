@@ -390,6 +390,7 @@ function normalizeKhitanInvitation(raw: Record<string, any>): KhitanInvitationDa
 
     child: {
       name: raw.baby_name || "",
+      nickname: firstNonEmpty(raw.child_nickname),
       photo: firstNonEmpty(raw.cover_image, raw.cover_photo),
       birthDate: raw.birth_date ? formatDate(raw.birth_date) : null,
       birthPlace: raw.birth_place || null,

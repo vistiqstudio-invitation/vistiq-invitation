@@ -12,7 +12,7 @@ export default function Cover({ invitation }: { invitation: KhitanInvitationData
   const { setOpened } = useInvitation();
   const searchParams = useSearchParams();
   const guestName = searchParams.get("to") || "Bapak/Ibu/Saudara/i";
-  const nickname = invitation.child.name.trim().split(/\s+/).pop() || invitation.child.name;
+  const nickname = invitation.child.nickname?.trim() || invitation.child.name.trim().split(/\s+/).pop() || invitation.child.name;
 
   return (
     <motion.section

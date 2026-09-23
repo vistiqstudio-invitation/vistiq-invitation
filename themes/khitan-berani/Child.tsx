@@ -8,7 +8,7 @@ import Monogram from "./Monogram";
 export default function Child({ invitation }: { invitation: KhitanInvitationData }) {
   const { child, parents } = invitation;
 
-  const nickname = child.name.trim().split(/\s+/).pop() || child.name;
+  const nickname = child.nickname?.trim() || child.name.trim().split(/\s+/).pop() || child.name;
 
   return (
     <div className={styles.section}>

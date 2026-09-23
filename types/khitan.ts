@@ -20,6 +20,7 @@ export type KhitanInvitationData = {
 
   child: {
     name: string;
+    nickname: string | null;
     photo: string | null;
     birthDate: string | null;
     birthPlace: string | null;
