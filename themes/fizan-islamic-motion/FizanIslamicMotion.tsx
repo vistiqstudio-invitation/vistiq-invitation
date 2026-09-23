@@ -10,19 +10,9 @@ import type { GiftAccount, InvitationData } from "@/types/invitation";
 import styles from "./style.module.css";
 
 const ASSET_ROOT = "/themes/fizan-islamic-motion";
-const POSTER = ASSET_ROOT + "/poster.jpg";
-const COVER_PHOTO = ASSET_ROOT + "/gallery-1.jpg";
 const VIDEO_PARTS = Array.from({ length: 33 }, (_, index) =>
   `${ASSET_ROOT}/opening-fizan-parts/part-${String(index).padStart(2, "0")}`,
 );
-const FALLBACK_GALLERY = [
-  ASSET_ROOT + "/gallery-1.jpg",
-  ASSET_ROOT + "/gallery-2.jpg",
-  ASSET_ROOT + "/gallery-3.jpg",
-  ASSET_ROOT + "/gallery-4.jpg",
-  ASSET_ROOT + "/gallery-5.jpg",
-];
-
 const ease = [0.22, 1, 0.36, 1] as const;
 const OPENING_TEXT_START = 5.85;
 const OPENING_TEXT_FADE_DURATION = 1.35;
@@ -176,7 +166,7 @@ function Cover({ invitation, onOpen, onBegin }: { invitation: InvitationData; on
   const [videoDuration, setVideoDuration] = useState(14.42);
   const videoSource = useChunkedOpeningVideo();
   const event = invitation.coverEvent;
-  const coverPhoto = invitation.coverImage || COVER_PHOTO;
+  const coverPhoto = invitation.coverImage || invitation.gallery[0] || undefined;
 
   const openingProgress = clamp(
     (videoTime - OPENING_TEXT_START) / Math.max(videoDuration - OPENING_TEXT_START, 0.1),
@@ -327,18 +317,20 @@ function OpeningSection({ invitation }: { invitation: InvitationData }) {
   const event = invitation.events[0];
   const quote = invitation.opening.quote || "Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang.";
   const source = invitation.opening.quoteSource || "QS. Ar-Rum : 21";
-  const bridePhoto = invitation.bride.photo || invitation.coverImage || POSTER;
-  const groomPhoto = invitation.groom.photo || invitation.coverImage || POSTER;
+  const bridePhoto = invitation.bride.photo || invitation.coverImage;
+  const groomPhoto = invitation.groom.photo || invitation.coverImage;
 
   return (
     <section id="buka" className={styles.openingSection}>
       <Reveal className={styles.openingIntro}>
         <p className={styles.kicker}>The Wedding Of</p>
         <h2>{firstName(invitation.bride)} <span>&amp;</span> {firstName(invitation.groom)}</h2>
-        <div className={styles.portraitPair}>
-          <div className={styles.portraitCard} style={imageStyle(bridePhoto)} />
-          <div className={styles.portraitCard} style={imageStyle(groomPhoto)} />
-        </div>
+        {(bridePhoto || groomPhoto) && (
+          <div className={styles.portraitPair}>
+            {bridePhoto && <div className={styles.portraitCard} style={imageStyle(bridePhoto)} />}
+            {groomPhoto && <div className={styles.portraitCard} style={imageStyle(groomPhoto)} />}
+          </div>
+        )}
         <p className={styles.openingDescription}>
           {invitation.opening.description || "Maha Suci Allah yang telah menciptakan makhluk-Nya berpasang-pasangan. Dengan memohon ridho-Nya, kami mengundang Anda untuk hadir di hari bahagia kami."}
         </p>
@@ -358,11 +350,11 @@ function OpeningSection({ invitation }: { invitation: InvitationData }) {
 }
 
 function PersonCard({ person, role }: { person: InvitationData["bride"] | InvitationData["groom"]; role: "bride" | "groom" }) {
-  const photo = person.photo || POSTER;
+  const photo = person.photo;
   const instagram = person.instagram?.replace(/^@/, "");
   return (
     <Reveal className={styles.personCard}>
-      <div className={styles.personPhoto} style={imageStyle(photo)} />
+      {photo && <div className={styles.personPhoto} style={imageStyle(photo)} />}
       <div className={styles.personInfo}>
         <span>{role === "bride" ? "Mempelai Wanita" : "Mempelai Pria"}</span>
         <h3>{fullName(person)}</h3>
@@ -387,7 +379,7 @@ function CoupleSection({ invitation }: { invitation: InvitationData }) {
 
 function EventSection({ invitation }: { invitation: InvitationData }) {
   return (
-    <section id="events" className={styles.eventSection} style={imageStyle(invitation.gallery[0] || POSTER)}>
+    <section id="events" className={styles.eventSection} style={imageStyle(invitation.gallery[0])}>
       <div className={styles.sectionBackdrop} aria-hidden="true" />
       <div className={styles.sectionContent}>
         <SectionTitle eyebrow="Save the date" title="Wedding Event" />
@@ -447,7 +439,7 @@ function StorySection({ invitation }: { invitation: InvitationData }) {
 }
 
 function GallerySection({ invitation }: { invitation: InvitationData }) {
-  const photos = invitation.gallery.length ? invitation.gallery : FALLBACK_GALLERY;
+  const photos = invitation.gallery;
   const [active, setActive] = useState<number | null>(null);
   return (
     <section className={styles.gallerySection}>
@@ -555,8 +547,14 @@ function WishesSection({ invitation }: { invitation: InvitationData }) {
 }
 
 function Footer({ invitation }: { invitation: InvitationData }) {
+  const footerPhoto = invitation.gallery[0];
   return (
-    <footer className={styles.footer}>
+    <footer
+      className={styles.footer}
+      style={footerPhoto ? {
+        backgroundImage: `linear-gradient(rgba(23, 54, 36, .6), rgba(18, 42, 28, .72)), url("${footerPhoto}")`,
+      } : undefined}
+    >
       <Reveal>
         <p>Suatu kebahagiaan dan kehormatan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu kepada kami.</p>
         <span>Kami Yang Berbahagia,</span>
@@ -598,7 +596,7 @@ export default function FizanIslamicMotion({ invitation }: { invitation: Invitat
           <EventSection invitation={invitation} />
           <LiveSection invitation={invitation} />
           <StorySection invitation={invitation} />
-          <GallerySection invitation={invitation} />
+          {invitation.gallery.length > 0 && <GallerySection invitation={invitation} />}
           {invitation.gifts.length > 0 && <GiftSection invitation={invitation} />}
           <GiftConfirm />
           <RsvpSection />
