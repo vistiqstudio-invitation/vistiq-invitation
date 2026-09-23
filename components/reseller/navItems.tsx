@@ -9,6 +9,7 @@ export function getResellerNavItems(
     { key: "dashboard", label: "Dashboard", href: "/reseller", icon: <IconDashboard /> },
     { key: "invitations", label: "Buat Undangan", href: "/reseller/invitations", icon: <IconInvitation /> },
     { key: "clients", label: "Daftar Client", href: "/reseller/clients", icon: <IconUsers /> },
+    { key: "marketing-kit", label: "Marketing Kit", href: "/reseller/marketing-kit", icon: <IconPalette /> },
   ];
 
   if (pkg !== "reseller_brand") {

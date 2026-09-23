@@ -1,0 +1,68 @@
+.brandPanel,.panel,.previewWrap{border:1px solid #dceaf7;border-radius:22px;background:#fff;box-shadow:0 14px 42px rgba(20,72,116,.07)}
+.brandPanel{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:18px;padding:22px 25px;margin-bottom:22px}
+.brandPanel strong{font-size:18px;color:#0b2b4b}
+.brandPanel p,.panel>p{color:#677d91;font-size:14px;line-height:1.6;margin:7px 0 0}
+.switcher,.choices,.tabs,.catalogActions{display:flex;flex-wrap:wrap;gap:9px}
+.switcher{background:#eaf4ff;padding:5px;border-radius:15px}
+.switcher button,.choices button,.tabs button,.secondary{border:1px solid transparent;border-radius:11px;padding:11px 15px;background:transparent;color:#275178;cursor:pointer;font-size:13px;font-weight:700}
+.switcher button.selected,.choices button.chosen{background:#1863ad;color:white}
+.brandFields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;width:100%;border-top:1px solid #e8eef5;padding-top:18px}
+.brandFields label,.field{display:grid;gap:7px;color:#255071;font-weight:700;font-size:13px}
+.brandFields small{grid-column:1/-1;color:#708498;line-height:1.5}
+.brandFields input,.field input,.field select{width:100%;min-width:0;padding:12px 13px;border:1px solid #d4e6f4;border-radius:11px;background:#f9fcff;color:#0b2b4b;font:inherit;font-size:14px}
+.tabs{overflow-x:auto;flex-wrap:nowrap;padding:6px;margin-bottom:20px;background:#e8f2fc;border-radius:16px}
+.tabs button{white-space:nowrap;flex:1}
+.tabs .tabActive{background:#fff;color:#1260a8;box-shadow:0 5px 15px rgba(20,66,111,.12)}
+.notice{padding:13px 16px;border:1px solid #c6dff5;border-radius:12px;background:#ecf6ff;color:#164f80;font-size:13px}
+.columns{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,410px);gap:20px;align-items:start}
+.panel,.previewWrap{padding:26px;min-width:0}
+.panel h2{font-family:Georgia,serif;color:#0b2b4b;font-size:26px;font-weight:400;margin:0}
+.choices{margin:23px 0 22px}
+.choices button{background:#f0f6ff;border-color:#dce9f7}
+.choices button.chosen{border-color:#1863ad}
+.primary,.secondary{display:inline-flex;align-items:center;justify-content:center;text-align:center;text-decoration:none;cursor:pointer;border-radius:12px;padding:12px 17px;font-weight:750;font-size:13px;transition:filter .2s}
+.primary{border:1px solid #1863ad;background:#1863ad;color:#fff;margin-top:17px}
+.primary:hover,.secondary:hover{filter:brightness(.94)}
+.primary:disabled{opacity:.48;cursor:not-allowed}
+.secondary{border-color:#cee1f2;background:#fff;color:#1863ad}
+.warning{color:#a33a30!important}
+.hint{font-size:12px!important;color:#687e91!important;line-height:1.55}
+.previewWrap{background:#eef5fc;display:grid;justify-items:center;gap:12px}
+.poster{width:min(100%,340px);border-radius:12px;position:relative;overflow:hidden;box-shadow:0 22px 40px rgba(7,34,62,.24);color:#fff}
+.poster:before{position:absolute;content:"";inset:30% 0 0;background:linear-gradient(0deg,rgba(5,21,42,1),rgba(7,27,52,.96) 55%,transparent);z-index:1}
+.poster img{width:100%;height:65%;object-fit:cover;display:block}
+.posterTop{position:absolute;top:20px;left:24px;right:20px;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;font-weight:800;text-shadow:0 1px 5px #17334c;z-index:2}
+.posterCopy{position:absolute;bottom:18px;left:24px;right:24px;z-index:2}
+.posterCopy span{font-size:8px;letter-spacing:2px;color:#f6db9e}
+.posterCopy h2{color:#fff;font-family:Arial,sans-serif;font-size:clamp(20px,2.3vw,29px);font-weight:900;line-height:1.13;margin:8px 0 10px}
+.posterCopy p{color:#d6e3ee;font-size:12px;line-height:1.5;margin:0 0 15px}
+.posterCopy strong{display:block;border-radius:7px;background:#edcd88;color:#1c3650;text-align:center;font-size:9px;letter-spacing:.5px;padding:10px}
+.posterCopy small{display:block;margin-top:9px;font-size:11px}
+.videos{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:22px}
+.videoCard,.template,.themeCard{border:1px solid #dce9f7;border-radius:16px;background:#fafcff;overflow:hidden}
+.videoCard{padding:14px}
+.videoCard video{width:100%;max-height:360px;border-radius:10px;background:#0b2b4b}
+.videoCard h3,.template h3,.group h3{color:#0b2b4b;font-size:17px;margin:12px 0 6px}
+.videoCard p{color:#64788a;font-size:13px}
+.templates{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:15px;margin-top:20px}
+.template{padding:18px}
+.template h3{margin-top:0}
+.template pre{white-space:pre-wrap;overflow-wrap:anywhere;font-family:inherit;font-size:13px;color:#344c61;line-height:1.65;min-height:170px}
+.catalogTools{display:grid;grid-template-columns:190px minmax(0,1fr);gap:12px;margin-top:20px}
+.catalogActions{align-items:center;margin:6px 0 22px}
+.catalogActions .primary{margin:0}
+.group{margin-top:28px}
+.group h3{display:flex;gap:12px;align-items:baseline}
+.group h3 small{font-size:12px;color:#7990a6;font-weight:400}
+.themeGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:13px}
+.themeCard{padding-bottom:12px}
+.themeCard img,.noImage{width:100%;aspect-ratio:4/5;object-fit:cover;display:block;background:#e7eff7}
+.noImage{display:grid;place-items:center;color:#68809a;font-size:12px}
+.themeCard strong{display:block;font-size:13px;color:#0b2b4b;padding:11px 10px 6px;min-height:52px}
+.themeActions{display:flex;flex-wrap:wrap;gap:6px;padding:0 9px}
+.themeActions a,.themeActions button{font-size:11px;color:#1762a3;background:#e8f3fd;border:0;padding:7px 9px;border-radius:8px;cursor:pointer;text-decoration:none}
+.guide{counter-reset:step;list-style:none;margin:25px 0;padding:0;display:grid;gap:14px}
+.guide li{display:grid;gap:7px;padding:17px 18px;border:1px solid #dbeaf7;border-left:4px solid #1863ad;border-radius:10px;background:#f8fcff;color:#4d667d;font-size:14px;line-height:1.65}
+.guide strong{color:#0b2b4b}
+@media(max-width:1000px){.columns{grid-template-columns:1fr}.previewWrap{max-width:600px}}
+@media(max-width:620px){.brandPanel,.panel,.previewWrap{padding:18px}.brandFields,.catalogTools{grid-template-columns:1fr}.tabs button{flex:0 0 auto}.templates,.videos{grid-template-columns:1fr}.poster{max-width:290px}}
