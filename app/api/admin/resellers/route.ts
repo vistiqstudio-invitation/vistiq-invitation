@@ -106,27 +106,30 @@ export async function PATCH(request: Request) {
     const oldName = reseller.name || "";
     const oldWhatsapp = reseller.whatsapp || "";
     const oldBrandName = reseller.brand_name ?? null;
-    const nextMetadata = { ...previousMetadata, name, whatsapp };
     const emailChanged = email !== previousEmail.toLowerCase();
-    const metadataChanged = previousMetadata.name !== name || previousMetadata.whatsapp !== whatsapp;
 
-    // Do not rewrite the Auth email for edits that only change name/phone/brand.
-    // This avoids unnecessary Auth email updates and makes regular edits reliable.
-    if (emailChanged || metadataChanged) {
-      const { error: authUpdateError } = await context.client.auth.admin.updateUserById(
-        reseller.user_id,
-        {
-          ...(emailChanged ? { email, email_confirm: true } : {}),
-          ...(metadataChanged ? { user_metadata: nextMetadata } : {}),
-        },
-      );
+    // Name and WhatsApp live in public.resellers + public.profiles.
+    // Do not touch Supabase Auth metadata for those ordinary edits: Auth can
+    // intermittently return a retryable 500 even though the public profile is healthy.
+    // The Auth admin API is required only when the login email itself changes.
+    if (emailChanged) {
+      let authUpdateError: { message?: string } | null = null;
+      for (let attempt = 0; attempt < 3; attempt += 1) {
+        const result = await context.client.auth.admin.updateUserById(
+          reseller.user_id,
+          { email, email_confirm: true },
+        );
+        authUpdateError = result.error;
+        if (!authUpdateError) break;
+        if (attempt < 2) await new Promise((resolve) => setTimeout(resolve, 250 * (attempt + 1)));
+      }
 
       if (authUpdateError) {
         console.error("reseller_edit_auth_update_failed", authUpdateError);
         const message = typeof authUpdateError.message === "string" ? authUpdateError.message : "";
         const duplicate = /already|registered|exists|duplicate|unique/i.test(message);
         return NextResponse.json(
-          { error: duplicate ? "Email tersebut sudah digunakan akun lain." : "Gagal memperbarui akun login reseller. Silakan coba lagi." },
+          { error: duplicate ? "Email tersebut sudah digunakan akun lain." : "Gagal mengubah email login reseller. Silakan coba lagi." },
           { status: 400 },
         );
       }
@@ -139,12 +142,12 @@ export async function PATCH(request: Request) {
 
     if (updateError) {
       console.error("reseller_edit_reseller_update_failed", updateError);
-      if (emailChanged || metadataChanged) {
+      if (emailChanged) {
         const { error: rollbackError } = await context.client.auth.admin.updateUserById(
           reseller.user_id,
           {
             ...(emailChanged ? { email: previousEmail, email_confirm: true } : {}),
-            ...(metadataChanged ? { user_metadata: previousMetadata } : {}),
+            user_metadata: previousMetadata,
           },
         );
         if (rollbackError) console.error("reseller_edit_auth_rollback_failed", rollbackError);
@@ -164,12 +167,12 @@ export async function PATCH(request: Request) {
       await context.client.from("resellers").update({
         name: oldName, whatsapp: oldWhatsapp, brand_name: oldBrandName,
       }).eq("id", resellerId);
-      if (emailChanged || metadataChanged) {
+      if (emailChanged) {
         const { error: rollbackError } = await context.client.auth.admin.updateUserById(
           reseller.user_id,
           {
             ...(emailChanged ? { email: previousEmail, email_confirm: true } : {}),
-            ...(metadataChanged ? { user_metadata: previousMetadata } : {}),
+            user_metadata: previousMetadata,
           },
         );
         if (rollbackError) console.error("reseller_edit_auth_rollback_failed", rollbackError);
