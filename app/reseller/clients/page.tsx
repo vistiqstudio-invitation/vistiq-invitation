@@ -113,6 +113,7 @@ export default function ResellerClientsPage() {
   const [newClientCredentials, setNewClientCredentials] = useState<NewClientInfo | null>(null);
   const [resettingId, setResettingId] = useState<string | null>(null);
   const [activatingKey, setActivatingKey] = useState<string | null>(null);
+  const [renewingPayment, setRenewingPayment] = useState<string | null>(null);
   const [statusNotice, setStatusNotice] = useState("");
 
   const fetchData = async (resellerId: string) => {
@@ -273,6 +274,30 @@ export default function ResellerClientsPage() {
   const clientWaLink = () => {
     if (!newClientCredentials?.whatsapp) return "";
     return `https://wa.me/${toWaNumber(newClientCredentials.whatsapp)}?text=${encodeURIComponent(clientCredentialsMessage())}`;
+  };
+
+  const renewClientPayment = async (transactionId: string) => {
+    if (!reseller || renewingPayment) return;
+    setRenewingPayment(transactionId);
+    try {
+      const response = await fetch("/api/payments/renew-client-link", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ transactionId }),
+      });
+      const result = await response.json();
+      if (!response.ok || !result.success) {
+        alert(result.error || "Gagal membuat link pembayaran baru.");
+        return;
+      }
+      await fetchData(reseller.id);
+      alert("Link pembayaran baru berlaku selama 7 hari. Silakan kirim link terbaru kepada client.");
+    } catch (error) {
+      console.error("renew client payment:", error);
+      alert("Gagal menghubungi server pembayaran. Coba lagi.");
+    } finally {
+      setRenewingPayment(null);
+    }
   };
 
   const paymentWaLink = (client: Client, transaction?: Transaction) => {
@@ -599,10 +624,27 @@ export default function ResellerClientsPage() {
                             <Link href={`/reseller/rsvp?client_id=${client.id}`}>Lihat RSVP</Link>
                           )}
 
-                          {reseller.package !== "reseller_brand" && !isPaid && transaction?.midtrans_redirect_url && (
+                          {reseller.package !== "reseller_brand" && transaction && !isPaid && (
                             <>
-                              <a href={transaction.midtrans_redirect_url} target="_blank" rel="noreferrer">Link Pembayaran</a>
-                              {client.whatsapp && <a href={paymentWaLink(client, transaction)} target="_blank" rel="noreferrer">Kirim Tagihan via WA</a>}
+                              {transaction.midtrans_redirect_url && transaction.payment_link_expires_at && new Date(transaction.payment_link_expires_at).getTime() > Date.now() ? (
+                                <>
+                                  <a href={transaction.midtrans_redirect_url} target="_blank" rel="noreferrer">Link Pembayaran</a>
+                                  {client.whatsapp && <a href={paymentWaLink(client, transaction)} target="_blank" rel="noreferrer">Kirim Tagihan via WA</a>}
+                                  <span style={{ fontSize: 12, color: "#64748b" }}>Berlaku sampai {new Date(transaction.payment_link_expires_at).toLocaleString("id-ID")}</span>
+                                </>
+                              ) : (
+                                <>
+                                  <span style={{ fontSize: 12, color: "#b45309" }}>Link pembayaran kedaluwarsa atau belum tersedia.</span>
+                                  <button
+                                    type="button"
+                                    className={styles.button}
+                                    disabled={renewingPayment === transaction.id}
+                                    onClick={() => void renewClientPayment(transaction.id)}
+                                  >
+                                    {renewingPayment === transaction.id ? "Membuat Link..." : "Buat Link Pembayaran Baru (7 Hari)"}
+                                  </button>
+                                </>
+                              )}
                             </>
                           )}
 

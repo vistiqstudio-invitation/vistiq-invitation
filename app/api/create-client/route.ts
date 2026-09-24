@@ -51,7 +51,8 @@ async function createClientPaymentLink({
         },
       ],
       customer_details: { first_name: name, email, phone },
-      expiry: { unit: "hours", duration: 24 },
+      expiry: { unit: "days", duration: 7 },
+      page_expiry: { unit: "days", duration: 7 },
       custom_field1: "reseller_client",
       custom_field2: transactionId,
     }),
@@ -68,7 +69,7 @@ async function createClientPaymentLink({
     throw new Error(result.error_messages?.[0] || "Gagal membuat link pembayaran Midtrans.");
   }
 
-  const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+  const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
   const { error: updateError } = await supabaseAdmin
     .from("transactions")
     .update({
