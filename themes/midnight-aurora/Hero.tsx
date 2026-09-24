@@ -18,11 +18,11 @@ export default function Hero({ invitation }: { invitation: InvitationData }) {
         </p>
 
         {opening?.title ? (
-          <h2 className={styles.heroTitle}>{opening.title}</h2>
+          <h2 className={styles.heroTitle} style={{ whiteSpace: "pre-line" }}>{opening.title}</h2>
         ) : (
           <h2 className={styles.heroTitle}>
             Dengan memohon rahmat dan ridho Allah SWT, kami bermaksud
-            menyelenggarakan pernikahan putra-putri kami,{" "}
+            menyelenggarakan pernikahan putra-putri kami,<br />
             {invitation.groom.name} &amp; {invitation.bride.name}.
           </h2>
         )}

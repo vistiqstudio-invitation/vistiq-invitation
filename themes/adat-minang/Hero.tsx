@@ -15,7 +15,7 @@ export default function Hero({ invitation }: { invitation: InvitationData }) {
         </p>
 
         {opening?.title ? (
-          <h2 className={styles.heroTitle}>{opening.title}</h2>
+          <h2 className={styles.heroTitle} style={{ whiteSpace: "pre-line" }}>{opening.title}</h2>
         ) : (
           <h2 className={styles.heroTitle}>
             Dengan mengharap rahmat dan ridho Allah SWT, kami mengundang

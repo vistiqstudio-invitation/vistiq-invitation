@@ -534,7 +534,7 @@ export default function AdminInvitationEditPage() {
               />
 
               <textarea
-                placeholder="Kalimat pembuka utama"
+                placeholder={"Kalimat pembuka utama. Tekan Enter sebelum nama pengantin agar tampil pada baris baru."}
                 value={form.opening_title}
                 onChange={(e) => set("opening_title", e.target.value)}
                 className={styles.textarea}
@@ -739,7 +739,7 @@ export default function AdminInvitationEditPage() {
           />
 
           <textarea
-            placeholder="Kalimat pembuka utama"
+            placeholder={"Kalimat pembuka utama. Tekan Enter sebelum nama pengantin agar tampil pada baris baru."}
             value={form.opening_title}
             onChange={(e) => set("opening_title", e.target.value)}
             className={styles.textarea}

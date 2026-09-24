@@ -17,7 +17,7 @@ export default function Hero({ invitation }: { invitation: InvitationData }) {
         <p className={styles.heroLabel}>{opening?.greeting || "Om Swastyastu"}</p>
 
         {opening?.title ? (
-          <h2 className={styles.heroTitle}>{opening.title}</h2>
+          <h2 className={styles.heroTitle} style={{ whiteSpace: "pre-line" }}>{opening.title}</h2>
         ) : (
           <h2 className={styles.heroTitle}>
             Atas asung kertha wara nugraha Ida Sang Hyang Widhi Wasa, kami
