@@ -476,6 +476,23 @@ function prepareReference(
   setText(doc, "#mempelai .elementor-element-5b4d997b .elementor-heading-title", invitation.bride.name);
   setText(doc, "#mempelai .elementor-element-35980867 .elementor-widget-container", invitation.bride.parents || "");
 
+  // The original Azure Bloom reference marks the first parent's text with
+  // "revealin" (not idb-reveal), so it can remain transparent forever after
+  // we inject client data. Force both parent blocks visible and remove any
+  // leftover animation transform from the reference template.
+  [
+    "#mempelai .elementor-element-1fba950c",
+    "#mempelai .elementor-element-35980867",
+  ].forEach((selector) => {
+    const parentBlock = doc.querySelector<HTMLElement>(selector);
+    if (!parentBlock) return;
+    parentBlock.classList.add("active");
+    parentBlock.style.setProperty("opacity", "1", "important");
+    parentBlock.style.setProperty("visibility", "visible", "important");
+    parentBlock.style.setProperty("transform", "none", "important");
+    parentBlock.style.setProperty("display", "block", "important");
+  });
+
   setImage(doc, "#home .elementor-element-2277f517 img", invitation.coverImage, couple);
   setImage(doc, ".elementor-element-65a5beb8.story img", storyPhoto, "Love Story");
   setImage(doc, "#mempelai .elementor-element-19be02e5 img", invitation.groom.photo, invitation.groom.name);
