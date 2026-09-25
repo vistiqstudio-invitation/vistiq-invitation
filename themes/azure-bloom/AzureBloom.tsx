@@ -522,10 +522,20 @@ function prepareReference(
     invitation.opening.quoteSource?.trim() || "QS. Ar-Rum : 21",
   );
 
-  setText(doc, ".stream-con .elementor-element-5de6c857 .elementor-widget-container", firstEvent?.date || "");
-  setText(doc, ".stream-con .elementor-element-fc08f57 .elementor-widget-container", firstEvent ? `Pukul : ${firstEvent.time}` : "");
-  setText(doc, ".stream-con .elementor-element-78228d40 .idb-social-icons__text", instagram ? `@${instagram}` : `@${groomName}`);
-  setLink(doc, ".stream-con .elementor-element-78228d40 a", instagram ? `https://www.instagram.com/${instagram}` : null);
+  const liveStreamingUrl = sourceWithoutHash(invitation.liveStreamingUrl);
+  const streamSection = doc.querySelector<HTMLElement>(".stream-con");
+  if (liveStreamingUrl) {
+    setText(doc, ".stream-con .elementor-element-5de6c857 .elementor-widget-container", firstEvent?.date || "");
+    setText(doc, ".stream-con .elementor-element-fc08f57 .elementor-widget-container", firstEvent ? `Pukul : ${firstEvent.time}` : "");
+    setText(doc, ".stream-con .elementor-element-78228d40 .idb-social-icons__text", "Live Streaming");
+    setLink(doc, ".stream-con .elementor-element-78228d40 a", liveStreamingUrl);
+    streamSection?.style.removeProperty("display");
+  } else {
+    // No live-streaming data: remove the entire purple streaming section,
+    // including its background, spacing, title and reference social link.
+    streamSection?.style.setProperty("display", "none", "important");
+    streamSection?.setAttribute("aria-hidden", "true");
+  }
   doc.querySelectorAll<HTMLAnchorElement>("[data-idb-maps-link]").forEach((link) => {
     const mapsUrl = invitation.mapsUrl || invitation.mapsEmbedUrl;
     if (mapsUrl) link.href = sourceWithoutHash(mapsUrl) || mapsUrl;
@@ -602,10 +612,11 @@ function prepareReference(
       Boolean(account.accountName?.trim()),
   );
   if (!hasDigitalEnvelope) {
-    const giftTriggerSection =
-      doc.getElementById("klik")?.closest<HTMLElement>(".elementor-element") ||
-      doc.getElementById("klik");
-    giftTriggerSection?.style.setProperty("display", "none", "important");
+    // Remove the whole purple Amplop Digital section (not only the cards)
+    // so no template heading/background/reference content remains.
+    const envelopeSection = doc.querySelector<HTMLElement>(".amplop-section");
+    envelopeSection?.style.setProperty("display", "none", "important");
+    envelopeSection?.setAttribute("aria-hidden", "true");
     gift?.style.setProperty("display", "none", "important");
     gift?.setAttribute("aria-hidden", "true");
   }
