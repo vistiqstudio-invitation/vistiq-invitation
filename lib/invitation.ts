@@ -248,6 +248,9 @@ function normalizeInvitation(raw: Record<string, any>): InvitationData {
     events,
     coverEvent: events.find((event) => event.name === "Resepsi") || events[0] || null,
     gallery,
+    galleryLayout: ["portrait", "landscape", "square"].includes(raw.gallery_layout)
+      ? raw.gallery_layout
+      : "auto",
 
     gifts,
   };

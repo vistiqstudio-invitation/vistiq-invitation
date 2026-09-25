@@ -78,6 +78,7 @@ export type InvitationData = {
   // lalu fallback ke acara pertama bila data resepsi belum tersedia.
   coverEvent: EventItem | null;
   gallery: string[];
+  galleryLayout?: "auto" | "portrait" | "landscape" | "square";
 
   gifts: GiftAccount[];
 };

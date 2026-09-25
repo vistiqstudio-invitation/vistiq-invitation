@@ -211,22 +211,25 @@ function setAudioSource(doc: Document, musicUrl: string | null | undefined) {
 }
 
 function setGallery(doc: Document, invitation: InvitationData) {
-  const photos = invitation.gallery
-    .map(sourceWithoutHash)
-    .filter(Boolean);
-
-  const fallback = [
-    sourceWithoutHash(invitation.coverImage),
-    sourceWithoutHash(invitation.groom.photo),
-    sourceWithoutHash(invitation.bride.photo),
-    sourceWithoutHash(invitation.coverImage),
-  ].filter(Boolean);
-
+  const photos = invitation.gallery.map(sourceWithoutHash).filter(Boolean);
+  const widget = doc.querySelector<HTMLElement>(".elementor-element-3caaa7de");
+  const container = doc.querySelector<HTMLElement>(".e-gallery-container");
   const slots = Array.from(doc.querySelectorAll<HTMLElement>(".e-gallery-item"));
-  slots.forEach((slot, index) => {
-    const photo = photos[index] || fallback[index] || fallback[0];
-    if (!photo) return;
 
+  if (photos.length === 0) {
+    widget?.style.setProperty("display", "none", "important");
+    return;
+  }
+
+  widget?.style.removeProperty("display");
+  slots.forEach((slot, index) => {
+    const photo = photos[index];
+    if (!photo) {
+      slot.style.setProperty("display", "none", "important");
+      return;
+    }
+
+    slot.style.removeProperty("display");
     slot.setAttribute("href", photo);
     slot.removeAttribute("data-e-action-hash");
     const image = slot.querySelector<HTMLElement>(".e-gallery-image");
@@ -234,7 +237,81 @@ function setGallery(doc: Document, invitation: InvitationData) {
 
     image.dataset.thumbnail = photo;
     image.style.backgroundImage = `url("${photo}")`;
+    image.style.setProperty("background-position", "center", "important");
+    image.style.setProperty("background-size", "cover", "important");
   });
+
+  if (!container || !invitation.galleryLayout || invitation.galleryLayout === "auto") return;
+
+  const layout = invitation.galleryLayout;
+  const columns = layout === "landscape" ? "1" : "2";
+  const ratio = layout === "portrait" ? "3 / 4" : layout === "landscape" ? "16 / 9" : "1 / 1";
+
+  container.classList.remove("e-gallery-masonry");
+  container.style.setProperty("display", "grid", "important");
+  container.style.setProperty("grid-template-columns", `repeat(${columns}, minmax(0, 1fr))`, "important");
+  container.style.setProperty("gap", "10px", "important");
+  container.style.setProperty("padding-bottom", "0", "important");
+  container.style.setProperty("height", "auto", "important");
+
+  slots.forEach((slot, index) => {
+    if (index >= photos.length) return;
+    slot.style.setProperty("position", "relative", "important");
+    slot.style.setProperty("inset", "auto", "important");
+    slot.style.setProperty("left", "auto", "important");
+    slot.style.setProperty("top", "auto", "important");
+    slot.style.setProperty("width", "100%", "important");
+    slot.style.setProperty("aspect-ratio", ratio, "important");
+    slot.style.setProperty("transform", "none", "important");
+    const image = slot.querySelector<HTMLElement>(".e-gallery-image");
+    image?.style.setProperty("position", "absolute", "important");
+    image?.style.setProperty("inset", "0", "important");
+    image?.style.setProperty("width", "100%", "important");
+    image?.style.setProperty("height", "100%", "important");
+  });
+}
+
+function normalizeBankName(value: string | null | undefined) {
+  return (value || "").replace(/^bank\s+/i, "").trim();
+}
+
+function setBankIdentity(doc: Document, card: HTMLElement | null, bankName: string | null | undefined) {
+  if (!card) return;
+  const label = normalizeBankName(bankName);
+  const logo = card.querySelector<HTMLElement>(".idb-copy-rek__banklogo");
+  const bankText = card.querySelector<HTMLElement>(".idb-copy-rek__banktext");
+  if (bankText) bankText.textContent = label;
+
+  if (!logo) return;
+  logo.replaceChildren();
+
+  const knownLogos: Record<string, string> = {
+    BCA: "/banks/BCA.png",
+    MANDIRI: "/banks/Mandiri.png",
+  };
+  const key = label.toUpperCase();
+  const asset = knownLogos[key];
+
+  if (asset) {
+    const image = doc.createElement("img");
+    image.src = asset;
+    image.alt = label;
+    image.loading = "lazy";
+    image.style.maxWidth = "70px";
+    image.style.maxHeight = "28px";
+    image.style.objectFit = "contain";
+    logo.append(image);
+    return;
+  }
+
+  const textLogo = doc.createElement("strong");
+  textLogo.textContent = label || "BANK";
+  textLogo.style.fontFamily = "Arial, sans-serif";
+  textLogo.style.fontSize = "15px";
+  textLogo.style.fontWeight = "800";
+  textLogo.style.letterSpacing = "0.04em";
+  textLogo.style.color = "#164a77";
+  logo.append(textLogo);
 }
 
 function setLoveStory(doc: Document, invitation: InvitationData) {
@@ -562,16 +639,19 @@ function prepareReference(
 
   const giftCards = Array.from(doc.querySelectorAll<HTMLElement>(".no-rekening-marker"));
   giftCards.forEach((marker, index) => {
-    const account = invitation.gifts[index];
-    if (!account) return;
-
-    marker.textContent = account.accountNumber || "";
     const card = marker.closest<HTMLElement>(".idb-copy-rek");
+    const account = invitation.gifts[index];
+    if (!account) {
+      card?.style.setProperty("display", "none", "important");
+      return;
+    }
+
+    card?.style.removeProperty("display");
+    marker.textContent = account.accountNumber || "";
     card?.setAttribute("data-copy", account.accountNumber || "");
     const name = card?.querySelector<HTMLElement>(".idb-copy-rek__name");
     if (name) name.textContent = account.accountName || "";
-    const bank = card?.querySelector<HTMLElement>(".idb-copy-rek__banktext");
-    if (bank) bank.textContent = account.bankName || "";
+    setBankIdentity(doc, card, account.bankName);
   });
 
   const giftRecipient = doc.querySelectorAll<HTMLElement>(".idb-kirim-hadiah__value")[0];

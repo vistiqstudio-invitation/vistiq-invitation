@@ -71,6 +71,7 @@ const initialForm = {
   bride_photo: "",
   groom_photo: "",
   gallery_photos: [] as string[],
+  gallery_layout: "auto",
 
   baby_name: "",
   child_nickname: "",
@@ -233,6 +234,9 @@ export default function ResellerInvitationEditPage() {
         gallery_photos: Array.isArray(invitation.gallery_photos)
           ? invitation.gallery_photos
           : [],
+        gallery_layout: ["portrait", "landscape", "square"].includes(invitation.gallery_layout)
+          ? invitation.gallery_layout
+          : "auto",
 
         baby_name: invitation.baby_name || "",
         child_nickname: invitation.child_nickname || "",
@@ -962,6 +966,27 @@ export default function ResellerInvitationEditPage() {
         )}
 
         <h2 className={styles.editSectionTitle}>Galeri Foto</h2>
+
+        {form.category === "wedding" && (
+          <div style={{ marginBottom: 16 }}>
+            <label style={{ display: "grid", gap: 7, fontWeight: 600 }}>
+              Model Kolase Galeri
+              <select
+                className={styles.input}
+                value={form.gallery_layout}
+                onChange={(e) => set("gallery_layout", e.target.value)}
+              >
+                <option value="auto">Otomatis / Masonry</option>
+                <option value="portrait">Portrait - 2 kolom (3:4)</option>
+                <option value="landscape">Landscape - 1 kolom (16:9)</option>
+                <option value="square">Kotak - 2 kolom (1:1)</option>
+              </select>
+            </label>
+            <p className={styles.helpText} style={{ marginTop: 7 }}>
+              Pilih bentuk kolase sesuai orientasi foto client. Pengaturan ini terutama digunakan oleh tema yang mendukung galeri fleksibel seperti Azure Bloom.
+            </p>
+          </div>
+        )}
 
         <div className={styles.galleryUploadBox}>
           <p className={styles.helpText}>
