@@ -654,10 +654,14 @@ function prepareReference(
     setBankIdentity(doc, card, account.bankName);
   });
 
-  const giftRecipient = doc.querySelectorAll<HTMLElement>(".idb-kirim-hadiah__value")[0];
-  if (giftRecipient && invitation.gifts[0]?.accountName) {
-    giftRecipient.textContent = invitation.gifts[0].accountName;
-  }
+  // "Kirim Hadiah" in the reference template contains hard-coded demo
+  // recipient/phone/address data. Vistiq currently has no client fields for
+  // physical gift shipping, so never leak that reference data into a real
+  // invitation. Keep only the digital bank cards when bank data is supplied.
+  doc.querySelectorAll<HTMLElement>(".idb-kirim-hadiah").forEach((card) => {
+    card.style.setProperty("display", "none", "important");
+    card.setAttribute("aria-hidden", "true");
+  });
 
   const footerSocial = doc.querySelector<HTMLElement>(".elementor-element-4a8e37fd .idb-social-icons");
   if (footerSocial) {
