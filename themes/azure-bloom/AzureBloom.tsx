@@ -591,6 +591,24 @@ function prepareReference(
   const giftButton = doc.querySelector<HTMLElement>("#klik .elementor-button");
   const giftClickTarget = doc.getElementById("klik") || giftButton;
   const giftKeyboardTarget = giftButton || giftClickTarget;
+
+  // If the client leaves all bank fields empty, remove the Amplop Digital
+  // entry point and its whole detail section. This prevents reference/demo
+  // bank data from leaking into real invitations.
+  const hasDigitalEnvelope = invitation.gifts.some(
+    (account) =>
+      Boolean(account.bankName?.trim()) ||
+      Boolean(account.accountNumber?.trim()) ||
+      Boolean(account.accountName?.trim()),
+  );
+  if (!hasDigitalEnvelope) {
+    const giftTriggerSection =
+      doc.getElementById("klik")?.closest<HTMLElement>(".elementor-element") ||
+      doc.getElementById("klik");
+    giftTriggerSection?.style.setProperty("display", "none", "important");
+    gift?.style.setProperty("display", "none", "important");
+    gift?.setAttribute("aria-hidden", "true");
+  }
   const giftCardsToReveal = gift
     ? Array.from(gift.querySelectorAll<HTMLElement>(".idb-copy-rek, .idb-kirim-hadiah"))
     : [];
@@ -623,7 +641,7 @@ function prepareReference(
   const toggleGift = () => {
     setGiftVisibility(!giftVisible);
   };
-  if (giftKeyboardTarget) {
+  if (hasDigitalEnvelope && giftKeyboardTarget) {
     giftKeyboardTarget.setAttribute("role", "button");
     giftKeyboardTarget.setAttribute("tabindex", "0");
     giftKeyboardTarget.setAttribute("aria-controls", "amplop");
