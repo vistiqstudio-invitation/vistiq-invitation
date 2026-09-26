@@ -255,7 +255,7 @@ function OpeningVideo({
       window.clearTimeout(errorRevealTimer);
       window.clearTimeout(errorFinishTimer);
     };
-  }, [invitation.videoUrl, onFinished]);
+  }, [onFinished]);
 
   const resumeVideo = () => {
     const video = videoRef.current;
@@ -272,22 +272,17 @@ function OpeningVideo({
 
   return (
     <section id="bukaUndangan" className={styles.opening} aria-label="Video opening undangan">
-      {invitation.videoUrl ? (
-        <video
-          ref={videoRef}
-          className={styles.openingVideo}
-          src={invitation.videoUrl}
-          poster={invitation.coverImage || undefined}
-          muted
-          disablePictureInPicture
-          playsInline
-          autoPlay
-          preload="auto"
-          aria-label="Video opening 3D Adat Minang"
-        />
-      ) : (
-        <div className={styles.openingFallback} />
-      )}
+      <video
+        ref={videoRef}
+        className={styles.openingVideo}
+        src="/video/adat-minang-opening.mp4"
+        muted
+        disablePictureInPicture
+        playsInline
+        autoPlay
+        preload="auto"
+        aria-label="Video opening 3D Adat Minang"
+      />
 
       <div className={styles.openingShade} />
       {playbackBlocked && (
