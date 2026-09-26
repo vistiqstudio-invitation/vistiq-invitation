@@ -709,7 +709,12 @@ function ReferenceInvitation({ invitation }: { invitation: InvitationData }) {
         </div>
       </section>
 
-      <footer className={styles.finalSection}>
+      <footer
+        className={styles.finalSection}
+        style={{
+          backgroundImage: `linear-gradient(180deg, rgba(248, 240, 223, 0.18) 0%, rgba(0, 0, 0, 0.66) 100%), url("${invitation.gallery[0] || invitation.coverImage || ""}")`,
+        }}
+      >
         <div className={styles.finalPanel}>
           <p>Suatu kebahagiaan &amp; kehormatan bagi kami, apabila Bapak/Ibu/Saudara/i, berkenan hadir dan memberikan do&apos;a restu kepada kami</p>
           <strong>Kami Yang Berbahagia</strong>

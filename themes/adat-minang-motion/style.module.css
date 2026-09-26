@@ -1221,9 +1221,10 @@
   justify-content: center;
   align-items: flex-end;
   padding: 50px 5px;
-  background:
-    linear-gradient(180deg, var(--cream-tone) 0%, rgba(245, 238, 231, 0.03) 18%, rgba(0, 0, 0, 0.62) 100%),
-    url("/photos/luxury-cover.webp") center / cover;
+  background-color: #4f1119;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .finalPanel {
