@@ -464,11 +464,23 @@ function ReferenceRsvp({ invitation }: { invitation: InvitationData }) {
 function ReferenceGallery({ invitation }: { invitation: InvitationData }) {
   const [activePhoto, setActivePhoto] = useState<number | null>(null);
   const photos = invitation.gallery.slice(0, 6);
+  const gridStyle =
+    photos.length <= 1
+      ? { gridTemplateAreas: '"large"', gridTemplateColumns: "1fr", gridTemplateRows: "420px" }
+      : photos.length === 2
+        ? { gridTemplateAreas: '"large top"', gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gridTemplateRows: "360px" }
+        : photos.length === 3
+          ? { gridTemplateAreas: '"large top" "large middle"', gridTemplateRows: "180px 180px" }
+          : photos.length === 4
+            ? { gridTemplateAreas: '"large top" "large middle" "wide wide"', gridTemplateRows: "145px 145px 180px" }
+            : photos.length === 5
+              ? { gridTemplateAreas: '"large top" "large middle" "wide wide" "left left"', gridTemplateRows: "145px 145px 180px 180px" }
+              : undefined;
 
   return (
     <section className={styles.gallerySection}>
       <div className={styles.galleryWrap}>
-        <div className={styles.referenceGallery}>
+        <div className={styles.referenceGallery} style={gridStyle}>
           {photos.map((photo, index) => (
             <button className={styles.galleryTile} key={photo} type="button" onClick={() => setActivePhoto(index)}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
