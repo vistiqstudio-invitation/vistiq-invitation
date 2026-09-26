@@ -221,9 +221,7 @@
 
 .openingFallback {
   z-index: -3;
-  background:
-    linear-gradient(180deg, rgba(50, 8, 14, 0.16), rgba(22, 9, 10, 0.9)),
-    url("/photos/luxury-cover.webp") center / cover;
+  background: linear-gradient(180deg, rgba(50, 8, 14, 0.16), rgba(22, 9, 10, 0.9));
 }
 
 .openingShade {
@@ -401,9 +399,7 @@
 
 .coupleSection {
   padding: 48px 10px 50px;
-  background:
-    linear-gradient(180deg, var(--soft-lilac) 0%, rgba(245, 238, 231, 0.78) 18%, rgba(245, 238, 231, 0.7) 78%, var(--cream-tone) 100%),
-    url("/photos/luxury-cover.webp") center / cover;
+  background: linear-gradient(180deg, var(--soft-lilac) 0%, rgba(245, 238, 231, 0.78) 18%, rgba(245, 238, 231, 0.7) 78%, var(--cream-tone) 100%);
   color: #000;
 }
 
@@ -542,9 +538,7 @@
   padding: 90px 15px 50px;
   border-bottom: 5px solid rgba(197, 167, 111, 0.8);
   border-radius: 0 0 40px 40px;
-  background:
-    radial-gradient(circle at center, rgba(112, 87, 118, 0.94) 0%, rgba(112, 87, 118, 0.9) 72%, rgba(183, 158, 188, 0.7) 100%),
-    url("/photos/luxury-cover.webp") center / cover;
+  background: radial-gradient(circle at center, rgba(112, 87, 118, 0.94) 0%, rgba(112, 87, 118, 0.9) 72%, rgba(183, 158, 188, 0.7) 100%);
   text-align: center;
 }
 
@@ -643,9 +637,7 @@
 
 .eventSection {
   padding: 50px 20px;
-  background:
-    linear-gradient(180deg, var(--lilac) 0%, rgba(144, 119, 146, 0.5) 18%, rgba(144, 119, 146, 0.5) 82%, #d1bdd5 100%),
-    url("/photos/luxury-cover.webp") center / cover;
+  background: linear-gradient(180deg, var(--lilac) 0%, rgba(144, 119, 146, 0.5) 18%, rgba(144, 119, 146, 0.5) 82%, #d1bdd5 100%);
 }
 
 .eventStack {
@@ -1004,9 +996,7 @@
 
 .giftSection {
   padding: 100px 10px;
-  background:
-    linear-gradient(180deg, #bda3c2 0%, rgba(245, 238, 231, 0.76) 20%, rgba(245, 238, 231, 0.74) 82%, var(--cream-tone) 100%),
-    url("/photos/luxury-cover.webp") center / cover;
+  background: linear-gradient(180deg, #bda3c2 0%, rgba(245, 238, 231, 0.76) 20%, rgba(245, 238, 231, 0.74) 82%, var(--cream-tone) 100%);
   color: #000;
 }
 
@@ -1040,9 +1030,7 @@
   justify-items: start;
   gap: 8px;
   border-radius: 20px;
-  background:
-    linear-gradient(135deg, rgba(58, 58, 58, 0.87), rgba(25, 19, 34, 0.92)),
-    url("/photos/luxury-gallery-5.webp") center / cover;
+  background: linear-gradient(135deg, rgba(58, 58, 58, 0.96), rgba(25, 19, 34, 0.98));
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   color: #fff;
   text-align: left;
@@ -1376,13 +1364,13 @@
 }
 
 .countdownCard {
-  background: radial-gradient(circle at center, rgba(104, 20, 31, 0.92), rgba(53, 8, 14, 0.97)), url("/photos/luxury-cover.webp") center / cover;
+  background: radial-gradient(circle at center, rgba(104, 20, 31, 0.92), rgba(53, 8, 14, 0.97));
 }
 
 .referenceCountdownItem { background: rgba(88, 15, 25, 0.9); }
 
 .eventSection {
-  background: linear-gradient(180deg, var(--lilac), rgba(120, 45, 45, 0.34) 20%, rgba(120, 45, 45, 0.36) 82%, #dcc7af), url("/photos/luxury-cover.webp") center / cover;
+  background: linear-gradient(180deg, var(--lilac), rgba(120, 45, 45, 0.34) 20%, rgba(120, 45, 45, 0.36) 82%, #dcc7af);
 }
 
 .rsvpSection { background: linear-gradient(180deg, #dcc7af, #b37a73); }
@@ -1400,7 +1388,7 @@
 }
 
 .giftSection {
-  background: linear-gradient(180deg, #c89289 0%, rgba(248, 240, 223, 0.8) 22%, rgba(248, 240, 223, 0.76) 82%, var(--cream-tone) 100%), url("/photos/luxury-cover.webp") center / cover;
+  background: linear-gradient(180deg, #c89289 0%, rgba(248, 240, 223, 0.8) 22%, rgba(248, 240, 223, 0.76) 82%, var(--cream-tone) 100%);
 }
 
 .giftPanel,
