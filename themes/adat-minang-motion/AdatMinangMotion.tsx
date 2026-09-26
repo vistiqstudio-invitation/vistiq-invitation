@@ -501,6 +501,11 @@ function ReferenceGallery({ invitation }: { invitation: InvitationData }) {
 }
 
 function ReferenceStory({ invitation }: { invitation: InvitationData }) {
+  const stories = invitation.story.filter(
+    (item) => Boolean(item.title?.trim()) || Boolean(item.description?.trim()),
+  );
+  if (stories.length === 0) return null;
+
   const storyPhotos = invitation.gallery.slice(0, 4).reverse();
   const fallbackPhotos = invitation.gallery.slice(0, 4);
 
@@ -509,7 +514,7 @@ function ReferenceStory({ invitation }: { invitation: InvitationData }) {
       <div className={styles.storyPanel}>
         <h2>Love Story</h2>
         <div className={styles.storyList}>
-          {invitation.story.map((item, index) => (
+          {stories.map((item, index) => (
             <article className={styles.storyItem} key={`${item.title}-${index}`}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={storyPhotos[index] || fallbackPhotos[index] || invitation.coverImage || ""} alt="" loading="lazy" />
@@ -565,11 +570,6 @@ function ReferenceGift({ invitation }: { invitation: InvitationData }) {
         {showAccounts && (
           <>
             {invitation.gifts.map((account) => <ReferenceGiftCard account={account} key={account.owner} />)}
-            <div className={styles.giftAddress}>
-              <GiftIcon className={styles.giftAddressIcon} />
-              <strong>{shortName(invitation.groom.name, invitation.groom.nickname)} &amp; {shortName(invitation.bride.name, invitation.bride.nickname)}</strong>
-              <small>Gedung Serbaguna Vistiq, Jakarta</small>
-            </div>
           </>
         )}
       </div>
