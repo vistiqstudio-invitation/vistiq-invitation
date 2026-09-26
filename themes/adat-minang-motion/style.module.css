@@ -1179,9 +1179,7 @@
 
 .inviteSection {
   padding: 100px 10px;
-  background:
-    linear-gradient(180deg, #baa2bf 0%, rgba(245, 238, 231, 0.78) 20%, rgba(245, 238, 231, 0.74) 82%, var(--cream-tone) 100%),
-    url("/photos/luxury-cover.webp") center / cover;
+  background: linear-gradient(180deg, #baa2bf 0%, rgba(245, 238, 231, 0.78) 20%, rgba(245, 238, 231, 0.74) 82%, var(--cream-tone) 100%);
   color: #242424;
 }
 
@@ -1415,7 +1413,7 @@
 }
 
 .inviteSection {
-  background: linear-gradient(180deg, #bd7e76 0%, rgba(248, 240, 223, 0.82) 22%, rgba(248, 240, 223, 0.76) 82%, var(--cream-tone) 100%), url("/photos/luxury-cover.webp") center / cover;
+  background: linear-gradient(180deg, #bd7e76 0%, rgba(248, 240, 223, 0.82) 22%, rgba(248, 240, 223, 0.76) 82%, var(--cream-tone) 100%);
 }
 
 .galleryTile { background: #d8b6a7; }

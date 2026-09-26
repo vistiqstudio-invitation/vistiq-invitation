@@ -701,14 +701,6 @@ function ReferenceInvitation({ invitation }: { invitation: InvitationData }) {
       <ReferenceGift invitation={invitation} />
       <ReferenceWishes invitation={invitation} />
 
-      <section className={styles.inviteSection}>
-        <div className={styles.invitePanel}>
-          <h2>Turut Mengundang</h2>
-          <p><b>Keluarga Mempelai Wanita</b><br />1.<br />2.<br />3.<br />4.<br />5.</p>
-          <p><b>Keluarga Mempelai Pria</b><br />1.<br />2.<br />3.<br />4.<br />5.</p>
-        </div>
-      </section>
-
       <footer
         className={styles.finalSection}
         style={{
