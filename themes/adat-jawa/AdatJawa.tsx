@@ -6,7 +6,7 @@ import { useRsvpWishes, type Attendance, type RsvpWish } from "@/hooks/useRsvpWi
 import type { InvitationData } from "@/types/invitation";
 import styles from "./style.module.css";
 
-const REFERENCE_SOURCE = "/themes/adat-jawa/vistiq-wayang/index.html";
+const REFERENCE_SOURCE = "/themes/adat-jawa/reference/source.html";
 const ADMIN_WHATSAPP =
   "https://wa.me/6281371338032?text=" +
   encodeURIComponent("Saya mau pesan undangan seperti ini juga");
@@ -782,98 +782,6 @@ function prepareGift(doc: Document, invitation: InvitationData) {
   };
 }
 
-function rebuildOpeningCover(
-  doc: Document,
-  invitation: InvitationData,
-  guestName: string,
-) {
-  const cover = doc.getElementById("sec");
-  if (!cover) return;
-
-  cover.replaceChildren();
-  cover.className = "";
-  cover.removeAttribute("style");
-  cover.style.cssText =
-    "position:fixed;inset:0;width:100%;height:100svh;min-height:100svh;z-index:10000;background:#f8f4ec;overflow:hidden;display:flex;justify-content:center;";
-
-  const shell = doc.createElement("div");
-  shell.style.cssText =
-    "position:relative;width:min(100%,450px);height:100%;background:#f8f4ec;overflow:hidden;display:flex;flex-direction:column;align-items:stretch;";
-
-  const top = doc.createElement("div");
-  top.style.cssText =
-    "position:relative;height:52%;min-height:52%;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:24px 24px 22px;box-sizing:border-box;overflow:hidden;";
-
-  const photo = sourceWithoutHash(invitation.coverImage || invitation.gallery[0] || invitation.groom.photo || invitation.bride.photo);
-  if (photo) {
-    const photoCard = doc.createElement("div");
-    photoCard.style.cssText =
-      "position:absolute;inset:34px 28px 18px;border-radius:24px;background-size:cover;background-position:center;opacity:.30;";
-    photoCard.style.backgroundImage = `url("${photo.replace(/"/g, "%22")}")`;
-    top.appendChild(photoCard);
-  }
-
-  const gunungan = doc.createElement("img");
-  gunungan.src = "/themes/adat-jawa/vistiq-wayang/vistiq-assets/vistiq-wayang-gunungan-outline.webp";
-  gunungan.alt = "Gunungan Wayang";
-  gunungan.style.cssText =
-    "position:relative;z-index:2;width:92px;max-height:168px;object-fit:contain;margin-bottom:12px;filter:drop-shadow(0 4px 12px rgba(90,55,30,.14));";
-  top.appendChild(gunungan);
-
-  const weddingOf = doc.createElement("div");
-  weddingOf.textContent = "The Wedding of";
-  weddingOf.style.cssText =
-    "position:relative;z-index:3;color:#5b4447;font:500 16px Georgia,'Times New Roman',serif;letter-spacing:.02em;";
-  top.appendChild(weddingOf);
-
-  const bottom = doc.createElement("div");
-  bottom.style.cssText =
-    "position:relative;height:48%;min-height:48%;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:18px 26px 28px;box-sizing:border-box;text-align:center;overflow:hidden;";
-
-  const names = doc.createElement("div");
-  names.textContent = coupleName(invitation);
-  names.style.cssText =
-    "position:relative;z-index:4;color:#7f5839;font:500 clamp(30px,9vw,42px) Georgia,'Times New Roman',serif;line-height:1.08;margin:4px 0 18px;";
-  bottom.appendChild(names);
-
-  const invitationLabel = doc.createElement("div");
-  invitationLabel.textContent = "Kepada Bapak/Ibu/Saudara/i";
-  invitationLabel.style.cssText =
-    "position:relative;z-index:4;color:#5b4447;font:500 13px Arial,sans-serif;margin-bottom:6px;";
-  bottom.appendChild(invitationLabel);
-
-  const guest = doc.createElement("div");
-  guest.textContent = guestName || "Nama Tamu";
-  guest.style.cssText =
-    "position:relative;z-index:4;color:#5b4447;font:600 18px Arial,sans-serif;margin-bottom:18px;";
-  bottom.appendChild(guest);
-
-  const button = doc.createElement("button");
-  button.id = "vistiq-wayang-open";
-  button.type = "button";
-  button.textContent = "Buka Undangan";
-  button.style.cssText =
-    "position:relative;z-index:6;border:0;border-radius:999px;padding:11px 24px;background:linear-gradient(180deg,#7e5d3d,#522f19);color:#fff;font:600 13px Arial,sans-serif;box-shadow:0 8px 20px rgba(82,47,25,.22);cursor:pointer;";
-  bottom.appendChild(button);
-
-  const character = doc.createElement("img");
-  character.src = "/themes/adat-jawa/vistiq-wayang/vistiq-assets/vistiq-wayang-character.webp";
-  character.alt = "";
-  character.style.cssText =
-    "position:absolute;left:-32px;bottom:0;width:145px;max-height:175px;object-fit:contain;object-position:left bottom;opacity:.92;z-index:1;";
-  bottom.appendChild(character);
-
-  const cloud = doc.createElement("img");
-  cloud.src = "/themes/adat-jawa/vistiq-wayang/vistiq-assets/vistiq-wayang-cloud-bottom.png";
-  cloud.alt = "";
-  cloud.style.cssText =
-    "position:absolute;left:0;right:0;bottom:-8px;width:100%;height:112px;object-fit:cover;object-position:bottom;opacity:.95;z-index:2;pointer-events:none;";
-  bottom.appendChild(cloud);
-
-  shell.append(top, bottom);
-  cover.appendChild(shell);
-}
-
 function prepareReference(
   doc: Document,
   invitation: InvitationData,
@@ -884,7 +792,6 @@ function prepareReference(
 ) {
   const cleanups: Array<() => void> = [];
   const body = doc.body;
-  rebuildOpeningCover(doc, invitation, guestName);
   const cover = doc.getElementById("sec");
   const coverColumn = doc.getElementById("kolom");
   const root = doc.querySelector<HTMLElement>(".elementor-8619");
@@ -894,12 +801,9 @@ function prepareReference(
   const firstStory = invitation.story[0];
 
   if (body) {
-    body.setAttribute("data-idb-cover-closed", "0");
-    body.style.position = "fixed";
-    body.style.inset = "0";
-    body.style.width = "100%";
-    body.style.height = "100svh";
-    body.style.overflow = "hidden";
+    body.setAttribute("data-idb-cover-closed", "1");
+    body.style.overflowY = "auto";
+    body.style.overflowX = "hidden";
   }
   if (root) root.style.minHeight = "100vh";
   if (cover) {
@@ -908,7 +812,10 @@ function prepareReference(
     cover.style.pointerEvents = "auto";
     cover.style.zIndex = "10000";
   }
-
+  if (coverColumn) {
+    coverColumn.style.transform = "translateY(0)";
+    coverColumn.style.transition = "1.5s ease-in-out";
+  }
   doc.querySelectorAll<HTMLElement>(".idb-reveal.idb-ef").forEach((element) => {
     element.classList.add("active");
   });
@@ -930,7 +837,7 @@ function prepareReference(
   setText(
     doc,
     "#home .elementor-element-37111d94 .elementor-widget-container",
-    invitation.coverEvent?.date || firstEvent?.date || ""
+    firstEvent?.date || ""
   );
   setLink(doc, "#home .elementor-element-6bc8e42c a", "#date", "Save The Date");
 
@@ -1167,9 +1074,7 @@ function prepareReference(
 
   const openWidget = doc.getElementById("open");
   const openTarget =
-    doc.getElementById("vistiq-wayang-open") ||
-    openWidget?.querySelector<HTMLElement>(".elementor-button") ||
-    openWidget;
+    openWidget?.querySelector<HTMLElement>(".elementor-button") || openWidget;
   const openHandler = (event: Event) => {
     event.preventDefault();
     event.stopPropagation();
@@ -1209,12 +1114,12 @@ function buildReferenceDocument(source: string) {
   });
 
   const base = parsed.createElement("base");
-  base.href = "/themes/adat-jawa/vistiq-wayang/";
+  base.href = "/themes/adat-jawa/reference/";
   parsed.head.prepend(base);
 
   const stylesheet = parsed.createElement("link");
   stylesheet.rel = "stylesheet";
-  stylesheet.href = "./vistiq-wayang.css";
+  stylesheet.href = "./reference.css";
   parsed.querySelectorAll('link[rel="stylesheet"]').forEach((node) => node.remove());
   parsed.head.prepend(stylesheet);
   replaceReferenceIcons(parsed);
@@ -1226,17 +1131,6 @@ function buildReferenceDocument(source: string) {
     "#sec{isolation:isolate;}",
     "#sec>.e-con-inner,#sec #kolom{position:relative;z-index:1;}",
     ".vistiq-cover-photo-wrap{z-index:0!important;}",
-    "#sec{position:fixed!important;inset:0!important;width:100%!important;height:100svh!important;min-height:100svh!important;overflow:hidden!important;background:#F8F4EC!important;z-index:10000!important;}",
-    "#sec>.e-con-inner{width:min(100%,450px)!important;height:100%!important;min-height:100%!important;margin:0 auto!important;}",
-    "#sec #kolom{height:100%!important;min-height:100%!important;display:flex!important;flex-direction:column!important;overflow:hidden!important;}",
-    "#sec .elementor-element-c336586,#sec .elementor-element-5eb5bd67{height:50%!important;min-height:50%!important;flex:0 0 50%!important;position:relative!important;}",
-    "#sec .elementor-element-28a3b749 img{width:42px!important;max-height:90px!important;object-fit:contain!important;}",
-    "#sec .elementor-element-4d17bf2e img,#sec .elementor-element-553e4d47 img{max-width:190px!important;height:auto!important;}",
-    "#sec .elementor-element-5ea5062c{left:-46px!important;bottom:10px!important;}",
-    "#sec .elementor-element-5ea5062c img{width:38%!important;max-width:170px!important;height:auto!important;}",
-    "#sec .elementor-element-c58030b{left:0!important;bottom:0!important;width:100%!important;}",
-    "#sec .elementor-element-c58030b img{width:100%!important;max-height:160px!important;object-fit:cover!important;object-position:bottom!important;}",
-    "#sec .elementor-element-405fbc8c,#sec .elementor-element-2fb79074,#sec .elementor-element-171b1b07,#sec .elementor-element-388c075b{position:relative!important;z-index:5!important;}",
     ".vistiq-admin-whatsapp{font-family:inherit;}",
     ".rsvp-item{display:flex;gap:12px;align-items:flex-start;margin:0 0 14px;}",
     ".rsvp-avatar{display:grid;place-items:center;flex:0 0 34px;width:34px;height:34px;border-radius:50%;background:rgba(124,83,55,.18);color:#6c432b;font-weight:700;}",
@@ -1290,16 +1184,14 @@ export default function AdatJawa({
     const cover = doc?.getElementById("sec");
     const column = doc?.getElementById("kolom");
     const body = doc?.body;
-    if (!doc || !cover) {
+    if (!doc || !cover || !column) {
       setOpened(true);
       return;
     }
 
-    if (column) {
-      column.style.transition = "transform 1.5s ease-in-out";
-      column.style.transform = "translateY(-100%)";
-    }
-    cover.style.transition = "opacity .65s ease-in-out";
+    column.style.transition = "transform 1.5s ease-in-out";
+    column.style.transform = "translateY(-100%)";
+    cover.style.transition = "opacity 1.5s ease-in-out";
     cover.style.opacity = "0";
     cover.style.pointerEvents = "none";
     window.setTimeout(() => {
@@ -1313,7 +1205,7 @@ export default function AdatJawa({
         body.style.overflowX = "hidden";
       }
       setOpened(true);
-    }, 700);
+    }, 1550);
   }, [setOpened]);
 
   const submitRsvp = useCallback<RsvpSubmit>(
