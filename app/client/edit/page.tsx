@@ -70,6 +70,7 @@ const initialForm = {
   bride_photo: "",
   groom_photo: "",
   gallery_photos: [] as string[],
+  gallery_positions: {} as Record<string, { x: number; y: number }>,
   gallery_layout: "auto",
 
   baby_name: "",
@@ -243,6 +244,12 @@ export default function ClientEditPage() {
         gallery_photos: Array.isArray(invitation.gallery_photos)
           ? invitation.gallery_photos
           : [],
+        gallery_positions:
+          invitation.gallery_positions &&
+          typeof invitation.gallery_positions === "object" &&
+          !Array.isArray(invitation.gallery_positions)
+            ? invitation.gallery_positions
+            : {},
         gallery_layout: ["portrait", "landscape", "square"].includes(invitation.gallery_layout)
           ? invitation.gallery_layout
           : "auto",
@@ -375,16 +382,50 @@ export default function ClientEditPage() {
     setForm((prev) => ({
       ...prev,
       gallery_photos: [...prev.gallery_photos, ...uploadedUrls],
+      gallery_positions: {
+        ...prev.gallery_positions,
+        ...Object.fromEntries(uploadedUrls.map((url) => [url, { x: 50, y: 50 }])),
+      },
     }));
 
     alert(`${uploadedUrls.length} foto galeri berhasil diupload.`);
   };
 
-  const removeGalleryPhoto = (index: number) => {
+  const updateGalleryPosition = (photo: string, axis: "x" | "y", value: number) => {
+    setForm((prev) => {
+      const current = prev.gallery_positions[photo] || { x: 50, y: 50 };
+      return {
+        ...prev,
+        gallery_positions: {
+          ...prev.gallery_positions,
+          [photo]: { ...current, [axis]: value },
+        },
+      };
+    });
+  };
+
+  const resetGalleryPosition = (photo: string) => {
     setForm((prev) => ({
       ...prev,
-      gallery_photos: prev.gallery_photos.filter((_, i) => i !== index),
+      gallery_positions: {
+        ...prev.gallery_positions,
+        [photo]: { x: 50, y: 50 },
+      },
     }));
+  };
+
+  const removeGalleryPhoto = (index: number) => {
+    setForm((prev) => {
+      const photo = prev.gallery_photos[index];
+      const nextPositions = { ...prev.gallery_positions };
+      delete nextPositions[photo];
+
+      return {
+        ...prev,
+        gallery_photos: prev.gallery_photos.filter((_, i) => i !== index),
+        gallery_positions: nextPositions,
+      };
+    });
   };
 
   const saveData = async () => {
@@ -1144,23 +1185,70 @@ export default function ClientEditPage() {
             {form.gallery_photos.length === 0 ? (
               <div className={styles.emptyGallery}>Belum ada foto galeri</div>
             ) : (
-              form.gallery_photos.map((photo, index) => (
-                <div key={photo} className={styles.galleryItem}>
-                  <img
-                    src={photo}
-                    alt={`Gallery ${index + 1}`}
-                    className={styles.galleryImage}
-                  />
+              form.gallery_photos.map((photo, index) => {
+                const position = form.gallery_positions[photo] || { x: 50, y: 50 };
 
-                  <button
-                    type="button"
-                    onClick={() => removeGalleryPhoto(index)}
-                    className={styles.deleteButton}
-                  >
-                    Hapus
-                  </button>
-                </div>
-              ))
+                return (
+                  <div key={photo} className={styles.galleryItem}>
+                    <div style={{ position: "relative", overflow: "hidden", borderRadius: 10, aspectRatio: "4 / 3" }}>
+                      <img
+                        src={photo}
+                        alt={`Gallery ${index + 1}`}
+                        className={styles.galleryImage}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                          objectPosition: `${position.x}% ${position.y}%`,
+                        }}
+                      />
+                    </div>
+
+                    <div style={{ marginTop: 10, display: "grid", gap: 8 }}>
+                      <label style={{ display: "grid", gap: 4, fontSize: 12 }}>
+                        <span>Geser kiri / kanan</span>
+                        <input
+                          type="range"
+                          min="0"
+                          max="100"
+                          value={position.x}
+                          onChange={(e) => updateGalleryPosition(photo, "x", Number(e.target.value))}
+                        />
+                      </label>
+
+                      <label style={{ display: "grid", gap: 4, fontSize: 12 }}>
+                        <span>Geser atas / bawah</span>
+                        <input
+                          type="range"
+                          min="0"
+                          max="100"
+                          value={position.y}
+                          onChange={(e) => updateGalleryPosition(photo, "y", Number(e.target.value))}
+                        />
+                      </label>
+
+                      <div style={{ display: "flex", gap: 8 }}>
+                        <button
+                          type="button"
+                          onClick={() => resetGalleryPosition(photo)}
+                          className={styles.secondaryButton}
+                          style={{ flex: 1, padding: "8px 10px" }}
+                        >
+                          Reset
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => removeGalleryPhoto(index)}
+                          className={styles.deleteButton}
+                          style={{ position: "static", flex: 1 }}
+                        >
+                          Hapus
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
             )}
           </div>
         </div>
