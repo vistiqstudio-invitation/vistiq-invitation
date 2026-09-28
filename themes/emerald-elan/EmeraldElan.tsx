@@ -175,6 +175,13 @@ function clientPhotos(invitation: InvitationData) {
   ].filter((photo): photo is string => Boolean(photo));
 }
 
+function galleryObjectPosition(invitation: InvitationData, photo: string) {
+  const position = invitation.galleryPositions?.[photo];
+  const x = Math.min(100, Math.max(0, Number(position?.x ?? 50)));
+  const y = Math.min(100, Math.max(0, Number(position?.y ?? 50)));
+  return `${x}% ${y}%`;
+}
+
 function googleCalendarHref(event?: EventItem) {
   const startMs = parseEventDate(event)?.getTime();
   if (!event || startMs === undefined || !Number.isFinite(startMs)) return null;
@@ -492,7 +499,7 @@ function Gallery({ invitation }: { invitation: InvitationData }) {
         viewport={{ once: true, amount: 0.25 }}
         transition={{ duration: 0.9, ease: revealEase }}
       >
-        {photos[0] ? <Image src={photos[0]} alt="" fill sizes="(max-width: 450px) 100vw, 450px" /> : null}
+        {photos[0] ? <Image src={photos[0]} alt="" fill sizes="(max-width: 450px) 100vw, 450px" style={{ objectFit: "cover", objectPosition: galleryObjectPosition(invitation, photos[0]) }} /> : null}
         <div><span>Mini</span><strong>Gallery</strong></div>
       </motion.div>
       <div className={styles.galleryShelf}>
@@ -507,7 +514,13 @@ function Gallery({ invitation }: { invitation: InvitationData }) {
             viewport={{ once: true, amount: 0.2 }}
             transition={{ delay: index * 0.05, duration: 0.55, ease: revealEase }}
           >
-            <Image src={photo} alt={`Gallery ${index + 1}`} fill sizes="(max-width: 450px) 28vw, 140px" />
+            <Image
+              src={photo}
+              alt={`Gallery ${index + 1}`}
+              fill
+              sizes="(max-width: 450px) 28vw, 140px"
+              style={{ objectFit: "cover", objectPosition: galleryObjectPosition(invitation, photo) }}
+            />
           </motion.button>
         ))}
       </div>
@@ -515,7 +528,7 @@ function Gallery({ invitation }: { invitation: InvitationData }) {
         {active !== null ? (
           <motion.div className={styles.lightbox} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setActive(null)}>
             <button type="button" aria-label="Tutup">×</button>
-            <div><Image src={photos[active]} alt="Foto galeri" fill sizes="90vw" /></div>
+            <div><Image src={photos[active]} alt="Foto galeri" fill sizes="90vw" style={{ objectFit: "contain", objectPosition: galleryObjectPosition(invitation, photos[active]) }} /></div>
           </motion.div>
         ) : null}
       </AnimatePresence>
@@ -543,7 +556,10 @@ function Story({ invitation }: { invitation: InvitationData }) {
             <i>♥</i>
             <div className={styles.storyCard}>
               <div className={styles.storyCardPhoto}>
-                {photos.length ? <Image src={photos[index] || photos[index % photos.length]} alt={`Momen ${story.title}`} fill sizes="(max-width: 450px) 66vw, 300px" /> : null}
+                {photos.length ? (() => {
+                  const photo = photos[index] || photos[index % photos.length];
+                  return <Image src={photo} alt={`Momen ${story.title}`} fill sizes="(max-width: 450px) 66vw, 300px" style={{ objectFit: "cover", objectPosition: galleryObjectPosition(invitation, photo) }} />;
+                })() : null}
               </div>
               <div className={styles.storyCardCopy}><small>{story.year}</small><h3>{story.title}</h3><p>{story.description}</p></div>
             </div>
