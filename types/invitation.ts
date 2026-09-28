@@ -79,6 +79,7 @@ export type InvitationData = {
   coverEvent: EventItem | null;
   gallery: string[];
   galleryLayout?: "auto" | "portrait" | "landscape" | "square";
+  galleryPositions?: Record<string, { x: number; y: number }>;
 
   gifts: GiftAccount[];
 };
