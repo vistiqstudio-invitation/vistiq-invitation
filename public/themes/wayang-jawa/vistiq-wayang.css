@@ -3451,3 +3451,6 @@ html:not([data-idb-cover-closed]){overflow-y:auto!important}
 .vistiq-cover-photo-widget{overflow:visible!important;background:transparent!important}
 .vistiq-cover-photo{mask-image:linear-gradient(to bottom,#000 42%,rgba(0,0,0,.86) 62%,rgba(0,0,0,.38) 82%,transparent 100%)!important;-webkit-mask-image:linear-gradient(to bottom,#000 42%,rgba(0,0,0,.86) 62%,rgba(0,0,0,.38) 82%,transparent 100%)!important}
 .vistiq-cover-photo-widget:after{height:48%!important;background:linear-gradient(to bottom,rgba(248,244,236,0),rgba(248,244,236,.4) 42%,rgba(248,244,236,.86) 78%,rgba(248,244,236,0) 100%)!important}
+
+/* Keep cover typography above the photo fade */
+#sec .elementor-element-ab82531,#sec .elementor-element-405fbc8c,#sec .elementor-element-2fb79074,#sec .elementor-element-171b1b07{position:relative!important;z-index:6!important}
