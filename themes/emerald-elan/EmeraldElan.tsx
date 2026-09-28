@@ -11,7 +11,6 @@ import type { EventItem, InvitationData } from "@/types/invitation";
 import styles from "./style.module.css";
 
 const ASSET = "/themes/emerald-elan/";
-const ADMIN_WHATSAPP = "6281371338032";
 const revealEase = [0.22, 1, 0.36, 1] as const;
 
 type IconName =
@@ -574,7 +573,8 @@ function Gift({ invitation }: { invitation: InvitationData }) {
   const [copied, setCopied] = useState<number | null>(null);
   const bride = firstName(invitation.bride.name, invitation.bride.nickname);
   const groom = firstName(invitation.groom.name, invitation.groom.nickname);
-  const message = encodeURIComponent(`Halo Admin Vistiq, saya ingin mengonfirmasi gift untuk undangan ${groom} & ${bride}.`);
+  const message = encodeURIComponent(`Halo ${groom} & ${bride}, saya ingin mengonfirmasi gift untuk undangan pernikahan Anda.`);
+  const whatsapp = (invitation.contactWhatsapp || "").replace(/\D/g, "").replace(/^0/, "62");
   const copyAccount = async (accountNumber: string | null, index: number) => {
     if (!accountNumber) return;
     await navigator.clipboard?.writeText(accountNumber);
@@ -602,7 +602,7 @@ function Gift({ invitation }: { invitation: InvitationData }) {
         <div className={styles.confirmCard}>
           <div className={styles.scriptHeading}><span>Gift</span><em>Confirm</em></div>
           <p>Mohon konfirmasi untuk pengiriman gift. Terima kasih atas perhatian dan tanda kasih Anda.</p>
-          <a href={`https://wa.me/${ADMIN_WHATSAPP}?text=${message}`} target="_blank" rel="noreferrer"><Icon name="chat" /> Konfirmasi via WhatsApp</a>
+          {whatsapp ? <a href={`https://wa.me/${whatsapp}?text=${message}`} target="_blank" rel="noreferrer"><Icon name="chat" /> Konfirmasi via WhatsApp</a> : null}
         </div>
       </div>
     </section>
