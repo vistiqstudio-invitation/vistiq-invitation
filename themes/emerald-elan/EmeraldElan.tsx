@@ -436,6 +436,9 @@ function Events({ invitation }: { invitation: InvitationData }) {
 
 function WeddingVideo({ invitation }: { invitation: InvitationData }) {
   const videoUrl = isExternalUrl(invitation.videoUrl) ? invitation.videoUrl : null;
+
+  if (!videoUrl) return null;
+
   const background = invitation.gallery[0] || invitation.coverImage || invitation.bride.photo || invitation.groom.photo || null;
 
   return (
@@ -451,11 +454,7 @@ function WeddingVideo({ invitation }: { invitation: InvitationData }) {
       >
         <div className={styles.videoHeading}><span>Wedding</span><em>Video</em></div>
         <p>Saksikan video pre-wedding kami dan simpan cerita kecil menuju hari bahagia.</p>
-        {videoUrl ? (
-          <a href={videoUrl} target="_blank" rel="noreferrer"><Icon name="play" /> Watch Video</a>
-        ) : (
-          <span className={styles.videoPending}>Video pre-wedding</span>
-        )}
+        <a href={videoUrl} target="_blank" rel="noreferrer"><Icon name="play" /> Watch Video</a>
       </motion.div>
     </section>
   );
