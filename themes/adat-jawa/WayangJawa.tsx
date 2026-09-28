@@ -401,6 +401,12 @@ function prepareAudio(doc: Document, musicUrl: string | null) {
     doc.querySelectorAll<HTMLElement>(".idb-audio-box")
   );
   const sync = () => {
+    doc.querySelectorAll<HTMLElement>(".idb-mute-sound").forEach((button) => {
+      button.style.display = audio.paused ? "block" : "none";
+    });
+    doc.querySelectorAll<HTMLElement>(".idb-unmute-sound").forEach((button) => {
+      button.style.display = audio.paused ? "none" : "block";
+    });
     controls.forEach((control) => {
       control.setAttribute("aria-label", audio.paused ? "Putar musik" : "Jeda musik");
       control.dataset.playing = String(!audio.paused);
@@ -1138,6 +1144,8 @@ function buildReferenceDocument(source: string) {
   parsed.querySelectorAll('link[rel="stylesheet"]').forEach((node) => node.remove());
   parsed.head.prepend(stylesheet);
   replaceReferenceIcons(parsed);
+  setText(parsed, '[data-rsvp-pill="hadir"] .pill-icon', "✓");
+  setText(parsed, '[data-rsvp-pill="tidak"] .pill-icon', "×");
 
   const override = parsed.createElement("style");
   override.textContent = [
@@ -1147,6 +1155,7 @@ function buildReferenceDocument(source: string) {
     "#sec>.e-con-inner,#sec #kolom{position:relative;z-index:1;}",
     ".vistiq-cover-photo-wrap{z-index:0!important;}",
     ".vistiq-admin-whatsapp{font-family:inherit;}",
+    ".elementor-element-73ffc401{inset-inline-start:auto!important;left:auto!important;top:auto!important;right:16px!important;}",
     ".rsvp-item{display:flex;gap:12px;align-items:flex-start;margin:0 0 14px;}",
     ".rsvp-avatar{display:grid;place-items:center;flex:0 0 34px;width:34px;height:34px;border-radius:50%;background:rgba(124,83,55,.18);color:#6c432b;font-weight:700;}",
     ".rsvp-item__content{min-width:0;flex:1;}",
