@@ -780,10 +780,28 @@ function prepareReference(
   const reveals = Array.from(doc.querySelectorAll<HTMLElement>(".idb-reveal.idb-ef"));
   const FrameObserver = (doc.defaultView as (Window & typeof globalThis) | null)?.IntersectionObserver;
   if (FrameObserver) {
+    const targets = new Map<Element, HTMLElement[]>();
+    reveals.forEach((element) => {
+      element.classList.remove("active");
+      // Cover ornaments must start even when their initial transform is off-screen.
+      if (element.closest("#sec")) {
+        element.classList.add("active");
+        return;
+      }
+      // Observe the stable container for decorations positioned beyond its edge.
+      const target = element.classList.contains("elementor-absolute")
+        ? element.parentElement || element
+        : element;
+      targets.set(target, [...(targets.get(target) || []), element]);
+    });
     const observer = new FrameObserver((entries) => {
-      entries.forEach((entry) => { if (entry.isIntersecting) { entry.target.classList.add("active"); observer.unobserve(entry.target); } });
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        targets.get(entry.target)?.forEach((element) => element.classList.add("active"));
+        observer.unobserve(entry.target);
+      });
     }, { threshold: 0.08 });
-    reveals.forEach((element) => { element.classList.remove("active"); observer.observe(element); });
+    targets.forEach((_, target) => observer.observe(target));
     cleanups.push(() => observer.disconnect());
   } else reveals.forEach((element) => element.classList.add("active"));
   setText(doc, "#sec .elementor-element-405fbc8c .elementor-widget-container", name);
