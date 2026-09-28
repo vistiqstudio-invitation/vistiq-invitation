@@ -270,64 +270,57 @@ export default function ResellerInvitationEditPage() {
     setForm((prev) => ({ ...prev, [field]: value }));
   };
 
-  const optimizeImageForUpload = async (file: File) => {
-    if (!file.type.startsWith("image/")) return file;
-
-    const MAX_DIMENSION = 1920;
-    const TARGET_SIZE = 2 * 1024 * 1024;
-
-    // Small images can be uploaded as-is.
-    if (file.size <= TARGET_SIZE) return file;
+  const optimizeImageForUpload = async (file: File): Promise<Blob> => {
+    if (!file.type.startsWith("image/") || file.size <= 2 * 1024 * 1024) {
+      return file;
+    }
 
     const objectUrl = URL.createObjectURL(file);
 
     try {
-      const image = await new Promise<HTMLImageElement>((resolve, reject) => {
-        const img = new Image();
-        img.onload = () => resolve(img);
+      const img = document.createElement("img");
+
+      await new Promise<void>((resolve, reject) => {
+        img.onload = () => resolve();
         img.onerror = () => reject(new Error("Foto tidak dapat dibaca."));
         img.src = objectUrl;
       });
 
-      let width = image.naturalWidth;
-      let height = image.naturalHeight;
-      const scale = Math.min(1, MAX_DIMENSION / Math.max(width, height));
+      const maxDimension = 1920;
+      const ratio = Math.min(
+        1,
+        maxDimension / Math.max(img.naturalWidth, img.naturalHeight)
+      );
 
-      width = Math.max(1, Math.round(width * scale));
-      height = Math.max(1, Math.round(height * scale));
-
-      let quality = 0.84;
-      let blob: Blob | null = null;
+      let width = Math.max(1, Math.round(img.naturalWidth * ratio));
+      let height = Math.max(1, Math.round(img.naturalHeight * ratio));
+      let quality = 0.82;
+      let compressed: Blob | null = null;
 
       for (let attempt = 0; attempt < 6; attempt += 1) {
         const canvas = document.createElement("canvas");
         canvas.width = width;
         canvas.height = height;
 
-        const ctx = canvas.getContext("2d");
-        if (!ctx) throw new Error("Browser tidak mendukung kompresi foto.");
+        const context = canvas.getContext("2d");
+        if (!context) throw new Error("Browser tidak mendukung kompresi foto.");
 
-        ctx.drawImage(image, 0, 0, width, height);
+        context.drawImage(img, 0, 0, width, height);
 
-        blob = await new Promise<Blob | null>((resolve) =>
-          canvas.toBlob(resolve, "image/jpeg", quality)
-        );
+        compressed = await new Promise<Blob | null>((resolve) => {
+          canvas.toBlob(resolve, "image/jpeg", quality);
+        });
 
-        if (!blob) throw new Error("Foto gagal dikompres.");
-        if (blob.size <= TARGET_SIZE) break;
+        if (!compressed) throw new Error("Foto gagal dikompres.");
+        if (compressed.size <= 2 * 1024 * 1024) break;
 
-        quality = Math.max(0.55, quality - 0.08);
+        quality = Math.max(0.55, quality - 0.07);
         width = Math.max(1, Math.round(width * 0.9));
         height = Math.max(1, Math.round(height * 0.9));
       }
 
-      if (!blob) throw new Error("Foto gagal dikompres.");
-
-      const baseName = file.name.replace(/\.[^.]+$/, "") || "photo";
-      return new File([blob], `${baseName}.jpg`, {
-        type: "image/jpeg",
-        lastModified: Date.now(),
-      });
+      if (!compressed) throw new Error("Foto gagal dikompres.");
+      return compressed;
     } finally {
       URL.revokeObjectURL(objectUrl);
     }
@@ -335,43 +328,44 @@ export default function ResellerInvitationEditPage() {
 
   const uploadToStorage = async (file: File, folder: string) => {
     try {
-      const uploadFile = await optimizeImageForUpload(file);
-      const mimeExt =
-        uploadFile.type === "image/jpeg"
-          ? "jpg"
-          : uploadFile.type === "image/png"
-            ? "png"
-            : uploadFile.type === "image/webp"
-              ? "webp"
-              : uploadFile.name.split(".").pop() || "bin";
+      const isImage = file.type.startsWith("image/");
+      const uploadBody = isImage ? await optimizeImageForUpload(file) : file;
+      const extension = isImage
+        ? "jpg"
+        : file.name.split(".").pop() || "bin";
+      const contentType = isImage ? "image/jpeg" : file.type;
 
       const fileName = `${params.id}/${folder}-${Date.now()}-${Math.random()
         .toString(36)
-        .slice(2)}.${mimeExt}`;
+        .slice(2)}.${extension}`;
 
       const { error } = await supabase.storage
         .from(BUCKET)
-        .upload(fileName, uploadFile, {
-          contentType: uploadFile.type || undefined,
+        .upload(fileName, uploadBody, {
+          contentType,
           cacheControl: "3600",
         });
 
       if (error) {
-        const isTooLarge =
-          error.message?.toLowerCase().includes("maximum allowed size") ||
-          String((error as { statusCode?: string | number }).statusCode) === "413";
+        const statusCode = String((error as unknown as { statusCode?: string | number }).statusCode || "");
+        const tooLarge =
+          error.message.toLowerCase().includes("maximum allowed size") ||
+          statusCode === "413";
 
         alert(
-          isTooLarge
+          tooLarge
             ? "Foto masih terlalu besar untuk diupload. Silakan pilih foto lain atau coba ulang."
-            : `Upload gagal: ${error.message || "Terjadi kesalahan saat upload."}`
+            : `Upload gagal: ${error.message}`
         );
         return "";
       }
 
       return supabase.storage.from(BUCKET).getPublicUrl(fileName).data.publicUrl;
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Terjadi kesalahan saat memproses file.";
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Terjadi kesalahan saat memproses file.";
       alert(`Upload gagal: ${message}`);
       return "";
     }
