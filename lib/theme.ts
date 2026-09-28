@@ -26,7 +26,6 @@ import Rustic from "@/themes/rustic/Rustic";
 import Bohemian from "@/themes/bohemian/Bohemian";
 import ModernElegant from "@/themes/modern-elegant/ModernElegant";
 import RoyalImperial from "@/themes/royal-imperial/RoyalImperial";
-import AdatJawa from "@/themes/adat-jawa/AdatJawa";
 import AdatMinang from "@/themes/adat-minang/AdatMinang";
 import AdatBugis from "@/themes/adat-bugis/AdatBugis";
 import AdatBali from "@/themes/adat-bali/AdatBali";
@@ -82,7 +81,6 @@ export const themeRegistry: Record<
   bohemian: Bohemian,
   "modern-elegant": ModernElegant,
   "royal-imperial": RoyalImperial,
-  "adat-jawa": AdatJawa,
   "adat-minang": AdatMinang,
   "adat-bugis": AdatBugis,
   "adat-bali": AdatBali,
@@ -173,7 +171,6 @@ const allWeddingThemes: ThemeMeta[] = [
   { key: "bohemian", label: "Bohemian", description: "Terracotta & pasir, pampas grass, free-spirited & artsy", swatch: ["#f7ede1", "#b5603a"], tags: ["basic"] },
   { key: "modern-elegant", label: "Modern Elegant", description: "Split-screen, tipografi bold, layout & animasi editorial modern", swatch: ["#ffffff", "#b5482a"], tags: ["premium"] },
   { key: "royal-imperial", label: "Royal Imperial", description: "Maroon & emas keraton, medali foto, dial melingkar", swatch: ["#2a0f0f", "#d4af37"], tags: ["basic"] },
-  { key: "adat-jawa", label: "Wayang Jawa", description: "Template Wayang Jawa klasik dengan gunungan, awan, batik, galeri, rekening, RSVP dan ucapan", swatch: ["#f3e7d7", "#7f5839"], tags: ["adat"] },
   { key: "royal-java", label: "Royal Java – Maroon Heritage", description: "Opening sinematik pendopo, bunga marun berlapis, batik & emas keraton", swatch: ["#250608", "#d7ad55"], tags: ["premium", "adat"], addedAt: "2026-07-26" },
   { key: "adat-minang", label: "Adat Minang", description: "Marun & emas songket, motif gonjong rumah gadang, suntiang", swatch: ["#4a0e14", "#d1a13a"], tags: ["adat"] },
   { key: "adat-bugis", label: "Adat Bugis", description: "Teal & emas, motif atap timpalaja, ombak Bugis-Makassar", swatch: ["#0d3438", "#cfa23c"], tags: ["adat"] },
