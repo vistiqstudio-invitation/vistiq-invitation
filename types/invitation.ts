@@ -55,6 +55,7 @@ export type InvitationData = {
   mapsEmbedUrl: string | null;
 
   opening: OpeningText;
+  closingGreeting?: string | null;
 
   groom: {
     name: string;
