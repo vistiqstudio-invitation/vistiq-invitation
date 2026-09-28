@@ -801,9 +801,12 @@ function prepareReference(
   const firstStory = invitation.story[0];
 
   if (body) {
-    body.setAttribute("data-idb-cover-closed", "1");
-    body.style.overflowY = "auto";
-    body.style.overflowX = "hidden";
+    body.setAttribute("data-idb-cover-closed", "0");
+    body.style.position = "fixed";
+    body.style.inset = "0";
+    body.style.width = "100%";
+    body.style.height = "100svh";
+    body.style.overflow = "hidden";
   }
   if (root) root.style.minHeight = "100vh";
   if (cover) {
@@ -1131,6 +1134,17 @@ function buildReferenceDocument(source: string) {
     "#sec{isolation:isolate;}",
     "#sec>.e-con-inner,#sec #kolom{position:relative;z-index:1;}",
     ".vistiq-cover-photo-wrap{z-index:0!important;}",
+    "#sec{position:fixed!important;inset:0!important;width:100%!important;height:100svh!important;min-height:100svh!important;overflow:hidden!important;background:#F8F4EC!important;z-index:10000!important;}",
+    "#sec>.e-con-inner{width:min(100%,450px)!important;height:100%!important;min-height:100%!important;margin:0 auto!important;}",
+    "#sec #kolom{height:100%!important;min-height:100%!important;display:flex!important;flex-direction:column!important;overflow:hidden!important;}",
+    "#sec .elementor-element-c336586,#sec .elementor-element-5eb5bd67{height:50%!important;min-height:50%!important;flex:0 0 50%!important;position:relative!important;}",
+    "#sec .elementor-element-28a3b749 img{width:42px!important;max-height:90px!important;object-fit:contain!important;}",
+    "#sec .elementor-element-4d17bf2e img,#sec .elementor-element-553e4d47 img{max-width:190px!important;height:auto!important;}",
+    "#sec .elementor-element-5ea5062c{left:-46px!important;bottom:10px!important;}",
+    "#sec .elementor-element-5ea5062c img{width:38%!important;max-width:170px!important;height:auto!important;}",
+    "#sec .elementor-element-c58030b{left:0!important;bottom:0!important;width:100%!important;}",
+    "#sec .elementor-element-c58030b img{width:100%!important;max-height:160px!important;object-fit:cover!important;object-position:bottom!important;}",
+    "#sec .elementor-element-405fbc8c,#sec .elementor-element-2fb79074,#sec .elementor-element-171b1b07,#sec .elementor-element-388c075b{position:relative!important;z-index:5!important;}",
     ".vistiq-admin-whatsapp{font-family:inherit;}",
     ".rsvp-item{display:flex;gap:12px;align-items:flex-start;margin:0 0 14px;}",
     ".rsvp-avatar{display:grid;place-items:center;flex:0 0 34px;width:34px;height:34px;border-radius:50%;background:rgba(124,83,55,.18);color:#6c432b;font-weight:700;}",
