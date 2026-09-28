@@ -3465,3 +3465,19 @@ html:not([data-idb-cover-closed]){overflow-y:auto!important}
 #sec .elementor-element-171b1b07{position:absolute!important;top:63%!important;left:0!important;right:0!important;z-index:8!important;text-align:center!important}
 #sec .elementor-element-388c075b{position:absolute!important;top:70%!important;left:0!important;right:0!important;z-index:8!important}
 @media(max-width:600px){#sec .elementor-element-ab82531{top:42%!important}#sec .elementor-element-405fbc8c{top:48%!important}#sec .elementor-element-2fb79074{top:56%!important}#sec .elementor-element-171b1b07{top:63%!important}#sec .elementor-element-388c075b{top:70%!important}}
+
+
+/* Final cover alignment: keep all opening typography in one shared coordinate system */
+#sec .elementor-element-c336586{position:static!important;display:block!important}
+#sec .elementor-element-ab82531{top:46%!important}
+#sec .elementor-element-405fbc8c{top:52%!important}
+#sec .elementor-element-2fb79074{top:59%!important}
+#sec .elementor-element-171b1b07{top:66%!important}
+#sec .elementor-element-388c075b{top:73%!important}
+@media(max-width:600px){
+ #sec .elementor-element-ab82531{top:46%!important}
+ #sec .elementor-element-405fbc8c{top:52%!important}
+ #sec .elementor-element-2fb79074{top:59%!important}
+ #sec .elementor-element-171b1b07{top:66%!important}
+ #sec .elementor-element-388c075b{top:73%!important}
+}
