@@ -27,7 +27,7 @@ import Bohemian from "@/themes/bohemian/Bohemian";
 import ModernElegant from "@/themes/modern-elegant/ModernElegant";
 import RoyalImperial from "@/themes/royal-imperial/RoyalImperial";
 import AdatMinang from "@/themes/adat-minang/AdatMinang";
-import AdatJawa from "@/themes/adat-jawa/AdatJawa";
+import WayangJawa from "@/themes/adat-jawa/WayangJawa";
 import AdatBugis from "@/themes/adat-bugis/AdatBugis";
 import AdatBali from "@/themes/adat-bali/AdatBali";
 import AdatSunda from "@/themes/adat-sunda/AdatSunda";
@@ -83,7 +83,7 @@ export const themeRegistry: Record<
   "modern-elegant": ModernElegant,
   "royal-imperial": RoyalImperial,
   "adat-minang": AdatMinang,
-  "adat-jawa": AdatJawa,
+  "adat-jawa": WayangJawa,
   "adat-bugis": AdatBugis,
   "adat-bali": AdatBali,
   "adat-sunda": AdatSunda,
