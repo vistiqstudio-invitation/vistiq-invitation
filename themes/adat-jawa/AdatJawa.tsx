@@ -6,7 +6,7 @@ import { useRsvpWishes, type Attendance, type RsvpWish } from "@/hooks/useRsvpWi
 import type { InvitationData } from "@/types/invitation";
 import styles from "./style.module.css";
 
-const REFERENCE_SOURCE = "/themes/adat-jawa/reference/source.html";
+const REFERENCE_SOURCE = "/themes/adat-jawa/vistiq-wayang/index.html";
 const ADMIN_WHATSAPP =
   "https://wa.me/6281371338032?text=" +
   encodeURIComponent("Saya mau pesan undangan seperti ini juga");
@@ -1114,12 +1114,12 @@ function buildReferenceDocument(source: string) {
   });
 
   const base = parsed.createElement("base");
-  base.href = "/themes/adat-jawa/reference/";
+  base.href = "/themes/adat-jawa/vistiq-wayang/";
   parsed.head.prepend(base);
 
   const stylesheet = parsed.createElement("link");
   stylesheet.rel = "stylesheet";
-  stylesheet.href = "./reference.css";
+  stylesheet.href = "./vistiq-wayang.css";
   parsed.querySelectorAll('link[rel="stylesheet"]').forEach((node) => node.remove());
   parsed.head.prepend(stylesheet);
   replaceReferenceIcons(parsed);
