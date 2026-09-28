@@ -166,20 +166,13 @@ function parseEventDate(event?: EventItem) {
   return new Date(localUtcMs - eventTimezoneOffsetMinutes(event?.time || "") * 60_000);
 }
 
-function fallbackPhotos(invitation: InvitationData) {
-  const defaults = [
-    `${ASSET}emerald-gallery-01.jpg`,
-    `${ASSET}emerald-gallery-02.jpg`,
-    `${ASSET}emerald-gallery-03.jpg`,
-    `${ASSET}emerald-gallery-04.jpg`,
-    `${ASSET}emerald-gallery-05.jpg`,
-    `${ASSET}emerald-gallery-06.jpg`,
-    `${ASSET}emerald-gallery-07.jpg`,
-    `${ASSET}emerald-gallery-08.jpg`,
-    `${ASSET}emerald-gallery-09.jpg`,
-  ];
-  const customPhotos = invitation.gallery.filter(Boolean);
-  return customPhotos.length ? customPhotos : defaults;
+function clientPhotos(invitation: InvitationData) {
+  return [
+    invitation.coverImage,
+    invitation.bride.photo,
+    invitation.groom.photo,
+    ...invitation.gallery,
+  ].filter((photo): photo is string => Boolean(photo));
 }
 
 function googleCalendarHref(event?: EventItem) {
@@ -204,7 +197,7 @@ function Cover({ invitation, onOpen }: { invitation: InvitationData; onOpen: () 
   const guest = useSearchParams().get("to") || "Bapak/Ibu/Saudara/i";
   const bride = firstName(invitation.bride.name, invitation.bride.nickname);
   const groom = firstName(invitation.groom.name, invitation.groom.nickname);
-  const fallback = invitation.coverImage || `${ASSET}emerald-cover.jpg`;
+  const fallback = invitation.coverImage || clientPhotos(invitation)[0] || null;
   const videoSource = invitation.videoUrl;
   const [videoFailed, setVideoFailed] = useState(false);
 
@@ -217,7 +210,7 @@ function Cover({ invitation, onOpen }: { invitation: InvitationData; onOpen: () 
       <div className={styles.cover}>
         <div className={styles.coverMedia}>
           {videoFailed || !videoSource ? (
-            <Image src={fallback} alt="" fill priority sizes="(max-width: 450px) 100vw, 450px" className={styles.coverFallback} />
+            fallback ? <Image src={fallback} alt="" fill priority sizes="(max-width: 450px) 100vw, 450px" className={styles.coverFallback} /> : null
           ) : (
             <video
               className={styles.coverVideo}
@@ -226,7 +219,7 @@ function Cover({ invitation, onOpen }: { invitation: InvitationData; onOpen: () 
               loop
               playsInline
               preload="auto"
-              poster={fallback}
+              poster={fallback || undefined}
               onError={() => setVideoFailed(true)}
             >
               <source src={videoSource} type="video/mp4" />
@@ -261,9 +254,11 @@ function Hero({ invitation }: { invitation: InvitationData }) {
     ? `${date.weekday.toUpperCase()}, ${date.day} ${date.month.toUpperCase()} ${date.year}`
     : invitation.coverEvent?.date || "SAVE THE DATE";
 
+  const heroPhoto = invitation.coverImage || invitation.gallery[0] || invitation.bride.photo || invitation.groom.photo || null;
+
   return (
     <section className={styles.heroPanel} data-opening-hero aria-label="Halaman pembuka undangan">
-      <Image src={`${ASSET}emerald-cover.jpg`} alt="" fill priority sizes="(max-width: 450px) 100vw, 450px" className={styles.panelArt} />
+      {heroPhoto ? <Image src={heroPhoto} alt="" fill priority sizes="(max-width: 450px) 100vw, 450px" className={styles.panelArt} /> : null}
       <div className={styles.panelShade} />
       <div className={styles.heroFrame}>
         <motion.div
@@ -294,8 +289,9 @@ function Hero({ invitation }: { invitation: InvitationData }) {
 }
 
 function Couple({ invitation }: { invitation: InvitationData }) {
-  const bridePhoto = invitation.bride.photo || `${ASSET}emerald-bride.jpg`;
-  const groomPhoto = invitation.groom.photo || `${ASSET}emerald-groom.jpg`;
+  const photos = clientPhotos(invitation);
+  const bridePhoto = invitation.bride.photo || invitation.coverImage || invitation.gallery[0] || photos[0] || "";
+  const groomPhoto = invitation.groom.photo || invitation.coverImage || invitation.gallery[1] || invitation.gallery[0] || photos[0] || "";
   const description = invitation.opening.description || "Tanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara pernikahan kami.";
 
   return (
@@ -387,12 +383,12 @@ function QuoteCountdown({ invitation }: { invitation: InvitationData }) {
       ].map((value) => String(value).padStart(2, "0"));
   const quote = invitation.opening.quote || "Love is that condition in which the happiness of another person is essential to your own.";
   const source = invitation.opening.quoteSource || "Robert A. Heinlein";
-  const background = invitation.gallery[2] || `${ASSET}emerald-gallery-03.jpg`;
+  const background = invitation.gallery[2] || invitation.gallery[0] || invitation.coverImage || invitation.bride.photo || invitation.groom.photo || null;
   const saveDate = googleCalendarHref(event);
 
   return (
     <section id="countdown" className={styles.quoteSection}>
-      <Image src={background} alt="" fill sizes="(max-width: 450px) 100vw, 450px" className={styles.quoteBackground} />
+      {background ? <Image src={background} alt="" fill sizes="(max-width: 450px) 100vw, 450px" className={styles.quoteBackground} /> : null}
       <div className={styles.quoteShade} />
       <motion.div
         className={styles.quoteContent}
@@ -434,10 +430,11 @@ function Events({ invitation }: { invitation: InvitationData }) {
 
 function WeddingVideo({ invitation }: { invitation: InvitationData }) {
   const videoUrl = isExternalUrl(invitation.videoUrl) ? invitation.videoUrl : null;
+  const background = invitation.gallery[0] || invitation.coverImage || invitation.bride.photo || invitation.groom.photo || null;
 
   return (
     <section id="video" className={styles.videoSection}>
-      <Image src={`${ASSET}emerald-gallery-03.jpg`} alt="" fill sizes="(max-width: 450px) 100vw, 450px" className={styles.videoBackground} />
+      {background ? <Image src={background} alt="" fill sizes="(max-width: 450px) 100vw, 450px" className={styles.videoBackground} /> : null}
       <div className={styles.videoShade} />
       <motion.div
         className={styles.videoContent}
@@ -485,7 +482,7 @@ function EventCard({ event, reverse = false, mapsUrl }: { event: EventItem; reve
 
 function Gallery({ invitation }: { invitation: InvitationData }) {
   const [active, setActive] = useState<number | null>(null);
-  const photos = fallbackPhotos(invitation).slice(0, 9);
+  const photos = clientPhotos(invitation).slice(0, 9);
   return (
     <section id="gallery" className={styles.gallerySection}>
       <motion.div
@@ -495,7 +492,7 @@ function Gallery({ invitation }: { invitation: InvitationData }) {
         viewport={{ once: true, amount: 0.25 }}
         transition={{ duration: 0.9, ease: revealEase }}
       >
-        <Image src={`${ASSET}emerald-gallery-01.jpg`} alt="" fill sizes="(max-width: 450px) 100vw, 450px" />
+        {photos[0] ? <Image src={photos[0]} alt="" fill sizes="(max-width: 450px) 100vw, 450px" /> : null}
         <div><span>Mini</span><strong>Gallery</strong></div>
       </motion.div>
       <div className={styles.galleryShelf}>
@@ -535,7 +532,7 @@ const defaultStories = [
 
 function Story({ invitation }: { invitation: InvitationData }) {
   const stories = invitation.story.length ? invitation.story.slice(0, 5) : defaultStories;
-  const photos = fallbackPhotos(invitation).slice(2, 2 + stories.length);
+  const photos = clientPhotos(invitation).slice(0, stories.length);
   return (
     <section id="story" className={styles.storySection}>
       <div className={styles.storyHeader}><span>Love</span><h2>Story</h2></div>
@@ -546,7 +543,7 @@ function Story({ invitation }: { invitation: InvitationData }) {
             <i>♥</i>
             <div className={styles.storyCard}>
               <div className={styles.storyCardPhoto}>
-                <Image src={photos[index] || photos[index % photos.length] || `${ASSET}emerald-gallery-03.jpg`} alt={`Momen ${story.title}`} fill sizes="(max-width: 450px) 66vw, 300px" />
+                {photos.length ? <Image src={photos[index] || photos[index % photos.length]} alt={`Momen ${story.title}`} fill sizes="(max-width: 450px) 66vw, 300px" /> : null}
               </div>
               <div className={styles.storyCardCopy}><small>{story.year}</small><h3>{story.title}</h3><p>{story.description}</p></div>
             </div>
@@ -672,10 +669,10 @@ function RsvpAndWishes({ invitation }: { invitation: InvitationData }) {
 function Footer({ invitation }: { invitation: InvitationData }) {
   const bride = firstName(invitation.bride.name, invitation.bride.nickname);
   const groom = firstName(invitation.groom.name, invitation.groom.nickname);
-  const photo = invitation.gallery[4] || invitation.coverImage || `${ASSET}emerald-footer.jpg`;
+  const photo = invitation.gallery[4] || invitation.gallery[0] || invitation.coverImage || invitation.bride.photo || invitation.groom.photo || null;
   return (
     <footer className={styles.footerSection}>
-      <Image src={photo} alt={`${bride} dan ${groom}`} fill sizes="(max-width: 450px) 100vw, 450px" className={styles.footerPhoto} />
+      {photo ? <Image src={photo} alt={`${bride} dan ${groom}`} fill sizes="(max-width: 450px) 100vw, 450px" className={styles.footerPhoto} /> : null}
       <div className={styles.footerShade} />
       <motion.div className={styles.footerCopy} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.25 }} transition={{ duration: 0.85, ease: revealEase }}>
         <p>Atas kehadiran dan doa restu dari Bapak/Ibu/Saudara/i sekalian, kami mengucapkan terima kasih.</p>
