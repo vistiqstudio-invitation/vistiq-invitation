@@ -251,6 +251,10 @@ function normalizeInvitation(raw: Record<string, any>): InvitationData {
     galleryLayout: ["portrait", "landscape", "square"].includes(raw.gallery_layout)
       ? raw.gallery_layout
       : "auto",
+    galleryPositions:
+      raw.gallery_positions && typeof raw.gallery_positions === "object" && !Array.isArray(raw.gallery_positions)
+        ? raw.gallery_positions
+        : {},
 
     gifts,
   };
