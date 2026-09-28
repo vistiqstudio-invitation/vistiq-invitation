@@ -40,6 +40,7 @@ const initialForm = {
   opening_description: "",
   opening_quote: "",
   opening_quote_source: "",
+  closing_greeting: "",
 
   youtube_url: "",
 
@@ -202,6 +203,7 @@ export default function ResellerInvitationEditPage() {
         opening_description: invitation.opening_description || "",
         opening_quote: invitation.opening_quote || "",
         opening_quote_source: invitation.opening_quote_source || "",
+        closing_greeting: invitation.closing_greeting || "",
 
         youtube_url: invitation.youtube_url || "",
 
@@ -727,6 +729,14 @@ export default function ResellerInvitationEditPage() {
                 placeholder="Sumber kutipan, contoh: QS. Ar-Rum : 21"
                 value={form.opening_quote_source}
                 onChange={(e) => set("opening_quote_source", e.target.value)}
+                className={styles.input}
+                style={{ gridColumn: "1 / -1" }}
+              />
+
+              <input
+                placeholder="Ucapan penutup, contoh: Tuhan memberkati"
+                value={form.closing_greeting}
+                onChange={(e) => set("closing_greeting", e.target.value)}
                 className={styles.input}
                 style={{ gridColumn: "1 / -1" }}
               />
