@@ -810,6 +810,12 @@ function prepareReference(
     targets.forEach((_, target) => observer.observe(target));
     cleanups.push(() => observer.disconnect());
   } else reveals.forEach((element) => element.classList.add("active"));
+  setImage(
+    doc,
+    ".vistiq-cover-photo",
+    invitation.coverImage || invitation.groom.photo || invitation.bride.photo,
+    "Foto " + coupleName(invitation)
+  );
   setText(doc, "#sec .elementor-element-405fbc8c .elementor-widget-container", name);
   setText(
     doc,

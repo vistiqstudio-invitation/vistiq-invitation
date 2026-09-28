@@ -3427,7 +3427,7 @@ body[data-idb-cover-closed] .elementor-element-41765daf,body[data-idb-cover-clos
 .elementor-element-14913c2d{padding-bottom:100px!important}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 
-/* Vistiq Wayang Jawa background variation */
-body.vistiq-wayang-kit{background:#eee7d8 url('/themes/wayang-jawa/vistiq-wayang-bg.webp') center top/cover fixed no-repeat!important}
-.vistiq-wayang{background:transparent!important}
-.vistiq-wayang .e-con,.vistiq-wayang .elementor-section{background-color:transparent!important}
+/* Vistiq cover photo variation */
+.vistiq-cover-photo-widget{display:block!important;position:relative;width:100%;height:34%;min-height:190px;overflow:hidden;margin:0 auto 10px;z-index:2}
+.vistiq-cover-photo-widget .elementor-widget-container{height:100%;width:100%}
+.vistiq-cover-photo{display:block!important;width:100%;height:100%;object-fit:cover;object-position:center 35%;opacity:.96;mask-image:linear-gradient(to bottom,#000 68%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,#000 68%,transparent 100%)}
