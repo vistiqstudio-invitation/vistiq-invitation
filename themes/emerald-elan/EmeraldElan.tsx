@@ -694,6 +694,7 @@ function Footer({ invitation }: { invitation: InvitationData }) {
       <motion.div className={styles.footerCopy} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.25 }} transition={{ duration: 0.85, ease: revealEase }}>
         <p>Atas kehadiran dan doa restu dari Bapak/Ibu/Saudara/i sekalian, kami mengucapkan terima kasih.</p>
         <strong>{invitation.closingGreeting || "Terima kasih atas doa dan restu Anda."}</strong>
+
         <small>Kami yang berbahagia</small>
         <h2>{bride} <em>&amp;</em> {groom}</h2>
       </motion.div>
