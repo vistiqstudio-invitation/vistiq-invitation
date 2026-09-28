@@ -475,6 +475,7 @@ function EventCard({ event, reverse = false, mapsUrl }: { event: EventItem; reve
       <div className={styles.eventFrame}>
         <div className={styles.eventContent}>
           <h2>{event.name === "Akad Nikah" ? "Pemberkatan" : event.name}</h2>
+
           {date.weekday ? <p>{date.weekday.toUpperCase()}, {date.day} {date.month.toUpperCase()} {date.year}</p> : <p>{event.date}</p>}
           {event.time ? <strong>{event.time}</strong> : null}
           <span className={styles.eventDivider}>♥</span>
