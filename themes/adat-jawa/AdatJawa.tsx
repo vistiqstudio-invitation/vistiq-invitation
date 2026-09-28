@@ -7,9 +7,6 @@ import type { InvitationData } from "@/types/invitation";
 import styles from "./style.module.css";
 
 const REFERENCE_SOURCE = "/themes/adat-jawa/exact/index.html";
-const ADMIN_WHATSAPP =
-  "https://wa.me/6281371338032?text=" +
-  encodeURIComponent("Saya mau pesan undangan seperti ini juga");
 
 type RsvpSubmit = (input: {
   name: string;
@@ -796,8 +793,8 @@ function prepareReference(
   const coverColumn = doc.getElementById("kolom");
   const root = doc.querySelector<HTMLElement>(".elementor-8619");
   const name = coupleName(invitation);
-  const firstEvent = invitation.events[0];
-  const secondEvent = invitation.events[1] || invitation.events[0];
+  const firstEvent = invitation.coverEvent || invitation.events[0];
+  const secondEvent = invitation.events.find((event) => event !== firstEvent) || invitation.events[1] || invitation.events[0];
   const firstStory = invitation.story[0];
 
   if (body) {
@@ -1047,7 +1044,10 @@ function prepareReference(
     footerSocial.replaceChildren();
     const whatsapp = doc.createElement("a");
     whatsapp.className = "vistiq-admin-whatsapp";
-    whatsapp.href = ADMIN_WHATSAPP;
+    const clientWhatsapp = String(invitation.contactWhatsapp || "").replace(/\D/g, "");
+    whatsapp.href = clientWhatsapp
+      ? "https://wa.me/" + (clientWhatsapp.startsWith("0") ? "62" + clientWhatsapp.slice(1) : clientWhatsapp)
+      : "#";
     whatsapp.target = "_blank";
     whatsapp.rel = "noreferrer";
     whatsapp.setAttribute("aria-label", "Pesan undangan melalui WhatsApp");
@@ -1059,7 +1059,7 @@ function prepareReference(
     whatsapp.style.textDecoration = "none";
     whatsapp.appendChild(createInlineIcon(doc, "whatsapp"));
     whatsapp.appendChild(doc.createTextNode("Pesan via WhatsApp"));
-    footerSocial.appendChild(whatsapp);
+    if (clientWhatsapp) footerSocial.appendChild(whatsapp);
   }
   setText(
     doc,
