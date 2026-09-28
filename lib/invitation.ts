@@ -217,6 +217,7 @@ function normalizeInvitation(raw: Record<string, any>): InvitationData {
     mapsEmbedUrl: firstNonEmpty(raw.maps_embed, raw.map_embed),
 
     opening: resolveOpening(raw),
+    closingGreeting: firstNonEmpty(raw.closing_greeting),
 
     groom: {
       name: raw.groom_name || "",
