@@ -824,6 +824,14 @@ export default function AdminInvitationEditPage() {
             className={styles.input}
             style={{ gridColumn: "1 / -1" }}
           />
+
+          <input
+            placeholder="Ucapan penutup, contoh: Tuhan memberkati"
+            value={form.closing_greeting}
+            onChange={(e) => set("closing_greeting", e.target.value)}
+            className={styles.input}
+            style={{ gridColumn: "1 / -1" }}
+          />
         </div>
 
         <h2 className={styles.editSectionTitle}>Love Story</h2>
