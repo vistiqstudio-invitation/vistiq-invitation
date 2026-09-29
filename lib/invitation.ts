@@ -132,7 +132,7 @@ function normalizeInvitation(raw: Record<string, any>): InvitationData {
     });
   }
 
-  const gallery = [
+  const gallery = Array.from(new Set([
     raw.gallery_1,
     raw.gallery_2,
     raw.gallery_3,
@@ -144,7 +144,7 @@ function normalizeInvitation(raw: Record<string, any>): InvitationData {
     raw.gallery5,
     raw.gallery6,
     ...(Array.isArray(raw.gallery_photos) ? raw.gallery_photos : []),
-  ].filter((url): url is string => Boolean(url));
+  ].filter((url): url is string => Boolean(url))));
 
   // The gift_*/bank_*/account_* columns predate per-person accounts and
   // aren't tied to either side - treat them as the groom's account unless
