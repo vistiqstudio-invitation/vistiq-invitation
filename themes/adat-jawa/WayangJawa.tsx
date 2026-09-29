@@ -1158,6 +1158,7 @@ function buildReferenceDocument(source: string) {
     "html,body{min-height:100%;margin:0;overflow-x:hidden!important;}",
     "body{overflow-y:auto!important;}",
     "#sec{isolation:isolate;}",
+    "#sec .elementor-element-c58030b{display:none!important;}",
     "#sec>.e-con-inner,#sec #kolom{position:relative;z-index:1;}",
     ".vistiq-cover-photo-wrap{z-index:0!important;}",
     ".vistiq-admin-whatsapp{font-family:inherit;}",
