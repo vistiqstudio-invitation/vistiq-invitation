@@ -7,7 +7,7 @@ import { useSearchParams } from "next/navigation";
 import { useInvitation } from "@/components/InvitationProvider";
 import { useMusicPlayer } from "@/hooks/useMusicPlayer";
 import { useRsvpWishes, type Attendance } from "@/hooks/useRsvpWishes";
-import type { EventItem, InvitationData } from "@/types/invitation";
+import type { EventItem, InvitationData, StoryItem } from "@/types/invitation";
 import styles from "./style.module.css";
 
 const ASSET = "/themes/emerald-elan/";
@@ -563,7 +563,7 @@ function Gallery({ invitation }: { invitation: InvitationData }) {
   );
 }
 
-const defaultStories = [
+const defaultStories: StoryItem[] = [
   { year: "2018", title: "Awal Bertemu", description: "Pertemuan sederhana yang menjadi awal dari cerita indah kami." },
   { year: "2020", title: "Menjalin Kasih", description: "Kami belajar tumbuh, saling mendukung, dan mengenal keluarga masing-masing." },
   { year: "2025", title: "Lamaran", description: "Dengan restu kedua keluarga, kami mantap melangkah menuju jenjang pernikahan." },
