@@ -6,6 +6,10 @@ import styles from "./style.module.css";
 import Crown from "./Crown";
 
 export default function Footer({ invitation }: { invitation: KhitanInvitationData }) {
+  const quote = invitation.opening?.quote?.trim() || "";
+  const entertainmentMatch = quote.match(/^hiburan\s*:\s*(.+)$/i);
+  const entertainment = entertainmentMatch?.[1]?.trim() || "";
+
   return (
     <footer className={styles.footer}>
       <Reveal>
@@ -20,6 +24,13 @@ export default function Footer({ invitation }: { invitation: KhitanInvitationDat
         </p>
 
         <h2 className={styles.footerName}>{invitation.child.name}</h2>
+
+        {entertainment && (
+          <div className={styles.footerEntertainment}>
+            <span>Hiburan</span>
+            <strong>{entertainment}</strong>
+          </div>
+        )}
 
         <p className={styles.copyright}>
           © {new Date().getFullYear()} {invitation.brand?.name ?? "Vistiq Invitation"}
