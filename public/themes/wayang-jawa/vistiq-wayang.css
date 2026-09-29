@@ -3518,3 +3518,7 @@ html:not([data-idb-cover-closed]){overflow-y:auto!important}
 
 /* Keep footer waves anchored only to the bottom */
 #sec:before,#sec:after{top:auto!important;inset-block-start:auto!important}
+
+
+/* Remove legacy top pseudo layer; retain the bottom footer wave */
+#sec:before{content:none!important;display:none!important}
