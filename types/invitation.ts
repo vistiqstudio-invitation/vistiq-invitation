@@ -2,6 +2,7 @@ export type StoryItem = {
   year: string;
   title: string;
   description: string;
+  photo?: string | null;
 };
 
 export type EventItem = {
