@@ -11,7 +11,7 @@ import styles from "@/styles/dashboard.module.css";
 
 const BUCKET = "invitation-assets";
 
-type PhotoField = "cover_photo" | "background_photo" | "bride_photo" | "groom_photo" | "music_url";
+type PhotoField = "cover_photo" | "background_photo" | "bride_photo" | "groom_photo" | "story_1_photo" | "story_2_photo" | "story_3_photo" | "story_4_photo" | "story_5_photo" | "music_url";
 
 const initialForm = {
   category: "wedding" as "wedding" | "aqiqah" | "khitan" | "birthday",
@@ -46,18 +46,23 @@ const initialForm = {
   story_1_year: "",
   story_1_title: "",
   story_1_desc: "",
+  story_1_photo: "",
   story_2_year: "",
   story_2_title: "",
   story_2_desc: "",
+  story_2_photo: "",
   story_3_year: "",
   story_3_title: "",
   story_3_desc: "",
+  story_3_photo: "",
   story_4_year: "",
   story_4_title: "",
   story_4_desc: "",
+  story_4_photo: "",
   story_5_year: "",
   story_5_title: "",
   story_5_desc: "",
+  story_5_photo: "",
 
   groom_bank_name: "",
   groom_bank_account: "",
@@ -220,18 +225,23 @@ export default function ClientEditPage() {
         story_1_year: invitation.story_1_year || "",
         story_1_title: invitation.story_1_title || "",
         story_1_desc: invitation.story_1_desc || "",
+        story_1_photo: invitation.story_1_photo || "",
         story_2_year: invitation.story_2_year || "",
         story_2_title: invitation.story_2_title || "",
         story_2_desc: invitation.story_2_desc || "",
+        story_2_photo: invitation.story_2_photo || "",
         story_3_year: invitation.story_3_year || "",
         story_3_title: invitation.story_3_title || "",
         story_3_desc: invitation.story_3_desc || "",
+        story_3_photo: invitation.story_3_photo || "",
         story_4_year: invitation.story_4_year || "",
         story_4_title: invitation.story_4_title || "",
         story_4_desc: invitation.story_4_desc || "",
+        story_4_photo: invitation.story_4_photo || "",
         story_5_year: invitation.story_5_year || "",
         story_5_title: invitation.story_5_title || "",
         story_5_desc: invitation.story_5_desc || "",
+        story_5_photo: invitation.story_5_photo || "",
 
         groom_bank_name: invitation.groom_bank_name || "",
         groom_bank_account: invitation.groom_bank_account || "",
@@ -1003,6 +1013,7 @@ export default function ClientEditPage() {
           const yearKey = `story_${n}_year` as keyof FormState;
           const titleKey = `story_${n}_title` as keyof FormState;
           const descKey = `story_${n}_desc` as keyof FormState;
+          const photoKey = `story_${n}_photo` as PhotoField;
 
           return (
             <div key={n} className={styles.storyBlock}>
@@ -1027,6 +1038,12 @@ export default function ClientEditPage() {
                 value={form[descKey] as string}
                 onChange={(e) => set(descKey, e.target.value)}
                 className={styles.textarea}
+              />
+
+              <UploadBox
+                title={`Foto Love Story ${n}`}
+                value={form[photoKey] as string}
+                onUpload={(file) => uploadSingleFile(file, photoKey)}
               />
             </div>
           );
