@@ -11,7 +11,7 @@ import styles from "@/styles/dashboard.module.css";
 
 const BUCKET = "invitation-assets";
 
-type PhotoField = "cover_photo" | "bride_photo" | "groom_photo" | "music_url";
+type PhotoField = "cover_photo" | "background_photo" | "bride_photo" | "groom_photo" | "music_url";
 
 const initialForm = {
   category: "wedding" as "wedding" | "aqiqah" | "khitan" | "birthday",
@@ -68,6 +68,7 @@ const initialForm = {
   music_url: "",
 
   cover_photo: "",
+  background_photo: "",
   bride_photo: "",
   groom_photo: "",
   gallery_photos: [] as string[],
@@ -241,6 +242,7 @@ export default function ClientEditPage() {
         music_url: invitation.music_url || "",
 
         cover_photo: invitation.cover_photo || "",
+        background_photo: invitation.background_photo || "",
         bride_photo: invitation.bride_photo || "",
         groom_photo: invitation.groom_photo || "",
         gallery_photos: Array.isArray(invitation.gallery_photos)
@@ -1121,6 +1123,12 @@ export default function ClientEditPage() {
 
           {form.category === "wedding" && (
             <>
+              <UploadBox
+                title="Foto Background"
+                value={form.background_photo}
+                onUpload={(file) => uploadSingleFile(file, "background_photo")}
+              />
+
               <UploadBox
                 title="Foto Mempelai Wanita"
                 value={form.bride_photo}
