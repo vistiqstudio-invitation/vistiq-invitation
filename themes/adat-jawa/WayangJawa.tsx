@@ -1160,7 +1160,7 @@ function buildReferenceDocument(source: string) {
     "#sec{isolation:isolate;}",
     "#sec::before{content:none!important;display:none!important;}",
     "#sec::after{content:\"\"!important;display:block!important;position:absolute!important;left:0!important;right:0!important;top:auto!important;bottom:0!important;width:100%!important;height:auto!important;aspect-ratio:2048/684!important;z-index:3!important;pointer-events:none!important;background:url(\"/themes/wayang-jawa/vistiq-wayang-footer.webp\") center bottom/100% 100% no-repeat!important;}",
-    "#sec .elementor-element-5ea5062c{z-index:4!important;}",
+    "#sec .elementor-element-5ea5062c{display:none!important;}",
     "#sec>.e-con-inner,#sec #kolom{position:relative;z-index:1;}",
     ".vistiq-cover-photo-wrap{z-index:0!important;}",
     ".vistiq-admin-whatsapp{font-family:inherit;}",
