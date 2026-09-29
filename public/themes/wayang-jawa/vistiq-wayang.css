@@ -3501,3 +3501,9 @@ html:not([data-idb-cover-closed]){overflow-y:auto!important}
 #sec:after{content:"";position:absolute;left:0;right:0;bottom:0;height:24%;z-index:3;pointer-events:none;background:linear-gradient(155deg,#795438 0%,#5a3826 48%,#3f281d 100%);clip-path:polygon(0 30%,12% 24%,24% 34%,37% 20%,49% 31%,61% 17%,74% 28%,87% 14%,100% 23%,100% 100%,0 100%);box-shadow:inset 0 12px 0 rgba(214,174,119,.32)}
 #sec:before{content:"";position:absolute;left:0;right:0;bottom:24%;height:2px;z-index:4;pointer-events:none;background:linear-gradient(90deg,transparent 0%,rgba(194,145,88,.75) 18%,rgba(242,214,167,.8) 50%,rgba(194,145,88,.75) 82%,transparent 100%)}
 @media(max-width:600px){#sec .elementor-element-ab82531{top:46%!important}#sec .elementor-element-405fbc8c{top:52%!important}#sec .elementor-element-2fb79074{top:59%!important}#sec .elementor-element-171b1b07{top:66%!important}#sec .elementor-element-388c075b{top:73%!important}#sec:after{height:22%;clip-path:polygon(0 28%,14% 18%,28% 31%,43% 17%,58% 29%,72% 14%,86% 26%,100% 18%,100% 100%,0 100%)}}
+
+
+/* Smooth the new lower wave on mobile and desktop */
+#sec:after{left:-10%!important;right:-10%!important;width:120%!important;height:22%!important;bottom:-1%!important;clip-path:none!important;border-radius:50% 50% 0 0 / 18% 22% 0 0!important;transform:rotate(-1deg)!important;transform-origin:center bottom!important}
+#sec:before{bottom:21.5%!important}
+@media(max-width:600px){#sec:after{height:20%!important;left:-12%!important;width:124%!important;border-radius:52% 48% 0 0 / 20% 18% 0 0!important}#sec:before{bottom:19.5%!important}}
