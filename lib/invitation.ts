@@ -401,6 +401,7 @@ function normalizeKhitanInvitation(raw: Record<string, any>): KhitanInvitationDa
     mapsEmbedUrl: firstNonEmpty(raw.maps_embed, raw.map_embed),
 
     opening: resolveOpening(raw),
+    closingGreeting: firstNonEmpty(raw.closing_greeting),
 
     child: {
       name: raw.baby_name || "",
