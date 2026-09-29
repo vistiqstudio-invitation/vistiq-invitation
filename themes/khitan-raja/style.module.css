@@ -181,6 +181,16 @@
   margin: 0 0 10px;
 }
 
+.coverTitleLine {
+  display: block;
+  white-space: nowrap;
+}
+
+.coverTitleAmp {
+  line-height: 0.9;
+  margin: 2px 0;
+}
+
 .coverSub {
   position: relative;
   font-size: 13px;
