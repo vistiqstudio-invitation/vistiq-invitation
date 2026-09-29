@@ -2,7 +2,6 @@ export type StoryItem = {
   year: string;
   title: string;
   description: string;
-  photo?: string | null;
 };
 
 export type EventItem = {
@@ -76,6 +75,7 @@ export type InvitationData = {
   };
 
   story: StoryItem[];
+  storyPhotos?: Array<string | null>;
   events: EventItem[];
   // Acara utama yang ditampilkan pada cover. Resepsi diprioritaskan,
   // lalu fallback ke acara pertama bila data resepsi belum tersedia.
