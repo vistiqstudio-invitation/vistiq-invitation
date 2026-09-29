@@ -80,9 +80,9 @@
 .quoteBackground,.quoteShade{position:absolute!important;inset:0;width:100%;height:100%}
 .quoteBackground{object-fit:cover;object-position:center 52%;filter:saturate(.68)}
 .quoteShade{background:linear-gradient(180deg,rgba(4,37,27,.08) 0%,rgba(4,37,27,.18) 38%,rgba(2,25,18,.9) 100%)}
-.quoteContent{position:absolute;z-index:2;left:9%;right:9%;bottom:43px;text-align:center;text-shadow:0 2px 5px rgba(0,0,0,.54)}
-.quoteContent blockquote{margin:0 auto 10px;font-family:var(--font-playfair),serif;font-size:13px;font-style:italic;line-height:1.45}
-.quoteContent cite{font-size:11px;font-style:normal}
+.quoteContent{position:absolute;z-index:2;left:50%;bottom:43px;width:min(82%,360px);transform:translateX(-50%);text-align:center;text-shadow:0 2px 5px rgba(0,0,0,.54)}
+.quoteContent blockquote{width:100%;margin:0 auto 10px;font-family:var(--font-playfair),serif;font-size:13px;font-style:italic;line-height:1.55;text-align:center;white-space:normal;overflow-wrap:anywhere;word-break:normal}
+.quoteContent cite{display:block;width:100%;margin:0 auto;font-size:11px;font-style:normal;line-height:1.5;text-align:center;white-space:normal;overflow-wrap:anywhere}
 .countdownGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin:23px auto 0;max-width:300px}
 .countdownGrid span{display:block}
 .countdownGrid strong,.countdownGrid small{display:block}
