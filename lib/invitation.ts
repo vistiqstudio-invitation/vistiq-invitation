@@ -101,6 +101,7 @@ function normalizeInvitation(raw: Record<string, any>): InvitationData {
       year: raw[`story_${n}_year`] || "",
       title: raw[`story_${n}_title`],
       description: raw[`story_${n}_desc`],
+      photo: firstNonEmpty(raw[`story_${n}_photo`]),
     }))
     .filter((item): item is StoryItem => Boolean(item.title && item.description));
 
