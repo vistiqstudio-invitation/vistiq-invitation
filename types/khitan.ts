@@ -17,6 +17,7 @@ export type KhitanInvitationData = {
   mapsEmbedUrl: string | null;
 
   opening: OpeningText;
+  closingGreeting: string | null;
 
   child: {
     name: string;
