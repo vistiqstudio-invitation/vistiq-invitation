@@ -3522,3 +3522,9 @@ html:not([data-idb-cover-closed]){overflow-y:auto!important}
 
 /* Remove legacy top pseudo layer; retain the bottom footer wave */
 #sec:before{content:none!important;display:none!important}
+
+/* Final footer placement: one wave only, locked to the bottom edge */
+#sec{overflow:hidden!important}
+#sec::before{all:unset!important;content:none!important;display:none!important}
+#sec::after{content:""!important;position:absolute!important;inset:auto 0 0 0!important;display:block!important;width:100%!important;height:24%!important;z-index:3!important;pointer-events:none!important;clip-path:none!important;transform:none!important;border-radius:58% 42% 0 0 / 22% 28% 0 0!important;background:#5a3826!important;box-shadow:inset 0 12px 0 rgba(207,165,111,.45)!important}
+@media(max-width:600px){#sec::after{height:22%!important;border-radius:55% 45% 0 0 / 24% 20% 0 0!important}}
