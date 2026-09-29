@@ -730,6 +730,13 @@ export default function EmeraldElan({ invitation }: { invitation: InvitationData
   const [contentReady, setContentReady] = useState(() => opened);
   const [showNavigation, setShowNavigation] = useState(false);
   const fallbackMusic = useRef(false);
+  const backgroundPhoto =
+    invitation.backgroundPhoto ||
+    invitation.coverImage ||
+    invitation.gallery[0] ||
+    invitation.bride.photo ||
+    invitation.groom.photo ||
+    null;
 
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;
@@ -777,10 +784,10 @@ export default function EmeraldElan({ invitation }: { invitation: InvitationData
   return (
     <main className={styles.root}>
       <div className={styles.invitation}>
-        {invitation.backgroundPhoto ? (
+        {backgroundPhoto ? (
           <div className={styles.customBackground} aria-hidden="true">
             <Image
-              src={invitation.backgroundPhoto}
+              src={backgroundPhoto}
               alt=""
               fill
               sizes="(max-width: 450px) 100vw, 450px"
