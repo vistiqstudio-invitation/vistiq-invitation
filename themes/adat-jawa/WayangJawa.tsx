@@ -1166,8 +1166,6 @@ function buildReferenceDocument(source: string) {
     "#sec>.e-con-inner,#sec #kolom{position:relative;z-index:1;}",
     "#sec #kolom::after{content:\"\";display:block;position:absolute;right:-28px;bottom:36px;width:164px;height:78px;z-index:4;pointer-events:none;opacity:.78;background:url(\"/themes/wayang-jawa/vistiq-wayang-cloud-crown.webp\") right center/100% 100% no-repeat;}",
     ".vistiq-cover-photo-wrap{z-index:0!important;}",
-    ".elementor-element-689aed41 .elementor-element-361fc64e{position:relative!important;}",
-    ".elementor-element-689aed41 .elementor-element-361fc64e::after{content:\"\"!important;display:block!important;position:absolute!important;right:16px!important;bottom:34px!important;width:min(34vw,132px)!important;height:min(42vw,170px)!important;z-index:1!important;pointer-events:none!important;opacity:.95!important;background:url(\"/themes/wayang-jawa/vistiq-wayang-puppet.webp\") right bottom/contain no-repeat!important;}",
     ".vistiq-admin-whatsapp{font-family:inherit;}",
     ".elementor-element-73ffc401{inset-inline-start:auto!important;left:auto!important;top:auto!important;right:16px!important;}",
     ".rsvp-item{display:flex;gap:12px;align-items:flex-start;margin:0 0 14px;}",
