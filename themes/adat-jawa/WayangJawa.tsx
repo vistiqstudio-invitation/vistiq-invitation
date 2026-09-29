@@ -938,6 +938,17 @@ function prepareReference(
       if (title) title.textContent = story.year + " · " + story.title;
       if (description) description.textContent = story.description;
     });
+    const storySurface = storySection.querySelector<HTMLElement>(".elementor-element-361fc64e");
+    if (storySurface && !storySurface.querySelector(".vistiq-story-wayang")) {
+      storySurface.style.position = "relative";
+      const wayang = doc.createElement("img");
+      wayang.className = "vistiq-story-wayang";
+      wayang.src = "/themes/wayang-jawa/vistiq-wayang-puppet.webp";
+      wayang.alt = "";
+      wayang.setAttribute("aria-hidden", "true");
+      wayang.style.cssText = "position:absolute;left:50%;bottom:34px;transform:translateX(-50%);width:min(34vw,132px);height:auto;max-height:170px;object-fit:contain;z-index:1;pointer-events:none;";
+      storySurface.appendChild(wayang);
+    }
   }
 
   const countdownClean = updateCountdown(doc, coverEvent?.rawDate);
