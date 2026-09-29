@@ -6,7 +6,10 @@ import styles from "./style.module.css";
 
 export default function Doa({ invitation }: { invitation: KhitanInvitationData }) {
   const nickname = invitation.child.nickname?.trim() || invitation.child.name;
-  const customQuote = invitation.opening?.quote?.trim();
+  const quote = invitation.opening?.quote?.trim() || "";
+  const quoteSource = invitation.opening?.quoteSource?.trim() || "";
+  const isEntertainment = /^hiburan\s*:/i.test(quote);
+  const customQuote = isEntertainment ? quoteSource : quote;
 
   return (
     <div className={styles.doaSection}>
