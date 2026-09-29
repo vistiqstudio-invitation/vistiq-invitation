@@ -181,6 +181,35 @@ function galleryObjectPosition(invitation: InvitationData, photo: string) {
   return `${x}% ${y}%`;
 }
 
+function themeBackgroundPhoto(invitation: InvitationData) {
+  return (
+    invitation.backgroundPhoto ||
+    invitation.coverImage ||
+    invitation.gallery[0] ||
+    invitation.bride.photo ||
+    invitation.groom.photo ||
+    null
+  );
+}
+
+function ThemeBackground({ invitation }: { invitation: InvitationData }) {
+  const photo = themeBackgroundPhoto(invitation);
+  if (!photo) return null;
+
+  return (
+    <div className={styles.themeBackground} aria-hidden="true">
+      <Image
+        src={photo}
+        alt=""
+        fill
+        sizes="(max-width: 450px) 100vw, 450px"
+        className={styles.themeBackgroundImage}
+      />
+      <div className={styles.themeBackgroundShade} />
+    </div>
+  );
+}
+
 function googleCalendarHref(event?: EventItem) {
   const startMs = parseEventDate(event)?.getTime();
   if (!event || startMs === undefined || !Number.isFinite(startMs)) return null;
@@ -302,6 +331,7 @@ function Couple({ invitation }: { invitation: InvitationData }) {
 
   return (
     <section id="couple" className={styles.coupleSection}>
+      <ThemeBackground invitation={invitation} />
       <div className={styles.coupleTexture} aria-hidden="true" />
       <motion.header
         className={styles.coupleIntro}
@@ -393,6 +423,7 @@ function QuoteCountdown({ invitation }: { invitation: InvitationData }) {
 
   return (
     <section id="countdown" className={styles.quoteSection}>
+      <ThemeBackground invitation={invitation} />
       <div className={styles.quoteShade} />
       <motion.div
         className={styles.quoteContent}
@@ -425,6 +456,7 @@ function Events({ invitation }: { invitation: InvitationData }) {
   const events = invitation.events.slice(0, 2);
   return (
     <section id="event" className={styles.eventsSection}>
+      <ThemeBackground invitation={invitation} />
       <div className={styles.eventsHeading}><span>Wedding</span><em>Event</em></div>
       {events.map((event, index) => <EventCard key={`${event.name}-${event.date}`} event={event} reverse={index === 1} mapsUrl={invitation.mapsUrl} />)}
       {!events.length ? <EventCard event={{ name: "Wedding Event", date: "", rawDate: null, time: "", location: "" }} mapsUrl={null} /> : null}
@@ -439,6 +471,7 @@ function WeddingVideo({ invitation }: { invitation: InvitationData }) {
 
   return (
     <section id="video" className={styles.videoSection}>
+      <ThemeBackground invitation={invitation} />
       <div className={styles.videoShade} />
       <motion.div
         className={styles.videoContent}
@@ -542,6 +575,7 @@ function Story({ invitation }: { invitation: InvitationData }) {
   const photos = clientPhotos(invitation).slice(0, stories.length);
   return (
     <section id="story" className={styles.storySection}>
+      <ThemeBackground invitation={invitation} />
       <div className={styles.storyHeader}><span>Love</span><h2>Story</h2></div>
       <div className={styles.storyTimeline}>
         <span className={styles.timelineLine} aria-hidden="true" />
@@ -579,6 +613,7 @@ function Gift({ invitation }: { invitation: InvitationData }) {
 
   return (
     <section id="gift" className={styles.giftSection}>
+      <ThemeBackground invitation={invitation} />
       <div className={styles.giftPanel}>
         <div className={styles.giftCard}>
           <div className={styles.scriptHeading}><span>Wedding</span><em>Gift</em></div>
@@ -637,6 +672,7 @@ function RsvpAndWishes({ invitation }: { invitation: InvitationData }) {
   return (
     <>
       <section id="rsvp" className={styles.rsvpSection}>
+        <ThemeBackground invitation={invitation} />
         <div className={styles.rsvpCard}>
           <h2>RSVP</h2>
           <p>Bantu kami mempersiapkan jamuan yang hangat untuk Anda semua dengan mengirimkan konfirmasi kehadiran melalui form berikut ini.</p>
@@ -652,6 +688,7 @@ function RsvpAndWishes({ invitation }: { invitation: InvitationData }) {
       </section>
 
       <section id="wishes" className={styles.wishesSection}>
+        <ThemeBackground invitation={invitation} />
         <div className={styles.wishesCard}>
           <div className={styles.scriptHeading}><span>Ucapan</span><em>Doa</em></div>
           <p>Berikan harapan dan doa tulus Anda di sini karena kami sangat bersemangat untuk memulai perjalanan baru bersama.</p>
@@ -683,6 +720,7 @@ function Footer({ invitation }: { invitation: InvitationData }) {
   const photo = invitation.gallery[4] || invitation.gallery[0] || invitation.coverImage || invitation.bride.photo || invitation.groom.photo || null;
   return (
     <footer className={styles.footerSection}>
+      <ThemeBackground invitation={invitation} />
       {photo ? <Image src={photo} alt={`${bride} dan ${groom}`} fill sizes="(max-width: 450px) 100vw, 450px" className={styles.footerPhoto} /> : null}
       <div className={styles.footerShade} />
       <motion.div className={styles.footerCopy} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.25 }} transition={{ duration: 0.85, ease: revealEase }}>
@@ -730,13 +768,6 @@ export default function EmeraldElan({ invitation }: { invitation: InvitationData
   const [contentReady, setContentReady] = useState(() => opened);
   const [showNavigation, setShowNavigation] = useState(false);
   const fallbackMusic = useRef(false);
-  const backgroundPhoto =
-    invitation.backgroundPhoto ||
-    invitation.coverImage ||
-    invitation.gallery[0] ||
-    invitation.bride.photo ||
-    invitation.groom.photo ||
-    null;
 
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;
@@ -784,18 +815,6 @@ export default function EmeraldElan({ invitation }: { invitation: InvitationData
   return (
     <main className={styles.root}>
       <div className={styles.invitation}>
-        {backgroundPhoto ? (
-          <div className={styles.customBackground} aria-hidden="true">
-            <Image
-              src={backgroundPhoto}
-              alt=""
-              fill
-              sizes="(max-width: 450px) 100vw, 450px"
-              priority
-            />
-            <div className={styles.customBackgroundOverlay} />
-          </div>
-        ) : null}
         {invitation.musicUrl ? <audio ref={audioRef} src={invitation.musicUrl} loop preload="none" /> : null}
         <div id="home" className={`${styles.content} ${contentReady ? styles.contentVisible : styles.contentHidden}`} aria-hidden={!contentReady}>
           <Hero invitation={invitation} />
