@@ -3528,3 +3528,7 @@ html:not([data-idb-cover-closed]){overflow-y:auto!important}
 #sec::before{all:unset!important;content:none!important;display:none!important}
 #sec::after{content:""!important;position:absolute!important;inset:auto 0 0 0!important;display:block!important;width:100%!important;height:24%!important;z-index:3!important;pointer-events:none!important;clip-path:none!important;transform:none!important;border-radius:58% 42% 0 0 / 22% 28% 0 0!important;background:#5a3826!important;box-shadow:inset 0 12px 0 rgba(207,165,111,.45)!important}
 @media(max-width:600px){#sec::after{height:22%!important;border-radius:55% 45% 0 0 / 24% 20% 0 0!important}}
+
+/* Wayang accent in the lower open area of the Love Story section */
+.elementor-element-689aed41 .elementor-element-361fc64e{position:relative!important;}
+.elementor-element-689aed41 .elementor-element-361fc64e::after{content:"";display:block;position:absolute;right:16px;bottom:34px;width:min(34vw,132px);height:min(42vw,170px);z-index:1;pointer-events:none;opacity:.96;background:url("/themes/wayang-jawa/vistiq-wayang-puppet.webp") right bottom/contain no-repeat;}
