@@ -389,12 +389,10 @@ function QuoteCountdown({ invitation }: { invitation: InvitationData }) {
       ].map((value) => String(value).padStart(2, "0"));
   const quote = invitation.opening.quote || "Love is that condition in which the happiness of another person is essential to your own.";
   const source = invitation.opening.quoteSource || "Robert A. Heinlein";
-  const background = invitation.gallery[2] || invitation.gallery[0] || invitation.coverImage || invitation.bride.photo || invitation.groom.photo || null;
   const saveDate = googleCalendarHref(event);
 
   return (
     <section id="countdown" className={styles.quoteSection}>
-      {background ? <Image src={background} alt="" fill sizes="(max-width: 450px) 100vw, 450px" className={styles.quoteBackground} /> : null}
       <div className={styles.quoteShade} />
       <motion.div
         className={styles.quoteContent}
@@ -439,11 +437,8 @@ function WeddingVideo({ invitation }: { invitation: InvitationData }) {
 
   if (!videoUrl) return null;
 
-  const background = invitation.gallery[0] || invitation.coverImage || invitation.bride.photo || invitation.groom.photo || null;
-
   return (
     <section id="video" className={styles.videoSection}>
-      {background ? <Image src={background} alt="" fill sizes="(max-width: 450px) 100vw, 450px" className={styles.videoBackground} /> : null}
       <div className={styles.videoShade} />
       <motion.div
         className={styles.videoContent}
@@ -782,6 +777,18 @@ export default function EmeraldElan({ invitation }: { invitation: InvitationData
   return (
     <main className={styles.root}>
       <div className={styles.invitation}>
+        {invitation.backgroundPhoto ? (
+          <div className={styles.customBackground} aria-hidden="true">
+            <Image
+              src={invitation.backgroundPhoto}
+              alt=""
+              fill
+              sizes="(max-width: 450px) 100vw, 450px"
+              priority
+            />
+            <div className={styles.customBackgroundOverlay} />
+          </div>
+        ) : null}
         {invitation.musicUrl ? <audio ref={audioRef} src={invitation.musicUrl} loop preload="none" /> : null}
         <div id="home" className={`${styles.content} ${contentReady ? styles.contentVisible : styles.contentHidden}`} aria-hidden={!contentReady}>
           <Hero invitation={invitation} />
