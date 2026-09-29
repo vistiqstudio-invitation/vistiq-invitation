@@ -13,6 +13,8 @@ export default function Cover({ invitation }: { invitation: KhitanInvitationData
   const searchParams = useSearchParams();
   const guestName = searchParams.get("to") || "Bapak/Ibu/Saudara/i";
   const nickname = invitation.child.nickname?.trim() || invitation.child.name.trim().split(/\s+/).pop() || invitation.child.name;
+  const nameParts = invitation.child.name.split(/\s*&\s*/).map((part) => part.trim()).filter(Boolean);
+  const hasTwoNames = nameParts.length === 2;
 
   return (
     <motion.section
@@ -58,7 +60,15 @@ export default function Cover({ invitation }: { invitation: KhitanInvitationData
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 0.55 }}
       >
-        {invitation.child.name}
+        {hasTwoNames ? (
+          <>
+            <span className={styles.coverTitleLine}>{nameParts[0]}</span>
+            <span className={`${styles.coverTitleLine} ${styles.coverTitleAmp}`}>&amp;</span>
+            <span className={styles.coverTitleLine}>{nameParts[1]}</span>
+          </>
+        ) : (
+          invitation.child.name
+        )}
       </motion.h1>
 
       {invitation.event?.date && (
