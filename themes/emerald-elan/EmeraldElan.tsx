@@ -578,25 +578,28 @@ function Story({ invitation }: { invitation: InvitationData }) {
       <div className={styles.storyHeader}><span>Love</span><h2>Story</h2></div>
       <div className={styles.storyTimeline}>
         <span className={styles.timelineLine} aria-hidden="true" />
-        {stories.map((story, index) => (
-          <motion.article key={`${story.year}-${story.title}`} initial={{ opacity: 0, x: index % 2 ? 18 : -18 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ delay: index * 0.06, duration: 0.65, ease: revealEase }}>
-            <i>♥</i>
-            <div className={styles.storyCard}>
-              {story.photo ? (
-                <div className={styles.storyCardPhoto}>
-                  <Image
-                    src={story.photo}
-                    alt={`Momen ${story.title}`}
-                    fill
-                    sizes="(max-width: 450px) 66vw, 300px"
-                    style={{ objectFit: "cover", objectPosition: galleryObjectPosition(invitation, story.photo) }}
-                  />
-                </div>
-              ) : null}
-              <div className={styles.storyCardCopy}><small>{story.year}</small><h3>{story.title}</h3><p>{story.description}</p></div>
-            </div>
-          </motion.article>
-        ))}
+        {stories.map((story, index) => {
+          const photo = story.photo || null;
+          return (
+            <motion.article key={`${story.year}-${story.title}`} initial={{ opacity: 0, x: index % 2 ? 18 : -18 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ delay: index * 0.06, duration: 0.65, ease: revealEase }}>
+              <i>♥</i>
+              <div className={styles.storyCard}>
+                {photo ? (
+                  <div className={styles.storyCardPhoto}>
+                    <Image
+                      src={photo}
+                      alt={`Momen ${story.title}`}
+                      fill
+                      sizes="(max-width: 450px) 66vw, 300px"
+                      style={{ objectFit: "cover", objectPosition: galleryObjectPosition(invitation, photo) }}
+                    />
+                  </div>
+                ) : null}
+                <div className={styles.storyCardCopy}><small>{story.year}</small><h3>{story.title}</h3><p>{story.description}</p></div>
+              </div>
+            </motion.article>
+          );
+        })}
       </div>
     </section>
   );
