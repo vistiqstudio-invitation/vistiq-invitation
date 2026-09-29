@@ -190,7 +190,7 @@ export default function ResellerSaldoPage() {
           <div>
             <p className={styles.label}>RESELLER DASHBOARD</p>
             <h1 className={styles.title}>Saldo & Penarikan</h1>
-            <p className={styles.subtitle}>Bagian reseller 80% ditahan selama 6 hari setelah pembayaran client berhasil.</p>
+            <p className={styles.subtitle}>Komisi reseller 80% dapat diajukan untuk pencairan 24 jam setelah pembayaran client berhasil.</p>
           </div>
           <button onClick={() => reseller && fetchData(reseller.id)} className={styles.button}>Refresh</button>
         </header>

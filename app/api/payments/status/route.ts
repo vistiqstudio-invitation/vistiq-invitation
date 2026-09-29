@@ -66,10 +66,8 @@ export async function GET(request: Request) {
           midtrans_transaction_id: data.transaction_id ?? null,
         };
 
-        if (paid) {
-          updatePayload.paid_at = new Date().toISOString();
-          updatePayload.available_at = new Date(Date.now() + 6 * 86400000).toISOString();
-        }
+        // Use the same database-owned 24-hour hold as payment notifications.
+        // Status refreshes must preserve the original payment/availability time.
 
         await supabase
           .from("transactions")

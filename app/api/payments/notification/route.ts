@@ -76,10 +76,8 @@ export async function POST(request: Request) {
       midtrans_transaction_id: body.transaction_id ?? null,
     };
 
-    if (paid) {
-      updatePayload.paid_at = new Date().toISOString();
-      updatePayload.available_at = new Date(Date.now() + 6 * 86400000).toISOString();
-    }
+    // Database triggers set the first paid_at and the 24-hour commission hold.
+    // Repeated notifications must not restart the withdrawal waiting period.
 
     const { error: updateError } = await supabase
       .from("transactions")
