@@ -387,6 +387,30 @@
   margin: 0 0 22px;
 }
 
+.eventEntertainment {
+  margin: 22px auto 0;
+  max-width: 420px;
+  text-align: center;
+}
+
+.eventEntertainment span {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.eventEntertainment strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(22px, 4vw, 30px);
+  font-weight: 600;
+  color: var(--maroon);
+}
+
 /* ---------- Gallery ---------- */
 
 .galleryGrid {
@@ -735,28 +759,6 @@
   margin: 0 0 24px;
 }
 
-.footerEntertainment {
-  margin: 0 auto 28px;
-  text-align: center;
-}
-
-.footerEntertainment span {
-  display: block;
-  margin-bottom: 6px;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  color: var(--gold);
-}
-
-.footerEntertainment strong {
-  display: block;
-  font-family: var(--font-display);
-  font-size: clamp(22px, 4vw, 30px);
-  font-weight: 600;
-  color: var(--maroon);
-}
 
 .copyright {
   font-size: 12px;
