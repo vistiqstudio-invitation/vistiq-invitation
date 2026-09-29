@@ -9,6 +9,9 @@ export default function Event({ invitation }: { invitation: KhitanInvitationData
   if (!invitation.event) return null;
 
   const { event } = invitation;
+  const quote = invitation.opening?.quote?.trim() || "";
+  const entertainmentMatch = quote.match(/^hiburan\s*:\s*(.+)$/i);
+  const entertainment = entertainmentMatch?.[1]?.trim() || "";
 
   return (
     <div className={styles.section}>
@@ -29,6 +32,13 @@ export default function Event({ invitation }: { invitation: KhitanInvitationData
             <>
               <h4 className={styles.eventSub}>Lokasi Acara</h4>
               <p className={styles.eventDetail}>{event.location}</p>
+            </>
+          )}
+
+          {entertainment && (
+            <>
+              <h4 className={styles.eventSub}>Hiburan</h4>
+              <p className={styles.eventDetail}>{entertainment}</p>
             </>
           )}
 
