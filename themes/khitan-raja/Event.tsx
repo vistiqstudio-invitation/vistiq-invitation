@@ -9,8 +9,8 @@ export default function Event({ invitation }: { invitation: KhitanInvitationData
   if (!invitation.event) return null;
 
   const { event } = invitation;
-  const quote = invitation.opening?.quote?.trim() || "";
-  const entertainmentMatch = quote.match(/^hiburan\s*:\s*(.+)$/i);
+  const closingGreeting = invitation.closingGreeting?.trim() || "";
+  const entertainmentMatch = closingGreeting.match(/^hiburan\s*:\s*(.+)$/i);
   const entertainment = entertainmentMatch?.[1]?.trim() || "";
 
   return (
