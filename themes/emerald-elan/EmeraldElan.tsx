@@ -7,7 +7,7 @@ import { useSearchParams } from "next/navigation";
 import { useInvitation } from "@/components/InvitationProvider";
 import { useMusicPlayer } from "@/hooks/useMusicPlayer";
 import { useRsvpWishes, type Attendance } from "@/hooks/useRsvpWishes";
-import type { EventItem, InvitationData, StoryItem } from "@/types/invitation";
+import type { EventItem, InvitationData } from "@/types/invitation";
 import styles from "./style.module.css";
 
 const ASSET = "/themes/emerald-elan/";
@@ -563,7 +563,7 @@ function Gallery({ invitation }: { invitation: InvitationData }) {
   );
 }
 
-const defaultStories: StoryItem[] = [
+const defaultStories = [
   { year: "2018", title: "Awal Bertemu", description: "Pertemuan sederhana yang menjadi awal dari cerita indah kami." },
   { year: "2020", title: "Menjalin Kasih", description: "Kami belajar tumbuh, saling mendukung, dan mengenal keluarga masing-masing." },
   { year: "2025", title: "Lamaran", description: "Dengan restu kedua keluarga, kami mantap melangkah menuju jenjang pernikahan." },
@@ -572,6 +572,7 @@ const defaultStories: StoryItem[] = [
 
 function Story({ invitation }: { invitation: InvitationData }) {
   const stories = invitation.story.length ? invitation.story.slice(0, 5) : defaultStories;
+  const storyPhotos = invitation.storyPhotos || [];
   return (
     <section id="story" className={styles.storySection}>
       <ThemeBackground invitation={invitation} />
@@ -579,7 +580,7 @@ function Story({ invitation }: { invitation: InvitationData }) {
       <div className={styles.storyTimeline}>
         <span className={styles.timelineLine} aria-hidden="true" />
         {stories.map((story, index) => {
-          const photo = story.photo || null;
+          const photo = storyPhotos[index] || null;
           return (
             <motion.article key={`${story.year}-${story.title}`} initial={{ opacity: 0, x: index % 2 ? 18 : -18 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ delay: index * 0.06, duration: 0.65, ease: revealEase }}>
               <i>♥</i>
@@ -591,7 +592,7 @@ function Story({ invitation }: { invitation: InvitationData }) {
                       alt={`Momen ${story.title}`}
                       fill
                       sizes="(max-width: 450px) 66vw, 300px"
-                      style={{ objectFit: "cover", objectPosition: galleryObjectPosition(invitation, photo) }}
+                      style={{ objectFit: "cover", objectPosition: "center" }}
                     />
                   </div>
                 ) : null}
