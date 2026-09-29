@@ -8,8 +8,7 @@ export default function Doa({ invitation }: { invitation: KhitanInvitationData }
   const nickname = invitation.child.nickname?.trim() || invitation.child.name;
   const quote = invitation.opening?.quote?.trim() || "";
   const quoteSource = invitation.opening?.quoteSource?.trim() || "";
-  const isEntertainment = /^hiburan\s*:/i.test(quote);
-  const customQuote = isEntertainment ? quoteSource : quote;
+  const customQuote = quote || quoteSource;
 
   return (
     <div className={styles.doaSection}>
