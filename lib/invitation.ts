@@ -202,6 +202,7 @@ function normalizeInvitation(raw: Record<string, any>): InvitationData {
     contactWhatsapp: firstNonEmpty(raw.gift_whatsapp, raw.clients?.whatsapp),
 
     coverImage: firstNonEmpty(raw.cover_image, raw.cover_photo),
+    backgroundPhoto: firstNonEmpty(raw.background_photo),
     musicUrl: raw.music_url || null,
     videoUrl: firstNonEmpty(raw.video_url, raw.youtube_url),
     liveStreamingUrl: firstNonEmpty(
