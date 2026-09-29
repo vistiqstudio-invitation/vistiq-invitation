@@ -483,7 +483,7 @@ function EventCard({ event, reverse = false, mapsUrl }: { event: EventItem; reve
 
 function Gallery({ invitation }: { invitation: InvitationData }) {
   const [active, setActive] = useState<number | null>(null);
-  const photos = clientPhotos(invitation).slice(0, 9);
+  const photos = Array.from(new Set(invitation.gallery.filter(Boolean)));
   return (
     <section id="gallery" className={styles.gallerySection}>
       <motion.div
@@ -501,7 +501,7 @@ function Gallery({ invitation }: { invitation: InvitationData }) {
           <motion.button
             type="button"
             key={`${photo}-${index}`}
-            className={index >= 4 ? styles.galleryWide : ""}
+            className={(index + 1) % 5 === 0 ? styles.galleryWide : ""}
             onClick={() => setActive(index)}
             initial={{ opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}
