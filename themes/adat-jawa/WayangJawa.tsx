@@ -1159,7 +1159,7 @@ function buildReferenceDocument(source: string) {
     "body{overflow-y:auto!important;}",
     "#sec{isolation:isolate;}",
     "#sec::before{content:\"\"!important;display:block!important;position:absolute!important;left:-28px!important;bottom:36px!important;width:164px!important;height:78px!important;z-index:4!important;pointer-events:none!important;opacity:.78!important;background:url(\"/themes/wayang-jawa/vistiq-wayang-cloud-crown.webp\") left center/100% 100% no-repeat!important;}",
-    "#sec::after{content:\"\"!important;display:block!important;position:absolute!important;left:0!important;right:0!important;top:auto!important;bottom:0!important;width:100%!important;height:auto!important;aspect-ratio:2048/684!important;z-index:3!important;pointer-events:none!important;background:url(\"/themes/wayang-jawa/vistiq-wayang-footer.webp\") center bottom/100% 100% no-repeat!important;}",
+    "#sec::after{content:\"\"!important;display:block!important;position:absolute!important;left:0!important;right:0!important;top:auto!important;bottom:0!important;width:100%!important;height:auto!important;aspect-ratio:2048/684!important;z-index:3!important;pointer-events:none!important;clip-path:polygon(0 44%,25% 60%,50% 72%,75% 58%,100% 52%,100% 100%,0 100%)!important;background:url(\"/themes/wayang-jawa/vistiq-wayang-footer.webp\") center bottom/100% 100% no-repeat!important;}",
     "#sec .elementor-element-c58030b{display:none!important;}",
     "#sec .elementor-element-5ea5062c{display:block!important;z-index:5!important;}",
     "#sec .elementor-element-5ea5062c img{width:48%!important;}",
