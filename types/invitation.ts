@@ -46,6 +46,7 @@ export type InvitationData = {
   contactWhatsapp?: string | null;
 
   coverImage: string | null;
+  backgroundPhoto?: string | null;
   musicUrl: string | null;
   videoUrl: string | null;
   // Optional external Instagram, TikTok, YouTube, or other live-stream URL.
