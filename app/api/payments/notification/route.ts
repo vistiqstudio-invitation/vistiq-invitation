@@ -1,10 +1,11 @@
 import "server-only";
 
 import crypto from "node:crypto";
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
 import { createClient as createServiceClient } from "@supabase/supabase-js";
 import { packageFromOrderId } from "@/lib/paymentPackages";
 import { provisionPaidOrder } from "@/lib/provisionPaidOrder";
+import { safelyProcessPaymentWhatsApp } from "@/lib/paymentWhatsApp";
 
 export async function POST(request: Request) {
   const serverKey = process.env.MIDTRANS_SERVER_KEY;
@@ -89,6 +90,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Database update failed" }, { status: 500 });
     }
 
+    if (paid) after(() => safelyProcessPaymentWhatsApp(supabase));
     // A settled payment updates the ledger only. Vistiq admin activates the client/invitation.
 
     return NextResponse.json({ received: true, resellerClientPayment: true });
@@ -114,6 +116,7 @@ export async function POST(request: Request) {
   if (error) console.warn("checkout_orders notification skipped:", error.message);
 
   if (!error && paid) {
+    after(() => safelyProcessPaymentWhatsApp(supabase));
     const { data: order } = await supabase
       .from("checkout_orders")
       .select("id, affiliate_id, package_id, amount")

@@ -88,6 +88,12 @@ export default function DashboardSidebar({
         )}
       </nav>
 
+      {notificationRole === "owner" && (
+        <Link href="/admin/payment-notifications" className={styles.menuButton} onClick={closeMobile}>
+          Notifikasi Pembayaran
+        </Link>
+      )}
+
       <button onClick={onLogout} className={styles.logoutButton}>
         Logout
       </button>

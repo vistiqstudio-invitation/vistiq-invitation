@@ -1,8 +1,9 @@
 import "server-only";
 
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
 import { createClient as createServiceClient } from "@supabase/supabase-js";
 import { provisionPaidOrder } from "@/lib/provisionPaidOrder";
+import { safelyProcessPaymentWhatsApp } from "@/lib/paymentWhatsApp";
 
 export async function GET(request: Request) {
   const serverKey = process.env.MIDTRANS_SERVER_KEY;
@@ -69,22 +70,24 @@ export async function GET(request: Request) {
         // Use the same database-owned 24-hour hold as payment notifications.
         // Status refreshes must preserve the original payment/availability time.
 
-        await supabase
+        const { error: updateError } = await supabase
           .from("transactions")
           .update(updatePayload)
           .eq("id", transaction.id);
+
+        if (!updateError && paid) after(() => safelyProcessPaymentWhatsApp(supabase));
 
         // Payment is recorded here; invitation/client activation requires Vistiq admin approval.
       }
     } else {
       const { data: order } = await supabase
         .from("checkout_orders")
-        .select("status, provision_status")
+        .select("status, provision_status, amount")
         .eq("order_id", orderId)
         .maybeSingle();
       accountStatus = order?.provision_status ?? null;
 
-      if (order && paid && order.status !== "paid") {
+      if (order && paid && Number(data.gross_amount) === Number(order.amount) && order.status !== "paid") {
         const { error: updateError } = await supabase
           .from("checkout_orders")
           .update({
@@ -97,6 +100,7 @@ export async function GET(request: Request) {
           })
           .eq("order_id", orderId);
         if (!updateError) {
+          after(() => safelyProcessPaymentWhatsApp(supabase));
           try {
             await provisionPaidOrder(supabase, orderId, new URL(request.url).origin);
           } catch (provisionError) {
