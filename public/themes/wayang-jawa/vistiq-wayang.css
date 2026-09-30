@@ -3554,3 +3554,6 @@ body.rtl .vistiq-wayang .vistiq-wayang-puppet-wanita{left:-76px}
 body:not(.rtl) .vistiq-wayang .vistiq-wayang-puppet-wanita-home{left:auto!important;right:-76px}
 body.rtl .vistiq-wayang .vistiq-wayang-puppet-wanita-home{left:-76px;right:auto!important}
 .vistiq-wayang .vistiq-wayang-puppet-wanita-home img{display:block;width:55%;height:auto;margin-inline-start:auto}
+
+/* Replace clouds baked into the cover background */
+.vistiq-wayang .elementor-element.elementor-element-1f7348e::before{background-image:url("/themes/wayang-jawa/vistiq-wayang-cover-clouds.svg")!important;background-size:100% 100%!important;background-position:center top!important}
