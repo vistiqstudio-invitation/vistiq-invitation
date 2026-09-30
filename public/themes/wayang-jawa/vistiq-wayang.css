@@ -3577,3 +3577,7 @@ body.rtl .vistiq-wayang .vistiq-wayang-puppet-wanita-home{left:-76px;right:auto!
 #home::after{animation:wayangCloudDriftRight 10s linear infinite!important}
 @keyframes wayangCloudDriftLeft{0%,100%{translate:-10px 0}50%{translate:10px 0}}
 @keyframes wayangCloudDriftRight{0%,100%{translate:-10px 0}50%{translate:10px 0}}
+
+
+/* Remove the bottom footer ornament from the cover */
+html body #sec::after{content:none!important;display:none!important;background:none!important;box-shadow:none!important}
