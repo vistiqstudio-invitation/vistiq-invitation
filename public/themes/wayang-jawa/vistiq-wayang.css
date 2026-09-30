@@ -3532,3 +3532,10 @@ html:not([data-idb-cover-closed]){overflow-y:auto!important}
 /* Wayang accent in the lower open area of the Love Story section */
 .elementor-element-689aed41 .elementor-element-361fc64e{position:relative!important;}
 .elementor-element-689aed41 .elementor-element-361fc64e::after{content:"";display:block;position:absolute;right:16px;bottom:34px;width:min(34vw,132px);height:min(42vw,170px);z-index:1;pointer-events:none;opacity:.96;background:url("/themes/wayang-jawa/vistiq-wayang-puppet.webp") right bottom/contain no-repeat;}
+
+
+/* Matching right-side partner for the existing cover Wayang */
+.vistiq-wayang .vistiq-wayang-puppet-wanita{width:100%;max-width:100%;bottom:25px;text-align:end;pointer-events:none}
+body:not(.rtl) .vistiq-wayang .vistiq-wayang-puppet-wanita{right:-76px}
+body.rtl .vistiq-wayang .vistiq-wayang-puppet-wanita{left:-76px}
+.vistiq-wayang .vistiq-wayang-puppet-wanita img{display:block;width:48%;height:auto;margin-inline-start:auto}
