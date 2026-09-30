@@ -829,6 +829,16 @@ function prepareReference(
   );
 
   setText(doc, "#home .elementor-element-29f43eb8 .elementor-heading-title", name);
+  setImage(
+    doc,
+    "#home .vistiq-wayang-gunungan-art",
+    "/themes/wayang-jawa/vistiq-wayang-gunungan-monogram.webp",
+    "Ornamen gunungan adat Jawa"
+  );
+  const groomInitial = displayName(invitation.groom).trim().charAt(0).toLocaleUpperCase("id-ID");
+  const brideInitial = displayName(invitation.bride).trim().charAt(0).toLocaleUpperCase("id-ID");
+  setText(doc, "#home .vistiq-wayang-initial-groom", groomInitial);
+  setText(doc, "#home .vistiq-wayang-initial-bride", brideInitial);
   setText(
     doc,
     "#home .elementor-element-37111d94 .elementor-widget-container",

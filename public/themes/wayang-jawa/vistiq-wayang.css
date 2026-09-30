@@ -3539,3 +3539,18 @@ html:not([data-idb-cover-closed]){overflow-y:auto!important}
 body:not(.rtl) .vistiq-wayang .vistiq-wayang-puppet-wanita{right:-76px}
 body.rtl .vistiq-wayang .vistiq-wayang-puppet-wanita{left:-76px}
 .vistiq-wayang .vistiq-wayang-puppet-wanita img{display:block;width:48%;height:auto;margin-inline-start:auto}
+
+
+/* Couple initials in the two open spaces of the Adat Jawa gunungan */
+.vistiq-wayang #home .elementor-element-785d789c .elementor-widget-container{text-align:center}
+.vistiq-wayang #home .vistiq-wayang-gunungan-lockup{position:relative;display:block;width:min(42vw,176px);aspect-ratio:1263/1246;margin:0 auto}
+.vistiq-wayang #home .vistiq-wayang-gunungan-art{display:block;width:100%!important;height:100%!important;object-fit:contain}
+.vistiq-wayang #home .vistiq-wayang-gunungan-initial{position:absolute;top:53%;z-index:2;color:#713714;font-family:"Times New Roman",serif;font-size:clamp(18px,5.5vw,24px);font-weight:700;line-height:1;transform:translate(-50%,-50%);pointer-events:none}
+.vistiq-wayang #home .vistiq-wayang-initial-groom{left:36.1%}
+.vistiq-wayang #home .vistiq-wayang-initial-bride{left:63.9%}
+
+/* Matching female Wayang at the opposite side of the cover */
+.vistiq-wayang .vistiq-wayang-puppet-wanita-home{width:100%;max-width:100%;bottom:-20px;text-align:end;pointer-events:none;z-index:1}
+body:not(.rtl) .vistiq-wayang .vistiq-wayang-puppet-wanita-home{left:auto!important;right:-76px}
+body.rtl .vistiq-wayang .vistiq-wayang-puppet-wanita-home{left:-76px;right:auto!important}
+.vistiq-wayang .vistiq-wayang-puppet-wanita-home img{display:block;width:55%;height:auto;margin-inline-start:auto}
