@@ -902,14 +902,13 @@ function prepareReference(
     "Instagram " + displayName(invitation.bride)
   );
 
-  const quote =
-    invitation.opening.quote ||
-    "Dan di antara tanda-tanda kebesaran-Nya ialah Dia menciptakan pasangan-pasangan untukmu.";
+  const customQuote = invitation.opening.quote?.trim();
+  const quote = customQuote || "Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda (kebesaran Allah) bagi kaum yang berpikir.";
   setQuote(
     doc,
     ".elementor-element-32cad1d9 .elementor-heading-title",
     quote,
-    invitation.opening.quoteSource
+    invitation.opening.quoteSource || (!customQuote ? "QS. Ar-Rum: 21" : undefined)
   );
 
   const storySection = doc.querySelector<HTMLElement>(".elementor-element-689aed41");

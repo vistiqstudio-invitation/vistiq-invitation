@@ -3600,3 +3600,20 @@ html body .vistiq-wayang .elementor-element-24134ce2::after{content:""!important
 .vistiq-wayang .elementor-element-201e4c1a img{width:60px!important;}
 .vistiq-wayang .elementor-element-6a39f8f0 img{width:88px!important;max-width:18%!important;}
 .vistiq-wayang :is(.elementor-element-4b6fe9c1,.elementor-element-238af8e2,.elementor-element-71e0b404,.elementor-element-333a256c,.elementor-element-7f662d43,.elementor-element-7c48582a) img{width:80%!important;height:auto!important;}
+
+/* Calm, readable verse transition between the couple and story. */
+html body .vistiq-wayang .elementor-element-731a2e1f{--spacer-size:140px!important;}
+html body .vistiq-wayang .elementor-element-4d3e579b{--spacer-size:0px!important;}
+html body .vistiq-wayang .elementor-element-3092a3d4 img{width:44%!important;}
+html body .vistiq-wayang .elementor-element-52ecd3c7 img{width:38%!important;}
+html body .vistiq-wayang .elementor-element-58eb778c{left:auto!important;right:-36px!important;}
+html body .vistiq-wayang .elementor-element-58eb778c img{width:44%!important;}
+html body .vistiq-wayang .elementor-element-43f102f5 > .elementor-shape-bottom .elementor-shape-fill,
+html body .vistiq-wayang .elementor-element-361fc64e > .elementor-shape-top .elementor-shape-fill{fill:#dfcbb3!important;}
+html body .vistiq-wayang .elementor-element-60b3c6d2{background:#dfcbb3!important;padding:24px 22px 30px!important;height:auto!important;}
+html body .vistiq-wayang .elementor-element-32cad1d9{width:100%!important;max-width:390px!important;margin:0 auto!important;}
+html body .vistiq-wayang .elementor-element-32cad1d9 > .elementor-widget-container{background:#f8f4ec!important;border:1px solid #c7a984!important;border-radius:18px!important;padding:26px 22px!important;box-shadow:none!important;}
+html body .vistiq-wayang .elementor-element-32cad1d9 .elementor-heading-title{font-size:15px!important;line-height:1.85!important;letter-spacing:0!important;margin:0!important;color:#704f35!important;}
+html body .vistiq-wayang .elementor-element-32cad1d9 .elementor-heading-title span{font-size:13px;font-weight:700;}
+html body .vistiq-wayang .elementor-element-361fc64e{background-image:none!important;padding-top:54px!important;}
+html body .vistiq-wayang .elementor-element-23d59e32 > .elementor-widget-container{margin:0 14px 12px!important;padding:10px 16px!important;box-shadow:none!important;border-radius:12px!important;}
