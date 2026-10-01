@@ -3579,5 +3579,5 @@ body.rtl .vistiq-wayang .vistiq-wayang-puppet-wanita-home{left:-76px;right:auto!
 @keyframes wayangCloudDriftRight{0%,100%{translate:-10px 0}50%{translate:10px 0}}
 
 
-/* Remove the bottom footer ornament from the cover */
-html body #sec::after{content:none!important;display:none!important;background:none!important;box-shadow:none!important}
+/* Show the cleaned original footer artwork in full */
+html body #sec::after{content:""!important;position:absolute!important;left:0!important;right:0!important;bottom:0!important;display:block!important;width:100%!important;height:auto!important;aspect-ratio:1536/512!important;z-index:3!important;pointer-events:none!important;clip-path:none!important;transform:none!important;border-radius:0!important;background:transparent url("/themes/wayang-jawa/vistiq-wayang-footer-original.webp") center bottom/contain no-repeat!important;box-shadow:none!important}
