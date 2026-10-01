@@ -3583,11 +3583,15 @@ body.rtl .vistiq-wayang .vistiq-wayang-puppet-wanita-home{left:-76px;right:auto!
 html body #sec::after{content:""!important;position:absolute!important;left:0!important;right:0!important;bottom:0!important;display:block!important;width:100%!important;height:auto!important;aspect-ratio:1536/512!important;z-index:3!important;pointer-events:none!important;clip-path:none!important;transform:none!important;border-radius:0!important;background:transparent url("/themes/wayang-jawa/vistiq-wayang-footer-original.webp") center bottom/contain no-repeat!important;box-shadow:none!important}
 
 
-/* Integrate the footer artwork into the home scene, above the wayang feet. */
-html body .vistiq-wayang #home .elementor-element-1f7348e{position:relative!important;}
-html body .vistiq-wayang #home .elementor-element-1f7348e::after{content:""!important;display:block!important;position:absolute!important;inset:auto 0 0!important;width:100%!important;height:auto!important;aspect-ratio:1536/512!important;z-index:3!important;pointer-events:none!important;background:transparent url("/themes/wayang-jawa/vistiq-wayang-home-footer.webp") center bottom/contain no-repeat!important;border:0!important;border-radius:0!important;box-shadow:none!important;transform:none!important;}
+/* A curved parchment transition joins home to the couple section. */
+html body .vistiq-wayang #home .elementor-element-1f7348e::after{content:none!important;display:none!important;}
 html body .vistiq-wayang #home .elementor-shape-bottom,
-html body .vistiq-wayang .elementor-element-67d5794c > .elementor-shape-top{display:none!important;}
-html body .vistiq-wayang .elementor-element-24134ce2{background:transparent!important;}
-html body .vistiq-wayang .elementor-element-24134ce2::before,
-html body .vistiq-wayang .elementor-element-24134ce2::after{content:none!important;display:none!important;}
+html body .vistiq-wayang .elementor-element-67d5794c > .elementor-shape-top,
+html body .vistiq-wayang #home .elementor-element-4754b731,
+html body .vistiq-wayang #home .elementor-element-cfcf249{display:none!important;}
+html body .vistiq-wayang #home{position:relative!important;z-index:1;}
+html body .vistiq-wayang #catin{position:relative!important;overflow:visible!important;}
+html body .vistiq-wayang .elementor-element-24134ce2{position:relative!important;z-index:3!important;flex-shrink:0!important;min-height:0!important;height:110px!important;margin-top:-48px!important;padding:0!important;background:transparent!important;overflow:visible!important;}
+html body .vistiq-wayang .elementor-element-24134ce2 > .elementor-widget-spacer{display:none!important;}
+html body .vistiq-wayang .elementor-element-24134ce2::before{content:none!important;display:none!important;}
+html body .vistiq-wayang .elementor-element-24134ce2::after{content:""!important;display:block!important;position:absolute!important;inset:0!important;width:100%!important;height:100%!important;background:transparent url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%201000%20180%22%20preserveAspectRatio%3D%22none%22%3E%3Cpath%20fill%3D%22%23dfcbb3%22%20d%3D%22M0%2010%20C240%2060%20620%20110%201000%2022%20L1000%20123%20C670%20185%20320%20104%200%20145%20Z%22%2F%3E%3Cpath%20fill%3D%22%23eadcca%22%20d%3D%22M0%2010%20C240%2060%20620%20110%201000%2022%20L1000%2032%20C620%20120%20240%2070%200%2020%20Z%22%2F%3E%3C%2Fsvg%3E") center/100% 100% no-repeat!important;pointer-events:none!important;z-index:3!important;border:0!important;box-shadow:none!important;}
