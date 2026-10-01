@@ -3583,8 +3583,11 @@ body.rtl .vistiq-wayang .vistiq-wayang-puppet-wanita-home{left:-76px;right:auto!
 html body #sec::after{content:""!important;position:absolute!important;left:0!important;right:0!important;bottom:0!important;display:block!important;width:100%!important;height:auto!important;aspect-ratio:1536/512!important;z-index:3!important;pointer-events:none!important;clip-path:none!important;transform:none!important;border-radius:0!important;background:transparent url("/themes/wayang-jawa/vistiq-wayang-footer-original.webp") center bottom/contain no-repeat!important;box-shadow:none!important}
 
 
-/* Adat Jawa home footer: clear the brown block and place the supplied cloud ornament behind the fixed menu */
-html body .vistiq-wayang .elementor-element-24134ce2{position:relative!important;overflow:visible!important;background:transparent!important;background-color:transparent!important;}
-html body .vistiq-wayang .elementor-element-24134ce2::before{content:none!important;display:none!important;}
-html body .vistiq-wayang .elementor-element-24134ce2::after{content:""!important;display:block!important;position:absolute!important;left:0!important;right:0!important;bottom:0!important;width:100%!important;height:auto!important;aspect-ratio:1536/512!important;z-index:0!important;pointer-events:none!important;clip-path:none!important;transform:none!important;border-radius:0!important;background:transparent url("/themes/wayang-jawa/vistiq-wayang-home-footer.webp") center bottom/contain no-repeat!important;box-shadow:none!important;}
-.elementor-element-41765daf{z-index:999!important;}
+/* Integrate the footer artwork into the home scene, above the wayang feet. */
+html body .vistiq-wayang #home .elementor-element-1f7348e{position:relative!important;}
+html body .vistiq-wayang #home .elementor-element-1f7348e::after{content:""!important;display:block!important;position:absolute!important;inset:auto 0 0!important;width:100%!important;height:auto!important;aspect-ratio:1536/512!important;z-index:3!important;pointer-events:none!important;background:transparent url("/themes/wayang-jawa/vistiq-wayang-home-footer.webp") center bottom/contain no-repeat!important;border:0!important;border-radius:0!important;box-shadow:none!important;transform:none!important;}
+html body .vistiq-wayang #home .elementor-shape-bottom,
+html body .vistiq-wayang .elementor-element-67d5794c > .elementor-shape-top{display:none!important;}
+html body .vistiq-wayang .elementor-element-24134ce2{background:transparent!important;}
+html body .vistiq-wayang .elementor-element-24134ce2::before,
+html body .vistiq-wayang .elementor-element-24134ce2::after{content:none!important;display:none!important;}
