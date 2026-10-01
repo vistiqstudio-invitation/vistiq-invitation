@@ -3617,3 +3617,6 @@ html body .vistiq-wayang .elementor-element-32cad1d9 .elementor-heading-title{fo
 html body .vistiq-wayang .elementor-element-32cad1d9 .elementor-heading-title span{font-size:13px;font-weight:700;}
 html body .vistiq-wayang .elementor-element-361fc64e{background-image:none!important;padding-top:54px!important;}
 html body .vistiq-wayang .elementor-element-23d59e32 > .elementor-widget-container{margin:0 14px 12px!important;padding:10px 16px!important;box-shadow:none!important;border-radius:12px!important;}
+
+/* Bleed the cover ornament beyond its transparent outer margins. */
+html body #sec::after{left:-2.5%!important;right:auto!important;width:105%!important;bottom:-6px!important;}
