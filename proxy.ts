@@ -1,17 +1,10 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
-import { getHostname } from "@/lib/customDomain";
+import { getHostname, isPlatformHostname } from "@/lib/customDomain";
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const protectedPrefixes = ["/admin", "/reseller", "/client", "/affiliate"];
-
-const PLATFORM_HOSTS = new Set([
-  "vistiqinvitation.com",
-  "www.vistiqinvitation.com",
-  "localhost",
-  "127.0.0.1",
-]);
 
 async function resellerForDomain(domain: string) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -36,7 +29,7 @@ export async function proxy(request: NextRequest) {
   const headers = new Headers(request.headers);
   let tenant: { reseller_id?: string } | null = null;
 
-  const isPlatformHost = !hostname || PLATFORM_HOSTS.has(hostname) || hostname === deploymentHost || hostname.endsWith(".vercel.app");
+  const isPlatformHost = isPlatformHostname(hostname) || hostname === deploymentHost;
   if (!isPlatformHost) {
     tenant = await resellerForDomain(hostname);
     if (tenant?.reseller_id) {

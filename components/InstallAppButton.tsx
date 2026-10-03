@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import { usePlatformHost } from "@/hooks/usePlatformHost";
 import styles from "./InstallAppButton.module.css";
 
 type BeforeInstallPromptEvent = Event & {
@@ -41,6 +42,7 @@ function getInstructions() {
 
 export default function InstallAppButton() {
   const pathname = usePathname();
+  const isPlatformHost = usePlatformHost();
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isStandalone, setIsStandalone] = useState(false);
   const [showHint, setShowHint] = useState(false);
@@ -48,7 +50,9 @@ export default function InstallAppButton() {
   useEffect(() => {
     const standaloneQuery = window.matchMedia("(display-mode: standalone)");
     const iosStandalone = (navigator as unknown as { standalone?: boolean }).standalone === true;
-    setIsStandalone(standaloneQuery.matches || iosStandalone);
+    const initialStateFrame = window.requestAnimationFrame(() => {
+      setIsStandalone(standaloneQuery.matches || iosStandalone);
+    });
 
     const onBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
@@ -64,12 +68,13 @@ export default function InstallAppButton() {
     window.addEventListener("appinstalled", onAppInstalled);
 
     return () => {
+      window.cancelAnimationFrame(initialStateFrame);
       window.removeEventListener("beforeinstallprompt", onBeforeInstallPrompt);
       window.removeEventListener("appinstalled", onAppInstalled);
     };
   }, []);
 
-  if (!isDashboardPage(pathname) || isStandalone) return null;
+  if (isPlatformHost !== true || !isDashboardPage(pathname) || isStandalone) return null;
 
   const handleClick = async () => {
     if (deferredPrompt) {

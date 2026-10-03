@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { usePlatformHost } from "@/hooks/usePlatformHost";
 import styles from "./FloatingWhatsApp.module.css";
 
 const WA_NUMBER = "6281371338032";
@@ -26,8 +27,9 @@ function getMessage(pathname: string) {
 
 export default function FloatingWhatsApp() {
   const pathname = usePathname();
+  const isPlatformHost = usePlatformHost();
 
-  if (!isMarketingPage(pathname)) return null;
+  if (isPlatformHost !== true || !isMarketingPage(pathname)) return null;
 
   const href = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(getMessage(pathname))}`;
   return (

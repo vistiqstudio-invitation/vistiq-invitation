@@ -29,6 +29,18 @@ export function getHostname(value: string | null) {
 
 export const FREE_SUBDOMAIN_ROOT = "vistiqinvitation.com";
 
+const PLATFORM_HOSTS = new Set([
+  FREE_SUBDOMAIN_ROOT,
+  `www.${FREE_SUBDOMAIN_ROOT}`,
+  "localhost",
+  "127.0.0.1",
+]);
+
+export function isPlatformHostname(value: string | null) {
+  const hostname = getHostname(value);
+  return !hostname || PLATFORM_HOSTS.has(hostname) || hostname.endsWith(".vercel.app");
+}
+
 const RESERVED_SUBDOMAINS = new Set([
   "www", "admin", "api", "app", "dashboard", "login", "client", "reseller",
   "affiliate", "owner", "mail", "email", "smtp", "ftp", "support", "help",
