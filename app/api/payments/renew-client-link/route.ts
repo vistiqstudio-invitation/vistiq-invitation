@@ -32,7 +32,7 @@ export async function POST(request: Request) {
 
     const { data: tx, error: lookupError } = await db
       .from("transactions")
-      .select("id, reseller_id, client_id, amount, status, midtrans_order_id, midtrans_redirect_url, payment_link_expires_at")
+      .select("id, reseller_id, client_id, amount, status, transaction_type, midtrans_order_id, midtrans_redirect_url, payment_link_expires_at")
       .eq("id", transactionId)
       .single();
     if (lookupError || !tx) {
@@ -45,7 +45,7 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: "Anda tidak dapat mengubah tagihan ini." }, { status: 403 });
       }
     }
-    if (!tx.reseller_id || tx.status === "paid") {
+    if (!tx.reseller_id || tx.status === "paid" || tx.transaction_type === "invitation_activation") {
       return NextResponse.json({ error: "Tagihan sudah lunas atau tidak memenuhi syarat." }, { status: 409 });
     }
     if (!Number.isInteger(Number(tx.amount)) || Number(tx.amount) < 1000) {

@@ -53,8 +53,8 @@ const packageDetails: Array<{
     features: [
       "Rp149.000 sekali bayar, akses selamanya",
       "Jual dan kelola client tanpa batas",
-      "80% bagian reseller setiap transaksi client",
-      "Fee platform 20% setiap transaksi client",
+      "Tanpa sistem komisi atau persentase",
+      "Aktivasi Rp20.000 per undangan",
       "Dashboard khusus reseller",
     ],
     button: "Join Reseller Rp149.000",
@@ -68,7 +68,7 @@ const packageDetails: Array<{
     features: [
       "Nama, logo, dan warna brand sendiri",
       "Subdomain gratis atau custom domain",
-      "Keuntungan penjualan 100% milik Anda",
+      "Aktivasi Rp20.000 per undangan",
       "Update tema dan konten promosi",
       "Rp59.000 per bulan",
     ],
@@ -77,10 +77,10 @@ const packageDetails: Array<{
 ];
 
 const FAQS = [
-  ["Apa perbedaan Reseller dan Mitra Brand?", "Reseller memakai brand Vistiq, join Rp149.000 sekali bayar, dapat menjual tanpa batas, dan setiap transaksi client dikenakan fee platform 20%. Mitra Brand memakai identitas bisnis sendiri dan menyimpan 100% harga jualnya."],
+  ["Apa perbedaan Reseller dan Mitra Brand?", "Reseller memakai brand Vistiq dan membayar Rp149.000 sekali. Mitra Brand memakai identitas bisnis sendiri dengan langganan Rp59.000 per bulan. Keduanya membayar Rp20.000 per aktivasi undangan."],
   ["Apakah Reseller ada biaya bulanan?", "Tidak. Paket Reseller Rp149.000 dibayar sekali dan aktif selamanya."],
   ["Apakah jumlah client Reseller dibatasi?", "Tidak. Reseller dapat menjual undangan dan mengelola client sebanyak yang dibutuhkan."],
-  ["Bagaimana fee 20% dihitung?", "Pada transaksi client paket Reseller, 80% menjadi bagian reseller dan 20% menjadi fee platform Vistiq."],
+  ["Apakah ada potongan komisi?", "Tidak ada sistem persentase untuk akun baru. Biayanya tetap Rp20.000 setiap kali mengaktifkan satu undangan."],
   ["Apakah harus bisa desain atau coding?", "Tidak. Tema, dashboard, dan sistem sudah disiapkan."],
 ];
 

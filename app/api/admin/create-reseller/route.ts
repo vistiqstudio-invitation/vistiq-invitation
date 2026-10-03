@@ -41,10 +41,9 @@ export async function POST(request: Request) {
   const email = (body.email || "").trim().toLowerCase();
   const whatsapp = (body.whatsapp || "").trim();
   const pkg = body.package === "reseller_brand" ? "reseller_brand" : "reseller";
-  // Package rules are fixed: standard reseller keeps 80% and Vistiq takes
-  // a 20% platform fee. Mitra Brand keeps 100%. Do not trust a stale
-  // browser value for this field.
-  const commission_percent = pkg === "reseller_brand" ? 100 : 80;
+  // New accounts no longer use percentage commission. Both packages pay a
+  // fixed Rp20.000 when an invitation is activated.
+  const commission_percent = 0;
   // Accounts created directly by Vistiq Owner are already approved. Ignore
   // any client-supplied status so this rule cannot be bypassed by a stale or
   // modified browser request.
@@ -89,6 +88,7 @@ export async function POST(request: Request) {
       whatsapp,
       package: pkg,
       commission_percent,
+      billing_model: "per_invitation",
       status,
       brand_active: pkg === "reseller_brand",
       brand_expires_at: brandExpiresAt,

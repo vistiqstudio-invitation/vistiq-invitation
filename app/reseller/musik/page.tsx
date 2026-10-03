@@ -13,6 +13,7 @@ const WA_NUMBER = "6281371338032";
 type Reseller = {
   id: string;
   package?: "reseller" | "reseller_brand";
+  billing_model?: "legacy_commission" | "per_invitation";
   brand_name?: string | null;
   logo_url?: string | null;
   brand_color?: string | null;
@@ -154,7 +155,7 @@ export default function ResellerMusikPage() {
         brandBottom={reseller?.package === "reseller_brand" ? "Mitra Brand" : "Reseller"}
         logoUrl={brandingEnabled ? reseller?.logo_url : null}
         accentColor={brandingEnabled ? reseller?.brand_color : null}
-        items={getResellerNavItems(reseller?.package, reseller?.id)}
+        items={getResellerNavItems(reseller?.package, reseller?.id, reseller?.billing_model)}
         activeKey="musik"
         notificationRole="reseller"
         onLogout={logout}

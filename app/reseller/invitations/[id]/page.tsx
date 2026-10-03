@@ -587,7 +587,7 @@ export default function ResellerInvitationEditPage() {
 
         {resellerPackage === "reseller_brand" && (
           <p className={styles.helpText} style={{ marginTop: -8 }}>
-            Harga ini sepenuhnya Anda yang tentukan - tidak ada potongan komisi ke Vistiq, 100% milik Anda.
+            Harga jual kepada client bebas Anda tentukan. Untuk akun baru, biaya aktivasi Vistiq tetap Rp20.000 per undangan.
           </p>
         )}
 

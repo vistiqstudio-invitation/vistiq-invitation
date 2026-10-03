@@ -73,9 +73,10 @@ export async function provisionPaidOrder(
         name: claimed.customer_name,
         whatsapp: claimed.customer_phone,
         package: resellerBrand ? "reseller_brand" : "reseller",
-        // commission_percent stores the reseller's share of each client transaction.
-        // Standard Reseller keeps 80%; the remaining 20% is the platform fee.
-        commission_percent: resellerBrand ? 100 : 80,
+        // Kept for grandfathered reporting only. New accounts use a fixed
+        // invitation activation fee and do not accrue reseller commission.
+        commission_percent: 0,
+        billing_model: "per_invitation",
         status: "active",
         brand_active: resellerBrand,
         brand_expires_at: brandExpiresAt,

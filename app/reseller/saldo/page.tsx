@@ -13,6 +13,7 @@ type Reseller = {
   id: string;
   name?: string | null;
   package?: "reseller" | "reseller_brand";
+  billing_model?: "legacy_commission" | "per_invitation";
   brand_name?: string | null;
   logo_url?: string | null;
   brand_color?: string | null;
@@ -85,7 +86,7 @@ export default function ResellerSaldoPage() {
 
       const { data } = await supabase.from("resellers").select("*").eq("user_id", user.id).maybeSingle();
       if (!data) { setLoading(false); return; }
-      if (data.package === "reseller_brand") { router.push("/reseller"); return; }
+      if (data.package === "reseller_brand" || data.billing_model === "per_invitation") { router.push("/reseller"); return; }
 
       setReseller(data as Reseller);
       setBankName(data.bank_name || "");
@@ -179,7 +180,7 @@ export default function ResellerSaldoPage() {
         brandBottom={reseller?.package === "reseller_brand" ? "Mitra Brand" : "Reseller"}
         logoUrl={brandingEnabled ? reseller?.logo_url : null}
         accentColor={brandingEnabled ? reseller?.brand_color : null}
-        items={getResellerNavItems(reseller?.package, reseller?.id)}
+        items={getResellerNavItems(reseller?.package, reseller?.id, reseller?.billing_model)}
         activeKey="saldo"
         notificationRole="reseller"
         onLogout={logout}

@@ -14,6 +14,7 @@ type Reseller = {
   brand_color?: string | null;
   brand_active?: boolean;
   package?: "reseller" | "reseller_brand";
+  billing_model?: "legacy_commission" | "per_invitation";
 };
 
 type Transaction = {
@@ -82,6 +83,7 @@ export default function ResellerTransactionsPage() {
       const currentReseller = resellerData?.[0] || null;
       setReseller(currentReseller);
       if (!currentReseller) { setLoading(false); return; }
+      if (currentReseller.billing_model === "per_invitation") { router.push("/reseller/invitations"); return; }
       fetchTransactions(currentReseller.id);
     };
     loadUser();
@@ -127,7 +129,7 @@ export default function ResellerTransactionsPage() {
         brandBottom={reseller?.package === "reseller_brand" ? "Mitra Brand" : "Reseller"}
         logoUrl={brandingEnabled ? reseller?.logo_url : null}
         accentColor={brandingEnabled ? reseller?.brand_color : null}
-        items={getResellerNavItems(reseller?.package, reseller?.id)}
+        items={getResellerNavItems(reseller?.package, reseller?.id, reseller?.billing_model)}
         activeKey="transactions"
         notificationRole="reseller"
         onLogout={logout}

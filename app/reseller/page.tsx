@@ -29,6 +29,7 @@ type Reseller = {
   brand_color?: string | null;
   brand_active?: boolean;
   package?: "reseller" | "reseller_brand";
+  billing_model?: "legacy_commission" | "per_invitation";
   starting_price?: number | null;
   wedding_price?: number | null;
   khitan_price?: number | null;
@@ -281,7 +282,7 @@ export default function ResellerPage() {
         brandBottom={reseller?.package === "reseller_brand" ? "Mitra Brand" : "Reseller"}
         logoUrl={brandingEnabled ? reseller?.logo_url : null}
         accentColor={brandingEnabled ? reseller?.brand_color : null}
-        items={getResellerNavItems(reseller?.package, reseller?.id)}
+        items={getResellerNavItems(reseller?.package, reseller?.id, reseller?.billing_model)}
         activeKey="dashboard"
         notificationRole="reseller"
         onLogout={logout}
@@ -373,10 +374,17 @@ export default function ResellerPage() {
                 <strong>{PACKAGE_LABELS[reseller.package || "reseller"]}</strong>
               </div>
 
-              {!isBrandPackage && (
+              {!isBrandPackage && reseller.billing_model !== "per_invitation" && (
                 <div className={styles.statCard}>
                   <span>Komisi</span>
                   <strong>{reseller.commission_percent || 0}%</strong>
+                </div>
+              )}
+
+              {reseller.billing_model === "per_invitation" && (
+                <div className={styles.statCard}>
+                  <span>Aktivasi Undangan</span>
+                  <strong>Rp20.000</strong>
                 </div>
               )}
 
@@ -482,7 +490,7 @@ export default function ResellerPage() {
 
                 <p className={styles.helpText} style={{ marginTop: 10 }}>
                   Setiap harga akan tampil pada kategori yang sesuai di landing page Anda.
-                  {isBrandPackage && " Harga bebas Anda tentukan sendiri dan 100% milik Anda."}
+                  {isBrandPackage && " Harga jual kepada client bebas Anda tentukan sendiri."}
                 </p>
 
                 <div style={{ display: "flex", alignItems: "center", gap: 16, margin: "16px 0" }}>
@@ -554,8 +562,8 @@ export default function ResellerPage() {
                 <h2 className={styles.sectionTitle}>Upgrade ke Mitra Brand</h2>
                 <p style={{ margin: "0 0 16px", fontSize: 13.5, color: "#64748b" }}>
                   Gunakan subdomain atau domain sendiri, dapatkan fitur premium,
-                  update tema dan konten promosi baru setiap bulan, serta nikmati
-                  keuntungan 100% milik Anda. <strong>Rp59.000/bulan</strong>.
+                  update tema dan konten promosi baru setiap bulan, dengan biaya
+                  aktivasi tetap Rp20.000 per undangan. <strong>Rp59.000/bulan</strong>.
                 </p>
                 <a
                   href={`https://wa.me/${WA_NUMBER}?text=${upgradeText}`}

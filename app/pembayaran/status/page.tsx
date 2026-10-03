@@ -10,7 +10,7 @@ declare global {
   }
 }
 
-type PaymentStatus = { orderId:string;status:string;paymentType:string|null;grossAmount:string;accountStatus:string|null };
+type PaymentStatus = { orderId:string;status:string;paymentType:string|null;grossAmount:string;accountStatus:string|null;invitationActivation?:boolean };
 
 const LABELS:Record<string,{title:string;copy:string;color:string}>={
   settlement:{title:"Selamat, Pembayaran Berhasil!",copy:"Pembayaran Anda sudah diterima.",color:"#139b52"},
@@ -40,14 +40,16 @@ function StatusContent(){
       window.fbq?.("track","Purchase",{value:Number(data.grossAmount),currency:"IDR",content_name:data.orderId});
     }
   },[paid,data]);
-  const accountCopy=data?.accountStatus==="completed"
+  const accountCopy=data?.invitationActivation
+    ? "Pembayaran aktivasi berhasil. Undangan sudah aktif dan dapat dibagikan kepada tamu."
+    : data?.accountStatus==="completed"
     ? "Akun Anda sudah dibuat. Silakan cek email untuk membuat password dan login ke dashboard. Catatan: link di email hanya bisa dipakai sekali - kalau dibuka aplikasi email (mis. pratinjau Gmail) sebelum Anda klik, link bisa langsung dianggap terpakai dan muncul \"link kedaluwarsa\". Kalau itu terjadi, langsung hubungi kami via WhatsApp di bawah, tidak perlu coba klik link yang sama berulang kali."
     : data?.accountStatus==="email_failed"
       ? "Akun sudah dibuat, tetapi email belum terkirim. Silakan hubungi admin melalui WhatsApp."
       : data?.accountStatus==="failed"
         ? "Pembayaran berhasil, tetapi akun perlu dibantu admin. Silakan hubungi kami melalui WhatsApp."
         : "Akun Anda sedang dibuat. Silakan cek email beberapa saat lagi.";
-  return <main className="paymentStatus"><div className="statusCard"><div className="statusIcon" style={{background:meta.color}}>{paid?"✓":"⌛"}</div><p className="statusLabel">VISTIQ INVITATION · MIDTRANS</p><h1>{loading?"Memeriksa Pembayaran...":error?"Status Belum Tersedia":meta.title}</h1><p className="statusCopy">{loading?"Mohon tunggu sebentar.":error||(paid?accountCopy:meta.copy)}</p>{data&&<div className="statusDetails"><span>Nomor pesanan<b>{data.orderId}</b></span><span>Total<b>Rp {Number(data.grossAmount).toLocaleString("id-ID")}</b></span><span>Metode<b>{data.paymentType||"Belum dipilih"}</b></span></div>}<div className="statusActions"><button onClick={check} disabled={loading}>Periksa Lagi</button>{data?.accountStatus==="completed"?<Link href="/login">Login Dashboard</Link>:<Link href="/#harga">Kembali ke Paket</Link>}</div><small>Butuh bantuan? Gunakan tombol WhatsApp di sudut halaman.</small></div><style>{css}</style></main>
+  return <main className="paymentStatus"><div className="statusCard"><div className="statusIcon" style={{background:meta.color}}>{paid?"✓":"⌛"}</div><p className="statusLabel">VISTIQ INVITATION · MIDTRANS</p><h1>{loading?"Memeriksa Pembayaran...":error?"Status Belum Tersedia":meta.title}</h1><p className="statusCopy">{loading?"Mohon tunggu sebentar.":error||(paid?accountCopy:meta.copy)}</p>{data&&<div className="statusDetails"><span>Nomor pesanan<b>{data.orderId}</b></span><span>Total<b>Rp {Number(data.grossAmount).toLocaleString("id-ID")}</b></span><span>Metode<b>{data.paymentType||"Belum dipilih"}</b></span></div>}<div className="statusActions"><button onClick={check} disabled={loading}>Periksa Lagi</button>{data?.invitationActivation?<Link href="/reseller/invitations">Kembali ke Undangan</Link>:data?.accountStatus==="completed"?<Link href="/login">Login Dashboard</Link>:<Link href="/#harga">Kembali ke Paket</Link>}</div><small>Butuh bantuan? Gunakan tombol WhatsApp di sudut halaman.</small></div><style>{css}</style></main>
 }
 
 export default function PaymentStatusPage(){return <Suspense fallback={<main className="paymentStatus">Memuat...</main>}><StatusContent/></Suspense>}

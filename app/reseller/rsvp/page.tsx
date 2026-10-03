@@ -15,6 +15,7 @@ type Reseller = {
   brand_color?: string | null;
   brand_active?: boolean;
   package?: "reseller" | "reseller_brand";
+  billing_model?: "legacy_commission" | "per_invitation";
 };
 
 type Rsvp = {
@@ -174,7 +175,7 @@ function RsvpContent() {
         brandBottom={reseller?.package === "reseller_brand" ? "Mitra Brand" : "Reseller"}
         logoUrl={brandingEnabled ? reseller?.logo_url : null}
         accentColor={brandingEnabled ? reseller?.brand_color : null}
-        items={getResellerNavItems(reseller?.package, reseller?.id)}
+        items={getResellerNavItems(reseller?.package, reseller?.id, reseller?.billing_model)}
         activeKey="rsvp"
         notificationRole="reseller"
         onLogout={logout}

@@ -30,6 +30,7 @@ type Reseller = {
   brand_name?: string | null;
   brand_active?: boolean;
   package?: "reseller" | "reseller_brand";
+  billing_model?: "legacy_commission" | "per_invitation";
   brand_expires_at?: string | null;
 };
 
@@ -44,8 +45,8 @@ type CreatedCredentials = {
 };
 
 const PACKAGE_LABELS: Record<string, string> = {
-  reseller: "Reseller (80% reseller / 20% fee platform)",
-  reseller_brand: "Mitra Brand - White Label (100%)",
+  reseller: "Reseller",
+  reseller_brand: "Mitra Brand - White Label",
 };
 
 function brandExpiryStatus(reseller: Reseller): { label: string; color: string } {
@@ -82,7 +83,7 @@ export default function ResellersPage() {
     email: "",
     whatsapp: "",
     package: "reseller",
-    commission_percent: 80,
+    commission_percent: 0,
   });
 
   const [creating, setCreating] = useState(false);
@@ -115,6 +116,8 @@ Setelah login, silakan buka menu *Brand Saya* untuk:
     return `Halo Kak *${account.name}* ðŸ‘‹
 
 Selamat! Akun *${isBrand ? "Mitra Brand" : "Reseller"}* Kakak sudah berhasil dibuat dan aktif. ðŸŽ‰
+
+Setiap undangan dapat dibuat sebagai draft dan diaktifkan dengan pembayaran Rp20.000 melalui Midtrans.
 
 Berikut akses login Kakak:
 
@@ -241,7 +244,7 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! ðŸš
       email: "",
       whatsapp: "",
       package: "reseller",
-      commission_percent: 80,
+      commission_percent: 0,
     });
 
     fetchResellers();
@@ -328,11 +331,14 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! ðŸš
   };
 
   const updatePackage = async (id: string, pkg: string) => {
+    const account = resellers.find((item) => item.id === id);
     const { error } = await supabase
       .from("resellers")
       .update({
         package: pkg,
-        commission_percent: PACKAGE_DEFAULT_COMMISSION[pkg],
+        commission_percent: account?.billing_model === "per_invitation"
+          ? 0
+          : PACKAGE_DEFAULT_COMMISSION[pkg],
       })
       .eq("id", id);
 
@@ -683,22 +689,13 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! ðŸš
               }
               className={styles.input}
             >
-              <option value="reseller">Reseller (Rp 149.000 sekali bayar, 80% reseller / fee platform 20%)</option>
-              <option value="reseller_brand">Mitra Brand - White Label (Rp 59.000/bulan, 100%)</option>
+              <option value="reseller">Reseller (Rp149.000 sekali + Rp20.000/aktivasi)</option>
+              <option value="reseller_brand">Mitra Brand (Rp59.000/bulan + Rp20.000/aktivasi)</option>
             </select>
 
-            <input
-              type="number"
-              placeholder="Bagian Reseller (%)"
-              value={form.commission_percent}
-              onChange={(e) =>
-                setForm({
-                  ...form,
-                  commission_percent: Number(e.target.value),
-                })
-              }
-              className={styles.input}
-            />
+            <div className={styles.input} style={{ display: "flex", alignItems: "center", color: "#475569" }}>
+              Sistem baru Â· Aktivasi Rp20.000/undangan
+            </div>
 
           </div>
 
@@ -734,15 +731,17 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! ðŸš
                     <option value="reseller_brand">{PACKAGE_LABELS.reseller_brand}</option>
                   </select>
 
-                  <input
-                    type="number"
-                    value={reseller.commission_percent || 0}
-                    onChange={(e) =>
-                      updateCommission(reseller.id, Number(e.target.value))
-                    }
-                    className={`${styles.smallInput} ${styles.resellerCommission}`}
-                    title="Bagian reseller (%)"
-                  />
+                  {reseller.billing_model === "per_invitation" ? (
+                    <span className={styles.badge}>Rp20.000 / AKTIVASI</span>
+                  ) : (
+                    <input
+                      type="number"
+                      value={reseller.commission_percent || 0}
+                      onChange={(e) => updateCommission(reseller.id, Number(e.target.value))}
+                      className={`${styles.smallInput} ${styles.resellerCommission}`}
+                      title="Bagian reseller sistem lama (%)"
+                    />
+                  )}
 
                   <label className={styles.resellerBrand}>
                     <input

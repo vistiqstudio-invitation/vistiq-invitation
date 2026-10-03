@@ -59,11 +59,12 @@ export async function POST(request: Request) {
     auth: { autoRefreshToken: false, persistSession: false },
   });
 
-  // Pembayaran client yang dibuat oleh Reseller standar.
-  if (orderId.startsWith("VSTQ-RC-")) {
+  // Pembayaran sistem reseller: transaksi client lama (RC) atau aktivasi
+  // undangan Rp20.000 untuk akun baru (IA).
+  if (orderId.startsWith("VSTQ-RC-") || orderId.startsWith("VSTQ-IA-")) {
     const { data: resellerTransaction, error: transactionError } = await supabase
       .from("transactions")
-      .select("id, client_id, reseller_id, amount, status")
+      .select("id, client_id, reseller_id, invitation_id, transaction_type, amount, status")
       .eq("midtrans_order_id", orderId)
       .maybeSingle();
 
@@ -91,9 +92,14 @@ export async function POST(request: Request) {
     }
 
     if (paid) after(() => safelyProcessPaymentWhatsApp(supabase));
-    // A settled payment updates the ledger only. Vistiq admin activates the client/invitation.
+    // The database trigger activates a paid per-invitation order atomically.
+    // Grandfathered reseller transactions keep their existing admin flow.
 
-    return NextResponse.json({ received: true, resellerClientPayment: true });
+    return NextResponse.json({
+      received: true,
+      resellerClientPayment: resellerTransaction.transaction_type === "legacy_client_sale",
+      invitationActivation: resellerTransaction.transaction_type === "invitation_activation",
+    });
   }
 
   // Checkout paket Vistiq dari landing page.

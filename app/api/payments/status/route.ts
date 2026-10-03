@@ -9,7 +9,7 @@ export async function GET(request: Request) {
   const serverKey = process.env.MIDTRANS_SERVER_KEY;
   const production = process.env.MIDTRANS_IS_PRODUCTION === "true";
   const orderId = new URL(request.url).searchParams.get("order_id") ?? "";
-  const isResellerClientOrder = /^VSTQ-RC-[A-Za-z0-9-]{8,60}$/.test(orderId);
+  const isResellerClientOrder = /^VSTQ-(RC|IA)-[A-Za-z0-9-]{8,60}$/.test(orderId);
   const isPackageOrder = /^VSTQ-(CL|RS|RB)-[A-Za-z0-9-]{8,45}$/.test(orderId);
 
   if (!isResellerClientOrder && !isPackageOrder) {
@@ -56,7 +56,7 @@ export async function GET(request: Request) {
     if (isResellerClientOrder) {
       const { data: transaction } = await supabase
         .from("transactions")
-        .select("id, client_id, amount, status")
+        .select("id, client_id, invitation_id, transaction_type, amount, status")
         .eq("midtrans_order_id", orderId)
         .maybeSingle();
 
@@ -77,7 +77,8 @@ export async function GET(request: Request) {
 
         if (!updateError && paid) after(() => safelyProcessPaymentWhatsApp(supabase));
 
-        // Payment is recorded here; invitation/client activation requires Vistiq admin approval.
+        // For invitation_activation, the database trigger publishes the invitation
+        // and activates its client in the same transaction.
       }
     } else {
       const { data: order } = await supabase
@@ -127,5 +128,6 @@ export async function GET(request: Request) {
     transactionTime: data.transaction_time ?? null,
     settlementTime: data.settlement_time ?? null,
     accountStatus,
+    invitationActivation: isResellerClientOrder && orderId.startsWith("VSTQ-IA-"),
   });
 }

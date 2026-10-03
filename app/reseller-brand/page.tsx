@@ -27,14 +27,14 @@ const STEPS = [
   },
   {
     n: "3",
-    title: "Client Bayar Penuh ke Kamu",
-    desc: "Tidak ada potongan komisi — 100% harga yang kamu tetapkan masuk kantong kamu.",
+    title: "Aktifkan Rp20.000",
+    desc: "Saat undangan siap dibagikan, bayar biaya aktivasi tetap Rp20.000 melalui Midtrans.",
   },
 ];
 
 const COMPARISON = [
   ["Nama yang tampil ke client", "Vistiq Invitation", "Brand kamu sendiri"],
-  ["Profit per penjualan", "40% komisi", "100% milik sendiri"],
+  ["Aktivasi per undangan", "Rp20.000", "Rp20.000"],
   ["Biaya", "Rp149.000 sekali bayar", "Rp59.000/bulan"],
   ["Update tema & konten promosi", "Tidak ada", "Setiap bulan"],
   ["Dashboard", "Dashboard reseller standar", "Dashboard full branding sendiri"],
@@ -43,7 +43,7 @@ const COMPARISON = [
 const BENEFITS = [
   ["Logo & nama brand tampil di setiap undangan", "Bukan lagi \"Vistiq Invitation\" — client lihat brand kamu sepenuhnya."],
   ["Warna brand custom di dashboard client", "Identitas brand kamu konsisten dari undangan sampai dashboard."],
-  ["Profit 100% dari setiap penjualan", "Kamu yang tentukan harga ke client, tidak ada potongan komisi."],
+  ["Harga jual bebas ditentukan", "Kamu menentukan sendiri harga ke client; biaya Vistiq tetap Rp20.000 per aktivasi."],
   ["Dashboard reseller lengkap", "Selengkap dashboard tim Vistiq sendiri — kelola client, RSVP, dan galeri."],
   ["Update tema baru setiap bulan", "Koleksi tema terus bertambah tiap bulan, langsung bisa kamu jual."],
   ["Konten promosi siap pakai tiap bulan", "Materi promosi baru tiap bulan buat bantu kamu jualan di media sosial."],
@@ -57,7 +57,7 @@ const FAQS = [
   },
   {
     q: "Apa bedanya dengan paket Reseller biasa?",
-    a: "Reseller biasa jual di bawah brand Vistiq Invitation dan dapat komisi 40%. Mitra Brand pakai identitas brand kamu sendiri dan kamu simpan 100% dari harga yang kamu tetapkan.",
+    a: "Reseller biasa memakai brand Vistiq Invitation, sedangkan Mitra Brand memakai identitas brand sendiri. Keduanya membayar Rp20.000 untuk setiap aktivasi undangan.",
   },
   {
     q: "Saya sudah reseller biasa, bisa upgrade?",
@@ -65,7 +65,7 @@ const FAQS = [
   },
   {
     q: "Berapa biayanya?",
-    a: "Rp59.000/bulan, layaknya member premium — dapat update tema dan konten promosi baru tiap bulan, plus 100% profit dari setiap penjualan jadi milikmu.",
+    a: "Rp59.000/bulan untuk akses white label, update tema, dan konten promosi. Setiap undangan yang diaktifkan dikenakan biaya tetap Rp20.000.",
   },
   {
     q: "Bagaimana cara perpanjangan tiap bulan?",
@@ -96,8 +96,8 @@ export default function ResellerBrandPage() {
           <p>
             Mitra Brand: logo, nama, dan warna brand kamu tampil di setiap
             undangan yang kamu jual. <strong>Rp59.000/bulan</strong>, dapat
-            update tema dan konten promosi baru tiap bulan, dan 100%
-            keuntungan jadi milikmu.
+            update tema dan konten promosi baru tiap bulan. Aktivasi setiap
+            undangan hanya Rp20.000.
           </p>
 
           <div className="heroActions">
@@ -176,7 +176,7 @@ export default function ResellerBrandPage() {
 
         <p className="darkNote">
           Setiap halaman undangan yang kamu buat otomatis menampilkan nama
-          brand kamu di footer — bukan lagi "Vistiq Invitation".
+          brand kamu di footer — bukan lagi &quot;Vistiq Invitation&quot;.
         </p>
       </section>
 
@@ -223,8 +223,8 @@ export default function ResellerBrandPage() {
       </section>
 
       <section className="sectionDark">
-        <p className="label">Simulasi Penghasilan</p>
-        <h2>Bandingkan: Komisi 40% vs Profit 100%</h2>
+        <p className="label">Simulasi Biaya</p>
+        <h2>Biaya Jelas, Tanpa Hitungan Persentase</h2>
         <p className="darkIntro">
           Contoh kalau kamu jual ke 10 client dalam sebulan, di harga
           Rp200.000 per undangan.
@@ -232,14 +232,14 @@ export default function ResellerBrandPage() {
 
         <div className="simCompareGrid">
           <div className="simCompareCard">
-            <small>Reseller (komisi 40%)</small>
-            <strong>Rp 800.000</strong>
-            <p>dari total penjualan Rp2.000.000</p>
+            <small>Total harga jual ke client</small>
+            <strong>Rp 2.000.000</strong>
+            <p>10 undangan × Rp200.000</p>
           </div>
           <div className="simCompareCard simCompareHighlight">
-            <small>Mitra Brand (100%)</small>
-            <strong>Rp 2.000.000</strong>
-            <p>seluruh penjualan jadi milikmu</p>
+            <small>Biaya aktivasi Vistiq</small>
+            <strong>Rp 200.000</strong>
+            <p>10 undangan × Rp20.000</p>
           </div>
         </div>
 
@@ -298,9 +298,9 @@ export default function ResellerBrandPage() {
             Rp 59.000<span>/bulan</span>
           </h2>
           <p>
-            White label penuh, profit 100%, update tema dan konten promosi
-            setiap bulan. Tagihan manual — dashboard kamu akan mengingatkan
-            sebelum masa aktif habis.
+            White label penuh, update tema dan konten promosi setiap bulan,
+            serta biaya aktivasi tetap Rp20.000 per undangan. Dashboard akan
+            mengingatkan sebelum masa aktif langganan habis.
           </p>
           <a
             href={`https://wa.me/${WA_NUMBER}?text=${ctaText("price-highlight")}`}
@@ -320,7 +320,8 @@ export default function ResellerBrandPage() {
         <h2>Siap Punya Brand Undangan Digital Sendiri?</h2>
         <p>
           Rp59.000/bulan, layaknya member premium — dapat update tema dan
-          konten promosi baru tiap bulan, dan 100% keuntungan jadi milikmu.
+          konten promosi baru tiap bulan. Setiap undangan diaktifkan dengan
+          biaya tetap Rp20.000.
         </p>
 
         <div className="heroActions center">

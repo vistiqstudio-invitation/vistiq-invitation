@@ -15,6 +15,7 @@ type Reseller = {
   brand_name: string | null; brand_color: string | null; logo_url: string | null;
   landing_whatsapp: string | null; brand_active: boolean | null;
   brand_expires_at: string | null;
+  billing_model?: "legacy_commission" | "per_invitation" | null;
 };
 type Props = {
   reseller: Reseller | null;
@@ -256,7 +257,7 @@ export default function MarketingKit({ reseller, profileWhatsapp, catalogs, isOw
         brandBottom={isOwner ? "Invitation" : reseller?.package === "reseller_brand" ? "Mitra Brand" : "Reseller"}
         logoUrl={reseller?.logo_url}
         accentColor={reseller?.brand_color}
-        items={isOwner ? adminNavItems : getResellerNavItems(reseller?.package, reseller?.id)}
+        items={isOwner ? adminNavItems : getResellerNavItems(reseller?.package, reseller?.id, reseller?.billing_model)}
         activeKey="marketing-kit"
         notificationRole={isOwner ? "owner" : "reseller"}
         onLogout={logout}

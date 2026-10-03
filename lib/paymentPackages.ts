@@ -8,13 +8,13 @@ export const PAYMENT_PACKAGES = {
   reseller: {
     code: "RS",
     name: "Paket Reseller",
-    description: "Akses dashboard reseller selamanya, jual undangan tanpa batas",
+    description: "Akses dashboard reseller selamanya, aktivasi undangan Rp20.000",
     amount: 149000,
   },
   "reseller-brand": {
     code: "RB",
     name: "Paket Mitra Brand",
-    description: "Dashboard reseller white label, update tema & konten promosi tiap bulan",
+    description: "Dashboard white label bulanan, aktivasi undangan Rp20.000",
     // Rp59.000/bulan, ditagih manual (lihat provisionPaidOrder.ts untuk
     // brand_expires_at 1 bulan dari pembelian). 10 Mitra Brand pertama
     // (sebelum harga ini berlaku) tetap lifetime - brand_expires_at null.

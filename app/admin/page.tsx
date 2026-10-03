@@ -45,6 +45,7 @@ type Reseller = {
   status?: string;
   package?: "reseller" | "reseller_brand" | string | null;
   brand_active?: boolean | null;
+  billing_model?: "legacy_commission" | "per_invitation";
   created_at: string;
 };
 
@@ -66,6 +67,7 @@ type Transaction = {
   status?: string;
   paid_at?: string | null;
   created_at: string;
+  transaction_type?: "legacy_client_sale" | "invitation_activation";
 };
 
 type CheckoutOrder = {
@@ -216,13 +218,16 @@ export default function AdminPage() {
   //    (Reseller sekali bayar, Mitra Brand langganan bulanan, dan paket
   //    direct-client bila ada). Nilai yang dipakai adalah amount transaksi
   //    aktual, sehingga histori harga lama tetap tercatat sesuai pembayaran.
-  // 2. Penjualan undangan oleh Reseller standar baru masuk setelah client
-  //    benar-benar membayar (transactions.status === "paid"). Harga jual penuh
-  //    adalah omzet penjualan; 80% adalah komisi reseller dan 20% hak Vistiq.
-  // 3. Penjualan undangan oleh Mitra Brand tidak masuk omzet Vistiq karena
-  //    100% hasil penjualan tersebut milik Mitra Brand.
+  // 2. Penjualan sistem lama tetap mengikuti pembagian historisnya.
+  // 3. Pembayaran aktivasi Rp20.000 sistem baru masuk penuh sebagai omzet
+  //    Vistiq dan tidak menghasilkan komisi reseller.
   const paidStandardResellerSales = transactions.filter(
-    (item) => item.status === "paid" && !isBrandResellerTransaction(item),
+    (item) => item.status === "paid"
+      && item.transaction_type !== "invitation_activation"
+      && !isBrandResellerTransaction(item),
+  );
+  const paidInvitationActivations = transactions.filter(
+    (item) => item.status === "paid" && item.transaction_type === "invitation_activation",
   );
 
   const packageRevenue = checkoutOrders
@@ -233,8 +238,12 @@ export default function AdminPage() {
     (sum, item) => sum + Number(item.amount || 0),
     0,
   );
+  const invitationActivationRevenue = paidInvitationActivations.reduce(
+    (sum, item) => sum + Number(item.amount || 0),
+    0,
+  );
 
-  const totalOmzet = packageRevenue + regularResellerGrossSales;
+  const totalOmzet = packageRevenue + regularResellerGrossSales + invitationActivationRevenue;
 
   // Komisi reseller hanya lahir dari penjualan undangan Reseller standar yang
   // sudah dibayar client. Transaksi pending belum menjadi omzet/komisi. Komisi
@@ -363,6 +372,10 @@ export default function AdminPage() {
                 value={`Rp ${totalOmzet.toLocaleString("id-ID")}`}
               />
               <StatCard
+                title="Aktivasi Undangan"
+                value={`Rp ${invitationActivationRevenue.toLocaleString("id-ID")}`}
+              />
+              <StatCard
                 title="Total Komisi"
                 value={`Rp ${totalKomisi.toLocaleString("id-ID")}`}
               />
@@ -420,9 +433,9 @@ export default function AdminPage() {
                     <MiniItem
                       key={item.id}
                       title={item.name}
-                      meta={`${item.whatsapp || "-"} · Komisi ${
-                        item.commission_percent || 0
-                      }%`}
+                      meta={item.billing_model === "per_invitation"
+                        ? `${item.whatsapp || "-"} · Rp20.000/aktivasi`
+                        : `${item.whatsapp || "-"} · Sistem lama ${item.commission_percent || 0}%`}
                     />
                   ))
                 )}

@@ -47,6 +47,8 @@ type Transaction = {
   available_at?: string | null;
   payment_type?: string | null;
   midtrans_order_id?: string | null;
+  transaction_type?: "legacy_client_sale" | "invitation_activation";
+  invitation_id?: number | null;
 };
 
 type Reseller = {
@@ -94,7 +96,7 @@ export default function AdminTransactionsPage() {
 
   const fetchTransactions = async () => {
     const [{ data: tx }, { data: resellerData }, { data: clientData }, { data: checkoutData }] = await Promise.all([
-      supabase.from("transactions").select("id, client_id, reseller_id, amount, commission, status, created_at, paid_at, available_at, payment_type, midtrans_order_id").order("created_at", { ascending: false }),
+      supabase.from("transactions").select("id, client_id, reseller_id, invitation_id, transaction_type, amount, commission, status, created_at, paid_at, available_at, payment_type, midtrans_order_id").order("created_at", { ascending: false }),
       supabase.from("resellers").select("id, name, whatsapp, package"),
       supabase.from("clients").select("id, name"),
       supabase.from("checkout_orders").select("id, order_id, package_id, package_name, amount, customer_name, customer_email, customer_phone, status, reseller_id, order_source, payment_type, provision_status, provision_error, confirmed_at, settlement_applied_at, created_at").order("created_at", { ascending: false }),
@@ -204,7 +206,7 @@ export default function AdminTransactionsPage() {
       const result = Array.isArray(data) ? data[0] : data;
       alert(result?.already_paid
         ? "Pembayaran ini sudah pernah dikonfirmasi. Tidak ada saldo atau komisi tambahan."
-        : "Pembayaran client berhasil dikonfirmasi. Saldo reseller ditahan selama 6 hari.");
+        : "Pembayaran client berhasil dikonfirmasi. Saldo reseller tersedia setelah 24 jam.");
       await fetchTransactions();
     } finally {
       setConfirmingTransactionId(null);
@@ -226,12 +228,15 @@ export default function AdminTransactionsPage() {
   const logout = async () => { await supabase.auth.signOut(); router.push("/login"); };
 
   const paidTransactions = transactions.filter((item) => item.status === "paid");
+  const paidLegacySales = paidTransactions.filter((item) => item.transaction_type !== "invitation_activation");
+  const paidActivationFees = paidTransactions.filter((item) => item.transaction_type === "invitation_activation");
   const paidPackageOrders = checkoutOrders.filter((item) => item.status === "paid");
   const totalPackageRevenue = paidPackageOrders.reduce((sum, item) => sum + Number(item.amount || 0), 0);
-  const totalClientGrossSales = paidTransactions.reduce((sum, item) => sum + Number(item.amount || 0), 0);
-  const totalOwnerOmzet = totalPackageRevenue + totalClientGrossSales;
-  const totalResellerShare = paidTransactions.reduce((sum, item) => sum + Number(item.commission || 0), 0);
-  const totalPlatformFee = paidTransactions.reduce((sum, item) => sum + Math.max(0, Number(item.amount || 0) - Number(item.commission || 0)), 0);
+  const totalClientGrossSales = paidLegacySales.reduce((sum, item) => sum + Number(item.amount || 0), 0);
+  const totalActivationFees = paidActivationFees.reduce((sum, item) => sum + Number(item.amount || 0), 0);
+  const totalResellerShare = paidLegacySales.reduce((sum, item) => sum + Number(item.commission || 0), 0);
+  const totalPlatformFee = paidLegacySales.reduce((sum, item) => sum + Math.max(0, Number(item.amount || 0) - Number(item.commission || 0)), 0);
+  const totalOwnerOmzet = totalPackageRevenue + totalPlatformFee + totalActivationFees;
 
   return (
     <main className={styles.page}>
@@ -249,7 +254,7 @@ export default function AdminTransactionsPage() {
           <div>
             <p className={styles.label}>OWNER MENU</p>
             <h1 className={styles.title}>Transaksi</h1>
-            <p className={styles.subtitle}>Kelola pembayaran paket dan penjualan client reseller. Akun yang dibuat Admin Vistiq langsung Lunas dan masuk omzet; order manual akun lama tetap menunggu konfirmasi transfer.</p>
+            <p className={styles.subtitle}>Kelola pembayaran paket, transaksi sistem lama, dan aktivasi undangan Rp20.000 untuk akun baru.</p>
           </div>
           <button onClick={fetchTransactions} className={styles.button}>Refresh</button>
         </header>
@@ -257,9 +262,10 @@ export default function AdminTransactionsPage() {
         <section className={styles.stats}>
           <div className={styles.statCard}><span>Omzet Paket Lunas</span><strong>Rp {totalPackageRevenue.toLocaleString("id-ID")}</strong></div>
           <div className={styles.statCard}><span>Omzet Client Reseller</span><strong>Rp {totalClientGrossSales.toLocaleString("id-ID")}</strong></div>
-          <div className={styles.statCard}><span>Total Omzet Owner</span><strong>Rp {totalOwnerOmzet.toLocaleString("id-ID")}</strong></div>
-          <div className={styles.statCard}><span>Hak Reseller 80%</span><strong>Rp {totalResellerShare.toLocaleString("id-ID")}</strong></div>
-          <div className={styles.statCard}><span>Fee Vistiq 20%</span><strong>Rp {totalPlatformFee.toLocaleString("id-ID")}</strong></div>
+          <div className={styles.statCard}><span>Aktivasi Undangan</span><strong>Rp {totalActivationFees.toLocaleString("id-ID")}</strong></div>
+          <div className={styles.statCard}><span>Total Pemasukan Vistiq</span><strong>Rp {totalOwnerOmzet.toLocaleString("id-ID")}</strong></div>
+          <div className={styles.statCard}><span>Hak Reseller Sistem Lama</span><strong>Rp {totalResellerShare.toLocaleString("id-ID")}</strong></div>
+          <div className={styles.statCard}><span>Fee Sistem Lama</span><strong>Rp {totalPlatformFee.toLocaleString("id-ID")}</strong></div>
         </section>
 
         <section className={styles.formCard}>
@@ -310,7 +316,7 @@ export default function AdminTransactionsPage() {
         </section>
 
         <section className={styles.tableWrap}>
-          <h2 className={styles.sectionTitle}>Pembayaran Client Reseller</h2>
+          <h2 className={styles.sectionTitle}>Pembayaran Reseller &amp; Aktivasi Undangan</h2>
           {loading ? <p>Memuat data...</p> : transactions.length === 0 ? <p>Belum ada transaksi reseller.</p> : (
             <div className={styles.table}>
               {transactions.map((item) => {
@@ -321,7 +327,9 @@ export default function AdminTransactionsPage() {
                   <div className={styles.row} key={item.id}>
                     <div>
                       <strong>{clientName(item.client_id)} · Rp {amount.toLocaleString("id-ID")}</strong>
-                      <p>{resellerName(item.reseller_id)} · Reseller Rp {resellerShare.toLocaleString("id-ID")} · Vistiq Rp {platformFee.toLocaleString("id-ID")}</p>
+                      <p>{item.transaction_type === "invitation_activation"
+                        ? `${resellerName(item.reseller_id)} · Aktivasi undangan #${item.invitation_id || "-"} · Vistiq Rp ${amount.toLocaleString("id-ID")}`
+                        : `${resellerName(item.reseller_id)} · Reseller Rp ${resellerShare.toLocaleString("id-ID")} · Vistiq Rp ${platformFee.toLocaleString("id-ID")}`}</p>
                       {item.status === "paid" && (
                         <p style={{ fontSize: 12, color: "#64748b" }}>
                           Lunas {item.paid_at ? new Date(item.paid_at).toLocaleString("id-ID") : ""}

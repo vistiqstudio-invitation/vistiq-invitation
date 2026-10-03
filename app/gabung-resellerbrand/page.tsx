@@ -24,7 +24,7 @@ const BENEFITS = [
 
 const FAQS = [
   ["Berapa harga Mitra Brand?", "Rp59.000 per bulan untuk fitur white label dan benefit premium Mitra Brand."],
-  ["Apa bedanya dengan Reseller biasa?", "Reseller biasa memakai brand Vistiq dan dikenakan fee platform 20% per transaksi client. Mitra Brand memakai brand sendiri dan menyimpan 100% harga jualnya."],
+  ["Apa bedanya dengan Reseller biasa?", "Reseller memakai brand Vistiq, sedangkan Mitra Brand memakai nama, logo, warna, dan domain sendiri. Keduanya membayar Rp20.000 per aktivasi undangan."],
   ["Apakah saya bisa memakai domain sendiri?", "Ya. Mitra Brand mendukung subdomain gratis dan custom domain sesuai pengaturan akun."],
   ["Apakah saya bebas menentukan harga jual?", "Ya. Mitra Brand dapat menentukan harga jual sendiri ke client."],
 ];
@@ -43,7 +43,7 @@ export default function GabungResellerBrandPage() {
           <h1>Bangun Bisnis Undangan Digital dengan Brand Sendiri</h1>
           <p className="lead">
             Gunakan nama, logo, warna, subdomain atau custom domain sendiri.
-            Tentukan harga jual sendiri dan nikmati keuntungan 100% dari penjualan client.
+            Tentukan harga jual sendiri. Setiap undangan diaktifkan dengan biaya tetap Rp20.000.
           </p>
           <div className="price"><strong>Rp59.000</strong><span>/bulan</span></div>
           <div className="actions">
@@ -99,7 +99,7 @@ export default function GabungResellerBrandPage() {
 
       <section className="section">
         <div className="compare">
-          <div><p className="label">Belum Butuh White Label?</p><h2>Pilih Reseller Biasa</h2><p>Join Rp149.000 sekali bayar, jual undangan tanpa batas, dengan fee platform 20% setiap transaksi client.</p></div>
+          <div><p className="label">Belum Butuh White Label?</p><h2>Pilih Reseller Biasa</h2><p>Join Rp149.000 sekali bayar, lalu aktifkan setiap undangan dengan biaya Rp20.000.</p></div>
           <Link href="/gabung-reseller" className="primaryLink">Lihat Paket Reseller</Link>
         </div>
       </section>

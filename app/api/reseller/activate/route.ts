@@ -11,11 +11,13 @@ function isBrandAccessActive(reseller: {
   status?: string | null;
   brand_active?: boolean | null;
   brand_expires_at?: string | null;
+  billing_model?: string | null;
 }) {
   const brandNotExpired =
     !reseller.brand_expires_at || new Date(reseller.brand_expires_at).getTime() > Date.now();
 
   return reseller.package === "reseller_brand"
+    && reseller.billing_model === "legacy_commission"
     && reseller.status === "active"
     && reseller.brand_active === true
     && brandNotExpired;
@@ -53,7 +55,7 @@ export async function POST(request: Request) {
 
   const { data: reseller, error: resellerError } = await supabaseAdmin
     .from("resellers")
-    .select("id, package, status, brand_active, brand_expires_at")
+    .select("id, package, status, brand_active, brand_expires_at, billing_model")
     .eq("user_id", profile.id)
     .maybeSingle();
 
@@ -63,7 +65,9 @@ export async function POST(request: Request) {
 
   if (!isBrandAccessActive(reseller)) {
     return NextResponse.json(
-      { error: "Aktivasi mandiri hanya tersedia untuk Mitra Brand yang aktif." },
+      { error: reseller.billing_model === "per_invitation"
+        ? "Undangan diaktifkan melalui pembayaran Rp20.000."
+        : "Aktivasi mandiri hanya tersedia untuk Mitra Brand yang aktif." },
       { status: 403 },
     );
   }

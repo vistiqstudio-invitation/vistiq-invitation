@@ -8,6 +8,7 @@ import DashboardSidebar from "@/components/admin/DashboardSidebar";
 import WhatsAppIcon from "@/components/WhatsAppIcon";
 import { getResellerNavItems } from "@/components/reseller/navItems";
 import { themeList, aqiqahThemeList, khitanThemeList, birthdayThemeList } from "@/lib/theme";
+import { INVITATION_ACTIVATION_FEE } from "@/lib/resellerBilling";
 import styles from "@/styles/dashboard.module.css";
 
 function toWaNumber(phone: string) {
@@ -46,6 +47,7 @@ type Reseller = {
   brand_expires_at?: string | null;
   package?: "reseller" | "reseller_brand";
   status?: string;
+  billing_model?: "legacy_commission" | "per_invitation";
 };
 
 type Client = {
@@ -68,6 +70,8 @@ type Transaction = {
   status?: string;
   midtrans_redirect_url?: string | null;
   payment_link_expires_at?: string | null;
+  transaction_type?: "legacy_client_sale" | "invitation_activation";
+  invitation_id?: number | null;
 };
 
 type Invitation = {
@@ -115,6 +119,9 @@ export default function ResellerClientsPage() {
   const [activatingKey, setActivatingKey] = useState<string | null>(null);
   const [renewingPayment, setRenewingPayment] = useState<string | null>(null);
   const [statusNotice, setStatusNotice] = useState("");
+  const [currentTime] = useState(() => Date.now());
+  const usesActivationFee = reseller?.billing_model === "per_invitation";
+  const legacyStandardReseller = reseller?.package === "reseller" && !usesActivationFee;
 
   const fetchData = async (resellerId: string) => {
     const { data: clientsData } = await supabase
@@ -140,7 +147,7 @@ export default function ResellerClientsPage() {
         .in("client_id", clientIds),
       supabase
         .from("transactions")
-        .select("id, client_id, amount, commission, status, midtrans_redirect_url, payment_link_expires_at")
+        .select("id, client_id, invitation_id, transaction_type, amount, commission, status, midtrans_redirect_url, payment_link_expires_at")
         .eq("reseller_id", resellerId)
         .in("client_id", clientIds)
         .order("created_at", { ascending: false }),
@@ -203,7 +210,7 @@ export default function ResellerClientsPage() {
     }
 
     const salePrice = Math.round(Number(form.sale_price));
-    if (reseller.package !== "reseller_brand" && (!Number.isFinite(salePrice) || salePrice < 1000)) {
+    if (legacyStandardReseller && (!Number.isFinite(salePrice) || salePrice < 1000)) {
       alert("Harga jual client wajib diisi dengan benar.");
       return;
     }
@@ -215,7 +222,7 @@ export default function ResellerClientsPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         ...form,
-        sale_price: reseller.package === "reseller_brand" ? salePrice || 100000 : salePrice,
+        sale_price: usesActivationFee ? 0 : reseller.package === "reseller_brand" ? salePrice || 100000 : salePrice,
       }),
     });
 
@@ -258,11 +265,11 @@ export default function ResellerClientsPage() {
     const category = categoryForPackageName(newClientCredentials.packageName);
     const checklist = DATA_CHECKLIST[category];
 
-    if (reseller?.package !== "reseller_brand" && newClientCredentials.paymentUrl) {
+    if (legacyStandardReseller && newClientCredentials.paymentUrl) {
       return `Halo ${newClientCredentials.name}, pesanan undangan digital Anda sudah dibuat.\n\nTotal pembayaran: Rp ${newClientCredentials.salePrice.toLocaleString("id-ID")}\nBayar aman melalui Midtrans di link berikut:\n${newClientCredentials.paymentUrl}\n\nAkun dashboard yang sudah disiapkan:\nLink: ${window.location.origin}/login\nEmail: ${newClientCredentials.email}\nPassword: ${newClientCredentials.password}\n\nData yang perlu disiapkan:\n${checklist}\n\nTerima kasih!`;
     }
 
-    return `Halo ${newClientCredentials.name}, akun dashboard undangan Anda di ${dashboardBrand} sudah disiapkan.\n\nLink: ${window.location.origin}/login\nEmail: ${newClientCredentials.email}\nPassword: ${newClientCredentials.password}\n\nAkun client dan link undangan akan dapat digunakan setelah diaktifkan oleh Mitra Brand Anda.\n\nMohon siapkan data berikut:\n${checklist}\n\nKalau ada pertanyaan, jangan sungkan hubungi kami ya. Terima kasih!`;
+    return `Halo ${newClientCredentials.name}, akun dashboard undangan Anda di ${dashboardBrand} sudah disiapkan.\n\nLink: ${window.location.origin}/login\nEmail: ${newClientCredentials.email}\nPassword: ${newClientCredentials.password}\n\nLink undangan akan dapat dibagikan setelah proses aktivasi selesai.\n\nMohon siapkan data berikut:\n${checklist}\n\nKalau ada pertanyaan, jangan sungkan hubungi kami ya. Terima kasih!`;
   };
 
   const copyClientCredentials = async () => {
@@ -416,6 +423,7 @@ export default function ResellerClientsPage() {
   const brandNotExpired =
     !reseller?.brand_expires_at || new Date(reseller.brand_expires_at) > new Date();
   const canSelfActivate = reseller?.package === "reseller_brand"
+    && reseller?.billing_model === "legacy_commission"
     && reseller?.status === "active" && Boolean(reseller?.brand_active) && brandNotExpired;
   const brandingEnabled = reseller?.package === "reseller" || Boolean(reseller?.brand_active);
   const brandName = brandingEnabled && reseller?.brand_name ? reseller.brand_name : null;
@@ -430,7 +438,7 @@ export default function ResellerClientsPage() {
         brandBottom={reseller?.package === "reseller_brand" ? "Mitra Brand" : "Reseller"}
         logoUrl={brandingEnabled ? reseller?.logo_url : null}
         accentColor={brandingEnabled ? reseller?.brand_color : null}
-        items={getResellerNavItems(reseller?.package, reseller?.id)}
+        items={getResellerNavItems(reseller?.package, reseller?.id, reseller?.billing_model)}
         activeKey="clients"
         notificationRole="reseller"
         onLogout={logout}
@@ -442,9 +450,11 @@ export default function ResellerClientsPage() {
             <p className={styles.label}>{brandName ? `${brandName} DASHBOARD` : "RESELLER DASHBOARD"}</p>
             <h1 className={styles.title}>Daftar Client</h1>
             <p className={styles.subtitle}>
-              {reseller?.package === "reseller_brand"
-                ? "Tambah client baru dan kelola client yang sudah ada."
-                : "Tentukan harga jual, kirim link Midtrans ke client, dan pembayaran akan tercatat otomatis."}
+              {usesActivationFee
+                  ? `Tambah client dan buat draft undangan. Aktivasi setiap undangan hanya Rp${INVITATION_ACTIVATION_FEE.toLocaleString("id-ID")}.`
+                : reseller?.package === "reseller_brand"
+                  ? "Tambah client baru dan kelola client yang sudah ada."
+                  : "Tentukan harga jual, kirim link Midtrans ke client, dan pembayaran akan tercatat otomatis."}
             </p>
           </div>
 
@@ -464,7 +474,9 @@ export default function ResellerClientsPage() {
             <section className={styles.formCard}>
               <h2 className={styles.sectionTitle}>Tambah Client Baru</h2>
               <p style={{ marginTop: -8, marginBottom: 16, fontSize: 13, opacity: 0.75 }}>
-                {reseller.package === "reseller_brand"
+                {usesActivationFee
+                  ? `Client dapat dibuat tanpa tagihan. Pembayaran Rp${INVITATION_ACTIVATION_FEE.toLocaleString("id-ID")} dilakukan saat undangan siap diaktifkan.`
+                  : reseller.package === "reseller_brand"
                   ? "Email dipakai untuk membuat akun login dashboard client secara otomatis. Anda dapat mengaktifkan akun client dan undangannya sendiri dari daftar di bawah."
                   : "Setelah disimpan, sistem otomatis membuat tagihan Midtrans. Client dan undangan menunggu pembayaran serta aktivasi admin Vistiq."}
               </p>
@@ -474,7 +486,7 @@ export default function ResellerClientsPage() {
                   <p style={{ margin: "0 0 8px", fontWeight: 700 }}>
                     Client berhasil dibuat: {newClientCredentials.name}
                   </p>
-                  {reseller.package !== "reseller_brand" && (
+                  {legacyStandardReseller && (
                     <>
                       <p style={{ margin: "0 0 5px" }}>Harga jual: <strong>Rp {newClientCredentials.salePrice.toLocaleString("id-ID")}</strong></p>
                       <p style={{ margin: "0 0 12px" }}>
@@ -500,7 +512,7 @@ export default function ResellerClientsPage() {
                         Kirim ke WA Otomatis
                       </a>
                     )}
-                    {reseller.package !== "reseller_brand" && (
+                    {legacyStandardReseller && (
                       <a href={adminActivationLinkForNewClient()} target="_blank" rel="noreferrer" className={styles.adminActivationButton}>
                         <WhatsAppIcon />
                         Hubungi Admin untuk Aktivasi
@@ -552,7 +564,7 @@ export default function ResellerClientsPage() {
                   </optgroup>
                 </select>
 
-                {reseller.package !== "reseller_brand" && (
+                {legacyStandardReseller && (
                   <input
                     type="number"
                     min="1000"
@@ -566,14 +578,14 @@ export default function ResellerClientsPage() {
 
               </div>
 
-              {reseller.package !== "reseller_brand" && (
+              {legacyStandardReseller && (
                 <p style={{ marginTop: 12, color: "#64748b", fontSize: 13 }}>
-                  Contoh Rp100.000 → Rp80.000 bagian reseller dan Rp20.000 fee Vistiq. Saldo reseller tersedia 6 hari setelah pembayaran berhasil.
+                  Contoh Rp100.000 → Rp80.000 bagian reseller dan Rp20.000 fee Vistiq. Saldo reseller tersedia 24 jam setelah pembayaran berhasil.
                 </p>
               )}
 
               <button onClick={addClient} className={styles.button} disabled={addingClient} style={{ marginTop: 16 }}>
-                {addingClient ? "Membuat Client & Tagihan..." : reseller.package === "reseller_brand" ? "Simpan Client" : "Simpan Client & Buat Tagihan"}
+                {addingClient ? "Menyimpan Client..." : usesActivationFee || reseller.package === "reseller_brand" ? "Simpan Client" : "Simpan Client & Buat Tagihan"}
               </button>
             </section>
 
@@ -591,7 +603,7 @@ export default function ResellerClientsPage() {
                 <div className={styles.table}>
                   {clients.map((client) => {
                     const clientInvitations = invitations.filter((inv) => inv.client_id === client.id);
-                    const transaction = transactions.find((tx) => tx.client_id === client.id);
+                    const transaction = transactions.find((tx) => tx.client_id === client.id && tx.transaction_type !== "invitation_activation");
                     const isPaid = transaction?.status === "paid";
                     const activeInvitation = clientInvitations.find((inv) => inv.is_active);
                     const invitationForActivation = clientInvitations.find((inv) => !inv.is_active) || clientInvitations[0];
@@ -602,7 +614,7 @@ export default function ResellerClientsPage() {
                           <strong>{client.name}</strong>
                           <p>{client.email || "-"}</p>
                           <p>{client.whatsapp || "-"}</p>
-                          {reseller.package !== "reseller_brand" && transaction && (
+                          {legacyStandardReseller && transaction && (
                             <p><strong>Rp {Number(transaction.amount).toLocaleString("id-ID")}</strong> · Reseller Rp {Number(transaction.commission).toLocaleString("id-ID")}</p>
                           )}
                         </div>
@@ -624,9 +636,9 @@ export default function ResellerClientsPage() {
                             <Link href={`/reseller/rsvp?client_id=${client.id}`}>Lihat RSVP</Link>
                           )}
 
-                          {reseller.package !== "reseller_brand" && transaction && !isPaid && (
+                          {legacyStandardReseller && transaction && !isPaid && (
                             <>
-                              {transaction.midtrans_redirect_url && transaction.payment_link_expires_at && new Date(transaction.payment_link_expires_at).getTime() > Date.now() ? (
+                              {transaction.midtrans_redirect_url && transaction.payment_link_expires_at && new Date(transaction.payment_link_expires_at).getTime() > currentTime ? (
                                 <>
                                   <a href={transaction.midtrans_redirect_url} target="_blank" rel="noreferrer">Link Pembayaran</a>
                                   {client.whatsapp && <a href={paymentWaLink(client, transaction)} target="_blank" rel="noreferrer">Kirim Tagihan via WA</a>}
@@ -648,7 +660,7 @@ export default function ResellerClientsPage() {
                             </>
                           )}
 
-                          {!activeInvitation && !canSelfActivate && (
+                          {!usesActivationFee && !activeInvitation && !canSelfActivate && (
                             <a
                               href={adminActivationLink(client, invitationForActivation)}
                               target="_blank"
@@ -663,7 +675,7 @@ export default function ResellerClientsPage() {
                         </div>
 
                         <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-                          {reseller.package !== "reseller_brand" && (
+                          {legacyStandardReseller && (
                             <span className={styles.badge}>{isPaid ? "LUNAS" : "MENUNGGU BAYAR"}</span>
                           )}
                           {canSelfActivate ? (
@@ -687,7 +699,7 @@ export default function ResellerClientsPage() {
                             <span className={styles.status}>
                               {client.status === "active"
                                 ? "AKUN CLIENT AKTIF"
-                                : "AKUN CLIENT MENUNGGU ADMIN"}
+                                : usesActivationFee ? "MENUNGGU AKTIVASI UNDANGAN" : "AKUN CLIENT MENUNGGU ADMIN"}
                             </span>
                           )}
                           <span className={styles.badge}>
@@ -695,6 +707,8 @@ export default function ResellerClientsPage() {
                               ? "BELUM ADA UNDANGAN"
                               : activeInvitation
                               ? "UNDANGAN AKTIF"
+                              : usesActivationFee
+                                ? `Bayar Rp${INVITATION_ACTIVATION_FEE.toLocaleString("id-ID")} di menu Buat Undangan`
                               : canSelfActivate
                               ? "UNDANGAN SIAP DIAKTIFKAN"
                               : "UNDANGAN MENUNGGU ADMIN"}

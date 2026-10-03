@@ -15,7 +15,7 @@ const HERO_FAN = [
 const BENEFITS = [
   ["Jual undangan tanpa batas", "Buat dan jual undangan ke sebanyak mungkin client tanpa batas jumlah."],
   ["Akses dashboard selamanya", "Cukup bayar Rp149.000 sekali. Tidak ada biaya join bulanan untuk paket Reseller."],
-  ["Fee platform hanya 20%", "Pada setiap transaksi client, 20% menjadi fee platform dan 80% menjadi bagian reseller."],
+  ["Aktivasi hanya Rp20.000", "Bayar Rp20.000 hanya saat undangan sudah siap diaktifkan dan dibagikan."],
   ["Tema premium siap jual", "Wedding, aqiqah, khitan, ulang tahun, dan kategori lainnya sudah siap digunakan."],
   ["Client bisa edit sendiri", "Client dapat mengubah data dan mengunggah foto dari dashboard pribadinya."],
   ["Bisa dikerjakan dari HP", "Kelola client dan undangan dari mana saja tanpa perlu coding atau desain dari nol."],
@@ -25,13 +25,13 @@ const STEPS = [
   ["1", "Join Rp149.000", "Bayar sekali untuk mengaktifkan akun Reseller Vistiq."],
   ["2", "Cari Client", "Tawarkan undangan digital ke calon pengantin atau siapa pun yang punya acara."],
   ["3", "Buat Undangan", "Pilih tema, masukkan data client, lalu bagikan link undangan."],
-  ["4", "Jual Tanpa Batas", "Tidak ada batas jumlah client. Setiap transaksi dikenakan fee platform 20%."],
+  ["4", "Aktifkan Undangan", "Bayar Rp20.000 per undangan agar link aktif dan siap dibagikan."],
 ];
 
 const FAQS = [
   ["Berapa biaya join Reseller?", "Rp149.000 sekali bayar dan akun Reseller aktif selamanya."],
   ["Apakah ada batas jumlah undangan?", "Tidak. Reseller dapat menjual dan membuat undangan sebanyak yang dibutuhkan."],
-  ["Bagaimana pembagian setiap transaksi?", "80% menjadi bagian reseller dan 20% menjadi fee platform Vistiq pada setiap transaksi client."],
+  ["Apakah masih memakai sistem komisi?", "Tidak. Reseller baru membayar biaya tetap Rp20.000 untuk setiap undangan yang ingin diaktifkan."],
   ["Apakah harus bisa desain atau coding?", "Tidak. Tema dan sistem sudah tersedia; reseller cukup memilih tema dan mengisi data client."],
   ["Apakah Reseller bisa memakai logo sendiri?", "Paket Reseller memakai brand Vistiq. Untuk white label, logo, warna, dan domain sendiri gunakan Mitra Brand."],
 ];
@@ -53,8 +53,8 @@ export default function GabungResellerPage() {
           <h1>Mulai Usaha Undangan Digital Cuma Rp149.000</h1>
           <p className="lead">
             Tidak perlu bikin website dari nol. Dapatkan dashboard Reseller Vistiq,
-            jual undangan digital sebebasnya tanpa batas, dan cukup bayar fee platform
-            20% setiap ada transaksi client.
+            jual undangan digital sebebasnya tanpa batas, lalu bayar Rp20.000
+            hanya untuk setiap undangan yang ingin diaktifkan.
           </p>
           <div className="price"><strong>Rp149.000</strong><span>sekali bayar · akses selamanya</span></div>
           <div className="actions">
@@ -63,7 +63,7 @@ export default function GabungResellerPage() {
           </div>
           <div className="facts">
             <div><strong>Tanpa Batas</strong><span>Jumlah client</span></div>
-            <div><strong>20%</strong><span>Fee platform/transaksi</span></div>
+            <div><strong>Rp20rb</strong><span>Aktivasi/undangan</span></div>
             <div><strong>1x Bayar</strong><span>Akses selamanya</span></div>
           </div>
         </div>

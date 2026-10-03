@@ -10,6 +10,7 @@ import { themeList, aqiqahThemeList, khitanThemeList, birthdayThemeList } from "
 import SmartCoverEditor from "@/components/SmartCoverEditor";
 import ThemePreviewPanel from "@/components/ThemePreviewPanel";
 import { MUSIC_LIBRARY } from "@/lib/musicLibrary";
+import { INVITATION_ACTIVATION_FEE } from "@/lib/resellerBilling";
 import styles from "@/styles/dashboard.module.css";
 
 const BUCKET = "invitation-assets";
@@ -26,6 +27,7 @@ type Reseller = {
   brand_active?: boolean;
   package?: "reseller" | "reseller_brand";
   brand_expires_at?: string | null;
+  billing_model?: "legacy_commission" | "per_invitation";
 };
 
 type Client = {
@@ -51,6 +53,10 @@ type Transaction = {
   id: string;
   client_id: string;
   status?: string;
+  invitation_id?: number | null;
+  transaction_type?: "legacy_client_sale" | "invitation_activation";
+  midtrans_redirect_url?: string | null;
+  payment_link_expires_at?: string | null;
 };
 
 type InvitationCategory = "wedding" | "aqiqah" | "khitan" | "birthday";
@@ -144,10 +150,12 @@ export default function ResellerInvitationsPage() {
   const [clients, setClients] = useState<Client[]>([]);
   const [invitations, setInvitations] = useState<Invitation[]>([]);
   const [transactionsByClientId, setTransactionsByClientId] = useState<Record<string, Transaction>>({});
+  const [activationsByInvitationId, setActivationsByInvitationId] = useState<Record<number, Transaction>>({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [deletingId, setDeletingId] = useState<number | null>(null);
   const [activatingId, setActivatingId] = useState<number | null>(null);
+  const [payingId, setPayingId] = useState<number | null>(null);
 
   const [form, setForm] = useState<FormState>(initialForm);
 
@@ -164,6 +172,7 @@ export default function ResellerInvitationsPage() {
 
     if (clientIds.length === 0) {
       setInvitations([]);
+      setActivationsByInvitationId({});
       setLoading(false);
       return;
     }
@@ -178,17 +187,21 @@ export default function ResellerInvitationsPage() {
 
     const { data: transactionsData } = await supabase
       .from("transactions")
-      .select("id, client_id, status")
+      .select("id, client_id, invitation_id, transaction_type, status, midtrans_redirect_url, payment_link_expires_at")
       .in("client_id", clientIds)
       .order("created_at", { ascending: false });
 
     const transactionMap: Record<string, Transaction> = {};
+    const activationMap: Record<number, Transaction> = {};
     for (const t of transactionsData ?? []) {
-      if (!(t.client_id in transactionMap)) {
+      if (t.transaction_type === "invitation_activation" && t.invitation_id) {
+        activationMap[Number(t.invitation_id)] = t as Transaction;
+      } else if (!(t.client_id in transactionMap)) {
         transactionMap[t.client_id] = t;
       }
     }
     setTransactionsByClientId(transactionMap);
+    setActivationsByInvitationId(activationMap);
 
     setLoading(false);
   };
@@ -399,7 +412,9 @@ export default function ResellerInvitationsPage() {
     setForm(initialForm);
     if (reseller) fetchData(reseller.id);
     alert(
-      reseller?.package === "reseller_brand"
+      reseller?.billing_model === "per_invitation"
+        ? `Undangan berhasil dibuat sebagai draft. Bayar aktivasi Rp${INVITATION_ACTIVATION_FEE.toLocaleString("id-ID")} dari daftar di bawah agar undangan aktif.`
+        : reseller?.package === "reseller_brand"
         ? "Undangan berhasil dibuat sebagai draft. Aktifkan melalui tombol Aktifkan Undangan pada daftar di bawah."
         : "Undangan berhasil dibuat sebagai draft. Hubungi admin Vistiq untuk verifikasi dan aktivasi.",
     );
@@ -436,6 +451,32 @@ export default function ResellerInvitationsPage() {
     alert("Undangan berhasil diaktifkan.");
   };
 
+  const payInvitationActivation = async (id: number) => {
+    setPayingId(id);
+    const response = await fetch("/api/reseller/invitation-activation", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ invitationId: id }),
+    });
+    const result = await response.json();
+    setPayingId(null);
+
+    if (!response.ok) {
+      if (result.orderId) {
+        window.location.assign(`/pembayaran/status?order_id=${encodeURIComponent(result.orderId)}`);
+        return;
+      }
+      alert(result.error || "Tagihan aktivasi gagal dibuat.");
+      return;
+    }
+    if (result.active) {
+      if (reseller) await fetchData(reseller.id);
+      alert("Undangan sudah aktif.");
+      return;
+    }
+    if (result.paymentUrl) window.location.assign(result.paymentUrl);
+  };
+
   const deleteInvitation = async (id: number, name: string) => {
     if (!confirm(`Hapus undangan "${name}" secara permanen? Tindakan ini tidak bisa dibatalkan.`)) return;
 
@@ -459,6 +500,7 @@ export default function ResellerInvitationsPage() {
   const brandNotExpired =
     !reseller?.brand_expires_at || new Date(reseller.brand_expires_at) > new Date();
   const canSelfActivate = reseller?.package === "reseller_brand"
+    && reseller?.billing_model === "legacy_commission"
     && reseller?.status === "active" && Boolean(reseller?.brand_active) && brandNotExpired;
   const canDeleteInvitation = canSelfActivate;
 
@@ -480,7 +522,7 @@ export default function ResellerInvitationsPage() {
         brandBottom={reseller?.package === "reseller_brand" ? "Mitra Brand" : "Reseller"}
         logoUrl={brandingEnabled ? reseller?.logo_url : null}
         accentColor={brandingEnabled ? reseller?.brand_color : null}
-        items={getResellerNavItems(reseller?.package, reseller?.id)}
+        items={getResellerNavItems(reseller?.package, reseller?.id, reseller?.billing_model)}
         activeKey="invitations"
         notificationRole="reseller"
         onLogout={logout}
@@ -605,7 +647,7 @@ export default function ResellerInvitationsPage() {
 
               {reseller?.package === "reseller_brand" && (
                 <p className={styles.helpText} style={{ marginTop: -8 }}>
-                  Harga ini sepenuhnya Anda yang tentukan - tidak ada potongan komisi ke Vistiq, 100% milik Anda.
+                  Harga jual kepada client bebas Anda tentukan. Untuk akun baru, biaya aktivasi Vistiq tetap Rp20.000 per undangan.
                 </p>
               )}
 
@@ -1183,6 +1225,7 @@ export default function ResellerInvitationsPage() {
                 <div className={styles.table}>
                   {invitations.map((item) => {
                     const transaction = item.client_id ? transactionsByClientId[item.client_id] : null;
+                    const activation = activationsByInvitationId[item.id];
                     const client = clients.find((candidate) => candidate.id === item.client_id);
 
                     return (
@@ -1206,7 +1249,7 @@ export default function ResellerInvitationsPage() {
                         </span>
                       )}
 
-                      {transaction && (
+                      {reseller?.billing_model === "legacy_commission" && transaction && (
                         <span className={styles.packageBadge}>
                           {transaction.status === "paid" ? "LUNAS" : "MENUNGGU BAYAR"}
                         </span>
@@ -1214,14 +1257,26 @@ export default function ResellerInvitationsPage() {
 
                       <span className={styles.status}>
                         {item.is_active === false
-                          ? reseller?.package === "reseller_brand"
+                          ? reseller?.billing_model === "per_invitation"
+                            ? activation?.status === "paid" ? "Pembayaran Diproses" : "Belum Diaktifkan"
+                            : reseller?.package === "reseller_brand"
                             ? canSelfActivate ? "Siap Diaktifkan" : "Aktivasi Mandiri Belum Tersedia"
                             : "Menunggu Aktivasi Admin"
                           : "Aktif"}
                       </span>
 
                       {item.is_active === false && (
-                        canSelfActivate ? (
+                        reseller?.billing_model === "per_invitation" ? (
+                          <button
+                            onClick={() => payInvitationActivation(item.id)}
+                            disabled={payingId === item.id}
+                            className={styles.miniButtonGreen}
+                          >
+                            {payingId === item.id
+                              ? "Menyiapkan Pembayaran..."
+                              : `Bayar Aktivasi Rp${INVITATION_ACTIVATION_FEE.toLocaleString("id-ID")}`}
+                          </button>
+                        ) : canSelfActivate ? (
                           <button
                             onClick={() => activateInvitation(item.id)}
                             disabled={activatingId === item.id}

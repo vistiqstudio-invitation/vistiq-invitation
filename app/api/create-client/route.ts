@@ -127,11 +127,12 @@ export async function POST(request: Request) {
 
   let reseller_id: string | null = null;
   let resellerPackage: "reseller" | "reseller_brand" | null = null;
+  let resellerBillingModel: "legacy_commission" | "per_invitation" | null = null;
 
   if (profile.role === "reseller") {
     const { data: reseller } = await supabaseAdmin
       .from("resellers")
-      .select("id, package")
+      .select("id, package, billing_model")
       .eq("user_id", profile.id)
       .single();
 
@@ -144,17 +145,21 @@ export async function POST(request: Request) {
 
     reseller_id = reseller.id;
     resellerPackage = reseller.package as "reseller" | "reseller_brand";
+    resellerBillingModel = reseller.billing_model as "legacy_commission" | "per_invitation";
   } else if (body.reseller_id) {
     reseller_id = body.reseller_id;
     const { data: reseller } = await supabaseAdmin
       .from("resellers")
-      .select("package")
+      .select("package, billing_model")
       .eq("id", reseller_id)
       .maybeSingle();
     resellerPackage = (reseller?.package as "reseller" | "reseller_brand" | undefined) ?? null;
+    resellerBillingModel = (reseller?.billing_model as "legacy_commission" | "per_invitation" | undefined) ?? null;
   }
 
-  const salePrice = resellerPackage === "reseller"
+  const salePrice = resellerBillingModel === "per_invitation"
+    ? 0
+    : resellerPackage === "reseller"
     ? Math.max(1000, Number.isFinite(requestedSalePrice) ? requestedSalePrice : 100000)
     : Math.max(0, Number.isFinite(requestedSalePrice) ? requestedSalePrice : 100000);
 
@@ -205,7 +210,7 @@ export async function POST(request: Request) {
   let paymentUrl: string | null = null;
   let paymentError: string | null = null;
 
-  if (resellerPackage === "reseller") {
+  if (resellerPackage === "reseller" && resellerBillingModel === "legacy_commission") {
     const { data: transaction } = await supabaseAdmin
       .from("transactions")
       .select("id, amount")
@@ -241,5 +246,6 @@ export async function POST(request: Request) {
     salePrice,
     paymentUrl,
     paymentError,
+    billingModel: resellerBillingModel,
   });
 }
