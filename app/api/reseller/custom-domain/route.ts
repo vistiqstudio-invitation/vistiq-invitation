@@ -30,7 +30,8 @@ async function currentReseller() {
   return data ? { supabase, reseller: data } : null;
 }
 
-function packageIsActive(reseller: { package?: string; brand_active?: boolean; brand_expires_at?: string | null }) {
+function packageHasDomainAccess(reseller: { package?: string; brand_active?: boolean; brand_expires_at?: string | null }) {
+  if (reseller.package === "reseller") return true;
   return reseller.package === "reseller_brand" &&
     reseller.brand_active === true &&
     (!reseller.brand_expires_at || new Date(reseller.brand_expires_at).getTime() > Date.now());
@@ -68,8 +69,8 @@ export async function POST(request: Request) {
   try {
     const context = await currentReseller();
     if (!context) return NextResponse.json({ error: "Tidak diizinkan." }, { status: 403 });
-    if (!packageIsActive(context.reseller)) {
-      return NextResponse.json({ error: "Custom domain hanya tersedia untuk paket Mitra Brand yang aktif." }, { status: 403 });
+    if (!packageHasDomainAccess(context.reseller)) {
+      return NextResponse.json({ error: "Custom domain tersedia untuk Reseller dan Mitra Brand yang aktif." }, { status: 403 });
     }
 
     const body = await request.json();
