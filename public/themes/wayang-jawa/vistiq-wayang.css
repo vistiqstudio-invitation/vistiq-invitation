@@ -3620,3 +3620,20 @@ html body .vistiq-wayang .elementor-element-23d59e32 > .elementor-widget-contain
 
 /* Bleed the cover ornament beyond its transparent outer margins. */
 html body #sec::after{left:-2.5%!important;right:auto!important;width:105%!important;bottom:-6px!important;}
+
+/* Paired puppets and clean parchment transitions throughout the invitation. */
+html body .vistiq-wayang .elementor-element-361fc64e::after{content:none!important;display:none!important}
+html body .vistiq-wayang .vistiq-scene-puppet{position:absolute!important;width:43%!important;max-width:190px!important;bottom:28px!important;pointer-events:none;z-index:1}
+html body .vistiq-wayang .vistiq-scene-left{left:-16px!important;right:auto!important}
+html body .vistiq-wayang .vistiq-scene-right{right:-16px!important;left:auto!important}
+html body .vistiq-wayang .vistiq-scene-puppet img{display:block;width:100%!important;height:240px!important;object-fit:contain;object-position:center bottom}
+html body .vistiq-wayang .elementor-element-361fc64e .vistiq-scene-puppet img{height:190px!important}
+html body .vistiq-wayang .elementor-element-647b74c1{background:#f8f4ec!important}
+html body .vistiq-wayang :is(.elementor-element-3a4f4557,.elementor-element-d2eb9e9){background:#f8f4ec!important;position:relative!important}
+html body .vistiq-wayang :is(.elementor-element-3a4f4557,.elementor-element-d2eb9e9)::after{content:"";display:block;position:absolute;left:0;right:0;bottom:0;height:110px;background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%201000%20310%22%20preserveAspectRatio%3D%22none%22%3E%3Cpath%20fill%3D%22%23dfcbb3%22%20d%3D%22M0%2010%20C240%2060%20620%20110%201000%2022%20L1000%20253%20C670%20315%20320%20234%200%20275%20Z%22%2F%3E%3Cpath%20fill%3D%22%23eadcca%22%20d%3D%22M0%2010%20C240%2060%20620%20110%201000%2022%20L1000%2032%20C620%20120%20240%2070%200%2020%20Z%22%2F%3E%3C%2Fsvg%3E") center/100% 100% no-repeat;pointer-events:none}
+html body .vistiq-wayang .elementor-element-396df29,
+html body .vistiq-wayang .elementor-element-59fdcccd{--spacer-size:110px!important}
+html body .vistiq-wayang .elementor-element-647b74c1 > .elementor-shape-top{display:none!important}
+html body .vistiq-wayang .elementor-element-7772ea12{background:#f8f4ec!important}
+html body .vistiq-wayang :is(.elementor-element-751083f2,.elementor-element-6ad9ce31) .idb-social-icons__item{display:inline-flex!important;align-items:center;justify-content:center;gap:8px;width:auto!important;min-width:112px;padding:12px 20px!important;border-radius:999px}
+html body .vistiq-wayang :is(.elementor-element-751083f2,.elementor-element-6ad9ce31) .idb-social-icons__text{display:inline!important;color:#fff!important;font-size:15px!important;line-height:1.4}

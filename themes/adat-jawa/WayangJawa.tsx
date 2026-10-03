@@ -130,7 +130,7 @@ function setLink(
     link.rel = "noreferrer";
   }
   if (label) {
-    const text = link.querySelector<HTMLElement>(".elementor-button-text");
+    const text = link.querySelector<HTMLElement>(".elementor-button-text, .idb-social-icons__text");
     if (text) text.textContent = label;
   }
 }
@@ -998,7 +998,7 @@ function prepareReference(
     setText(doc, config.date, event.date);
     setText(doc, config.time, formatTime(event.time));
     setEventPlace(doc, config.place, event.location);
-    setLink(doc, config.map, invitation.mapsUrl || invitation.mapsEmbedUrl, "Lihat Lokasi");
+    setLink(doc, config.map, invitation.mapsUrl || invitation.mapsEmbedUrl, "Lokasi");
   });
 
   expandItems(doc, "#galeri .e-gallery-item", invitation.gallery.length);
