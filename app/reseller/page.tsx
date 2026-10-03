@@ -46,6 +46,7 @@ type Reseller = {
   custom_domain?: string | null;
   free_subdomain?: string | null;
   landing_whatsapp?: string | null;
+  landing_slug?: string | null;
 };
 
 const LOGO_BUCKET = "invitation-assets";
@@ -78,6 +79,7 @@ export default function ResellerPage() {
   const [brandForm, setBrandForm] = useState({
     brand_name: "",
     landing_whatsapp: "",
+    landing_slug: "",
     brand_color: "#d4af37",
     wedding_price: "",
     khitan_price: "",
@@ -113,6 +115,7 @@ export default function ResellerPage() {
     setBrandForm({
       brand_name: currentReseller.brand_name || "",
       landing_whatsapp: currentReseller.landing_whatsapp || "",
+      landing_slug: currentReseller.landing_slug || "",
       brand_color: currentReseller.brand_color || "#d4af37",
       wedding_price: currentReseller.wedding_price != null ? String(currentReseller.wedding_price) : "",
       khitan_price: currentReseller.khitan_price != null ? String(currentReseller.khitan_price) : "",
@@ -183,6 +186,7 @@ export default function ResellerPage() {
       .update({
         brand_name: brandForm.brand_name || null,
         landing_whatsapp: brandForm.landing_whatsapp.trim() || null,
+        landing_slug: brandForm.landing_slug.trim().toLowerCase().replace(/[^a-z0-9-]/g, "") || null,
         brand_color: brandForm.brand_color || null,
         wedding_price: brandForm.wedding_price ? Number(brandForm.wedding_price) : null,
         khitan_price: brandForm.khitan_price ? Number(brandForm.khitan_price) : null,
@@ -399,7 +403,7 @@ export default function ResellerPage() {
 
                 <p style={{ margin: "0 0 16px", fontSize: 13.5, color: brandingEnabled ? "#15803d" : "#b45309" }}>
                   {!isBrandPackage
-                    ? "Nama dan logo brand Anda akan tampil di dashboard serta undangan client. Fitur domain sendiri tetap khusus Mitra Brand."
+                    ? "Nama, logo, subdomain, custom domain, dan link Landing Page dapat Anda atur sendiri."
                     : brandActive
                     ? "Paket brand aktif - nama & logo di bawah tampil di undangan client Anda."
                     : brandExpired
@@ -414,6 +418,19 @@ export default function ResellerPage() {
                     onChange={(e) => setBrandForm({ ...brandForm, brand_name: e.target.value })}
                     className={styles.input}
                   />
+
+                  <label>
+                    <span style={{ display: "block", marginBottom: 6, fontSize: 12, fontWeight: 700, color: "#475569" }}>
+                      Link Landing Page Custom
+                    </span>
+                    <input
+                      placeholder="contoh: elova-invitation"
+                      value={brandForm.landing_slug}
+                      onChange={(e) => setBrandForm({ ...brandForm, landing_slug: e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, "") })}
+                      className={styles.input}
+                    />
+                    <span className={styles.helpText}>Link: /promo/{brandForm.landing_slug || reseller.id}</span>
+                  </label>
 
                   <label>
                     <span style={{ display: "block", marginBottom: 6, fontSize: 12, fontWeight: 700, color: "#475569" }}>
@@ -524,7 +541,7 @@ export default function ResellerPage() {
                 </button>
               </section>
 
-            {brandActive && (
+            {brandingEnabled && (
               <CustomDomainCard
                 initialDomain={reseller.custom_domain}
                 initialSubdomain={reseller.free_subdomain}
@@ -541,12 +558,12 @@ export default function ResellerPage() {
                 </p>
 
                 <div className={styles.linkBox}>
-                  {typeof window !== "undefined" ? `${window.location.origin}/promo/${reseller.id}` : `/promo/${reseller.id}`}
+                  {typeof window !== "undefined" ? `${window.location.origin}/promo/${reseller.landing_slug || reseller.id}` : `/promo/${reseller.id}`}
                 </div>
 
                 <button
                   onClick={async () => {
-                    await navigator.clipboard.writeText(`${window.location.origin}/promo/${reseller.id}`);
+                    await navigator.clipboard.writeText(`${window.location.origin}/promo/${reseller.landing_slug || reseller.id}`);
                     alert("Link landing page berhasil disalin.");
                   }}
                   className={styles.button}
@@ -561,8 +578,7 @@ export default function ResellerPage() {
               <section className={styles.formCard}>
                 <h2 className={styles.sectionTitle}>Upgrade ke Mitra Brand</h2>
                 <p style={{ margin: "0 0 16px", fontSize: 13.5, color: "#64748b" }}>
-                  Gunakan subdomain atau domain sendiri, dapatkan fitur premium,
-                  update tema dan konten promosi baru setiap bulan, dengan biaya
+                  Gunakan fitur premium Mitra Brand, update tema dan konten promosi baru setiap bulan, dengan biaya
                   aktivasi tetap Rp20.000 per undangan. <strong>Rp59.000/bulan</strong>.
                 </p>
                 <a
