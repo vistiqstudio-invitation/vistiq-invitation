@@ -43,7 +43,7 @@ export default function ResellerPromoPage() {
   useEffect(() => {
     const load = async () => {
       const { data } = await supabase
-        .rpc("get_reseller_storefront", { p_reseller_id: params.resellerId })
+        .rpc("get_reseller_storefront_by_key", { p_key: params.resellerId })
         .maybeSingle();
       setStore((data as Storefront) ?? null);
     };
