@@ -24,7 +24,10 @@ async function resellerForDomain(domain: string) {
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const hostname = getHostname(request.headers.get("x-forwarded-host") || request.headers.get("host"));
+  // Vercel/Cloudflare can set x-forwarded-host to the deployment host while
+  // preserving the visitor-facing custom domain in Host. Prefer Host so the
+  // reseller tenant is resolved from the domain visible in the browser.
+  const hostname = getHostname(request.headers.get("host") || request.headers.get("x-forwarded-host"));
   const deploymentHost = getHostname(process.env.VERCEL_URL || null);
   const headers = new Headers(request.headers);
   let tenant: { reseller_id?: string } | null = null;
