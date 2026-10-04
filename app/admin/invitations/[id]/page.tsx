@@ -8,8 +8,8 @@ import ThemePreviewPanel from "@/components/ThemePreviewPanel";
 import SmartCoverEditor from "@/components/SmartCoverEditor";
 import { MUSIC_LIBRARY } from "@/lib/musicLibrary";
 import styles from "@/styles/dashboard.module.css";
+import { uploadMediaToR2 } from "@/lib/uploadMedia";
 
-const BUCKET = "invitation-assets";
 
 type PhotoField = "cover_photo" | "background_photo" | "bride_photo" | "groom_photo" | "story_1_photo" | "story_2_photo" | "story_3_photo" | "story_4_photo" | "story_5_photo" | "music_url";
 
@@ -290,25 +290,14 @@ export default function AdminInvitationEditPage() {
   };
 
   const uploadToStorage = async (file: File, folder: string) => {
-    const optimizedFile = await optimizeImage(file);
-    const ext = optimizedFile.name.split(".").pop();
-    const fileName = `${params.id}/${folder}-${Date.now()}-${Math.random()
-      .toString(36)
-      .slice(2)}.${ext}`;
-
-    const { error } = await supabase.storage
-      .from(BUCKET)
-      .upload(fileName, optimizedFile, {
-        contentType: optimizedFile.type,
-        cacheControl: "31536000",
-      });
-
-    if (error) {
-      alert(`Upload gagal: ${JSON.stringify(error, Object.getOwnPropertyNames(error))}`);
+    try {
+      const optimizedFile = await optimizeImage(file);
+      return await uploadMediaToR2(optimizedFile, folder, params.id);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Upload gagal.";
+      alert(`Upload gagal: ${message}`);
       return "";
     }
-
-    return supabase.storage.from(BUCKET).getPublicUrl(fileName).data.publicUrl;
   };
 
   const uploadSingleFile = async (file: File, field: PhotoField) => {
