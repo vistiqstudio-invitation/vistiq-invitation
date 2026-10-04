@@ -551,16 +551,17 @@ export async function getInvitationBySlug(
   // Only call the branding RPC when the live Supabase read succeeded.
   // During Fair Use restrictions the fallback snapshot already contains
   // reseller branding, so public invitations remain independent of Supabase.
-  let publicBrand: {
+  type PublicBrand = {
     brand_name: string | null;
     logo_url: string | null;
     brand_color: string | null;
-  } | null = null;
+  };
+  let publicBrand: PublicBrand | null = null;
   if (!error && data) {
     const { data: publicBrandRow } = await supabase
       .rpc("get_invitation_brand_by_slug", { p_slug: slug })
       .maybeSingle();
-    publicBrand = publicBrandRow as typeof publicBrand;
+    publicBrand = publicBrandRow as PublicBrand | null;
   }
 
   const invitation =
