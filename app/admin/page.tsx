@@ -204,16 +204,31 @@ export default function AdminPage() {
 
   const runMediaMigration = async () => {
     if (migrationRunning) return;
-    if (!window.confirm("Mulai menyalin media undangan aktif dari Supabase ke Cloudflare R2? File lama tidak akan dihapus dan database belum akan diubah.")) return;
+    if (!window.confirm("Mulai menyalin media undangan aktif dari Supabase ke Cloudflare R2 secara bertahap? File lama tidak akan dihapus dan database belum akan diubah.")) return;
     setMigrationRunning(true);
-    setMigrationResult("Sedang menyalin dan memverifikasi media...");
+    let offset = 0, copied = 0, existing = 0, failed = 0, total = 0;
     try {
-      const response = await fetch("/api/admin/media-migration", { method: "POST" });
-      const result = await response.json();
-      if (!response.ok) throw new Error(result.error || "Migrasi gagal dijalankan.");
-      setMigrationResult(`Selesai. Total ${result.total}, disalin ${result.copied}, sudah ada ${result.existing}, gagal ${result.failed?.length || 0}.`);
+      while (true) {
+        const response = await fetch("/api/admin/media-migration", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ offset }),
+        });
+        const text = await response.text();
+        let result: any;
+        try { result = JSON.parse(text); } catch { throw new Error(text.slice(0, 180) || "Respons server tidak valid."); }
+        if (!response.ok) throw new Error(result.error || "Migrasi gagal dijalankan.");
+        total = result.total || total;
+        copied += result.copied || 0;
+        existing += result.existing || 0;
+        failed += result.failed?.length || 0;
+        offset = result.nextOffset || offset;
+        setMigrationResult(`Progress ${Math.min(offset, total)} / ${total}. Disalin ${copied}, sudah ada ${existing}, gagal ${failed}.`);
+        if (result.done) break;
+      }
+      setMigrationResult(`Selesai. Total ${total}, disalin ${copied}, sudah ada ${existing}, gagal ${failed}.`);
     } catch (error) {
-      setMigrationResult(error instanceof Error ? `Gagal: ${error.message}` : "Migrasi gagal dijalankan.");
+      setMigrationResult(error instanceof Error ? `Terhenti di ${offset} / ${total || "?"}: ${error.message}` : "Migrasi gagal dijalankan.");
     } finally {
       setMigrationRunning(false);
     }
