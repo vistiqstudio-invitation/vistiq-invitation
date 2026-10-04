@@ -1,64 +1,64 @@
 .wrap {
   position: fixed;
-  right: 22px;
-  bottom: 22px;
+  right: 12px;
+  bottom: 12px;
   z-index: 8900;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 10px;
+  gap: 7px;
 }
 
 .wrap.stacked {
-  bottom: 92px;
+  bottom: 68px;
 }
 
 .button {
   display: flex;
   align-items: center;
-  gap: 11px;
-  min-height: 58px;
-  padding: 9px 18px 9px 11px;
+  gap: 7px;
+  min-height: 42px;
+  padding: 6px 12px 6px 8px;
   border: 1px solid rgba(255, 255, 255, 0.55);
   border-radius: 999px;
   color: #fff;
   cursor: pointer;
   background: linear-gradient(135deg, #2f7cc8, #1167b2);
-  box-shadow: 0 14px 34px rgba(17, 103, 178, 0.32), 0 3px 10px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 20px rgba(17, 103, 178, 0.28), 0 2px 7px rgba(0, 0, 0, 0.12);
   transition: transform 180ms ease, box-shadow 180ms ease;
 }
 
 .button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 18px 40px rgba(17, 103, 178, 0.4), 0 4px 12px rgba(0, 0, 0, 0.16);
+  transform: translateY(-2px);
+  box-shadow: 0 11px 25px rgba(17, 103, 178, 0.34), 0 3px 8px rgba(0, 0, 0, 0.14);
 }
 
 .button:focus-visible {
-  outline: 3px solid rgba(17, 103, 178, 0.35);
-  outline-offset: 4px;
+  outline: 2px solid rgba(17, 103, 178, 0.35);
+  outline-offset: 3px;
 }
 
 .button svg {
-  width: 26px;
-  height: 26px;
+  width: 18px;
+  height: 18px;
   flex: 0 0 auto;
   fill: currentColor;
 }
 
 .copy {
   display: grid;
-  gap: 1px;
-  line-height: 1.15;
+  gap: 0;
+  line-height: 1.08;
   text-align: left;
 }
 
 .copy small {
-  font-size: 10px;
+  font-size: 8px;
   opacity: 0.82;
 }
 
 .copy strong {
-  font-size: 13px;
+  font-size: 10px;
   font-weight: 750;
   letter-spacing: 0.01em;
   white-space: nowrap;
@@ -66,28 +66,28 @@
 
 .hint {
   position: relative;
-  max-width: 240px;
-  padding: 12px 30px 12px 14px;
-  border-radius: 14px;
+  max-width: 200px;
+  padding: 9px 25px 9px 11px;
+  border-radius: 11px;
   background: #0f2742;
   color: #fff;
-  font-size: 12.5px;
-  line-height: 1.5;
-  box-shadow: 0 10px 26px rgba(15, 39, 66, 0.35);
+  font-size: 10px;
+  line-height: 1.4;
+  box-shadow: 0 8px 20px rgba(15, 39, 66, 0.3);
 }
 
 .hintClose {
   position: absolute;
-  top: 6px;
-  right: 8px;
+  top: 4px;
+  right: 6px;
   border: none;
   background: none;
   color: #fff;
   opacity: 0.7;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 1;
   cursor: pointer;
-  padding: 4px;
+  padding: 3px;
 }
 
 .hintClose:hover {
@@ -96,18 +96,18 @@
 
 @media (max-width: 640px) {
   .wrap {
-    right: 14px;
-    bottom: 16px;
+    right: 10px;
+    bottom: 10px;
   }
 
   .wrap.stacked {
-    bottom: 82px;
+    bottom: 58px;
   }
 
   .button {
-    width: 56px;
-    min-height: 56px;
-    padding: 9px;
+    width: 42px;
+    min-height: 42px;
+    padding: 7px;
     justify-content: center;
   }
 
@@ -116,6 +116,6 @@
   }
 
   .hint {
-    max-width: 200px;
+    max-width: 175px;
   }
 }
