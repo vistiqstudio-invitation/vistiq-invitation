@@ -8,6 +8,7 @@ import ChangePasswordCard from "@/components/dashboard/ChangePasswordCard";
 import { getResellerNavItems } from "@/components/reseller/navItems";
 import CustomDomainCard from "@/components/reseller/CustomDomainCard";
 import styles from "@/styles/dashboard.module.css";
+import { uploadMediaToR2 } from "@/lib/uploadMedia";
 
 const WA_NUMBER = "6281371338032";
 
@@ -49,7 +50,6 @@ type Reseller = {
   landing_slug?: string | null;
 };
 
-const LOGO_BUCKET = "invitation-assets";
 
 const PACKAGE_LABELS: Record<string, string> = {
   reseller: "Reseller",
@@ -239,39 +239,27 @@ export default function ResellerPage() {
     if (!reseller) return;
 
     setUploadingLogo(true);
+    try {
+      const optimizedFile = await optimizeLogo(file);
+      const logoUrl = await uploadMediaToR2(optimizedFile, "logo", `reseller-${reseller.id}`);
 
-    const optimizedFile = await optimizeLogo(file);
-    const ext = optimizedFile.name.split(".").pop();
-    const fileName = `resellers/${reseller.id}/logo-${Date.now()}.${ext}`;
+      const { error: updateError } = await supabase
+        .from("resellers")
+        .update({ logo_url: logoUrl })
+        .eq("id", reseller.id);
 
-    const { error: uploadError } = await supabase.storage
-      .from(LOGO_BUCKET)
-      .upload(fileName, optimizedFile, {
-        contentType: optimizedFile.type,
-        cacheControl: "31536000",
-      });
+      if (updateError) {
+        alert("Logo terupload tapi gagal disimpan ke profil.");
+        return;
+      }
 
-    if (uploadError) {
+      if (user) fetchData(user);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Upload logo gagal.";
+      alert(`Upload logo gagal: ${message}`);
+    } finally {
       setUploadingLogo(false);
-      alert(`Upload logo gagal: ${uploadError.message}`);
-      return;
     }
-
-    const logoUrl = supabase.storage.from(LOGO_BUCKET).getPublicUrl(fileName).data.publicUrl;
-
-    const { error: updateError } = await supabase
-      .from("resellers")
-      .update({ logo_url: logoUrl })
-      .eq("id", reseller.id);
-
-    setUploadingLogo(false);
-
-    if (updateError) {
-      alert("Logo terupload tapi gagal disimpan ke profil.");
-      return;
-    }
-
-    if (user) fetchData(user);
   };
 
   const logout = async () => {
