@@ -112,6 +112,8 @@ export default function AdminPage() {
   const [dashboardError, setDashboardError] = useState(false);
   const [migrationRunning, setMigrationRunning] = useState(false);
   const [migrationResult, setMigrationResult] = useState<string>("");
+  const [verifyRunning, setVerifyRunning] = useState(false);
+  const [verifyResult, setVerifyResult] = useState<string>("");
 
   const supabaseFetch = async (table: string) => {
     const { data, error } = await supabase
@@ -231,6 +233,36 @@ export default function AdminPage() {
       setMigrationResult(error instanceof Error ? `Terhenti di ${offset} / ${total || "?"}: ${error.message}` : "Migrasi gagal dijalankan.");
     } finally {
       setMigrationRunning(false);
+    }
+  };
+
+  const runMediaVerification = async () => {
+    if (verifyRunning) return;
+    setVerifyRunning(true);
+    let offset = 0, verified = 0, failed = 0, total = 0;
+    try {
+      while (true) {
+        const response = await fetch("/api/admin/media-verify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ offset }),
+        });
+        const text = await response.text();
+        let result: any;
+        try { result = JSON.parse(text); } catch { throw new Error(text.slice(0, 180) || "Respons server tidak valid."); }
+        if (!response.ok) throw new Error(result.error || "Verifikasi gagal dijalankan.");
+        total = result.total || total;
+        verified += result.verified || 0;
+        failed += result.failed?.length || 0;
+        offset = result.nextOffset || offset;
+        setVerifyResult(`Progress ${Math.min(offset, total)} / ${total}. Terverifikasi ${verified}, gagal ${failed}.`);
+        if (result.done) break;
+      }
+      setVerifyResult(`Verifikasi selesai. Total ${total}, OK ${verified}, gagal ${failed}.`);
+    } catch (error) {
+      setVerifyResult(error instanceof Error ? `Terhenti di ${offset} / ${total || "?"}: ${error.message}` : "Verifikasi gagal dijalankan.");
+    } finally {
+      setVerifyRunning(false);
     }
   };
 
@@ -424,6 +456,12 @@ export default function AdminPage() {
                 </button>
               </div>
               {migrationResult && <div className={styles.linkBox}>{migrationResult}</div>}
+              <div className={styles.generatorWrap}>
+                <button onClick={runMediaVerification} className={styles.exportButton} disabled={verifyRunning || migrationRunning}>
+                  {verifyRunning ? "Sedang Verifikasi..." : "Verifikasi 238 Media di R2"}
+                </button>
+              </div>
+              {verifyResult && <div className={styles.linkBox}>{verifyResult}</div>}
             </section>
 
             <section className={styles.generatorCard}>
