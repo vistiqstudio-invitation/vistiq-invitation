@@ -401,6 +401,17 @@ export default function AdminPage() {
             </section>
 
             <section className={styles.generatorCard}>
+              <h2 className={styles.sectionTitle}>Migrasi Media ke Cloudflare R2</h2>
+              <p>Salin media undangan aktif ke R2 terlebih dahulu. File Supabase tidak dihapus dan URL database belum diubah.</p>
+              <div className={styles.generatorWrap}>
+                <button onClick={runMediaMigration} className={styles.button} disabled={migrationRunning}>
+                  {migrationRunning ? "Sedang Migrasi..." : "Mulai Migrasi ke R2"}
+                </button>
+              </div>
+              {migrationResult && <div className={styles.linkBox}>{migrationResult}</div>}
+            </section>
+
+            <section className={styles.generatorCard}>
               <h2 className={styles.sectionTitle}>Generator Link Tamu</h2>
 
               <div className={styles.generatorWrap}>
