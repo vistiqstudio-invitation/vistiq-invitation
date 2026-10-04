@@ -12,6 +12,7 @@ import type {
 import type { AqiqahInvitationData } from "@/types/aqiqah";
 import type { KhitanInvitationData } from "@/types/khitan";
 import type { BirthdayInvitationData } from "@/types/birthday";
+import publicInvitationFallback from "@/data/public-invitations-fallback.json";
 
 function resolveBrand(raw: Record<string, any>): Brand {
   const reseller = raw.clients?.resellers;
@@ -511,7 +512,15 @@ export async function getInvitationBySlug(
     .eq("slug", slug)
     .single();
 
-  if (error || !data) return null;
+  // Emergency public fallback: when Supabase Fair Use restrictions return
+  // 402 (or another transient read error), keep already-active invitations
+  // available from the deployment snapshot. The snapshot contains only
+  // invitations that were active when it was generated.
+  const fallbackRaw = (publicInvitationFallback as Array<Record<string, any>>)
+    .find((item) => item.slug === slug && item.is_active === true);
+  const raw = !error && data ? data : fallbackRaw;
+
+  if (!raw) return null;
 
   // Public invitation requests can read the invitation itself, but RLS may
   // hide the nested reseller row. Read only the approved public branding
@@ -527,13 +536,13 @@ export async function getInvitationBySlug(
   } | null;
 
   const invitation =
-    data.category === "aqiqah"
-      ? normalizeAqiqahInvitation(data)
-      : data.category === "khitan"
-      ? normalizeKhitanInvitation(data)
-      : data.category === "birthday"
-      ? normalizeBirthdayInvitation(data)
-      : normalizeInvitation(data);
+    raw.category === "aqiqah"
+      ? normalizeAqiqahInvitation(raw)
+      : raw.category === "khitan"
+      ? normalizeKhitanInvitation(raw)
+      : raw.category === "birthday"
+      ? normalizeBirthdayInvitation(raw)
+      : normalizeInvitation(raw);
 
   if (publicBrand?.brand_name) {
     invitation.brand = {
