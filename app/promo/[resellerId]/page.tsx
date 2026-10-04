@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import ThemeBrowser from "@/components/ThemeBrowser";
 import floating from "@/components/FloatingWhatsApp.module.css";
 import TenantUrlCleaner from "@/components/TenantUrlCleaner";
+import {
+  getStorefrontFallbackByKey,
+  type Storefront,
+} from "@/lib/storefrontFallback";
 import styles from "../../demo/demo.module.css";
 import hero from "./landing.module.css";
 
@@ -12,46 +16,32 @@ function normalizeWhatsapp(raw: string) {
   return `62${digits}`;
 }
 
-type Storefront = {
-  brand_name: string | null;
-  logo_url: string | null;
-  brand_color: string | null;
-  starting_price: number | null;
-  wedding_price: number | null;
-  khitan_price: number | null;
-  graduation_price: number | null;
-  aqiqah_price: number | null;
-  birthday_price: number | null;
-  wedding_premium_price: number | null;
-  wedding_motion_price: number | null;
-  wedding_luxury_art_price: number | null;
-  wedding_regular_price: number | null;
-  wedding_adat_price: number | null;
-  wedding_no_photo_price: number | null;
-  whatsapp: string | null;
-};
-
 type PageProps = { params: Promise<{ resellerId: string }> };
 
 async function getStorefront(key: string): Promise<Storefront | null> {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const apiKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !apiKey) return null;
+  const fallback = getStorefrontFallbackByKey(key);
+  if (!url || !apiKey) return fallback;
 
-  const response = await fetch(`${url}/rest/v1/rpc/get_reseller_storefront_by_key`, {
-    method: "POST",
-    headers: {
-      apikey: apiKey,
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ p_key: key }),
-    next: { revalidate: 60 },
-  });
+  try {
+    const response = await fetch(`${url}/rest/v1/rpc/get_reseller_storefront_by_key`, {
+      method: "POST",
+      headers: {
+        apikey: apiKey,
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ p_key: key }),
+      next: { revalidate: 60 },
+    });
 
-  if (!response.ok) return null;
-  const rows = await response.json();
-  return (Array.isArray(rows) ? rows[0] : rows) as Storefront | null;
+    if (!response.ok) return fallback;
+    const rows = await response.json();
+    return ((Array.isArray(rows) ? rows[0] : rows) as Storefront | null) || fallback;
+  } catch {
+    return fallback;
+  }
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {

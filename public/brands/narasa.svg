@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 120" role="img" aria-labelledby="title desc">
+  <title id="title">NARASA</title>
+  <desc id="desc">Logo NARASA</desc>
+  <rect width="440" height="120" rx="24" fill="#ffffff"/>
+  <path d="M38 84V36h13l28 29V36h14v48H80L52 55v29H38Z" fill="#60aac4"/>
+  <text x="110" y="78" fill="#17324d" font-family="Arial, Helvetica, sans-serif" font-size="54" font-weight="700" letter-spacing="3">NARASA</text>
+</svg>
