@@ -213,17 +213,43 @@ export default function ResellerPage() {
     alert("Brand berhasil disimpan.");
   };
 
+  const optimizeLogo = async (file: File) => {
+    if (!file.type.startsWith("image/")) return file;
+    const bitmap = await createImageBitmap(file);
+    const maxSide = 800;
+    const scale = Math.min(1, maxSide / Math.max(bitmap.width, bitmap.height));
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.max(1, Math.round(bitmap.width * scale));
+    canvas.height = Math.max(1, Math.round(bitmap.height * scale));
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return file;
+    ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    bitmap.close();
+    const blob = await new Promise<Blob | null>((resolve) =>
+      canvas.toBlob(resolve, "image/webp", 0.85)
+    );
+    if (!blob || blob.size >= file.size) return file;
+    return new File([blob], file.name.replace(/\.[^.]+$/, ".webp"), {
+      type: "image/webp",
+      lastModified: Date.now(),
+    });
+  };
+
   const uploadLogo = async (file: File) => {
     if (!reseller) return;
 
     setUploadingLogo(true);
 
-    const ext = file.name.split(".").pop();
+    const optimizedFile = await optimizeLogo(file);
+    const ext = optimizedFile.name.split(".").pop();
     const fileName = `resellers/${reseller.id}/logo-${Date.now()}.${ext}`;
 
     const { error: uploadError } = await supabase.storage
       .from(LOGO_BUCKET)
-      .upload(fileName, file, { contentType: file.type });
+      .upload(fileName, optimizedFile, {
+        contentType: optimizedFile.type,
+        cacheControl: "31536000",
+      });
 
     if (uploadError) {
       setUploadingLogo(false);
