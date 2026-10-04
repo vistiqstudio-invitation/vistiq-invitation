@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { createClient } from "@/lib/supabase/client";
 import { isPlatformHostname } from "@/lib/customDomain";
 
 type GateState = "checking" | "platform" | "redirecting" | "not_found";
@@ -18,20 +17,19 @@ export default function DomainStorefrontGate({ children }: { children: React.Rea
 
     let active = true;
     const resolveTenant = async () => {
-      const supabase = createClient();
-      const { data } = await supabase
-        .rpc("get_reseller_by_custom_domain", { p_domain: hostname })
-        .maybeSingle();
-      const tenant = data as { reseller_id?: string } | null;
+      const response = await fetch(`/api/storefront/resolve?domain=${encodeURIComponent(hostname)}`, {
+        cache: "no-store",
+      });
+      const tenant = await response.json() as { resellerId?: string };
 
       if (!active) return;
-      if (!tenant?.reseller_id) {
+      if (!response.ok || !tenant.resellerId) {
         setState("not_found");
         return;
       }
 
       setState("redirecting");
-      window.location.replace(`/promo/${tenant.reseller_id}?tenant-domain=1`);
+      window.location.replace(`/promo/${tenant.resellerId}?tenant-domain=1`);
     };
 
     resolveTenant();
