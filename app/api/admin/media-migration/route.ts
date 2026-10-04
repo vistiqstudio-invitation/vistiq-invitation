@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import { putR2Object, r2PublicUrl } from "@/lib/r2";
 export const dynamic = "force-dynamic";
 export const maxDuration = 300;
