@@ -10,7 +10,6 @@ export async function GET(){const s=await createClient();const {data:{user}}=awa
 export async function POST(req:Request){
  const s=await createClient();const {data:{user}}=await s.auth.getUser();if(!user)return NextResponse.json({error:"Unauthorized"},{status:401});
  const {data:p}=await s.from("profiles").select("role").eq("id",user.id).single();if(p?.role!=="owner")return NextResponse.json({error:"Forbidden"},{status:403});
- const token=req.headers.get("x-migration-token");if(!token||token!==process.env.MEDIA_MIGRATION_TOKEN)return NextResponse.json({error:"Invalid migration token"},{status:403});
  const {data,error}=await s.from("invitations").select(fields.join(",")).eq("is_active",true);if(error)return NextResponse.json({error:error.message},{status:500});
  const all=[...collect(data)];let copied=0,existing=0;const failed:{source:string,error:string}[]=[];
  for(const source of all){try{const key=keyFor(source),dest=r2PublicUrl(key);const h=await fetch(dest,{method:"HEAD",cache:"no-store"});if(h.ok){existing++;continue;}const src=await fetch(source,{cache:"no-store"});if(!src.ok)throw new Error("source HTTP "+src.status);await putR2Object(key,Buffer.from(await src.arrayBuffer()),src.headers.get("content-type")||"application/octet-stream");const check=await fetch(dest,{method:"HEAD",cache:"no-store"});if(!check.ok)throw new Error("R2 verify HTTP "+check.status);copied++;}catch(e){failed.push({source,error:e instanceof Error?e.message:String(e)});}}
