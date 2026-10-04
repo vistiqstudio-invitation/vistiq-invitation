@@ -3,6 +3,8 @@ import { createClient } from "@/lib/supabase/server";
 import { createR2PresignedPutUrl } from "@/lib/r2";
 
 const ALLOWED_PREFIXES = new Set(["image/", "audio/"]);
+const MAX_IMAGE_BYTES = 8 * 1024 * 1024;
+const MAX_AUDIO_BYTES = 15 * 1024 * 1024;
 
 function safeSegment(value: string) {
   return value.toLowerCase().replace(/[^a-z0-9._-]+/g, "-").replace(/^-+|-+$/g, "");
@@ -21,8 +23,17 @@ export async function POST(request: Request) {
 
     const body = await request.json();
     const contentType = String(body.contentType || "").toLowerCase();
+    const fileSize = Number(body.fileSize || 0);
     if (![...ALLOWED_PREFIXES].some((prefix) => contentType.startsWith(prefix))) {
       return NextResponse.json({ error: "Jenis file tidak didukung." }, { status: 400 });
+    }
+
+    if (!Number.isFinite(fileSize) || fileSize <= 0) {
+      return NextResponse.json({ error: "Ukuran file tidak valid." }, { status: 400 });
+    }
+    const maxBytes = contentType.startsWith("image/") ? MAX_IMAGE_BYTES : MAX_AUDIO_BYTES;
+    if (fileSize > maxBytes) {
+      return NextResponse.json({ error: contentType.startsWith("image/") ? "Ukuran gambar maksimal 8 MB." : "Ukuran audio maksimal 15 MB." }, { status: 413 });
     }
 
     const scope = safeSegment(String(body.scope || user.id)) || user.id;
