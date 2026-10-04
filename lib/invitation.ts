@@ -493,6 +493,31 @@ function normalizeBirthdayInvitation(raw: Record<string, any>): BirthdayInvitati
   };
 }
 
+const SUPABASE_MEDIA_PREFIX =
+  "https://tvjifuzhakaymzottdyf.supabase.co/storage/v1/object/public/invitation-assets/";
+
+function routeEmergencyMedia(value: unknown): unknown {
+  if (typeof value === "string") {
+    if (!value.startsWith(SUPABASE_MEDIA_PREFIX)) return value;
+    const [base, fragment] = value.split("#", 2);
+    const path = base.slice(SUPABASE_MEDIA_PREFIX.length);
+    const routed = "/media-fallback/" + path.split("/").map(encodeURIComponent).join("/");
+    return fragment ? routed + "#" + fragment : routed;
+  }
+  if (Array.isArray(value)) return value.map(routeEmergencyMedia);
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value as Record<string, unknown>).map(([key, item]) => [
+        key.startsWith(SUPABASE_MEDIA_PREFIX)
+          ? (routeEmergencyMedia(key) as string)
+          : key,
+        routeEmergencyMedia(item),
+      ])
+    );
+  }
+  return value;
+}
+
 export async function getInvitationBySlug(
   slug: string
 ): Promise<
@@ -518,7 +543,8 @@ export async function getInvitationBySlug(
   // invitations that were active when it was generated.
   const fallbackRaw = (publicInvitationFallback as Array<Record<string, any>>)
     .find((item) => item.slug === slug && item.is_active === true);
-  const raw = !error && data ? data : fallbackRaw;
+  const rawSource = !error && data ? data : fallbackRaw;
+  const raw = rawSource ? (routeEmergencyMedia(rawSource) as Record<string, any>) : null;
 
   if (!raw) return null;
 
