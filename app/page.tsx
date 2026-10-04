@@ -1,9 +1,71 @@
+import type { Metadata } from "next";
+import { headers } from "next/headers";
 import Link from "next/link";
 import Image from "next/image";
 import SiteNavbar from "@/components/SiteNavbar";
 import ThemeBrowser from "@/components/ThemeBrowser";
 import CheckoutButton from "@/components/CheckoutButton";
+import ResellerPromoPage from "./promo/[resellerId]/page";
+import { getHostname, isPlatformHostname } from "@/lib/customDomain";
 import styles from "./home.module.css";
+
+type DomainTenant = { reseller_id?: string };
+type TenantBrand = { brand_name?: string | null; logo_url?: string | null };
+
+async function supabaseRpc<T>(name: string, body: Record<string, string>): Promise<T | null> {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const apiKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !apiKey) return null;
+
+  const response = await fetch(`${url}/rest/v1/rpc/${name}`, {
+    method: "POST",
+    headers: {
+      apikey: apiKey,
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+    next: { revalidate: 60 },
+  });
+
+  if (!response.ok) return null;
+  const rows = await response.json();
+  return (Array.isArray(rows) ? rows[0] : rows) as T | null;
+}
+
+async function tenantForRequest() {
+  const requestHeaders = await headers();
+  const hostname = getHostname(requestHeaders.get("host") || requestHeaders.get("x-forwarded-host"));
+  const deploymentHost = getHostname(process.env.VERCEL_URL || null);
+
+  if (isPlatformHostname(hostname) || hostname === deploymentHost) return null;
+  return supabaseRpc<DomainTenant>("get_reseller_by_custom_domain", { p_domain: hostname });
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const tenant = await tenantForRequest();
+  if (!tenant?.reseller_id) return {};
+
+  const brand = await supabaseRpc<TenantBrand>("get_reseller_storefront_by_key", {
+    p_key: tenant.reseller_id,
+  });
+  const brandName = brand?.brand_name?.trim() || "Undangan Digital";
+  const description = `Katalog undangan digital premium dari ${brandName}.`;
+
+  return {
+    title: { absolute: brandName },
+    applicationName: brandName,
+    description,
+    openGraph: {
+      title: brandName,
+      description,
+      ...(brand?.logo_url ? { images: [{ url: brand.logo_url, alt: brandName }] } : {}),
+    },
+    ...(brand?.logo_url
+      ? { icons: { icon: [{ url: brand.logo_url }], apple: [{ url: brand.logo_url }] } }
+      : {}),
+  };
+}
 
 const FEATURES = [
   ["Unlimited & Easy Share", "Bagikan undangan melalui WhatsApp dan media sosial tanpa batas tamu.", "↗"],
@@ -44,7 +106,12 @@ const HERO_COLUMNS = [
   ],
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const tenant = await tenantForRequest();
+  if (tenant?.reseller_id) {
+    return <ResellerPromoPage params={Promise.resolve({ resellerId: tenant.reseller_id })} />;
+  }
+
   const production = process.env.MIDTRANS_IS_PRODUCTION === "true";
   return <main className={styles.page}>
     <SiteNavbar />
