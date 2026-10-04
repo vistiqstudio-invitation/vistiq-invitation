@@ -114,6 +114,8 @@ export default function AdminPage() {
   const [migrationResult, setMigrationResult] = useState<string>("");
   const [verifyRunning, setVerifyRunning] = useState(false);
   const [verifyResult, setVerifyResult] = useState<string>("");
+  const [logoMigrationRunning, setLogoMigrationRunning] = useState(false);
+  const [logoMigrationResult, setLogoMigrationResult] = useState<string>("");
 
   const supabaseFetch = async (table: string) => {
     const { data, error } = await supabase
@@ -263,6 +265,25 @@ export default function AdminPage() {
       setVerifyResult(error instanceof Error ? `Terhenti di ${offset} / ${total || "?"}: ${error.message}` : "Verifikasi gagal dijalankan.");
     } finally {
       setVerifyRunning(false);
+    }
+  };
+
+  const runLogoMigration = async () => {
+    if (logoMigrationRunning) return;
+    if (!window.confirm("Migrasikan logo reseller dari Supabase ke Cloudflare R2? File lama Supabase tidak akan dihapus.")) return;
+    setLogoMigrationRunning(true);
+    setLogoMigrationResult("Memproses logo reseller...");
+    try {
+      const response = await fetch("/api/admin/logo-migration", { method: "POST" });
+      const text = await response.text();
+      let result: any;
+      try { result = JSON.parse(text); } catch { throw new Error(text.slice(0, 180) || "Respons server tidak valid."); }
+      if (!response.ok) throw new Error(result.error || "Migrasi logo gagal.");
+      setLogoMigrationResult(`Selesai. Total ${result.total}, disalin ${result.copied}, sudah ada ${result.existing}, URL diperbarui ${result.updated}, gagal ${result.failed?.length || 0}.`);
+    } catch (error) {
+      setLogoMigrationResult(error instanceof Error ? `Migrasi logo gagal: ${error.message}` : "Migrasi logo gagal.");
+    } finally {
+      setLogoMigrationRunning(false);
     }
   };
 
@@ -462,6 +483,12 @@ export default function AdminPage() {
                 </button>
               </div>
               {verifyResult && <div className={styles.linkBox}>{verifyResult}</div>}
+              <div className={styles.generatorWrap}>
+                <button onClick={runLogoMigration} className={styles.button} disabled={logoMigrationRunning || migrationRunning || verifyRunning}>
+                  {logoMigrationRunning ? "Sedang Migrasi Logo..." : "Migrasi 24 Logo Reseller ke R2"}
+                </button>
+              </div>
+              {logoMigrationResult && <div className={styles.linkBox}>{logoMigrationResult}</div>}
             </section>
 
             <section className={styles.generatorCard}>
