@@ -54,6 +54,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title: { absolute: brandName },
     applicationName: brandName,
     description,
+    manifest: `/api/storefront/manifest?key=${encodeURIComponent(resellerId)}`,
+    appleWebApp: {
+      capable: true,
+      statusBarStyle: "default",
+      title: brandName,
+    },
     openGraph: {
       title: brandName,
       description,
