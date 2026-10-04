@@ -267,15 +267,41 @@ export default function AdminInvitationEditPage() {
     setForm((prev) => ({ ...prev, [field]: value }));
   };
 
+  const optimizeImage = async (file: File) => {
+    if (!file.type.startsWith("image/")) return file;
+    const bitmap = await createImageBitmap(file);
+    const maxSide = 1920;
+    const scale = Math.min(1, maxSide / Math.max(bitmap.width, bitmap.height));
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.max(1, Math.round(bitmap.width * scale));
+    canvas.height = Math.max(1, Math.round(bitmap.height * scale));
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return file;
+    ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    bitmap.close();
+    const blob = await new Promise<Blob | null>((resolve) =>
+      canvas.toBlob(resolve, "image/webp", 0.82)
+    );
+    if (!blob || blob.size >= file.size) return file;
+    return new File([blob], file.name.replace(/\.[^.]+$/, ".webp"), {
+      type: "image/webp",
+      lastModified: Date.now(),
+    });
+  };
+
   const uploadToStorage = async (file: File, folder: string) => {
-    const ext = file.name.split(".").pop();
+    const optimizedFile = await optimizeImage(file);
+    const ext = optimizedFile.name.split(".").pop();
     const fileName = `${params.id}/${folder}-${Date.now()}-${Math.random()
       .toString(36)
       .slice(2)}.${ext}`;
 
     const { error } = await supabase.storage
       .from(BUCKET)
-      .upload(fileName, file, { contentType: file.type });
+      .upload(fileName, optimizedFile, {
+        contentType: optimizedFile.type,
+        cacheControl: "31536000",
+      });
 
     if (error) {
       alert(`Upload gagal: ${JSON.stringify(error, Object.getOwnPropertyNames(error))}`);
