@@ -300,8 +300,7 @@ export default function AdminPage() {
       ...rows.map((row) =>
         row.map((value) => `"${String(value).replace(/"/g, '""')}"`).join(",")
       ),
-    ].join("
-");
+    ].join("\\n");
 
     const blob = new Blob([csvContent], {
       type: "text/csv;charset=utf-8;",
