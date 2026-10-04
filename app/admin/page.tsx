@@ -109,7 +109,7 @@ export default function AdminPage() {
 
   const [guestName, setGuestName] = useState("");
   const [generatedLink, setGeneratedLink] = useState("");
-  const [dashboardError, setDashboardError] = useState(false);
+  const [dashboardError, setDashboardError] = useState(false);\n  const [migrationRunning, setMigrationRunning] = useState(false);\n  const [migrationResult, setMigrationResult] = useState<string>("");
 
   const supabaseFetch = async (table: string) => {
     const { data, error } = await supabase
@@ -200,7 +200,7 @@ export default function AdminPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
-  const logout = async () => {
+  const runMediaMigration = async () => {\n    if (migrationRunning) return;\n    if (!window.confirm("Mulai menyalin media undangan aktif dari Supabase ke Cloudflare R2? File lama tidak akan dihapus dan database belum akan diubah.")) return;\n    setMigrationRunning(true);\n    setMigrationResult("Sedang menyalin dan memverifikasi media...");\n    try {\n      const response = await fetch("/api/admin/media-migration", { method: "POST" });\n      const result = await response.json();\n      if (!response.ok) throw new Error(result.error || "Migrasi gagal dijalankan.");\n      setMigrationResult(`Selesai. Total ${result.total}, disalin ${result.copied}, sudah ada ${result.existing}, gagal ${result.failed?.length || 0}.`);\n    } catch (error) {\n      setMigrationResult(error instanceof Error ? `Gagal: ${error.message}` : "Migrasi gagal dijalankan.");\n    } finally {\n      setMigrationRunning(false);\n    }\n  };\n\n  const logout = async () => {
     await supabase.auth.signOut();
     router.push("/login");
   };
