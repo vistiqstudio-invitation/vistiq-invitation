@@ -5,6 +5,7 @@ import Image from "next/image";
 import SiteNavbar from "@/components/SiteNavbar";
 import ThemeBrowser from "@/components/ThemeBrowser";
 import CheckoutButton from "@/components/CheckoutButton";
+import DomainStorefrontGate from "@/components/DomainStorefrontGate";
 import ResellerPromoPage from "./promo/[resellerId]/page";
 import { getHostname, isPlatformHostname } from "@/lib/customDomain";
 import styles from "./home.module.css";
@@ -113,7 +114,7 @@ export default async function HomePage() {
   }
 
   const production = process.env.MIDTRANS_IS_PRODUCTION === "true";
-  return <main className={styles.page}>
+  return <DomainStorefrontGate><main className={styles.page}>
     <SiteNavbar />
     <section className={styles.hero}>
       <div className={styles.heroCopy}>
@@ -143,5 +144,5 @@ export default async function HomePage() {
     <section className={styles.faq}><div className={styles.centerHeading}><p className={styles.eyebrow}>PERTANYAAN UMUM</p><h2>Yang sering ditanyakan.</h2></div><div className={styles.faqGrid}>{FAQ.map(([q,a],i)=><details key={q} open={i===0}><summary>{q}<span>+</span></summary><p>{a}</p></details>)}</div></section>
     <section className={styles.finalCta}><p>Mulai cerita istimewa Anda bersama Vistiq.</p><h2>Undangan yang berkesan, dibuat lebih mudah.</h2><div className={styles.actions}><Link href="/demo" className={styles.primary}>Pilih Tema</Link><Link href="/gabung-reseller" className={styles.secondary}>Jadi Reseller</Link></div></section>
     <footer className={styles.footer}><div><Link href="/" className={styles.footerBrand}><small>VISTIQ</small>Invitation</Link><p>Platform undangan digital premium untuk acara dan bisnis Anda.</p></div><div><strong>Produk</strong><Link href="/demo">Tema</Link><Link href="/pilih-paket">Paket</Link><Link href="/gabung-reseller">Reseller</Link></div><div><strong>Akun</strong><Link href="/login">Login Dashboard</Link><Link href="/gabung-affiliate">Affiliate</Link></div><p className={styles.copyright}>© 2026 Vistiq Invitation. Seluruh hak dilindungi.</p></footer>
-  </main>;
+  </main></DomainStorefrontGate>;
 }

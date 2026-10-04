@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import ThemeBrowser from "@/components/ThemeBrowser";
 import floating from "@/components/FloatingWhatsApp.module.css";
+import TenantUrlCleaner from "@/components/TenantUrlCleaner";
 import styles from "../../demo/demo.module.css";
 import hero from "./landing.module.css";
 
@@ -133,6 +134,7 @@ export default async function ResellerPromoPage({ params }: PageProps) {
       className={styles.page}
       style={store.brand_color ? ({ "--accent": store.brand_color } as React.CSSProperties) : undefined}
     >
+      <TenantUrlCleaner />
       <div className={styles.inner}>
         <section className={hero.hero}>
           <div className={hero.heroTop}>
