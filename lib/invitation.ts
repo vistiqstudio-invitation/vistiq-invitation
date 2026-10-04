@@ -548,18 +548,20 @@ export async function getInvitationBySlug(
 
   if (!raw) return null;
 
-  // Public invitation requests can read the invitation itself, but RLS may
-  // hide the nested reseller row. Read only the approved public branding
-  // fields through a security-definer RPC so published and preview pages
-  // resolve the same reseller/Mitra Brand identity.
-  const { data: publicBrandRow } = await supabase
-    .rpc("get_invitation_brand_by_slug", { p_slug: slug })
-    .maybeSingle();
-  const publicBrand = publicBrandRow as {
+  // Only call the branding RPC when the live Supabase read succeeded.
+  // During Fair Use restrictions the fallback snapshot already contains
+  // reseller branding, so public invitations remain independent of Supabase.
+  let publicBrand: {
     brand_name: string | null;
     logo_url: string | null;
     brand_color: string | null;
-  } | null;
+  } | null = null;
+  if (!error && data) {
+    const { data: publicBrandRow } = await supabase
+      .rpc("get_invitation_brand_by_slug", { p_slug: slug })
+      .maybeSingle();
+    publicBrand = publicBrandRow as typeof publicBrand;
+  }
 
   const invitation =
     raw.category === "aqiqah"
