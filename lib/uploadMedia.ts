@@ -33,6 +33,17 @@ async function optimizeImage(file: File) {
   return new File([blob], `${base}.webp`, { type: "image/webp", lastModified: Date.now() });
 }
 
+async function serverFallback(uploadFile: File, folder: string, scope: string) {
+  const form = new FormData();
+  form.append("file", uploadFile);
+  form.append("folder", folder);
+  form.append("scope", scope);
+  const response = await fetch("/api/media/presign", { method: "PUT", body: form });
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(payload.error || "Upload media gagal.");
+  return String(payload.publicUrl);
+}
+
 export async function uploadMediaToR2(file: File, folder: string, scope: string) {
   const isImage = file.type.startsWith("image/");
   const isAudio = file.type.startsWith("audio/");
@@ -57,14 +68,16 @@ export async function uploadMediaToR2(file: File, folder: string, scope: string)
   const payload = await response.json();
   if (!response.ok) throw new Error(payload.error || "Gagal menyiapkan upload.");
 
-  const upload = await fetch(payload.uploadUrl, {
-    method: "PUT",
-    headers: {
-      "Content-Type": uploadFile.type || "application/octet-stream",
-    },
-    body: uploadFile,
-  });
+  try {
+    const upload = await fetch(payload.uploadUrl, {
+      method: "PUT",
+      headers: { "Content-Type": uploadFile.type || "application/octet-stream" },
+      body: uploadFile,
+    });
+    if (upload.ok) return String(payload.publicUrl);
+  } catch {
+    // Browser-to-R2 can be blocked by bucket CORS. Fall back to authenticated server upload.
+  }
 
-  if (!upload.ok) throw new Error(`Upload R2 gagal (${upload.status}).`);
-  return String(payload.publicUrl);
+  return serverFallback(uploadFile, folder, scope);
 }
