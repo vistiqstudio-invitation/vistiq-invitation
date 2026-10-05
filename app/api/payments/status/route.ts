@@ -11,8 +11,9 @@ export async function GET(request: Request) {
   const orderId = new URL(request.url).searchParams.get("order_id") ?? "";
   const isResellerClientOrder = /^VSTQ-(RC|IA)-[A-Za-z0-9-]{8,60}$/.test(orderId);
   const isPackageOrder = /^VSTQ-(CL|RS|RB)-[A-Za-z0-9-]{8,45}$/.test(orderId);
+  const isStorefrontOrder = /^VSTQ-ST-[A-Za-z0-9-]{8,60}$/.test(orderId);
 
-  if (!isResellerClientOrder && !isPackageOrder) {
+  if (!isResellerClientOrder && !isPackageOrder && !isStorefrontOrder) {
     return NextResponse.json({ error: "Nomor pesanan tidak valid." }, { status: 400 });
   }
   if (!serverKey) {
@@ -67,28 +68,23 @@ export async function GET(request: Request) {
           midtrans_transaction_id: data.transaction_id ?? null,
         };
 
-        // Use the same database-owned 24-hour hold as payment notifications.
-        // Status refreshes must preserve the original payment/availability time.
-
         const { error: updateError } = await supabase
           .from("transactions")
           .update(updatePayload)
           .eq("id", transaction.id);
 
         if (!updateError && paid) after(() => safelyProcessPaymentWhatsApp(supabase));
-
-        // For invitation_activation, the database trigger publishes the invitation
-        // and activates its client in the same transaction.
       }
     } else {
       const { data: order } = await supabase
         .from("checkout_orders")
-        .select("status, provision_status, amount")
+        .select("status, provision_status, amount, order_source")
         .eq("order_id", orderId)
         .maybeSingle();
       accountStatus = order?.provision_status ?? null;
 
-      if (order && paid && Number(data.gross_amount) === Number(order.amount) && order.status !== "paid") {
+      const sourceValid = !isStorefrontOrder || order?.order_source === "reseller_storefront";
+      if (order && sourceValid && paid && Number(data.gross_amount) === Number(order.amount) && order.status !== "paid") {
         const { error: updateError } = await supabase
           .from("checkout_orders")
           .update({
@@ -129,5 +125,6 @@ export async function GET(request: Request) {
     settlementTime: data.settlement_time ?? null,
     accountStatus,
     invitationActivation: isResellerClientOrder && orderId.startsWith("VSTQ-IA-"),
+    storefrontOrder: isStorefrontOrder,
   });
 }
