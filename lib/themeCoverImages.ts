@@ -15,6 +15,7 @@ export const WEDDING_COVER_BY_THEME: Record<string, string> = {
   "art-deco-glam": "/photos/deco-cover.webp",
   "golden-romance": "/photos/romance-cover.webp",
   "adat-jawa": "/photos/jawa-cover.webp",
+  "jawa-sasmaya": "/photos/jawa-cover.webp",
   "adat-minang": "/photos/luxury-gallery-1.webp",
   "adat-bugis": "/photos/lantern-cover.webp",
   "menara-cahaya": "/photos/imperial-cover.webp",
@@ -74,6 +75,7 @@ export const THEME_CARD_PREVIEW_BY_THEME: Record<string, string> = {
   "ivory-botanica": "/theme-previews/wedding/ivory-botanica-card.jpg",
   "adat-bali-motion": "/theme-previews/wedding/adat-bali-motion-card.jpg",
   "adat-minang-motion": "/theme-previews/wedding/adat-minang-motion-card.jpg",
+  "jawa-sasmaya": "/theme-previews/wedding/jawa-sasmaya.jpg",
   // Dedicated Khitan catalog covers stay separate from each theme live demo preview.
   "khitan-warna": "/theme-previews/khitan/khitan-warna-card.jpg",
   "khitan-ksatria": "/theme-previews/khitan/khitan-ksatria-card.jpg",

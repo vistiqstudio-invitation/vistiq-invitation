@@ -28,6 +28,7 @@ import ModernElegant from "@/themes/modern-elegant/ModernElegant";
 import RoyalImperial from "@/themes/royal-imperial/RoyalImperial";
 import AdatMinang from "@/themes/adat-minang/AdatMinang";
 import WayangJawa from "@/themes/adat-jawa/WayangJawa";
+import JawaSasmaya from "@/themes/jawa-sasmaya/JawaSasmaya";
 import AdatBugis from "@/themes/adat-bugis/AdatBugis";
 import AdatBali from "@/themes/adat-bali/AdatBali";
 import AdatSunda from "@/themes/adat-sunda/AdatSunda";
@@ -84,6 +85,7 @@ export const themeRegistry: Record<
   "royal-imperial": RoyalImperial,
   "adat-minang": AdatMinang,
   "adat-jawa": WayangJawa,
+  "jawa-sasmaya": JawaSasmaya,
   "adat-bugis": AdatBugis,
   "adat-bali": AdatBali,
   "adat-sunda": AdatSunda,
@@ -175,6 +177,7 @@ const allWeddingThemes: ThemeMeta[] = [
   { key: "royal-imperial", label: "Royal Imperial", description: "Maroon & emas keraton, medali foto, dial melingkar", swatch: ["#2a0f0f", "#d4af37"], tags: ["basic"] },
   { key: "royal-java", label: "Royal Java – Maroon Heritage", description: "Opening sinematik pendopo, bunga marun berlapis, batik & emas keraton", swatch: ["#250608", "#d7ad55"], tags: ["premium", "adat"], addedAt: "2026-07-26" },
   { key: "adat-jawa", label: "Wayang Jawa", description: "Tema adat Jawa bergaya wayang berdasarkan referensi Wayang 01", swatch: ["#f3e7d7", "#7f5839"], tags: ["adat"], addedAt: "2026-09-28" },
+  { key: "jawa-sasmaya", label: "Jawa Sasmaya", description: "Krem hangat, gunungan klasik, awan Jawa dan bunga lembut dengan tata letak tradisional elegan", swatch: ["#f7efe3", "#8b5b35"], tags: ["adat"], addedAt: "2026-10-05" },
   { key: "adat-minang", label: "Adat Minang", description: "Marun & emas songket, motif gonjong rumah gadang, suntiang", swatch: ["#4a0e14", "#d1a13a"], tags: ["adat"] },
   { key: "adat-bugis", label: "Adat Bugis", description: "Teal & emas, motif atap timpalaja, ombak Bugis-Makassar", swatch: ["#0d3438", "#cfa23c"], tags: ["adat"] },
   { key: "adat-bali", label: "Adat Bali", description: "Hitam batu & emas prada, gapura candi bentar, medali foto bulat, aksara Bali", swatch: ["#16110d", "#c9a227"], tags: ["adat"] },
