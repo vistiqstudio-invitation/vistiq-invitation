@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import PhoneMockup from "@/components/PhoneMockup";
+import StorefrontCheckoutButton from "@/components/StorefrontCheckoutButton";
 import { themeList, aqiqahThemeList, khitanThemeList, birthdayThemeList, isThemeNew, type ThemeMeta } from "@/lib/theme";
 import { getThemeCardPreviewImage, getThemeCoverImage } from "@/lib/themeCoverImages";
 import styles from "@/app/demo/demo.module.css";
@@ -32,6 +33,7 @@ const OCCASIONS = [
 ] as const;
 
 type OccasionKey = (typeof OCCASIONS)[number]["key"];
+type CheckoutOccasionKey = Exclude<OccasionKey, "wisuda">;
 
 const WEDDING_SUBFILTERS = [
   { key: "semua", label: "Semua Tema" },
@@ -59,9 +61,6 @@ const SCREENSHOT_VARIANTS = [
 ] as const;
 
 function getThemeScreenshotImages(coverImage: string | null) {
-  // The catalog cards must show screenshots of the invitation website itself.
-  // Reuse the portrait website preview and crop different vertical sections;
-  // the invitation gallery contains raw couple photos and must not be used here.
   return SCREENSHOT_VARIANTS.map(() => coverImage);
 }
 
@@ -162,6 +161,9 @@ function ThemeCard({
   discountLabel,
   waNumber,
   brandName,
+  resellerKey,
+  occasion,
+  midtransProduction,
 }: {
   theme: ThemeMeta;
   demoPath: string;
@@ -171,6 +173,9 @@ function ThemeCard({
   discountLabel?: string;
   waNumber: string;
   brandName: string;
+  resellerKey?: string;
+  occasion: CheckoutOccasionKey;
+  midtransProduction?: boolean;
 }) {
   const orderText = encodeURIComponent(`Halo ${brandName}, saya ingin order undangan tema ${theme.label}`);
   const coverImage = getThemeCoverImage(theme.key, demoPath);
@@ -206,14 +211,26 @@ function ThemeCard({
           <Link href={`${demoPath}/${theme.key}`} className={styles.cardButton}>
             <SendIcon /> Lihat Tema
           </Link>
-          <a
-            href={`https://wa.me/${waNumber}?text=${orderText}`}
-            target="_blank"
-            rel="noreferrer"
-            className={styles.orderButton}
-          >
-            Order
-          </a>
+          {resellerKey ? (
+            <StorefrontCheckoutButton
+              resellerKey={resellerKey}
+              themeKey={theme.key}
+              themeLabel={theme.label}
+              category={occasion}
+              className={styles.orderButton}
+              label="Order"
+              production={midtransProduction}
+            />
+          ) : (
+            <a
+              href={`https://wa.me/${waNumber}?text=${orderText}`}
+              target="_blank"
+              rel="noreferrer"
+              className={styles.orderButton}
+            >
+              Order
+            </a>
+          )}
         </div>
       </div>
     </div>
@@ -248,6 +265,8 @@ export default function ThemeBrowser({
   priceWasLabel,
   discountLabel,
   defaultOccasion,
+  resellerKey,
+  midtransProduction,
 }: {
   waNumber?: string;
   brandName?: string;
@@ -257,16 +276,14 @@ export default function ThemeBrowser({
   priceWasLabel?: string;
   discountLabel?: string;
   defaultOccasion?: OccasionKey;
+  resellerKey?: string;
+  midtransProduction?: boolean;
 }) {
   const [occasion, setOccasion] = useState<OccasionKey | null>(defaultOccasion ?? null);
   const [weddingSub, setWeddingSub] = useState<WeddingSubKey>("semua");
 
   const filteredWeddingThemes = useMemo(() => {
     if (weddingSub === "semua") return themeList;
-
-    // Category catalogs are intentionally exclusive. Luxury Art and 3D Motion
-    // themes must never leak into the generic Premium catalog, even if legacy
-    // metadata or a stale data source still contains an old premium tag.
     if (weddingSub === "premium") {
       return themeList.filter(
         (theme) =>
@@ -275,7 +292,6 @@ export default function ThemeBrowser({
           !theme.tags.includes("premium-3d-motion")
       );
     }
-
     return themeList.filter((theme) => theme.tags?.includes(weddingSub));
   }, [weddingSub]);
 
@@ -287,7 +303,7 @@ export default function ThemeBrowser({
       ? "luxury-art"
       : tags.includes("tanpa-foto")
       ? "tanpa-foto"
-      : tags.includes("adat")
+      : tags.includes("adat") || tags.includes("3d-motion-adat")
       ? "adat"
       : tags.includes("premium")
       ? "premium"
@@ -295,6 +311,8 @@ export default function ThemeBrowser({
 
     return weddingPriceLabels?.[category] || priceLabels?.wedding || priceLabel;
   };
+
+  const commonCheckoutProps = { waNumber, brandName, resellerKey, midtransProduction };
 
   return (
     <div>
@@ -350,8 +368,8 @@ export default function ThemeBrowser({
               priceLabel={weddingPriceForTheme(theme)}
               priceWasLabel={priceWasLabel}
               discountLabel={discountLabel}
-              waNumber={waNumber}
-              brandName={brandName}
+              occasion="wedding"
+              {...commonCheckoutProps}
             />
           ))}
         </div>
@@ -366,8 +384,8 @@ export default function ThemeBrowser({
               priceLabel={priceLabels?.khitan || priceLabel}
               priceWasLabel={priceWasLabel}
               discountLabel={discountLabel}
-              waNumber={waNumber}
-              brandName={brandName}
+              occasion="khitan"
+              {...commonCheckoutProps}
             />
           ))}
         </div>
@@ -382,8 +400,8 @@ export default function ThemeBrowser({
               priceLabel={priceLabels?.akikah || priceLabel}
               priceWasLabel={priceWasLabel}
               discountLabel={discountLabel}
-              waNumber={waNumber}
-              brandName={brandName}
+              occasion="akikah"
+              {...commonCheckoutProps}
             />
           ))}
         </div>
@@ -398,17 +416,14 @@ export default function ThemeBrowser({
               priceLabel={priceLabels?.["ulang-tahun"] || priceLabel}
               priceWasLabel={priceWasLabel}
               discountLabel={discountLabel}
-              waNumber={waNumber}
-              brandName={brandName}
+              occasion="ulang-tahun"
+              {...commonCheckoutProps}
             />
           ))}
         </div>
       ) : (
         <div className={styles.grid}>
-          <ComingSoonCard
-            {...COMING_SOON[occasion]}
-            priceLabel={priceLabels?.[occasion] || priceLabel}
-          />
+          <ComingSoonCard {...COMING_SOON[occasion]} priceLabel={priceLabels?.[occasion] || priceLabel} />
         </div>
       )}
     </div>
