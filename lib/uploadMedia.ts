@@ -61,7 +61,6 @@ export async function uploadMediaToR2(file: File, folder: string, scope: string)
     method: "PUT",
     headers: {
       "Content-Type": uploadFile.type || "application/octet-stream",
-      "Cache-Control": "public, max-age=31536000, immutable",
     },
     body: uploadFile,
   });
