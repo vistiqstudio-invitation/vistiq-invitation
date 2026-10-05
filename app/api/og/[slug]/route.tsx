@@ -1,49 +1,9 @@
 import { ImageResponse } from "next/og";
-import { imageSize } from "image-size";
 import { getInvitationBySlug } from "@/lib/invitation";
 import { parseSmartCoverValue } from "@/lib/smartCover";
 
 const WIDTH = 800;
 const HEIGHT = 420;
-
-// Frame the photo itself instead of a fixed landscape box - a portrait
-// cover photo forced into an 800x420 frame either gets cropped (cover) or
-// leaves empty bars on the sides (contain). Sizing the frame to the
-// photo's own aspect ratio shows the whole photo with neither.
-// Target pixel count is tuned lower than WIDTH*HEIGHT because, unlike the
-// old letterboxed version, every pixel here is photo detail (no cheap-to-
-// compress solid background), so the same pixel budget would encode larger.
-const TARGET_PIXELS = 100_000;
-const MIN_DIMENSION = 250;
-const MAX_DIMENSION = 1000;
-
-async function photoFrameSize(coverImage: string): Promise<{ width: number; height: number }> {
-  try {
-    const bytes = await fetch(coverImage).then((res) => res.arrayBuffer());
-    const { width: naturalWidth, height: naturalHeight } = imageSize(new Uint8Array(bytes));
-    if (!naturalWidth || !naturalHeight) return { width: WIDTH, height: HEIGHT };
-
-    const aspectRatio = naturalWidth / naturalHeight;
-    let width = Math.round(Math.sqrt(TARGET_PIXELS * aspectRatio));
-    let height = Math.round(Math.sqrt(TARGET_PIXELS / aspectRatio));
-
-    const longSide = Math.max(width, height);
-    const shortSide = Math.min(width, height);
-    if (longSide > MAX_DIMENSION) {
-      const scale = MAX_DIMENSION / longSide;
-      width = Math.round(width * scale);
-      height = Math.round(height * scale);
-    } else if (shortSide < MIN_DIMENSION) {
-      const scale = MIN_DIMENSION / shortSide;
-      width = Math.round(width * scale);
-      height = Math.round(height * scale);
-    }
-
-    return { width, height };
-  } catch {
-    return { width: WIDTH, height: HEIGHT };
-  }
-}
 
 function getDisplayName(
   invitation: Awaited<ReturnType<typeof getInvitationBySlug>>
@@ -75,11 +35,9 @@ export async function GET(
 
   const { source: coverImage } = parseSmartCoverValue(invitation.coverImage);
   const cacheHeaders = {
-    "Cache-Control": "public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800",
+    "Cache-Control": "public, max-age=86400, s-maxage=604800, stale-while-revalidate=2592000",
   };
 
-  // No cover photo uploaded yet - fall back to a branded text card so
-  // the share link always has some preview image instead of none at all.
   if (!coverImage) {
     const displayName = getDisplayName(invitation);
     const categoryLabel = CATEGORY_LABEL[invitation.category] ?? CATEGORY_LABEL.wedding;
@@ -98,39 +56,13 @@ export async function GET(
             color: "#ffffff",
           }}
         >
-          <div
-            style={{
-              display: "flex",
-              fontSize: 16,
-              fontWeight: 600,
-              letterSpacing: 4,
-              color: "#a8c8e8",
-            }}
-          >
+          <div style={{ display: "flex", fontSize: 16, fontWeight: 600, letterSpacing: 4, color: "#a8c8e8" }}>
             {categoryLabel.toUpperCase()}
           </div>
-          <div
-            style={{
-              display: "flex",
-              marginTop: 20,
-              padding: "0 60px",
-              fontSize: 42,
-              fontWeight: 700,
-              textAlign: "center",
-            }}
-          >
+          <div style={{ display: "flex", marginTop: 20, padding: "0 60px", fontSize: 42, fontWeight: 700, textAlign: "center" }}>
             {displayName}
           </div>
-          <div
-            style={{
-              display: "flex",
-              marginTop: 28,
-              fontSize: 14,
-              fontWeight: 600,
-              letterSpacing: 3,
-              color: "#a8c8e8",
-            }}
-          >
+          <div style={{ display: "flex", marginTop: 28, fontSize: 14, fontWeight: 600, letterSpacing: 3, color: "#a8c8e8" }}>
             VISTIQ INVITATION
           </div>
         </div>
@@ -139,34 +71,23 @@ export async function GET(
     );
   }
 
-  // Frame sized to the photo's own aspect ratio so the whole photo fills it
-  // edge to edge - no crop (like a fixed landscape frame would force) and
-  // no empty side bars (like letterboxing a mismatched frame would leave).
-  const frame = await photoFrameSize(coverImage);
-
+  // Keep the same 800x420 share-card appearance, but let the OG renderer
+  // fetch the R2 image directly. Avoiding a separate server-side download
+  // just to inspect its dimensions removes one network transfer and image
+  // parsing step from every cache miss.
   return new ImageResponse(
     (
-      <div
-        style={{
-          display: "flex",
-          width: `${frame.width}px`,
-          height: `${frame.height}px`,
-        }}
-      >
+      <div style={{ display: "flex", width: `${WIDTH}px`, height: `${HEIGHT}px`, overflow: "hidden" }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={coverImage}
           alt=""
-          width={frame.width}
-          height={frame.height}
-          style={{
-            width: `${frame.width}px`,
-            height: `${frame.height}px`,
-            objectFit: "cover",
-          }}
+          width={WIDTH}
+          height={HEIGHT}
+          style={{ width: `${WIDTH}px`, height: `${HEIGHT}px`, objectFit: "cover" }}
         />
       </div>
     ),
-    { width: frame.width, height: frame.height, headers: cacheHeaders }
+    { width: WIDTH, height: HEIGHT, headers: cacheHeaders }
   );
 }
