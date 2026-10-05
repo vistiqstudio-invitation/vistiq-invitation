@@ -1,37 +1,160 @@
 "use client";
-import { useEffect,useMemo,useRef,useState } from "react";
-import type { FormEvent } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useInvitation } from "@/components/InvitationProvider";
-import { useRsvpWishes,type Attendance } from "@/hooks/useRsvpWishes";
+import { useRsvpWishes, type Attendance } from "@/hooks/useRsvpWishes";
 import type { InvitationData } from "@/types/invitation";
 import styles from "./style.module.css";
-const A="/themes/jawa-sasmaya";
-const first=(s:string,f:string)=>s.trim().split(/\s+/)[0]||f;
-const ig=(s:string|null)=>!s?"":/^https?:\/\//i.test(s)?s:`https://instagram.com/${s.replace(/^@/,"")}`;
-const wa=(s?:string|null)=>{const d=String(s||"").replace(/\D/g,"");return d?`https://wa.me/${d.startsWith("0")?`62${d.slice(1)}`:d}`:""};
-function parts(v?:string|null){const a=String(v||"Minggu, 20 September 2026").replace(/,/g," ").split(/\s+/).filter(Boolean),i=a.findIndex(x=>/^\d{1,2}$/.test(x));return{weekday:i>0?a.slice(0,i).join(" "):"Minggu",day:i>=0?a[i]:"20",month:i>=0?a[i+1]||"September":"September",year:i>=0?a[i+2]||"2026":"2026"}}
-function Countdown({date}:{date?:string|null}){const target=useMemo(()=>date?new Date(date).getTime():NaN,[date]),[now,setNow]=useState(()=>Date.now());useEffect(()=>{const n=setInterval(()=>setNow(Date.now()),1000);return()=>clearInterval(n)},[]);const s=Math.floor((Number.isFinite(target)?Math.max(0,target-now):0)/1000),p=[[Math.floor(s/86400),"D"],[Math.floor((s%86400)/3600),"H"],[Math.floor((s%3600)/60),"M"],[s%60,"S"]] as const;return <div className={styles.countdown}>{p.map(([v,l])=><div key={l}><b>{String(v).padStart(2,"0")}</b><span>{l}</span></div>)}</div>}
-function Divider(){return <div className={styles.divider} aria-hidden="true"><img src={`${A}/sasmaya-cloud-cluster.webp`} alt=""/><img src={`${A}/sasmaya-cloud-cluster.webp`} alt=""/><img src={`${A}/sasmaya-scallop-divider.webp`} alt=""/></div>}
-function EventCard({item,map}:{item:InvitationData["events"][number],map:string}){const d=parts(item.date);return <article className={styles.eventCard} data-reveal><h3>{item.name}</h3><p>{d.weekday}</p><div className={styles.dateMark}><img src={`${A}/sasmaya-cloud-single.webp`} alt=""/><strong>{d.day}</strong><img src={`${A}/sasmaya-cloud-double.webp`} alt=""/></div><div className={styles.month}><span>{d.month}</span><span>{d.year}</span></div><p>Waktu: {item.time}</p><hr/><b>{item.location}</b>{map&&<a href={map} target="_blank" rel="noreferrer">⌖&nbsp; Google Maps</a>}</article>}
-export default function JawaSasmaya({invitation}:{invitation:InvitationData}){
- const {opened,setOpened}=useInvitation(),audioRef=useRef<HTMLAudioElement>(null),[playing,setPlaying]=useState(false),[form,setForm]=useState({name:"",whatsapp:"",attendance:"Hadir" as Attendance,message:""}),[error,setError]=useState(""),rsvp=useRsvpWishes(invitation.id);
- const groom=first(invitation.groom.name,"Rizky"),bride=first(invitation.bride.name,"Nabila"),event=invitation.coverEvent||invitation.events[1]||invitation.events[0],cover=invitation.coverImage||invitation.groom.photo||invitation.bride.photo||"/photos/jawa-cover.webp",couple=invitation.gallery[0]||cover,storyPhotos=invitation.storyPhotos||invitation.gallery,d=parts(event?.date),map=invitation.mapsUrl||invitation.mapsEmbedUrl||"";
- useEffect(()=>{if(!opened)return;const ns=Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]")),o=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add(styles.visible)}),{threshold:.12});ns.forEach(n=>o.observe(n));return()=>o.disconnect()},[opened]);
- useEffect(()=>{if(opened&&audioRef.current&&invitation.musicUrl)audioRef.current.play().then(()=>setPlaying(true)).catch(()=>{})},[opened,invitation.musicUrl]);
- const toggle=()=>{const a=audioRef.current;if(!a)return;if(a.paused)a.play().then(()=>setPlaying(true)).catch(()=>{});else{a.pause();setPlaying(false)}};
- const submit=async(e:FormEvent)=>{e.preventDefault();if(!form.name.trim()||!form.message.trim()){setError("Nama dan ucapan wajib diisi.");return}const x=await rsvp.submit(form);if(x.error){setError(x.error);return}setError("");setForm({name:"",whatsapp:"",attendance:"Hadir",message:""})};
- return <div className={styles.root}>
- {!opened&&<section className={styles.opening}><p className={styles.kicker}>UNDANGAN</p><p className={styles.sub}>PERNIKAHAN</p><div className={styles.openPhoto}><img src={cover} alt={`Foto ${groom} dan ${bride}`}/></div><img className={styles.openGunungan} src={`${A}/sasmaya-gunungan-pair.webp`} alt="Ornamen gunungan"/><h1>{groom} <span>&amp;</span> {bride}</h1><div className={styles.guest}><small>Kepada YTH Bapak/Ibu/Saudara/i</small><strong>Nama Tamu</strong><button onClick={()=>setOpened(true)}>✉&nbsp; Buka Undangan</button></div><img className={styles.openLeft} src={`${A}/sasmaya-gunungan-pair.webp`} alt=""/><img className={styles.openRight} src={`${A}/sasmaya-gunungan-pair.webp`} alt=""/><Divider/></section>}
- {opened&&<main>
- <section id="home" className={styles.saveDate}><div className={styles.datePanel} data-reveal><p>Save The Date</p><div className={styles.bigDate}><b>{d.day}</b><b>{String(new Date(`${d.month} 1, 2020`).getMonth()+1).padStart(2,"0")}</b><b>{d.year.slice(-2)}</b></div><img className={styles.rose} src={`${A}/sasmaya-rose.webp`} alt="Bunga"/><img className={styles.dateGunungan} src={`${A}/sasmaya-gunungan-cloud.webp`} alt="Gunungan"/></div><div className={styles.quotePanel}><img className={styles.quotePhoto} src={couple} alt={`Foto ${groom} dan ${bride}`}/><img className={styles.quoteCloud} src={`${A}/sasmaya-cloud-cluster.webp`} alt=""/><blockquote>{invitation.opening.quote||"Di antara tanda-tanda (kebesaran)-Nya ialah bahwa Dia menciptakan pasangan-pasangan untukmu dari (jenis) dirimu sendiri agar kamu merasa tenteram kepadanya. Dia menjadikan di antaramu rasa cinta dan kasih sayang."}</blockquote><cite>{invitation.opening.quoteSource||"( Ar Rum - 21 )"}</cite><Countdown date={event?.rawDate}/><a className={styles.calendar} href="#event">▣&nbsp; Save on the calendar</a></div></section>
- <section id="couple" className={styles.couple}><img className={styles.coupleTop} src={`${A}/sasmaya-gunungan-cloud.webp`} alt=""/><h2>{invitation.opening.greeting||"Assalamu'alaikum Wr Wb"}</h2><p>{invitation.opening.description||"Tanpa mengurangi rasa hormat, kami bermaksud mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara pernikahan kami:"}</p>{[{p:invitation.groom,l:"Putra dari",f:"/photos/jawa-groom.webp"},{p:invitation.bride,l:"Putri dari",f:"/photos/jawa-bride.webp"}].map(({p,l,f},i)=><div className={styles.person} key={p.name} data-reveal><div className={styles.personPhoto}><img src={p.photo||f} alt={`Foto ${p.name}`}/><img src={`${A}/sasmaya-gunungan-pair.webp`} alt=""/></div><h3>{p.name}</h3><small>{l}</small><p>{p.parents}</p>{p.instagram&&<a href={ig(p.instagram)} target="_blank" rel="noreferrer">◎&nbsp; {p.instagram.replace(/^@/,"")}</a>}{i===0&&<div className={styles.amp}>&amp;</div>}</div>)}<Divider/></section>
- <section id="event" className={styles.events}><h2>Save The Date</h2><div className={styles.eventList}>{invitation.events.map((x,i)=><EventCard key={`${x.name}-${i}`} item={x} map={map}/>)}</div>{invitation.liveStreamingUrl&&<div className={styles.live} data-reveal><img src={`${A}/sasmaya-gunungan-pair.webp`} alt=""/><p>Kami mengajak Anda yang tidak dapat hadir langsung untuk bergabung pada momen spesial kami melalui siaran langsung.</p><a href={invitation.liveStreamingUrl} target="_blank" rel="noreferrer">▶&nbsp; Join Live</a></div>}<Divider/></section>
- {invitation.story.length>0&&<section id="story" className={styles.story}><h2>Love Story</h2><div>{invitation.story.map((x,i)=><article key={`${x.year}-${i}`} data-reveal><img src={storyPhotos[i]||invitation.gallery[i]||cover} alt={x.title}/><div><span>{x.year}</span><h3>{x.title}</h3><p>{x.description}</p></div></article>)}</div></section>}
- {invitation.gallery.length>0&&<section id="gallery" className={styles.gallery}><h2>Mini Gallery</h2><div>{invitation.gallery.map((x,i)=><img src={x} alt={`Galeri ${i+1}`} key={`${x}-${i}`} data-reveal/>)}</div><Divider/></section>}
- <section id="rsvp" className={styles.rsvp}><h2>RSVP &amp; UCAPAN</h2><p>Mohon Untuk Mengisi Form Reservasi</p><form onSubmit={submit} data-reveal><input value={form.name} onChange={e=>setForm({...form,name:e.target.value})} placeholder="Nama Kamu"/><input value={form.whatsapp} onChange={e=>setForm({...form,whatsapp:e.target.value})} placeholder="Nomor WhatsApp (opsional)"/><textarea value={form.message} onChange={e=>setForm({...form,message:e.target.value})} placeholder="Berikan Ucapan & Doa"/><label>Konfirmasi Kehadiran?</label><div className={styles.attendance}>{(["Hadir","Tidak Hadir","Masih Ragu"] as Attendance[]).map(x=><button type="button" data-active={form.attendance===x} onClick={()=>setForm({...form,attendance:x})} key={x}>{x}</button>)}</div>{error&&<p className={styles.error}>{error}</p>}<button className={styles.submit} disabled={rsvp.submitting}>{rsvp.submitting?"Mengirim...":"Kirim"}</button></form><div className={styles.wishes}>{rsvp.entries.map(x=><article key={x.id}><b>{x.name}</b><span>{x.attendance}</span><p>{x.message}</p></article>)}{rsvp.hasMore&&<button onClick={rsvp.loadMore}>Lihat Ucapan Lainnya</button>}</div><Divider/></section>
- {invitation.gifts.length>0&&<section id="gift" className={styles.gift}><h2>Wedding Gift</h2><p>Bagi tamu yang ingin memberi tanda kasih, kami dengan senang hati menerimanya dan tentunya semakin melengkapi kebahagiaan kami.</p><img className={styles.giftPhoto} src={invitation.gallery[1]||couple} alt={`Foto ${groom} dan ${bride}`}/><div className={styles.giftList}>{invitation.gifts.map((x,i)=><article key={`${x.accountNumber}-${i}`} data-reveal><span>{x.bankName||"Rekening"}</span><i>▤</i><small>{x.accountName||x.owner}</small><b>{x.accountNumber}</b><button onClick={()=>navigator.clipboard?.writeText(x.accountNumber||"")}>Salin Nomor</button></article>)}</div>{wa(invitation.contactWhatsapp)&&<a className={styles.confirmGift} href={wa(invitation.contactWhatsapp)} target="_blank" rel="noreferrer">Konfirmasi Hadiah</a>}<Divider/></section>}
- <section className={styles.closing}><img className={styles.closingTop} src={`${A}/sasmaya-gunungan-cloud.webp`} alt=""/><img className={styles.closingPhoto} src={couple} alt={`Foto ${groom} dan ${bride}`}/><p className={styles.thanks}>Terimakasih</p><p>Merupakan suatu kebahagiaan dan kehormatan bagi kami, apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu kepada kami.</p><h2>{groom} <span>&amp;</span> {bride}</h2><img className={styles.closingGunungan} src={`${A}/sasmaya-gunungan-pair.webp`} alt=""/></section><footer className={styles.footer}>Made with ♥ by {invitation.brand?.name||"Vistiq Invitation"}</footer>
- <nav className={styles.nav}><a href="#home">⌂</a><a href="#couple">♡</a><a href="#event">▣</a><a href="#gallery">▧</a><a href="#rsvp">✉</a></nav>{invitation.musicUrl&&<><audio ref={audioRef} src={invitation.musicUrl} loop/><button className={styles.music} onClick={toggle}>{playing?"♫":"♪"}</button></>}
- </main>}
- </div>
+
+const asset = "/themes/jawa-sasmaya/reference/index.html";
+const first = (name: string) => name.trim().split(/\s+/)[0] || "";
+const dateParts = (date?: string | null) => {
+  const match = String(date || "").match(/(\d{1,2})\s+(\S+)\s+(\d{4})/);
+  return match && [match[1],match[2],match[3]];
+};
+
+export default function JawaSasmaya({invitation}:{invitation:InvitationData}) {
+  const iframe = useRef<HTMLIFrameElement>(null);
+  const audio = useRef<HTMLAudioElement>(null);
+  const {opened,setOpened} = useInvitation();
+  const rsvp = useRsvpWishes(invitation.id);
+  const rsvpRef = useRef(rsvp);
+  useEffect(()=>{rsvpRef.current=rsvp;},[rsvp]);
+
+  const populate = useCallback(() => {
+    const doc = iframe.current?.contentDocument;
+    if (!doc) return;
+    if (!doc.body.dataset.vistiqRevealBound) {
+      doc.body.dataset.vistiqRevealBound = "1";
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(({target,isIntersecting}) => {
+          if (!isIntersecting) return;
+          const element = target as HTMLElement;
+          let animation = "fadeInUp";
+          try { animation = JSON.parse(element.dataset.settings || "{}")._animation || animation; } catch {}
+          element.classList.remove("elementor-invisible");
+          element.classList.add("animated", animation);
+          if (element.hasAttribute("data-aos")) element.classList.add("aos-animate");
+          observer.unobserve(element);
+        });
+      },{rootMargin:"80px 0px",threshold:0.01});
+      doc.querySelectorAll<HTMLElement>(".elementor-invisible,[data-aos]").forEach(el => observer.observe(el));
+    }
+    const cover = invitation.coverImage || invitation.gallery[0] || invitation.groom.photo || "/photos/jawa-cover.webp";
+    const photos = invitation.gallery.length ? invitation.gallery : [cover];
+    const names:Record<string,string> = {
+      "Rizky & Nabila": first(invitation.groom.name)+" & "+first(invitation.bride.name),
+      "Rizky Pratama": invitation.groom.name,
+      "Nabila Putri": invitation.bride.name,
+      "Bapak Rahmat & Ibu Dewi": invitation.groom.parents || "",
+      "Bapak Hadi & Ibu Sari": invitation.bride.parents || "",
+      "Vistiq Invitation": invitation.brand?.name || "Vistiq Invitation",
+    };
+    doc.querySelectorAll("h1,h2,h3,p,span,strong,small").forEach(el => {
+      for (const child of Array.from(el.childNodes)) if (child.nodeType === 3) {
+        let value = child.textContent || "";
+        for (const [from,to] of Object.entries(names)) value = value.replaceAll(from,to);
+        child.textContent = value;
+      }
+    });
+    const images:Record<string,string> = {
+      "/photos/jawa-cover.webp": cover,
+      "/photos/jawa-bride.webp": invitation.bride.photo || photos[1] || cover,
+      "/photos/jawa-groom.webp": invitation.groom.photo || photos[2] || cover,
+    };
+    doc.querySelectorAll<HTMLImageElement>("img").forEach(img => {
+      const original = img.getAttribute("src") || "";
+      if (images[original]) img.src = images[original];
+    });
+    doc.querySelectorAll<HTMLElement>(".e-gallery-image").forEach((el,i) => {
+      const src = photos[i % photos.length];
+      el.style.backgroundImage = "url("+JSON.stringify(src)+")";
+      el.closest("a")?.setAttribute("href",src);
+    });
+    const opening = doc.querySelector<HTMLElement>(".elementor-element-662bb3ba");
+    if (opening) opening.style.display = opened ? "none" : "";
+    const open = doc.querySelector<HTMLAnchorElement>("#tombol-buka a");
+    if (open) open.onclick = e => {
+      e.preventDefault(); setOpened(true);
+      if (opening) opening.style.display = "none";
+      doc.querySelector("#cover")?.scrollIntoView({behavior:"smooth"});
+      audio.current?.play().catch(()=>{});
+    };
+    const date = dateParts((invitation.coverEvent || invitation.events[1] || invitation.events[0])?.date);
+    if (date) {
+      const headings = Array.from(doc.querySelectorAll<HTMLElement>("h2.elementor-heading-title"));
+      const i = headings.findIndex(h => h.textContent?.trim() === "21");
+      if (i >= 0) [date[0],date[1],date[2].slice(-2)].forEach((x,n)=> {headings[i+n].textContent=x;});
+    }
+    const eventSections = ["37eae226","47e22cc"];
+    invitation.events.slice(0,2).forEach((event,i) => {
+      const section = doc.querySelector<HTMLElement>(".elementor-element-"+eventSections[i]);
+      if (!section) return;
+      const headings = Array.from(section.querySelectorAll<HTMLElement>("h2.elementor-heading-title"));
+      const d = dateParts(event.date);
+      const weekday = event.date?.split(",")[0];
+      const values = [event.name,weekday,d?.[0],d?.[1],d?.[2],"Waktu: "+event.time,event.location];
+      values.forEach((value,j)=>{if(value && headings[j]) headings[j].textContent=value;});
+    });
+    const anchors = Array.from(doc.querySelectorAll<HTMLAnchorElement>("a"));
+    anchors.filter(a=>a.textContent?.includes("Google Maps")).forEach(a=>{
+      a.href=invitation.mapsUrl || invitation.mapsEmbedUrl || "#";
+      a.target="_blank";a.rel="noopener noreferrer";
+    });
+    anchors.filter(a=>a.getAttribute("href")==="https://instagram.com/").slice(0,2).forEach((a,i)=>{
+      const handle=[invitation.bride.instagram,invitation.groom.instagram][i];
+      if (!handle) a.style.display="none";
+      else a.href=/^https?:\/\//.test(handle)?handle:"https://instagram.com/"+handle.replace(/^@/,"");
+    });
+    const live=anchors.find(a=>a.textContent?.includes("Join Live"));
+    if(live){if(invitation.liveStreamingUrl)live.href=invitation.liveStreamingUrl;else live.style.display="none";}
+    const storyHeading=Array.from(doc.querySelectorAll<HTMLElement>("h2")).find(h=>h.textContent?.trim()==="Love Story");
+    const storyContainer=storyHeading?.closest(".e-con-inner");
+    if(storyContainer && invitation.story.length){
+      const descriptions=Array.from(storyContainer.querySelectorAll<HTMLElement>("h2.elementor-heading-title"))
+        .filter(h=>h!==storyHeading);
+      const titles=Array.from(storyContainer.querySelectorAll<HTMLElement>("h3.elementor-heading-title"));
+      invitation.story.slice(0,descriptions.length).forEach((item,i)=>{
+        if(descriptions[i]) descriptions[i].textContent=item.description;
+        if(titles[i]) titles[i].textContent=item.title;
+      });
+    }
+    const giftNumbers=Array.from(doc.querySelectorAll<HTMLElement>("h2.elementor-heading-title"))
+      .filter(h=>/^\d{10,16}$/.test(h.textContent?.trim()||""));
+    giftNumbers.forEach((h,i)=>{
+      const item=invitation.gifts[i];
+      const card=h.closest<HTMLElement>(".e-con-full");
+      if(!item){card?.classList.add("vistiq-hidden");return;}
+      h.textContent=item.accountNumber;
+      const owner=Array.from(card?.querySelectorAll<HTMLElement>("h2.elementor-heading-title")||[])
+        .find(el=>el!==h && /^(Nabila|Rizky)$/.test(el.textContent?.trim()||""));
+      if(owner)owner.textContent=item.accountName||item.owner||"";
+    });
+    const gift=anchors.find(a=>a.textContent?.includes("Konfirmasi Hadiah"));
+    if(gift){const phone=String(invitation.contactWhatsapp||"").replace(/\D/g,"").replace(/^0/,"62");gift.href=phone?"https://wa.me/"+phone:"#";}
+    const form=doc.querySelector<HTMLFormElement>("form[data-vistiq-rsvp]");
+    if(form) form.onsubmit=async e=>{
+      e.preventDefault();
+      const data=new FormData(form), name=String(data.get("author")||"").trim(), message=String(data.get("comment")||"").trim();
+      if(!name||!message)return;
+      const attendance=({present:"Hadir",notpresent:"Tidak Hadir",notsure:"Masih Ragu"} as Record<string,Attendance>)[String(data.get("attendance"))]||"Hadir";
+      const result=await rsvpRef.current.submit({name,message,attendance,whatsapp:""});
+      if(!result.error)form.reset();
+    };
+  },[invitation,opened,setOpened]);
+  useEffect(()=>{populate();},[populate]);
+  useEffect(()=>{
+    const doc=iframe.current?.contentDocument;
+    const list=doc?.querySelector<HTMLElement>("#saic-container-comment-4017");
+    if(!doc||!list)return;
+    list.replaceChildren(...rsvp.entries.map(entry=>{
+      const li=doc.createElement("li");li.className="saic-item-comment";
+      const name=doc.createElement("strong");name.textContent=entry.name;
+      const message=doc.createElement("p");message.textContent=entry.message;
+      li.append(name,message);return li;
+    }));
+  },[rsvp.entries]);
+  return <div className={styles.shell}>
+    <iframe title={"Undangan "+invitation.groom.name+" dan "+invitation.bride.name} ref={iframe} src={asset} onLoad={populate} className={styles.frame}/>
+    {invitation.musicUrl&&<audio ref={audio} src={invitation.musicUrl} loop/>}
+  </div>;
 }

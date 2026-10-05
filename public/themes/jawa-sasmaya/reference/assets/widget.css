@@ -1,0 +1,12 @@
+/* Copy Text Widget minimal styling */
+.copy-text-wrapper { text-align: center; }
+.copy-text-button { display: inline-flex; align-items: center; gap: 6px; border: none; outline: none; color: #fff; background-color: #FF7A00; padding: 8px 12px; border-radius: 8px; cursor: pointer; }
+.copy-text-button .icon svg { width: 15px; height: 15px; }
+.copy-text-button .icon i { font-size: 15px; }
+.copy-text-button .icon-left { margin-right: 6px; }
+.copy-text-button .icon-right { margin-left: 6px; }
+.copy-text-button .success-text { display: none; }
+
+/* (Dihapus) Gaya diagnostik Skema Animasi tidak digunakan lagi */
+
+/* (Dihapus) Panel diagnostik kontrol Elementor tidak digunakan lagi */
