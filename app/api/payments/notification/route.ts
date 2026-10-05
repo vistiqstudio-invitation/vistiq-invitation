@@ -78,9 +78,6 @@ export async function POST(request: Request) {
       midtrans_transaction_id: body.transaction_id ?? null,
     };
 
-    // Database triggers set the first paid_at and the 24-hour commission hold.
-    // Repeated notifications must not restart the withdrawal waiting period.
-
     const { error: updateError } = await supabase
       .from("transactions")
       .update(updatePayload)
@@ -92,8 +89,6 @@ export async function POST(request: Request) {
     }
 
     if (paid) after(() => safelyProcessPaymentWhatsApp(supabase));
-    // The database trigger activates a paid per-invitation order atomically.
-    // Grandfathered reseller transactions keep their existing admin flow.
 
     return NextResponse.json({
       received: true,
@@ -102,7 +97,55 @@ export async function POST(request: Request) {
     });
   }
 
-  // Checkout paket Vistiq dari landing page.
+  // Order tema yang dibuat langsung dari landing page reseller.
+  if (orderId.startsWith("VSTQ-ST-")) {
+    const { data: storefrontOrder, error: storefrontError } = await supabase
+      .from("checkout_orders")
+      .select("id, amount, reseller_id, package_id, order_source")
+      .eq("order_id", orderId)
+      .maybeSingle();
+
+    if (
+      storefrontError ||
+      !storefrontOrder ||
+      storefrontOrder.order_source !== "reseller_storefront" ||
+      !storefrontOrder.reseller_id ||
+      !String(storefrontOrder.package_id).startsWith("theme:") ||
+      Number(grossAmount) !== Number(storefrontOrder.amount)
+    ) {
+      return NextResponse.json({ error: "Invalid storefront transaction" }, { status: 403 });
+    }
+
+    const { error: storefrontUpdateError } = await supabase
+      .from("checkout_orders")
+      .update({
+        status: normalizedStatus,
+        payment_type: body.payment_type ?? null,
+        transaction_id: body.transaction_id ?? null,
+        paid_at: paid ? new Date().toISOString() : null,
+        raw_notification: body,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", storefrontOrder.id);
+
+    if (storefrontUpdateError) {
+      console.error("storefront payment update failed:", storefrontUpdateError.message);
+      return NextResponse.json({ error: "Database update failed" }, { status: 500 });
+    }
+
+    if (paid) {
+      after(() => safelyProcessPaymentWhatsApp(supabase));
+      try {
+        await provisionPaidOrder(supabase, orderId, new URL(request.url).origin);
+      } catch (provisionError) {
+        console.error("storefront account provisioning failed:", provisionError);
+      }
+    }
+
+    return NextResponse.json({ received: true, storefrontOrder: true });
+  }
+
+  // Checkout paket Vistiq dari landing page utama.
   const matchedPackage = packageFromOrderId(orderId);
   if (!matchedPackage || Number(grossAmount) !== matchedPackage[1].amount) {
     return NextResponse.json({ error: "Invalid notification" }, { status: 403 });
