@@ -1,9 +1,41 @@
 import { ImageResponse } from "next/og";
+import { imageSize } from "image-size";
 import { getInvitationBySlug } from "@/lib/invitation";
 import { parseSmartCoverValue } from "@/lib/smartCover";
 
 const WIDTH = 800;
 const HEIGHT = 420;
+const TARGET_PIXELS = 100_000;
+const MIN_DIMENSION = 250;
+const MAX_DIMENSION = 1000;
+
+async function photoFrameSize(coverImage: string): Promise<{ width: number; height: number }> {
+  try {
+    const bytes = await fetch(coverImage).then((res) => res.arrayBuffer());
+    const { width: naturalWidth, height: naturalHeight } = imageSize(new Uint8Array(bytes));
+    if (!naturalWidth || !naturalHeight) return { width: WIDTH, height: HEIGHT };
+
+    const aspectRatio = naturalWidth / naturalHeight;
+    let width = Math.round(Math.sqrt(TARGET_PIXELS * aspectRatio));
+    let height = Math.round(Math.sqrt(TARGET_PIXELS / aspectRatio));
+
+    const longSide = Math.max(width, height);
+    const shortSide = Math.min(width, height);
+    if (longSide > MAX_DIMENSION) {
+      const scale = MAX_DIMENSION / longSide;
+      width = Math.round(width * scale);
+      height = Math.round(height * scale);
+    } else if (shortSide < MIN_DIMENSION) {
+      const scale = MIN_DIMENSION / shortSide;
+      width = Math.round(width * scale);
+      height = Math.round(height * scale);
+    }
+
+    return { width, height };
+  } catch {
+    return { width: WIDTH, height: HEIGHT };
+  }
+}
 
 function getDisplayName(
   invitation: Awaited<ReturnType<typeof getInvitationBySlug>>
@@ -71,23 +103,21 @@ export async function GET(
     );
   }
 
-  // Keep the same 800x420 share-card appearance, but let the OG renderer
-  // fetch the R2 image directly. Avoiding a separate server-side download
-  // just to inspect its dimensions removes one network transfer and image
-  // parsing step from every cache miss.
+  const frame = await photoFrameSize(coverImage);
+
   return new ImageResponse(
     (
-      <div style={{ display: "flex", width: `${WIDTH}px`, height: `${HEIGHT}px`, overflow: "hidden" }}>
+      <div style={{ display: "flex", width: `${frame.width}px`, height: `${frame.height}px` }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={coverImage}
           alt=""
-          width={WIDTH}
-          height={HEIGHT}
-          style={{ width: `${WIDTH}px`, height: `${HEIGHT}px`, objectFit: "cover" }}
+          width={frame.width}
+          height={frame.height}
+          style={{ width: `${frame.width}px`, height: `${frame.height}px`, objectFit: "cover" }}
         />
       </div>
     ),
-    { width: WIDTH, height: HEIGHT, headers: cacheHeaders }
+    { width: frame.width, height: frame.height, headers: cacheHeaders }
   );
 }
