@@ -72,10 +72,12 @@ export default function JawaSasmaya({invitation}:{invitation:InvitationData}) {
     });
     const opening = doc.querySelector<HTMLElement>(".elementor-element-662bb3ba");
     if (opening) opening.style.display = opened ? "none" : "";
+    doc.body.style.overflow = opened ? "auto" : "hidden";
     const open = doc.querySelector<HTMLAnchorElement>("#tombol-buka a");
     if (open) open.onclick = e => {
       e.preventDefault(); setOpened(true);
       if (opening) opening.style.display = "none";
+      doc.body.style.overflow = "auto";
       doc.querySelector("#cover")?.scrollIntoView({behavior:"smooth"});
       audio.current?.play().catch(()=>{});
     };
@@ -83,7 +85,9 @@ export default function JawaSasmaya({invitation}:{invitation:InvitationData}) {
     if (date) {
       const headings = Array.from(doc.querySelectorAll<HTMLElement>("h2.elementor-heading-title"));
       const i = headings.findIndex(h => h.textContent?.trim() === "21");
-      if (i >= 0) [date[0],date[1],date[2].slice(-2)].forEach((x,n)=> {headings[i+n].textContent=x;});
+      const months=["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+      const month=months.findIndex(x=>x.toLowerCase()===date[1].toLowerCase());
+      if (i >= 0) [date[0],month>=0?String(month+1).padStart(2,"0"):date[1],date[2].slice(-2)].forEach((x,n)=> {headings[i+n].textContent=x;});
     }
     const eventSections = ["37eae226","47e22cc"];
     invitation.events.slice(0,2).forEach((event,i) => {
@@ -100,6 +104,16 @@ export default function JawaSasmaya({invitation}:{invitation:InvitationData}) {
       a.href=invitation.mapsUrl || invitation.mapsEmbedUrl || "#";
       a.target="_blank";a.rel="noopener noreferrer";
     });
+    const calendar=anchors.find(a=>a.textContent?.includes("Save on the calendar"));
+    const mainEvent=invitation.coverEvent || invitation.events[1] || invitation.events[0];
+    if(calendar && mainEvent?.rawDate){
+      const start=new Date(mainEvent.rawDate);
+      if(!Number.isNaN(start.getTime())){
+        const end=new Date(start.getTime()+2*60*60*1000);
+        const stamp=(d:Date)=>d.toISOString().replace(/[-:]/g,"").replace(/\.\d{3}/,"");
+        calendar.href="https://www.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent(mainEvent.name+" "+invitation.groom.name+" & "+invitation.bride.name)+"&dates="+stamp(start)+"/"+stamp(end);
+      }
+    }
     anchors.filter(a=>a.getAttribute("href")==="https://instagram.com/").slice(0,2).forEach((a,i)=>{
       const handle=[invitation.bride.instagram,invitation.groom.instagram][i];
       if (!handle) a.style.display="none";
@@ -129,10 +143,23 @@ export default function JawaSasmaya({invitation}:{invitation:InvitationData}) {
         .find(el=>el!==h && /^(Nabila|Rizky)$/.test(el.textContent?.trim()||""));
       if(owner)owner.textContent=item.accountName||item.owner||"";
     });
+    const giftAddress=Array.from(doc.querySelectorAll<HTMLElement>("h2,p,span,div"))
+      .find(el=>el.childNodes.length===1 && el.textContent?.includes("Jl.Bunga, Mawar"));
+    if(giftAddress)giftAddress.textContent=invitation.events[0]?.location||"";
+    anchors.filter(a=>/^(copy|copy adress)$/i.test(a.textContent?.trim()||"")).forEach((a,i)=>{
+      a.onclick=e=>{
+        e.preventDefault();
+        const value=i===0 ? invitation.events[0]?.location : invitation.gifts[i-1]?.accountNumber;
+        if(value)navigator.clipboard?.writeText(value).catch(()=>{});
+      };
+    });
     const gift=anchors.find(a=>a.textContent?.includes("Konfirmasi Hadiah"));
     if(gift){const phone=String(invitation.contactWhatsapp||"").replace(/\D/g,"").replace(/^0/,"62");gift.href=phone?"https://wa.me/"+phone:"#";}
     const form=doc.querySelector<HTMLFormElement>("form[data-vistiq-rsvp]");
-    if(form) form.onsubmit=async e=>{
+    if(form) {
+    const nameInput=form.querySelector<HTMLInputElement>("input[name='author']");
+    if(nameInput && nameInput.value==="Nama Tamu")nameInput.value="";
+    form.onsubmit=async e=>{
       e.preventDefault();
       const data=new FormData(form), name=String(data.get("author")||"").trim(), message=String(data.get("comment")||"").trim();
       if(!name||!message)return;
@@ -140,6 +167,7 @@ export default function JawaSasmaya({invitation}:{invitation:InvitationData}) {
       const result=await rsvpRef.current.submit({name,message,attendance,whatsapp:""});
       if(!result.error)form.reset();
     };
+    }
   },[invitation,opened,setOpened]);
   useEffect(()=>{populate();},[populate]);
   useEffect(()=>{
