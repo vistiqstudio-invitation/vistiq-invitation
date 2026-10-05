@@ -1,160 +1,24 @@
-import { Abril_Fatface, Alice, Cormorant_Garamond, Cormorant_Infant, Playfair_Display, Inter, Montserrat, Alex_Brush, Pinyon_Script, Poppins, Roboto, Inria_Serif, Suranna, Readex_Pro, Chelsea_Market, Noto_Sans_Balinese, Noto_Serif_Display, Raleway, Orbitron, Baloo_2, Bangers } from "next/font/google";
-
-export const abrilFatface = Abril_Fatface({
-  variable: "--font-abril-fatface",
-  subsets: ["latin"],
-  weight: ["400"],
-  display: "swap",
-});
-
-export const montserrat = Montserrat({
-  variable: "--font-montserrat",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
-
-export const alice = Alice({
-  variable: "--font-alice",
-  subsets: ["latin"],
-  weight: ["400"],
-  display: "swap",
-});
-
-export const cormorant = Cormorant_Garamond({
-  variable: "--font-cormorant",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  display: "swap",
-});
-
-export const playfair = Playfair_Display({
-  variable: "--font-playfair",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
-  display: "swap",
-});
-
-export const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-  display: "swap",
-});
-
-export const alexBrush = Alex_Brush({
-  variable: "--font-alex-brush",
-  subsets: ["latin"],
-  weight: ["400"],
-  display: "swap",
-});
-
-export const pinyonScript = Pinyon_Script({
-  variable: "--font-pinyon-script",
-  subsets: ["latin"],
-  weight: ["400"],
-  display: "swap",
-});
-
-export const inriaSerif = Inria_Serif({
-  variable: "--font-inria-serif",
-  subsets: ["latin"],
-  weight: ["300", "400", "700"],
-  display: "swap",
-});
-
-export const cormorantInfant = Cormorant_Infant({
-  variable: "--font-cormorant-infant",
-  subsets: ["latin"],
-  weight: ["300", "400", "700"],
-  display: "swap",
-});
-
-export const poppins = Poppins({
-  variable: "--font-poppins",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
-
-export const roboto = Roboto({
-  variable: "--font-roboto",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  display: "swap",
-});
-
-export const suranna = Suranna({
-  variable: "--font-suranna",
-  subsets: ["latin"],
-  weight: ["400"],
-  display: "swap",
-});
-
-export const readexPro = Readex_Pro({
-  variable: "--font-readex-pro",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-  display: "swap",
-});
-
-export const chelseaMarket = Chelsea_Market({
-  variable: "--font-chelsea-market",
-  subsets: ["latin"],
-  weight: ["400"],
-  display: "swap",
-});
-
-// Renders genuine Aksara Bali script (used by adat-bali for the Om
-// Swastyastu / Om Shanti Shanti Shanti Om ceremonial flourishes) instead
-// of falling back to tofu boxes on devices without the script installed.
-export const notoBalinese = Noto_Sans_Balinese({
-  variable: "--font-noto-bali",
-  subsets: ["balinese", "latin"],
-  weight: ["400", "600", "700"],
-  display: "swap",
-});
-
-// Matches the label/body serif used across the adat-bali reference site
-// (nauhin.com/adat-bali-premium-template).
-export const notoSerifDisplay = Noto_Serif_Display({
-  variable: "--font-noto-serif-display",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
-
-export const raleway = Raleway({
-  variable: "--font-raleway",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-  display: "swap",
-});
-
-// Geometric sci-fi display face used by the space-explorer birthday
-// theme for headings and the mission-countdown digits.
-export const orbitron = Orbitron({
-  variable: "--font-orbitron",
-  subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],
-  display: "swap",
-});
-
-// Playful rounded display face used by the dinosaur-adventure birthday
-// theme for headings.
-export const baloo2 = Baloo_2({
-  variable: "--font-baloo2",
-  subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],
-  display: "swap",
-});
-
-// Comic-book display face used by the superhero-city birthday theme for
-// headings and the countdown badges.
-export const bangers = Bangers({
-  variable: "--font-bangers",
-  subsets: ["latin"],
-  weight: ["400"],
-  display: "swap",
-});
+// Locally hosted Google Fonts; generated from the verified Next.js font build.
+export const geistSans = { variable: "__variable_246ccd" };
+export const geistMono = { variable: "__variable_c29908" };
+export const abrilFatface = { variable: "__variable_6eafd1" };
+export const alice = { variable: "__variable_350c52" };
+export const cormorant = { variable: "__variable_054274" };
+export const cormorantInfant = { variable: "__variable_2694fa" };
+export const inriaSerif = { variable: "__variable_59036f" };
+export const pinyonScript = { variable: "__variable_cad7cf" };
+export const playfair = { variable: "__variable_745915" };
+export const inter = { variable: "__variable_0fc2d1" };
+export const montserrat = { variable: "__variable_fca8ee" };
+export const alexBrush = { variable: "__variable_e47be3" };
+export const poppins = { variable: "__variable_6bee3b" };
+export const roboto = { variable: "__variable_793af3" };
+export const suranna = { variable: "__variable_b36a7e" };
+export const readexPro = { variable: "__variable_17c5ff" };
+export const chelseaMarket = { variable: "__variable_babcdd" };
+export const notoBalinese = { variable: "__variable_72c553" };
+export const notoSerifDisplay = { variable: "__variable_6e3ba5" };
+export const raleway = { variable: "__variable_960c3b" };
+export const orbitron = { variable: "__variable_e5f97b" };
+export const baloo2 = { variable: "__variable_185f4e" };
+export const bangers = { variable: "__variable_6ef392" };

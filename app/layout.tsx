@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import "./vistiq-fonts.css";
 
 import { InvitationProvider } from "@/components/InvitationProvider";
 import AutoScrollController from "@/components/AutoScrollController";
@@ -11,17 +11,7 @@ import AffiliateReferralTracker from "@/components/AffiliateReferralTracker";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import PwaRegister from "@/components/PwaRegister";
 import InstallAppButton from "@/components/InstallAppButton";
-import { abrilFatface, alice, cormorant, cormorantInfant, inriaSerif, pinyonScript, playfair, inter, montserrat, alexBrush, poppins, roboto, suranna, readexPro, chelseaMarket, notoBalinese, notoSerifDisplay, raleway, orbitron, baloo2, bangers } from "@/lib/fonts";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import { geistSans, geistMono, abrilFatface, alice, cormorant, cormorantInfant, inriaSerif, pinyonScript, playfair, inter, montserrat, alexBrush, poppins, roboto, suranna, readexPro, chelseaMarket, notoBalinese, notoSerifDisplay, raleway, orbitron, baloo2, bangers } from "@/lib/fonts";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.vistiqinvitation.com"),
