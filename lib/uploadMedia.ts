@@ -53,6 +53,10 @@ export async function uploadMediaToR2(file: File, folder: string, scope: string)
 
   const uploadFile = isImage ? await optimizeImage(file) : file;
 
+  // Logos are small and critical to reseller onboarding. Upload them through
+  // our authenticated same-origin endpoint so R2 bucket CORS can never block them.
+  if (folder === "logo") return serverFallback(uploadFile, folder, scope);
+
   const response = await fetch("/api/media/presign", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
