@@ -147,7 +147,7 @@ export default async function ResellerPromoPage({ params }: PageProps) {
           <h1 className={hero.heroHeadline}>Undangan digital yang bikin acara Anda diingat tamu</h1>
           <p className={hero.heroCopy}>
             Pernikahan, khitan, aqiqah, wisuda, atau ulang tahun — pilih dari puluhan tema siap pakai, lihat tampilan aslinya
-            langsung, lalu konsultasikan kebutuhan Anda ke {brandName} lewat WhatsApp.
+            langsung, lalu order tema pilihan Anda dengan pembayaran aman melalui Midtrans.
           </p>
 
           <ul className={hero.heroTrust}>
@@ -158,14 +158,14 @@ export default async function ResellerPromoPage({ params }: PageProps) {
 
           <div className={hero.heroActions}>
             <a href={whatsappHref} target="_blank" rel="noreferrer" className={hero.heroCta}>
-              Chat Sekarang via WhatsApp
+              Konsultasi via WhatsApp
             </a>
             <span className={hero.heroPrice}>Harga <strong>{priceLabel}</strong></span>
           </div>
         </section>
 
         <p className={hero.sectionLabel}>Pilih Tema Undangan</p>
-        <p className={hero.sectionSub}>Lihat langsung tampilan setiap tema, lalu order dari tema yang Anda suka.</p>
+        <p className={hero.sectionSub}>Lihat tampilan setiap tema, lalu tekan Order untuk langsung melanjutkan pembayaran.</p>
 
         <ThemeBrowser
           waNumber={waNumber}
@@ -173,6 +173,8 @@ export default async function ResellerPromoPage({ params }: PageProps) {
           priceLabel={priceLabel}
           priceLabels={categoryPriceLabels}
           weddingPriceLabels={weddingPriceLabels}
+          resellerKey={resellerId}
+          midtransProduction={process.env.MIDTRANS_IS_PRODUCTION === "true"}
         />
       </div>
 
