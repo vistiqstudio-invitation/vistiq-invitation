@@ -102,13 +102,10 @@ export async function POST(request: Request) {
     auth: { autoRefreshToken: false, persistSession: false },
   });
 
-  const resellerColumns = [
-    "id", "status", "starting_price", "wedding_price", "khitan_price", "aqiqah_price", "birthday_price",
-    "wedding_premium_price", "wedding_motion_price", "wedding_luxury_art_price", "wedding_regular_price",
-    "wedding_adat_price", "wedding_no_photo_price",
-  ].join(",");
-
-  const resellerQuery = supabase.from("resellers").select(resellerColumns).eq("status", "active");
+  const resellerQuery = supabase
+    .from("resellers")
+    .select("id,status,starting_price,wedding_price,khitan_price,aqiqah_price,birthday_price,wedding_premium_price,wedding_motion_price,wedding_luxury_art_price,wedding_regular_price,wedding_adat_price,wedding_no_photo_price")
+    .eq("status", "active");
   const { data: reseller, error: resellerError } = isUuid(resellerKey)
     ? await resellerQuery.eq("id", resellerKey).maybeSingle()
     : await resellerQuery.or(`landing_slug.eq.${resellerKey},custom_domain.eq.${resellerKey},free_subdomain.eq.${resellerKey}`).maybeSingle();
@@ -117,7 +114,13 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Katalog reseller tidak ditemukan atau belum aktif." }, { status: 404 });
   }
 
-  const amount = orderAmount(category, theme, reseller as unknown as Record<string, unknown>);
+  const resellerRow = reseller as unknown as Record<string, unknown>;
+  const resellerId = String(resellerRow.id ?? "");
+  if (!resellerId) {
+    return NextResponse.json({ error: "Data reseller tidak valid." }, { status: 500 });
+  }
+
+  const amount = orderAmount(category, theme, resellerRow);
   if (amount <= 0) {
     return NextResponse.json({ error: "Harga tema belum dikonfigurasi oleh reseller." }, { status: 409 });
   }
@@ -143,7 +146,7 @@ export async function POST(request: Request) {
       expiry: { unit: "days", duration: 1 },
       page_expiry: { unit: "days", duration: 1 },
       custom_field1: "reseller_storefront",
-      custom_field2: String(reseller.id),
+      custom_field2: resellerId,
       custom_field3: theme.key,
     }),
     cache: "no-store",
@@ -164,7 +167,7 @@ export async function POST(request: Request) {
     customer_email: email,
     customer_phone: phone,
     status: "pending",
-    reseller_id: reseller.id,
+    reseller_id: resellerId,
     order_source: "reseller_storefront",
   });
 
