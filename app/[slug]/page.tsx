@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { cache } from "react";
 import { getInvitationBySlug } from "@/lib/invitation";
 import {
   themeRegistry,
@@ -13,9 +14,14 @@ import WeddingThemeSafeArea from "@/components/WeddingThemeSafeArea";
 
 type Props = { params: Promise<{ slug: string }> };
 
+// generateMetadata and the page render need the same invitation. React cache
+// keeps that lookup request-scoped, so edits remain fresh between requests
+// while duplicate Supabase/RPC work inside one render is avoided.
+const getCachedInvitationBySlug = cache(getInvitationBySlug);
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const invitation = await getInvitationBySlug(slug);
+  const invitation = await getCachedInvitationBySlug(slug);
   if (!invitation) return { title: "Undangan Tidak Ditemukan | Vistiq Invitation" };
   const ogImage = [`/api/og/${slug}`];
 
@@ -41,7 +47,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function InvitationPage({ params }: Props) {
   const { slug } = await params;
-  const invitation = await getInvitationBySlug(slug);
+  const invitation = await getCachedInvitationBySlug(slug);
   if (!invitation || invitation.status !== "active") notFound();
 
   if (invitation.category === "aqiqah") {
