@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 import { getInvitationBySlug } from "@/lib/invitation";
+import { withMediaDelivery } from "@/lib/mediaDelivery";
 import {
   themeRegistry,
   aqiqahThemeRegistry,
@@ -47,8 +48,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function InvitationPage({ params }: Props) {
   const { slug } = await params;
-  const invitation = await getCachedInvitationBySlug(slug);
-  if (!invitation || invitation.status !== "active") notFound();
+  const sourceInvitation = await getCachedInvitationBySlug(slug);
+  if (!sourceInvitation || sourceInvitation.status !== "active") notFound();
+
+  // Keep the database on stable Supabase object URLs. Only the rendered
+  // invitation is routed through our media layer, which can use CDN/R2 when
+  // healthy and transparently fall back to Supabase when it is not.
+  const invitation = withMediaDelivery(sourceInvitation);
 
   if (invitation.category === "aqiqah") {
     const Theme = aqiqahThemeRegistry[invitation.theme] || aqiqahThemeRegistry["akikah-nur"];
