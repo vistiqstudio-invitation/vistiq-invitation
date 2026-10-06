@@ -150,6 +150,11 @@ export default function WeddingThemeSafeArea({
   );
 
   if (!invitation) return content;
+
+  // Libra & Widy requested the invitation cover to be shown immediately.
+  // Keep the normal cover/open flow; only bypass the asset preloader for this slug.
+  if (invitation.slug === "libra-widy") return content;
+
   return (
     <InvitationPreloader key={`${theme}:${invitation.id}:${invitation.slug}`} {...invitationPreloadData(invitation, theme)}>
       {content}
