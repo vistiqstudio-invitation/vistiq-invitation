@@ -6,6 +6,7 @@ export const dynamic = "force-dynamic";
 const ALLOWED_BUCKET = "invitation-assets";
 const SUPABASE_BASE =
   "https://tvjifuzhakaymzottdyf.supabase.co/storage/v1/object/public/invitation-assets";
+const R2_LEGACY_PREFIX = "legacy/invitation-assets";
 
 function encodeObjectPath(parts: string[]) {
   return parts.map((part) => encodeURIComponent(part)).join("/");
@@ -19,13 +20,18 @@ function isSafePath(parts: string[]) {
   );
 }
 
-async function fetchOrigin(url: string, range: string | null) {
+async function fetchOrigin(
+  url: string,
+  range: string | null,
+  timeoutMs?: number
+) {
   const headers = new Headers();
   if (range) headers.set("range", range);
 
   return fetch(url, {
     headers,
     redirect: "follow",
+    signal: timeoutMs ? AbortSignal.timeout(timeoutMs) : undefined,
     // Immutable uploaded assets benefit from a long server-side fetch cache.
     // Range requests are left uncached because partial-response cache keys are
     // not consistently reusable across browsers/CDNs.
@@ -42,21 +48,29 @@ async function serve(request: NextRequest, path: string[]) {
 
   const objectPath = encodeObjectPath(path.slice(1));
   const range = request.headers.get("range");
-  const cdnBase = process.env.MEDIA_CDN_BASE?.replace(/\/+$/, "") || null;
+  const r2PublicBase = process.env.R2_PUBLIC_URL?.replace(/\/+$/, "") || null;
 
   let response: Response | null = null;
   let source = "supabase";
 
-  if (cdnBase) {
+  // Existing Vistiq R2 migration stores objects under
+  // legacy/invitation-assets/<original object path>. R2 is preferred when its
+  // public endpoint is healthy, but a broken custom domain/DNS must never make
+  // an active invitation lose its media again. A short timeout makes failover
+  // fast even during a DNS or CDN incident.
+  if (r2PublicBase) {
     try {
-      const cdnResponse = await fetchOrigin(`${cdnBase}/${objectPath}`, range);
-      if (cdnResponse.ok || cdnResponse.status === 206) {
-        response = cdnResponse;
-        source = "cdn";
+      const r2Response = await fetchOrigin(
+        `${r2PublicBase}/${R2_LEGACY_PREFIX}/${objectPath}`,
+        range,
+        1800
+      );
+      if (r2Response.ok || r2Response.status === 206) {
+        response = r2Response;
+        source = "r2";
       }
     } catch {
-      // A DNS/network/CDN failure must never make a published invitation lose
-      // its photos. The Supabase origin below is the guaranteed fallback.
+      // Guaranteed Supabase fallback below.
     }
   }
 
@@ -99,8 +113,10 @@ async function serve(request: NextRequest, path: string[]) {
       ? "public, max-age=3600, s-maxage=3600"
       : "public, max-age=86400, s-maxage=2592000, stale-while-revalidate=86400, immutable"
   );
+  headers.set("cdn-cache-control", "public, max-age=2592000");
   headers.set("x-vistiq-media-source", source);
   headers.set("x-content-type-options", "nosniff");
+  headers.set("vary", "range");
 
   return new NextResponse(response.body, {
     status: response.status,
