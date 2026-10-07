@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 import { getInvitationBySlug } from "@/lib/invitation";
+import { applyFlexibleWeddingEvents } from "@/lib/flexibleInvitationEvents";
 import {
   themeRegistry,
   aqiqahThemeRegistry,
@@ -47,8 +48,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function InvitationPage({ params }: Props) {
   const { slug } = await params;
-  const invitation = await getCachedInvitationBySlug(slug);
-  if (!invitation || invitation.status !== "active") notFound();
+  const baseInvitation = await getCachedInvitationBySlug(slug);
+  if (!baseInvitation || baseInvitation.status !== "active") notFound();
+
+  const invitation =
+    baseInvitation.category === "wedding"
+      ? await applyFlexibleWeddingEvents(baseInvitation)
+      : baseInvitation;
 
   if (invitation.category === "aqiqah") {
     const Theme = aqiqahThemeRegistry[invitation.theme] || aqiqahThemeRegistry["akikah-nur"];
@@ -65,11 +71,13 @@ export default async function InvitationPage({ params }: Props) {
 
   const resolvedTheme = invitation.theme === "luxury-art-lx005" ? "luxury-art-champagne-romance" : invitation.theme;
   const Theme = themeRegistry[resolvedTheme] || themeRegistry["luxury-gold"];
+  const weddingInvitation = { ...invitation, theme: resolvedTheme };
+
   return (
     <WhiteLabelFrame brand={invitation.brand}>
-      <WeddingThemeSafeArea theme={resolvedTheme} invitation={{ ...invitation, theme: resolvedTheme }}>
+      <WeddingThemeSafeArea theme={resolvedTheme} invitation={weddingInvitation}>
         <SmartCoverRuntime coverImage={invitation.coverImage} title={`${invitation.groom.nickname || invitation.groom.name} & ${invitation.bride.nickname || invitation.bride.name}`}>
-          <Theme invitation={{ ...invitation, theme: resolvedTheme }} />
+          <Theme invitation={weddingInvitation} />
         </SmartCoverRuntime>
       </WeddingThemeSafeArea>
     </WhiteLabelFrame>
