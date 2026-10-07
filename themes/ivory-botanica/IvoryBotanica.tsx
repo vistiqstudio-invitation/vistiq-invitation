@@ -42,39 +42,28 @@ function parentParts(value: string | null) {
 
 function replaceText(documentRoot: Document, from: string, to: string) {
   if (!from || from === to || !documentRoot.body) return;
-
   const walker = documentRoot.createTreeWalker(documentRoot.body, NodeFilter.SHOW_TEXT);
   const nodes: Text[] = [];
   let node = walker.nextNode();
-
   while (node) {
     nodes.push(node as Text);
     node = walker.nextNode();
   }
-
   nodes.forEach((textNode) => {
-    if (textNode.nodeValue?.includes(from)) {
-      textNode.nodeValue = textNode.nodeValue.replaceAll(from, to);
-    }
+    if (textNode.nodeValue?.includes(from)) textNode.nodeValue = textNode.nodeValue.replaceAll(from, to);
   });
 }
 
 function setCountdown(documentRoot: Document, rawDate: string | null) {
   const countdown = documentRoot.querySelector<HTMLElement>(".idb-countdown");
   if (!countdown || !rawDate) return;
-
   const target = new Date(rawDate).getTime();
   if (!Number.isFinite(target)) return;
-
   const timerElement = countdown as TimerElement;
   const childWindow = documentRoot.defaultView;
-  if (timerElement.__idbTimer && childWindow) {
-    childWindow.clearInterval(timerElement.__idbTimer);
-  }
-
+  if (timerElement.__idbTimer && childWindow) childWindow.clearInterval(timerElement.__idbTimer);
   countdown.dataset.target = String(target);
   countdown.dataset.targetIso = rawDate;
-
   const update = () => {
     const remaining = Math.max(0, target - Date.now());
     const values = {
@@ -83,15 +72,11 @@ function setCountdown(documentRoot: Document, rawDate: string | null) {
       minutes: Math.floor((remaining % 3600000) / 60000),
       seconds: Math.floor((remaining % 60000) / 1000),
     };
-
     Object.entries(values).forEach(([part, value]) => {
-      const number = countdown.querySelector<HTMLElement>(
-        `.idb-countdown__item[data-part="${part}"] [data-role="num"]`,
-      );
+      const number = countdown.querySelector<HTMLElement>(`.idb-countdown__item[data-part="${part}"] [data-role="num"]`);
       if (number) number.textContent = part === "days" ? String(value) : String(value).padStart(2, "0");
     });
   };
-
   update();
   if (childWindow) timerElement.__idbTimer = childWindow.setInterval(update, 1000);
 }
@@ -99,10 +84,7 @@ function setCountdown(documentRoot: Document, rawDate: string | null) {
 function setEventContent(eventRoot: HTMLElement, event: InvitationData["events"][number]) {
   const marker = eventRoot.querySelector<HTMLElement>(".nama-acara-marker");
   if (marker) marker.textContent = event.name;
-
-  const editors = Array.from(
-    eventRoot.querySelectorAll<HTMLElement>(".elementor-widget-text-editor .elementor-widget-container"),
-  );
+  const editors = Array.from(eventRoot.querySelectorAll<HTMLElement>(".elementor-widget-text-editor .elementor-widget-container"));
   if (editors[0]) editors[0].textContent = event.date;
   if (editors[1]) editors[1].textContent = `Pukul : ${event.time}`;
   if (editors[2]) editors[2].textContent = `Tempat : ${event.location}`;
@@ -110,9 +92,7 @@ function setEventContent(eventRoot: HTMLElement, event: InvitationData["events"]
 
 function setParents(documentRoot: Document, side: "pria" | "wanita", parents: string | null) {
   const [father, mother] = parentParts(parents);
-  const markers = Array.from(
-    documentRoot.querySelectorAll<HTMLElement>(`[data-idb-mempelai-side="${side}"]`),
-  );
+  const markers = Array.from(documentRoot.querySelectorAll<HTMLElement>(`[data-idb-mempelai-side="${side}"]`));
   if (markers[0]) markers[0].textContent = father;
   if (markers[1]) markers[1].textContent = mother;
 }
@@ -129,7 +109,6 @@ function localizeInternalLinks(documentRoot: Document) {
 
 function setAudioSource(documentRoot: Document, musicUrl: string | null) {
   if (!musicUrl) return;
-
   documentRoot.querySelectorAll<HTMLAudioElement>(".idb-audio-el").forEach((audio) => {
     const source = audio.querySelector<HTMLSourceElement>("source");
     if (source) source.src = musicUrl;
@@ -153,24 +132,32 @@ function createFooterIcon(documentRoot: Document, kind: FooterIconKind) {
 function setFooterBranding(documentRoot: Document) {
   const footer = documentRoot.querySelector<HTMLElement>(".elementor-element-12b47c4c");
   if (!footer) return;
-
   const whatsapp = footer.querySelector<HTMLAnchorElement>('a[aria-label="WhatsApp"]');
   if (whatsapp) {
     whatsapp.href = VISTIQ_ADMIN_WHATSAPP_URL;
     whatsapp.replaceChildren(createFooterIcon(documentRoot, "whatsapp"));
   }
-
   const instagram = footer.querySelector<HTMLAnchorElement>('a[aria-label="Instagram"]');
   if (instagram) {
     instagram.href = VISTIQ_INSTAGRAM_URL;
     instagram.replaceChildren(createFooterIcon(documentRoot, "instagram"));
   }
-
   const watermark = documentRoot.querySelector<HTMLElement>(".idb-watermark-text");
   if (watermark && !watermark.querySelector(".vistiq-footer-logo")) {
-    watermark.innerHTML =
-      'Made with <img draggable="false" role="img" class="emoji" alt="❤" src="./Undangan Website Spesial 02 Animasi_files/2764.svg"> by <img class="vistiq-footer-logo" src="/vistiq-invitation-logo.png" alt="Vistiq Invitation" style="display:inline-block;width:92px;height:auto;max-height:28px;object-fit:contain;vertical-align:middle;margin-left:4px;">';
+    watermark.innerHTML = 'Made with <img draggable="false" role="img" class="emoji" alt="❤" src="./Undangan Website Spesial 02 Animasi_files/2764.svg"> by <img class="vistiq-footer-logo" src="/vistiq-invitation-logo.png" alt="Vistiq Invitation" style="display:inline-block;width:92px;height:auto;max-height:28px;object-fit:contain;vertical-align:middle;margin-left:4px;">';
   }
+}
+
+function applyOptionalSectionVisibility(documentRoot: Document, invitation: InvitationData) {
+  if (!documentRoot.body) return;
+  const hasStory = invitation.story.some((item) => Boolean(item.title?.trim() || item.description?.trim() || item.year?.trim()));
+  const hasLiveStreaming = Boolean(invitation.liveStreamingUrl?.trim());
+  const hasGift = invitation.gifts.some((gift) => Boolean(gift.bankName?.trim() || gift.accountNumber?.trim() || gift.accountName?.trim()));
+
+  documentRoot.body.classList.toggle("idb-hide-love-story", !hasStory);
+  documentRoot.body.classList.toggle("idb-hide-live-streaming", !hasLiveStreaming);
+  documentRoot.body.classList.toggle("idb-hide-wedding-gift", !hasGift);
+  documentRoot.body.classList.toggle("idb-hide-kirim-hadiah", !hasGift);
 }
 
 function applyInvitationData(documentRoot: Document, invitation: InvitationData, guest: string) {
@@ -183,6 +170,7 @@ function applyInvitationData(documentRoot: Document, invitation: InvitationData,
 
   documentRoot.title = `${groomShort} & ${brideShort} — Ivory Botanica`;
   documentRoot.documentElement.lang = "id";
+  applyOptionalSectionVisibility(documentRoot, invitation);
 
   replaceText(documentRoot, "Habib & Adiba", `${groomShort} & ${brideShort}`);
   replaceText(documentRoot, "Rizky & Nabila", `${groomShort} & ${brideShort}`);
@@ -197,9 +185,7 @@ function applyInvitationData(documentRoot: Document, invitation: InvitationData,
   replaceText(documentRoot, groomNameToken, invitation.groom.name);
   replaceText(documentRoot, brideNameToken, invitation.bride.name);
   replaceText(documentRoot, "Nama Tamu", guest);
-  const guestMarker = documentRoot.querySelector<HTMLElement>(
-    ".elementor-element-633aaeac .elementor-widget-container",
-  );
+  const guestMarker = documentRoot.querySelector<HTMLElement>(".elementor-element-633aaeac .elementor-widget-container");
   if (guestMarker) guestMarker.textContent = guest;
   replaceText(documentRoot, LEGACY_REFERENCE_DATE, coverEvent?.date || REFERENCE_DATE);
   replaceText(documentRoot, REFERENCE_DATE, coverEvent?.date || REFERENCE_DATE);
@@ -208,23 +194,25 @@ function applyInvitationData(documentRoot: Document, invitation: InvitationData,
   setParents(documentRoot, "wanita", invitation.bride.parents);
 
   const eventRoots = Array.from(documentRoot.querySelectorAll<HTMLElement>(".acara-con"));
-  invitation.events.slice(0, eventRoots.length).forEach((event, index) => {
-    setEventContent(eventRoots[index], event);
-  });
+  invitation.events.slice(0, eventRoots.length).forEach((event, index) => setEventContent(eventRoots[index], event));
 
-  const streamEditors = Array.from(
-    documentRoot.querySelectorAll<HTMLElement>(".stream-con .elementor-widget-text-editor .elementor-widget-container"),
-  );
+  const streamEditors = Array.from(documentRoot.querySelectorAll<HTMLElement>(".stream-con .elementor-widget-text-editor .elementor-widget-container"));
   if (firstEvent && streamEditors[0]) streamEditors[0].textContent = firstEvent.date;
   if (firstEvent && streamEditors[1]) streamEditors[1].textContent = `Pukul : ${firstEvent.time}`;
 
   documentRoot.querySelectorAll<HTMLAnchorElement>("a[data-idb-maps-link]").forEach((anchor) => {
-    anchor.href = invitation.mapsUrl || "https://maps.google.com";
+    if (invitation.mapsUrl?.trim()) {
+      anchor.href = invitation.mapsUrl;
+      anchor.style.removeProperty("display");
+      anchor.removeAttribute("aria-hidden");
+    } else {
+      anchor.removeAttribute("href");
+      anchor.style.display = "none";
+      anchor.setAttribute("aria-hidden", "true");
+    }
   });
 
-  const instagramAnchors = Array.from(
-    documentRoot.querySelectorAll<HTMLAnchorElement>('.elementor-widget-bisdev_social_icons a[aria-label="Instagram"]'),
-  );
+  const instagramAnchors = Array.from(documentRoot.querySelectorAll<HTMLAnchorElement>('.elementor-widget-bisdev_social_icons a[aria-label="Instagram"]'));
   const instagramValues = [invitation.groom.instagram, invitation.bride.instagram, invitation.groom.instagram];
   instagramAnchors.forEach((anchor, index) => {
     const value = instagramValues[index] || null;
