@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { requireRole } from "@/lib/supabase/dal";
 import { createClient } from "@/lib/supabase/server";
 import { getInvitationBySlug } from "@/lib/invitation";
+import { applyFlexibleWeddingEvents } from "@/lib/flexibleInvitationEvents";
 import {
   themeRegistry,
   aqiqahThemeRegistry,
@@ -15,10 +16,6 @@ type Props = {
   params: Promise<{ slug: string }>;
 };
 
-// Same rendering as app/[slug]/page.tsx, but for logged-in reseller/owner
-// dashboards only, and it ignores is_active entirely - a reseller needs to
-// see their draft before payment is confirmed, while the public /[slug]
-// route stays gated to active invitations only.
 export default async function PreviewPage({ params }: Props) {
   const { slug } = await params;
   const profile = await requireRole(["owner", "reseller"]);
@@ -33,9 +30,6 @@ export default async function PreviewPage({ params }: Props) {
   if (!invitationRow) notFound();
 
   if (invitationRow.client_id) {
-    // clients_select RLS already scopes this to "owner sees everything" or
-    // "reseller sees only their own clients" - an empty result here means
-    // this reseller doesn't own the client behind this invitation.
     const { data: client } = await supabase
       .from("clients")
       .select("id")
@@ -44,13 +38,16 @@ export default async function PreviewPage({ params }: Props) {
 
     if (!client) notFound();
   } else if (profile.role !== "owner") {
-    // No client attached (legacy/owner-created invitation) - only the
-    // owner can preview those.
     notFound();
   }
 
-  const invitation = await getInvitationBySlug(slug);
-  if (!invitation) notFound();
+  const baseInvitation = await getInvitationBySlug(slug);
+  if (!baseInvitation) notFound();
+
+  const invitation =
+    baseInvitation.category === "wedding"
+      ? await applyFlexibleWeddingEvents(baseInvitation)
+      : baseInvitation;
 
   if (invitation.category === "aqiqah") {
     const Theme = aqiqahThemeRegistry[invitation.theme] || aqiqahThemeRegistry["akikah-nur"];
@@ -75,32 +72,29 @@ export default async function PreviewPage({ params }: Props) {
   }
 
   if (invitation.category === "birthday") {
-    const Theme =
-      birthdayThemeRegistry[invitation.theme] ||
-      birthdayThemeRegistry["princess-fairytale"];
+    const Theme = birthdayThemeRegistry[invitation.theme] || birthdayThemeRegistry["princess-fairytale"];
     return (
       <WeddingThemeSafeArea theme={invitation.theme} invitation={invitation}>
-        <SmartCoverRuntime
-          coverImage={invitation.coverImage}
-          title={invitation.child.name}
-        >
+        <SmartCoverRuntime coverImage={invitation.coverImage} title={invitation.child.name}>
           <Theme invitation={invitation} />
         </SmartCoverRuntime>
       </WeddingThemeSafeArea>
     );
   }
 
-  const Theme = themeRegistry[invitation.theme] || themeRegistry["luxury-gold"];
+  const resolvedTheme = invitation.theme === "luxury-art-lx005" ? "luxury-art-champagne-romance" : invitation.theme;
+  const Theme = themeRegistry[resolvedTheme] || themeRegistry["luxury-gold"];
+  const weddingInvitation = { ...invitation, theme: resolvedTheme };
 
   return (
-    <WeddingThemeSafeArea theme={invitation.theme} invitation={invitation}>
+    <WeddingThemeSafeArea theme={resolvedTheme} invitation={weddingInvitation}>
       <SmartCoverRuntime
         coverImage={invitation.coverImage}
         title={`${invitation.groom.nickname || invitation.groom.name} & ${
           invitation.bride.nickname || invitation.bride.name
         }`}
       >
-        <Theme invitation={invitation} />
+        <Theme invitation={weddingInvitation} />
       </SmartCoverRuntime>
     </WeddingThemeSafeArea>
   );
