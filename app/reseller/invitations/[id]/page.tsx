@@ -13,6 +13,22 @@ const BUCKET = "invitation-assets";
 
 type PhotoField = "cover_photo" | "background_photo" | "bride_photo" | "groom_photo" | "story_1_photo" | "story_2_photo" | "story_3_photo" | "story_4_photo" | "story_5_photo" | "music_url";
 
+type WeddingEventForm = {
+  name: string;
+  date: string;
+  time: string;
+  location: string;
+  mapsUrl: string;
+};
+
+const emptyWeddingEvent = (): WeddingEventForm => ({
+  name: "",
+  date: "",
+  time: "",
+  location: "",
+  mapsUrl: "",
+});
+
 const initialForm = {
   category: "wedding" as "wedding" | "aqiqah" | "khitan" | "birthday",
   theme: "luxury-gold",
@@ -109,6 +125,8 @@ export default function ResellerInvitationEditPage() {
   const [slug, setSlug] = useState("");
   const [resellerPackage, setResellerPackage] = useState<"reseller" | "reseller_brand" | null>(null);
   const [form, setForm] = useState<FormState>(initialForm);
+  const [weddingEvents, setWeddingEvents] = useState<WeddingEventForm[]>([]);
+  const [coverEventIndex, setCoverEventIndex] = useState(0);
 
   const loadInvitation = async () => {
     try {
@@ -166,6 +184,40 @@ export default function ResellerInvitationEditPage() {
       }
 
       setSlug(invitation.slug || "");
+
+      const storedEvents = Array.isArray(invitation.events)
+        ? invitation.events.slice(0, 4).map((event: Record<string, unknown>) => ({
+            name: String(event.name || event.title || ""),
+            date: String(event.date || "").slice(0, 10),
+            time: String(event.time || ""),
+            location: String(event.location || ""),
+            mapsUrl: String(event.mapsUrl || event.maps_url || ""),
+          }))
+        : [];
+
+      const legacyEvents: WeddingEventForm[] = [
+        {
+          name: "Akad",
+          date: String(invitation.akad_date || "").slice(0, 10),
+          time: invitation.akad_time || "",
+          location: invitation.akad_location || "",
+          mapsUrl: invitation.maps_url || "",
+        },
+        {
+          name: "Resepsi",
+          date: String(invitation.resepsi_date || "").slice(0, 10),
+          time: invitation.reception_time || "",
+          location: invitation.reception_location || "",
+          mapsUrl: invitation.maps_url || "",
+        },
+      ].filter((event) => event.date || event.time || event.location);
+
+      setWeddingEvents(storedEvents.length > 0 ? storedEvents : legacyEvents);
+      setCoverEventIndex(
+        Number.isInteger(invitation.cover_event_index) && invitation.cover_event_index >= 0
+          ? Math.min(invitation.cover_event_index, 3)
+          : Math.min(storedEvents.length > 1 || legacyEvents.length > 1 ? 1 : 0, 3)
+      );
 
       setForm({
         category:
@@ -469,13 +521,37 @@ export default function ResellerInvitationEditPage() {
   const saveData = async () => {
     setSaving(true);
 
+    const normalizedEvents = weddingEvents
+      .slice(0, 4)
+      .map((event) => ({
+        name: event.name.trim(),
+        date: event.date || "",
+        time: event.time.trim(),
+        location: event.location.trim(),
+        mapsUrl: event.mapsUrl.trim(),
+      }))
+      .filter((event) => event.name || event.date || event.time || event.location || event.mapsUrl);
+
+    const firstEvent = normalizedEvents[0];
+    const secondEvent = normalizedEvents[1];
+
     const payload = {
       ...form,
+      events: form.category === "wedding" ? normalizedEvents : null,
+      cover_event_index:
+        form.category === "wedding" && normalizedEvents.length > 0
+          ? Math.min(coverEventIndex, normalizedEvents.length - 1)
+          : null,
       groom_nickname: form.groom_nickname.trim() || null,
       bride_nickname: form.bride_nickname.trim() || null,
       child_nickname: form.category === "khitan" ? (form.child_nickname.trim() || null) : null,
-      akad_date: form.akad_date || null,
-      resepsi_date: form.resepsi_date || null,
+      akad_date: form.category === "wedding" ? firstEvent?.date || null : form.akad_date || null,
+      akad_time: form.category === "wedding" ? firstEvent?.time || "" : form.akad_time,
+      akad_location: form.category === "wedding" ? firstEvent?.location || "" : form.akad_location,
+      resepsi_date: form.category === "wedding" ? secondEvent?.date || null : form.resepsi_date || null,
+      reception_time: form.category === "wedding" ? secondEvent?.time || "" : form.reception_time,
+      reception_location: form.category === "wedding" ? secondEvent?.location || "" : form.reception_location,
+      maps_url: form.category === "wedding" ? firstEvent?.mapsUrl || secondEvent?.mapsUrl || "" : form.maps_url,
       aqiqah_date: form.aqiqah_date || null,
       birth_date: form.birth_date || null,
       baby_gender: form.baby_gender || null,
@@ -857,59 +933,100 @@ export default function ResellerInvitationEditPage() {
         </div>
 
         <h2 className={styles.editSectionTitle}>Jadwal &amp; Lokasi Acara</h2>
+        <p className={styles.helpText} style={{ marginTop: -8 }}>
+          Tambahkan hingga 4 acara. Nama acara bebas, misalnya Akad, Resepsi, Pemberkatan, Ngunduh Mantu, atau Temu Manten.
+        </p>
 
-        <div className={styles.formGrid}>
-          <input
-            type="date"
-            value={form.akad_date}
-            onChange={(e) => set("akad_date", e.target.value)}
-            className={styles.input}
-          />
+        <div style={{ display: "grid", gap: 16 }}>
+          {weddingEvents.map((event, index) => (
+            <div key={index} className={styles.storyBlock}>
+              <div className={styles.formGrid}>
+                <input
+                  placeholder={`Nama Acara ${index + 1}`}
+                  value={event.name}
+                  onChange={(e) =>
+                    setWeddingEvents((prev) =>
+                      prev.map((item, i) => i === index ? { ...item, name: e.target.value } : item)
+                    )
+                  }
+                  className={styles.input}
+                />
+                <input
+                  type="date"
+                  value={event.date}
+                  onChange={(e) =>
+                    setWeddingEvents((prev) =>
+                      prev.map((item, i) => i === index ? { ...item, date: e.target.value } : item)
+                    )
+                  }
+                  className={styles.input}
+                />
+                <input
+                  placeholder="Jam, contoh: 08.00 WIB"
+                  value={event.time}
+                  onChange={(e) =>
+                    setWeddingEvents((prev) =>
+                      prev.map((item, i) => i === index ? { ...item, time: e.target.value } : item)
+                    )
+                  }
+                  className={styles.input}
+                />
+                <input
+                  placeholder="Lokasi acara"
+                  value={event.location}
+                  onChange={(e) =>
+                    setWeddingEvents((prev) =>
+                      prev.map((item, i) => i === index ? { ...item, location: e.target.value } : item)
+                    )
+                  }
+                  className={styles.input}
+                />
+                <input
+                  placeholder="Google Maps URL (opsional)"
+                  value={event.mapsUrl}
+                  onChange={(e) =>
+                    setWeddingEvents((prev) =>
+                      prev.map((item, i) => i === index ? { ...item, mapsUrl: e.target.value } : item)
+                    )
+                  }
+                  className={styles.input}
+                  style={{ gridColumn: "1 / -1" }}
+                />
+              </div>
+              <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap", marginTop: 10 }}>
+                <label className={styles.helpText} style={{ margin: 0 }}>
+                  <input
+                    type="radio"
+                    name="cover-event"
+                    checked={coverEventIndex === index}
+                    onChange={() => setCoverEventIndex(index)}
+                    style={{ marginRight: 6 }}
+                  />
+                  Pakai tanggal acara ini di cover
+                </label>
+                <button
+                  type="button"
+                  className={styles.secondaryButton}
+                  onClick={() => {
+                    setWeddingEvents((prev) => prev.filter((_, i) => i !== index));
+                    setCoverEventIndex((current) => current > index ? current - 1 : Math.min(current, Math.max(0, weddingEvents.length - 2)));
+                  }}
+                >
+                  Hapus Acara
+                </button>
+              </div>
+            </div>
+          ))}
 
-          <input
-            placeholder="Jam Akad, contoh: 08.00 WIB"
-            value={form.akad_time}
-            onChange={(e) => set("akad_time", e.target.value)}
-            className={styles.input}
-          />
-
-          <input
-            placeholder="Lokasi Akad"
-            value={form.akad_location}
-            onChange={(e) => set("akad_location", e.target.value)}
-            className={styles.input}
-            style={{ gridColumn: "1 / -1" }}
-          />
-
-          <input
-            type="date"
-            value={form.resepsi_date}
-            onChange={(e) => set("resepsi_date", e.target.value)}
-            className={styles.input}
-          />
-
-          <input
-            placeholder="Jam Resepsi, contoh: 11.00 WIB"
-            value={form.reception_time}
-            onChange={(e) => set("reception_time", e.target.value)}
-            className={styles.input}
-          />
-
-          <input
-            placeholder="Lokasi Resepsi"
-            value={form.reception_location}
-            onChange={(e) => set("reception_location", e.target.value)}
-            className={styles.input}
-            style={{ gridColumn: "1 / -1" }}
-          />
-
-          <input
-            placeholder="Google Maps URL"
-            value={form.maps_url}
-            onChange={(e) => set("maps_url", e.target.value)}
-            className={styles.input}
-            style={{ gridColumn: "1 / -1" }}
-          />
+          {weddingEvents.length < 4 && (
+            <button
+              type="button"
+              className={styles.secondaryButton}
+              onClick={() => setWeddingEvents((prev) => [...prev, emptyWeddingEvent()])}
+            >
+              + Tambah Acara
+            </button>
+          )}
         </div>
 
         <h2 className={styles.editSectionTitle}>Kata Pembuka (opsional)</h2>
