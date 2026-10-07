@@ -88,6 +88,43 @@ function setEventContent(eventRoot: HTMLElement, event: InvitationData["events"]
   if (editors[0]) editors[0].textContent = event.date;
   if (editors[1]) editors[1].textContent = `Pukul : ${event.time}`;
   if (editors[2]) editors[2].textContent = `Tempat : ${event.location}`;
+
+  eventRoot.querySelectorAll<HTMLAnchorElement>("a[data-idb-maps-link]").forEach((anchor) => {
+    if (event.mapsUrl?.trim()) {
+      anchor.href = event.mapsUrl;
+      anchor.style.removeProperty("display");
+      anchor.removeAttribute("aria-hidden");
+    } else {
+      anchor.removeAttribute("href");
+      anchor.style.display = "none";
+      anchor.setAttribute("aria-hidden", "true");
+    }
+  });
+}
+
+function ensureEventRoots(documentRoot: Document, eventCount: number) {
+  const targetCount = Math.min(Math.max(eventCount, 0), 4);
+  const roots = Array.from(documentRoot.querySelectorAll<HTMLElement>(".acara-con"));
+  if (roots.length === 0) return roots;
+
+  let lastRoot = roots[roots.length - 1];
+  while (roots.length < targetCount) {
+    const clone = lastRoot.cloneNode(true) as HTMLElement;
+    clone.removeAttribute("id");
+    clone.dataset.vistiqClonedEvent = "true";
+    clone.querySelectorAll<HTMLElement>("[id]").forEach((node) => node.removeAttribute("id"));
+    clone.querySelectorAll<HTMLElement>(".animated").forEach((node) => node.classList.remove("animated"));
+    lastRoot.insertAdjacentElement("afterend", clone);
+    roots.push(clone);
+    lastRoot = clone;
+  }
+
+  roots.forEach((root, index) => {
+    root.style.display = index < targetCount ? "" : "none";
+    root.setAttribute("aria-hidden", index < targetCount ? "false" : "true");
+  });
+
+  return roots;
 }
 
 function setParents(documentRoot: Document, side: "pria" | "wanita", parents: string | null) {
@@ -193,7 +230,7 @@ function applyInvitationData(documentRoot: Document, invitation: InvitationData,
   setParents(documentRoot, "pria", invitation.groom.parents);
   setParents(documentRoot, "wanita", invitation.bride.parents);
 
-  const eventRoots = Array.from(documentRoot.querySelectorAll<HTMLElement>(".acara-con"));
+  const eventRoots = ensureEventRoots(documentRoot, invitation.events.length);
   invitation.events.slice(0, eventRoots.length).forEach((event, index) => setEventContent(eventRoots[index], event));
 
   const streamEditors = Array.from(documentRoot.querySelectorAll<HTMLElement>(".stream-con .elementor-widget-text-editor .elementor-widget-container"));
@@ -201,6 +238,7 @@ function applyInvitationData(documentRoot: Document, invitation: InvitationData,
   if (firstEvent && streamEditors[1]) streamEditors[1].textContent = `Pukul : ${firstEvent.time}`;
 
   documentRoot.querySelectorAll<HTMLAnchorElement>("a[data-idb-maps-link]").forEach((anchor) => {
+    if (anchor.closest(".acara-con")) return;
     if (invitation.mapsUrl?.trim()) {
       anchor.href = invitation.mapsUrl;
       anchor.style.removeProperty("display");
@@ -240,7 +278,7 @@ function applyInvitationData(documentRoot: Document, invitation: InvitationData,
   if (giftValues[2]) giftValues[2].textContent = firstEvent?.location || "—";
 
   setAudioSource(documentRoot, invitation.musicUrl);
-  setCountdown(documentRoot, firstEvent?.rawDate || null);
+  setCountdown(documentRoot, coverEvent?.rawDate || firstEvent?.rawDate || null);
   localizeInternalLinks(documentRoot);
   setFooterBranding(documentRoot);
 
