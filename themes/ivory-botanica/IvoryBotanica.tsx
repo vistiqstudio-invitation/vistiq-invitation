@@ -12,310 +12,53 @@ const VISTIQ_INSTAGRAM_URL = "https://www.instagram.com/vistiqinvitation/";
 const VISTIQ_ADMIN_WHATSAPP_URL = "https://wa.me/6281371338032";
 
 type FooterIconKind = "instagram" | "whatsapp";
-
 const FOOTER_ICON_MARKUP: Record<FooterIconKind, string> = {
-  instagram:
-    '<rect x="3.25" y="3.25" width="17.5" height="17.5" rx="4.5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4.1" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.45" cy="6.65" r="1.05" fill="currentColor"/>',
-  whatsapp:
-    '<path fill="currentColor" d="M16.04 3C8.86 3 3.03 8.73 3.03 15.79c0 2.25.6 4.45 1.74 6.38L3 28.55l6.6-1.7a13.1 13.1 0 0 0 6.43 1.63h.01c7.17 0 13.01-5.74 13.01-12.79C29.05 8.64 23.21 3 16.04 3Zm0 23.32h-.01a10.9 10.9 0 0 1-5.55-1.49l-.4-.23-3.92 1.01 1.05-3.75-.26-.39a10.5 10.5 0 0 1-1.68-5.68c0-5.87 4.83-10.64 10.78-10.64 5.94 0 10.77 4.77 10.77 10.64 0 5.86-4.84 10.53-10.78 10.53Zm5.91-7.98c-.32-.16-1.92-.93-2.22-1.03-.29-.11-.51-.16-.72.16-.22.31-.84 1.03-1.03 1.24-.19.21-.38.23-.7.08-.33-.16-1.37-.5-2.61-1.56a9.7 9.7 0 0 1-1.81-2.22c-.19-.32-.02-.49.14-.65.15-.14.33-.37.49-.55.16-.19.22-.32.32-.53.11-.21.06-.4-.02-.56-.08-.15-.73-1.72-.99-2.36-.27-.63-.53-.54-.73-.55h-.62c-.22 0-.57.08-.86.4-.3.31-1.14 1.09-1.14 2.67 0 1.57 1.16 3.09 1.32 3.3.16.21 2.29 3.44 5.54 4.82.78.33 1.38.52 1.85.67.78.24 1.48.21 2.04.13.62-.09 1.92-.78 2.19-1.52.27-.73.27-1.36.19-1.49-.08-.13-.3-.21-.63-.37Z"/>',
+  instagram:'<rect x="3.25" y="3.25" width="17.5" height="17.5" rx="4.5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4.1" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.45" cy="6.65" r="1.05" fill="currentColor"/>',
+  whatsapp:'<path fill="currentColor" d="M16.04 3C8.86 3 3.03 8.73 3.03 15.79c0 2.25.6 4.45 1.74 6.38L3 28.55l6.6-1.7a13.1 13.1 0 0 0 6.43 1.63h.01c7.17 0 13.01-5.74 13.01-12.79C29.05 8.64 23.21 3 16.04 3Zm0 23.32h-.01a10.9 10.9 0 0 1-5.55-1.49l-.4-.23-3.92 1.01 1.05-3.75-.26-.39a10.5 10.5 0 0 1-1.68-5.68c0-5.87 4.83-10.64 10.78-10.64 5.94 0 10.77 4.77 10.77 10.64 0 5.86-4.84 10.53-10.78 10.53Z"/>'
 };
-
 type TimerElement = HTMLElement & { __idbTimer?: number };
 
-function shortName(person: InvitationData["groom"]) {
-  return person.nickname?.trim() || person.name.trim().split(/\s+/)[0] || "Mempelai";
-}
+function shortName(person: InvitationData["groom"]){return person.nickname?.trim()||person.name.trim().split(/\s+/)[0]||"Mempelai"}
+function instagramUrl(value:string|null){const h=value?.trim().replace(/^@/,"");return h?`https://instagram.com/${h}`:"https://www.instagram.com/"}
+function instagramHandle(value:string|null){return value?.trim().replace(/^@/,"")||""}
+function parentParts(value:string|null){const p=(value||"").split(/\s*&\s*/).map(x=>x.trim()).filter(Boolean);return[p[0]||"",p[1]||""]}
+function replaceText(d:Document,from:string,to:string){if(!from||from===to||!d.body)return;const w=d.createTreeWalker(d.body,NodeFilter.SHOW_TEXT),nodes:Text[]=[];let n=w.nextNode();while(n){nodes.push(n as Text);n=w.nextNode()}nodes.forEach(t=>{if(t.nodeValue?.includes(from))t.nodeValue=t.nodeValue.replaceAll(from,to)})}
 
-function instagramUrl(value: string | null) {
-  const handle = value?.trim().replace(/^@/, "");
-  return handle ? `https://instagram.com/${handle}` : "https://www.instagram.com/";
-}
+function setEditableOpening(d:Document, invitation:InvitationData){
+  const quote=invitation.opening.quote?.trim();
+  const source=invitation.opening.quoteSource?.trim();
+  const description=invitation.opening.description?.trim();
+  const greeting=invitation.opening.greeting?.trim();
+  if(!quote&&!source&&!description&&!greeting)return;
 
-function instagramHandle(value: string | null) {
-  return value?.trim().replace(/^@/, "") || "";
-}
-
-function parentParts(value: string | null) {
-  const parts = (value || "").split(/\s*&\s*/).map((part) => part.trim()).filter(Boolean);
-  return [parts[0] || "", parts[1] || ""];
-}
-
-function replaceText(documentRoot: Document, from: string, to: string) {
-  if (!from || from === to || !documentRoot.body) return;
-  const walker = documentRoot.createTreeWalker(documentRoot.body, NodeFilter.SHOW_TEXT);
-  const nodes: Text[] = [];
-  let node = walker.nextNode();
-  while (node) {
-    nodes.push(node as Text);
-    node = walker.nextNode();
+  let block=d.getElementById("vistiq-editable-opening");
+  if(!block){
+    block=d.createElement("section"); block.id="vistiq-editable-opening";
+    const event=d.querySelector(".acara-con");
+    const target=event?.parentElement||d.querySelector("main")||d.body;
+    if(event&&event.parentElement) event.parentElement.insertBefore(block,event); else target?.appendChild(block);
   }
-  nodes.forEach((textNode) => {
-    if (textNode.nodeValue?.includes(from)) textNode.nodeValue = textNode.nodeValue.replaceAll(from, to);
-  });
-}
-
-function setCountdown(documentRoot: Document, rawDate: string | null) {
-  const countdown = documentRoot.querySelector<HTMLElement>(".idb-countdown");
-  if (!countdown || !rawDate) return;
-  const target = new Date(rawDate).getTime();
-  if (!Number.isFinite(target)) return;
-  const timerElement = countdown as TimerElement;
-  const childWindow = documentRoot.defaultView;
-  if (timerElement.__idbTimer && childWindow) childWindow.clearInterval(timerElement.__idbTimer);
-  countdown.dataset.target = String(target);
-  countdown.dataset.targetIso = rawDate;
-  const update = () => {
-    const remaining = Math.max(0, target - Date.now());
-    const values = {
-      days: Math.floor(remaining / 86400000),
-      hours: Math.floor((remaining % 86400000) / 3600000),
-      minutes: Math.floor((remaining % 3600000) / 60000),
-      seconds: Math.floor((remaining % 60000) / 1000),
-    };
-    Object.entries(values).forEach(([part, value]) => {
-      const number = countdown.querySelector<HTMLElement>(`.idb-countdown__item[data-part="${part}"] [data-role="num"]`);
-      if (number) number.textContent = part === "days" ? String(value) : String(value).padStart(2, "0");
-    });
-  };
-  update();
-  if (childWindow) timerElement.__idbTimer = childWindow.setInterval(update, 1000);
-}
-
-function setEventContent(eventRoot: HTMLElement, event: InvitationData["events"][number]) {
-  const marker = eventRoot.querySelector<HTMLElement>(".nama-acara-marker");
-  if (marker) marker.textContent = event.name;
-  const editors = Array.from(eventRoot.querySelectorAll<HTMLElement>(".elementor-widget-text-editor .elementor-widget-container"));
-  if (editors[0]) editors[0].textContent = event.date;
-  if (editors[1]) editors[1].textContent = `Pukul : ${event.time}`;
-  if (editors[2]) editors[2].textContent = `Tempat : ${event.location}`;
-
-  eventRoot.querySelectorAll<HTMLAnchorElement>("a[data-idb-maps-link]").forEach((anchor) => {
-    if (event.mapsUrl?.trim()) {
-      anchor.href = event.mapsUrl;
-      anchor.style.removeProperty("display");
-      anchor.removeAttribute("aria-hidden");
-    } else {
-      anchor.removeAttribute("href");
-      anchor.style.display = "none";
-      anchor.setAttribute("aria-hidden", "true");
-    }
-  });
-}
-
-function ensureEventRoots(documentRoot: Document, eventCount: number) {
-  const targetCount = Math.min(Math.max(eventCount, 0), 4);
-  const roots = Array.from(documentRoot.querySelectorAll<HTMLElement>(".acara-con"));
-  if (roots.length === 0) return roots;
-
-  let lastRoot = roots[roots.length - 1];
-  while (roots.length < targetCount) {
-    const clone = lastRoot.cloneNode(true) as HTMLElement;
-    clone.removeAttribute("id");
-    clone.dataset.vistiqClonedEvent = "true";
-    clone.querySelectorAll<HTMLElement>("[id]").forEach((node) => node.removeAttribute("id"));
-    clone.querySelectorAll<HTMLElement>(".animated").forEach((node) => node.classList.remove("animated"));
-    lastRoot.insertAdjacentElement("afterend", clone);
-    roots.push(clone);
-    lastRoot = clone;
+  block.innerHTML="";
+  Object.assign(block.style,{padding:"42px 24px",textAlign:"center",background:"#f7f3e8",color:"#4b4337",fontFamily:"inherit"});
+  if(greeting){const el=d.createElement("h3");el.textContent=greeting;Object.assign(el.style,{margin:"0 0 16px",fontSize:"22px",fontWeight:"500"});block.appendChild(el)}
+  if(description){const el=d.createElement("p");el.textContent=description;Object.assign(el.style,{maxWidth:"620px",margin:"0 auto 22px",lineHeight:"1.8",fontSize:"15px",whiteSpace:"pre-line"});block.appendChild(el)}
+  if(quote){
+    const parts=quote.split(/\n\s*\n/).map(x=>x.trim()).filter(Boolean);
+    parts.forEach((part,index)=>{const el=d.createElement("p");el.textContent=part;const arabic=/[\u0600-\u06FF]/.test(part);if(arabic){el.dir="rtl";el.lang="ar"}Object.assign(el.style,{maxWidth:"700px",margin:index===0?"0 auto 18px":"0 auto 12px",lineHeight:arabic?"2.15":"1.8",fontSize:arabic?"24px":"15px",fontFamily:arabic?'"Noto Naskh Arabic","Amiri","Scheherazade New",serif':"inherit",whiteSpace:"pre-line"});block!.appendChild(el)})
   }
-
-  roots.forEach((root, index) => {
-    root.style.display = index < targetCount ? "" : "none";
-    root.setAttribute("aria-hidden", index < targetCount ? "false" : "true");
-  });
-
-  return roots;
+  if(source){const el=d.createElement("p");el.textContent=source;Object.assign(el.style,{margin:"14px auto 0",fontWeight:"600",fontSize:"14px"});block.appendChild(el)}
 }
 
-function setParents(documentRoot: Document, side: "pria" | "wanita", parents: string | null) {
-  const [father, mother] = parentParts(parents);
-  const markers = Array.from(documentRoot.querySelectorAll<HTMLElement>(`[data-idb-mempelai-side="${side}"]`));
-  if (markers[0]) markers[0].textContent = father;
-  if (markers[1]) markers[1].textContent = mother;
-}
+function setCountdown(d:Document,rawDate:string|null){const c=d.querySelector<HTMLElement>(".idb-countdown");if(!c||!rawDate)return;const target=new Date(rawDate).getTime();if(!Number.isFinite(target))return;const t=c as TimerElement,w=d.defaultView;if(t.__idbTimer&&w)w.clearInterval(t.__idbTimer);const update=()=>{const r=Math.max(0,target-Date.now()),v={days:Math.floor(r/86400000),hours:Math.floor((r%86400000)/3600000),minutes:Math.floor((r%3600000)/60000),seconds:Math.floor((r%60000)/1000)};Object.entries(v).forEach(([p,x])=>{const e=c.querySelector<HTMLElement>(`.idb-countdown__item[data-part="${p}"] [data-role="num"]`);if(e)e.textContent=p==="days"?String(x):String(x).padStart(2,"0")})};update();if(w)t.__idbTimer=w.setInterval(update,1000)}
+function setEventContent(root:HTMLElement,event:InvitationData["events"][number]){const m=root.querySelector<HTMLElement>(".nama-acara-marker");if(m)m.textContent=event.name;const e=Array.from(root.querySelectorAll<HTMLElement>(".elementor-widget-text-editor .elementor-widget-container"));if(e[0])e[0].textContent=event.date;if(e[1])e[1].textContent=`Pukul : ${event.time}`;if(e[2])e[2].textContent=`Tempat : ${event.location}`;root.querySelectorAll<HTMLAnchorElement>("a[data-idb-maps-link]").forEach(a=>{if(event.mapsUrl?.trim()){a.href=event.mapsUrl;a.style.removeProperty("display");a.removeAttribute("aria-hidden")}else{a.removeAttribute("href");a.style.display="none"}})}
+function ensureEventRoots(d:Document,count:number){const target=Math.min(Math.max(count,0),4),roots=Array.from(d.querySelectorAll<HTMLElement>(".acara-con"));if(!roots.length)return roots;let last=roots[roots.length-1];while(roots.length<target){const c=last.cloneNode(true) as HTMLElement;c.removeAttribute("id");c.querySelectorAll<HTMLElement>("[id]").forEach(n=>n.removeAttribute("id"));last.insertAdjacentElement("afterend",c);roots.push(c);last=c}roots.forEach((r,i)=>r.style.display=i<target?"":"none");return roots}
+function setParents(d:Document,side:"pria"|"wanita",parents:string|null){const [f,m]=parentParts(parents),x=Array.from(d.querySelectorAll<HTMLElement>(`[data-idb-mempelai-side="${side}"]`));if(x[0])x[0].textContent=f;if(x[1])x[1].textContent=m}
+function localizeInternalLinks(d:Document){d.querySelectorAll<HTMLAnchorElement>('a[href*="inv.wekita.id/spesial-02-animasi/#"]').forEach(a=>{const h=a.getAttribute("href")||"",i=h.indexOf("#"),hash=i>=0?decodeURIComponent(h.slice(i+1)).trim():"";a.href=/#(?:%20|\s*)$/i.test(h)?"#amplop":hash?`#${hash}`:"#home"})}
+function setAudioSource(d:Document,url:string|null){if(!url)return;d.querySelectorAll<HTMLAudioElement>(".idb-audio-el").forEach(a=>{const s=a.querySelector<HTMLSourceElement>("source");if(s)s.src=url;a.src=url;a.load()})}
+function createFooterIcon(d:Document,kind:FooterIconKind){const s=d.createElementNS("http://www.w3.org/2000/svg","svg");s.setAttribute("viewBox",kind==="whatsapp"?"0 0 32 32":"0 0 24 24");s.setAttribute("width","24");s.setAttribute("height","24");s.innerHTML=FOOTER_ICON_MARKUP[kind];return s}
+function setFooterBranding(d:Document){const f=d.querySelector<HTMLElement>(".elementor-element-12b47c4c");if(!f)return;const w=f.querySelector<HTMLAnchorElement>('a[aria-label="WhatsApp"]');if(w){w.href=VISTIQ_ADMIN_WHATSAPP_URL;w.replaceChildren(createFooterIcon(d,"whatsapp"))}const i=f.querySelector<HTMLAnchorElement>('a[aria-label="Instagram"]');if(i){i.href=VISTIQ_INSTAGRAM_URL;i.replaceChildren(createFooterIcon(d,"instagram"))}}
+function applyOptionalSectionVisibility(d:Document,i:InvitationData){if(!d.body)return;d.body.classList.toggle("idb-hide-love-story",!i.story.some(x=>Boolean(x.title?.trim()||x.description?.trim()||x.year?.trim())));d.body.classList.toggle("idb-hide-live-streaming",!i.liveStreamingUrl?.trim());d.body.classList.toggle("idb-hide-wedding-gift",!i.gifts.some(g=>Boolean(g.bankName?.trim()||g.accountNumber?.trim()||g.accountName?.trim())))}
 
-function localizeInternalLinks(documentRoot: Document) {
-  documentRoot.querySelectorAll<HTMLAnchorElement>('a[href*="inv.wekita.id/spesial-02-animasi/#"]').forEach((anchor) => {
-    const rawHref = anchor.getAttribute("href") || "";
-    const hashStart = rawHref.indexOf("#");
-    const hash = hashStart >= 0 ? decodeURIComponent(rawHref.slice(hashStart + 1)).trim() : "";
-    const isGiftLink = /#(?:%20|\s*)$/i.test(rawHref);
-    anchor.setAttribute("href", isGiftLink ? "#amplop" : hash ? `#${hash}` : "#home");
-  });
-}
+function applyInvitationData(d:Document,i:InvitationData,guest:string){const gs=shortName(i.groom),bs=shortName(i.bride),first=i.events[0],cover=i.coverEvent||first;d.title=`${gs} & ${bs} — Ivory Botanica`;d.documentElement.lang="id";applyOptionalSectionVisibility(d,i);replaceText(d,"Habib & Adiba",`${gs} & ${bs}`);replaceText(d,"Rizky & Nabila",`${gs} & ${bs}`);replaceText(d,"Habib Yulianto",i.groom.name);replaceText(d,"Rizky Pratama",i.groom.name);replaceText(d,"Adiba Putri Syakila",i.bride.name);replaceText(d,"Nabila Putri",i.bride.name);replaceText(d,"Nama Tamu",guest);replaceText(d,LEGACY_REFERENCE_DATE,cover?.date||REFERENCE_DATE);replaceText(d,REFERENCE_DATE,cover?.date||REFERENCE_DATE);setParents(d,"pria",i.groom.parents);setParents(d,"wanita",i.bride.parents);const roots=ensureEventRoots(d,i.events.length);i.events.slice(0,roots.length).forEach((e,n)=>setEventContent(roots[n],e));const inst=Array.from(d.querySelectorAll<HTMLAnchorElement>('.elementor-widget-bisdev_social_icons a[aria-label="Instagram"]')),vals=[i.groom.instagram,i.bride.instagram,i.groom.instagram];inst.forEach((a,n)=>{const v=vals[n]||null;a.href=instagramUrl(v);const l=a.querySelector<HTMLElement>(".idb-social-icons__text"),h=instagramHandle(v);if(l&&h)l.textContent=`@${h}`});setEditableOpening(d,i);setAudioSource(d,i.musicUrl);setCountdown(d,cover?.rawDate||first?.rawDate||null);localizeInternalLinks(d);setFooterBranding(d);if(!d.getElementById("ivory-botanica-frame-overrides")){const s=d.createElement("style");s.id="ivory-botanica-frame-overrides";s.textContent=":root,body{background-color:#f7f3e8!important}";d.head.appendChild(s)}}
 
-function setAudioSource(documentRoot: Document, musicUrl: string | null) {
-  if (!musicUrl) return;
-  documentRoot.querySelectorAll<HTMLAudioElement>(".idb-audio-el").forEach((audio) => {
-    const source = audio.querySelector<HTMLSourceElement>("source");
-    if (source) source.src = musicUrl;
-    audio.src = musicUrl;
-    audio.load();
-  });
-}
-
-function createFooterIcon(documentRoot: Document, kind: FooterIconKind) {
-  const svg = documentRoot.createElementNS("http://www.w3.org/2000/svg", "svg");
-  svg.setAttribute("class", `vistiq-footer-icon vistiq-footer-icon-${kind}`);
-  svg.setAttribute("viewBox", kind === "whatsapp" ? "0 0 32 32" : "0 0 24 24");
-  svg.setAttribute("width", "24");
-  svg.setAttribute("height", "24");
-  svg.setAttribute("aria-hidden", "true");
-  svg.setAttribute("focusable", "false");
-  svg.innerHTML = FOOTER_ICON_MARKUP[kind];
-  return svg;
-}
-
-function setFooterBranding(documentRoot: Document) {
-  const footer = documentRoot.querySelector<HTMLElement>(".elementor-element-12b47c4c");
-  if (!footer) return;
-  const whatsapp = footer.querySelector<HTMLAnchorElement>('a[aria-label="WhatsApp"]');
-  if (whatsapp) {
-    whatsapp.href = VISTIQ_ADMIN_WHATSAPP_URL;
-    whatsapp.replaceChildren(createFooterIcon(documentRoot, "whatsapp"));
-  }
-  const instagram = footer.querySelector<HTMLAnchorElement>('a[aria-label="Instagram"]');
-  if (instagram) {
-    instagram.href = VISTIQ_INSTAGRAM_URL;
-    instagram.replaceChildren(createFooterIcon(documentRoot, "instagram"));
-  }
-  const watermark = documentRoot.querySelector<HTMLElement>(".idb-watermark-text");
-  if (watermark && !watermark.querySelector(".vistiq-footer-logo")) {
-    watermark.innerHTML = 'Made with <img draggable="false" role="img" class="emoji" alt="❤" src="./Undangan Website Spesial 02 Animasi_files/2764.svg"> by <img class="vistiq-footer-logo" src="/vistiq-invitation-logo.png" alt="Vistiq Invitation" style="display:inline-block;width:92px;height:auto;max-height:28px;object-fit:contain;vertical-align:middle;margin-left:4px;">';
-  }
-}
-
-function applyOptionalSectionVisibility(documentRoot: Document, invitation: InvitationData) {
-  if (!documentRoot.body) return;
-  const hasStory = invitation.story.some((item) => Boolean(item.title?.trim() || item.description?.trim() || item.year?.trim()));
-  const hasLiveStreaming = Boolean(invitation.liveStreamingUrl?.trim());
-  const hasGift = invitation.gifts.some((gift) => Boolean(gift.bankName?.trim() || gift.accountNumber?.trim() || gift.accountName?.trim()));
-
-  documentRoot.body.classList.toggle("idb-hide-love-story", !hasStory);
-  documentRoot.body.classList.toggle("idb-hide-live-streaming", !hasLiveStreaming);
-  documentRoot.body.classList.toggle("idb-hide-wedding-gift", !hasGift);
-  documentRoot.body.classList.toggle("idb-hide-kirim-hadiah", !hasGift);
-}
-
-function applyInvitationData(documentRoot: Document, invitation: InvitationData, guest: string) {
-  const groomShort = shortName(invitation.groom);
-  const brideShort = shortName(invitation.bride);
-  const firstEvent = invitation.events[0];
-  const coverEvent = invitation.coverEvent || firstEvent;
-  const groomNameToken = "__IVORY_BOTANICA_GROOM_NAME__";
-  const brideNameToken = "__IVORY_BOTANICA_BRIDE_NAME__";
-
-  documentRoot.title = `${groomShort} & ${brideShort} — Ivory Botanica`;
-  documentRoot.documentElement.lang = "id";
-  applyOptionalSectionVisibility(documentRoot, invitation);
-
-  replaceText(documentRoot, "Habib & Adiba", `${groomShort} & ${brideShort}`);
-  replaceText(documentRoot, "Rizky & Nabila", `${groomShort} & ${brideShort}`);
-  replaceText(documentRoot, "Habib Yulianto", groomNameToken);
-  replaceText(documentRoot, "Rizky Pratama", groomNameToken);
-  replaceText(documentRoot, "Adiba Putri Syakila", brideNameToken);
-  replaceText(documentRoot, "Nabila Putri", brideNameToken);
-  replaceText(documentRoot, "Habib", groomShort);
-  replaceText(documentRoot, "Adiba", brideShort);
-  replaceText(documentRoot, "Rizky", groomShort);
-  replaceText(documentRoot, "Nabila", brideShort);
-  replaceText(documentRoot, groomNameToken, invitation.groom.name);
-  replaceText(documentRoot, brideNameToken, invitation.bride.name);
-  replaceText(documentRoot, "Nama Tamu", guest);
-  const guestMarker = documentRoot.querySelector<HTMLElement>(".elementor-element-633aaeac .elementor-widget-container");
-  if (guestMarker) guestMarker.textContent = guest;
-  replaceText(documentRoot, LEGACY_REFERENCE_DATE, coverEvent?.date || REFERENCE_DATE);
-  replaceText(documentRoot, REFERENCE_DATE, coverEvent?.date || REFERENCE_DATE);
-
-  setParents(documentRoot, "pria", invitation.groom.parents);
-  setParents(documentRoot, "wanita", invitation.bride.parents);
-
-  const eventRoots = ensureEventRoots(documentRoot, invitation.events.length);
-  invitation.events.slice(0, eventRoots.length).forEach((event, index) => setEventContent(eventRoots[index], event));
-
-  const streamEditors = Array.from(documentRoot.querySelectorAll<HTMLElement>(".stream-con .elementor-widget-text-editor .elementor-widget-container"));
-  if (firstEvent && streamEditors[0]) streamEditors[0].textContent = firstEvent.date;
-  if (firstEvent && streamEditors[1]) streamEditors[1].textContent = `Pukul : ${firstEvent.time}`;
-
-  documentRoot.querySelectorAll<HTMLAnchorElement>("a[data-idb-maps-link]").forEach((anchor) => {
-    if (anchor.closest(".acara-con")) return;
-    if (invitation.mapsUrl?.trim()) {
-      anchor.href = invitation.mapsUrl;
-      anchor.style.removeProperty("display");
-      anchor.removeAttribute("aria-hidden");
-    } else {
-      anchor.removeAttribute("href");
-      anchor.style.display = "none";
-      anchor.setAttribute("aria-hidden", "true");
-    }
-  });
-
-  const instagramAnchors = Array.from(documentRoot.querySelectorAll<HTMLAnchorElement>('.elementor-widget-bisdev_social_icons a[aria-label="Instagram"]'));
-  const instagramValues = [invitation.groom.instagram, invitation.bride.instagram, invitation.groom.instagram];
-  instagramAnchors.forEach((anchor, index) => {
-    const value = instagramValues[index] || null;
-    anchor.href = instagramUrl(value);
-    const label = anchor.querySelector<HTMLElement>(".idb-social-icons__text");
-    const handle = instagramHandle(value);
-    if (label && handle) label.textContent = `@${handle}`;
-  });
-
-  const giftCards = Array.from(documentRoot.querySelectorAll<HTMLElement>(".idb-copy-rek"));
-  invitation.gifts.slice(0, giftCards.length).forEach((gift, index) => {
-    const card = giftCards[index];
-    if (gift.accountNumber) {
-      card.dataset.copy = gift.accountNumber;
-      const number = card.querySelector<HTMLElement>(".no-rekening-marker");
-      if (number) number.textContent = gift.accountNumber;
-    }
-    const name = card.querySelector<HTMLElement>(".idb-copy-rek__name");
-    if (name && gift.accountName) name.textContent = gift.accountName;
-  });
-
-  const giftValues = Array.from(documentRoot.querySelectorAll<HTMLElement>(".idb-kirim-hadiah__value"));
-  if (giftValues[0]) giftValues[0].textContent = invitation.groom.name;
-  if (giftValues[1]) giftValues[1].textContent = invitation.contactWhatsapp || "—";
-  if (giftValues[2]) giftValues[2].textContent = firstEvent?.location || "—";
-
-  setAudioSource(documentRoot, invitation.musicUrl);
-  setCountdown(documentRoot, coverEvent?.rawDate || firstEvent?.rawDate || null);
-  localizeInternalLinks(documentRoot);
-  setFooterBranding(documentRoot);
-
-  if (!documentRoot.getElementById("ivory-botanica-frame-overrides")) {
-    const style = documentRoot.createElement("style");
-    style.id = "ivory-botanica-frame-overrides";
-    style.textContent = `
-      :root, body { background-color: #f7f3e8 !important; }
-      .elementor-8395 .elementor-element.elementor-element-11b016c5:not(.elementor-motion-effects-element-type-background),
-      .elementor-8395 .elementor-element.elementor-element-11b016c5 > .elementor-motion-effects-container > .elementor-motion-effects-layer {
-        background-color: #f7f3e8 !important;
-      }
-    `;
-    documentRoot.head.appendChild(style);
-  }
-}
-
-export default function IvoryBotanica({ invitation }: { invitation: InvitationData }) {
-  const searchParams = useSearchParams();
-  const iframeRef = useRef<HTMLIFrameElement>(null);
-  const guest = searchParams.get("to")?.trim() || "Bapak/Ibu/Saudara/i";
-
-  const handleLoad = useCallback(() => {
-    const documentRoot = iframeRef.current?.contentDocument;
-    if (documentRoot) applyInvitationData(documentRoot, invitation, guest);
-  }, [guest, invitation]);
-
-  return (
-    <div className={styles.root}>
-      <iframe
-        ref={iframeRef}
-        className={styles.frame}
-        src={REFERENCE_PAGE}
-        title={`Undangan ${shortName(invitation.groom)} dan ${shortName(invitation.bride)}`}
-        allow="autoplay; fullscreen; picture-in-picture"
-        onLoad={handleLoad}
-      />
-    </div>
-  );
-}
+export default function IvoryBotanica({invitation}:{invitation:InvitationData}){const sp=useSearchParams(),ref=useRef<HTMLIFrameElement>(null),guest=sp.get("to")?.trim()||"Bapak/Ibu/Saudara/i";const handleLoad=useCallback(()=>{const d=ref.current?.contentDocument;if(d)applyInvitationData(d,invitation,guest)},[guest,invitation]);return <div className={styles.root}><iframe ref={ref} className={styles.frame} src={REFERENCE_PAGE} title={`Undangan ${shortName(invitation.groom)} dan ${shortName(invitation.bride)}`} allow="autoplay; fullscreen; picture-in-picture" onLoad={handleLoad}/></div>}
