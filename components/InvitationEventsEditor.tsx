@@ -67,7 +67,9 @@ function legacyEvents(invitation: Record<string, unknown>) {
 
   if (akad.date || akad.time || akad.location) result.push(akad);
   if (reception.date || reception.time || reception.location || reception.mapsUrl) result.push(reception);
-  return result.length > 0 ? result : [{ ...emptyEvent(), name: "Akad Nikah" }, { ...emptyEvent(), name: "Resepsi" }];
+  return result.length > 0
+    ? result
+    : [{ ...emptyEvent(), name: "Akad Nikah" }, { ...emptyEvent(), name: "Resepsi" }];
 }
 
 export default function InvitationEventsEditor({
@@ -82,6 +84,7 @@ export default function InvitationEventsEditor({
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const [loadedInvitationId, setLoadedInvitationId] = useState<string>("");
   const [slug, setSlug] = useState("");
   const [title, setTitle] = useState("Undangan");
   const [events, setEvents] = useState<EditableEvent[]>([]);
@@ -138,6 +141,8 @@ export default function InvitationEventsEditor({
           .from("invitations")
           .select("id, slug, category, groom_name, bride_name, events, cover_event_index, akad_date, akad_time, akad_location, resepsi_date, reception_time, reception_location, resepsi_location, maps_url")
           .eq("client_id", client.id)
+          .order("id", { ascending: true })
+          .limit(1)
           .maybeSingle();
         row = invitation as Record<string, unknown> | null;
       }
@@ -150,14 +155,17 @@ export default function InvitationEventsEditor({
 
       if (cancelled) return;
       const saved = storedEvents(row.events);
-      setEvents(saved.length > 0 ? saved : legacyEvents(row));
+      const fallback = legacyEvents(row);
+      const loadedEvents = saved.length > 0 ? saved : fallback;
+      setEvents(loadedEvents);
       setCoverIndex(
         typeof row.cover_event_index === "number" && row.cover_event_index >= 0
-          ? Math.min(row.cover_event_index, Math.max((saved.length || legacyEvents(row).length) - 1, 0))
-          : saved.length > 1
+          ? Math.min(row.cover_event_index, Math.max(loadedEvents.length - 1, 0))
+          : loadedEvents.length > 1
             ? 1
             : 0,
       );
+      setLoadedInvitationId(String(row.id ?? ""));
       setSlug(typeof row.slug === "string" ? row.slug : "");
       const groom = typeof row.groom_name === "string" ? row.groom_name : "";
       const bride = typeof row.bride_name === "string" ? row.bride_name : "";
@@ -230,6 +238,11 @@ export default function InvitationEventsEditor({
       return;
     }
 
+    if (!loadedInvitationId) {
+      setError("ID undangan tidak ditemukan. Silakan muat ulang halaman.");
+      return;
+    }
+
     const safeCoverIndex = Math.min(Math.max(coverIndex, 0), cleaned.length - 1);
     const first = cleaned[0];
     const second = cleaned[1];
@@ -238,7 +251,7 @@ export default function InvitationEventsEditor({
     setSaving(true);
     setError("");
 
-    let query = supabase
+    const { error: saveError } = await supabase
       .from("invitations")
       .update({
         events: cleaned,
@@ -251,12 +264,9 @@ export default function InvitationEventsEditor({
         reception_time: second?.time || "",
         reception_location: second?.location || "",
         maps_url: cover?.mapsUrl || cleaned.find((event) => event.mapsUrl)?.mapsUrl || "",
-      });
+      })
+      .eq("id", loadedInvitationId);
 
-    if (mode === "reseller") query = query.eq("id", invitationId || "");
-    else if (slug) query = query.eq("slug", slug);
-
-    const { error: saveError } = await query;
     setSaving(false);
 
     if (saveError) {
