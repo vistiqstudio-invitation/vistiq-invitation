@@ -32,6 +32,9 @@ export default function Child({ invitation }: { invitation: KhitanInvitationData
           <p className={styles.childParents}>
             Putra dari Bapak {parents.father} dan Ibu {parents.mother}
           </p>
+          <p className={styles.childParents}>
+            Kuwu Desa Kalisapu Kabupaten Cirebon.
+          </p>
         </div>
       </Reveal>
     </div>
