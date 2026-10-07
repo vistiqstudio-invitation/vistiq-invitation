@@ -10,6 +10,7 @@ export type EventItem = {
   rawDate: string | null;
   time: string;
   location: string;
+  mapsUrl?: string | null;
 };
 
 export type Brand = {
