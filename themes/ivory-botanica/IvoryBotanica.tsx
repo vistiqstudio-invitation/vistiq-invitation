@@ -23,24 +23,15 @@ function instagramHandle(value:string|null){return value?.trim().replace(/^@/,""
 function parentParts(value:string|null){const p=(value||"").split(/\s*&\s*/).map(x=>x.trim()).filter(Boolean);return[p[0]||"",p[1]||""]}
 function replaceText(d:Document,from:string,to:string){if(!from||from===to||!d.body)return;const w=d.createTreeWalker(d.body,NodeFilter.SHOW_TEXT),nodes:Text[]=[];let n=w.nextNode();while(n){nodes.push(n as Text);n=w.nextNode()}nodes.forEach(t=>{if(t.nodeValue?.includes(from))t.nodeValue=t.nodeValue.replaceAll(from,to)})}
 function currentGuest(){if(typeof window==="undefined")return "Bapak/Ibu/Saudara/i";return new URLSearchParams(window.location.search).get("to")?.trim()||"Bapak/Ibu/Saudara/i"}
-function setGuestName(d:Document,guest:string){
-  const marker=d.querySelector<HTMLElement>(".elementor-element-633aaeac .elementor-widget-container");
-  if(marker)marker.textContent=guest;
-  else replaceText(d,"Nama Tamu",guest);
-}
+function setGuestName(d:Document,guest:string){const marker=d.querySelector<HTMLElement>(".elementor-element-633aaeac .elementor-widget-container");if(marker)marker.textContent=guest;else replaceText(d,"Nama Tamu",guest)}
 
 function setEditableOpening(d:Document, invitation:InvitationData){
-  const quote=invitation.opening.quote?.trim();
-  const source=invitation.opening.quoteSource?.trim();
-  const description=invitation.opening.description?.trim();
-  const greeting=invitation.opening.greeting?.trim();
-  if(!quote&&!source&&!description&&!greeting)return;
-  let block=d.getElementById("vistiq-editable-opening");
-  if(!block){block=d.createElement("section");block.id="vistiq-editable-opening";const event=d.querySelector(".acara-con");const target=event?.parentElement||d.querySelector("main")||d.body;if(event&&event.parentElement)event.parentElement.insertBefore(block,event);else target?.appendChild(block)}
+  const quote=invitation.opening.quote?.trim();const source=invitation.opening.quoteSource?.trim();const description=invitation.opening.description?.trim();const greeting=invitation.opening.greeting?.trim();if(!quote&&!source&&!description&&!greeting)return;
+  let block=d.getElementById("vistiq-editable-opening");if(!block){block=d.createElement("section");block.id="vistiq-editable-opening";const event=d.querySelector(".acara-con");const target=event?.parentElement||d.querySelector("main")||d.body;if(event&&event.parentElement)event.parentElement.insertBefore(block,event);else target?.appendChild(block)}
   block.innerHTML="";Object.assign(block.style,{padding:"42px 24px",textAlign:"center",background:"#f7f3e8",color:"#4b4337",fontFamily:"inherit"});
   if(greeting){const el=d.createElement("h3");el.textContent=greeting;Object.assign(el.style,{margin:"0 0 16px",fontSize:"22px",fontWeight:"500"});block.appendChild(el)}
   if(description){const el=d.createElement("p");el.textContent=description;Object.assign(el.style,{maxWidth:"620px",margin:"0 auto 22px",lineHeight:"1.8",fontSize:"15px",whiteSpace:"pre-line"});block.appendChild(el)}
-  if(quote){const parts=quote.split(/\n\s*\n/).map(x=>x.trim()).filter(Boolean);parts.forEach((part,index)=>{const el=d.createElement("p");el.textContent=part;const arabic=/[\u0600-\u06FF]/.test(part);if(arabic){el.dir="rtl";el.lang="ar"}Object.assign(el.style,{maxWidth:"700px",margin:index===0?"0 auto 18px":"0 auto 12px",lineHeight:arabic?"2.15":"1.8",fontSize:arabic?"24px":"15px",fontFamily:arabic?'"Noto Naskh Arabic","Amiri","Scheherazade New",serif':"inherit",whiteSpace:"pre-line"});block!.appendChild(el)})}
+  if(quote){quote.split(/\n\s*\n/).map(x=>x.trim()).filter(Boolean).forEach((part,index)=>{const el=d.createElement("p");el.textContent=part;const arabic=/[\u0600-\u06FF]/.test(part);if(arabic){el.dir="rtl";el.lang="ar"}Object.assign(el.style,{maxWidth:"700px",margin:index===0?"0 auto 18px":"0 auto 12px",lineHeight:arabic?"2.15":"1.8",fontSize:arabic?"24px":"15px",fontFamily:arabic?'"Noto Naskh Arabic","Amiri","Scheherazade New",serif':"inherit",whiteSpace:"pre-line"});block!.appendChild(el)})}
   if(source){const el=d.createElement("p");el.textContent=source;Object.assign(el.style,{margin:"14px auto 0",fontWeight:"600",fontSize:"14px"});block.appendChild(el)}
 }
 
@@ -49,24 +40,25 @@ function setEventContent(root:HTMLElement,event:InvitationData["events"][number]
 function ensureEventRoots(d:Document,count:number){const target=Math.min(Math.max(count,0),4),roots=Array.from(d.querySelectorAll<HTMLElement>(".acara-con"));if(!roots.length)return roots;let last=roots[roots.length-1];while(roots.length<target){const c=last.cloneNode(true) as HTMLElement;c.removeAttribute("id");c.querySelectorAll<HTMLElement>("[id]").forEach(n=>n.removeAttribute("id"));last.insertAdjacentElement("afterend",c);roots.push(c);last=c}roots.forEach((r,i)=>r.style.display=i<target?"":"none");return roots}
 function setParents(d:Document,side:"pria"|"wanita",parents:string|null){const [f,m]=parentParts(parents),x=Array.from(d.querySelectorAll<HTMLElement>(`[data-idb-mempelai-side="${side}"]`));if(x[0])x[0].textContent=f;if(x[1])x[1].textContent=m}
 function localizeInternalLinks(d:Document){d.querySelectorAll<HTMLAnchorElement>('a[href*="inv.wekita.id/spesial-02-animasi/#"]').forEach(a=>{const h=a.getAttribute("href")||"",i=h.indexOf("#"),hash=i>=0?decodeURIComponent(h.slice(i+1)).trim():"";a.href=/#(?:%20|\s*)$/i.test(h)?"#amplop":hash?`#${hash}`:"#home"})}
-function setAudioSource(d:Document,url:string|null){if(!url)return;d.querySelectorAll<HTMLAudioElement>(".idb-audio-el").forEach(a=>{const s=a.querySelector<HTMLSourceElement>("source");if(s)s.src=url;a.src=url;a.load()})}
-function createFooterIcon(d:Document,kind:FooterIconKind){const s=d.createElementNS("http://www.w3.org/2000/svg","svg");s.setAttribute("viewBox",kind==="whatsapp"?"0 0 32 32":"0 0 24 24");s.setAttribute("width","24");s.setAttribute("height","24");s.innerHTML=FOOTER_ICON_MARKUP[kind];return s}
-function setFooterBranding(d:Document){const f=d.querySelector<HTMLElement>(".elementor-element-12b47c4c");if(!f)return;const w=f.querySelector<HTMLAnchorElement>('a[aria-label="WhatsApp"]');if(w){w.href=VISTIQ_ADMIN_WHATSAPP_URL;w.replaceChildren(createFooterIcon(d,"whatsapp"))}const i=f.querySelector<HTMLAnchorElement>('a[aria-label="Instagram"]');if(i){i.href=VISTIQ_INSTAGRAM_URL;i.replaceChildren(createFooterIcon(d,"instagram"))}}
-function applyOptionalSectionVisibility(d:Document,i:InvitationData){
-  if(!d.body)return;
-  const hasStory=i.story.some(x=>Boolean(x.title?.trim()||x.description?.trim()||x.year?.trim()));
-  const hasLiveStreaming=Boolean(i.liveStreamingUrl?.trim());
-  const hasGift=i.gifts.some(g=>Boolean(g.bankName?.trim()||g.accountNumber?.trim()||g.accountName?.trim()));
-  d.body.classList.toggle("idb-hide-love-story",!hasStory);
-  d.body.classList.toggle("idb-hide-live-streaming",!hasLiveStreaming);
-  d.body.classList.toggle("idb-hide-wedding-gift",!hasGift);
-  d.body.classList.toggle("idb-hide-kirim-hadiah",!hasGift);
-  if(!hasGift){
-    d.querySelectorAll<HTMLElement>("#amplop, .amplop-con, .gift-con, .wedding-gift-con, .kirim-hadiah-con, [data-idb-section='amplop'], [data-idb-section='gift']").forEach(el=>{el.style.display="none";el.setAttribute("aria-hidden","true")});
-    d.querySelectorAll<HTMLAnchorElement>('a[href="#amplop"], a[href*="#amplop"]').forEach(a=>{a.style.display="none";a.setAttribute("aria-hidden","true")});
+function setAudioSource(d:Document,url:string|null){
+  if(!url)return;
+  const audios=Array.from(d.querySelectorAll<HTMLAudioElement>(".idb-audio-el"));
+  audios.forEach(a=>{const s=a.querySelector<HTMLSourceElement>("source");if(s)s.src=url;a.src=url;a.loop=true;a.preload="auto";a.load()});
+  const primary=audios[0];
+  const open=d.getElementById("open");
+  if(primary&&open&&!open.dataset.vistiqMusicBound){
+    open.dataset.vistiqMusicBound="1";
+    open.addEventListener("click",()=>{
+      const start=Number(primary.closest<HTMLElement>(".idb-audio-box")?.dataset.start||0);
+      if(Number.isFinite(start)&&start>0&&primary.currentTime<1){try{primary.currentTime=start}catch{}}
+      primary.volume=.8;
+      primary.play().catch(()=>{});
+    },{capture:true});
   }
 }
-
+function createFooterIcon(d:Document,kind:FooterIconKind){const s=d.createElementNS("http://www.w3.org/2000/svg","svg");s.setAttribute("viewBox",kind==="whatsapp"?"0 0 32 32":"0 0 24 24");s.setAttribute("width","24");s.setAttribute("height","24");s.innerHTML=FOOTER_ICON_MARKUP[kind];return s}
+function setFooterBranding(d:Document){const f=d.querySelector<HTMLElement>(".elementor-element-12b47c4c");if(!f)return;const w=f.querySelector<HTMLAnchorElement>('a[aria-label="WhatsApp"]');if(w){w.href=VISTIQ_ADMIN_WHATSAPP_URL;w.replaceChildren(createFooterIcon(d,"whatsapp"))}const i=f.querySelector<HTMLAnchorElement>('a[aria-label="Instagram"]');if(i){i.href=VISTIQ_INSTAGRAM_URL;i.replaceChildren(createFooterIcon(d,"instagram"))}}
+function applyOptionalSectionVisibility(d:Document,i:InvitationData){if(!d.body)return;const hasStory=i.story.some(x=>Boolean(x.title?.trim()||x.description?.trim()||x.year?.trim()));const hasLiveStreaming=Boolean(i.liveStreamingUrl?.trim());const hasGift=i.gifts.some(g=>Boolean(g.bankName?.trim()||g.accountNumber?.trim()||g.accountName?.trim()));d.body.classList.toggle("idb-hide-love-story",!hasStory);d.body.classList.toggle("idb-hide-live-streaming",!hasLiveStreaming);d.body.classList.toggle("idb-hide-wedding-gift",!hasGift);d.body.classList.toggle("idb-hide-kirim-hadiah",!hasGift);if(!hasGift){d.querySelectorAll<HTMLElement>("#amplop, .amplop-con, .gift-con, .wedding-gift-con, .kirim-hadiah-con, [data-idb-section='amplop'], [data-idb-section='gift']").forEach(el=>{el.style.display="none";el.setAttribute("aria-hidden","true")});d.querySelectorAll<HTMLAnchorElement>('a[href="#amplop"], a[href*="#amplop"]').forEach(a=>{a.style.display="none";a.setAttribute("aria-hidden","true")})}}
 function applyInvitationData(d:Document,i:InvitationData,guest:string){const gs=shortName(i.groom),bs=shortName(i.bride),first=i.events[0],cover=i.coverEvent||first;d.title=`${gs} & ${bs} — Ivory Botanica`;d.documentElement.lang="id";applyOptionalSectionVisibility(d,i);replaceText(d,"Habib & Adiba",`${gs} & ${bs}`);replaceText(d,"Rizky & Nabila",`${gs} & ${bs}`);replaceText(d,"Habib Yulianto",i.groom.name);replaceText(d,"Rizky Pratama",i.groom.name);replaceText(d,"Adiba Putri Syakila",i.bride.name);replaceText(d,"Nabila Putri",i.bride.name);setGuestName(d,guest);replaceText(d,LEGACY_REFERENCE_DATE,cover?.date||REFERENCE_DATE);replaceText(d,REFERENCE_DATE,cover?.date||REFERENCE_DATE);setParents(d,"pria",i.groom.parents);setParents(d,"wanita",i.bride.parents);const roots=ensureEventRoots(d,i.events.length);i.events.slice(0,roots.length).forEach((e,n)=>setEventContent(roots[n],e));const inst=Array.from(d.querySelectorAll<HTMLAnchorElement>('.elementor-widget-bisdev_social_icons a[aria-label="Instagram"]')),vals=[i.groom.instagram,i.bride.instagram,i.groom.instagram];inst.forEach((a,n)=>{const v=vals[n]||null;a.href=instagramUrl(v);const l=a.querySelector<HTMLElement>(".idb-social-icons__text"),h=instagramHandle(v);if(l&&h)l.textContent=`@${h}`});setEditableOpening(d,i);setAudioSource(d,i.musicUrl);setCountdown(d,cover?.rawDate||first?.rawDate||null);localizeInternalLinks(d);setFooterBranding(d);if(!d.getElementById("ivory-botanica-frame-overrides")){const s=d.createElement("style");s.id="ivory-botanica-frame-overrides";s.textContent=":root,body{background-color:#f7f3e8!important}.idb-hide-wedding-gift #amplop,.idb-hide-wedding-gift .amplop-con,.idb-hide-wedding-gift .gift-con,.idb-hide-wedding-gift .wedding-gift-con,.idb-hide-kirim-hadiah .kirim-hadiah-con{display:none!important}";d.head.appendChild(s)}}
 
 export default function IvoryBotanica({invitation}:{invitation:InvitationData}){const ref=useRef<HTMLIFrameElement>(null);const handleLoad=useCallback(()=>{const d=ref.current?.contentDocument;if(d)applyInvitationData(d,invitation,currentGuest())},[invitation]);return <div className={styles.root}><iframe ref={ref} className={styles.frame} src={REFERENCE_PAGE} title={`Undangan ${shortName(invitation.groom)} dan ${shortName(invitation.bride)}`} allow="autoplay; fullscreen; picture-in-picture" onLoad={handleLoad}/></div>}
