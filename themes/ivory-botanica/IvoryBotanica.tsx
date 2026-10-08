@@ -40,21 +40,21 @@ function setEventContent(root:HTMLElement,event:InvitationData["events"][number]
 function ensureEventRoots(d:Document,count:number){const target=Math.min(Math.max(count,0),4),roots=Array.from(d.querySelectorAll<HTMLElement>(".acara-con"));if(!roots.length)return roots;let last=roots[roots.length-1];while(roots.length<target){const c=last.cloneNode(true) as HTMLElement;c.removeAttribute("id");c.querySelectorAll<HTMLElement>("[id]").forEach(n=>n.removeAttribute("id"));last.insertAdjacentElement("afterend",c);roots.push(c);last=c}roots.forEach((r,i)=>r.style.display=i<target?"":"none");return roots}
 function setParents(d:Document,side:"pria"|"wanita",parents:string|null){const [f,m]=parentParts(parents),x=Array.from(d.querySelectorAll<HTMLElement>(`[data-idb-mempelai-side="${side}"]`));if(x[0])x[0].textContent=f;if(x[1])x[1].textContent=m}
 function localizeInternalLinks(d:Document){d.querySelectorAll<HTMLAnchorElement>('a[href*="inv.wekita.id/spesial-02-animasi/#"]').forEach(a=>{const h=a.getAttribute("href")||"",i=h.indexOf("#"),hash=i>=0?decodeURIComponent(h.slice(i+1)).trim():"";a.href=/#(?:%20|\s*)$/i.test(h)?"#amplop":hash?`#${hash}`:"#home"})}
+
 function setAudioSource(d:Document,url:string|null){
-  if(!url)return;
+  const existing=d.getElementById("vistiq-music-control");
+  if(!url){existing?.remove();return}
   const audios=Array.from(d.querySelectorAll<HTMLAudioElement>(".idb-audio-el"));
-  audios.forEach(a=>{const s=a.querySelector<HTMLSourceElement>("source");if(s)s.src=url;a.src=url;a.loop=true;a.preload="auto";a.load()});
-  const primary=audios[0];
+  audios.forEach(a=>{a.pause();a.autoplay=false;a.removeAttribute("autoplay");const s=a.querySelector<HTMLSourceElement>("source");if(s)s.src=url;a.src=url;a.loop=true;a.preload="metadata";a.load()});
+  const primary=audios[0];if(!primary)return;
+  let opened=false;
+  let control=existing as HTMLButtonElement|null;
+  if(!control){control=d.createElement("button");control.id="vistiq-music-control";control.type="button";control.setAttribute("aria-label","Putar musik");control.textContent="▶";Object.assign(control.style,{position:"fixed",right:"18px",bottom:"22px",zIndex:"999999",width:"44px",height:"44px",borderRadius:"50%",border:"0",background:"rgba(78,112,91,.92)",color:"#fff",fontSize:"18px",lineHeight:"44px",textAlign:"center",boxShadow:"0 4px 14px rgba(0,0,0,.22)",cursor:"pointer",display:"none",padding:"0"});d.body.appendChild(control)}
+  const sync=()=>{if(!control)return;const playing=!primary.paused;control.textContent=playing?"❚❚":"▶";control.setAttribute("aria-label",playing?"Jeda musik":"Putar musik")};
+  primary.addEventListener("play",sync);primary.addEventListener("pause",sync);
+  control.onclick=()=>{if(!opened)return;if(primary.paused)primary.play().catch(()=>{});else primary.pause();sync()};
   const open=d.getElementById("open");
-  if(primary&&open&&!open.dataset.vistiqMusicBound){
-    open.dataset.vistiqMusicBound="1";
-    open.addEventListener("click",()=>{
-      const start=Number(primary.closest<HTMLElement>(".idb-audio-box")?.dataset.start||0);
-      if(Number.isFinite(start)&&start>0&&primary.currentTime<1){try{primary.currentTime=start}catch{}}
-      primary.volume=.8;
-      primary.play().catch(()=>{});
-    },{capture:true});
-  }
+  if(open&&!open.dataset.vistiqMusicBound){open.dataset.vistiqMusicBound="1";open.addEventListener("click",()=>{opened=true;if(control)control.style.display="block";const start=Number(primary.closest<HTMLElement>(".idb-audio-box")?.dataset.start||0);if(Number.isFinite(start)&&start>0&&primary.currentTime<1){try{primary.currentTime=start}catch{}}primary.volume=.8;primary.play().then(sync).catch(sync)},{capture:true})}
 }
 function createFooterIcon(d:Document,kind:FooterIconKind){const s=d.createElementNS("http://www.w3.org/2000/svg","svg");s.setAttribute("viewBox",kind==="whatsapp"?"0 0 32 32":"0 0 24 24");s.setAttribute("width","24");s.setAttribute("height","24");s.innerHTML=FOOTER_ICON_MARKUP[kind];return s}
 function setFooterBranding(d:Document){const f=d.querySelector<HTMLElement>(".elementor-element-12b47c4c");if(!f)return;const w=f.querySelector<HTMLAnchorElement>('a[aria-label="WhatsApp"]');if(w){w.href=VISTIQ_ADMIN_WHATSAPP_URL;w.replaceChildren(createFooterIcon(d,"whatsapp"))}const i=f.querySelector<HTMLAnchorElement>('a[aria-label="Instagram"]');if(i){i.href=VISTIQ_INSTAGRAM_URL;i.replaceChildren(createFooterIcon(d,"instagram"))}}
