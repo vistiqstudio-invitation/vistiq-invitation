@@ -49,6 +49,8 @@ type DashboardBrand = {
   brand_name: string;
   logo_url: string | null;
   brand_color: string | null;
+  custom_domain?: string | null;
+  custom_domain_status?: string | null;
 };
 
 type Invitation = {
@@ -72,6 +74,12 @@ type Rsvp = {
   created_at: string;
 };
 
+function domainOrigin(domain?: string | null) {
+  const value = domain?.trim();
+  if (!value) return null;
+  return `https://${value.replace(/^https?:\/\//i, "").replace(/\/+$/, "")}`;
+}
+
 export default function ClientPage() {
   const router = useRouter();
   const supabase = createClient();
@@ -90,6 +98,19 @@ export default function ClientPage() {
   >([]);
   const [fetchError, setFetchError] = useState(false);
 
+  const invitationOrigin = () => {
+    if (brand?.custom_domain_status === "active") {
+      const customOrigin = domainOrigin(brand.custom_domain);
+      if (customOrigin) return customOrigin;
+    }
+    return window.location.origin;
+  };
+
+  const invitationUrl = (slug: string, guest?: string) => {
+    const base = `${invitationOrigin()}/${slug}`;
+    return guest ? `${base}?to=${encodeURIComponent(guest)}` : base;
+  };
+
   const fetchData = async (currentUser: AppUser) => {
     setFetchError(false);
 
@@ -105,7 +126,6 @@ export default function ClientPage() {
     }
 
     const currentClient = clientData?.[0];
-
     setClient(currentClient || null);
 
     if (!currentClient) {
@@ -123,13 +143,11 @@ export default function ClientPage() {
 
     if (invitationsData && invitationsData.length > 0) {
       const invitationIds = invitationsData.map((item) => item.id);
-
       const { data: rsvpData } = await supabase
         .from("rsvp_wishes")
         .select("*")
         .in("invitation_id", invitationIds)
         .order("created_at", { ascending: false });
-
       setRsvps(rsvpData ?? []);
     }
 
@@ -138,10 +156,7 @@ export default function ClientPage() {
 
   useEffect(() => {
     const loadUser = async () => {
-      const {
-        data: { user: authUser },
-      } = await supabase.auth.getUser();
-
+      const { data: { user: authUser } } = await supabase.auth.getUser();
       if (!authUser) {
         router.push("/login");
         return;
@@ -182,32 +197,24 @@ export default function ClientPage() {
   };
 
   const generateLinks = () => {
-    const names = guestNamesInput
-      .split("\n")
-      .map((line) => line.trim())
-      .filter(Boolean);
-
+    const names = guestNamesInput.split("\n").map((line) => line.trim()).filter(Boolean);
     if (names.length === 0) {
       alert("Masukkan minimal satu nama tamu (satu nama per baris).");
       return;
     }
 
-    const invitation =
-      invitations.find((inv) => inv.id === selectedInvitationId) || invitations[0];
-
+    const invitation = invitations.find((inv) => inv.id === selectedInvitationId) || invitations[0];
     if (!invitation) {
       alert("Belum ada undangan untuk akun client ini.");
       return;
     }
 
-    const links = names.map((name) => ({
+    setGeneratedLinks(names.map((name) => ({
       name,
-      url: `${window.location.origin}/${invitation.slug}?to=${encodeURIComponent(name)}`,
+      url: invitationUrl(invitation.slug, name),
       groomName: invitation.groom_name,
       brideName: invitation.bride_name,
-    }));
-
-    setGeneratedLinks(links);
+    })));
   };
 
   const copyLink = async (url: string) => {
@@ -217,7 +224,6 @@ export default function ClientPage() {
 
   const buildWaMessage = (guestName: string, url: string, groomName?: string, brideName?: string) => {
     const coupleLine = groomName && brideName ? `*${groomName} & ${brideName}*` : null;
-
     return `Assalamualaikum Warahmatullahi Wabarakatuh 🌸
 
 Yth. Bapak/Ibu/Saudara/i *${guestName}*,
@@ -237,16 +243,13 @@ Wassalamualaikum Warahmatullahi Wabarakatuh`;
   };
 
   const copyWaMessage = async (guestName: string, url: string, groomName?: string, brideName?: string) => {
-    const message = buildWaMessage(guestName, url, groomName, brideName);
-    await navigator.clipboard.writeText(message);
+    await navigator.clipboard.writeText(buildWaMessage(guestName, url, groomName, brideName));
     alert("Pesan berhasil disalin, tinggal paste ke WhatsApp tamu.");
   };
 
   const copyAllLinks = async () => {
     if (generatedLinks.length === 0) return;
-
-    const text = generatedLinks.map(({ name, url }) => `${name}: ${url}`).join("\n");
-    await navigator.clipboard.writeText(text);
+    await navigator.clipboard.writeText(generatedLinks.map(({ name, url }) => `${name}: ${url}`).join("\n"));
     alert(`${generatedLinks.length} link berhasil disalin.`);
   };
 
@@ -257,7 +260,6 @@ Wassalamualaikum Warahmatullahi Wabarakatuh`;
     }
 
     const headersCsv = ["Nama", "WhatsApp", "Kehadiran", "Ucapan", "Tanggal"];
-
     const rows = rsvps.map((item) => [
       item.name,
       item.whatsapp || "-",
@@ -265,25 +267,16 @@ Wassalamualaikum Warahmatullahi Wabarakatuh`;
       item.message,
       new Date(item.created_at).toLocaleString("id-ID"),
     ]);
-
     const csvContent = [
       headersCsv.join(","),
-      ...rows.map((row) =>
-        row.map((value) => `"${String(value).replace(/"/g, '""')}"`).join(",")
-      ),
+      ...rows.map((row) => row.map((value) => `"${String(value).replace(/"/g, '""')}"`).join(",")),
     ].join("\n");
-
-    const blob = new Blob([csvContent], {
-      type: "text/csv;charset=utf-8;",
-    });
-
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
-
     link.href = url;
     link.download = "rsvp-client.csv";
     link.click();
-
     URL.revokeObjectURL(url);
   };
 
@@ -308,17 +301,9 @@ Wassalamualaikum Warahmatullahi Wabarakatuh`;
           <div>
             <p className={styles.label}>{brand?.brand_name ? `${brand.brand_name} DASHBOARD` : "CLIENT DASHBOARD"}</p>
             <h1 className={styles.title}>Halo, {user?.name || "Client"}</h1>
-            <p className={styles.subtitle}>
-              Pantau undangan, RSVP, dan generate link tamu.
-            </p>
+            <p className={styles.subtitle}>Pantau undangan, RSVP, dan generate link tamu.</p>
           </div>
-
-          <button
-            onClick={() => user && fetchData(user)}
-            className={styles.button}
-          >
-            Refresh
-          </button>
+          <button onClick={() => user && fetchData(user)} className={styles.button}>Refresh</button>
         </header>
 
         {loading ? (
@@ -326,18 +311,12 @@ Wassalamualaikum Warahmatullahi Wabarakatuh`;
         ) : fetchError ? (
           <section className={styles.warningBox}>
             <h2>Gagal memuat data dashboard.</h2>
-            <p>
-              Terjadi gangguan koneksi ke server. Klik tombol Refresh di atas
-              untuk mencoba lagi.
-            </p>
+            <p>Terjadi gangguan koneksi ke server. Klik tombol Refresh di atas untuk mencoba lagi.</p>
           </section>
         ) : !client ? (
           <section className={styles.warningBox}>
             <h2>Akun client belum terhubung.</h2>
-            <p>
-              Owner perlu menghubungkan user login ini dengan data client di
-              tabel clients.
-            </p>
+            <p>Owner perlu menghubungkan user login ini dengan data client di tabel clients.</p>
           </section>
         ) : (
           <>
@@ -351,8 +330,7 @@ Wassalamualaikum Warahmatullahi Wabarakatuh`;
             <section className={styles.generatorCard}>
               <h2 className={styles.sectionTitle}>Generator Link Tamu</h2>
               <p style={{ marginTop: -8, marginBottom: 16, fontSize: 13, opacity: 0.75 }}>
-                Isi satu nama tamu per baris (bisa paste banyak nama sekaligus dari Excel/WA),
-                lalu klik Generate untuk membuat link undangan personal untuk semua tamu itu.
+                Isi satu nama tamu per baris (bisa paste banyak nama sekaligus dari Excel/WA), lalu klik Generate untuk membuat link undangan personal untuk semua tamu itu.
               </p>
 
               {invitations.length > 1 && (
@@ -379,10 +357,7 @@ Wassalamualaikum Warahmatullahi Wabarakatuh`;
                   rows={4}
                   style={{ resize: "vertical", fontFamily: "inherit" }}
                 />
-
-                <button onClick={generateLinks} className={styles.button}>
-                  Generate Semua Link
-                </button>
+                <button onClick={generateLinks} className={styles.button}>Generate Semua Link</button>
               </div>
 
               {generatedLinks.length > 0 && (
@@ -394,28 +369,14 @@ Wassalamualaikum Warahmatullahi Wabarakatuh`;
                           <strong>{name}</strong>
                           <div className={styles.linkBox}>{url}</div>
                         </div>
-
                         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                          <button onClick={() => copyLink(url)} className={styles.exportButton}>
-                            Copy Link
-                          </button>
-
-                          <button
-                            onClick={() => copyWaMessage(name, url, groomName, brideName)}
-                            className={styles.waButton}
-                          >
-                            Copy Pesan WA
-                          </button>
+                          <button onClick={() => copyLink(url)} className={styles.exportButton}>Copy Link</button>
+                          <button onClick={() => copyWaMessage(name, url, groomName, brideName)} className={styles.waButton}>Copy Pesan WA</button>
                         </div>
                       </div>
                     ))}
                   </div>
-
-                  <button
-                    onClick={copyAllLinks}
-                    className={styles.exportButton}
-                    style={{ marginTop: 12 }}
-                  >
+                  <button onClick={copyAllLinks} className={styles.exportButton} style={{ marginTop: 12 }}>
                     Copy Semua ({generatedLinks.length} link)
                   </button>
                 </>
@@ -429,25 +390,18 @@ Wassalamualaikum Warahmatullahi Wabarakatuh`;
                 ) : (
                   invitations.map((item) => (
                     <div key={item.id} className={styles.miniItem}>
-                      <strong>
-                        {item.groom_name || "-"} & {item.bride_name || "-"}
-                      </strong>
+                      <strong>{item.groom_name || "-"} & {item.bride_name || "-"}</strong>
                       <p>/{item.slug}</p>
                       <div className={styles.actions}>
                         <button
-                          onClick={() =>
-                            window.open(`/${item.slug}?to=Bapak%20Ahmad`, "_blank")
-                          }
+                          onClick={() => window.open(invitationUrl(item.slug, "Bapak Ahmad"), "_blank")}
                           className={styles.miniButton}
                         >
                           Preview
                         </button>
-
                         <button
                           onClick={async () => {
-                            await navigator.clipboard.writeText(
-                              `${window.location.origin}/${item.slug}`
-                            );
+                            await navigator.clipboard.writeText(invitationUrl(item.slug));
                             alert("Link undangan berhasil disalin.");
                           }}
                           className={styles.miniButtonGreen}
@@ -462,10 +416,7 @@ Wassalamualaikum Warahmatullahi Wabarakatuh`;
 
               <Panel title="Info Client">
                 <MiniItem title={client.name} meta={client.whatsapp || "-"} />
-                <MiniItem
-                  title="Paket"
-                  meta={client.package_name || "Luxury Gold"}
-                />
+                <MiniItem title="Paket" meta={client.package_name || "Luxury Gold"} />
                 <MiniItem title="Status" meta={clientStatusLabel(client.status)} />
                 {client.status === "pending" && (
                   <a
@@ -485,12 +436,8 @@ Wassalamualaikum Warahmatullahi Wabarakatuh`;
             <section className={styles.tableWrap}>
               <div className={styles.tableHead}>
                 <h2 className={styles.sectionTitle}>RSVP Terbaru</h2>
-
-                <button onClick={exportCSV} className={styles.exportButton}>
-                  Export CSV
-                </button>
+                <button onClick={exportCSV} className={styles.exportButton}>Export CSV</button>
               </div>
-
               {rsvps.length === 0 ? (
                 <p>Belum ada data RSVP.</p>
               ) : (
@@ -501,9 +448,7 @@ Wassalamualaikum Warahmatullahi Wabarakatuh`;
                         <strong>{item.name}</strong>
                         <p>{item.whatsapp || "-"}</p>
                       </div>
-
                       <span className={styles.badge}>{item.attendance}</span>
-
                       <p className={styles.message}>{item.message}</p>
                     </div>
                   ))}
@@ -528,13 +473,7 @@ function StatCard({ title, value }: { title: string; value: string | number }) {
   );
 }
 
-function Panel({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
+function Panel({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className={styles.panel}>
       <h2 className={styles.sectionTitle}>{title}</h2>
