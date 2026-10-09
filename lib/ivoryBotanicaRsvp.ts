@@ -4,12 +4,12 @@ type RsvpItem = { id:number; guest_name:string; attendance:string|null; total_gu
 const esc=(value:string)=>value.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]||c));
 
 export function installIvoryBotanicaRsvp(documentRoot:Document,invitation:InvitationData,guestName:string){
-  const root=documentRoot.querySelector<HTMLElement>(".niku-rsvp");
+  // The copied Ivory template uses .rsvp-card as the actual RSVP runtime root.
+  // Older integration looked for .niku-rsvp, so the Vistiq handler never installed.
+  const root=documentRoot.querySelector<HTMLElement>(".rsvp-card");
   if(!root||root.dataset.vistiqRsvp==="1")return;
   root.dataset.vistiqRsvp="1";
 
-  // The copied template may already have initialized its WordPress RSVP script before
-  // the Vistiq iframe runtime runs. Neutralize all legacy restrictions/state here.
   root.setAttribute("data-post-id","0");
   root.setAttribute("data-post","0");
   root.setAttribute("data-comment-permission","public");
@@ -29,15 +29,15 @@ export function installIvoryBotanicaRsvp(documentRoot:Document,invitation:Invita
   const list=root.querySelector<HTMLElement>(".rsvp-list");
   const nameError=root.querySelector<HTMLElement>(".rsvp-error--name");
   const messageError=root.querySelector<HTMLElement>(".rsvp-error--message");
+  const topError=root.querySelector<HTMLElement>(".rsvp-error-top");
   const live=root.querySelector<HTMLElement>(".rsvp-live");
   if(!name||!message||!send)return;
 
-  // Legacy runtime disables this button and displays "Khusus untuk tamu undangan"
-  // when its WordPress guest parameter is absent. Vistiq uses its own invitation id.
   send.disabled=false;
   send.classList.remove("is-loading");
   if(nameError){nameError.textContent="";nameError.style.display="none"}
   if(messageError){messageError.textContent="";messageError.style.display="none"}
+  if(topError){topError.textContent="";topError.style.display="none"}
   if(live){live.textContent="";live.style.display="none"}
   if(guestName&&guestName!=="Bapak/Ibu/Saudara/i")name.value=guestName;
 
@@ -64,6 +64,7 @@ export function installIvoryBotanicaRsvp(documentRoot:Document,invitation:Invita
     event.preventDefault();event.stopImmediatePropagation();
     if(nameError)nameError.style.display="none";
     if(messageError)messageError.style.display="none";
+    if(topError)topError.style.display="none";
     if(!name.value.trim()){if(nameError){nameError.textContent="Nama wajib diisi.";nameError.style.display="block"}return}
     if(!message.value.trim()){if(messageError){messageError.textContent="Ucapan / doa wajib diisi.";messageError.style.display="block"}return}
     if(!["hadir","tidak"].includes(attendance)){if(nameError){nameError.textContent="Pilih konfirmasi kehadiran.";nameError.style.display="block"}return}
