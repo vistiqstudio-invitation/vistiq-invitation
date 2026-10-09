@@ -19,13 +19,23 @@ async function requestOrigin() {
   return `${proto}://${host}`;
 }
 
+function publicCoverUrl(value?: string | null) {
+  const url = value?.trim();
+  if (!url) return null;
+  // Smart-cover positioning is stored in the URL fragment. Crawlers need the
+  // original public image URL only; fragments are never sent to the server.
+  return url.split("#")[0];
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const invitation = await getCachedInvitationBySlug(slug);
   if (!invitation) return { title: "Undangan Tidak Ditemukan | Vistiq Invitation" };
   const origin = await requestOrigin();
   const canonical = `${origin}/${encodeURIComponent(slug)}`;
-  const ogImage = `${origin}/api/og/${encodeURIComponent(slug)}?v=2`;
+  // Prefer the real uploaded cover for social crawlers. This avoids making
+  // WhatsApp depend on a dynamic image renderer and preserves the client's photo.
+  const ogImage = publicCoverUrl(invitation.coverImage) || `${origin}/api/og/${encodeURIComponent(slug)}?v=3`;
   let title = "Undangan Digital";
   let description = "Kami mengundang Bapak/Ibu/Saudara/i untuk turut hadir dan memberikan doa restu.";
   if (invitation.category === "aqiqah") { title = `Aqiqah ${invitation.baby.name} | ${invitation.brand?.name ?? "Vistiq Invitation"}`; description = `Undangan aqiqah ${invitation.baby.name}. ${description}`; }
@@ -35,7 +45,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     metadataBase: new URL(origin), title, description,
     alternates: { canonical },
-    openGraph: { type:"website", url:canonical, siteName:invitation.brand?.name ?? "Vistiq Invitation", title, description, images:[{url:ogImage,width:1200,height:630,alt:title,type:"image/png"}] },
+    openGraph: { type:"website", url:canonical, siteName:invitation.brand?.name ?? "Vistiq Invitation", title, description, images:[{url:ogImage,width:1200,height:630,alt:title}] },
     twitter: { card:"summary_large_image", title, description, images:[ogImage] },
   };
 }
