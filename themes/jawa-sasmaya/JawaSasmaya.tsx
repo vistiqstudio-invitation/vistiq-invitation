@@ -7,7 +7,6 @@ import { useRsvpWishes,type Attendance } from "@/hooks/useRsvpWishes";
 import type { InvitationData } from "@/types/invitation";
 import styles from "./style.module.css";
 const A="/themes/jawa-sasmaya";
-const first=(s:string,f:string)=>s.trim().split(/\s+/)[0]||f;
 const ig=(s:string|null)=>!s?"":/^https?:\/\//i.test(s)?s:`https://instagram.com/${s.replace(/^@/,"")}`;
 const wa=(s?:string|null)=>{const d=String(s||"").replace(/\D/g,"");return d?`https://wa.me/${d.startsWith("0")?`62${d.slice(1)}`:d}`:""};
 function parts(v?:string|null){const a=String(v||"Minggu, 20 September 2026").replace(/,/g," ").split(/\s+/).filter(Boolean),i=a.findIndex(x=>/^\d{1,2}$/.test(x));return{weekday:i>0?a.slice(0,i).join(" "):"Minggu",day:i>=0?a[i]:"20",month:i>=0?a[i+1]||"September":"September",year:i>=0?a[i+2]||"2026":"2026"}}
