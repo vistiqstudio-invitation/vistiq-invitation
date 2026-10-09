@@ -35,22 +35,22 @@ export async function GET(_request: Request, context: { params: Promise<{ slug: 
   const displayName = getDisplayName(invitation);
   const categoryLabel = CATEGORY_LABEL[invitation.category] || "Undangan Digital";
   const brandName = invitation.brand?.name || "Vistiq Invitation";
-  const headers = {
-    "Cache-Control": "public, max-age=300, s-maxage=3600, stale-while-revalidate=86400",
-    "Content-Type": "image/png",
-  };
 
   return new ImageResponse(
-    <div style={{display:"flex",position:"relative",alignItems:"center",justifyContent:"center",width:`${WIDTH}px`,height:`${HEIGHT}px`,overflow:"hidden",background:"linear-gradient(135deg,#f5efe5,#d9c9b3)",fontFamily:"Arial, sans-serif"}}>
-      {coverImage ? <img src={coverImage} alt="" width={WIDTH} height={HEIGHT} style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover"}} /> : null}
-      <div style={{display:"flex",position:"absolute",inset:0,background:coverImage?"rgba(0,0,0,.48)":"rgba(255,255,255,.10)"}} />
-      <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",width:"1000px",padding:"55px",textAlign:"center",color:coverImage?"#fff":"#3f332a"}}>
+    <div style={{display:"flex",position:"relative",alignItems:"center",justifyContent:"center",width:WIDTH,height:HEIGHT,overflow:"hidden",background:"linear-gradient(135deg,#f5efe5,#d9c9b3)",fontFamily:"Arial, sans-serif"}}>
+      {coverImage ? <img src={coverImage} alt="" width={WIDTH} height={HEIGHT} style={{position:"absolute",left:0,top:0,width:WIDTH,height:HEIGHT,objectFit:"cover"}} /> : null}
+      <div style={{display:"flex",position:"absolute",left:0,top:0,width:WIDTH,height:HEIGHT,background:coverImage?"rgba(0,0,0,.48)":"rgba(255,255,255,.10)"}} />
+      <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",width:1000,padding:55,textAlign:"center",color:coverImage?"#fff":"#3f332a"}}>
         <div style={{display:"flex",fontSize:26,fontWeight:600,letterSpacing:5,textTransform:"uppercase",marginBottom:25}}>{categoryLabel}</div>
         <div style={{display:"flex",fontSize:displayName.length>45?58:76,fontWeight:700,lineHeight:1.08,justifyContent:"center",marginBottom:28}}>{displayName}</div>
         <div style={{display:"flex",width:100,height:3,background:coverImage?"#fff":"#8a725d",marginBottom:25}} />
         <div style={{display:"flex",fontSize:24,fontWeight:500}}>{brandName}</div>
       </div>
     </div>,
-    { width: WIDTH, height: HEIGHT, headers }
+    {
+      width: WIDTH,
+      height: HEIGHT,
+      headers: { "Cache-Control": "public, max-age=300, s-maxage=3600, stale-while-revalidate=86400" },
+    }
   );
 }
