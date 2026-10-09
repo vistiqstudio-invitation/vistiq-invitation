@@ -8,3 +8,11 @@
 .divider{width:calc(100% + 44px);margin-left:-22px;margin-right:-22px;flex:none}.events>.divider{width:calc(100% + 32px);margin-left:-16px;margin-right:-16px}.couple>.divider,.events>.divider,.rsvp>.divider,.gift>.divider{margin-top:0;margin-bottom:-1px}.couple,.events,.rsvp,.gift{padding-bottom:0}.events>.divider{background:#805334}.story{padding-top:40px}.gallery{padding-bottom:0}.gallery>.divider{margin-top:0}.gallery>div img{box-shadow:none}.divider img:nth-child(3){left:0;width:100%;height:38px;filter:none}
 .bankMark{position:absolute;right:20px;top:20px;display:flex;align-items:center;gap:7px;color:#fff}.bankMark b{display:grid;place-items:center;min-width:38px;height:30px;padding:0 4px;border-radius:4px;background:#fff;color:#1769aa;font-family:Arial,sans-serif;font-size:14px;font-style:italic;font-weight:800;letter-spacing:-.06em}.bankMark small{font-family:Arial,sans-serif;font-size:12px;font-weight:700;letter-spacing:.02em}.bankMark[data-bank="mandiri"] b{color:#003b71;border-bottom:4px solid #f5c400}.bankMark[data-bank="bri"] b{color:#00529b;border-radius:50%}.bankMark[data-bank="bni"] b{color:#f15a24}.bankMark[data-bank="bsi"] b{color:#008d7f}.bankMark[data-bank="cimb"] b{color:#ed1c24}
 @media(max-width:360px){.salutation{font-size:22px}.bankMark{right:14px;top:17px}.bankMark small{font-size:10px}}
+
+/* Softly blend the save-date panel into a full-bleed couple photo. */
+.saveDate{background:linear-gradient(180deg,#af7d52 0%,#805334 68%,#b38a69 84%,#fffaf2 100%)}
+.datePanel{z-index:2;background:linear-gradient(180deg,#af7d52 0%,#805334 70%,#9b704f 86%,#c3a182 100%)}
+.dateGunungan{width:clamp(140px,40vw,175px);bottom:-48px;z-index:3}
+.quotePanel{position:relative;z-index:1;margin-top:-42px;padding:0 0 54px;background:linear-gradient(180deg,#c3a182 0%,#e4d4c4 22%,#fffaf2 46%,#fffaf2 100%)}
+.quotePhoto{width:100%;max-width:none;height:clamp(340px,100vw,480px);margin:0 0 30px;border:0;box-shadow:none;object-fit:cover;object-position:center;position:relative;z-index:1;-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 18%);mask-image:linear-gradient(180deg,transparent 0%,#000 18%)}
+.quotePanel blockquote{position:relative;z-index:1;padding:0 24px}.quotePanel cite,.quotePanel .countdown,.quotePanel .calendar{position:relative;z-index:1}
