@@ -57,31 +57,18 @@ export async function GET(_request: Request, context: { params: Promise<{ slug: 
   if (coverImage) {
     return new ImageResponse(
       (
-        <div style={{ width: "100%", height: "100%", display: "flex", position: "relative", background: "#171717" }}>
+        <div style={{ width: "100%", height: "100%", display: "flex", position: "relative", alignItems: "center", justifyContent: "center", overflow: "hidden", background: "#171717" }}>
           <img
             src={coverImage}
             alt=""
-            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}
+            style={{ position: "absolute", width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 32%", filter: "blur(28px)", transform: "scale(1.12)", opacity: 0.62 }}
           />
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "flex-end",
-              alignItems: "center",
-              padding: "120px 70px 55px",
-              color: "white",
-              textAlign: "center",
-              background: "linear-gradient(to bottom, rgba(0,0,0,0) 35%, rgba(0,0,0,.72) 100%)",
-              fontFamily: "Arial, sans-serif",
-            }}
-          >
-            <div style={{ display: "flex", fontSize: 22, fontWeight: 600, letterSpacing: 4, marginBottom: 16 }}>{label}</div>
-            <div style={{ display: "flex", fontSize: displayName.length > 45 ? 50 : 64, fontWeight: 700 }}>{displayName}</div>
-            {brandName ? <div style={{ display: "flex", fontSize: 20, marginTop: 18, opacity: .9 }}>{brandName}</div> : null}
-          </div>
+          <div style={{ position: "absolute", inset: 0, display: "flex", background: "rgba(0,0,0,.18)" }} />
+          <img
+            src={coverImage}
+            alt=""
+            style={{ position: "relative", height: "100%", width: "auto", maxWidth: "100%", objectFit: "contain", objectPosition: "center top" }}
+          />
         </div>
       ),
       {
