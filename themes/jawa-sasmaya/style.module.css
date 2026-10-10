@@ -25,3 +25,7 @@
 .quotePanel{z-index:1;margin-top:-145px;background:transparent}
 .quotePhoto{margin-top:0;-webkit-mask-image:none;mask-image:none}
 @media(max-width:520px){.quotePhoto{height:clamp(340px,100vw,480px)}}
+
+
+/* Remove the event-to-love-story divider as requested. */
+.events>.divider{display:none}
