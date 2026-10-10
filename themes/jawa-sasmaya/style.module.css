@@ -35,3 +35,7 @@
 .divider{width:calc(100% + 32px);margin-left:-16px;margin-right:-16px}
 .divider img:nth-child(3){left:-6%;width:112%;max-width:none}
 @media(min-width:521px){.divider{width:100vw;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw)}}
+
+
+/* Remove the brown scallop and its shadow below the gallery. */
+.gallery>.divider img:nth-child(3){display:none}
