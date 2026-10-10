@@ -11,6 +11,7 @@ import WeddingThemeSafeArea from "@/components/WeddingThemeSafeArea";
 
 type Props = { params: Promise<{ slug: string }> };
 const getCachedInvitationBySlug = cache(getInvitationBySlug);
+const PRIMARY_ORIGIN = "https://www.vistiqinvitation.com";
 
 async function requestOrigin() {
   const h = await headers();
@@ -25,9 +26,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!invitation) return { title: "Undangan Tidak Ditemukan | Vistiq Invitation" };
   const origin = await requestOrigin();
   const canonical = `${origin}/${encodeURIComponent(slug)}`;
-  // Always use our dedicated, crawler-friendly PNG endpoint for social previews.
-  // Keeping this on the current host also makes it work for reseller/custom domains.
-  const ogImage = `${origin}/api/og/${encodeURIComponent(slug)}?v=4`;
+  // Social crawlers must fetch the image from the primary public domain.
+  // Some reseller/custom domains do not proxy /api routes consistently, which
+  // makes WhatsApp drop the preview even when the page metadata is valid.
+  const ogImage = `${PRIMARY_ORIGIN}/api/og/${encodeURIComponent(slug)}?v=5`;
   let title = "Undangan Digital";
   let description = "Kami mengundang Bapak/Ibu/Saudara/i untuk turut hadir dan memberikan doa restu.";
   if (invitation.category === "aqiqah") { title = `Aqiqah ${invitation.baby.name} | ${invitation.brand?.name ?? "Vistiq Invitation"}`; description = `Undangan aqiqah ${invitation.baby.name}. ${description}`; }
@@ -37,7 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     metadataBase: new URL(origin), title, description,
     alternates: { canonical },
-    openGraph: { type:"website", url:canonical, siteName:invitation.brand?.name ?? "Vistiq Invitation", title, description, images:[{url:ogImage,width:1200,height:630,alt:title,type:"image/png"}] },
+    openGraph: { type:"website", url:canonical, siteName:invitation.brand?.name ?? "Vistiq Invitation", title, description, images:[{url:ogImage,secureUrl:ogImage,width:1200,height:630,alt:title,type:"image/png"}] },
     twitter: { card:"summary_large_image", title, description, images:[ogImage] },
   };
 }
