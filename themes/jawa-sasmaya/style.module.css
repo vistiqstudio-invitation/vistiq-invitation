@@ -29,3 +29,9 @@
 
 /* Remove the event-to-love-story divider as requested. */
 .events>.divider{display:none}
+
+
+/* Extend the scallop divider to both screen edges. */
+.divider{width:calc(100% + 32px);margin-left:-16px;margin-right:-16px}
+.divider img:nth-child(3){left:-6%;width:112%;max-width:none}
+@media(min-width:521px){.divider{width:100vw;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw)}}
