@@ -27,9 +27,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const origin = await requestOrigin();
   const canonical = `${origin}/${encodeURIComponent(slug)}`;
   // Social crawlers must fetch the image from the primary public domain.
-  // Some reseller/custom domains do not proxy /api routes consistently, which
-  // makes WhatsApp drop the preview even when the page metadata is valid.
-  const ogImage = `${PRIMARY_ORIGIN}/api/og/${encodeURIComponent(slug)}?v=5`;
+  // Version this URL whenever the OG renderer changes so WhatsApp does not
+  // keep showing an older cached composition.
+  const ogImage = `${PRIMARY_ORIGIN}/api/og/${encodeURIComponent(slug)}?v=7`;
   let title = "Undangan Digital";
   let description = "Kami mengundang Bapak/Ibu/Saudara/i untuk turut hadir dan memberikan doa restu.";
   if (invitation.category === "aqiqah") { title = `Aqiqah ${invitation.baby.name} | ${invitation.brand?.name ?? "Vistiq Invitation"}`; description = `Undangan aqiqah ${invitation.baby.name}. ${description}`; }
