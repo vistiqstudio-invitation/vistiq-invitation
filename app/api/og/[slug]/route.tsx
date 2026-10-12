@@ -61,14 +61,16 @@ export async function GET(_request: Request, context: { params: Promise<{ slug: 
           <img
             src={coverImage}
             alt=""
-            style={{ position: "absolute", width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 32%", filter: "blur(28px)", transform: "scale(1.12)", opacity: 0.62 }}
+            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 30%", filter: "blur(24px)", transform: "scale(1.12)", opacity: 0.55 }}
           />
-          <div style={{ position: "absolute", inset: 0, display: "flex", background: "rgba(0,0,0,.18)" }} />
-          <img
-            src={coverImage}
-            alt=""
-            style={{ position: "relative", height: "100%", width: "auto", maxWidth: "100%", objectFit: "contain", objectPosition: "center top" }}
-          />
+          <div style={{ position: "absolute", inset: 0, display: "flex", background: "rgba(0,0,0,.10)" }} />
+          <div style={{ position: "relative", display: "flex", width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}>
+            <img
+              src={coverImage}
+              alt=""
+              style={{ width: "100%", height: "100%", objectFit: "contain", objectPosition: "center center" }}
+            />
+          </div>
         </div>
       ),
       {
