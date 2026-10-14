@@ -177,5 +177,9 @@
     const values=[Math.floor(seconds/86400),Math.floor(seconds/3600)%24,Math.floor(seconds/60)%60,seconds%60];
     qa('.idb-countdown__number, .idb-countdown__num, [data-days], [data-hours], [data-minutes], [data-seconds]').forEach((el,i)=>{if(i<4)el.textContent=String(values[i]).padStart(2,'0');});
   },1000);
+  // Retry the handshake when the frame loads from cache before React hydrates.
+  const readyTimer = setInterval(() => {
+    if (invitation) clearInterval(readyTimer); else send('ready');
+  }, 250);
   send('ready');
 })();
