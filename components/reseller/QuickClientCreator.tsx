@@ -92,7 +92,14 @@ export default function QuickClientCreator() {
                 <div style={{ fontSize: 21, fontWeight: 800, color: "#102a43" }}>Tambah Client Baru</div>
                 <div style={{ marginTop: 5, fontSize: 13, lineHeight: 1.5, color: "#64748b" }}>Isi data client baru, lalu lanjutkan membuat undangan.</div>
               </div>
-              <button type="button" onClick={() => setOpen(false)} style={{ border: 0, background: "#eef2f7", borderRadius: 10, width: 36, height: 36, fontSize: 20, cursor: "pointer" }}>×</button>
+              <button
+                type="button"
+                aria-label="Tutup"
+                onClick={() => setOpen(false)}
+                style={{ flex: "0 0 auto", border: "1px solid #d7e1ea", background: "#eef3f8", color: "#17324a", borderRadius: 12, width: 40, height: 40, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 26, fontWeight: 700, lineHeight: 1, cursor: "pointer", boxShadow: "0 2px 7px rgba(15,42,67,.08)" }}
+              >
+                ×
+              </button>
             </div>
 
             <div style={{ display: "grid", gap: 12 }}>
