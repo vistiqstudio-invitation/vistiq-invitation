@@ -21,19 +21,16 @@ export async function POST(request: Request) {
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   const midtransKey = process.env.MIDTRANS_SERVER_KEY;
   if (!supabaseUrl || !serviceKey || !midtransKey) return NextResponse.json({ error: "Konfigurasi pembayaran belum lengkap." }, { status: 503 });
-
   let invitationId: number;
-  try { invitationId = Number((await request.json()).invitationId); }
-  catch { return NextResponse.json({ error: "Data aktivasi tidak valid." }, { status: 400 }); }
+  try { invitationId = Number((await request.json()).invitationId); } catch { return NextResponse.json({ error: "Data aktivasi tidak valid." }, { status: 400 }); }
   if (!Number.isSafeInteger(invitationId) || invitationId <= 0) return NextResponse.json({ error: "ID undangan tidak valid." }, { status: 400 });
 
   const db = createServiceClient(supabaseUrl, serviceKey, { auth: { autoRefreshToken: false, persistSession: false } });
-  const { data: reseller } = await db.from("resellers").select("id, package, status, billing_model, brand_active, brand_expires_at").eq("user_id", profile.id).maybeSingle();
+  const { data: reseller } = await db.from("resellers").select("id, package, status").eq("user_id", profile.id).maybeSingle();
   if (!reseller || reseller.status !== "active") return NextResponse.json({ error: "Akun reseller belum aktif." }, { status: 403 });
-  if (reseller.package === "reseller_brand") return NextResponse.json({ error: "Mitra Brand tetap menggunakan sistem aktivasi sebelumnya." }, { status: 409 });
-  if (reseller.billing_model !== "per_invitation") return NextResponse.json({ error: "Akun reseller belum menggunakan sistem aktivasi Rp20.000." }, { status: 409 });
+  if (reseller.package !== "reseller") return NextResponse.json({ error: "Mitra Brand tetap menggunakan sistem sebelumnya." }, { status: 409 });
 
-  const { data: invitation } = await db.from("invitations").select("id, client_id, slug, category, groom_name, bride_name, baby_name, is_active").eq("id", invitationId).maybeSingle();
+  const { data: invitation } = await db.from("invitations").select("id, client_id, category, groom_name, bride_name, baby_name, is_active").eq("id", invitationId).maybeSingle();
   if (!invitation?.client_id) return NextResponse.json({ error: "Undangan tidak ditemukan." }, { status: 404 });
   const { data: client } = await db.from("clients").select("id, name, email, whatsapp").eq("id", invitation.client_id).eq("reseller_id", reseller.id).maybeSingle();
   if (!client) return NextResponse.json({ error: "Undangan bukan milik akun ini." }, { status: 403 });
@@ -60,8 +57,7 @@ export async function POST(request: Request) {
     const { data: inserted, error: insertError } = await db.from("transactions").insert({ client_id: client.id, reseller_id: reseller.id, invitation_id: invitationId, transaction_type: "invitation_activation", amount: INVITATION_ACTIVATION_FEE, commission: 0, status: "pending" }).select("id, status, midtrans_order_id, midtrans_redirect_url, payment_link_expires_at").single();
     if (insertError || !inserted) {
       if (insertError?.code === "23505") {
-        const retry = await db.from("transactions").select("id, status, midtrans_order_id, midtrans_redirect_url, payment_link_expires_at").eq("invitation_id", invitationId).eq("transaction_type", "invitation_activation").maybeSingle();
-        transaction = retry.data;
+        const retry = await db.from("transactions").select("id, status, midtrans_order_id, midtrans_redirect_url, payment_link_expires_at").eq("invitation_id", invitationId).eq("transaction_type", "invitation_activation").maybeSingle(); transaction = retry.data;
       } else return NextResponse.json({ error: "Tagihan aktivasi gagal dibuat." }, { status: 500 });
     } else transaction = inserted;
   }
@@ -71,7 +67,7 @@ export async function POST(request: Request) {
   const finishUrl = `${new URL(request.url).origin}/pembayaran/status?order_id=${encodeURIComponent(orderId)}`;
   const snapEndpoint = production ? "https://app.midtrans.com/snap/v1/transactions" : "https://app.sandbox.midtrans.com/snap/v1/transactions";
   const midtransResponse = await fetch(snapEndpoint, { method: "POST", headers: { Authorization: auth, Accept: "application/json", "Content-Type": "application/json" }, body: JSON.stringify({ transaction_details: { order_id: orderId, gross_amount: INVITATION_ACTIVATION_FEE }, item_details: [{ id: "invitation-activation", price: INVITATION_ACTIVATION_FEE, quantity: 1, name: `Aktivasi ${invitationName(invitation)}`.slice(0, 50) }], customer_details: { first_name: profile.name || client.name || "Reseller Vistiq", email: profile.email, phone: profile.whatsapp || client.whatsapp || undefined }, expiry: { unit: "days", duration: LINK_DAYS }, page_expiry: { unit: "days", duration: LINK_DAYS }, callbacks: { finish: finishUrl }, custom_field1: "invitation_activation", custom_field2: String(invitationId) }), cache: "no-store" });
-  const midtrans = await midtransResponse.json().catch(() => ({})) as { redirect_url?: string; error_messages?: string[] };
+  const midtrans = await midtransResponse.json().catch(() => ({})) as { redirect_url?: string };
   if (!midtransResponse.ok || !midtrans.redirect_url) return NextResponse.json({ error: "Midtrans gagal membuat pembayaran. Silakan coba lagi." }, { status: 502 });
   const expiresAt = new Date(Date.now() + LINK_MS).toISOString();
   const { data: saved, error: saveError } = await db.from("transactions").update({ midtrans_order_id: orderId, midtrans_redirect_url: midtrans.redirect_url, payment_link_expires_at: expiresAt, status: "pending" }).eq("id", transaction.id).neq("status", "paid").select("id").maybeSingle();
