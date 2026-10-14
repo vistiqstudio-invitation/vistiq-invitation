@@ -39,3 +39,8 @@
 
 /* Remove the brown scallop and its shadow below the gallery. */
 .gallery>.divider img:nth-child(3){display:none}
+
+
+/* Keep the gallery-to-RSVP transition clean and spacious. */
+.gallery>.divider{display:none}
+.gallery{padding-bottom:42px}
