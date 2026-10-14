@@ -4,428 +4,50 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import PhoneMockup from "@/components/PhoneMockup";
-import StorefrontCheckoutButton from "@/components/StorefrontCheckoutButton";
 import { themeList, aqiqahThemeList, khitanThemeList, birthdayThemeList, isThemeNew, type ThemeMeta } from "@/lib/theme";
 import { getThemeCardPreviewImage, getThemeCoverImage } from "@/lib/themeCoverImages";
 import styles from "@/app/demo/demo.module.css";
 
 function SendIcon() {
-  return (
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path
-        d="M21 3 3 10.5l7 3 3 7L21 3Z"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path d="M21 3 10 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-    </svg>
-  );
+  return <svg width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M21 3 3 10.5l7 3 3 7L21 3Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M21 3 10 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>;
 }
 
 const OCCASIONS = [
-  { key: "wedding", label: "Wedding" },
-  { key: "khitan", label: "Khitan" },
-  { key: "wisuda", label: "Wisuda" },
-  { key: "akikah", label: "Akikah" },
-  { key: "ulang-tahun", label: "Ulang Tahun" },
+  { key: "wedding", label: "Wedding" }, { key: "khitan", label: "Khitan" }, { key: "wisuda", label: "Wisuda" }, { key: "akikah", label: "Akikah" }, { key: "ulang-tahun", label: "Ulang Tahun" },
 ] as const;
-
 type OccasionKey = (typeof OCCASIONS)[number]["key"];
 type CheckoutOccasionKey = Exclude<OccasionKey, "wisuda">;
-
 const WEDDING_SUBFILTERS = [
-  { key: "semua", label: "Semua Tema" },
-  { key: "premium", label: "Tema Premium" },
-  { key: "premium-3d-motion", label: "Tema Premium 3D Motion" },
-  { key: "3d-motion-adat", label: "3D Motion Adat" },
-  { key: "luxury-art", label: "Luxury Art" },
-  { key: "reguler", label: "Tema Reguler" },
-  { key: "adat", label: "Tema Adat" },
-  { key: "tanpa-foto", label: "Tanpa Foto" },
+  { key: "semua", label: "Semua Tema" }, { key: "premium", label: "Tema Premium" }, { key: "premium-3d-motion", label: "Tema Premium 3D Motion" }, { key: "3d-motion-adat", label: "3D Motion Adat" }, { key: "luxury-art", label: "Luxury Art" }, { key: "reguler", label: "Tema Reguler" }, { key: "adat", label: "Tema Adat" }, { key: "tanpa-foto", label: "Tanpa Foto" },
 ] as const;
-
 type WeddingSubKey = (typeof WEDDING_SUBFILTERS)[number]["key"];
 type WeddingPriceKey = Exclude<WeddingSubKey, "semua">;
-
-const COMING_SOON: Record<string, { label: string; description: string }> = {
-  wisuda: { label: "Wisuda", description: "Tema undangan wisuda digital - segera hadir." },
-};
-
+const COMING_SOON: Record<string, { label: string; description: string }> = { wisuda: { label: "Wisuda", description: "Tema undangan wisuda digital - segera hadir." } };
 const SCREENSHOT_VARIANTS = [
-  { label: "Cover", objectPosition: "50% 0%", transform: "scale(1)" },
-  { label: "Kisah", objectPosition: "50% 33%", transform: "scale(1.08)" },
-  { label: "Acara", objectPosition: "50% 66%", transform: "scale(1.08)" },
-  { label: "Galeri", objectPosition: "50% 100%", transform: "scale(1.04)" },
+  { label: "Cover", objectPosition: "50% 0%", transform: "scale(1)" }, { label: "Kisah", objectPosition: "50% 33%", transform: "scale(1.08)" }, { label: "Acara", objectPosition: "50% 66%", transform: "scale(1.08)" }, { label: "Galeri", objectPosition: "50% 100%", transform: "scale(1.04)" },
 ] as const;
 
-function getThemeScreenshotImages(coverImage: string | null) {
-  return SCREENSHOT_VARIANTS.map(() => coverImage);
+function getThemeScreenshotImages(coverImage: string | null) { return SCREENSHOT_VARIANTS.map(() => coverImage); }
+function ThemeScreenshotCard({ theme, image, variant }: { theme: ThemeMeta; image: string | null; variant: (typeof SCREENSHOT_VARIANTS)[number] }) {
+  return <div className={styles.screenshotCard} role="img" aria-label={`Preview ${variant.label} tema ${theme.label}`}><div className={styles.screenshotChrome} aria-hidden="true"><span/><span/><span/></div><div className={styles.screenshotViewport} style={{ background: `linear-gradient(155deg, ${theme.swatch[0]}, ${theme.swatch[1]})` }}>{image ? <Image src={image} alt="" fill sizes="(max-width: 640px) 28vw, 100px" className={styles.screenshotImage} style={{ objectPosition: variant.objectPosition, transform: variant.transform }}/> : <span className={styles.screenshotFallback}>{variant.label}</span>}</div></div>;
 }
-
-function ThemeScreenshotCard({
-  theme,
-  image,
-  variant,
-}: {
-  theme: ThemeMeta;
-  image: string | null;
-  variant: (typeof SCREENSHOT_VARIANTS)[number];
-}) {
-  return (
-    <div className={styles.screenshotCard} role="img" aria-label={`Preview ${variant.label} tema ${theme.label}`}>
-      <div className={styles.screenshotChrome} aria-hidden="true">
-        <span />
-        <span />
-        <span />
-      </div>
-      <div
-        className={styles.screenshotViewport}
-        style={{ background: `linear-gradient(155deg, ${theme.swatch[0]}, ${theme.swatch[1]})` }}
-      >
-        {image ? (
-          <Image
-            src={image}
-            alt=""
-            fill
-            sizes="(max-width: 640px) 28vw, 100px"
-            className={styles.screenshotImage}
-            style={{ objectPosition: variant.objectPosition, transform: variant.transform }}
-          />
-        ) : (
-          <span className={styles.screenshotFallback}>{variant.label}</span>
-        )}
-      </div>
-    </div>
-  );
+function ThemeCatalogPreview({ theme, demoPath, coverImage, previewImages, cardImage }: { theme: ThemeMeta; demoPath: string; coverImage: string | null; previewImages: Array<string | null>; cardImage: string | null }) {
+  return <div className={`${styles.catalogPreview} ${cardImage ? styles.catalogPreviewCustom : ""}`} role="img" aria-label={`Preview katalog tema ${theme.label}`}>{cardImage ? <Image src={cardImage} alt="" fill sizes="(max-width: 640px) 50vw, (max-width: 1040px) 33vw, 260px" className={styles.catalogImage}/> : <><div className={styles.screenshotDeck} aria-hidden="true">{SCREENSHOT_VARIANTS.map((variant,index)=><ThemeScreenshotCard key={variant.label} theme={theme} image={previewImages[index]||null} variant={variant}/>)}</div><div className={styles.catalogPhone} aria-hidden="true"><PhoneMockup themeKey={theme.key} demoPath={demoPath} mode="static" width={74} coverImage={coverImage} swatch={theme.swatch} label={theme.label}/></div></>}</div>;
 }
-
-function ThemeCatalogPreview({
-  theme,
-  demoPath,
-  coverImage,
-  previewImages,
-  cardImage,
-}: {
-  theme: ThemeMeta;
-  demoPath: string;
-  coverImage: string | null;
-  previewImages: Array<string | null>;
-  cardImage: string | null;
-}) {
-  return (
-    <div
-      className={`${styles.catalogPreview} ${cardImage ? styles.catalogPreviewCustom : ""}`}
-      role="img"
-      aria-label={`Preview katalog tema ${theme.label}`}
-    >
-      {cardImage ? (
-        <Image
-          src={cardImage}
-          alt=""
-          fill
-          sizes="(max-width: 640px) 50vw, (max-width: 1040px) 33vw, 260px"
-          className={styles.catalogImage}
-        />
-      ) : (
-        <>
-          <div className={styles.screenshotDeck} aria-hidden="true">
-            {SCREENSHOT_VARIANTS.map((variant, index) => (
-              <ThemeScreenshotCard key={variant.label} theme={theme} image={previewImages[index] || null} variant={variant} />
-            ))}
-          </div>
-          <div className={styles.catalogPhone} aria-hidden="true">
-            <PhoneMockup
-              themeKey={theme.key}
-              demoPath={demoPath}
-              mode="static"
-              width={74}
-              coverImage={coverImage}
-              swatch={theme.swatch}
-              label={theme.label}
-            />
-          </div>
-        </>
-      )}
-    </div>
-  );
+function ThemeCard({ theme, demoPath, eyebrowLabel, priceLabel, priceWasLabel, discountLabel, waNumber, brandName }: { theme: ThemeMeta; demoPath: string; eyebrowLabel: string; priceLabel: string; priceWasLabel?: string; discountLabel?: string; waNumber: string; brandName: string; resellerKey?: string; occasion: CheckoutOccasionKey; midtransProduction?: boolean }) {
+  const message = [`Halo ${brandName}, saya ingin order undangan digital.`, "", `Tema: ${theme.label}`, `Harga: ${priceLabel}`, "", "Mohon info untuk proses pemesanannya. Terima kasih."].join("\n");
+  const orderHref = `https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`;
+  const coverImage = getThemeCoverImage(theme.key, demoPath); const cardImage = getThemeCardPreviewImage(theme.key, demoPath); const previewImages = getThemeScreenshotImages(coverImage);
+  return <div className={styles.card}>{isThemeNew(theme)&&<span className={styles.newBadge}>Baru</span>}<div className={styles.cardPreview}><ThemeCatalogPreview theme={theme} demoPath={demoPath} coverImage={coverImage} previewImages={previewImages} cardImage={cardImage}/></div><div className={styles.cardBody}><p className={styles.cardEyebrow}>{eyebrowLabel}</p><h2 className={styles.cardTitle}>{theme.label}</h2><p className={styles.cardDesc}>{theme.description}</p><div className={styles.priceRow}><span className={styles.priceNow}>{priceLabel}</span>{priceWasLabel&&<span className={styles.priceWas}>{priceWasLabel}</span>}{discountLabel&&<span className={styles.priceBadge}>Disc. {discountLabel}</span>}</div><div className={styles.cardActions}><Link href={`${demoPath}/${theme.key}`} className={styles.cardButton}><SendIcon/> Lihat Tema</Link><a href={orderHref} target="_blank" rel="noreferrer" className={styles.orderButton}>Order</a></div></div></div>;
 }
+function ComingSoonCard({ label, description, priceLabel }: { label: string; description: string; priceLabel?: string }) { return <div className={`${styles.card} ${styles.cardComingSoon}`}><div className={styles.cardPreview}><span className={styles.comingSoonBadge}>Segera Hadir</span></div><div className={styles.cardBody}><h2 className={styles.cardTitle}>{label}</h2><p className={styles.cardDesc}>{description}</p>{priceLabel&&<div className={styles.priceRow}><span className={styles.priceNow}>{priceLabel}</span></div>}</div></div>; }
 
-function ThemeCard({
-  theme,
-  demoPath,
-  eyebrowLabel,
-  priceLabel,
-  priceWasLabel,
-  discountLabel,
-  waNumber,
-  brandName,
-  resellerKey,
-  occasion,
-  midtransProduction,
-}: {
-  theme: ThemeMeta;
-  demoPath: string;
-  eyebrowLabel: string;
-  priceLabel: string;
-  priceWasLabel?: string;
-  discountLabel?: string;
-  waNumber: string;
-  brandName: string;
-  resellerKey?: string;
-  occasion: CheckoutOccasionKey;
-  midtransProduction?: boolean;
-}) {
-  const orderText = encodeURIComponent(`Halo ${brandName}, saya ingin order undangan tema ${theme.label}`);
-  const coverImage = getThemeCoverImage(theme.key, demoPath);
-  const cardImage = getThemeCardPreviewImage(theme.key, demoPath);
-  const previewImages = getThemeScreenshotImages(coverImage);
-
-  return (
-    <div className={styles.card}>
-      {isThemeNew(theme) && <span className={styles.newBadge}>Baru</span>}
-
-      <div className={styles.cardPreview}>
-        <ThemeCatalogPreview
-          theme={theme}
-          demoPath={demoPath}
-          coverImage={coverImage}
-          previewImages={previewImages}
-          cardImage={cardImage}
-        />
-      </div>
-
-      <div className={styles.cardBody}>
-        <p className={styles.cardEyebrow}>{eyebrowLabel}</p>
-        <h2 className={styles.cardTitle}>{theme.label}</h2>
-        <p className={styles.cardDesc}>{theme.description}</p>
-
-        <div className={styles.priceRow}>
-          <span className={styles.priceNow}>{priceLabel}</span>
-          {priceWasLabel && <span className={styles.priceWas}>{priceWasLabel}</span>}
-          {discountLabel && <span className={styles.priceBadge}>Disc. {discountLabel}</span>}
-        </div>
-
-        <div className={styles.cardActions}>
-          <Link href={`${demoPath}/${theme.key}`} className={styles.cardButton}>
-            <SendIcon /> Lihat Tema
-          </Link>
-          {resellerKey ? (
-            <StorefrontCheckoutButton
-              resellerKey={resellerKey}
-              themeKey={theme.key}
-              themeLabel={theme.label}
-              category={occasion}
-              className={styles.orderButton}
-              label="Order"
-              production={midtransProduction}
-            />
-          ) : (
-            <a
-              href={`https://wa.me/${waNumber}?text=${orderText}`}
-              target="_blank"
-              rel="noreferrer"
-              className={styles.orderButton}
-            >
-              Order
-            </a>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function ComingSoonCard({ label, description, priceLabel }: { label: string; description: string; priceLabel?: string }) {
-  return (
-    <div className={`${styles.card} ${styles.cardComingSoon}`}>
-      <div className={styles.cardPreview}>
-        <span className={styles.comingSoonBadge}>Segera Hadir</span>
-      </div>
-      <div className={styles.cardBody}>
-        <h2 className={styles.cardTitle}>{label}</h2>
-        <p className={styles.cardDesc}>{description}</p>
-        {priceLabel && (
-          <div className={styles.priceRow}>
-            <span className={styles.priceNow}>{priceLabel}</span>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-export default function ThemeBrowser({
-  waNumber = "6281371338032",
-  brandName = "Vistiq Invitation",
-  priceLabel = "Rp 99.000",
-  priceLabels,
-  weddingPriceLabels,
-  priceWasLabel,
-  discountLabel,
-  defaultOccasion,
-  resellerKey,
-  midtransProduction,
-}: {
-  waNumber?: string;
-  brandName?: string;
-  priceLabel?: string;
-  priceLabels?: Partial<Record<OccasionKey, string>>;
-  weddingPriceLabels?: Partial<Record<WeddingPriceKey, string>>;
-  priceWasLabel?: string;
-  discountLabel?: string;
-  defaultOccasion?: OccasionKey;
-  resellerKey?: string;
-  midtransProduction?: boolean;
-}) {
-  const [occasion, setOccasion] = useState<OccasionKey | null>(defaultOccasion ?? null);
-  const [weddingSub, setWeddingSub] = useState<WeddingSubKey>("semua");
-
-  const filteredWeddingThemes = useMemo(() => {
-    if (weddingSub === "semua") return themeList;
-    if (weddingSub === "premium") {
-      return themeList.filter(
-        (theme) =>
-          theme.tags?.includes("premium") &&
-          !theme.tags.includes("luxury-art") &&
-          !theme.tags.includes("premium-3d-motion")
-      );
-    }
-    return themeList.filter((theme) => theme.tags?.includes(weddingSub));
-  }, [weddingSub]);
-
-  const weddingPriceForTheme = (theme: ThemeMeta) => {
-    const tags = theme.tags || [];
-    const category: WeddingPriceKey = tags.includes("premium-3d-motion")
-      ? "premium-3d-motion"
-      : tags.includes("luxury-art")
-      ? "luxury-art"
-      : tags.includes("tanpa-foto")
-      ? "tanpa-foto"
-      : tags.includes("adat") || tags.includes("3d-motion-adat")
-      ? "adat"
-      : tags.includes("premium")
-      ? "premium"
-      : "reguler";
-
-    return weddingPriceLabels?.[category] || priceLabels?.wedding || priceLabel;
-  };
-
-  const commonCheckoutProps = { waNumber, brandName, resellerKey, midtransProduction };
-
-  return (
-    <div>
-      <div className={styles.filterRow}>
-        {OCCASIONS.map((item) => (
-          <button
-            key={item.key}
-            type="button"
-            onClick={() => {
-              setOccasion((current) => (current === item.key ? null : item.key));
-              if (item.key === "wedding") setWeddingSub("semua");
-            }}
-            aria-pressed={occasion === item.key}
-            className={`${styles.filterButton} ${occasion === item.key ? styles.filterButtonActive : ""}`}
-          >
-            {item.label}
-          </button>
-        ))}
-      </div>
-
-      {occasion === "wedding" && (
-        <div className={`${styles.filterRow} ${styles.subFilterRow}`}>
-          {WEDDING_SUBFILTERS.map((item) => (
-            <button
-              key={item.key}
-              type="button"
-              onClick={() => setWeddingSub(item.key)}
-              className={`${styles.filterButton} ${styles.filterButtonSub} ${
-                weddingSub === item.key ? styles.filterButtonActive : ""
-              }`}
-            >
-              {item.label}
-            </button>
-          ))}
-        </div>
-      )}
-
-      {occasion === null ? (
-        <div className={styles.emptyState}>
-          <p className={styles.emptyStateTitle}>Pilih Jenis Undangan</p>
-          <p className={styles.emptyStateDesc}>
-            Klik Wedding, Khitan, Wisuda, Akikah, atau Ulang Tahun untuk melihat pilihan temanya.
-          </p>
-        </div>
-      ) : occasion === "wedding" ? (
-        <div className={styles.grid}>
-          {filteredWeddingThemes.map((theme) => (
-            <ThemeCard
-              key={theme.key}
-              theme={theme}
-              demoPath="/demo"
-              eyebrowLabel="Indonesian Wedding"
-              priceLabel={weddingPriceForTheme(theme)}
-              priceWasLabel={priceWasLabel}
-              discountLabel={discountLabel}
-              occasion="wedding"
-              {...commonCheckoutProps}
-            />
-          ))}
-        </div>
-      ) : occasion === "khitan" ? (
-        <div className={styles.grid}>
-          {khitanThemeList.map((theme) => (
-            <ThemeCard
-              key={theme.key}
-              theme={theme}
-              demoPath="/demo-khitan"
-              eyebrowLabel="Indonesian Khitan"
-              priceLabel={priceLabels?.khitan || priceLabel}
-              priceWasLabel={priceWasLabel}
-              discountLabel={discountLabel}
-              occasion="khitan"
-              {...commonCheckoutProps}
-            />
-          ))}
-        </div>
-      ) : occasion === "akikah" ? (
-        <div className={styles.grid}>
-          {aqiqahThemeList.map((theme) => (
-            <ThemeCard
-              key={theme.key}
-              theme={theme}
-              demoPath="/demo-akikah"
-              eyebrowLabel="Indonesian Aqiqah"
-              priceLabel={priceLabels?.akikah || priceLabel}
-              priceWasLabel={priceWasLabel}
-              discountLabel={discountLabel}
-              occasion="akikah"
-              {...commonCheckoutProps}
-            />
-          ))}
-        </div>
-      ) : occasion === "ulang-tahun" ? (
-        <div className={styles.grid}>
-          {birthdayThemeList.map((theme) => (
-            <ThemeCard
-              key={theme.key}
-              theme={theme}
-              demoPath="/demo-ulang-tahun"
-              eyebrowLabel="Kids Birthday"
-              priceLabel={priceLabels?.["ulang-tahun"] || priceLabel}
-              priceWasLabel={priceWasLabel}
-              discountLabel={discountLabel}
-              occasion="ulang-tahun"
-              {...commonCheckoutProps}
-            />
-          ))}
-        </div>
-      ) : (
-        <div className={styles.grid}>
-          <ComingSoonCard {...COMING_SOON[occasion]} priceLabel={priceLabels?.[occasion] || priceLabel} />
-        </div>
-      )}
-    </div>
-  );
+export default function ThemeBrowser({ waNumber="6281371338032", brandName="Vistiq Invitation", priceLabel="Rp 99.000", priceLabels, weddingPriceLabels, priceWasLabel, discountLabel, defaultOccasion, resellerKey, midtransProduction }: { waNumber?: string; brandName?: string; priceLabel?: string; priceLabels?: Partial<Record<OccasionKey,string>>; weddingPriceLabels?: Partial<Record<WeddingPriceKey,string>>; priceWasLabel?: string; discountLabel?: string; defaultOccasion?: OccasionKey; resellerKey?: string; midtransProduction?: boolean }) {
+  const [occasion,setOccasion]=useState<OccasionKey|null>(defaultOccasion??null); const [weddingSub,setWeddingSub]=useState<WeddingSubKey>("semua");
+  const filteredWeddingThemes=useMemo(()=>{ if(weddingSub==="semua")return themeList; if(weddingSub==="premium")return themeList.filter(theme=>theme.tags?.includes("premium")&&!theme.tags.includes("luxury-art")&&!theme.tags.includes("premium-3d-motion")); return themeList.filter(theme=>theme.tags?.includes(weddingSub)); },[weddingSub]);
+  const weddingPriceForTheme=(theme:ThemeMeta)=>{ const tags=theme.tags||[]; const category:WeddingPriceKey=tags.includes("premium-3d-motion")?"premium-3d-motion":tags.includes("luxury-art")?"luxury-art":tags.includes("tanpa-foto")?"tanpa-foto":tags.includes("adat")||tags.includes("3d-motion-adat")?"adat":tags.includes("premium")?"premium":"reguler"; return weddingPriceLabels?.[category]||priceLabels?.wedding||priceLabel; };
+  const commonCheckoutProps={waNumber,brandName,resellerKey,midtransProduction};
+  return <div><div className={styles.filterRow}>{OCCASIONS.map(item=><button key={item.key} type="button" onClick={()=>{setOccasion(current=>current===item.key?null:item.key);if(item.key==="wedding")setWeddingSub("semua");}} aria-pressed={occasion===item.key} className={`${styles.filterButton} ${occasion===item.key?styles.filterButtonActive:""}`}>{item.label}</button>)}</div>
+  {occasion==="wedding"&&<div className={`${styles.filterRow} ${styles.subFilterRow}`}>{WEDDING_SUBFILTERS.map(item=><button key={item.key} type="button" onClick={()=>setWeddingSub(item.key)} className={`${styles.filterButton} ${styles.filterButtonSub} ${weddingSub===item.key?styles.filterButtonActive:""}`}>{item.label}</button>)}</div>}
+  {occasion===null?<div className={styles.emptyState}><p className={styles.emptyStateTitle}>Pilih Jenis Undangan</p><p className={styles.emptyStateDesc}>Klik Wedding, Khitan, Wisuda, Akikah, atau Ulang Tahun untuk melihat pilihan temanya.</p></div>:occasion==="wedding"?<div className={styles.grid}>{filteredWeddingThemes.map(theme=><ThemeCard key={theme.key} theme={theme} demoPath="/demo" eyebrowLabel="Indonesian Wedding" priceLabel={weddingPriceForTheme(theme)} priceWasLabel={priceWasLabel} discountLabel={discountLabel} occasion="wedding" {...commonCheckoutProps}/>)}</div>:occasion==="khitan"?<div className={styles.grid}>{khitanThemeList.map(theme=><ThemeCard key={theme.key} theme={theme} demoPath="/demo-khitan" eyebrowLabel="Indonesian Khitan" priceLabel={priceLabels?.khitan||priceLabel} priceWasLabel={priceWasLabel} discountLabel={discountLabel} occasion="khitan" {...commonCheckoutProps}/>)}</div>:occasion==="akikah"?<div className={styles.grid}>{aqiqahThemeList.map(theme=><ThemeCard key={theme.key} theme={theme} demoPath="/demo-akikah" eyebrowLabel="Indonesian Aqiqah" priceLabel={priceLabels?.akikah||priceLabel} priceWasLabel={priceWasLabel} discountLabel={discountLabel} occasion="akikah" {...commonCheckoutProps}/>)}</div>:occasion==="ulang-tahun"?<div className={styles.grid}>{birthdayThemeList.map(theme=><ThemeCard key={theme.key} theme={theme} demoPath="/demo-ulang-tahun" eyebrowLabel="Kids Birthday" priceLabel={priceLabels?.["ulang-tahun"]||priceLabel} priceWasLabel={priceWasLabel} discountLabel={discountLabel} occasion="ulang-tahun" {...commonCheckoutProps}/>)}</div>:<div className={styles.grid}><ComingSoonCard {...COMING_SOON[occasion]} priceLabel={priceLabels?.[occasion]||priceLabel}/></div>}</div>;
 }
