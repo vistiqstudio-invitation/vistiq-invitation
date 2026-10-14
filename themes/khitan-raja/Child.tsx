@@ -9,6 +9,7 @@ export default function Child({ invitation }: { invitation: KhitanInvitationData
   const { child, parents } = invitation;
 
   const nickname = child.nickname?.trim() || child.name.trim().split(/\s+/).pop() || child.name;
+  const hideVillageOfficeLine = invitation.slug === "dwi-putra-alam";
 
   return (
     <div className={styles.section}>
@@ -32,9 +33,11 @@ export default function Child({ invitation }: { invitation: KhitanInvitationData
           <p className={styles.childParents}>
             Putra dari Bapak {parents.father} dan Ibu {parents.mother}
           </p>
-          <p className={styles.childParents}>
-            Kuwu Desa Kalisapu Kabupaten Cirebon.
-          </p>
+          {!hideVillageOfficeLine && (
+            <p className={styles.childParents}>
+              Kuwu Desa Kalisapu Kabupaten Cirebon.
+            </p>
+          )}
         </div>
       </Reveal>
     </div>
