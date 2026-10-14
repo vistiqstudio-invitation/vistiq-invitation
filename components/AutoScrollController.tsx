@@ -61,10 +61,19 @@ export default function AutoScrollController() {
 
     const manualResetTimer = window.setTimeout(() => setManualOnly(false), 0);
 
+    // Re-check the document after opening because images/fonts and theme sections
+    // can change the final page height at different times on different devices.
+    // Do not hide the control for prefers-reduced-motion: users can still choose
+    // to start it manually, while automatic movement remains disabled.
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const timer = window.setTimeout(() => {
+    const updateAvailability = () => {
       const canScroll = document.documentElement.scrollHeight > window.innerHeight + 80;
       setAvailable(canScroll);
+      return canScroll;
+    };
+
+    const maybeStart = () => {
+      const canScroll = updateAvailability();
       const hero = document.querySelector<HTMLElement>("[data-opening-hero]");
       const heroBounds = hero?.getBoundingClientRect();
       const heroIsVisible = Boolean(heroBounds && heroBounds.top < window.innerHeight && heroBounds.bottom > 0);
@@ -72,11 +81,18 @@ export default function AutoScrollController() {
         startedRef.current = true;
         setRunning(true);
       }
-    }, 1400);
+    };
+
+    updateAvailability();
+    const timers = [250, 900, 1800, 3200].map((delay) => window.setTimeout(maybeStart, delay));
+    window.addEventListener("load", maybeStart);
+    window.addEventListener("resize", updateAvailability);
 
     return () => {
       window.clearTimeout(manualResetTimer);
-      window.clearTimeout(timer);
+      timers.forEach((timer) => window.clearTimeout(timer));
+      window.removeEventListener("load", maybeStart);
+      window.removeEventListener("resize", updateAvailability);
     };
   }, [opened]);
 
@@ -102,6 +118,7 @@ export default function AutoScrollController() {
 
     const hero = document.querySelector<HTMLElement>("[data-opening-hero]");
     if (!hero) {
+      setHeroVisible(false);
       return;
     }
 
@@ -236,12 +253,6 @@ export default function AutoScrollController() {
           }
 
           .autoScrollButton small {
-            display: none;
-          }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          .autoScrollButton {
             display: none;
           }
         }
