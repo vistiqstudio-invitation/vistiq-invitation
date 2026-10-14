@@ -1,125 +1,27 @@
 import Link from "next/link";
-import CheckoutButton from "@/components/CheckoutButton";
-import PhoneMockup from "@/components/PhoneMockup";
 import SiteNavbar from "@/components/SiteNavbar";
-import ThemeBrowser from "@/components/ThemeBrowser";
-import { getThemeCoverImage } from "@/lib/themeCoverImages";
-
-const HERO_FAN = [
-  { key: "jawa-merah", rotate: -18, x: -108, y: 20, scale: 0.82, z: 1 },
-  { key: "santorini", rotate: -9, x: -58, y: 4, scale: 0.9, z: 2 },
-  { key: "golden-romance", rotate: 0, x: 0, y: -10, scale: 1, z: 3 },
-  { key: "menara-cahaya", rotate: 9, x: 58, y: 4, scale: 0.9, z: 2 },
-  { key: "art-deco-glam", rotate: 18, x: 108, y: 20, scale: 0.82, z: 1 },
-];
-
-const BENEFITS = [
-  ["Brand & logo sendiri", "Tampilkan identitas usaha Anda, bukan brand Vistiq, pada pengalaman client."],
-  ["White label penuh", "Gunakan nama brand, warna, logo, serta halaman katalog milik bisnis Anda."],
-  ["Keuntungan 100%", "Anda bebas menentukan harga ke client dan hasil penjualan menjadi milik Anda."],
-  ["Subdomain gratis", "Gunakan subdomain brand sendiri untuk memperkuat identitas bisnis."],
-  ["Custom domain", "Hubungkan domain sendiri untuk tampilan usaha yang lebih profesional."],
-  ["Update tema & konten", "Dapatkan pembaruan tema serta materi promosi untuk membantu penjualan."],
-];
-
-const FAQS = [
-  ["Berapa harga Mitra Brand?", "Rp59.000 per bulan untuk fitur white label dan benefit premium Mitra Brand."],
-  ["Apa bedanya dengan Reseller biasa?", "Reseller memakai brand Vistiq, sedangkan Mitra Brand memakai nama, logo, warna, dan domain sendiri. Keduanya membayar Rp20.000 per aktivasi undangan."],
-  ["Apakah saya bisa memakai domain sendiri?", "Ya. Mitra Brand mendukung subdomain gratis dan custom domain sesuai pengaturan akun."],
-  ["Apakah saya bebas menentukan harga jual?", "Ya. Mitra Brand dapat menentukan harga jual sendiri ke client."],
-];
 
 export default function GabungResellerBrandPage() {
-  const midtransProduction = process.env.MIDTRANS_IS_PRODUCTION === "true";
-
   return (
     <main className="page">
       <style>{css}</style>
       <SiteNavbar />
-
-      <section className="hero">
-        <div>
-          <p className="badge">Mitra Brand · White Label</p>
-          <h1>Bangun Bisnis Undangan Digital dengan Brand Sendiri</h1>
-          <p className="lead">
-            Gunakan nama, logo, warna, subdomain atau custom domain sendiri.
-            Tentukan harga jual sendiri. Setiap undangan diaktifkan dengan biaya tetap Rp20.000.
+      <section className="closed">
+        <div className="card">
+          <p className="badge">MITRA BRAND</p>
+          <h1>Pendaftaran Mitra Brand Sudah Ditutup</h1>
+          <p>
+            Vistiq tidak menerima pendaftaran Mitra Brand baru. Akun Mitra Brand
+            yang sudah terdaftar sebelumnya tetap dapat digunakan seperti biasa.
           </p>
-          <div className="price"><strong>Rp59.000</strong><span>/bulan</span></div>
-          <div className="actions">
-            <CheckoutButton packageId="reseller-brand" label="Join Mitra Brand" featured production={midtransProduction} />
-            <Link href="/demo" className="secondary">Lihat Demo Tema</Link>
-          </div>
-          <div className="facts">
-            <div><strong>100%</strong><span>Keuntungan milik Anda</span></div>
-            <div><strong>White Label</strong><span>Brand sendiri</span></div>
-            <div><strong>Domain</strong><span>Subdomain/custom domain</span></div>
-          </div>
-        </div>
-        <div className="visual">
-          <div className="phoneFan">
-            {HERO_FAN.map((item) => (
-              <PhoneMockup
-                key={item.key}
-                themeKey={item.key}
-                width={128}
-                mode="static"
-                coverImage={getThemeCoverImage(item.key, "/demo")}
-                className="phone"
-                style={{ transform: `translate(calc(-50% + ${item.x}px), calc(-50% + ${item.y}px)) rotate(${item.rotate}deg) scale(${item.scale})`, zIndex: item.z }}
-              />
-            ))}
-          </div>
+          <Link href="/gabung-reseller" className="button">Lihat Paket Reseller</Link>
         </div>
       </section>
-
-      <section className="section center">
-        <p className="label">Punya Usaha Sendiri</p>
-        <h2>Client Melihat Brand Anda, Bukan Vistiq</h2>
-        <p className="intro">Cocok untuk Anda yang ingin membangun bisnis undangan digital profesional dengan identitas sendiri tanpa membuat platform dari nol.</p>
-      </section>
-
-      <section className="dark">
-        <div className="section">
-          <p className="label light">Benefit Mitra Brand</p>
-          <h2>Semua yang Dibutuhkan untuk Bangun Brand</h2>
-          <div className="benefits">
-            {BENEFITS.map(([title, desc]) => <article key={title}><span>✓</span><div><h3>{title}</h3><p>{desc}</p></div></article>)}
-          </div>
-        </div>
-      </section>
-
-      <section className="dark themes">
-        <div className="section">
-          <p className="label light">Katalog Tema</p>
-          <h2>Tema Premium Siap Dijual dengan Brand Anda</h2>
-          <ThemeBrowser priceWasLabel="Rp 149.000" discountLabel="34%" />
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="compare">
-          <div><p className="label">Belum Butuh White Label?</p><h2>Pilih Reseller Biasa</h2><p>Join Rp149.000 sekali bayar, lalu aktifkan setiap undangan dengan biaya Rp20.000.</p></div>
-          <Link href="/gabung-reseller" className="primaryLink">Lihat Paket Reseller</Link>
-        </div>
-      </section>
-
-      <section className="section">
-        <p className="label">FAQ</p><h2>Pertanyaan Umum</h2>
-        <div className="faq">{FAQS.map(([q,a]) => <article key={q}><h3>{q}</h3><p>{a}</p></article>)}</div>
-      </section>
-
-      <section className="cta">
-        <h2>Siap Punya Brand Undangan Digital Sendiri?</h2>
-        <p>Aktifkan Mitra Brand Rp59.000/bulan dan mulai jualan dengan identitas bisnis Anda.</p>
-        <div className="actions centered"><CheckoutButton packageId="reseller-brand" label="Join Mitra Brand" featured production={midtransProduction} /></div>
-      </section>
-
       <footer>© 2026 Vistiq Invitation. All rights reserved.</footer>
     </main>
   );
 }
 
 const css = `
-*{box-sizing:border-box}html,body{margin:0;padding:0;overflow-x:hidden}.page{min-height:100vh;background:#f6f8fb;color:#0f172a;font-family:Arial,Helvetica,sans-serif}.hero{max-width:1180px;margin:auto;padding:64px 24px 88px;display:grid;grid-template-columns:1.08fr .92fr;gap:42px;align-items:center;background:radial-gradient(circle at 85% 15%,rgba(17,103,178,.1),transparent 52%)}.badge{display:inline-block;background:#dbeafe;color:#0f4e8a;padding:10px 16px;border-radius:999px;font-weight:900;font-size:13px}.hero h1{font-size:52px;line-height:1.08;color:#0f4e8a;margin:22px 0 18px}.lead,.intro{font-size:18px;line-height:1.8;color:#475569}.price{display:flex;align-items:baseline;gap:7px;margin:25px 0 10px}.price strong{font-size:42px;color:#0f4e8a}.price span{font-weight:800;color:#64748b}.actions{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:20px}.centered{justify-content:center}.secondary,.primaryLink{display:inline-flex;align-items:center;justify-content:center;padding:14px 22px;border-radius:999px;text-decoration:none;font-weight:900}.secondary{background:#fff;color:#1167b2;border:1px solid #dbeafe}.primaryLink{background:#1167b2;color:#fff}.facts{display:flex;gap:28px;flex-wrap:wrap;margin-top:30px}.facts div{display:flex;flex-direction:column}.facts strong{font-size:22px;color:#0f4e8a}.facts span{font-size:13px;color:#64748b;font-weight:700}.visual{display:grid;place-items:center}.phoneFan{position:relative;width:340px;max-width:100%;height:320px}.phone{position:absolute;top:50%;left:50%}.section{max-width:1180px;margin:auto;padding:78px 24px}.center{text-align:center}.center .intro{max-width:760px;margin:auto}.label{color:#1167b2;font-weight:900;letter-spacing:1.8px;text-transform:uppercase;font-size:13px}.label.light{color:#93c5fd}.section h2,.dark h2,.cta h2{font-size:40px;line-height:1.15;margin:10px 0 24px}.dark{background:#0f172a;color:#fff}.benefits{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.benefits article{display:flex;gap:14px;padding:22px;border-radius:20px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1)}.benefits article>span{width:34px;height:34px;display:grid;place-items:center;background:#1167b2;border-radius:999px;font-weight:900;flex:none}.benefits h3{margin:0 0 7px}.benefits p{margin:0;color:rgba(255,255,255,.7);line-height:1.65}.compare{background:#fff;border-radius:28px;padding:34px;box-shadow:0 18px 50px rgba(15,23,42,.08);display:flex;align-items:center;justify-content:space-between;gap:30px}.compare h2{margin-bottom:10px}.compare p:not(.label){color:#64748b;line-height:1.7}.faq{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}.faq article{background:#fff;padding:24px;border-radius:20px;box-shadow:0 10px 28px rgba(15,23,42,.05)}.faq h3{margin:0 0 9px}.faq p{margin:0;color:#64748b;line-height:1.7}.cta{text-align:center;padding:78px 24px;background:linear-gradient(135deg,#0f4e8a,#1167b2);color:#fff}.cta p{color:rgba(255,255,255,.82);font-size:17px}footer{text-align:center;padding:28px;color:#64748b;font-size:13px}@media(max-width:900px){.hero{grid-template-columns:1fr;text-align:center}.hero h1{font-size:42px}.lead{margin:auto}.actions,.facts{justify-content:center}.compare{flex-direction:column;text-align:center}.faq{grid-template-columns:1fr}}@media(max-width:640px){.hero{padding:42px 18px 65px}.hero h1{font-size:36px}.section{padding:60px 18px}.section h2,.dark h2,.cta h2{font-size:31px}.benefits{grid-template-columns:1fr}.phoneFan{transform:scale(.87);height:285px}}
+*{box-sizing:border-box}.page{min-height:100vh;background:#f6f8fb;color:#0f172a;font-family:Arial,Helvetica,sans-serif;display:flex;flex-direction:column}.closed{flex:1;min-height:78vh;display:grid;place-items:center;padding:150px 20px 80px}.card{width:min(100%,680px);padding:52px 42px;text-align:center;background:#fff;border:1px solid #e2e8f0;border-radius:30px;box-shadow:0 22px 60px rgba(15,23,42,.09)}.badge{display:inline-block;margin:0 0 18px;padding:9px 15px;border-radius:999px;background:#dbeafe;color:#0f4e8a;font-size:12px;font-weight:900;letter-spacing:1.5px}.card h1{margin:0;color:#0f4e8a;font-size:42px;line-height:1.15}.card>p:not(.badge){max-width:560px;margin:20px auto 30px;color:#64748b;font-size:17px;line-height:1.75}.button{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 25px;border-radius:999px;background:#1863ad;color:#fff;text-decoration:none;font-weight:800}footer{text-align:center;padding:28px;color:#64748b;font-size:13px}@media(max-width:640px){.closed{padding:125px 16px 60px}.card{padding:38px 22px;border-radius:24px}.card h1{font-size:32px}.card>p:not(.badge){font-size:15px}}
 `;
