@@ -14,9 +14,7 @@ export const PAYMENT_PACKAGES = {
   "reseller-brand": {
     code: "RB",
     name: "Paket Mitra Brand",
-    description: "Dashboard white label bulanan dengan sistem Mitra Brand",
-    // Rp59.000/bulan. Alur aktivasi Mitra Brand tetap memakai sistem
-    // sebelumnya dan tidak mengikuti biaya aktivasi Rp20.000 milik Reseller biasa.
+    description: "Rp59.000/bulan, bebas buat dan aktifkan undangan selama langganan aktif",
     amount: 59000,
   },
 } as const;
