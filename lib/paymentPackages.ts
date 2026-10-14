@@ -14,10 +14,9 @@ export const PAYMENT_PACKAGES = {
   "reseller-brand": {
     code: "RB",
     name: "Paket Mitra Brand",
-    description: "Dashboard white label bulanan, aktivasi undangan Rp20.000",
-    // Rp59.000/bulan, ditagih manual (lihat provisionPaidOrder.ts untuk
-    // brand_expires_at 1 bulan dari pembelian). 10 Mitra Brand pertama
-    // (sebelum harga ini berlaku) tetap lifetime - brand_expires_at null.
+    description: "Dashboard white label bulanan dengan sistem Mitra Brand",
+    // Rp59.000/bulan. Alur aktivasi Mitra Brand tetap memakai sistem
+    // sebelumnya dan tidak mengikuti biaya aktivasi Rp20.000 milik Reseller biasa.
     amount: 59000,
   },
 } as const;
