@@ -1,101 +1,61 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { AnimatePresence } from "framer-motion";
+import { useCallback, useEffect, useRef } from "react";
 import { useInvitation } from "@/components/InvitationProvider";
+import { useRsvpWishes, type Attendance } from "@/hooks/useRsvpWishes";
 import type { InvitationData } from "@/types/invitation";
 
-import Loading from "./Loading";
-import Cover from "./Cover";
-import Hero from "./Hero";
-import Couple from "./Couple";
-import Story from "./Story";
-import Countdown from "./Countdown";
-import Event from "./Event";
-import Gallery from "./Gallery";
-import Video from "./Video";
-import Maps from "./Maps";
-import Gift from "./Gift";
-import RSVP from "./RSVP";
-import Wishes from "./Wishes";
-import Footer from "./Footer";
-import MusicPlayer from "./MusicPlayer";
-import FloatingMenu from "./FloatingMenu";
-import styles from "./style.module.css";
+const CHANNEL = "vistiq-minang-v1";
 
+/** Isolate the original visual CSS; all personal data and RSVP stay in Vistiq. */
 export default function AdatMinang({ invitation }: { invitation: InvitationData }) {
-  const { opened } = useInvitation();
-  const [ready, setReady] = useState(false);
+  const frame = useRef<HTMLIFrameElement>(null);
+  const { setOpened } = useInvitation();
+  const { entries, counts, hasMore, loadMore, submit } = useRsvpWishes(invitation.id);
+  const busy = useRef(false);
+  const send = useCallback((type: string, payload: Record<string, unknown> = {}) => {
+    frame.current?.contentWindow?.postMessage({ channel: CHANNEL, type, ...payload }, window.location.origin);
+  }, []);
+  const initialize = useCallback(() => {
+    const guest = new URLSearchParams(window.location.search).get("to") || "";
+    send("init", { invitation, guest });
+    send("wishes", { state: { entries, counts, hasMore } });
+  }, [invitation, entries, counts, hasMore, send]);
 
   useEffect(() => {
-    const timer = setTimeout(() => setReady(true), 250);
-    return () => clearTimeout(timer);
-  }, []);
+    const receive = async (event: MessageEvent) => {
+      if (event.source !== frame.current?.contentWindow || event.origin !== window.location.origin || event.data?.channel !== CHANNEL) return;
+      if (event.data.type === "ready") initialize();
+      else if (event.data.type === "opened") setOpened(true);
+      else if (event.data.type === "loadMore") loadMore();
+      else if (event.data.type === "submit" && !busy.current) {
+        const input = event.data.input;
+        if (!input || typeof input.name !== "string" || typeof input.message !== "string" || !input.name.trim() || !input.message.trim() || !["Hadir", "Tidak Hadir", "Masih Ragu"].includes(input.attendance)) {
+          send("result", { error: "Nama, ucapan, dan kehadiran wajib diisi." });
+          return;
+        }
+        if (!invitation.id) {
+          send("result", { error: "Ini halaman demo. RSVP tersedia pada undangan klien." });
+          return;
+        }
+        busy.current = true;
+        try {
+          const result = await submit({ name: input.name.trim(), message: input.message.trim(), whatsapp: "", attendance: input.attendance as Attendance });
+          send("result", result);
+        } catch {
+          send("result", { error: "Gagal mengirim. Silakan coba lagi." });
+        } finally {
+          busy.current = false;
+        }
+      }
+    };
+    window.addEventListener("message", receive);
+    return () => window.removeEventListener("message", receive);
+  }, [initialize, invitation.id, loadMore, send, setOpened, submit]);
 
-  const weddingDate = invitation.events[0]?.rawDate || null;
+  useEffect(() => {
+    send("wishes", { state: { entries, counts, hasMore } });
+  }, [entries, counts, hasMore, send]);
 
-  return (
-    <div className={styles.root}>
-      <AnimatePresence>{!ready && <Loading key="loading" />}</AnimatePresence>
-
-      {ready && !opened && <Cover invitation={invitation} />}
-
-      {ready && opened && (
-        <>
-          <section id="home">
-            <Hero invitation={invitation} />
-          </section>
-
-          <section id="couple">
-            <Couple invitation={invitation} />
-          </section>
-
-          {invitation.story.length > 0 && (
-            <section id="story">
-              <Story invitation={invitation} />
-            </section>
-          )}
-
-          {weddingDate && (
-            <section id="countdown">
-              <Countdown targetDate={weddingDate} />
-            </section>
-          )}
-
-          <section id="event">
-            <Event invitation={invitation} />
-          </section>
-
-          {invitation.gallery.length > 0 && (
-            <section id="gallery">
-              <Gallery invitation={invitation} />
-            </section>
-          )}
-
-          <Video invitation={invitation} />
-
-          <section id="maps">
-            <Maps invitation={invitation} />
-          </section>
-
-          {invitation.gifts.length > 0 && (
-            <section id="gift">
-              <Gift invitation={invitation} />
-            </section>
-          )}
-
-          <section id="rsvp">
-            <RSVP invitation={invitation} />
-          </section>
-
-          <Wishes invitation={invitation} />
-
-          <Footer invitation={invitation} />
-
-          <MusicPlayer url={invitation.musicUrl} />
-          <FloatingMenu />
-        </>
-      )}
-    </div>
-  );
+  return <iframe ref={frame} src="/themes/adat-minang/index.html" title="Undangan Adat Minang" onLoad={initialize} allow="autoplay; clipboard-write" style={{ display: "block", width: "100%", height: "100dvh", border: 0 }} />;
 }
