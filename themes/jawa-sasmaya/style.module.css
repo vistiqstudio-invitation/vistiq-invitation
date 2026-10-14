@@ -44,3 +44,7 @@
 /* Keep the gallery-to-RSVP transition clean and spacious. */
 .gallery>.divider{display:none}
 .gallery{padding-bottom:42px}
+
+/* Use the actual bank artwork inside a clean white badge. */
+.bankLogo{display:flex;align-items:center;justify-content:center;width:88px;height:40px;padding:7px 9px;border-radius:5px;background:#fff;flex:none}.bankLogo img{display:block;width:100%;height:100%;object-fit:contain}.bankMark{gap:8px}.bankMark small{font-size:12px}.bankMark[data-bank="mandiri"] .bankLogo{width:84px;height:40px;padding:7px 8px}.bankMark[data-bank="bca"] .bankLogo{width:88px;height:40px;padding:9px 7px}
+@media(max-width:360px){.bankLogo{width:72px;height:36px}.bankMark[data-bank="mandiri"] .bankLogo,.bankMark[data-bank="bca"] .bankLogo{width:72px;height:36px}.bankMark small{font-size:10px}}
