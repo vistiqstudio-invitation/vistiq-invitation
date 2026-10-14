@@ -26,9 +26,9 @@ export async function POST(request: Request) {
   if (!Number.isSafeInteger(invitationId) || invitationId <= 0) return NextResponse.json({ error: "ID undangan tidak valid." }, { status: 400 });
 
   const db = createServiceClient(supabaseUrl, serviceKey, { auth: { autoRefreshToken: false, persistSession: false } });
-  const { data: reseller } = await db.from("resellers").select("id, package, status").eq("user_id", profile.id).maybeSingle();
+  const { data: reseller } = await db.from("resellers").select("id, package, billing_model, status").eq("user_id", profile.id).maybeSingle();
   if (!reseller || reseller.status !== "active") return NextResponse.json({ error: "Akun reseller belum aktif." }, { status: 403 });
-  if (reseller.package !== "reseller") return NextResponse.json({ error: "Mitra Brand tetap menggunakan sistem sebelumnya." }, { status: 409 });
+  if (reseller.package !== "reseller" || reseller.billing_model !== "per_invitation") return NextResponse.json({ error: "Pembayaran aktivasi Rp20.000 hanya berlaku untuk Reseller biasa dengan sistem baru." }, { status: 409 });
 
   const { data: invitation } = await db.from("invitations").select("id, client_id, category, groom_name, bride_name, baby_name, is_active").eq("id", invitationId).maybeSingle();
   if (!invitation?.client_id) return NextResponse.json({ error: "Undangan tidak ditemukan." }, { status: 404 });
@@ -65,8 +65,9 @@ export async function POST(request: Request) {
 
   const orderId = `VSTQ-IA-${Date.now()}-${crypto.randomBytes(5).toString("hex")}`;
   const finishUrl = `${new URL(request.url).origin}/pembayaran/status?order_id=${encodeURIComponent(orderId)}`;
-  const snapEndpoint = production ? "https://app.midtrans.com/snap/v1/transactions" : "https://app.sandbox.midtrans.com/snap/v1/transactions";
-  const midtransResponse = await fetch(snapEndpoint, { method: "POST", headers: { Authorization: auth, Accept: "application/json", "Content-Type": "application/json" }, body: JSON.stringify({ transaction_details: { order_id: orderId, gross_amount: INVITATION_ACTIVATION_FEE }, item_details: [{ id: "invitation-activation", price: INVITATION_ACTIVATION_FEE, quantity: 1, name: `Aktivasi ${invitationName(invitation)}`.slice(0, 50) }], customer_details: { first_name: profile.name || client.name || "Reseller Vistiq", email: profile.email, phone: profile.whatsapp || client.whatsapp || undefined }, expiry: { unit: "days", duration: LINK_DAYS }, page_expiry: { unit: "days", duration: LINK_DAYS }, callbacks: { finish: finishUrl }, custom_field1: "invitation_activation", custom_field2: String(invitationId) }), cache: "no-store" });
+  const snapEndpoint = production ? "https://app.midtrans.com/snap/v1/transactions" : "https://app.sandbox.midtrans.com/snap/snap/v1/transactions";
+  const endpoint = production ? snapEndpoint : "https://app.sandbox.midtrans.com/snap/v1/transactions";
+  const midtransResponse = await fetch(endpoint, { method: "POST", headers: { Authorization: auth, Accept: "application/json", "Content-Type": "application/json" }, body: JSON.stringify({ transaction_details: { order_id: orderId, gross_amount: INVITATION_ACTIVATION_FEE }, item_details: [{ id: "invitation-activation", price: INVITATION_ACTIVATION_FEE, quantity: 1, name: `Aktivasi ${invitationName(invitation)}`.slice(0, 50) }], customer_details: { first_name: profile.name || client.name || "Reseller Vistiq", email: profile.email, phone: profile.whatsapp || client.whatsapp || undefined }, expiry: { unit: "days", duration: LINK_DAYS }, page_expiry: { unit: "days", duration: LINK_DAYS }, callbacks: { finish: finishUrl }, custom_field1: "invitation_activation", custom_field2: String(invitationId) }), cache: "no-store" });
   const midtrans = await midtransResponse.json().catch(() => ({})) as { redirect_url?: string };
   if (!midtransResponse.ok || !midtrans.redirect_url) return NextResponse.json({ error: "Midtrans gagal membuat pembayaran. Silakan coba lagi." }, { status: 502 });
   const expiresAt = new Date(Date.now() + LINK_MS).toISOString();
