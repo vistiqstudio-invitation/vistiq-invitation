@@ -21,6 +21,7 @@ export async function POST(request: Request) {
   const whatsapp = (body.whatsapp || "").trim();
   const package_name = body.package_name || "Luxury Gold";
   let status = body.status || "active";
+  const requestedSalePrice = Math.round(Number(body.sale_price || 100000));
   if (!name || !email) return NextResponse.json({ error: "Nama dan email wajib diisi." }, { status: 400 });
 
   let reseller_id: string | null = null;
@@ -39,9 +40,8 @@ export async function POST(request: Request) {
     resellerBillingModel = (reseller?.billing_model as "legacy_commission" | "per_invitation" | undefined) ?? null;
   }
 
-  // Reseller biasa selalu menunggu pembayaran aktivasi Rp20.000.
-  // Mitra Brand legacy dipertahankan seperti sebelumnya dan dapat mengatur status client sendiri.
-  if (reseller_id && resellerPackage !== "reseller_brand") status = "pending";
+  const salePrice = resellerBillingModel === "per_invitation" ? 0 : resellerPackage === "reseller" ? Math.max(1000, Number.isFinite(requestedSalePrice) ? requestedSalePrice : 100000) : Math.max(0, Number.isFinite(requestedSalePrice) ? requestedSalePrice : 100000);
+  if (reseller_id) status = "pending";
 
   const password = generatePassword();
   const { data: created, error: createUserError } = await db.auth.admin.createUser({ email, password, email_confirm: true, user_metadata: { role: "client", name, whatsapp } });
@@ -50,11 +50,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: message }, { status: 400 });
   }
 
-  const { data: client, error: clientError } = await db.from("clients").insert({ user_id: created.user.id, reseller_id, name, email, whatsapp, package_name, status, sale_price: 0 }).select("id").single();
+  const { data: client, error: clientError } = await db.from("clients").insert({ user_id: created.user.id, reseller_id, name, email, whatsapp, package_name, status, sale_price: salePrice }).select("id").single();
   if (clientError || !client) {
     await db.auth.admin.deleteUser(created.user.id);
     return NextResponse.json({ error: "Gagal menyimpan data client." }, { status: 500 });
   }
 
-  return NextResponse.json({ clientId: client.id, email, password, salePrice: 0, paymentUrl: null, paymentError: null, billingModel: resellerBillingModel });
+  return NextResponse.json({ clientId: client.id, email, password, salePrice, paymentUrl: null, paymentError: null, billingModel: resellerBillingModel });
 }
