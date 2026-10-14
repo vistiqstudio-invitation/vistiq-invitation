@@ -1,6 +1,5 @@
 import "server-only";
 
-import { createClient } from "@/lib/supabase/server";
 import type { EventItem, InvitationData } from "@/types/invitation";
 
 type StoredEvent = {
@@ -9,6 +8,11 @@ type StoredEvent = {
   time?: unknown;
   location?: unknown;
   mapsUrl?: unknown;
+};
+
+type FlexibleEventRow = {
+  events?: unknown;
+  cover_event_index?: unknown;
 };
 
 function asText(value: unknown) {
@@ -69,13 +73,42 @@ function normalizeStoredEvents(value: unknown): EventItem[] {
     .filter((event) => Boolean(event.name || event.date || event.time || event.location));
 }
 
+async function getFlexibleEventRow(invitationId: string): Promise<FlexibleEventRow | null> {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!supabaseUrl || !anonKey) return null;
+
+  try {
+    const url = new URL("/rest/v1/invitations", supabaseUrl);
+    url.searchParams.set("id", `eq.${invitationId}`);
+    url.searchParams.set("select", "events,cover_event_index");
+    url.searchParams.set("limit", "1");
+
+    const response = await fetch(url, {
+      headers: {
+        apikey: anonKey,
+        Authorization: `Bearer ${anonKey}`,
+        Accept: "application/json",
+      },
+      next: {
+        // These values rarely change while guests are opening an invitation.
+        // A short shared cache removes a database round-trip on every page view
+        // while keeping client edits visible within roughly half a minute.
+        revalidate: 30,
+        tags: [`invitation-events-${invitationId}`],
+      },
+    });
+
+    if (!response.ok) return null;
+    const rows = (await response.json()) as FlexibleEventRow[];
+    return rows[0] || null;
+  } catch {
+    return null;
+  }
+}
+
 export async function applyFlexibleWeddingEvents(invitation: InvitationData) {
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from("invitations")
-    .select("events, cover_event_index")
-    .eq("id", invitation.id)
-    .maybeSingle();
+  const data = await getFlexibleEventRow(invitation.id);
 
   const events = normalizeStoredEvents(data?.events);
   if (events.length === 0) return invitation;
