@@ -29,6 +29,8 @@
   const send = (type, payload) => parent.postMessage({ channel, type, ...payload }, location.origin);
   let invitation, opened = false, targetDate = null, attendance = 'Hadir';
   const cover = q('#sec');
+  q('#open').style.pointerEvents = 'none';
+  q('#open').setAttribute('aria-disabled', 'true');
   const music = new Audio(); music.loop = true; music.preload = 'none';
   // Remove reference audio controls; one local control follows the Vistiq track.
   qa('[data-id="271ccb48"]').forEach(el => el.remove());
@@ -51,7 +53,7 @@
     });
   }
   function open() {
-    if (opened) return; opened = true;
+    if (!invitation || opened) return; opened = true;
     q('#kolom').style.transform = 'translateY(-100%)'; q('#kolom').style.transition = 'transform 1.5s ease-in-out'; cover.style.transition = 'opacity 1.5s ease-in-out'; cover.style.opacity = '0'; cover.style.pointerEvents = 'none';
     setTimeout(() => { cover.hidden = true; }, 1500);
     qa('.aw').forEach(el => el.style.display = 'block');
@@ -143,7 +145,7 @@
     if (data.musicUrl) music.src=data.musicUrl;
     q('[data-rsvp="name"]').value=guest || '';
     q('[data-rsvp="send"]').disabled=false;
-    document.body.style.visibility='visible'; reveal();
+    q('#open').style.pointerEvents = ''; q('#open').removeAttribute('aria-disabled'); document.body.style.visibility='visible'; reveal();
   }
   const sendButton = q('[data-rsvp="send"]');
   qa('[data-rsvp-pill]').forEach(button => button.onclick = () => {
