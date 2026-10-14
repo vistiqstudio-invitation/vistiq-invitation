@@ -13,7 +13,11 @@ export function getResellerNavItems(
     { key: "marketing-kit", label: "Marketing Kit", href: "/reseller/marketing-kit", icon: <IconPalette /> },
   ];
 
-  if (pkg !== "reseller_brand" && billingModel !== "per_invitation") {
+  // Reseller biasa hanya perlu riwayat pembayaran aktivasi. Tidak ada lagi saldo/penarikan.
+  if (pkg === "reseller") {
+    items.push({ key: "transactions", label: "Riwayat Pembayaran", href: "/reseller/transactions", icon: <IconWallet /> });
+  } else if (pkg !== "reseller_brand" && billingModel !== "per_invitation") {
+    // Fallback untuk data lama yang belum terklasifikasi.
     items.push({ key: "transactions", label: "Transaksi", href: "/reseller/transactions", icon: <IconWallet /> });
     items.push({ key: "saldo", label: "Saldo & Penarikan", href: "/reseller/saldo", icon: <IconWallet /> });
   }
