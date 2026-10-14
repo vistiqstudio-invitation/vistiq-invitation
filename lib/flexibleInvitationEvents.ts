@@ -73,14 +73,15 @@ function normalizeStoredEvents(value: unknown): EventItem[] {
     .filter((event) => Boolean(event.name || event.date || event.time || event.location));
 }
 
-async function getFlexibleEventRow(invitationId: string): Promise<FlexibleEventRow | null> {
+async function getFlexibleEventRow(invitationId: string | number): Promise<FlexibleEventRow | null> {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   if (!supabaseUrl || !anonKey) return null;
 
   try {
+    const invitationIdText = String(invitationId);
     const url = new URL("/rest/v1/invitations", supabaseUrl);
-    url.searchParams.set("id", `eq.${invitationId}`);
+    url.searchParams.set("id", `eq.${invitationIdText}`);
     url.searchParams.set("select", "events,cover_event_index");
     url.searchParams.set("limit", "1");
 
@@ -95,7 +96,7 @@ async function getFlexibleEventRow(invitationId: string): Promise<FlexibleEventR
         // A short shared cache removes a database round-trip on every page view
         // while keeping client edits visible within roughly half a minute.
         revalidate: 30,
-        tags: [`invitation-events-${invitationId}`],
+        tags: [`invitation-events-${invitationIdText}`],
       },
     });
 
