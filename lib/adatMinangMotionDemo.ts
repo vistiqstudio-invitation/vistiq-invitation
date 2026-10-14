@@ -2,7 +2,6 @@ import type { InvitationData } from "@/types/invitation";
 import { WEDDING_VOCAL_TRACKS } from "@/lib/weddingMusic";
 
 const PHOTO_ROOT = "/photos";
-const OPENING_VIDEO = "/video/adat-minang-opening.mp4";
 
 const coverPhoto = `${PHOTO_ROOT}/luxury-cover.webp`;
 const bridePhoto = `${PHOTO_ROOT}/luxury-bride.webp`;
@@ -27,8 +26,8 @@ export function withAdatMinangMotionDemoAssets(
     ...invitation,
     coverImage: coverPhoto,
     musicUrl: WEDDING_VOCAL_TRACKS.minangWedding,
-    // The opening video is the Minang motion asset supplied for Vistiq.
-    videoUrl: OPENING_VIDEO,
+    // Reference layout starts with the cover photo; no legacy opening video.
+    videoUrl: null,
     liveStreamingUrl: "https://instagram.com/vistiqinvitation",
     opening: {
       ...invitation.opening,
