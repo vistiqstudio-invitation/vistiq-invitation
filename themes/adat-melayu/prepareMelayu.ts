@@ -84,7 +84,7 @@ function setupRsvp(doc: Document, invitation: InvitationData, guest: string, sig
     const avatar = doc.createElement("div"); avatar.className = "rsvp-ava"; avatar.textContent = item.guest_name.charAt(0).toUpperCase();
     const body = doc.createElement("div"); body.className = "rsvp-body";
     const author = doc.createElement("div"); author.className = "rsvp-name"; author.textContent = item.guest_name;
-    const status = doc.createElement("div"); status.className = "rsvp-meta"; status.textContent = item.attendance === "hadir" ? "Hadir" : "Tidak Hadir";
+    const status = doc.createElement("div"); status.className = "rsvp-meta"; status.textContent = item.attendance === "hadir" ? "Hadir" : item.attendance === "ragu" ? "Masih Ragu" : "Tidak Hadir";
     const copy = doc.createElement("div"); copy.className = "rsvp-msg"; copy.textContent = item.message || "";
     body.append(author, status, copy); row.append(avatar, body); list?.prepend(row);
   };

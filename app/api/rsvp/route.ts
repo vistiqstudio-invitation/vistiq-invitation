@@ -4,6 +4,30 @@ import { createClient } from "@/lib/supabase/server";
 const clean = (value: unknown, max: number) =>
   typeof value === "string" ? value.trim().slice(0, max) : "";
 
+type WishRow = {
+  id: number;
+  name: string;
+  attendance: string | null;
+  total_guest: number | null;
+  message: string | null;
+  created_at: string | null;
+};
+
+// Keep the existing theme API contract while using the dashboard's source of truth.
+function themeItem(row: WishRow) {
+  const status = (row.attendance || "").trim().toLowerCase();
+  return {
+    id: row.id,
+    guest_name: row.name,
+    attendance: status === "hadir" ? "hadir" : ["tidak", "tidak hadir"].includes(status) ? "tidak" : "ragu",
+    total_guest: row.total_guest,
+    message: row.message,
+    created_at: row.created_at,
+  };
+}
+
+const fields = "id,name,attendance,total_guest,message,created_at";
+
 export async function GET(request: NextRequest) {
   const invitationId = Number(request.nextUrl.searchParams.get("invitationId"));
   if (!Number.isInteger(invitationId) || invitationId <= 0) {
@@ -12,14 +36,14 @@ export async function GET(request: NextRequest) {
 
   const supabase = await createClient();
   const { data, error } = await supabase
-    .from("rsvp")
-    .select("id,guest_name,attendance,total_guest,message,created_at")
+    .from("rsvp_wishes")
+    .select(fields)
     .eq("invitation_id", invitationId)
     .order("created_at", { ascending: false })
     .limit(100);
 
   if (error) return NextResponse.json({ error: "Gagal memuat RSVP." }, { status: 500 });
-  return NextResponse.json({ items: data ?? [] });
+  return NextResponse.json({ items: (data ?? []).map(themeItem) });
 }
 
 export async function POST(request: NextRequest) {
@@ -31,7 +55,8 @@ export async function POST(request: NextRequest) {
   const guestName = clean(body.guestName, 120);
   const message = clean(body.message, 1000);
   const attendance = clean(body.attendance, 16);
-  const totalGuest = Math.min(20, Math.max(1, Number(body.totalGuest) || 1));
+  const requestedTotal = Number(body.totalGuest);
+  const totalGuest = Number.isFinite(requestedTotal) ? Math.min(20, Math.max(1, Math.floor(requestedTotal))) : 1;
 
   if (!Number.isInteger(invitationId) || invitationId <= 0 || !guestName || !message || !["hadir", "tidak"].includes(attendance)) {
     return NextResponse.json({ error: "Lengkapi nama, ucapan, dan konfirmasi kehadiran." }, { status: 400 });
@@ -49,11 +74,18 @@ export async function POST(request: NextRequest) {
   }
 
   const { data, error } = await supabase
-    .from("rsvp")
-    .insert({ invitation_id: invitationId, guest_name: guestName, attendance, total_guest: totalGuest, message })
-    .select("id,guest_name,attendance,total_guest,message,created_at")
+    .from("rsvp_wishes")
+    .insert({
+      invitation_id: invitationId,
+      name: guestName,
+      whatsapp: null,
+      attendance: attendance === "hadir" ? "Hadir" : "Tidak Hadir",
+      total_guest: totalGuest,
+      message,
+    })
+    .select(fields)
     .single();
 
-  if (error) return NextResponse.json({ error: "RSVP gagal disimpan." }, { status: 500 });
-  return NextResponse.json({ item: data }, { status: 201 });
+  if (error || !data) return NextResponse.json({ error: "RSVP gagal disimpan." }, { status: 500 });
+  return NextResponse.json({ item: themeItem(data) }, { status: 201 });
 }
