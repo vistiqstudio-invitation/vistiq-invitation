@@ -2248,3 +2248,13 @@ img[src$="/batas.png"]{filter:url(#vistiq-divider-red)}
   #kolom .elementor-element-4aa60b32 img{width:36px!important}
   #kolom .elementor-element-74bec9ca{font-size:40px}
 }
+
+/* Preserve the transparent full canvas and natural proportions of the draped songket. */
+#kolom .elementor-element-5f7c6dbd{
+  position:absolute!important;inset:auto 0 0!important;width:100%!important;max-width:100%!important;
+  transform:none!important;animation:none!important;line-height:0;pointer-events:none;
+}
+#kolom .elementor-element-5f7c6dbd .elementor-widget-container{margin:0!important;line-height:0}
+#kolom .elementor-element-5f7c6dbd img{
+  display:block;width:100%!important;max-width:100%!important;height:auto!important;max-height:none!important;object-fit:contain;
+}
