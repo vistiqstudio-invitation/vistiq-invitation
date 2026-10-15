@@ -132,6 +132,7 @@ export function prepareMelayu(doc: Document, invitation: InvitationData, onOpen:
   doc.querySelector<HTMLAnchorElement>(".elementor-element-29e08599 a")?.setAttribute("href", "#event");
   eventRoots(doc, invitation);
   social(doc, "6bfc9604", invitation.groom.instagram); social(doc, "5e5c31e2", invitation.bride.instagram);
+  image(doc, "vistiq-cover-photo", invitation.coverImage, couple);
   image(doc, "638d895c", invitation.groom.photo, invitation.groom.name);
   image(doc, "700bdcdf", invitation.bride.photo, invitation.bride.name);
   image(doc, "3dc445d3", invitation.storyPhotos?.[0] || invitation.coverImage, couple);

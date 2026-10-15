@@ -2212,3 +2212,39 @@ img[src*="BAHAN-e1690431816910.webp"]{background-color:#6c1017}
 
 /* Match the divider artwork to the songket red while preserving its alpha. */
 img[src$="/batas.png"]{filter:url(#vistiq-divider-red)}
+
+/* Photo cover: songket at 30% and a red gradient behind the invitation copy. */
+.elementor-9049 #kolom{
+  position:relative;isolation:isolate;justify-content:flex-end;
+  height:100svh;min-height:100svh;--padding-top:0px;--padding-bottom:0px;--padding-left:0px;--padding-right:0px;
+  padding:0!important;gap:0!important;
+  background-image:linear-gradient(rgba(108,16,23,.70),rgba(108,16,23,.70)),url("/themes/adat-melayu/songket-marun-background.webp?v=20261015")!important;
+}
+#kolom>.vistiq-cover-photo{
+  position:absolute!important;inset:0 0 auto!important;width:100%!important;height:76%!important;z-index:0;pointer-events:none;
+  mask-image:linear-gradient(to bottom,#000 0%,#000 58%,transparent 100%);
+}
+#kolom>.vistiq-cover-photo img{
+  display:block;width:100%!important;max-width:100%!important;height:100%!important;object-fit:cover;object-position:center top;
+}
+#kolom>.vistiq-cover-content{
+  position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;
+  width:100%;box-sizing:border-box;gap:10px;text-align:center;
+  padding:clamp(42px,6svh,64px) 24px clamp(100px,14svh,140px);
+  background:linear-gradient(to bottom,rgba(108,16,23,0) 0%,rgba(108,16,23,.82) 18%,#6c1017 48%,#6c1017 100%);
+}
+#kolom .vistiq-cover-content>.elementor-widget{width:100%;max-width:100%;margin:0!important;flex-shrink:0}
+#kolom .vistiq-cover-content>.elementor-widget>.elementor-widget-container{margin:0!important}
+#kolom .elementor-element-4aa60b32 img{width:48px!important;height:auto!important}
+#kolom .elementor-element-5d0d527d .elementor-heading-title{font-size:13px;letter-spacing:3px;text-shadow:0 1px 8px #460a0f}
+#kolom .elementor-element-74bec9ca{font-size:clamp(40px,11vw,52px);line-height:1.1;text-shadow:0 2px 10px #460a0f}
+#kolom .elementor-element-365d43db{font-size:13px;letter-spacing:2px}
+#kolom .elementor-element-6460100e .elementor-heading-title{font-size:18px;line-height:1.4}
+#kolom #open{padding-top:6px}
+#kolom .elementor-element-5f7c6dbd{z-index:3;pointer-events:none}
+#kolom .elementor-element-5f7c6dbd img{max-height:clamp(86px,13svh,130px);width:100%;object-fit:fill}
+@media(max-height:680px){
+  #kolom>.vistiq-cover-content{gap:7px;padding-top:30px;padding-bottom:88px}
+  #kolom .elementor-element-4aa60b32 img{width:36px!important}
+  #kolom .elementor-element-74bec9ca{font-size:40px}
+}
