@@ -148,6 +148,33 @@ summary:focus-visible {
   color: rgba(255,255,255,.85);
 }
 
+/* Pricing CTA buttons must read clearly as actions, not plain text. */
+.priceButton {
+  width: 100%;
+  min-height: 56px;
+  padding: 0 24px;
+  border: 0;
+  border-radius: 999px;
+  background: #0f4e8a;
+  color: #fff;
+  font: inherit;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(15,78,138,.18);
+}
+
+.priceButton:hover {
+  filter: brightness(1.08);
+  box-shadow: 0 11px 24px rgba(15,78,138,.24);
+}
+
+.priceButton.featuredButton {
+  background: #fff;
+  color: #0f4e8a;
+  box-shadow: 0 8px 20px rgba(0,0,0,.12);
+}
+
 .mobileLogin{display:none}
 .brandMark{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:#17649b;color:#fff;font-size:24px;font-weight:700}.brandWord{font-size:35px;font-weight:700;line-height:.78;letter-spacing:-2px;color:#16283a}.brandWord small{display:block;margin-top:9px;text-align:right;font-size:7px;letter-spacing:3px;font-weight:700}.brand img{display:none}
 @media(max-width:900px){.mobileLogin{margin-left:auto;min-height:56px;padding:4px 5px 4px 24px;border-radius:999px;background:#17649b;color:#fff;text-decoration:none;font-size:18px;display:flex;align-items:center;gap:18px}.mobileLogin span{width:47px;height:47px;border-radius:50%;display:grid;place-items:center;background:#fff;color:#17649b;font-size:25px}.navbar>.menuToggle{order:3}.navbar>.mobileLogin{order:2}.navbar>.brand{order:1}}
