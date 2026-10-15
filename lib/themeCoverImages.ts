@@ -1,4 +1,5 @@
 export const WEDDING_COVER_BY_THEME: Record<string, string> = {
+  "adat-melayu": "/photos/green-cover.webp",
   "princess-fairytale": "/photos/romance-cover.webp",
   "luxury-gold": "/photos/luxury-cover.webp",
   "islamic-green": "/photos/green-cover.webp",
@@ -49,6 +50,7 @@ export const WEDDING_COVER_BY_THEME: Record<string, string> = {
 };
 
 export const THEME_CARD_PREVIEW_BY_THEME: Record<string, string> = {
+  "adat-melayu": "/theme-previews/wedding/adat-melayu.jpg",
   "lavender-garden-motion": "/theme-previews/wedding/lavender-garden-motion-card.jpg",
   "luxury-gold": "/theme-previews/wedding/luxury-gold-card.jpg",
   "modern-elegant": "/theme-previews/wedding/modern-elegant-card.jpg",

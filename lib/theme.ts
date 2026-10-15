@@ -31,6 +31,7 @@ import WayangJawa from "@/themes/adat-jawa/WayangJawa";
 import JawaSasmaya from "@/themes/jawa-sasmaya/JawaSasmaya";
 import AdatBugis from "@/themes/adat-bugis/AdatBugis";
 import AdatBali from "@/themes/adat-bali/AdatBali";
+import AdatMelayu from "@/themes/adat-melayu/AdatMelayu";
 import AdatSunda from "@/themes/adat-sunda/AdatSunda";
 import MenaraCahaya from "@/themes/menara-cahaya/MenaraCahaya";
 import Santorini from "@/themes/santorini/Santorini";
@@ -89,6 +90,7 @@ export const themeRegistry: Record<
   "adat-bugis": AdatBugis,
   "adat-bali": AdatBali,
   "adat-sunda": AdatSunda,
+  "adat-melayu": AdatMelayu,
   "menara-cahaya": MenaraCahaya,
   santorini: Santorini,
   "vintage-botanical": VintageBotanical,
@@ -164,6 +166,7 @@ const HIDDEN_BASIC_THEME_KEYS = new Set([
 ]);
 
 const allWeddingThemes: ThemeMeta[] = [
+  { key: "adat-melayu", label: "Adat Melayu", description: "Hijau zamrud, krem dan emas dengan ornamen Melayu, foto pengantin dan animasi lembut", swatch: ["#163c2d", "#c7b77b"], tags: ["adat"], addedAt: "2026-10-15" },
   { key: "luxury-gold", label: "Luxury Gold", description: "Dark & glamorous, aksen gold, glassmorphism", swatch: ["#0b0b0b", "#d4af37"], tags: ["premium"] },
   { key: "minimal-white", label: "Minimal White", description: "Putih bersih, editorial, elegan minimalis", swatch: ["#ffffff", "#96742a"], tags: ["reguler"] },
   { key: "islamic-green", label: "Islamic Green", description: "Krem hangat, hijau emerald & emas, motif islami", swatch: ["#faf6ec", "#0b5d42"], tags: ["adat"] },

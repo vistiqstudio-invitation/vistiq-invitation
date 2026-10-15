@@ -12,6 +12,7 @@ export const COVER_BY_THEME = Object.fromEntries(
 // clashes with lighter/pastel themes. Themes not listed here fall back to
 // the luxury-gold portraits.
 const GROOM_PHOTO_BY_THEME: Record<string, string> = {
+  "adat-melayu": "/photos/green-groom.webp",
   "princess-fairytale": "/photos/romance-groom.webp",
   sakura: "/photos/sakura-groom.webp",
   "luxury-gold": "/photos/luxury-groom.webp",
@@ -48,6 +49,7 @@ const GROOM_PHOTO_BY_THEME: Record<string, string> = {
 };
 
 const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
+  "adat-melayu": "/photos/green-bride.webp",
   "princess-fairytale": "/photos/romance-bride.webp",
   sakura: "/photos/sakura-bride.webp",
   "luxury-gold": "/photos/luxury-bride.webp",
@@ -87,6 +89,7 @@ const BRIDE_PHOTO_BY_THEME: Record<string, string> = {
 // theme's mood instead of showing the same six generic photos everywhere.
 // Themes not listed here fall back to the shared /gallery/*.jpg placeholders.
 const GALLERY_BY_THEME: Record<string, string[]> = {
+  "adat-melayu": ["/photos/green-gallery-1.webp", "/photos/green-gallery-2.webp", "/photos/green-gallery-3.webp", "/photos/green-gallery-4.webp", "/photos/green-gallery-5.webp", "/photos/green-gallery-6.webp"],
   "princess-fairytale": [
     "/photos/romance-gallery-1.webp",
     "/photos/romance-gallery-2.webp",
@@ -391,6 +394,7 @@ const GALLERY_BY_THEME: Record<string, string[]> = {
 // Every wedding demo uses a vocal song. Tracks still vary by theme, but the
 // allowlist below intentionally excludes instrumental-only music.
 const MUSIC_BY_THEME: Record<string, string> = {
+  "adat-melayu": "/themes/adat-melayu/melayu.mp3",
   "luxury-gold": WEDDING_VOCAL_TRACKS.indonesianBallad,
   "minimal-white": WEDDING_VOCAL_TRACKS.englishBallad,
   "islamic-green": WEDDING_VOCAL_TRACKS.islamicPrayer,
@@ -452,6 +456,7 @@ export function getDemoInvitation(theme: string): InvitationData {
     coverImage: noPhotoTheme ? null : optimizedDemoImage(COVER_BY_THEME[theme] || "/themes/luxury-gold/cover.png"),
     musicUrl: MUSIC_BY_THEME[theme] || DEFAULT_WEDDING_VOCAL_TRACK,
     videoUrl: null,
+    ...(theme === "adat-melayu" ? { liveStreamingUrl: "https://www.instagram.com/vistiqinvitation/" } : {}),
 
     mapsUrl: "https://maps.google.com",
     mapsEmbedUrl: "https://www.google.com/maps?q=Jakarta&output=embed",
