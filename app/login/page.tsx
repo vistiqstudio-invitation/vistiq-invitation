@@ -61,6 +61,27 @@ export default function LoginPage() {
       return;
     }
 
+    if (profile.role === "reseller") {
+      const { data: reseller } = await supabase
+        .from("resellers")
+        .select("package, brand_expires_at")
+        .eq("user_id", data.user.id)
+        .maybeSingle();
+
+      const isExpiredBrand =
+        reseller?.package === "reseller_brand" &&
+        Boolean(reseller.brand_expires_at) &&
+        new Date(reseller.brand_expires_at as string).getTime() <= Date.now();
+
+      if (isExpiredBrand) {
+        await supabase.auth.signOut();
+        alert(
+          "Masa aktif Mitra Brand Anda telah habis. Hubungi admin untuk aktivasi kembali."
+        );
+        return;
+      }
+    }
+
     if (profile.role === "client") {
       const { data: client } = await supabase
         .from("clients")
