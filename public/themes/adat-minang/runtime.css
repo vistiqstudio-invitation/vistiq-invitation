@@ -3,3 +3,7 @@
 /* Supplied transparent songket curtain: preserve its full canvas and proportions. */
 #kolom{isolation:isolate}
 #kolom>.vistiq-cover-curtain{position:absolute;inset:0 0 auto;display:block;width:100%;max-width:100%;height:auto;z-index:3;pointer-events:none;user-select:none}
+
+/* Supplied gold silhouette uses luminance masking so its black canvas stays invisible. */
+#kolom>.vistiq-cover-emblem{position:absolute;top:clamp(68px,11svh,112px);left:50%;width:clamp(82px,24vw,110px);max-width:28%;margin:0!important;transform:translateX(-50%)!important;z-index:4;pointer-events:none;line-height:0;filter:drop-shadow(0 2px 3px #38120e99)}
+#kolom .vistiq-gonjong-mark{display:block;width:100%;aspect-ratio:1;background:#ffdb64;mask-image:url("/themes/adat-minang/cover-gonjong-emblem.webp");mask-mode:luminance;mask-size:contain;mask-position:center;mask-repeat:no-repeat}
