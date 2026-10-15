@@ -14,10 +14,12 @@ function collect(v: unknown, out = new Set<string>()) {
   else if (v && typeof v === "object") Object.values(v).forEach((x) => collect(x, out));
   return out;
 }
+
 function keyFor(source: string) {
   const u = new URL(source), m = "/storage/v1/object/public/";
   return "legacy/" + decodeURIComponent(u.pathname.slice(u.pathname.indexOf(m) + m.length));
 }
+
 async function ownerClient() {
   const s = await createClient();
   const { data: { user } } = await s.auth.getUser();
@@ -26,10 +28,22 @@ async function ownerClient() {
   if (p?.role !== "owner") return { s, error: NextResponse.json({ error: "Forbidden" }, { status: 403 }) };
   return { s, error: null };
 }
+
 async function sources(s: Awaited<ReturnType<typeof createClient>>) {
   const { data, error } = await s.from("invitations").select(fields.join(",")).eq("is_active", true);
   if (error) throw new Error(error.message);
   return [...collect(data)].sort();
+}
+
+export async function GET() {
+  const { s, error } = await ownerClient();
+  if (error) return error;
+  try {
+    const all = await sources(s);
+    return NextResponse.json({ ok: true, total: all.length, batchSize: BATCH_SIZE, source: "active-invitations-live" });
+  } catch (e) {
+    return NextResponse.json({ error: e instanceof Error ? e.message : String(e) }, { status: 500 });
+  }
 }
 
 export async function POST(req: Request) {
@@ -62,6 +76,7 @@ export async function POST(req: Request) {
       total: all.length,
       processed: nextOffset,
       verified,
+      missingOrFailed: failed.length,
       failed,
       done: nextOffset >= all.length,
       nextOffset,
