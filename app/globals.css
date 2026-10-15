@@ -190,3 +190,44 @@ summary:focus-visible {
 .loginButton span svg,.mobileLogin span svg{width:21px;height:21px;display:block;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 @media(max-width:640px){.brand img{width:142px}}
 @media(max-width:520px){.navbarWrap{top:22px;padding:0 15px}.navbar{height:78px;padding:9px 11px 9px 16px;border-radius:21px;gap:8px}.brand img{width:113px}.mobileLogin{min-height:46px;padding:3px 4px 3px 17px;font-size:16px;gap:9px}.mobileLogin span{width:38px;height:38px;display:flex;align-items:center;justify-content:center}.mobileLogin span svg{width:19px;height:19px}.menuToggle{width:35px;height:42px;display:flex;align-items:center;justify-content:center;font-size:27px;padding:0}}
+
+/* Compact homepage pricing actions. CSS-module classes are matched by their stable local-name segment. */
+[class*="priceGrid"] .priceButton,
+[class*="priceGrid"] [class*="planLink"] {
+  width: min(100%, 200px);
+  min-height: 44px;
+  padding: 0 18px;
+  margin-top: auto;
+  align-self: center;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  justify-content: center;
+  box-shadow: 0 6px 16px rgba(15,78,138,.14);
+}
+
+[class*="priceGrid"] [class*="planLink"] {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  border: 0;
+  background: #1863ad;
+  color: #fff;
+}
+
+[class*="priceGrid"] .priceButton.featuredButton {
+  background: #fff;
+  color: #0f4e8a;
+}
+
+@media(max-width:640px){
+  [class*="priceGrid"] .priceButton,
+  [class*="priceGrid"] [class*="planLink"] {
+    width: min(100%, 190px);
+    min-height: 42px;
+    padding: 0 16px;
+    font-size: 14px;
+  }
+}
