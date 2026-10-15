@@ -50,7 +50,7 @@ export const WEDDING_COVER_BY_THEME: Record<string, string> = {
 };
 
 export const THEME_CARD_PREVIEW_BY_THEME: Record<string, string> = {
-  "adat-melayu": "/theme-previews/wedding/adat-melayu.jpg",
+  "adat-melayu": "/theme-previews/wedding/adat-melayu-card.webp",
   "lavender-garden-motion": "/theme-previews/wedding/lavender-garden-motion-card.jpg",
   "luxury-gold": "/theme-previews/wedding/luxury-gold-card.jpg",
   "modern-elegant": "/theme-previews/wedding/modern-elegant-card.jpg",
