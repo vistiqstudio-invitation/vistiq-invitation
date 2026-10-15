@@ -2203,3 +2203,8 @@ img[src*="BAHAN-e1690431816910.webp"]{background-color:#642d38}
 /* Vistiq gold ornament texture: keep motifs proportional on long sections. */
 .elementor-9049 .elementor-element.elementor-element-232302a7,.elementor-9049 .elementor-element.elementor-element-4c4831df,.elementor-9049 .elementor-element.elementor-element-1196320b,.elementor-9049 .elementor-element.elementor-element-73d84c96{background-size:auto,100% auto!important;background-position:center,center top!important;background-repeat:no-repeat,repeat-y!important}
 .elementor-9049 .elementor-element.elementor-element-232302a7{background-image:linear-gradient(rgba(100,45,56,.76),rgba(100,45,56,.76)),url("/themes/adat-melayu/ornamen-emas-background.webp?v=20261015")!important;background-position:center,center bottom!important;background-repeat:no-repeat!important}
+
+/* Full-width event panels; retain internal text padding. */
+.elementor-9049 .elementor-element.elementor-element-4c4831df{--padding-left:0px;--padding-right:0px;padding-left:0!important;padding-right:0!important}
+.elementor-9049 .elementor-element.elementor-element-62c33cbc,.elementor-9049 .elementor-element.elementor-element-2ae92a4a{width:100%;max-width:100%;--margin-left:0px;--margin-right:0px}
+.elementor-9049 .elementor-element.elementor-element-232302a7,.elementor-9049 .elementor-element.elementor-element-4c4831df,.elementor-9049 .elementor-element.elementor-element-1196320b,.elementor-9049 .elementor-element.elementor-element-73d84c96{background-size:auto,116% auto!important}
