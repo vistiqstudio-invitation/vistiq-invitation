@@ -9,8 +9,10 @@
   gap: 7px;
 }
 
+/* Homepage also renders the larger WhatsApp CTA at bottom: 22px.
+   Keep the install control clearly above it instead of letting the pills overlap. */
 .wrap.stacked {
-  bottom: 68px;
+  bottom: 92px;
 }
 
 .button {
@@ -101,7 +103,7 @@
   }
 
   .wrap.stacked {
-    bottom: 58px;
+    bottom: 84px;
   }
 
   .button {
