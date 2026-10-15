@@ -557,3 +557,8 @@
     z-index: 3;
   }
 }
+
+/* Keep the complete headroom of the supplied Melayu demo cover. */
+.root[data-wedding-theme="adat-melayu"] .desktopBackdrop > img[src="/photos/melayu-cover.webp"] {
+  object-position: center top;
+}
