@@ -1,5 +1,5 @@
 export const WEDDING_COVER_BY_THEME: Record<string, string> = {
-  "adat-melayu": "/photos/green-cover.webp",
+  "adat-melayu": "/photos/melayu-cover.webp",
   "princess-fairytale": "/photos/romance-cover.webp",
   "luxury-gold": "/photos/luxury-cover.webp",
   "islamic-green": "/photos/green-cover.webp",
