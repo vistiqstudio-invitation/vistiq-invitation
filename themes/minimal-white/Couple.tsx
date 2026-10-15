@@ -17,6 +17,8 @@ function Person({
   instagram: string | null;
   role: "Putra" | "Putri";
 }) {
+  const hasCustomRole = parents?.trim().toLowerCase().startsWith(role.toLowerCase());
+
   return (
     <div className={styles.person}>
       {photo && (
@@ -30,9 +32,15 @@ function Person({
 
       {parents && (
         <p className={styles.personParents}>
-          {role} dari
-          <br />
-          {parents}
+          {hasCustomRole ? (
+            parents
+          ) : (
+            <>
+              {role} dari
+              <br />
+              {parents}
+            </>
+          )}
         </p>
       )}
 
