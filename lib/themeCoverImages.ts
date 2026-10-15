@@ -75,8 +75,8 @@ export const THEME_CARD_PREVIEW_BY_THEME: Record<string, string> = {
   "ivory-botanica": "/theme-previews/wedding/ivory-botanica-card.jpg",
   "adat-bali-motion": "/theme-previews/wedding/adat-bali-motion-card.jpg",
   "adat-minang-motion": "/theme-previews/wedding/adat-minang-motion-card.jpg",
-  "adat-jawa": "/theme-previews/wedding/adat-jawa-card.webp",
-  "jawa-sasmaya": "/theme-previews/wedding/jawa-sasmaya-card.webp",
+  "adat-jawa": "/theme-previews/wedding/adat-jawa-card.jpg",
+  "jawa-sasmaya": "/theme-previews/wedding/jawa-sasmaya-card.jpg",
   // Dedicated Khitan catalog covers stay separate from each theme live demo preview.
   "khitan-warna": "/theme-previews/khitan/khitan-warna-card.jpg",
   "khitan-ksatria": "/theme-previews/khitan/khitan-ksatria-card.jpg",
