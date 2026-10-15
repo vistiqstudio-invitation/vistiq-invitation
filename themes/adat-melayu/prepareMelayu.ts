@@ -58,6 +58,9 @@ function icon(doc: Document, label: string, path: string) {
   const p = doc.createElementNS(svg.namespaceURI, "path"); p.setAttribute("fill", "currentColor"); p.setAttribute("d", path); svg.append(p); return svg;
 }
 const icons = {
+  copy: "M8 2h12v14h-2V4H8V2M4 6h12v16H4V6m2 2v12h8V8H6",
+  gift: "M3 7h18v5h-1v10H4V12H3V7m2 2v1h6V9H5m8 0v1h6V9h-6m-7 3v8h5v-8H6m7 0v8h5v-8h-5M12 7C2-1 21-1 12 7m-2-2C6 1 5 6 10 5m4 0c5 1 4-4 0 0",
+  arrow: "M13 4l8 8-8 8-2-2 5-5H3v-2h13l-5-5 2-2",
   location: "M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7m0 10a3 3 0 1 1 0-6 3 3 0 0 1 0 6",
   envelope: "M2 4h20v16H2V4m2 2v1l8 5 8-5V6l-8 5-8-5m0 3v9h16V9l-8 5-8-5",
   instagram: "M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7m5 3a5 5 0 1 1 0 10 5 5 0 0 1 0-10m0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6m6-4a1 1 0 1 1 0 2 1 1 0 0 1 0-2",
@@ -199,7 +202,7 @@ export function prepareMelayu(doc: Document, invitation: InvitationData, onOpen:
     a.href = a.getAttribute("aria-label") === "WhatsApp" ? "https://wa.me/6281371338032" : "https://www.instagram.com/vistiqinvitation/";
   });
   doc.querySelectorAll<HTMLElement>("i.fas, i.far, i.fab").forEach(el => {
-    const kind = el.className.includes("map-marker") ? "location" : el.className.includes("whatsapp") ? "whatsapp" : el.className.includes("instagram") ? "instagram" : "envelope";
+    const kind = el.className.includes("fa-copy") ? "copy" : el.className.includes("fa-gift") ? "gift" : el.className.includes("fa-long-arrow") ? "arrow" : el.className.includes("map-marker") ? "location" : el.className.includes("whatsapp") ? "whatsapp" : el.className.includes("instagram") ? "instagram" : "envelope";
     el.replaceWith(icon(doc, kind, icons[kind]));
   });
   setupRsvp(doc, invitation, guest, signal);

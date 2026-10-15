@@ -9,14 +9,21 @@ import styles from "./style.module.css";
 export default function AdatMelayu({ invitation }: { invitation: InvitationData }) {
   const frame = useRef<HTMLIFrameElement>(null);
   const cleanup = useRef<(() => void) | undefined>(undefined);
+  const prepared = useRef<{ doc: Document; invitation: InvitationData } | null>(null);
   const { setOpened } = useInvitation();
   const load = useCallback(() => {
     const doc = frame.current?.contentDocument;
-    if (!doc) return;
+    if (!doc || !doc.querySelector("#sec")) return;
+    if (prepared.current?.doc === doc && prepared.current.invitation === invitation) return;
     cleanup.current?.();
     cleanup.current = prepareMelayu(doc, invitation, () => setOpened(true));
+    prepared.current = { doc, invitation };
   }, [invitation, setOpened]);
-  useEffect(() => () => cleanup.current?.(), []);
+  useEffect(() => {
+    // The static iframe can finish before React hydrates and attaches onLoad.
+    if (frame.current?.contentDocument?.readyState === "complete") load();
+    return () => { cleanup.current?.(); prepared.current = null; };
+  }, [load]);
   return (
     <main className={styles.root}>
       <iframe ref={frame} className={styles.frame}
