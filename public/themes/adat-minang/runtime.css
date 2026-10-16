@@ -13,3 +13,8 @@
 .vistiq-house-ornament img{display:block;width:100%;max-width:100%;height:auto;aspect-ratio:1.5;object-fit:cover;object-position:center}
 #kolom>.vistiq-house-ornament{width:80%;margin:8px auto 0}
 #kolom .elementor-element-4a32f8c8{display:none}
+
+/* Reveal each Rumah Gadang when its section enters the viewport. */
+.vistiq-house-ornament.idb-reveal{opacity:0;transform:translateY(28px);transition-property:opacity,transform;transition-timing-function:cubic-bezier(.22,1,.36,1)}
+.vistiq-house-ornament.idb-reveal.active{opacity:1;transform:translateY(0)}
+@media(prefers-reduced-motion:reduce){.vistiq-house-ornament.idb-reveal{opacity:1;transform:none;transition:none!important}}
