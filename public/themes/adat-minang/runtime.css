@@ -24,3 +24,11 @@
 #kolom>.vistiq-cover-curtain{transform:translateY(-13%)}
 #kolom>.vistiq-house-ornament{width:100%;max-width:100%;margin:calc(8px - 8.87vw) 0 0;overflow:hidden}
 #kolom>.vistiq-house-ornament img{width:104.5%;max-width:none;margin-left:-2.25%;aspect-ratio:1.68;object-fit:cover;object-position:center calc(50% + 6px)}
+
+/* Keep the couple's faces clear, with the emblem and names in the upper opening. */
+#kolom>.vistiq-cover-emblem{top:clamp(12px,3svh,30px)}
+#kolom>.vistiq-cover-titles{position:absolute;top:16svh;left:0;z-index:4;display:flex;flex-direction:column;align-items:center;gap:12px;width:100%;padding:0 24px;box-sizing:border-box;text-align:center;pointer-events:none}
+#kolom .vistiq-cover-titles>.elementor-widget{width:100%;margin:0!important}
+#kolom .vistiq-cover-titles .elementor-widget-container{margin:0!important}
+#kolom .vistiq-cover-titles .elementor-element-6274a66a .elementor-heading-title{font-size:12px;line-height:1.4;letter-spacing:3px;text-shadow:0 2px 8px #38120e}
+#kolom .vistiq-cover-titles .elementor-element-3a9b448a .elementor-heading-title{font-size:clamp(24px,6.2vw,30px);line-height:1.15;text-shadow:0 2px 8px #38120e}
