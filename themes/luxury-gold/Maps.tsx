@@ -7,11 +7,13 @@ import styles from "./style.module.css";
 export default function Maps({ invitation }: { invitation: InvitationData }) {
   if (!invitation.mapsUrl && !invitation.mapsEmbedUrl) return null;
 
+  const isAfifAyu = invitation.slug === "afif-dan-ayu";
+
   return (
     <div className={styles.section}>
       <Reveal>
         <p className={styles.eyebrow}>Location</p>
-        <h2 className={styles.title}>Wedding Venue</h2>
+        <h2 className={styles.title}>{isAfifAyu ? "NGUNDUH MANTU" : "Wedding Venue"}</h2>
         <div className={styles.ornament}><span className={styles.ornamentMark} /></div>
       </Reveal>
 
