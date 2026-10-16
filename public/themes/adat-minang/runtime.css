@@ -18,3 +18,9 @@
 .vistiq-house-ornament.idb-reveal{opacity:0;transform:translateY(28px);transition-property:opacity,transform;transition-timing-function:cubic-bezier(.22,1,.36,1)}
 .vistiq-house-ornament.idb-reveal.active{opacity:1;transform:translateY(0)}
 @media(prefers-reduced-motion:reduce){.vistiq-house-ornament.idb-reveal{opacity:1;transform:none;transition:none!important}}
+
+/* Cover only: lift the connecting drape out of view and fill the lower edges. */
+#kolom{overflow:hidden}
+#kolom>.vistiq-cover-curtain{transform:translateY(-13%)}
+#kolom>.vistiq-house-ornament{width:100%;max-width:100%;margin:calc(8px - 8.87vw) 0 0;overflow:hidden}
+#kolom>.vistiq-house-ornament img{width:104.5%;max-width:none;margin-left:-2.25%;aspect-ratio:1.68;object-fit:cover;object-position:center calc(50% - 4px)}
