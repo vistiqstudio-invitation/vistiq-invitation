@@ -7,3 +7,9 @@
 /* Supplied gold silhouette uses luminance masking so its black canvas stays invisible. */
 #kolom>.vistiq-cover-emblem{position:absolute;top:clamp(68px,11svh,112px);left:50%;width:clamp(82px,24vw,110px);max-width:28%;margin:0!important;transform:translateX(-50%)!important;z-index:4;pointer-events:none;line-height:0;filter:drop-shadow(0 2px 3px #38120e99)}
 #kolom .vistiq-gonjong-mark{display:block;width:100%;aspect-ratio:1;background:#ffdb64;mask-image:url("/themes/adat-minang/cover-gonjong-emblem.webp");mask-mode:luminance;mask-size:contain;mask-position:center;mask-repeat:no-repeat}
+
+/* Rumah Gadang ornaments keep their proportions and reserve space in the layout. */
+.vistiq-house-ornament{position:relative;width:100%;flex-shrink:0;margin:14px auto;line-height:0;pointer-events:none}
+.vistiq-house-ornament img{display:block;width:100%;max-width:100%;height:auto;aspect-ratio:1.5;object-fit:cover;object-position:center}
+#kolom>.vistiq-house-ornament{width:80%;margin:8px auto 0}
+#kolom .elementor-element-4a32f8c8{display:none}
