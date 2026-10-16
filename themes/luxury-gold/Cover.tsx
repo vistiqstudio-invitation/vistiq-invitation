@@ -12,6 +12,7 @@ export default function Cover({ invitation }: { invitation: InvitationData }) {
   const guestName = searchParams.get("to") || "Bapak/Ibu/Saudara/i";
 
   const coverEvent = invitation.coverEvent;
+  const isAfifAyu = invitation.slug === "afif-dan-ayu";
 
   return (
     <motion.section
@@ -40,7 +41,7 @@ export default function Cover({ invitation }: { invitation: InvitationData }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
       >
-        <p className={styles.coverTop}>The Wedding Of</p>
+        <p className={styles.coverTop}>{isAfifAyu ? "NGUNDUH MANTU" : "The Wedding Of"}</p>
 
         <h1 className={styles.coverTitle}>
           {(invitation.groom.nickname || invitation.groom.name)}
