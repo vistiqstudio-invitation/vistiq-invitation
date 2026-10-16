@@ -23,4 +23,4 @@
 #kolom{overflow:hidden}
 #kolom>.vistiq-cover-curtain{transform:translateY(-13%)}
 #kolom>.vistiq-house-ornament{width:100%;max-width:100%;margin:calc(8px - 8.87vw) 0 0;overflow:hidden}
-#kolom>.vistiq-house-ornament img{width:104.5%;max-width:none;margin-left:-2.25%;aspect-ratio:1.68;object-fit:cover;object-position:center calc(50% - 4px)}
+#kolom>.vistiq-house-ornament img{width:104.5%;max-width:none;margin-left:-2.25%;aspect-ratio:1.68;object-fit:cover;object-position:center calc(50% + 6px)}
