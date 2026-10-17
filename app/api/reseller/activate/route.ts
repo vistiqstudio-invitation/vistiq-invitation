@@ -25,7 +25,7 @@ export async function POST(request: Request) {
 
   const db = createServiceClient(supabaseUrl, serviceRoleKey, { auth: { autoRefreshToken: false, persistSession: false } });
   const { data: reseller } = await db.from("resellers").select("id, package, status, brand_active, brand_expires_at").eq("user_id", profile.id).maybeSingle();
-  if (!reseller || !isBrandAccessActive(reseller)) return NextResponse.json({ error: "Aktivasi mandiri hanya tersedia untuk Mitra Brand yang aktif." }, { status: 403 });
+  if (!reseller || !isBrandAccessActive(reseller)) return NextResponse.json({ error: "Akses ini hanya tersedia untuk Mitra Brand yang aktif." }, { status: 403 });
 
   if (target === "client") {
     const nextStatus = body.status ?? "active";
@@ -34,18 +34,11 @@ export async function POST(request: Request) {
     if (!ownedClient) return NextResponse.json({ error: "Client tidak ditemukan." }, { status: 404 });
     const { data: updatedClient, error } = await db.from("clients").update({ status: nextStatus }).eq("id", ownedClient.id).eq("reseller_id", reseller.id).select("id, status").maybeSingle();
     if (error || !updatedClient) return NextResponse.json({ error: "Status akun client gagal disimpan." }, { status: 500 });
-    const { data: syncedInvitations, error: invitationError } = await db.from("invitations").update({ is_active: nextStatus === "active" }).eq("client_id", ownedClient.id).select("id");
-    if (invitationError) return NextResponse.json({ error: "Status undangan gagal disinkronkan." }, { status: 500 });
-    return NextResponse.json({ success: true, target, status: nextStatus, invitationsUpdated: syncedInvitations?.length ?? 0 });
+    return NextResponse.json({ success: true, target, status: nextStatus });
   }
 
-  const invitationId = Number(id);
-  if (!Number.isSafeInteger(invitationId) || invitationId <= 0) return NextResponse.json({ error: "ID undangan tidak valid." }, { status: 400 });
-  const { data: invitation } = await db.from("invitations").select("id, client_id").eq("id", invitationId).maybeSingle();
-  if (!invitation?.client_id) return NextResponse.json({ error: "Undangan tidak ditemukan." }, { status: 404 });
-  const { data: ownedClient } = await db.from("clients").select("id").eq("id", invitation.client_id).eq("reseller_id", reseller.id).maybeSingle();
-  if (!ownedClient) return NextResponse.json({ error: "Undangan bukan milik Mitra Brand ini." }, { status: 403 });
-  const { error } = await db.from("invitations").update({ is_active: true }).eq("id", invitation.id).eq("client_id", ownedClient.id);
-  if (error) return NextResponse.json({ error: "Gagal mengaktifkan undangan." }, { status: 500 });
-  return NextResponse.json({ success: true, target });
+  return NextResponse.json(
+    { error: "Aktivasi undangan sekarang dilakukan melalui pembayaran Rp20.000 via Midtrans." },
+    { status: 409 },
+  );
 }
