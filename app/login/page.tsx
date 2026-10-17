@@ -80,6 +80,12 @@ export default function LoginPage() {
         );
         return;
       }
+
+      if (reseller?.package === "reseller_brand") {
+        alert(
+          "Informasi Mitra Brand\n\nDemi menjaga kualitas layanan dan kenyamanan bisnis ke depannya, setiap undangan kini dapat diaktifkan secara otomatis hanya dengan biaya Rp20.000 per undangan.\n\nKakak tetap bisa membuat dan mengedit undangan seperti biasa. Biaya Rp20.000 hanya dibayarkan saat undangan ingin diaktifkan.\n\nTerima kasih atas dukungan dan pengertiannya."
+        );
+      }
     }
 
     if (profile.role === "client") {
