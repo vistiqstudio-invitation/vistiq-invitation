@@ -79,8 +79,6 @@ export default function ResellerTransactionsPage() {
       const currentReseller = resellerData?.[0] || null;
       setReseller(currentReseller);
       if (!currentReseller) { setLoading(false); return; }
-      // Halaman ini khusus Reseller biasa. Mitra Brand tidak diubah oleh sistem baru.
-      if (currentReseller.package === "reseller_brand") { router.push("/reseller"); return; }
       fetchTransactions(currentReseller.id);
     };
     loadUser();
@@ -102,7 +100,7 @@ export default function ResellerTransactionsPage() {
   const paidCount = transactions.filter((item) => item.status === "paid").length;
   const pendingCount = transactions.filter((item) => item.status === "pending").length;
   const totalPaid = transactions.filter((item) => item.status === "paid").reduce((sum, item) => sum + Number(item.amount || 0), 0);
-  const brandingEnabled = reseller?.package === "reseller";
+  const brandingEnabled = reseller?.package === "reseller" || reseller?.package === "reseller_brand";
   const brandName = brandingEnabled && reseller?.brand_name ? reseller.brand_name : null;
   const brandStyle = brandingEnabled && reseller?.brand_color ? ({ "--accent": reseller.brand_color } as React.CSSProperties) : undefined;
   const clientName = (id?: string | null) => clients.find((client) => client.id === id)?.name || "Client";
@@ -116,7 +114,7 @@ export default function ResellerTransactionsPage() {
     <main className={styles.page} style={brandStyle}>
       <DashboardSidebar
         brandTop={brandName ? brandName.toUpperCase() : "VISTIQ"}
-        brandBottom="Reseller"
+        brandBottom={reseller?.package === "reseller_brand" ? "Mitra Brand" : "Reseller"}
         logoUrl={brandingEnabled ? reseller?.logo_url : null}
         accentColor={brandingEnabled ? reseller?.brand_color : null}
         items={getResellerNavItems(reseller?.package, reseller?.id, reseller?.billing_model)}
@@ -129,23 +127,23 @@ export default function ResellerTransactionsPage() {
           <div>
             <p className={styles.label}>{brandName ? `${brandName} DASHBOARD` : "RESELLER DASHBOARD"}</p>
             <h1 className={styles.title}>Riwayat Pembayaran</h1>
-            <p className={styles.subtitle}>Catatan pembayaran aktivasi undangan Rp20.000. Tidak ada saldo, komisi, atau proses penarikan.</p>
+            <p className={styles.subtitle}>Catatan pembayaran biaya layanan Rp20.000 per undangan.</p>
           </div>
           <button onClick={() => reseller && fetchTransactions(reseller.id)} className={styles.button}>Refresh</button>
         </header>
 
         {loading ? <p>Memuat data...</p> : !reseller ? (
-          <section className={styles.warningBox}><h2>Akun reseller belum terhubung.</h2></section>
+          <section className={styles.warningBox}><h2>Akun belum terhubung.</h2></section>
         ) : (
           <>
             <section className={styles.stats}>
               <div className={styles.statCard}><span>Pembayaran Berhasil</span><strong>{paidCount}</strong></div>
               <div className={styles.statCard}><span>Menunggu Bayar</span><strong>{pendingCount}</strong></div>
-              <div className={styles.statCard}><span>Total Aktivasi Dibayar</span><strong>Rp {totalPaid.toLocaleString("id-ID")}</strong></div>
+              <div className={styles.statCard}><span>Total Biaya Layanan</span><strong>Rp {totalPaid.toLocaleString("id-ID")}</strong></div>
             </section>
             <section className={styles.tableWrap}>
-              <h2 className={styles.sectionTitle}>Pembayaran Aktivasi</h2>
-              {transactions.length === 0 ? <p>Belum ada pembayaran aktivasi.</p> : (
+              <h2 className={styles.sectionTitle}>Pembayaran Biaya Layanan</h2>
+              {transactions.length === 0 ? <p>Belum ada pembayaran biaya layanan.</p> : (
                 <div className={styles.table}>
                   {transactions.map((item) => {
                     const isPaid = item.status === "paid";
