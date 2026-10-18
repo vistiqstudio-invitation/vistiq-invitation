@@ -6,9 +6,8 @@ import { getSessionProfile } from "@/lib/supabase/dal";
 
 type ActivationTarget = "client" | "invitation";
 
-function isBrandAccessActive(reseller: { package?: string | null; status?: string | null; brand_active?: boolean | null; brand_expires_at?: string | null }) {
-  const brandNotExpired = !reseller.brand_expires_at || new Date(reseller.brand_expires_at).getTime() > Date.now();
-  return reseller.package === "reseller_brand" && reseller.status === "active" && reseller.brand_active === true && brandNotExpired;
+function isBrandAccessActive(reseller: { package?: string | null; status?: string | null; brand_active?: boolean | null }) {
+  return reseller.package === "reseller_brand" && reseller.status === "active" && reseller.brand_active === true;
 }
 
 export async function POST(request: Request) {
@@ -21,11 +20,11 @@ export async function POST(request: Request) {
   const body = (await request.json()) as { target?: ActivationTarget; id?: string | number; status?: "active" | "inactive" };
   const target = body.target;
   const id = String(body.id ?? "").trim();
-  if ((target !== "client" && target !== "invitation") || !id) return NextResponse.json({ error: "Permintaan aktivasi tidak valid." }, { status: 400 });
+  if ((target !== "client" && target !== "invitation") || !id) return NextResponse.json({ error: "Permintaan tidak valid." }, { status: 400 });
 
   const db = createServiceClient(supabaseUrl, serviceRoleKey, { auth: { autoRefreshToken: false, persistSession: false } });
-  const { data: reseller } = await db.from("resellers").select("id, package, status, brand_active, brand_expires_at").eq("user_id", profile.id).maybeSingle();
-  if (!reseller || !isBrandAccessActive(reseller)) return NextResponse.json({ error: "Akses ini hanya tersedia untuk Mitra Brand yang aktif." }, { status: 403 });
+  const { data: reseller } = await db.from("resellers").select("id, package, status, brand_active").eq("user_id", profile.id).maybeSingle();
+  if (!reseller || !isBrandAccessActive(reseller)) return NextResponse.json({ error: "Akses ini hanya tersedia untuk akun Mitra Brand lama yang aktif." }, { status: 403 });
 
   if (target === "client") {
     const nextStatus = body.status ?? "active";
@@ -38,7 +37,7 @@ export async function POST(request: Request) {
   }
 
   return NextResponse.json(
-    { error: "Aktivasi undangan sekarang dilakukan melalui pembayaran Rp20.000 via Midtrans." },
+    { error: "Undangan dipublikasikan setelah biaya layanan Rp20.000 berhasil dibayar melalui Midtrans." },
     { status: 409 },
   );
 }
