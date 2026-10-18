@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import PushNotificationControl from "@/components/admin/PushNotificationControl";
 import styles from "@/styles/dashboard.module.css";
 
 type NotificationRole = "owner" | "reseller";
@@ -302,7 +303,7 @@ export default function OrderNotifications({ role }: { role: NotificationRole })
       </button>
 
       {open && (
-        <section className={styles.notificationPanel} aria-label="Daftar notifikasi pesanan">
+        <section className={styles.notificationPanel} aria-label="Daftar notifikasi pesanan" style={{ maxHeight: "min(720px, calc(100dvh - 96px))", overflowY: "auto" }}>
           <div className={styles.notificationHeader}>
             <div>
               <strong>Pesanan Baru</strong>
@@ -323,6 +324,7 @@ export default function OrderNotifications({ role }: { role: NotificationRole })
             <p style={{ margin: "8px 0 0", fontSize: 11, lineHeight: 1.5, color: "#64748b" }}>Nada berbunyi saat ada notifikasi baru selama dashboard terbuka.</p>
             {soundError && <p role="alert" style={{ margin: "8px 0 0", fontSize: 12, color: "#b91c1c" }}>{soundError}</p>}
           </div>
+          <PushNotificationControl />
           <div className={styles.notificationList}>
             {notices.length === 0 ? (
               <p className={styles.notificationEmpty}>Belum ada pesanan.</p>
