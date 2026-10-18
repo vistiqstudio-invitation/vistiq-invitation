@@ -14,14 +14,32 @@ const REPLACEMENTS: Array<[RegExp, string]> = [
   [/Aktivasi Rp20\.000 per undangan/g, "Biaya layanan Rp20.000 per undangan"],
 ];
 
-function serviceFeeCopy(value: string) {
-  return REPLACEMENTS.reduce((text, [pattern, replacement]) => text.replace(pattern, replacement), value);
+const MONTHLY_LEGACY_REPLACEMENTS: Array<[RegExp, string]> = [
+  [
+    /Harga jual kepada client bebas Anda tentukan\. Untuk akun baru, biaya layanan Vistiq tetap Rp20\.000 per undangan\./g,
+    "Harga jual kepada client bebas Anda tentukan. Akun Mitra Brand bulanan lama tetap menggunakan sistem sebelumnya: selama masa aktif, undangan dapat diaktifkan tanpa biaya layanan per undangan.",
+  ],
+  [
+    /Harga jual kepada client bebas Anda tentukan\. Untuk akun baru, biaya aktivasi Vistiq tetap Rp20\.000 per undangan\./g,
+    "Harga jual kepada client bebas Anda tentukan. Akun Mitra Brand bulanan lama tetap menggunakan sistem sebelumnya: selama masa aktif, undangan dapat diaktifkan tanpa biaya layanan per undangan.",
+  ],
+];
+
+function serviceFeeCopy(value: string, monthlyLegacy: boolean) {
+  let text = REPLACEMENTS.reduce((result, [pattern, replacement]) => result.replace(pattern, replacement), value);
+  if (monthlyLegacy) {
+    text = MONTHLY_LEGACY_REPLACEMENTS.reduce(
+      (result, [pattern, replacement]) => result.replace(pattern, replacement),
+      text,
+    );
+  }
+  return text;
 }
 
-function rewriteTextNodes(root: Node) {
+function rewriteTextNodes(root: Node, monthlyLegacy: boolean) {
   if (root.nodeType === Node.TEXT_NODE) {
     const current = root.nodeValue ?? "";
-    const next = serviceFeeCopy(current);
+    const next = serviceFeeCopy(current, monthlyLegacy);
     if (next !== current) root.nodeValue = next;
     return;
   }
@@ -32,26 +50,26 @@ function rewriteTextNodes(root: Node) {
   let node = walker.nextNode();
   while (node) {
     const current = node.nodeValue ?? "";
-    const next = serviceFeeCopy(current);
+    const next = serviceFeeCopy(current, monthlyLegacy);
     if (next !== current) node.nodeValue = next;
     node = walker.nextNode();
   }
 }
 
-export default function ServiceFeeTerminology() {
+export default function ServiceFeeTerminology({ monthlyLegacy = false }: { monthlyLegacy?: boolean }) {
   useEffect(() => {
     const originalAlert = window.alert.bind(window);
-    window.alert = (message?: unknown) => originalAlert(serviceFeeCopy(String(message ?? "")));
+    window.alert = (message?: unknown) => originalAlert(serviceFeeCopy(String(message ?? ""), monthlyLegacy));
 
-    rewriteTextNodes(document.body);
+    rewriteTextNodes(document.body, monthlyLegacy);
 
     const observer = new MutationObserver((mutations) => {
       for (const mutation of mutations) {
         if (mutation.type === "characterData") {
-          rewriteTextNodes(mutation.target);
+          rewriteTextNodes(mutation.target, monthlyLegacy);
           continue;
         }
-        mutation.addedNodes.forEach((node) => rewriteTextNodes(node));
+        mutation.addedNodes.forEach((node) => rewriteTextNodes(node, monthlyLegacy));
       }
     });
 
@@ -65,7 +83,7 @@ export default function ServiceFeeTerminology() {
       observer.disconnect();
       window.alert = originalAlert;
     };
-  }, []);
+  }, [monthlyLegacy]);
 
   return null;
 }
