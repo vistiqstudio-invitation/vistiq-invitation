@@ -4,6 +4,7 @@ import InvitationEventsShortcut from "@/components/InvitationEventsShortcut";
 import ResellerBillingNotice from "@/components/reseller/ResellerBillingNotice";
 import QuickClientCreator from "@/components/reseller/QuickClientCreator";
 import ServiceFeeTerminology from "@/components/reseller/ServiceFeeTerminology";
+import ExpiredBrandGate from "@/components/reseller/ExpiredBrandGate";
 
 export default async function ResellerLayout({
   children,
@@ -14,14 +15,26 @@ export default async function ResellerLayout({
   const supabase = await createClient();
   const { data: reseller } = await supabase
     .from("resellers")
-    .select("package")
+    .select("package, status, brand_active, brand_expires_at, billing_model")
     .eq("user_id", profile.id)
     .maybeSingle();
+
+  const isMonthlyLegacy =
+    reseller?.package === "reseller_brand" && Boolean(reseller?.brand_expires_at);
+  const monthlyExpired =
+    isMonthlyLegacy &&
+    (reseller?.status !== "active" ||
+      reseller?.brand_active !== true ||
+      new Date(reseller.brand_expires_at as string).getTime() <= Date.now());
+
+  if (monthlyExpired) {
+    return <ExpiredBrandGate />;
+  }
 
   return (
     <>
       {children}
-      <ServiceFeeTerminology />
+      <ServiceFeeTerminology monthlyLegacy={isMonthlyLegacy} />
       <QuickClientCreator />
       <InvitationEventsShortcut mode="reseller" />
       <ResellerBillingNotice packageName={reseller?.package ?? null} />
