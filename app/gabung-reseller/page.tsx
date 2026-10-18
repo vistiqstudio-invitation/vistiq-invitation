@@ -21,12 +21,11 @@ const THEMES = [
     ["adat-bali-motion", "Adat Bali Motion", "Detail adat yang istimewa", "/theme-previews/wedding/adat-bali-motion-card.jpg"],
 ];
 const BENEFITS = [
-    ["01", "Tema yang siap ditawarkan", "Pilihan tema pernikahan, khitan, aqiqah, hingga ulang tahun. Pilih yang sesuai dengan acara client."],
-    ["02", "Dashboard untuk mengelola order", "Kelola client, isi data acara, unggah foto, dan lihat preview undangan dari satu tempat."],
-    ["03", "Client juga bisa edit sendiri", "Berikan akses dashboard client agar perubahan data dan foto lebih praktis."],
-    ["04", "Bahan promosi sudah tersedia", "Gunakan Marketing Kit berisi poster, katalog tema, template pesan, dan panduan promosi."],
-    ["05", "Bisa dikelola lewat HP", "Cukup browser dan koneksi internet untuk mengelola undangan. Tidak perlu coding dari awal."],
-    ["06", "Kamu tentukan harga jual", "Biaya aktivasi tetap Rp20.000 per undangan. Atur penawaran dan layananmu sendiri kepada client."],
+    ["01", "Mulai tanpa bikin website dari nol", "Sistem dan dashboard sudah tersedia. Kelola order, data acara, dan foto dalam satu tempat; client juga bisa mendapat akses untuk mengedit datanya."],
+    ["02", "Beragam tema siap ditawarkan", "Dari undangan adat hingga desain modern, pilih tema yang sesuai dengan kebutuhan acara client."],
+    ["03", "Bisa dikelola lewat HP", "Kelola undangan melalui browser HP atau laptop dengan koneksi internet. Tidak perlu coding dari awal."],
+    ["04", "Marketing Kit untuk bantu promosi", "Gunakan poster, katalog tema, template pesan, dan panduan promosi untuk mulai menawarkan layananmu."],
+    ["05", "Kamu tentukan harga jual", "Biaya aktivasi Rp20.000 per undangan yang dipublikasikan. Tentukan harga jual dan layanan sesuai penawaranmu kepada client."],
 ];
 const FAQS = [
     [`${RESELLER_JOIN_PRICE_LABEL} itu untuk apa?`, "Untuk pendaftaran dan akses akun Reseller Vistiq sekali bayar. Harga normal Rp149.000; harga yang berlaku ditampilkan pada checkout. Tidak ada iuran bulanan pada paket Reseller ini. Biaya aktivasi undangan dibayar terpisah."],
@@ -56,7 +55,7 @@ export default function GabungResellerPage() {
     <div className={s.promiseStrip}><span>Sistem sudah tersedia</span><i /><span>Harga jual kamu tentukan</span><i /><span>Bayar aktivasi per undangan</span></div>
     <section className={`${s.section} ${s.intro}`}><div><p className={s.eyebrow}>MULAI DARI YANG SUDAH SIAP</p><h2 className={s.title}>Mau punya usaha digital,<br />tapi bingung mulai dari mana?</h2></div><div className={s.introCopy}><p>Tidak harus membuat platform, mendesain semua tema, atau memikirkan sistem akun client sendiri.</p><p>Vistiq menyiapkan alatnya. Kamu membangun penawaran, mencari client, dan memberikan layanan terbaik untuk acara mereka.</p><a href="#cara-kerja" className={s.textLink}>Pelajari alurnya <Arrow /></a></div></section>
     <section id="tema" className={s.catalogSection}><div className={s.section}><div className={s.sectionHeading}><div><p className={s.eyebrow}>LIHAT PRODUKNYA DAHULU</p><h2 className={s.title}>Tema yang bisa langsung<br />kamu tawarkan ke client.</h2></div><p>Contoh asli dari katalog Vistiq.<br />Buka demo dan jelajahi undangannya.</p></div><div className={s.themeGrid}>{THEMES.map(([key, name, category, image]) => <article key={key}><a href={`/demo/${key}`} target="_blank" rel="noopener noreferrer" aria-label={`Lihat demo ${name} di tab baru`} className={s.themeImage}><Image src={image} width={600} height={600} sizes="(max-width: 760px) 45vw, 350px" alt={`Contoh desain ${name}`} style={{ objectFit: "cover" }}/><span>Lihat demo ↗</span></a><div className={s.themeCopy}><h3>{name}</h3><p>{category}</p></div></article>)}</div><div className={s.catalogFoot}><p>Bukan hanya pernikahan. Ada juga khitan, aqiqah, dan ulang tahun.</p><Link href="/demo" target="_blank" rel="noopener noreferrer" className={s.textLink}>Jelajahi katalog lengkap ↗</Link></div></div></section>
-    <section className={s.section}><p className={s.eyebrow}>LEBIH DARI SEKADAR FILE TEMPLATE</p><h2 className={s.title}>Alat untuk menjalankan<br />usaha undanganmu.</h2><div className={s.benefitGrid}>{BENEFITS.map(([n, title, text]) => <article key={n}><span>{n}</span><h3>{title}</h3><p>{text}</p></article>)}</div></section>
+    <section className={s.section}><p className={s.eyebrow}>LEBIH DARI SEKADAR FILE TEMPLATE</p><h2 className={s.title}>5 Alasan Memilih Vistiq</h2><div className={s.benefitGrid}>{BENEFITS.map(([n, title, text]) => <article key={n}><span>{n}</span><h3>{title}</h3><p>{text}</p></article>)}</div></section>
     <section id="cara-kerja" className={s.workflowSection}><div className={s.section}><p className={s.eyebrow}>DARI DAFTAR SAMPAI SIAP DIBAGIKAN</p><h2 className={s.title}>Alurnya jelas.<br />Mulai satu per satu.</h2><ol className={s.steps}>{[
             ["Daftar reseller", `Isi data dan bayar ${RESELLER_JOIN_PRICE_LABEL} melalui Midtrans. Akses akun diproses setelah pembayaran berhasil.`],
             ["Tawarkan ke client", "Gunakan contoh tema dan Marketing Kit. Tentukan harga jual serta layanan yang kamu berikan."],
