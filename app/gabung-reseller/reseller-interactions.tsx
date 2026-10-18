@@ -37,8 +37,8 @@ export function ResellerDailyTimer() {
     if (!RESELLER_PROMO_ACTIVE) return null;
     const values = seconds === null ? ["--", "--", "--"] : [Math.floor(seconds / 3600), Math.floor(seconds / 60) % 60, seconds % 60].map(value => String(value).padStart(2, "0"));
     return <div className={s.dailyTimer}>
-        <strong>Promo Reseller · Timer harian 24 jam</strong>
+        <strong>Promo Reseller</strong>
         <div className={s.timerDigits} aria-label="Waktu menuju reset timer harian">{values.map((value, index) => <span key={index}><b>{value}</b><small>{["Jam", "Menit", "Detik"][index]}</small></span>)}</div>
-        <p>Timer direset setiap hari pukul 00.00 WIB. Promo tetap berlaku sampai ada pemberitahuan berikutnya.</p>
+        <p>Reset 00.00 WIB</p>
     </div>;
 }
