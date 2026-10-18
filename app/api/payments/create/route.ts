@@ -16,8 +16,10 @@ function validEmail(value: string) {
 export async function POST(request: Request) {
   const serverKey = process.env.MIDTRANS_SERVER_KEY;
   const production = process.env.MIDTRANS_IS_PRODUCTION === "true";
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-  if (!serverKey) {
+  if (!serverKey || !supabaseUrl || !serviceRoleKey) {
     return NextResponse.json({ error: "Konfigurasi pembayaran belum tersedia." }, { status: 503 });
   }
 
@@ -91,9 +93,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (supabaseUrl && serviceRoleKey) {
+  {
     const supabase = createServiceClient(supabaseUrl, serviceRoleKey, {
       auth: { autoRefreshToken: false, persistSession: false },
     });
@@ -114,7 +114,10 @@ export async function POST(request: Request) {
       affiliate_id: affiliateId,
       referral_code: affiliateId ? referralCode : null,
     });
-    if (error) console.warn("checkout_orders insert skipped:", error.message);
+    if (error) {
+      console.error("checkout order could not be persisted:", error.message);
+      return NextResponse.json({ error: "Pesanan belum tersimpan. Silakan coba lagi." }, { status: 503 });
+    }
   }
 
   return NextResponse.json({ token: result.token, orderId, redirectUrl: result.redirect_url });

@@ -1,3 +1,5 @@
+import { RESELLER_JOIN_FEE } from "./resellerBilling";
+
 export const PAYMENT_PACKAGES = {
   client: {
     code: "CL",
@@ -9,7 +11,7 @@ export const PAYMENT_PACKAGES = {
     code: "RS",
     name: "Paket Reseller",
     description: "Akses dashboard reseller selamanya, aktivasi undangan Rp20.000",
-    amount: 149000,
+    amount: RESELLER_JOIN_FEE,
   },
   "reseller-brand": {
     code: "RB",

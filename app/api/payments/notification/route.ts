@@ -147,7 +147,16 @@ export async function POST(request: Request) {
 
   // Checkout paket Vistiq dari landing page utama.
   const matchedPackage = packageFromOrderId(orderId);
-  if (!matchedPackage || Number(grossAmount) !== matchedPackage[1].amount) {
+  // Verify the immutable amount quoted when the order was created. A manual
+  // promotion change must neither invalidate old orders nor authorize a
+  // cheaper payment against an old, higher-priced order.
+  const { data: quotedOrder, error: quotedOrderError } = await supabase
+    .from("checkout_orders")
+    .select("package_id, amount")
+    .eq("order_id", orderId)
+    .maybeSingle();
+  if (quotedOrderError) return NextResponse.json({ error: "Order verification unavailable" }, { status: 500 });
+  if (!matchedPackage || !quotedOrder || quotedOrder.package_id !== matchedPackage[0] || Number(grossAmount) !== Number(quotedOrder.amount)) {
     return NextResponse.json({ error: "Invalid notification" }, { status: 403 });
   }
 

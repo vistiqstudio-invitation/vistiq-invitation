@@ -3,6 +3,7 @@
 import Script from "next/script";
 import { FormEvent, useEffect, useState } from "react";
 import type { PaymentPackageId } from "@/lib/paymentPackages";
+import ResellerPrice from "@/components/ResellerPrice";
 import styles from "./CheckoutButton.module.css";
 
 declare global {
@@ -48,7 +49,9 @@ export default function CheckoutButton({
     : "https://app.sandbox.midtrans.com/snap/snap.js";
 
   useEffect(() => {
-    if (autoOpen) setOpen(true);
+    if (!autoOpen) return;
+    const frame = window.requestAnimationFrame(() => setOpen(true));
+    return () => window.cancelAnimationFrame(frame);
   }, [autoOpen]);
 
   const goToStatus = (orderId?: string) => {
@@ -161,6 +164,7 @@ export default function CheckoutButton({
               Data ini digunakan untuk konfirmasi pembayaran dan pembuatan
               akun Anda.
             </p>
+            {packageId === "reseller" && <div className={styles.checkoutTotal}><span>Biaya pendaftaran sekali bayar</span><ResellerPrice /></div>}
             <form onSubmit={submit}>
               <label>
                 Nama lengkap

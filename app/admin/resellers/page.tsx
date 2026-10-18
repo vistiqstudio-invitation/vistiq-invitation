@@ -1,5 +1,7 @@
 "use client";
 
+import { RESELLER_JOIN_PRICE_LABEL } from "@/lib/resellerBilling";
+
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
@@ -320,7 +322,7 @@ function ResellerCreateForm({
               }
               className={styles.input}
             >
-              <option value="reseller">Reseller (Rp149.000 sekali + Rp20.000/aktivasi)</option>
+              <option value="reseller">Reseller ({RESELLER_JOIN_PRICE_LABEL} sekali + Rp20.000/aktivasi)</option>
               <option value="reseller_brand">Mitra Brand (Rp59.000/bulan + Rp20.000/aktivasi)</option>
             </select>
 

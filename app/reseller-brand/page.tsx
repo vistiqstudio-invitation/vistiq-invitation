@@ -1,3 +1,4 @@
+import { RESELLER_JOIN_PRICE_LABEL } from "@/lib/resellerBilling";
 import Link from "next/link";
 import PhoneMockup from "@/components/PhoneMockup";
 import SiteNavbar from "@/components/SiteNavbar";
@@ -35,7 +36,7 @@ const STEPS = [
 const COMPARISON = [
   ["Nama yang tampil ke client", "Vistiq Invitation", "Brand kamu sendiri"],
   ["Aktivasi per undangan", "Rp20.000", "Rp20.000"],
-  ["Biaya", "Rp149.000 sekali bayar", "Rp59.000/bulan"],
+  ["Biaya", `${RESELLER_JOIN_PRICE_LABEL} sekali bayar`, "Rp59.000/bulan"],
   ["Update tema & konten promosi", "Tidak ada", "Setiap bulan"],
   ["Dashboard", "Dashboard reseller standar", "Dashboard full branding sendiri"],
 ];
