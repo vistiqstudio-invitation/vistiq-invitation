@@ -64,26 +64,13 @@ export default function LoginPage() {
     if (profile.role === "reseller") {
       const { data: reseller } = await supabase
         .from("resellers")
-        .select("package, brand_expires_at")
+        .select("package")
         .eq("user_id", data.user.id)
         .maybeSingle();
 
-      const isExpiredBrand =
-        reseller?.package === "reseller_brand" &&
-        Boolean(reseller.brand_expires_at) &&
-        new Date(reseller.brand_expires_at as string).getTime() <= Date.now();
-
-      if (isExpiredBrand) {
-        await supabase.auth.signOut();
-        alert(
-          "Masa aktif Mitra Brand Anda telah habis. Hubungi admin untuk aktivasi kembali."
-        );
-        return;
-      }
-
       if (reseller?.package === "reseller_brand") {
         alert(
-          "Informasi Mitra Brand\n\nDemi menjaga kualitas layanan dan kenyamanan bisnis ke depannya, setiap undangan kini dapat diaktifkan secara otomatis hanya dengan biaya Rp20.000 per undangan.\n\nKakak tetap bisa membuat dan mengedit undangan seperti biasa. Biaya Rp20.000 hanya dibayarkan saat undangan ingin diaktifkan.\n\nTerima kasih atas dukungan dan pengertiannya."
+          "Informasi Layanan Mitra Brand\n\nUntuk menjaga kualitas layanan, kestabilan sistem, penyimpanan data, dan kenyamanan bisnis ke depannya, mulai sekarang setiap undangan pada akun Mitra Brand lama dikenakan biaya layanan Rp20.000 per undangan.\n\nAkun Mitra Brand Kakak tetap aktif tanpa biaya pendaftaran ulang maupun biaya bulanan. Kakak tetap bisa membuat dan mengedit undangan seperti biasa. Biaya layanan dibayarkan ketika undangan siap dipublikasikan. Setelah pembayaran berhasil melalui Midtrans, undangan akan langsung aktif otomatis.\n\nTerima kasih atas dukungan dan pengertiannya."
         );
       }
     }
