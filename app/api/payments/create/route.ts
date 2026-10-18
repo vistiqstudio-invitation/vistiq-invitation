@@ -32,6 +32,15 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Paket tidak valid." }, { status: 400 });
   }
 
+  // Paket Mitra Brand hanya dipertahankan untuk membaca transaksi lama.
+  // Checkout baru diarahkan ke Paket Reseller.
+  if (body.packageId === "reseller-brand") {
+    return NextResponse.json(
+      { error: "Paket Mitra Brand sudah tidak tersedia untuk pendaftaran atau perpanjangan baru. Silakan pilih Paket Reseller." },
+      { status: 409 },
+    );
+  }
+
   const name = clean(body.name, 50);
   const email = clean(body.email, 100).toLowerCase();
   const phone = clean(body.phone, 24).replace(/[^0-9+]/g, "");
