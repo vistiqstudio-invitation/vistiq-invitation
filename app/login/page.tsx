@@ -64,14 +64,31 @@ export default function LoginPage() {
     if (profile.role === "reseller") {
       const { data: reseller } = await supabase
         .from("resellers")
-        .select("package")
+        .select("package, status, brand_active, brand_expires_at, billing_model")
         .eq("user_id", data.user.id)
         .maybeSingle();
 
       if (reseller?.package === "reseller_brand") {
-        alert(
-          "Informasi Layanan Mitra Brand\n\nUntuk menjaga kualitas layanan, kestabilan sistem, penyimpanan data, dan kenyamanan bisnis ke depannya, mulai sekarang setiap undangan pada akun Mitra Brand lama dikenakan biaya layanan Rp20.000 per undangan.\n\nAkun Mitra Brand Kakak tetap aktif tanpa biaya pendaftaran ulang maupun biaya bulanan. Kakak tetap bisa membuat dan mengedit undangan seperti biasa. Biaya layanan dibayarkan ketika undangan siap dipublikasikan. Setelah pembayaran berhasil melalui Midtrans, undangan akan langsung aktif otomatis.\n\nTerima kasih atas dukungan dan pengertiannya."
-        );
+        const isMonthlyLegacy = Boolean(reseller.brand_expires_at);
+        const monthlyExpired =
+          isMonthlyLegacy &&
+          (reseller.status !== "active" ||
+            reseller.brand_active !== true ||
+            new Date(reseller.brand_expires_at as string).getTime() <= Date.now());
+
+        if (monthlyExpired) {
+          await supabase.auth.signOut();
+          alert(
+            "Masa aktif Mitra Brand Anda telah habis. Silakan hubungi admin untuk melakukan perpanjangan."
+          );
+          return;
+        }
+
+        if (!isMonthlyLegacy && reseller.billing_model === "per_invitation") {
+          alert(
+            "Informasi Layanan Mitra Brand\n\nUntuk menjaga kualitas layanan, kestabilan sistem, penyimpanan data, dan kenyamanan bisnis ke depannya, mulai sekarang setiap undangan pada akun Mitra Brand lama dikenakan biaya layanan Rp20.000 per undangan.\n\nAkun Mitra Brand Kakak tetap aktif tanpa biaya pendaftaran ulang maupun biaya bulanan. Kakak tetap bisa membuat dan mengedit undangan seperti biasa. Biaya layanan dibayarkan ketika undangan siap dipublikasikan. Setelah pembayaran berhasil melalui Midtrans, undangan akan langsung aktif otomatis.\n\nTerima kasih atas dukungan dan pengertiannya."
+          );
+        }
       }
     }
 
@@ -111,11 +128,6 @@ export default function LoginPage() {
 
     setSendingReset(false);
 
-    // Always show the same success message regardless of whether the email
-    // exists, so this can't be used to probe which emails have accounts.
-    // The detailed reason is still surfaced below since it's a Supabase-side
-    // failure (rate limit, SMTP, redirect URL not whitelisted) that's useful
-    // to see immediately rather than digging through dashboard logs.
     if (error) {
       alert(
         `Gagal mengirim email reset.\n\nDetail: ${error.message}${
