@@ -6,8 +6,18 @@ import { getSessionProfile } from "@/lib/supabase/dal";
 
 type ActivationTarget = "client" | "invitation";
 
-function isBrandAccessActive(reseller: { package?: string | null; status?: string | null; brand_active?: boolean | null }) {
-  return reseller.package === "reseller_brand" && reseller.status === "active" && reseller.brand_active === true;
+type BrandAccount = {
+  id: string;
+  package?: string | null;
+  status?: string | null;
+  brand_active?: boolean | null;
+  brand_expires_at?: string | null;
+  billing_model?: string | null;
+};
+
+function isBrandAccessActive(reseller: BrandAccount) {
+  const notExpired = !reseller.brand_expires_at || new Date(reseller.brand_expires_at).getTime() > Date.now();
+  return reseller.package === "reseller_brand" && reseller.status === "active" && reseller.brand_active === true && notExpired;
 }
 
 export async function POST(request: Request) {
@@ -23,8 +33,15 @@ export async function POST(request: Request) {
   if ((target !== "client" && target !== "invitation") || !id) return NextResponse.json({ error: "Permintaan tidak valid." }, { status: 400 });
 
   const db = createServiceClient(supabaseUrl, serviceRoleKey, { auth: { autoRefreshToken: false, persistSession: false } });
-  const { data: reseller } = await db.from("resellers").select("id, package, status, brand_active").eq("user_id", profile.id).maybeSingle();
-  if (!reseller || !isBrandAccessActive(reseller)) return NextResponse.json({ error: "Akses ini hanya tersedia untuk akun Mitra Brand lama yang aktif." }, { status: 403 });
+  const { data: reseller } = await db
+    .from("resellers")
+    .select("id, package, status, brand_active, brand_expires_at, billing_model")
+    .eq("user_id", profile.id)
+    .maybeSingle();
+
+  if (!reseller || !isBrandAccessActive(reseller)) {
+    return NextResponse.json({ error: "Akun Mitra Brand tidak aktif atau masa aktifnya telah habis." }, { status: 403 });
+  }
 
   if (target === "client") {
     const nextStatus = body.status ?? "active";
@@ -36,8 +53,48 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: true, target, status: nextStatus });
   }
 
-  return NextResponse.json(
-    { error: "Undangan dipublikasikan setelah biaya layanan Rp20.000 berhasil dibayar melalui Midtrans." },
-    { status: 409 },
-  );
+  const isMonthlyLegacy = Boolean(reseller.brand_expires_at) && reseller.billing_model !== "per_invitation";
+  if (!isMonthlyLegacy) {
+    return NextResponse.json(
+      { error: "Undangan dipublikasikan setelah biaya layanan Rp20.000 berhasil dibayar melalui Midtrans." },
+      { status: 409 },
+    );
+  }
+
+  const invitationId = Number(id);
+  if (!Number.isSafeInteger(invitationId) || invitationId <= 0) {
+    return NextResponse.json({ error: "ID undangan tidak valid." }, { status: 400 });
+  }
+
+  const { data: invitation } = await db
+    .from("invitations")
+    .select("id, client_id, is_active")
+    .eq("id", invitationId)
+    .maybeSingle();
+
+  if (!invitation?.client_id) return NextResponse.json({ error: "Undangan tidak ditemukan." }, { status: 404 });
+
+  const { data: ownedClient } = await db
+    .from("clients")
+    .select("id")
+    .eq("id", invitation.client_id)
+    .eq("reseller_id", reseller.id)
+    .maybeSingle();
+
+  if (!ownedClient) return NextResponse.json({ error: "Undangan bukan milik akun ini." }, { status: 403 });
+  if (invitation.is_active) return NextResponse.json({ success: true, target, status: "active" });
+
+  const { data: updatedInvitation, error } = await db
+    .from("invitations")
+    .update({ is_active: true })
+    .eq("id", invitationId)
+    .eq("client_id", ownedClient.id)
+    .select("id, is_active")
+    .maybeSingle();
+
+  if (error || !updatedInvitation) {
+    return NextResponse.json({ error: "Undangan gagal diaktifkan." }, { status: 500 });
+  }
+
+  return NextResponse.json({ success: true, target, status: "active" });
 }
