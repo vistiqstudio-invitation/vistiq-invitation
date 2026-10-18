@@ -20,6 +20,8 @@ const LAST_SEEN_PREFIX = "vistiq-order-notifications-seen";
 const DISMISSED_PREFIX = "vistiq-order-notifications-dismissed";
 const ALERTED_PREFIX = "vistiq-order-notifications-alerted";
 const SOUND_PREFIX = "vistiq-order-notifications-sound";
+// Keep one browser audio context across dashboard page navigation.
+let notificationAudio: AudioContext | null = null;
 
 function formatDate(value: string) {
   return new Intl.DateTimeFormat("id-ID", {
@@ -41,7 +43,7 @@ export default function OrderNotifications({ role }: { role: NotificationRole })
 
   const [soundEnabled, setSoundEnabled] = useState(false);
   const [soundError, setSoundError] = useState("");
-  const audioRef = useRef<AudioContext | null>(null);
+  const audioRef = useRef<AudioContext | null>(notificationAudio);
   const soundRef = useRef(false);
   const soundKeyRef = useRef("");
   const alertedRef = useRef<Set<string> | null>(null);
@@ -83,6 +85,7 @@ export default function OrderNotifications({ role }: { role: NotificationRole })
     try {
       const context = audioRef.current ?? new AudioContext();
       audioRef.current = context;
+      notificationAudio = context;
       if (context.state === "suspended") await context.resume();
     } catch { /* A later user interaction can unlock audio. */ }
   }, []);
@@ -102,6 +105,7 @@ export default function OrderNotifications({ role }: { role: NotificationRole })
     try {
       const context = audioRef.current ?? new AudioContext();
       audioRef.current = context;
+      notificationAudio = context;
       await context.resume();
       if (context.state !== "running") throw new Error("Audio unavailable");
       soundRef.current = true;
@@ -119,9 +123,7 @@ export default function OrderNotifications({ role }: { role: NotificationRole })
     return () => {
       document.removeEventListener("pointerdown", unlockSound);
       document.removeEventListener("keydown", unlockSound);
-      const context = audioRef.current;
-      audioRef.current = null;
-      if (context) void context.close().catch(() => {});
+      // The shared context stays available for the next dashboard page.
     };
   }, [unlockSound]);
 
