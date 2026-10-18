@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { rememberedEmail, rememberEmail, savedLogin, saveLogin } from "@/lib/loginDevice";
 import styles from "@/styles/dashboard.module.css";
 
 const roleHome: Record<string, string> = {
@@ -21,6 +22,15 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberDevice, setRememberDevice] = useState(false);
+
+  useEffect(() => {
+    const saved = rememberedEmail();
+    // Hydrate a browser-only preference once after the server-rendered form.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (saved) { setEmail(saved); setRememberDevice(true); }
+  }, []);
 
   const [showForgot, setShowForgot] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
@@ -30,85 +40,111 @@ export default function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!email.trim() || !password.trim()) {
-      alert("Email dan password wajib diisi.");
-      return;
-    }
-
+    if (loading) return;
     setLoading(true);
+    try {
+      let loginEmail = email.trim();
+      let loginPassword = password;
+      let user = null;
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: email.trim(),
-      password,
-    });
+      if (rememberDevice && !loginPassword) {
+        // Validate a continuing session with Auth before reusing it.
+        const { data } = await supabase.auth.getUser();
+        if (data.user?.email?.toLowerCase() === loginEmail.toLowerCase()) user = data.user;
+        if (!user) {
+          const saved = await savedLogin(loginEmail);
+          if (saved) {
+            loginEmail = saved.email;
+            loginPassword = saved.password;
+            setEmail(loginEmail);
+            setPassword(loginPassword);
+          }
+        }
+      }
 
-    if (error || !data.user) {
-      alert("Email atau password salah.");
-      setLoading(false);
-      return;
-    }
+      if (!user) {
+        if (!loginEmail || !loginPassword) {
+          alert(rememberDevice
+            ? "Masukkan password sekali, lalu pilih Simpan saat HP menawarkan penyimpanan password. Pada login berikutnya gunakan akun tersimpan."
+            : "Email dan password wajib diisi.");
+          return;
+        }
+        const { data, error } = await supabase.auth.signInWithPassword({ email: loginEmail, password: loginPassword });
+        if (error || !data.user) {
+          alert("Email atau password salah.");
+          return;
+        }
+        user = data.user;
+      }
 
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("role")
-      .eq("id", data.user.id)
-      .single();
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", user.id)
+        .single();
 
-    setLoading(false);
+      if (!profile) {
+        alert("Akun ini belum memiliki profil. Hubungi admin.");
+        return;
+      }
 
-    if (!profile) {
-      alert("Akun ini belum memiliki profil. Hubungi admin.");
-      return;
-    }
+      if (profile.role === "reseller") {
+        const { data: reseller } = await supabase
+          .from("resellers")
+          .select("package, status, brand_active, brand_expires_at, billing_model")
+          .eq("user_id", user.id)
+          .maybeSingle();
 
-    if (profile.role === "reseller") {
-      const { data: reseller } = await supabase
-        .from("resellers")
-        .select("package, status, brand_active, brand_expires_at, billing_model")
-        .eq("user_id", data.user.id)
-        .maybeSingle();
+        if (reseller?.package === "reseller_brand") {
+          const isMonthlyLegacy = Boolean(reseller.brand_expires_at);
+          const monthlyExpired =
+            isMonthlyLegacy &&
+            (reseller.status !== "active" ||
+              reseller.brand_active !== true ||
+              new Date(reseller.brand_expires_at as string).getTime() <= Date.now());
 
-      if (reseller?.package === "reseller_brand") {
-        const isMonthlyLegacy = Boolean(reseller.brand_expires_at);
-        const monthlyExpired =
-          isMonthlyLegacy &&
-          (reseller.status !== "active" ||
-            reseller.brand_active !== true ||
-            new Date(reseller.brand_expires_at as string).getTime() <= Date.now());
+          if (monthlyExpired) {
+            await supabase.auth.signOut();
+            alert(
+              "Masa aktif Mitra Brand Anda telah habis. Silakan hubungi admin untuk melakukan perpanjangan."
+            );
+            return;
+          }
 
-        if (monthlyExpired) {
+          if (!isMonthlyLegacy && reseller.billing_model === "per_invitation") {
+            alert(
+              "Informasi Layanan Mitra Brand\n\nUntuk menjaga kualitas layanan, kestabilan sistem, penyimpanan data, dan kenyamanan bisnis ke depannya, mulai sekarang setiap undangan pada akun Mitra Brand lama dikenakan biaya layanan Rp20.000 per undangan.\n\nAkun Mitra Brand Kakak tetap aktif tanpa biaya pendaftaran ulang maupun biaya bulanan. Kakak tetap bisa membuat dan mengedit undangan seperti biasa. Biaya layanan dibayarkan ketika undangan siap dipublikasikan. Setelah pembayaran berhasil melalui Midtrans, undangan akan langsung aktif otomatis.\n\nTerima kasih atas dukungan dan pengertiannya."
+            );
+          }
+        }
+      }
+
+      if (profile.role === "client") {
+        const { data: client } = await supabase
+          .from("clients")
+          .select("status")
+          .eq("user_id", user.id)
+          .maybeSingle();
+
+        if (client?.status !== "active") {
           await supabase.auth.signOut();
           alert(
-            "Masa aktif Mitra Brand Anda telah habis. Silakan hubungi admin untuk melakukan perpanjangan."
+            "Akun client belum aktif. Silakan selesaikan pembayaran dan minta Admin Vistiq mengaktifkan akun. Reseller tetap dapat mengedit dan melihat preview draft dari Dashboard Reseller."
           );
           return;
         }
-
-        if (!isMonthlyLegacy && reseller.billing_model === "per_invitation") {
-          alert(
-            "Informasi Layanan Mitra Brand\n\nUntuk menjaga kualitas layanan, kestabilan sistem, penyimpanan data, dan kenyamanan bisnis ke depannya, mulai sekarang setiap undangan pada akun Mitra Brand lama dikenakan biaya layanan Rp20.000 per undangan.\n\nAkun Mitra Brand Kakak tetap aktif tanpa biaya pendaftaran ulang maupun biaya bulanan. Kakak tetap bisa membuat dan mengedit undangan seperti biasa. Biaya layanan dibayarkan ketika undangan siap dipublikasikan. Setelah pembayaran berhasil melalui Midtrans, undangan akan langsung aktif otomatis.\n\nTerima kasih atas dukungan dan pengertiannya."
-          );
-        }
       }
-    }
 
-    if (profile.role === "client") {
-      const { data: client } = await supabase
-        .from("clients")
-        .select("status")
-        .eq("user_id", data.user.id)
-        .maybeSingle();
-
-      if (client?.status !== "active") {
-        await supabase.auth.signOut();
-        alert(
-          "Akun client belum aktif. Silakan selesaikan pembayaran dan minta Admin Vistiq mengaktifkan akun. Reseller tetap dapat mengedit dan melihat preview draft dari Dashboard Reseller."
-        );
-        return;
+      rememberEmail(rememberDevice ? loginEmail : null);
+      if (rememberDevice && loginPassword) {
+        // This only requests the browser's own secure save flow.
+        void saveLogin(loginEmail, loginPassword);
       }
-    }
-
-    router.push(roleHome[profile.role] || "/");
+      router.push(roleHome[profile.role] || "/");
+      router.refresh();
+    } catch {
+      alert("Login belum berhasil. Periksa koneksi internet dan coba lagi.");
+    } finally { setLoading(false); }
   };
 
   const handleForgotPassword = async (e: React.FormEvent) => {
@@ -150,22 +186,57 @@ export default function LoginPage() {
 
         {!showForgot ? (
           <>
-            <form onSubmit={handleLogin} className={styles.form}>
+            <form onSubmit={handleLogin} className={styles.form} autoComplete="on">
               <input
                 type="email"
+                name="username"
+                autoComplete="username"
+                aria-label="Email"
+                autoCapitalize="none"
+                spellCheck={false}
                 placeholder="Masukkan email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className={styles.input}
               />
 
-              <input
-                type="password"
-                placeholder="Masukkan password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className={styles.input}
-              />
+              <div style={{ position: "relative" }}>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  autoComplete="current-password"
+                  aria-label="Password"
+                  placeholder="Masukkan password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className={styles.input}
+                  style={{ paddingRight: 54 }}
+                />
+                <button
+                  type="button"
+                  aria-label={showPassword ? "Sembunyikan password" : "Lihat password"}
+                  aria-pressed={showPassword}
+                  onClick={() => setShowPassword((visible) => !visible)}
+                  style={{ position: "absolute", right: 4, top: "50%", transform: "translateY(-50%)", width: 44, height: 44, display: "grid", placeItems: "center", background: "transparent", border: 0, borderRadius: 8, color: "#1167b2", cursor: "pointer" }}
+                >
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    {showPassword ? <><path d="m3 3 18 18M10.6 10.6a2 2 0 0 0 2.8 2.8" /><path d="M9.9 5.2A10.6 10.6 0 0 1 12 5c6 0 10 7 10 7a18.6 18.6 0 0 1-4.1 4.7M6.6 6.6A19 19 0 0 0 2 12s4 7 10 7a10 10 0 0 0 5.4-1.6" /></> : <><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12Z" /><circle cx="12" cy="12" r="3" /></>}
+                  </svg>
+                </button>
+              </div>
+
+              <div>
+                <label style={{ display: "flex", alignItems: "center", gap: 10, color: "#334155", fontSize: 14, cursor: "pointer", minHeight: 36 }}>
+                  <input type="checkbox" checked={rememberDevice} onChange={(e) => {
+                    setRememberDevice(e.target.checked);
+                    if (!e.target.checked) rememberEmail(null);
+                  }} style={{ width: 18, height: 18, accentColor: "#1167b2", flexShrink: 0 }} />
+                  Simpan di perangkat ini
+                </label>
+                <p style={{ margin: "4px 0 0", fontSize: 12, color: "#64748b", lineHeight: 1.5 }}>
+                  Gunakan pada HP pribadi. Pilih Simpan jika browser menawarkan penyimpanan password agar login berikutnya lebih cepat.
+                </p>
+              </div>
 
               <button type="submit" className={styles.button} disabled={loading}>
                 {loading ? "Memproses..." : "Login"}
