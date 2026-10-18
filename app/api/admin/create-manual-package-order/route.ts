@@ -57,7 +57,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Data reseller tidak ditemukan." }, { status: 404 });
   }
 
-  const resellerPackage = reseller.package === "reseller_brand" ? "reseller_brand" : reseller.package === "reseller" ? "reseller" : null;
+  if (reseller.package === "reseller_brand") {
+    return NextResponse.json(
+      { error: "Mitra Brand adalah paket lama dan tidak menggunakan perpanjangan bulanan. Akun lama tetap aktif lifetime dengan biaya layanan Rp20.000 per undangan." },
+      { status: 409 },
+    );
+  }
+
+  const resellerPackage = reseller.package === "reseller" ? "reseller" : null;
   if (!resellerPackage) {
     return NextResponse.json({ error: "Paket reseller tidak valid." }, { status: 400 });
   }
