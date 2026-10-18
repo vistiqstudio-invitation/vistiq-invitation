@@ -11,13 +11,8 @@ function generatePassword() {
 }
 
 export async function POST(request: Request) {
-  // Read these inside the handler (not at module scope) so we always see
-  // the live process.env at request time.
   const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-  // Only an owner (checked via the caller's own session, anon-key client)
-  // may reach the service-role logic below.
   const profile = await getSessionProfile();
 
   if (!profile || profile.role !== "owner") {
@@ -40,17 +35,19 @@ export async function POST(request: Request) {
   const name = (body.name || "").trim();
   const email = (body.email || "").trim().toLowerCase();
   const whatsapp = (body.whatsapp || "").trim();
-  const pkg = body.package === "reseller_brand" ? "reseller_brand" : "reseller";
-  // New accounts no longer use percentage commission. Both packages pay a
-  // fixed Rp20.000 when an invitation is activated.
+
+  // Mitra Brand sudah tidak tersedia untuk pendaftaran baru. Nilai lama
+  // `reseller_brand` hanya dipertahankan untuk akun legacy yang sudah ada.
+  if (body.package === "reseller_brand") {
+    return NextResponse.json(
+      { error: "Paket Mitra Brand sudah tidak tersedia untuk pendaftaran baru. Gunakan paket Reseller." },
+      { status: 409 },
+    );
+  }
+
+  const pkg = "reseller" as const;
   const commission_percent = 0;
-  // Accounts created directly by Vistiq Owner are already approved. Ignore
-  // any client-supplied status so this rule cannot be bypassed by a stale or
-  // modified browser request.
   const status = "active";
-  const brandExpiresAt = pkg === "reseller_brand"
-    ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
-    : null;
 
   if (!name || !email) {
     return NextResponse.json(
@@ -90,15 +87,13 @@ export async function POST(request: Request) {
       commission_percent,
       billing_model: "per_invitation",
       status,
-      brand_active: pkg === "reseller_brand",
-      brand_expires_at: brandExpiresAt,
+      brand_active: false,
+      brand_expires_at: null,
     })
     .select("id")
     .single();
 
   if (resellerError || !reseller) {
-    // Roll back the auth user so we don't leave an orphaned login with no
-    // matching reseller row.
     await supabaseAdmin.auth.admin.deleteUser(created.user.id);
     return NextResponse.json(
       { error: "Gagal menyimpan data reseller." },
@@ -119,9 +114,6 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ email, password, orderId, orderStatus: "paid" });
   } catch (orderError) {
-    // Account creation and its paid package ledger record must not diverge.
-    // If the ledger insert fails, remove both rows so a later retry cannot
-    // leave an active account without a traceable package order.
     await supabaseAdmin.from("resellers").delete().eq("id", reseller.id);
     await supabaseAdmin.auth.admin.deleteUser(created.user.id);
 
