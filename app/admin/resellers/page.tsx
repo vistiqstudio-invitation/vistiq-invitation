@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import DashboardSidebar from "@/components/admin/DashboardSidebar";
+import WhatsAppIcon from "@/components/WhatsAppIcon";
 import styles from "@/styles/dashboard.module.css";
 import dialogStyles from "./reseller-dialog.module.css";
 import { PAYMENT_PACKAGES } from "@/lib/paymentPackages";
@@ -194,8 +195,10 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! ðŸš
           <button type="button" onClick={copyWelcomeMessage} className={styles.button}>
             {messageCopied ? "Pesan Tersalin âœ“" : "Salin Pesan"}
           </button>
-          <button type="button" onClick={openWhatsApp} className={styles.button} style={{ background: "#16a34a" }}>Kirim ke WhatsApp</button>
-          <button type="button" onClick={onClose} className={styles.button} style={{ background: "#64748b" }}>Tutup</button>
+          <button type="button" onClick={openWhatsApp} className={styles.button} style={{ background: "#16a34a", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
+            <WhatsAppIcon size={20} />
+            Kirim ke WhatsApp
+          </button>
         </footer>
       </div>
     </dialog>
