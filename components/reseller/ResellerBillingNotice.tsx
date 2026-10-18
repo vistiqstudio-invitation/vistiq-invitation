@@ -29,15 +29,14 @@ export default function ResellerBillingNotice({ packageName }: { packageName?: s
         <div className="bg-gradient-to-br from-[#1863AD] to-[#0F4E8A] px-6 py-7 text-white">
           <div className="mb-3 inline-flex rounded-full bg-white/15 px-3 py-1 text-xs font-semibold tracking-wide">PEMBERITAHUAN PENTING</div>
           <h2 id="reseller-billing-notice-title" className="text-2xl font-bold leading-tight">Sistem Reseller Vistiq Lebih Simpel</h2>
-          <p className="mt-2 text-sm leading-6 text-white/85">Mulai sekarang sistem reseller menggunakan biaya aktivasi per undangan.</p>
+          <p className="mt-2 text-sm leading-6 text-white/85">Mulai sekarang setiap undangan menggunakan biaya layanan tetap.</p>
         </div>
         <div className="space-y-4 px-6 py-6 text-sm text-slate-600">
           <div className="rounded-2xl bg-blue-50 p-4">
-            <p className="font-semibold text-slate-900">Aktivasi undangan hanya Rp20.000</p>
-            <p className="mt-1 leading-6">Setelah membuat client dan undangan, lakukan pembayaran Rp20.000. Setelah pembayaran berhasil, akun client dan undangannya akan aktif otomatis.</p>
+            <p className="font-semibold text-slate-900">Biaya layanan hanya Rp20.000 per undangan</p>
+            <p className="mt-1 leading-6">Setelah membuat client dan undangan, lakukan pembayaran biaya layanan Rp20.000. Setelah pembayaran berhasil melalui Midtrans, akun client dan undangannya akan aktif otomatis.</p>
           </div>
           <p className="leading-6">Tidak ada lagi sistem persentase komisi atau prosedur pencairan untuk Reseller. Anda bebas menentukan harga jual kepada client dan keuntungan penjualan menjadi milik Anda.</p>
-          <p className="text-xs leading-5 text-slate-400">Pemberitahuan ini khusus Reseller biasa. Sistem Mitra Brand tetap seperti sebelumnya.</p>
           <button type="button" onClick={close} className="w-full rounded-2xl bg-[#1863AD] px-4 py-3.5 font-semibold text-white transition hover:bg-[#0F4E8A]">Saya Mengerti</button>
         </div>
       </div>
