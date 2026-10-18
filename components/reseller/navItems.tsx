@@ -13,15 +13,15 @@ export function getResellerNavItems(
     { key: "marketing-kit", label: "Marketing Kit", href: "/reseller/marketing-kit", icon: <IconPalette /> },
   ];
 
-  if (pkg === "reseller") {
+  if (billingModel === "per_invitation") {
     items.push({ key: "transactions", label: "Riwayat Pembayaran", href: "/reseller/transactions", icon: <IconWallet /> });
-  } else if (pkg !== "reseller_brand" && billingModel !== "per_invitation") {
+  } else if (pkg !== "reseller_brand") {
     items.push({ key: "transactions", label: "Transaksi", href: "/reseller/transactions", icon: <IconWallet /> });
     items.push({ key: "saldo", label: "Saldo & Penarikan", href: "/reseller/saldo", icon: <IconWallet /> });
   }
 
-  // Mitra Brand adalah langganan Rp59.000/bulan: tidak ada komisi, saldo,
-  // penarikan, maupun biaya aktivasi per undangan.
+  // Mitra Brand adalah paket lama (grandfathered) dan tidak lagi tersedia
+  // untuk pendaftaran baru. Akun lama tetap memiliki fitur white-label.
   if (pkg === "reseller_brand") {
     items.push({ key: "musik", label: "Musik", href: "/reseller/musik", icon: <IconMusic /> });
   }
