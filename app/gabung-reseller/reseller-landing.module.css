@@ -14,3 +14,6 @@
 @media(prefers-reduced-motion:reduce){.page *{scroll-behavior:auto!important;transition:none!important}}
 
 .checkout [role="dialog"]{max-height:calc(100dvh - 28px);overflow-y:auto}
+
+/* Crop only the phone status/navigation bars from supplied screenshots. */
+.uploadedScreen{position:relative;aspect-ratio:709/1388;overflow:hidden;border-radius:21px}.phone .uploadedScreen img{position:absolute;left:0;top:-4.755%;width:100%;height:auto;aspect-ratio:auto;border-radius:0}
