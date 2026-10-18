@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import DashboardSidebar from "@/components/admin/DashboardSidebar";
 import styles from "@/styles/dashboard.module.css";
+import dialogStyles from "./reseller-dialog.module.css";
 import { PAYMENT_PACKAGES } from "@/lib/paymentPackages";
 
 const NAV_ITEMS = [
@@ -35,6 +36,7 @@ type Reseller = {
 };
 
 type CreatedCredentials = {
+  kind: "created" | "reset";
   email: string;
   password: string;
   orderId?: string;
@@ -71,29 +73,29 @@ const PACKAGE_DEFAULT_COMMISSION: Record<string, number> = {
   reseller_brand: 100,
 };
 
-// Keep typing state local: editing an input must not render every reseller row.
-function ResellerCreateForm({
-  credentials,
-  setCredentials,
-  onCreated,
-}: {
-  credentials: CreatedCredentials | null;
-  setCredentials: (value: CreatedCredentials | null) => void;
-  onCreated: () => void;
+function CredentialsDialog({ credentials, onClose }: {
+  credentials: CreatedCredentials;
+  onClose: () => void;
 }) {
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    whatsapp: "",
-    package: "reseller",
-    commission_percent: 0,
-  });
-
-  const [creating, setCreating] = useState(false);
+  const dialogRef = useRef<HTMLDialogElement>(null);
   const [messageCopied, setMessageCopied] = useState(false);
-  const creatingRequest = useRef(false);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    const previousOverflow = document.body.style.overflow;
+    dialog.showModal();
+    document.body.style.overflow = "hidden";
+    return () => {
+      dialog.close();
+      document.body.style.overflow = previousOverflow;
+    };
+  }, []);
 
   const getWelcomeMessage = (account: CreatedCredentials) => {
+    if (account.kind === "reset") {
+      return `Halo Kak *${account.name || "Reseller"}*,\n\nPassword akun Kakak berhasil direset. Berikut akses login terbaru:\n\n🌐 Login: https://www.vistiqinvitation.com/login\n📧 Email: *${account.email}*\n🔐 Password sementara: *${account.password}*\n\nSilakan login menggunakan password baru dan segera ganti melalui pengaturan akun. Jangan membagikan data login kepada orang lain.\n\nTerima kasih,\nAdmin Vistiq Invitation`;
+    }
     const isBrand = account.package === "reseller_brand";
     const brandInstructions = isBrand
       ? `
@@ -155,6 +157,70 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! �
     );
   };
 
+  return (
+    <dialog
+      ref={dialogRef}
+      className={dialogStyles.dialog}
+      aria-labelledby="reseller-credentials-title"
+      aria-describedby="reseller-credentials-description"
+      onCancel={onClose}
+      onClose={(event) => { if (!event.currentTarget.open) onClose(); }}
+    >
+      <div className={dialogStyles.layout}>
+        <header className={dialogStyles.header}>
+          <div>
+            <h2 id="reseller-credentials-title">
+              {credentials.kind === "reset" ? "Password berhasil direset" : "Akun reseller berhasil dibuat"}
+            </h2>
+            <p id="reseller-credentials-description">Salin atau kirim akses login kepada pelanggan sebelum menutup popup ini.</p>
+          </div>
+          <button type="button" onClick={onClose} className={dialogStyles.close} aria-label="Tutup popup">×</button>
+        </header>
+        <div className={dialogStyles.body}>
+          <div className={dialogStyles.credentials}>
+            <p>Email: <code>{credentials.email}</code></p>
+            <p>Password: <code>{credentials.password}</code></p>
+            {credentials.orderId && (
+              <p className={dialogStyles.order}>
+                Order paket: <code>{credentials.orderId}</code> · {credentials.orderStatus === "paid"
+                  ? "LUNAS — otomatis masuk omzet Owner."
+                  : "PENDING — konfirmasi di menu Transaksi setelah transfer masuk."}
+              </p>
+            )}
+          </div>
+          <div className={dialogStyles.message}>{getWelcomeMessage(credentials)}</div>
+        </div>
+        <footer className={dialogStyles.actions}>
+          <button type="button" onClick={copyWelcomeMessage} className={styles.button}>
+            {messageCopied ? "Pesan Tersalin ✓" : "Salin Pesan"}
+          </button>
+          <button type="button" onClick={openWhatsApp} className={styles.button} style={{ background: "#16a34a" }}>Kirim ke WhatsApp</button>
+          <button type="button" onClick={onClose} className={styles.button} style={{ background: "#64748b" }}>Tutup</button>
+        </footer>
+      </div>
+    </dialog>
+  );
+}
+
+// Keep typing state local: editing an input must not render every reseller row.
+function ResellerCreateForm({
+  setCredentials,
+  onCreated,
+}: {
+  setCredentials: (value: CreatedCredentials | null) => void;
+  onCreated: () => void;
+}) {
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    whatsapp: "",
+    package: "reseller",
+    commission_percent: 0,
+  });
+
+  const [creating, setCreating] = useState(false);
+  const creatingRequest = useRef(false);
+
   const addReseller = async () => {
     if (creatingRequest.current) return;
     if (!form.name.trim() || !form.email.trim()) {
@@ -185,6 +251,7 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! �
       }
 
       setCredentials({
+        kind: "created",
         name: submitted.name.trim(),
         email: result.email,
         password: result.password,
@@ -193,7 +260,6 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! �
         whatsapp: submitted.whatsapp.trim(),
         package: submitted.package === "reseller_brand" ? "reseller_brand" : "reseller",
       });
-      setMessageCopied(false);
       setForm({ name: "", email: "", whatsapp: "", package: "reseller", commission_percent: 0 });
       onCreated();
     } catch (error) {
@@ -216,92 +282,6 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! �
           <p style={{ margin: "0 0 16px", fontSize: 13.5, color: "#64748b" }}>
             Akun yang dibuat Admin Vistiq langsung Active. Paketnya otomatis dicatat Lunas dan masuk omzet Owner.
           </p>
-
-          {credentials && (
-            <div
-              style={{
-                background: "#f0fdf4",
-                border: "1px solid #bbf7d0",
-                borderRadius: 12,
-                padding: 16,
-                marginBottom: 16,
-                fontSize: 13.5,
-              }}
-            >
-              <strong style={{ display: "block", marginBottom: 6, color: "#15803d" }}>
-                {credentials.name
-                  ? "Akun berhasil dibuat — kirim akses login kepada pelanggan:"
-                  : "Password siap — catat/kirim sekarang, tidak akan ditampilkan lagi:"}
-              </strong>
-              <p style={{ margin: 0 }}>Email: <code>{credentials.email}</code></p>
-              <p style={{ margin: "4px 0 12px" }}>Password: <code>{credentials.password}</code></p>
-              {credentials.orderId && (
-                <p style={{ margin: "4px 0 12px", color: "#1d4ed8" }}>
-                  Order paket: <code>{credentials.orderId}</code> · {credentials.orderStatus === "paid"
-                    ? "LUNAS — otomatis masuk omzet Owner."
-                    : "PENDING — konfirmasi di menu Transaksi setelah transfer masuk."}
-                </p>
-              )}
-
-              {credentials.name && (
-                <div
-                  style={{
-                    background: "#fff",
-                    border: "1px solid #dcfce7",
-                    borderRadius: 10,
-                    padding: 14,
-                    marginBottom: 12,
-                    whiteSpace: "pre-wrap",
-                    lineHeight: 1.6,
-                    color: "#334155",
-                    maxHeight: 280,
-                    overflowY: "auto",
-                  }}
-                >
-                  {getWelcomeMessage(credentials)}
-                </div>
-              )}
-
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                {credentials.name && (
-                  <>
-                    <button
-                      type="button"
-                      onClick={copyWelcomeMessage}
-                      className={styles.button}
-                      style={{ padding: "8px 14px", fontSize: 12.5 }}
-                    >
-                      {messageCopied ? "Pesan Tersalin ✓" : "Salin Pesan"}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={openWhatsApp}
-                      className={styles.button}
-                      style={{
-                        padding: "8px 14px",
-                        fontSize: 12.5,
-                        background: "#16a34a",
-                      }}
-                    >
-                      Kirim ke WhatsApp
-                    </button>
-                  </>
-                )}
-                <button
-                  type="button"
-                  onClick={() => setCredentials(null)}
-                  className={styles.button}
-                  style={{
-                    padding: "8px 14px",
-                    fontSize: 12.5,
-                    background: "#64748b",
-                  }}
-                >
-                  Tutup
-                </button>
-              </div>
-            </div>
-          )}
 
           <div className={styles.formGrid}>
             <input
@@ -541,6 +521,7 @@ export default function ResellersPage() {
     }
 
     setCredentials({
+      kind: "reset",
       name: reseller.name,
       email: result.email,
       password: result.password,
@@ -632,6 +613,7 @@ export default function ResellersPage() {
 
   return (
     <main className={styles.page}>
+      {credentials && <CredentialsDialog credentials={credentials} onClose={() => setCredentials(null)} />}
       <DashboardSidebar
         brandTop="VISTIQ"
         brandBottom="Invitation"
@@ -735,7 +717,7 @@ export default function ResellersPage() {
           </button>
         </header>
 
-        <ResellerCreateForm credentials={credentials} setCredentials={setCredentials} onCreated={fetchResellers} />
+        <ResellerCreateForm setCredentials={setCredentials} onCreated={fetchResellers} />
 
         <section className={styles.tableWrap}>
           <h2 className={styles.sectionTitle}>Daftar Reseller</h2>
