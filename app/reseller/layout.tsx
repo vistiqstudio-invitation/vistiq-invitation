@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import InvitationEventsShortcut from "@/components/InvitationEventsShortcut";
 import ResellerBillingNotice from "@/components/reseller/ResellerBillingNotice";
 import QuickClientCreator from "@/components/reseller/QuickClientCreator";
+import ServiceFeeTerminology from "@/components/reseller/ServiceFeeTerminology";
 
 export default async function ResellerLayout({
   children,
@@ -20,6 +21,7 @@ export default async function ResellerLayout({
   return (
     <>
       {children}
+      <ServiceFeeTerminology />
       <QuickClientCreator />
       <InvitationEventsShortcut mode="reseller" />
       <ResellerBillingNotice packageName={reseller?.package ?? null} />
