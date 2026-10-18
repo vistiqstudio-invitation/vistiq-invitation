@@ -37,14 +37,34 @@ self.addEventListener("push", (event) => {
   let payload = {};
   try { payload = event.data ? event.data.json() : {}; } catch { /* Always show a visible notification. */ }
   const url = typeof payload.url === "string" && /^\/(admin|reseller)(\/|$)/.test(payload.url) ? payload.url : "/login";
-  event.waitUntil(self.registration.showNotification(typeof payload.title === "string" ? payload.title : "Notifikasi baru", {
-    body: typeof payload.body === "string" ? payload.body : "Ada pemberitahuan baru. Buka dashboard untuk melihatnya.",
-    icon: "/icons/icon-192.png",
-    badge: "/icons/icon-192.png",
-    tag: typeof payload.tag === "string" ? payload.tag : "dashboard-notification",
-    data: { url },
-    vibrate: [150, 80, 150],
-  }));
+  event.waitUntil((async () => {
+    let outcome = "shown";
+    let errorName;
+    try {
+      await self.registration.showNotification(typeof payload.title === "string" ? payload.title : "Notifikasi baru", {
+        body: typeof payload.body === "string" ? payload.body : "Ada pemberitahuan baru. Buka dashboard untuk melihatnya.",
+        icon: "/icons/icon-192.png",
+        badge: "/icons/icon-192.png",
+        tag: typeof payload.tag === "string" ? payload.tag : "dashboard-notification",
+        data: { url },
+        vibrate: [150, 80, 150],
+      });
+    } catch (error) {
+      outcome = "failed";
+      errorName = error?.name || "NotificationError";
+    }
+    const receipt = payload.receipt;
+    if (receipt && typeof receipt.id === "string" && typeof receipt.proof === "string") {
+      try {
+        await fetch("/api/push/receipt", {
+          method: "POST", credentials: "omit", cache: "no-store",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: receipt.id, proof: receipt.proof, outcome, error: errorName }),
+          signal: AbortSignal.timeout(6000),
+        });
+      } catch { /* Showing the notification never depends on this diagnostic request. */ }
+    }
+  })());
 });
 
 self.addEventListener("notificationclick", (event) => {

@@ -77,15 +77,16 @@ export default function PushNotificationControl() {
     finally { setBusy(false); }
   };
 
-  const test = async () => {
+  const test = async (background = false) => {
     if (busy) return;
     setBusy(true);
     try {
       const registration = await navigator.serviceWorker.getRegistration("/");
       const subscription = await registration?.pushManager.getSubscription();
       if (!subscription) throw new Error("Aktifkan notifikasi HP terlebih dahulu.");
-      await pushRequest("POST", { action: "test", endpoint: subscription.endpoint });
-      setMessage("Notifikasi percobaan sedang dikirim ke HP ini.");
+      await registration?.update().catch(() => {});
+      await pushRequest("POST", { action: "test", endpoint: subscription.endpoint, background });
+      setMessage(background ? "Silakan logout dan tutup aplikasi sekarang. Notifikasi tes akan dikirim sekitar satu menit lagi." : "Notifikasi percobaan sedang dikirim ke HP ini.");
     } catch (error) { setMessage(error instanceof Error ? error.message : "Percobaan gagal dikirim."); }
     finally { setBusy(false); }
   };
@@ -97,7 +98,8 @@ export default function PushNotificationControl() {
       <p style={{ margin: "6px 0 10px", fontSize: 11, color: "#64748b", lineHeight: 1.5 }}>Tetap menerima pemberitahuan saat aplikasi ditutup atau sudah logout. Aktifkan hanya pada HP pribadi Anda. Nada mengikuti pengaturan notifikasi HP.</p>
       <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
         <button type="button" style={buttonStyle} disabled={!ready || busy} onClick={enabled ? disable : enable}>{busy ? "Memproses..." : enabled ? "Matikan notifikasi HP" : "Aktifkan notifikasi HP"}</button>
-        {enabled && <button type="button" style={buttonStyle} disabled={busy} onClick={test}>Kirim percobaan</button>}
+        {enabled && <button type="button" style={buttonStyle} disabled={busy} onClick={() => test()}>Kirim percobaan</button>}
+        {enabled && <button type="button" style={buttonStyle} disabled={busy} onClick={() => test(true)}>Tes saat aplikasi ditutup</button>}
       </div>
       {message && <p role="status" style={{ margin: "8px 0 0", fontSize: 12, color: "#334155", lineHeight: 1.5 }}>{message}</p>}
     </section>

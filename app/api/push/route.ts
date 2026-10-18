@@ -31,7 +31,8 @@ export async function POST(request: Request) {
       if (!subscription) return NextResponse.json({ error: "Aktifkan notifikasi HP terlebih dahulu." }, { status: 404 });
       const { data: recent } = await admin.from("web_push_jobs").select("id").eq("endpoint", endpoint).like("event_key", "test:%").gte("created_at", new Date(Date.now() - 60_000).toISOString()).limit(1);
       if (recent?.length) return NextResponse.json({ error: "Tunggu satu menit sebelum mengirim percobaan lagi." }, { status: 429 });
-      const { error } = await admin.from("web_push_jobs").insert({ endpoint, user_id: profile.id, recipient_role: profile.role, event_key: `test:${crypto.randomUUID()}`, title: "Notifikasi HP aktif", body: "Perangkat ini siap menerima notifikasi meski aplikasi ditutup atau sudah logout.", url: profile.role === "owner" ? "/admin" : "/reseller" });
+      const background = body.background === true;
+      const { error } = await admin.from("web_push_jobs").insert({ endpoint, user_id: profile.id, recipient_role: profile.role, event_key: `test:${crypto.randomUUID()}`, title: background ? "Tes notifikasi saat aplikasi ditutup" : "Notifikasi HP aktif", body: "Perangkat ini siap menerima notifikasi meski aplikasi ditutup atau sudah logout.", url: profile.role === "owner" ? "/admin" : "/reseller", available_at: new Date(Date.now() + (background ? 20_000 : 0)).toISOString() });
       if (error) throw error;
       return NextResponse.json({ success: true });
     }

@@ -42,7 +42,8 @@ export async function POST(request: Request) {
             const { data: reseller } = await admin.from("resellers").select("status").eq("user_id", subscription.user_id).maybeSingle();
             if (reseller?.status !== "active") { await admin.from("web_push_jobs").delete().eq("id", job.id); return; }
           }
-          await deliverPush(job.endpoint, { p256dh: subscription.p256dh, auth: subscription.auth }, { title: job.title, body: job.body, url: job.url, tag: job.event_key });
+          const proof = createHmac("sha256", process.env.WEB_PUSH_WEBHOOK_SECRET!).update(`push-receipt:${job.id}`).digest("hex");
+          await deliverPush(job.endpoint, { p256dh: subscription.p256dh, auth: subscription.auth }, { title: job.title, body: job.body, url: job.url, tag: job.event_key, receipt: { id: job.id, proof } });
         } catch (failure) {
           const code = Number((failure as { statusCode?: number })?.statusCode);
           if (code === 404 || code === 410) { await admin.from("web_push_subscriptions").delete().eq("endpoint", job.endpoint); return; }

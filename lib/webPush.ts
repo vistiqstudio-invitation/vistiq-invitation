@@ -27,10 +27,10 @@ export function validPushKey(value: unknown, length: number) {
   return typeof value === "string" && /^[A-Za-z0-9_-]+$/.test(value) && Buffer.from(value, "base64url").length === length;
 }
 
-export async function deliverPush(endpoint: string, keys: { p256dh: string; auth: string }, payload: { title: string; body: string; url: string; tag: string }) {
+export async function deliverPush(endpoint: string, keys: { p256dh: string; auth: string }, payload: { title: string; body: string; url: string; tag: string; receipt?: { id: string; proof: string } }) {
   if (!validPushEndpoint(endpoint)) throw new Error("Invalid push provider");
   return webpush.sendNotification({ endpoint, keys }, JSON.stringify(payload), {
-    TTL: 3600,
+    TTL: 86400,
     urgency: "high",
     timeout: 5000,
     vapidDetails: {
