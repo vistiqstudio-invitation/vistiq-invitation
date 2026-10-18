@@ -1,5 +1,6 @@
 import { requireRole } from "@/lib/supabase/dal";
 import R2StorageMonitor from "@/components/admin/R2StorageMonitor";
+import LegacyMitraBrandAdminGuard from "@/components/admin/LegacyMitraBrandAdminGuard";
 
 export default async function AdminLayout({
   children,
@@ -10,6 +11,7 @@ export default async function AdminLayout({
   return (
     <>
       {children}
+      <LegacyMitraBrandAdminGuard />
       <R2StorageMonitor />
     </>
   );
