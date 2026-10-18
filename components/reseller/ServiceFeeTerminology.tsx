@@ -37,15 +37,6 @@ function serviceFeeCopy(value: string, monthlyLegacy: boolean) {
 }
 
 function rewriteTextNodes(root: Node, monthlyLegacy: boolean) {
-  if (root.nodeType === Node.TEXT_NODE) {
-    const current = root.nodeValue ?? "";
-    const next = serviceFeeCopy(current, monthlyLegacy);
-    if (next !== current) root.nodeValue = next;
-    return;
-  }
-
-  if (!(root instanceof Element) && root !== document.body) return;
-
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
   let node = walker.nextNode();
   while (node) {
@@ -61,26 +52,16 @@ export default function ServiceFeeTerminology({ monthlyLegacy = false }: { month
     const originalAlert = window.alert.bind(window);
     window.alert = (message?: unknown) => originalAlert(serviceFeeCopy(String(message ?? ""), monthlyLegacy));
 
-    rewriteTextNodes(document.body, monthlyLegacy);
-
-    const observer = new MutationObserver((mutations) => {
-      for (const mutation of mutations) {
-        if (mutation.type === "characterData") {
-          rewriteTextNodes(mutation.target, monthlyLegacy);
-          continue;
-        }
-        mutation.addedNodes.forEach((node) => rewriteTextNodes(node, monthlyLegacy));
-      }
-    });
-
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true,
-      characterData: true,
+    // Rewrite existing static copy once after the dashboard mounts. Do not watch
+    // the entire document continuously: a global MutationObserver here used to
+    // rescan text on every React update/keystroke and made the mobile dashboard
+    // feel sluggish, especially on large owner/reseller pages.
+    const frame = window.requestAnimationFrame(() => {
+      rewriteTextNodes(document.body, monthlyLegacy);
     });
 
     return () => {
-      observer.disconnect();
+      window.cancelAnimationFrame(frame);
       window.alert = originalAlert;
     };
   }, [monthlyLegacy]);
