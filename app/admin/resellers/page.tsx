@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import DashboardSidebar from "@/components/admin/DashboardSidebar";
@@ -71,13 +71,16 @@ const PACKAGE_DEFAULT_COMMISSION: Record<string, number> = {
   reseller_brand: 100,
 };
 
-export default function ResellersPage() {
-  const router = useRouter();
-  const supabase = createClient();
-
-  const [resellers, setResellers] = useState<Reseller[]>([]);
-  const [loading, setLoading] = useState(true);
-
+// Keep typing state local: editing an input must not render every reseller row.
+function ResellerCreateForm({
+  credentials,
+  setCredentials,
+  onCreated,
+}: {
+  credentials: CreatedCredentials | null;
+  setCredentials: (value: CreatedCredentials | null) => void;
+  onCreated: () => void;
+}) {
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -87,19 +90,8 @@ export default function ResellersPage() {
   });
 
   const [creating, setCreating] = useState(false);
-  const [credentials, setCredentials] = useState<CreatedCredentials | null>(null);
   const [messageCopied, setMessageCopied] = useState(false);
-  const [resettingId, setResettingId] = useState<string | null>(null);
-  const [deletingId, setDeletingId] = useState<string | null>(null);
-  const [creatingOrderId, setCreatingOrderId] = useState<string | null>(null);
-  const [editingReseller, setEditingReseller] = useState<Reseller | null>(null);
-  const [editForm, setEditForm] = useState({
-    name: "",
-    email: "",
-    whatsapp: "",
-    brand_name: "",
-  });
-  const [savingEdit, setSavingEdit] = useState(false);
+  const creatingRequest = useRef(false);
 
   const getWelcomeMessage = (account: CreatedCredentials) => {
     const isBrand = account.package === "reseller_brand";
@@ -163,14 +155,240 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! �
     );
   };
 
-  const fetchResellers = async () => {
+  const addReseller = async () => {
+    if (creatingRequest.current) return;
+    if (!form.name.trim() || !form.email.trim()) {
+      alert("Nama dan email reseller wajib diisi.");
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) {
+      alert("Format email tidak valid.");
+      return;
+    }
+
+    creatingRequest.current = true;
+    setCreating(true);
+    const submitted = { ...form };
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 60_000);
+
     try {
-      const response = await fetch("/api/admin/resellers", { cache: "no-store" });
+      const res = await fetch("/api/admin/create-reseller", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(submitted),
+        signal: controller.signal,
+      });
+      const result = await res.json().catch(() => null);
+      if (!res.ok || !result?.email || !result?.password) {
+        throw new Error(result?.error || "Respons server tidak valid. Periksa daftar reseller sebelum mencoba lagi.");
+      }
+
+      setCredentials({
+        name: submitted.name.trim(),
+        email: result.email,
+        password: result.password,
+        orderId: result.orderId,
+        orderStatus: result.orderStatus === "paid" ? "paid" : "pending",
+        whatsapp: submitted.whatsapp.trim(),
+        package: submitted.package === "reseller_brand" ? "reseller_brand" : "reseller",
+      });
+      setMessageCopied(false);
+      setForm({ name: "", email: "", whatsapp: "", package: "reseller", commission_percent: 0 });
+      onCreated();
+    } catch (error) {
+      alert(controller.signal.aborted
+        ? "Server belum memberi kepastian. Periksa daftar reseller sebelum mencoba lagi agar akun tidak dibuat dua kali."
+        : error instanceof Error && !(error instanceof TypeError)
+          ? error.message
+          : "Koneksi terputus. Periksa daftar reseller sebelum mencoba lagi.");
+      onCreated();
+    } finally {
+      window.clearTimeout(timeout);
+      creatingRequest.current = false;
+      setCreating(false);
+    }
+  };
+
+  return (
+<section className={styles.formCard}>
+          <h2 className={styles.sectionTitle}>Tambah Reseller Baru</h2>
+          <p style={{ margin: "0 0 16px", fontSize: 13.5, color: "#64748b" }}>
+            Akun yang dibuat Admin Vistiq langsung Active. Paketnya otomatis dicatat Lunas dan masuk omzet Owner.
+          </p>
+
+          {credentials && (
+            <div
+              style={{
+                background: "#f0fdf4",
+                border: "1px solid #bbf7d0",
+                borderRadius: 12,
+                padding: 16,
+                marginBottom: 16,
+                fontSize: 13.5,
+              }}
+            >
+              <strong style={{ display: "block", marginBottom: 6, color: "#15803d" }}>
+                {credentials.name
+                  ? "Akun berhasil dibuat — kirim akses login kepada pelanggan:"
+                  : "Password siap — catat/kirim sekarang, tidak akan ditampilkan lagi:"}
+              </strong>
+              <p style={{ margin: 0 }}>Email: <code>{credentials.email}</code></p>
+              <p style={{ margin: "4px 0 12px" }}>Password: <code>{credentials.password}</code></p>
+              {credentials.orderId && (
+                <p style={{ margin: "4px 0 12px", color: "#1d4ed8" }}>
+                  Order paket: <code>{credentials.orderId}</code> · {credentials.orderStatus === "paid"
+                    ? "LUNAS — otomatis masuk omzet Owner."
+                    : "PENDING — konfirmasi di menu Transaksi setelah transfer masuk."}
+                </p>
+              )}
+
+              {credentials.name && (
+                <div
+                  style={{
+                    background: "#fff",
+                    border: "1px solid #dcfce7",
+                    borderRadius: 10,
+                    padding: 14,
+                    marginBottom: 12,
+                    whiteSpace: "pre-wrap",
+                    lineHeight: 1.6,
+                    color: "#334155",
+                    maxHeight: 280,
+                    overflowY: "auto",
+                  }}
+                >
+                  {getWelcomeMessage(credentials)}
+                </div>
+              )}
+
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                {credentials.name && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={copyWelcomeMessage}
+                      className={styles.button}
+                      style={{ padding: "8px 14px", fontSize: 12.5 }}
+                    >
+                      {messageCopied ? "Pesan Tersalin ✓" : "Salin Pesan"}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={openWhatsApp}
+                      className={styles.button}
+                      style={{
+                        padding: "8px 14px",
+                        fontSize: 12.5,
+                        background: "#16a34a",
+                      }}
+                    >
+                      Kirim ke WhatsApp
+                    </button>
+                  </>
+                )}
+                <button
+                  type="button"
+                  onClick={() => setCredentials(null)}
+                  className={styles.button}
+                  style={{
+                    padding: "8px 14px",
+                    fontSize: 12.5,
+                    background: "#64748b",
+                  }}
+                >
+                  Tutup
+                </button>
+              </div>
+            </div>
+          )}
+
+          <div className={styles.formGrid}>
+            <input
+              placeholder="Nama Reseller"
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              className={styles.input}
+            />
+
+            <input
+              type="email"
+              placeholder="Email Login"
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              className={styles.input}
+            />
+
+            <input
+              placeholder="Nomor WhatsApp"
+              value={form.whatsapp}
+              onChange={(e) => setForm({ ...form, whatsapp: e.target.value })}
+              className={styles.input}
+            />
+
+            <select
+              value={form.package}
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  package: e.target.value,
+                  commission_percent: PACKAGE_DEFAULT_COMMISSION[e.target.value] ?? form.commission_percent,
+                })
+              }
+              className={styles.input}
+            >
+              <option value="reseller">Reseller (Rp149.000 sekali + Rp20.000/aktivasi)</option>
+              <option value="reseller_brand">Mitra Brand (Rp59.000/bulan + Rp20.000/aktivasi)</option>
+            </select>
+
+            <div className={styles.input} style={{ display: "flex", alignItems: "center", color: "#475569" }}>
+              Sistem baru · Aktivasi Rp20.000/undangan
+            </div>
+
+          </div>
+
+          <button onClick={addReseller} className={styles.button} disabled={creating}>
+            {creating ? "Membuat akun..." : "Simpan Reseller"}
+          </button>
+        </section>
+  );
+}
+
+export default function ResellersPage() {
+  const router = useRouter();
+  const supabase = createClient();
+
+  const [resellers, setResellers] = useState<Reseller[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState("");
+  const [page, setPage] = useState(1);
+  const pageCount = Math.max(1, Math.ceil(resellers.length / 20));
+  const currentPage = Math.min(page, pageCount);
+  const visibleResellers = resellers.slice((currentPage - 1) * 20, currentPage * 20);
+
+  const [credentials, setCredentials] = useState<CreatedCredentials | null>(null);
+  const [resettingId, setResettingId] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [creatingOrderId, setCreatingOrderId] = useState<string | null>(null);
+  const [editingReseller, setEditingReseller] = useState<Reseller | null>(null);
+  const [editForm, setEditForm] = useState({
+    name: "",
+    email: "",
+    whatsapp: "",
+    brand_name: "",
+  });
+  const [savingEdit, setSavingEdit] = useState(false);
+
+  const fetchResellers = async () => {
+    setLoadError("");
+    try {
+      const response = await fetch("/api/admin/resellers", { cache: "no-store", signal: AbortSignal.timeout(20_000) });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "Gagal memuat reseller.");
       setResellers(result.resellers ?? []);
     } catch (error) {
       console.error(error);
+      setLoadError("Gagal memuat daftar reseller. Tekan Refresh untuk mencoba lagi.");
     } finally {
       setLoading(false);
     }
@@ -204,51 +422,6 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! �
     loadUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
-
-  const addReseller = async () => {
-    if (!form.name.trim() || !form.email.trim()) {
-      alert("Nama dan email reseller wajib diisi.");
-      return;
-    }
-
-    setCreating(true);
-
-    const res = await fetch("/api/admin/create-reseller", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    });
-
-    const result = await res.json();
-
-    setCreating(false);
-
-    if (!res.ok) {
-      alert(result.error || "Gagal menambahkan reseller.");
-      return;
-    }
-
-    setCredentials({
-      name: form.name.trim(),
-      email: result.email,
-      password: result.password,
-      orderId: result.orderId,
-      orderStatus: result.orderStatus === "paid" ? "paid" : "pending",
-      whatsapp: form.whatsapp.trim(),
-      package: form.package === "reseller_brand" ? "reseller_brand" : "reseller",
-    });
-    setMessageCopied(false);
-
-    setForm({
-      name: "",
-      email: "",
-      whatsapp: "",
-      package: "reseller",
-      commission_percent: 0,
-    });
-
-    fetchResellers();
-  };
 
   const updateStatus = async (id: string, status: string) => {
     const { error } = await supabase.from("resellers").update({ status }).eq("id", id);
@@ -374,7 +547,6 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! �
       whatsapp: reseller.whatsapp || "",
       package: reseller.package === "reseller_brand" ? "reseller_brand" : "reseller",
     });
-    setMessageCopied(false);
   };
 
   const deleteReseller = async (id: string, name: string) => {
@@ -563,157 +735,19 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! �
           </button>
         </header>
 
-        <section className={styles.formCard}>
-          <h2 className={styles.sectionTitle}>Tambah Reseller Baru</h2>
-          <p style={{ margin: "0 0 16px", fontSize: 13.5, color: "#64748b" }}>
-            Akun yang dibuat Admin Vistiq langsung Active. Paketnya otomatis dicatat Lunas dan masuk omzet Owner.
-          </p>
-
-          {credentials && (
-            <div
-              style={{
-                background: "#f0fdf4",
-                border: "1px solid #bbf7d0",
-                borderRadius: 12,
-                padding: 16,
-                marginBottom: 16,
-                fontSize: 13.5,
-              }}
-            >
-              <strong style={{ display: "block", marginBottom: 6, color: "#15803d" }}>
-                {credentials.name
-                  ? "Akun berhasil dibuat — kirim akses login kepada pelanggan:"
-                  : "Password siap — catat/kirim sekarang, tidak akan ditampilkan lagi:"}
-              </strong>
-              <p style={{ margin: 0 }}>Email: <code>{credentials.email}</code></p>
-              <p style={{ margin: "4px 0 12px" }}>Password: <code>{credentials.password}</code></p>
-              {credentials.orderId && (
-                <p style={{ margin: "4px 0 12px", color: "#1d4ed8" }}>
-                  Order paket: <code>{credentials.orderId}</code> · {credentials.orderStatus === "paid"
-                    ? "LUNAS — otomatis masuk omzet Owner."
-                    : "PENDING — konfirmasi di menu Transaksi setelah transfer masuk."}
-                </p>
-              )}
-
-              {credentials.name && (
-                <div
-                  style={{
-                    background: "#fff",
-                    border: "1px solid #dcfce7",
-                    borderRadius: 10,
-                    padding: 14,
-                    marginBottom: 12,
-                    whiteSpace: "pre-wrap",
-                    lineHeight: 1.6,
-                    color: "#334155",
-                    maxHeight: 280,
-                    overflowY: "auto",
-                  }}
-                >
-                  {getWelcomeMessage(credentials)}
-                </div>
-              )}
-
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                {credentials.name && (
-                  <>
-                    <button
-                      type="button"
-                      onClick={copyWelcomeMessage}
-                      className={styles.button}
-                      style={{ padding: "8px 14px", fontSize: 12.5 }}
-                    >
-                      {messageCopied ? "Pesan Tersalin ✓" : "Salin Pesan"}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={openWhatsApp}
-                      className={styles.button}
-                      style={{
-                        padding: "8px 14px",
-                        fontSize: 12.5,
-                        background: "#16a34a",
-                      }}
-                    >
-                      Kirim ke WhatsApp
-                    </button>
-                  </>
-                )}
-                <button
-                  type="button"
-                  onClick={() => setCredentials(null)}
-                  className={styles.button}
-                  style={{
-                    padding: "8px 14px",
-                    fontSize: 12.5,
-                    background: "#64748b",
-                  }}
-                >
-                  Tutup
-                </button>
-              </div>
-            </div>
-          )}
-
-          <div className={styles.formGrid}>
-            <input
-              placeholder="Nama Reseller"
-              value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
-              className={styles.input}
-            />
-
-            <input
-              type="email"
-              placeholder="Email Login"
-              value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
-              className={styles.input}
-            />
-
-            <input
-              placeholder="Nomor WhatsApp"
-              value={form.whatsapp}
-              onChange={(e) => setForm({ ...form, whatsapp: e.target.value })}
-              className={styles.input}
-            />
-
-            <select
-              value={form.package}
-              onChange={(e) =>
-                setForm({
-                  ...form,
-                  package: e.target.value,
-                  commission_percent: PACKAGE_DEFAULT_COMMISSION[e.target.value] ?? form.commission_percent,
-                })
-              }
-              className={styles.input}
-            >
-              <option value="reseller">Reseller (Rp149.000 sekali + Rp20.000/aktivasi)</option>
-              <option value="reseller_brand">Mitra Brand (Rp59.000/bulan + Rp20.000/aktivasi)</option>
-            </select>
-
-            <div className={styles.input} style={{ display: "flex", alignItems: "center", color: "#475569" }}>
-              Sistem baru · Aktivasi Rp20.000/undangan
-            </div>
-
-          </div>
-
-          <button onClick={addReseller} className={styles.button} disabled={creating}>
-            {creating ? "Membuat akun..." : "Simpan Reseller"}
-          </button>
-        </section>
+        <ResellerCreateForm credentials={credentials} setCredentials={setCredentials} onCreated={fetchResellers} />
 
         <section className={styles.tableWrap}>
           <h2 className={styles.sectionTitle}>Daftar Reseller</h2>
 
+          {loadError && <p role="alert">{loadError}</p>}
           {loading ? (
             <p>Memuat data...</p>
           ) : resellers.length === 0 ? (
             <p>Belum ada reseller.</p>
           ) : (
             <div className={styles.table}>
-              {resellers.map((reseller) => (
+              {visibleResellers.map((reseller) => (
                 <div key={reseller.id} className={styles.resellerRow}>
                   <div className={styles.resellerName}>
                     <strong>{reseller.name}</strong>
@@ -829,6 +863,13 @@ Terima kasih dan selamat mengembangkan bisnis undangan digital bersama kami! �
                 </div>
               ))}
             </div>
+          )}
+          {resellers.length > 20 && (
+            <nav aria-label="Halaman daftar reseller" style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 16 }}>
+              <button type="button" className={styles.button} disabled={currentPage <= 1} onClick={() => setPage(currentPage - 1)}>Sebelumnya</button>
+              <span>Halaman {currentPage} dari {pageCount} · {resellers.length} reseller</span>
+              <button type="button" className={styles.button} disabled={currentPage >= pageCount} onClick={() => setPage(currentPage + 1)}>Berikutnya</button>
+            </nav>
           )}
         </section>
       </section>
