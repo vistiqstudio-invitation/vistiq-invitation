@@ -16,7 +16,7 @@ export default function ExpiredBrandGate() {
 
       if (!active) return;
 
-      alert("Masa aktif Mitra Brand Anda telah habis. Hubungi admin untuk aktivasi kembali.");
+      alert("Masa aktif Mitra Brand Anda telah habis. Silakan hubungi admin untuk melakukan perpanjangan.");
       router.replace("/login");
       router.refresh();
     };
@@ -53,7 +53,7 @@ export default function ExpiredBrandGate() {
           Masa Aktif Habis
         </h1>
         <p style={{ margin: 0, lineHeight: 1.7, color: "#64748b" }}>
-          Masa aktif Mitra Brand Anda telah habis. Hubungi admin untuk aktivasi kembali.
+          Masa aktif Mitra Brand Anda telah habis. Silakan hubungi admin untuk melakukan perpanjangan.
         </p>
       </div>
     </main>
