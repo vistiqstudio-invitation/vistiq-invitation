@@ -1,5 +1,6 @@
 import "server-only";
 
+import { createClient } from "@/lib/supabase/server";
 import type { EventItem, InvitationData } from "@/types/invitation";
 
 type StoredEvent = {
@@ -8,6 +9,7 @@ type StoredEvent = {
   time?: unknown;
   location?: unknown;
   mapsUrl?: unknown;
+  maps_url?: unknown;
 };
 
 type FlexibleEventRow = {
@@ -59,7 +61,7 @@ function normalizeStoredEvents(value: unknown): EventItem[] {
       const date = asText(item.date);
       const time = asText(item.time);
       const location = asText(item.location);
-      const mapsUrl = asText(item.mapsUrl);
+      const mapsUrl = asText(item.mapsUrl) || asText(item.maps_url);
 
       return {
         name,
@@ -74,35 +76,16 @@ function normalizeStoredEvents(value: unknown): EventItem[] {
 }
 
 async function getFlexibleEventRow(invitationId: string | number): Promise<FlexibleEventRow | null> {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!supabaseUrl || !anonKey) return null;
-
   try {
-    const invitationIdText = String(invitationId);
-    const url = new URL("/rest/v1/invitations", supabaseUrl);
-    url.searchParams.set("id", `eq.${invitationIdText}`);
-    url.searchParams.set("select", "events,cover_event_index");
-    url.searchParams.set("limit", "1");
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("invitations")
+      .select("events,cover_event_index")
+      .eq("id", invitationId)
+      .single();
 
-    const response = await fetch(url, {
-      headers: {
-        apikey: anonKey,
-        Authorization: `Bearer ${anonKey}`,
-        Accept: "application/json",
-      },
-      next: {
-        // These values rarely change while guests are opening an invitation.
-        // A short shared cache removes a database round-trip on every page view
-        // while keeping client edits visible within roughly half a minute.
-        revalidate: 30,
-        tags: [`invitation-events-${invitationIdText}`],
-      },
-    });
-
-    if (!response.ok) return null;
-    const rows = (await response.json()) as FlexibleEventRow[];
-    return rows[0] || null;
+    if (error || !data) return null;
+    return data as FlexibleEventRow;
   } catch {
     return null;
   }
