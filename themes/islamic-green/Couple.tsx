@@ -70,9 +70,11 @@ export default function Couple({ invitation }: { invitation: InvitationData }) {
           />
         </Reveal>
 
-        <Reveal delay={0.2} className={styles.middle}>
-          <span className={styles.andSymbol}>&amp;</span>
-        </Reveal>
+        <div className={styles.middle} style={{ order: 0 }}>
+          <Reveal delay={0.2}>
+            <span className={styles.andSymbol}>&amp;</span>
+          </Reveal>
+        </div>
 
         <Reveal delay={0.3}>
           <Person
