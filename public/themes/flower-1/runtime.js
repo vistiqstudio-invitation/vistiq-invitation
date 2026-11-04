@@ -15,6 +15,9 @@
   coverLayer.className = "elementor elementor-97395 flower-cover-layer";
   coverLayer.append(block("633321e"));
   document.body.append(coverLayer);
+  for (const artwork of all(".modalx, #cover .elementor-element-4311ea48.elementor-sticky--active, #cover .elementor-element-20cd6f27, #cover .elementor-element-107f747")) {
+    artwork.classList.add("flower-artwork");
+  }
   main.inert = true;
   open.disabled = true;
   let opened = false;
@@ -133,17 +136,17 @@
       if (guest && !form.elements.name.value) form.elements.name.value = guestName;
       if (!data.id) q(".flower-status", form).textContent = "RSVP tersedia pada undangan klien.";
     }
+    coverLayer.classList.add("flower-ready");
     open.disabled = false;
     ready = true;
     clearInterval(request);
   };
   const observer = "IntersectionObserver" in window ? new IntersectionObserver((entries) => {
     for (const { isIntersecting, target } of entries) if (isIntersecting) {
-      const anim = (matchMedia("(max-width:767px)").matches && target.dataset.revealMobile) || target.dataset.reveal;
-      target.classList.add("flower-revealed", anim);
+      target.classList.add("flower-revealed");
       observer.unobserve(target);
     }
-  }, { threshold: .12 }) : null;
+  }, { threshold: .05 }) : null;
   open.addEventListener("click", () => {
     if (opened) return;
     opened = true;
@@ -152,7 +155,7 @@
     main.inert = false;
     window.scrollTo(0, 0);
     if (audio.hasAttribute("src")) { music.hidden = false; audio.play().catch(() => {}); }
-    all("[data-reveal]", main).forEach((node) => observer?.observe(node));
+    all(".elementor-widget-heading, .elementor-widget-text-editor, .elementor-widget-image, .elementor-widget-button, .weddingpress-timeline-item, .wpkoi-elements-countdown-items, .flower-form", main).forEach((node) => observer?.observe(node));
     send("opened");
     const finishOpening = () => { coverLayer.hidden = true; };
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) {

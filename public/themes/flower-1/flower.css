@@ -12,16 +12,15 @@ html,body{margin:0;min-height:100%;overscroll-behavior:none}
 body:not(.flower-open){overflow:hidden}
 [hidden]{display:none!important}
 .flower-form label{display:block;margin:0 0 10px;text-align:left}
-.flower-form .form-control{display:block;width:100%;margin-top:4px;font:inherit;border:1px solid #b8a79b;border-radius:4px;background:#fff;color:#49392f;padding:8px 10px}
+.flower-form .form-control{display:block;width:100%;margin-top:4px;font:inherit;border:1px solid #9ebdd5;border-radius:4px;background:#fff;color:#234661;padding:8px 10px}
 .flower-form .elementor-button,#flower-more,.flower-copy{cursor:pointer}
 .flower-status{margin:5px 0;font-size:.9em;min-height:1em}
-#flower-wishes{margin-top:12px;max-height:270px;overflow:auto;color:#49392f;text-align:left}
-#flower-wishes article{border-bottom:1px solid #d9c9be;padding:8px;background:#ffffffba;overflow-wrap:anywhere}
+#flower-wishes{margin-top:12px;max-height:270px;overflow:auto;color:#234661;text-align:left}
+#flower-wishes article{border-bottom:1px solid #c3ddf0;padding:8px;background:#ffffffba;overflow-wrap:anywhere}
 #flower-wishes p{margin:2px 0;white-space:pre-wrap}
-.flower-bank{display:inline-block;font-weight:700;color:#4a3429}
+.flower-bank{display:inline-block;font-weight:700;color:#234661}
 .flower-bank img{height:auto;max-width:96px;max-height:36px;object-fit:contain}
-#flower-music{position:fixed;z-index:50;bottom:max(16px,env(safe-area-inset-bottom));right:16px;border:1px solid #fff;border-radius:50%;background:#675348;color:#fff;width:39px;height:39px;cursor:pointer;padding:0}
-[data-reveal].flower-revealed{animation-duration:.8s;animation-fill-mode:both}
+#flower-music{position:fixed;z-index:50;bottom:max(16px,env(safe-area-inset-bottom));right:16px;border:1px solid #fff;border-radius:50%;background:#356184;color:#fff;width:39px;height:39px;cursor:pointer;padding:0}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 @media(min-width:768px){
   .elementor-97395 #cover.elementor-element-274d8559{overflow:visible}
@@ -36,6 +35,29 @@ body:not(.flower-open){overflow:hidden}
 .flower-cover-layer .wdp-button-wrapper .elementor-button-icon{display:inline-flex;align-items:center;flex:none;margin:0}
 .flower-cover-layer .wdp-button-wrapper button:active{transform:scale(.96)}
 .flower-cover-layer .wdp-button-wrapper button:focus-visible{outline:2px solid #fff;outline-offset:4px}
-@media(hover:hover){.flower-cover-layer .wdp-button-wrapper button:not(:disabled):hover{box-shadow:0 4px 15px #30201648}}
+@media(hover:hover){.flower-cover-layer .wdp-button-wrapper button:not(:disabled):hover{box-shadow:0 4px 15px #20436348}}
 .flower-cover-layer .modalx{position:fixed!important;inset:0!important;display:block;transform:none!important}
 body:not(.flower-open) #cover{visibility:hidden}
+
+/* Blue-tinted illustration layers sit behind the original text and overlays. */
+.flower-artwork{isolation:isolate;background-image:none!important;overflow:hidden}
+.flower-artwork::before{
+  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:url("./kartun-coklat-2-scaled.jpg") center/cover no-repeat;
+  filter:grayscale(.92) sepia(.28) hue-rotate(163deg) saturate(1.45);
+  animation:flower-art-drift 13s ease-in-out infinite alternate;
+}
+.flower-artwork.elementor-element-4311ea48::before{background-position:center top}
+#cover img[src*="kartun-coklat"]{filter:grayscale(.92) sepia(.28) hue-rotate(163deg) saturate(1.45)}
+#cover .flower-revealed{animation:flower-rise .75s cubic-bezier(.22,.7,.3,1) both}
+#cover .elementor-widget-image.flower-revealed{animation:flower-picture-in .95s cubic-bezier(.22,.7,.3,1) both}
+#cover .elementor-widget-image.flower-revealed img[src*="kartun-coklat"]{animation:flower-float 6s ease-in-out 1s infinite alternate}
+.flower-cover-layer.flower-ready .info_modalx > *{animation:flower-rise .8s cubic-bezier(.22,.7,.3,1) both}
+.flower-cover-layer.flower-ready .info_modalx > :nth-child(2){animation-delay:.12s}
+.flower-cover-layer.flower-ready .info_modalx > :nth-child(3){animation-delay:.22s}
+.flower-cover-layer.flower-ready .info_modalx > :nth-child(4){animation-delay:.30s}
+.flower-cover-layer.flower-ready .info_modalx > :nth-child(5){animation-delay:.38s}
+@keyframes flower-art-drift{from{transform:scale(1.015)}to{transform:scale(1.075)}}
+@keyframes flower-rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes flower-picture-in{from{opacity:0;transform:translateY(25px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes flower-float{from{transform:translateY(0)}to{transform:translateY(-7px)}}

@@ -216,7 +216,7 @@ const allWeddingThemes: ThemeMeta[] = [
   { key: "velvet-cinema", label: "Velvet Cinema", description: "Merah beludru & hitam, premiere film, marquee lights, tiket VIP & filmstrip", swatch: ["#0a0909", "#761423"], tags: ["premium"] },
   { key: "prismatic-vows", label: "Prismatic Vows", description: "Indigo, lilac & cyan, kaca holografik, prisma cahaya & galeri refraksi", swatch: ["#0c0b1d", "#76e7ef"], tags: ["premium"] },
   { key: "pearl-tide", label: "Pearl Tide", description: "Deep ocean & seafoam, kerang, mutiara, riak air & bingkai pesisir organik", swatch: ["#071f29", "#dcebea"], tags: ["reguler"] },
-  { key: "flower-1", label: "Flower 1", description: "Undangan tanpa foto dengan ilustrasi pengantin bernuansa cokelat dan krem", swatch: ["#f4eeea", "#846b5c"], tags: ["tanpa-foto"], addedAt: "2026-11-04" },
+  { key: "flower-1", label: "Flower 1", description: "Undangan tanpa foto dengan ilustrasi pengantin bernuansa biru muda", swatch: ["#e4f3ff", "#739ec2"], tags: ["tanpa-foto"], addedAt: "2026-11-04" },
   { key: "ivory-botanica", label: "Ivory Botanica", description: "Sage, ivory & gold dengan komposisi botanical editorial tanpa foto", swatch: ["#fbf8f0", "#6f8974"], tags: ["tanpa-foto"], addedAt: "2026-09-14" },
 ];
 
