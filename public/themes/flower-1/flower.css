@@ -23,8 +23,12 @@ body:not(.flower-open){overflow:hidden}
 #flower-music{position:fixed;z-index:50;bottom:max(16px,env(safe-area-inset-bottom));right:16px;border:1px solid #fff;border-radius:50%;background:#675348;color:#fff;width:39px;height:39px;cursor:pointer;padding:0}
 [data-reveal].flower-revealed{animation-duration:.8s;animation-fill-mode:both}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
-.elementor-4311ea48{width:100%}
-.elementor-element-4311ea48.elementor-sticky--active{position:sticky;top:0;width:100%}
+@media(min-width:768px){
+  .elementor-97395 #cover.elementor-element-274d8559{overflow:visible}
+  #cover > .elementor-container > .elementor-element-2e4d54e7{position:sticky;top:0;align-self:flex-start}
+  #cover .elementor-element-4311ea48.elementor-sticky--active{width:100%;height:100dvh;overflow:hidden}
+  .elementor-97395 #cover .elementor-element-4311ea48.elementor-sticky--active > .elementor-container{min-height:100dvh}
+}
 .elementor-element-4311ea48.elementor-sticky__spacer{display:none}
 .flower-cover-layer{position:fixed!important;inset:0!important;z-index:2147483000!important;transition:transform .72s cubic-bezier(.65,0,.28,1)}
 .flower-cover-layer.flower-closing{transform:translateY(-100%);pointer-events:none}
