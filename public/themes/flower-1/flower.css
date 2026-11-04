@@ -68,3 +68,11 @@ body:not(.flower-open) #cover{visibility:hidden}
   color:#234661;
   font-weight:600;
 }
+
+.elementor-97395 #cover :is(.elementor-element-cab7986,.elementor-element-db66c97) .elementor-heading-title,
+.elementor-97395 #cover .flower-extra-event > p{
+  color:#234661;
+  font-weight:700;
+  font-style:normal;
+  line-height:1.5;
+}
