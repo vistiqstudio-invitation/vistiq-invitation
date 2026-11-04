@@ -12,7 +12,10 @@
   const open = q(".modalx button");
   const main = q("#cover");
   const modal = q(".modalx");
-  main.parentElement.append(block("633321e"));
+  const coverLayer = document.createElement("div");
+  coverLayer.className = "elementor elementor-97395 flower-cover-layer";
+  coverLayer.append(block("633321e"));
+  document.body.append(coverLayer);
   main.inert = true;
   open.disabled = true;
   let opened = false;
@@ -153,7 +156,7 @@
     if (audio.hasAttribute("src")) { music.hidden = false; audio.play().catch(() => {}); }
     all("[data-reveal]", main).forEach((node) => observer?.observe(node));
     send("opened");
-    setTimeout(() => { modal.hidden = true; }, 550);
+    setTimeout(() => { modal.hidden = true; coverLayer.hidden = true; }, 550);
   });
   music.addEventListener("click", () => { if (audio.paused) audio.play().catch(() => {}); else audio.pause(); });
   audio.addEventListener("play", () => { music.textContent = "Ⅱ"; music.setAttribute("aria-label", "Jeda musik"); });

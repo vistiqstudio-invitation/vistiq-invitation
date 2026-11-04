@@ -28,3 +28,6 @@ body:not(.flower-open){overflow:hidden}
 .elementor-4311ea48{width:100%}
 .elementor-element-4311ea48.elementor-sticky--active{position:sticky;top:0;width:100%}
 .elementor-element-4311ea48.elementor-sticky__spacer{display:none}
+.flower-cover-layer{position:fixed!important;inset:0!important;z-index:2147483000!important}
+.flower-cover-layer .modalx{position:fixed!important;inset:0!important;display:block;transform:none!important}
+body:not(.flower-open) #cover{visibility:hidden}
