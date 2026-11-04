@@ -5,6 +5,11 @@
   const all = (s, scope = document) => [...scope.querySelectorAll(s)];
   const block = (id) => q(`[data-id="${id}"]`);
   const set = (s, value, scope = document) => all(s, scope).forEach((node) => { node.textContent = value || ""; });
+  const parentLine = (parents, label) => {
+    const text = parents?.trim();
+    if (!text || /^(?:putra|putri|anak)\b/i.test(text)) return text || "";
+    return `${label} dari ${text}`;
+  };
   const heading = (id, value) => set(`[data-id="${id}"] .elementor-heading-title`, value);
   const send = (type, payload = {}) => parent.postMessage({ channel, type, ...payload }, location.origin);
   const audio = q("#flower-audio");
@@ -65,8 +70,8 @@
     const guestName = (guest || "").trim().slice(0, 120) || "Tamu Undangan";
     heading("5fac4413", guestName);
     set(".wdp-name", guestName);
-    heading("c214139", data.bride.name); heading("74914676", data.bride.parents);
-    heading("13c632da", data.groom.name); heading("4761a269", data.groom.parents);
+    heading("c214139", data.bride.name); heading("74914676", parentLine(data.bride.parents, "Putri"));
+    heading("13c632da", data.groom.name); heading("4761a269", parentLine(data.groom.parents, "Putra"));
     const opening = data.opening || {};
     if (opening.title) heading("3aa1de1b", opening.title);
     if (opening.greeting) heading("187d4735", opening.greeting);
