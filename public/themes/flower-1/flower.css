@@ -11,8 +11,6 @@
 html,body{margin:0;min-height:100%;overscroll-behavior:none}
 body:not(.flower-open){overflow:hidden}
 [hidden]{display:none!important}
-.modalx{z-index:1000;transition:opacity .55s ease}
-.modalx.flower-closing{opacity:0;pointer-events:none}
 .flower-form label{display:block;margin:0 0 10px;text-align:left}
 .flower-form .form-control{display:block;width:100%;margin-top:4px;font:inherit;border:1px solid #b8a79b;border-radius:4px;background:#fff;color:#49392f;padding:8px 10px}
 .flower-form .elementor-button,#flower-more,.flower-copy{cursor:pointer}
@@ -28,6 +26,12 @@ body:not(.flower-open){overflow:hidden}
 .elementor-4311ea48{width:100%}
 .elementor-element-4311ea48.elementor-sticky--active{position:sticky;top:0;width:100%}
 .elementor-element-4311ea48.elementor-sticky__spacer{display:none}
-.flower-cover-layer{position:fixed!important;inset:0!important;z-index:2147483000!important}
+.flower-cover-layer{position:fixed!important;inset:0!important;z-index:2147483000!important;transition:transform .72s cubic-bezier(.65,0,.28,1)}
+.flower-cover-layer.flower-closing{transform:translateY(-100%);pointer-events:none}
+.flower-cover-layer .wdp-button-wrapper button.elementor-button{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:44px;padding:10px 20px;line-height:1.25;cursor:pointer;transition:transform .16s ease,box-shadow .16s ease}
+.flower-cover-layer .wdp-button-wrapper .elementor-button-icon{display:inline-flex;align-items:center;flex:none;margin:0}
+.flower-cover-layer .wdp-button-wrapper button:active{transform:scale(.96)}
+.flower-cover-layer .wdp-button-wrapper button:focus-visible{outline:2px solid #fff;outline-offset:4px}
+@media(hover:hover){.flower-cover-layer .wdp-button-wrapper button:not(:disabled):hover{box-shadow:0 4px 15px #30201648}}
 .flower-cover-layer .modalx{position:fixed!important;inset:0!important;display:block;transform:none!important}
 body:not(.flower-open) #cover{visibility:hidden}

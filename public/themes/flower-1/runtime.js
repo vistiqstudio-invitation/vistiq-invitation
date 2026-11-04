@@ -11,7 +11,6 @@
   const music = q("#flower-music");
   const open = q(".modalx button");
   const main = q("#cover");
-  const modal = q(".modalx");
   const coverLayer = document.createElement("div");
   coverLayer.className = "elementor elementor-97395 flower-cover-layer";
   coverLayer.append(block("633321e"));
@@ -149,14 +148,22 @@
     if (opened) return;
     opened = true;
     document.body.classList.add("flower-open");
-    modal.classList.add("flower-closing");
-    modal.inert = true;
+    coverLayer.inert = true;
     main.inert = false;
     window.scrollTo(0, 0);
     if (audio.hasAttribute("src")) { music.hidden = false; audio.play().catch(() => {}); }
     all("[data-reveal]", main).forEach((node) => observer?.observe(node));
     send("opened");
-    setTimeout(() => { modal.hidden = true; coverLayer.hidden = true; }, 550);
+    const finishOpening = () => { coverLayer.hidden = true; };
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      finishOpening();
+    } else {
+      coverLayer.addEventListener("transitionend", (event) => {
+        if (event.target === coverLayer && event.propertyName === "transform") finishOpening();
+      });
+      coverLayer.classList.add("flower-closing");
+      setTimeout(finishOpening, 850);
+    }
   });
   music.addEventListener("click", () => { if (audio.paused) audio.play().catch(() => {}); else audio.pause(); });
   audio.addEventListener("play", () => { music.textContent = "Ⅱ"; music.setAttribute("aria-label", "Jeda musik"); });
