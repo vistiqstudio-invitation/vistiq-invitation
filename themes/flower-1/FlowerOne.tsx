@@ -57,5 +57,5 @@ export default function FlowerOne({ invitation }: { invitation: InvitationData }
     send("wishes", { state: { entries, counts, hasMore } });
   }, [entries, counts, hasMore, send]);
 
-  return <iframe ref={frame} src="/themes/flower-1/index.html?v=6" title="Undangan Flower 1" onLoad={initialize} allow="autoplay; clipboard-write" style={{ display: "block", width: "100%", height: "100dvh", border: 0 }} />;
+  return <iframe ref={frame} src="/themes/flower-1/index.html?v=7" title="Undangan Flower 1" onLoad={initialize} allow="autoplay; clipboard-write" style={{ display: "block", width: "100%", height: "100dvh", border: 0 }} />;
 }

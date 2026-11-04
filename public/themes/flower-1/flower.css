@@ -59,3 +59,12 @@ body:not(.flower-open) #cover{visibility:hidden}
 @keyframes flower-rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
 @keyframes flower-picture-in{from{opacity:0;transform:translateY(25px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
 @keyframes flower-float{from{transform:translateY(0)}to{transform:translateY(-7px)}}
+
+/* Continue the closing illustration's blue into the brand footer. */
+.elementor-97395 #cover .elementor-element-4db91927{
+  background:linear-gradient(180deg,#668fb3 0,#c3e0f5 30px);
+}
+.elementor-97395 #cover .elementor-element-68e3516 .elementor-heading-title{
+  color:#234661;
+  font-weight:600;
+}
