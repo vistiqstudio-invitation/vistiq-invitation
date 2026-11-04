@@ -1,0 +1,30 @@
+@font-face{font-family:"Amsterdam Three Slant";src:url("./Amsterdam-Three-Slant.ttf") format("truetype");font-display:swap}
+@font-face{font-family:TrajanPro;src:url("./TrajanPro-Regular.woff") format("woff");font-display:swap}
+@font-face{font-family:Mode-Regular;src:url("./Mode-Regular.woff") format("woff");font-display:swap}
+@font-face{font-family:Iskry-Regular;src:url("./Iskry-Regular.woff") format("woff");font-display:swap}
+@font-face{font-family:Italiana;src:url("./italiana.woff2") format("woff2");font-display:swap}
+@font-face{font-family:"Playfair Display";src:url("./playfairdisplay.woff2") format("woff2");font-display:swap}
+@font-face{font-family:Tangerine;src:url("./tangerine.woff2") format("woff2");font-display:swap}
+@font-face{font-family:Montserrat;src:url("../adat-minang/montserrat-jtusjig1_i6t8kchkm459wlhyw.woff2") format("woff2");font-display:swap}
+@font-face{font-family:Poppins;src:url("../adat-minang/poppins-pxiayp8kv8jhgfvrjjlme0tcmpi.woff2") format("woff2");font-display:swap}
+@font-face{font-family:Roboto;src:url("../adat-minang/roboto-kfo7cnqeu92fr1me7ksn66agldtyluama3yuba.woff2") format("woff2");font-display:swap}
+html,body{margin:0;min-height:100%;overscroll-behavior:none}
+body:not(.flower-open){overflow:hidden}
+[hidden]{display:none!important}
+.modalx{z-index:1000;transition:opacity .55s ease}
+.modalx.flower-closing{opacity:0;pointer-events:none}
+.flower-form label{display:block;margin:0 0 10px;text-align:left}
+.flower-form .form-control{display:block;width:100%;margin-top:4px;font:inherit;border:1px solid #b8a79b;border-radius:4px;background:#fff;color:#49392f;padding:8px 10px}
+.flower-form .elementor-button,#flower-more,.flower-copy{cursor:pointer}
+.flower-status{margin:5px 0;font-size:.9em;min-height:1em}
+#flower-wishes{margin-top:12px;max-height:270px;overflow:auto;color:#49392f;text-align:left}
+#flower-wishes article{border-bottom:1px solid #d9c9be;padding:8px;background:#ffffffba;overflow-wrap:anywhere}
+#flower-wishes p{margin:2px 0;white-space:pre-wrap}
+.flower-bank{display:inline-block;font-weight:700;color:#4a3429}
+.flower-bank img{height:auto;max-width:96px;max-height:36px;object-fit:contain}
+#flower-music{position:fixed;z-index:50;bottom:max(16px,env(safe-area-inset-bottom));right:16px;border:1px solid #fff;border-radius:50%;background:#675348;color:#fff;width:39px;height:39px;cursor:pointer;padding:0}
+[data-reveal].flower-revealed{animation-duration:.8s;animation-fill-mode:both}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+.elementor-4311ea48{width:100%}
+.elementor-element-4311ea48.elementor-sticky--active{position:sticky;top:0;width:100%}
+.elementor-element-4311ea48.elementor-sticky__spacer{display:none}

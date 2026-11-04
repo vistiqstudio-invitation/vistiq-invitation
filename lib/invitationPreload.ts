@@ -12,7 +12,7 @@ function assetUrl(value?: string | null) {
 }
 
 export function invitationPreloadData(invitation: PreloadInvitation, theme: string) {
-  const noPhoto = theme === "ivory-botanica";
+  const noPhoto = (theme === "ivory-botanica" || theme === "flower-1");
   const people = invitation.category === "wedding"
     ? [invitation.groom, invitation.bride]
     : [invitation.category === "aqiqah" ? invitation.baby : invitation.child];

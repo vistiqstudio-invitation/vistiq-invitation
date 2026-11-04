@@ -442,7 +442,7 @@ const MUSIC_BY_THEME: Record<string, string> = {
 // identical on purpose, so switching themes in the picker is an
 // apples-to-apples comparison.
 export function getDemoInvitation(theme: string): InvitationData {
-  const noPhotoTheme = theme === "ivory-botanica";
+  const noPhotoTheme = (theme === "ivory-botanica" || theme === "flower-1");
 
   return {
     id: 0,

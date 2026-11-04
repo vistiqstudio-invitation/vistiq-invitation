@@ -1,0 +1,1571 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Flower 1 | Vistiq Invitation</title><link rel="stylesheet" href="./bdt-uikit.css"><link rel="stylesheet" href="./ep-helper.css"><link rel="stylesheet" href="./exad-styles.min.css"><link rel="stylesheet" href="./elementor-icons.min.css"><link rel="stylesheet" href="./frontend.min.css"><link rel="stylesheet" href="./post-36082.css"><link rel="stylesheet" href="./wdp.css"><link rel="stylesheet" href="./widget-spacer.min.css"><link rel="stylesheet" href="./zoomIn.min.css"><link rel="stylesheet" href="./widget-heading.min.css"><link rel="stylesheet" href="./fadeInUp.min.css"><link rel="stylesheet" href="./sticky.min.css"><link rel="stylesheet" href="./fadeInDown.min.css"><link rel="stylesheet" href="./widget-image.min.css"><link rel="stylesheet" href="./widget-divider.min.css"><link rel="stylesheet" href="./widget-icon-list.min.css"><link rel="stylesheet" href="./e-animation-grow.min.css"><link rel="stylesheet" href="./ep-timeline.css"><link rel="stylesheet" href="./wdp-copy-widget.css"><link rel="stylesheet" href="./fadeInLeft.min.css"><link rel="stylesheet" href="./widget-social-icons.min.css"><link rel="stylesheet" href="./apple-webkit.min.css"><link rel="stylesheet" href="./post-97395.css"><link rel="stylesheet" href="./fontawesome.min.css"><link rel="stylesheet" href="./solid.min.css"><link rel="stylesheet" href="./regular.min.css"><link rel="stylesheet" href="./brands.min.css"><style>@charset "UTF-8";
+.react-datepicker__year-read-view--down-arrow,
+.react-datepicker__month-read-view--down-arrow,
+.react-datepicker__month-year-read-view--down-arrow, .react-datepicker__navigation-icon::before {
+  border-color: #ccc;
+  border-style: solid;
+  border-width: 3px 3px 0 0;
+  content: "";
+  display: block;
+  height: 9px;
+  position: absolute;
+  top: 6px;
+  width: 9px;
+}
+.react-datepicker-popper[data-placement^=top] .react-datepicker__triangle, .react-datepicker-popper[data-placement^=bottom] .react-datepicker__triangle {
+  margin-left: -4px;
+  position: absolute;
+  width: 0;
+}
+.react-datepicker-popper[data-placement^=top] .react-datepicker__triangle::before, .react-datepicker-popper[data-placement^=bottom] .react-datepicker__triangle::before, .react-datepicker-popper[data-placement^=top] .react-datepicker__triangle::after, .react-datepicker-popper[data-placement^=bottom] .react-datepicker__triangle::after {
+  box-sizing: content-box;
+  position: absolute;
+  border: 8px solid transparent;
+  height: 0;
+  width: 1px;
+  content: "";
+  z-index: -1;
+  border-width: 8px;
+  left: -8px;
+}
+.react-datepicker-popper[data-placement^=top] .react-datepicker__triangle::before, .react-datepicker-popper[data-placement^=bottom] .react-datepicker__triangle::before {
+  border-bottom-color: #aeaeae;
+}
+
+.react-datepicker-popper[data-placement^=bottom] .react-datepicker__triangle {
+  top: 0;
+  margin-top: -8px;
+}
+.react-datepicker-popper[data-placement^=bottom] .react-datepicker__triangle::before, .react-datepicker-popper[data-placement^=bottom] .react-datepicker__triangle::after {
+  border-top: none;
+  border-bottom-color: #f0f0f0;
+}
+.react-datepicker-popper[data-placement^=bottom] .react-datepicker__triangle::after {
+  top: 0;
+}
+.react-datepicker-popper[data-placement^=bottom] .react-datepicker__triangle::before {
+  top: -1px;
+  border-bottom-color: #aeaeae;
+}
+
+.react-datepicker-popper[data-placement^=top] .react-datepicker__triangle {
+  bottom: 0;
+  margin-bottom: -8px;
+}
+.react-datepicker-popper[data-placement^=top] .react-datepicker__triangle::before, .react-datepicker-popper[data-placement^=top] .react-datepicker__triangle::after {
+  border-bottom: none;
+  border-top-color: #fff;
+}
+.react-datepicker-popper[data-placement^=top] .react-datepicker__triangle::after {
+  bottom: 0;
+}
+.react-datepicker-popper[data-placement^=top] .react-datepicker__triangle::before {
+  bottom: -1px;
+  border-top-color: #aeaeae;
+}
+
+.react-datepicker-wrapper {
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  width: 100%;
+}
+
+.react-datepicker {
+  font-family: "Helvetica Neue", helvetica, arial, sans-serif;
+  font-size: 0.8rem;
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #aeaeae;
+  border-radius: 0.3rem;
+  display: inline-block;
+  position: relative;
+}
+
+.react-datepicker--time-only .react-datepicker__triangle {
+  left: 35px;
+}
+.react-datepicker--time-only .react-datepicker__time-container {
+  border-left: 0;
+}
+.react-datepicker--time-only .react-datepicker__time,
+.react-datepicker--time-only .react-datepicker__time-box {
+  border-bottom-left-radius: 0.3rem;
+  border-bottom-right-radius: 0.3rem;
+}
+
+.react-datepicker__triangle {
+  position: absolute;
+  left: 50px;
+}
+
+.react-datepicker-popper {
+  z-index: 1;
+}
+.react-datepicker-popper[data-placement^=bottom] {
+  padding-top: 10px;
+}
+.react-datepicker-popper[data-placement=bottom-end] .react-datepicker__triangle, .react-datepicker-popper[data-placement=top-end] .react-datepicker__triangle {
+  left: auto;
+  right: 50px;
+}
+.react-datepicker-popper[data-placement^=top] {
+  padding-bottom: 10px;
+}
+.react-datepicker-popper[data-placement^=right] {
+  padding-left: 8px;
+}
+.react-datepicker-popper[data-placement^=right] .react-datepicker__triangle {
+  left: auto;
+  right: 42px;
+}
+.react-datepicker-popper[data-placement^=left] {
+  padding-right: 8px;
+}
+.react-datepicker-popper[data-placement^=left] .react-datepicker__triangle {
+  left: 42px;
+  right: auto;
+}
+
+.react-datepicker__header {
+  text-align: center;
+  background-color: #f0f0f0;
+  border-bottom: 1px solid #aeaeae;
+  border-top-left-radius: 0.3rem;
+  padding: 8px 0;
+  position: relative;
+}
+.react-datepicker__header--time {
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.react-datepicker__header--time:not(.react-datepicker__header--time--only) {
+  border-top-left-radius: 0;
+}
+.react-datepicker__header:not(.react-datepicker__header--has-time-select) {
+  border-top-right-radius: 0.3rem;
+}
+
+.react-datepicker__year-dropdown-container--select,
+.react-datepicker__month-dropdown-container--select,
+.react-datepicker__month-year-dropdown-container--select,
+.react-datepicker__year-dropdown-container--scroll,
+.react-datepicker__month-dropdown-container--scroll,
+.react-datepicker__month-year-dropdown-container--scroll {
+  display: inline-block;
+  margin: 0 2px;
+}
+
+.react-datepicker__current-month,
+.react-datepicker-time__header,
+.react-datepicker-year-header {
+  margin-top: 0;
+  color: #000;
+  font-weight: bold;
+  font-size: 0.944rem;
+}
+
+.react-datepicker-time__header {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.react-datepicker__navigation {
+  align-items: center;
+  background: none;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  position: absolute;
+  top: 2px;
+  padding: 0;
+  border: none;
+  z-index: 1;
+  height: 32px;
+  width: 32px;
+  text-indent: -999em;
+  overflow: hidden;
+}
+.react-datepicker__navigation--previous {
+  left: 2px;
+}
+.react-datepicker__navigation--next {
+  right: 2px;
+}
+.react-datepicker__navigation--next--with-time:not(.react-datepicker__navigation--next--with-today-button) {
+  right: 85px;
+}
+.react-datepicker__navigation--years {
+  position: relative;
+  top: 0;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.react-datepicker__navigation--years-previous {
+  top: 4px;
+}
+.react-datepicker__navigation--years-upcoming {
+  top: -4px;
+}
+.react-datepicker__navigation:hover *::before {
+  border-color: #a6a6a6;
+}
+
+.react-datepicker__navigation-icon {
+  position: relative;
+  top: -1px;
+  font-size: 20px;
+  width: 0;
+}
+.react-datepicker__navigation-icon--next {
+  left: -2px;
+}
+.react-datepicker__navigation-icon--next::before {
+  transform: rotate(45deg);
+  left: -7px;
+}
+.react-datepicker__navigation-icon--previous {
+  right: -2px;
+}
+.react-datepicker__navigation-icon--previous::before {
+  transform: rotate(225deg);
+  right: -7px;
+}
+
+.react-datepicker__month-container {
+  float: left;
+}
+
+.react-datepicker__year {
+  margin: 0.4rem;
+  text-align: center;
+}
+.react-datepicker__year-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 180px;
+}
+.react-datepicker__year .react-datepicker__year-text {
+  display: inline-block;
+  width: 4rem;
+  margin: 2px;
+}
+
+.react-datepicker__month {
+  margin: 0.4rem;
+  text-align: center;
+}
+.react-datepicker__month .react-datepicker__month-text,
+.react-datepicker__month .react-datepicker__quarter-text {
+  display: inline-block;
+  width: 4rem;
+  margin: 2px;
+}
+
+.react-datepicker__input-time-container {
+  clear: both;
+  width: 100%;
+  float: left;
+  margin: 5px 0 10px 15px;
+  text-align: left;
+}
+.react-datepicker__input-time-container .react-datepicker-time__caption {
+  display: inline-block;
+}
+.react-datepicker__input-time-container .react-datepicker-time__input-container {
+  display: inline-block;
+}
+.react-datepicker__input-time-container .react-datepicker-time__input-container .react-datepicker-time__input {
+  display: inline-block;
+  margin-left: 10px;
+}
+.react-datepicker__input-time-container .react-datepicker-time__input-container .react-datepicker-time__input input {
+  width: auto;
+}
+.react-datepicker__input-time-container .react-datepicker-time__input-container .react-datepicker-time__input input[type=time]::-webkit-inner-spin-button,
+.react-datepicker__input-time-container .react-datepicker-time__input-container .react-datepicker-time__input input[type=time]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.react-datepicker__input-time-container .react-datepicker-time__input-container .react-datepicker-time__input input[type=time] {
+  -moz-appearance: textfield;
+}
+.react-datepicker__input-time-container .react-datepicker-time__input-container .react-datepicker-time__delimiter {
+  margin-left: 5px;
+  display: inline-block;
+}
+
+.react-datepicker__time-container {
+  float: right;
+  border-left: 1px solid #aeaeae;
+  width: 85px;
+}
+.react-datepicker__time-container--with-today-button {
+  display: inline;
+  border: 1px solid #aeaeae;
+  border-radius: 0.3rem;
+  position: absolute;
+  right: -72px;
+  top: 0;
+}
+.react-datepicker__time-container .react-datepicker__time {
+  position: relative;
+  background: white;
+  border-bottom-right-radius: 0.3rem;
+}
+.react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box {
+  width: 85px;
+  overflow-x: hidden;
+  margin: 0 auto;
+  text-align: center;
+  border-bottom-right-radius: 0.3rem;
+}
+.react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list {
+  list-style: none;
+  margin: 0;
+  height: calc(195px + (1.7rem / 2));
+  overflow-y: scroll;
+  padding-right: 0;
+  padding-left: 0;
+  width: 100%;
+  box-sizing: content-box;
+}
+.react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list li.react-datepicker__time-list-item {
+  height: 30px;
+  padding: 5px 10px;
+  white-space: nowrap;
+}
+.react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list li.react-datepicker__time-list-item:hover {
+  cursor: pointer;
+  background-color: #f0f0f0;
+}
+.react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list li.react-datepicker__time-list-item--selected {
+  background-color: #216ba5;
+  color: white;
+  font-weight: bold;
+}
+.react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list li.react-datepicker__time-list-item--selected:hover {
+  background-color: #216ba5;
+}
+.react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list li.react-datepicker__time-list-item--disabled {
+  color: #ccc;
+}
+.react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list li.react-datepicker__time-list-item--disabled:hover {
+  cursor: default;
+  background-color: transparent;
+}
+
+.react-datepicker__week-number {
+  color: #ccc;
+  display: inline-block;
+  width: 1.7rem;
+  line-height: 1.7rem;
+  text-align: center;
+  margin: 0.166rem;
+}
+.react-datepicker__week-number.react-datepicker__week-number--clickable {
+  cursor: pointer;
+}
+.react-datepicker__week-number.react-datepicker__week-number--clickable:hover {
+  border-radius: 0.3rem;
+  background-color: #f0f0f0;
+}
+
+.react-datepicker__day-names,
+.react-datepicker__week {
+  white-space: nowrap;
+}
+
+.react-datepicker__day-names {
+  margin-bottom: -8px;
+}
+
+.react-datepicker__day-name,
+.react-datepicker__day,
+.react-datepicker__time-name {
+  color: #000;
+  display: inline-block;
+  width: 1.7rem;
+  line-height: 1.7rem;
+  text-align: center;
+  margin: 0.166rem;
+}
+
+.react-datepicker__month--selected, .react-datepicker__month--in-selecting-range, .react-datepicker__month--in-range,
+.react-datepicker__quarter--selected,
+.react-datepicker__quarter--in-selecting-range,
+.react-datepicker__quarter--in-range {
+  border-radius: 0.3rem;
+  background-color: #216ba5;
+  color: #fff;
+}
+.react-datepicker__month--selected:hover, .react-datepicker__month--in-selecting-range:hover, .react-datepicker__month--in-range:hover,
+.react-datepicker__quarter--selected:hover,
+.react-datepicker__quarter--in-selecting-range:hover,
+.react-datepicker__quarter--in-range:hover {
+  background-color: #1d5d90;
+}
+.react-datepicker__month--disabled,
+.react-datepicker__quarter--disabled {
+  color: #ccc;
+  pointer-events: none;
+}
+.react-datepicker__month--disabled:hover,
+.react-datepicker__quarter--disabled:hover {
+  cursor: default;
+  background-color: transparent;
+}
+
+.react-datepicker__day,
+.react-datepicker__month-text,
+.react-datepicker__quarter-text,
+.react-datepicker__year-text {
+  cursor: pointer;
+}
+.react-datepicker__day:hover,
+.react-datepicker__month-text:hover,
+.react-datepicker__quarter-text:hover,
+.react-datepicker__year-text:hover {
+  border-radius: 0.3rem;
+  background-color: #f0f0f0;
+}
+.react-datepicker__day--today,
+.react-datepicker__month-text--today,
+.react-datepicker__quarter-text--today,
+.react-datepicker__year-text--today {
+  font-weight: bold;
+}
+.react-datepicker__day--highlighted,
+.react-datepicker__month-text--highlighted,
+.react-datepicker__quarter-text--highlighted,
+.react-datepicker__year-text--highlighted {
+  border-radius: 0.3rem;
+  background-color: #3dcc4a;
+  color: #fff;
+}
+.react-datepicker__day--highlighted:hover,
+.react-datepicker__month-text--highlighted:hover,
+.react-datepicker__quarter-text--highlighted:hover,
+.react-datepicker__year-text--highlighted:hover {
+  background-color: #32be3f;
+}
+.react-datepicker__day--highlighted-custom-1,
+.react-datepicker__month-text--highlighted-custom-1,
+.react-datepicker__quarter-text--highlighted-custom-1,
+.react-datepicker__year-text--highlighted-custom-1 {
+  color: magenta;
+}
+.react-datepicker__day--highlighted-custom-2,
+.react-datepicker__month-text--highlighted-custom-2,
+.react-datepicker__quarter-text--highlighted-custom-2,
+.react-datepicker__year-text--highlighted-custom-2 {
+  color: green;
+}
+.react-datepicker__day--selected, .react-datepicker__day--in-selecting-range, .react-datepicker__day--in-range,
+.react-datepicker__month-text--selected,
+.react-datepicker__month-text--in-selecting-range,
+.react-datepicker__month-text--in-range,
+.react-datepicker__quarter-text--selected,
+.react-datepicker__quarter-text--in-selecting-range,
+.react-datepicker__quarter-text--in-range,
+.react-datepicker__year-text--selected,
+.react-datepicker__year-text--in-selecting-range,
+.react-datepicker__year-text--in-range {
+  border-radius: 0.3rem;
+  background-color: #216ba5;
+  color: #fff;
+}
+.react-datepicker__day--selected:hover, .react-datepicker__day--in-selecting-range:hover, .react-datepicker__day--in-range:hover,
+.react-datepicker__month-text--selected:hover,
+.react-datepicker__month-text--in-selecting-range:hover,
+.react-datepicker__month-text--in-range:hover,
+.react-datepicker__quarter-text--selected:hover,
+.react-datepicker__quarter-text--in-selecting-range:hover,
+.react-datepicker__quarter-text--in-range:hover,
+.react-datepicker__year-text--selected:hover,
+.react-datepicker__year-text--in-selecting-range:hover,
+.react-datepicker__year-text--in-range:hover {
+  background-color: #1d5d90;
+}
+.react-datepicker__day--keyboard-selected,
+.react-datepicker__month-text--keyboard-selected,
+.react-datepicker__quarter-text--keyboard-selected,
+.react-datepicker__year-text--keyboard-selected {
+  border-radius: 0.3rem;
+  background-color: #2579ba;
+  color: #fff;
+}
+.react-datepicker__day--keyboard-selected:hover,
+.react-datepicker__month-text--keyboard-selected:hover,
+.react-datepicker__quarter-text--keyboard-selected:hover,
+.react-datepicker__year-text--keyboard-selected:hover {
+  background-color: #1d5d90;
+}
+.react-datepicker__day--in-selecting-range:not(.react-datepicker__day--in-range,
+.react-datepicker__month-text--in-range,
+.react-datepicker__quarter-text--in-range,
+.react-datepicker__year-text--in-range),
+.react-datepicker__month-text--in-selecting-range:not(.react-datepicker__day--in-range,
+.react-datepicker__month-text--in-range,
+.react-datepicker__quarter-text--in-range,
+.react-datepicker__year-text--in-range),
+.react-datepicker__quarter-text--in-selecting-range:not(.react-datepicker__day--in-range,
+.react-datepicker__month-text--in-range,
+.react-datepicker__quarter-text--in-range,
+.react-datepicker__year-text--in-range),
+.react-datepicker__year-text--in-selecting-range:not(.react-datepicker__day--in-range,
+.react-datepicker__month-text--in-range,
+.react-datepicker__quarter-text--in-range,
+.react-datepicker__year-text--in-range) {
+  background-color: rgba(33, 107, 165, 0.5);
+}
+.react-datepicker__month--selecting-range .react-datepicker__day--in-range:not(.react-datepicker__day--in-selecting-range,
+.react-datepicker__month-text--in-selecting-range,
+.react-datepicker__quarter-text--in-selecting-range,
+.react-datepicker__year-text--in-selecting-range),
+.react-datepicker__month--selecting-range .react-datepicker__month-text--in-range:not(.react-datepicker__day--in-selecting-range,
+.react-datepicker__month-text--in-selecting-range,
+.react-datepicker__quarter-text--in-selecting-range,
+.react-datepicker__year-text--in-selecting-range),
+.react-datepicker__month--selecting-range .react-datepicker__quarter-text--in-range:not(.react-datepicker__day--in-selecting-range,
+.react-datepicker__month-text--in-selecting-range,
+.react-datepicker__quarter-text--in-selecting-range,
+.react-datepicker__year-text--in-selecting-range),
+.react-datepicker__month--selecting-range .react-datepicker__year-text--in-range:not(.react-datepicker__day--in-selecting-range,
+.react-datepicker__month-text--in-selecting-range,
+.react-datepicker__quarter-text--in-selecting-range,
+.react-datepicker__year-text--in-selecting-range) {
+  background-color: #f0f0f0;
+  color: #000;
+}
+.react-datepicker__day--disabled,
+.react-datepicker__month-text--disabled,
+.react-datepicker__quarter-text--disabled,
+.react-datepicker__year-text--disabled {
+  cursor: default;
+  color: #ccc;
+}
+.react-datepicker__day--disabled:hover,
+.react-datepicker__month-text--disabled:hover,
+.react-datepicker__quarter-text--disabled:hover,
+.react-datepicker__year-text--disabled:hover {
+  background-color: transparent;
+}
+
+.react-datepicker__month-text.react-datepicker__month--selected:hover, .react-datepicker__month-text.react-datepicker__month--in-range:hover, .react-datepicker__month-text.react-datepicker__quarter--selected:hover, .react-datepicker__month-text.react-datepicker__quarter--in-range:hover,
+.react-datepicker__quarter-text.react-datepicker__month--selected:hover,
+.react-datepicker__quarter-text.react-datepicker__month--in-range:hover,
+.react-datepicker__quarter-text.react-datepicker__quarter--selected:hover,
+.react-datepicker__quarter-text.react-datepicker__quarter--in-range:hover {
+  background-color: #216ba5;
+}
+.react-datepicker__month-text:hover,
+.react-datepicker__quarter-text:hover {
+  background-color: #f0f0f0;
+}
+
+.react-datepicker__input-container {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.react-datepicker__year-read-view,
+.react-datepicker__month-read-view,
+.react-datepicker__month-year-read-view {
+  border: 1px solid transparent;
+  border-radius: 0.3rem;
+  position: relative;
+}
+.react-datepicker__year-read-view:hover,
+.react-datepicker__month-read-view:hover,
+.react-datepicker__month-year-read-view:hover {
+  cursor: pointer;
+}
+.react-datepicker__year-read-view:hover .react-datepicker__year-read-view--down-arrow,
+.react-datepicker__year-read-view:hover .react-datepicker__month-read-view--down-arrow,
+.react-datepicker__month-read-view:hover .react-datepicker__year-read-view--down-arrow,
+.react-datepicker__month-read-view:hover .react-datepicker__month-read-view--down-arrow,
+.react-datepicker__month-year-read-view:hover .react-datepicker__year-read-view--down-arrow,
+.react-datepicker__month-year-read-view:hover .react-datepicker__month-read-view--down-arrow {
+  border-top-color: #b3b3b3;
+}
+.react-datepicker__year-read-view--down-arrow,
+.react-datepicker__month-read-view--down-arrow,
+.react-datepicker__month-year-read-view--down-arrow {
+  transform: rotate(135deg);
+  right: -16px;
+  top: 0;
+}
+
+.react-datepicker__year-dropdown,
+.react-datepicker__month-dropdown,
+.react-datepicker__month-year-dropdown {
+  background-color: #f0f0f0;
+  position: absolute;
+  width: 50%;
+  left: 25%;
+  top: 30px;
+  z-index: 1;
+  text-align: center;
+  border-radius: 0.3rem;
+  border: 1px solid #aeaeae;
+}
+.react-datepicker__year-dropdown:hover,
+.react-datepicker__month-dropdown:hover,
+.react-datepicker__month-year-dropdown:hover {
+  cursor: pointer;
+}
+.react-datepicker__year-dropdown--scrollable,
+.react-datepicker__month-dropdown--scrollable,
+.react-datepicker__month-year-dropdown--scrollable {
+  height: 150px;
+  overflow-y: scroll;
+}
+
+.react-datepicker__year-option,
+.react-datepicker__month-option,
+.react-datepicker__month-year-option {
+  line-height: 20px;
+  width: 100%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.react-datepicker__year-option:first-of-type,
+.react-datepicker__month-option:first-of-type,
+.react-datepicker__month-year-option:first-of-type {
+  border-top-left-radius: 0.3rem;
+  border-top-right-radius: 0.3rem;
+}
+.react-datepicker__year-option:last-of-type,
+.react-datepicker__month-option:last-of-type,
+.react-datepicker__month-year-option:last-of-type {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  border-bottom-left-radius: 0.3rem;
+  border-bottom-right-radius: 0.3rem;
+}
+.react-datepicker__year-option:hover,
+.react-datepicker__month-option:hover,
+.react-datepicker__month-year-option:hover {
+  background-color: #ccc;
+}
+.react-datepicker__year-option:hover .react-datepicker__navigation--years-upcoming,
+.react-datepicker__month-option:hover .react-datepicker__navigation--years-upcoming,
+.react-datepicker__month-year-option:hover .react-datepicker__navigation--years-upcoming {
+  border-bottom-color: #b3b3b3;
+}
+.react-datepicker__year-option:hover .react-datepicker__navigation--years-previous,
+.react-datepicker__month-option:hover .react-datepicker__navigation--years-previous,
+.react-datepicker__month-year-option:hover .react-datepicker__navigation--years-previous {
+  border-top-color: #b3b3b3;
+}
+.react-datepicker__year-option--selected,
+.react-datepicker__month-option--selected,
+.react-datepicker__month-year-option--selected {
+  position: absolute;
+  left: 15px;
+}
+
+.react-datepicker__close-icon {
+  cursor: pointer;
+  background-color: transparent;
+  border: 0;
+  outline: 0;
+  padding: 0 6px 0 0;
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  display: table-cell;
+  vertical-align: middle;
+}
+.react-datepicker__close-icon::after {
+  cursor: pointer;
+  background-color: #216ba5;
+  color: #fff;
+  border-radius: 50%;
+  height: 16px;
+  width: 16px;
+  padding: 2px;
+  font-size: 12px;
+  line-height: 1;
+  text-align: center;
+  display: table-cell;
+  vertical-align: middle;
+  content: "×";
+}
+
+.react-datepicker__today-button {
+  background: #f0f0f0;
+  border-top: 1px solid #aeaeae;
+  cursor: pointer;
+  text-align: center;
+  font-weight: bold;
+  padding: 5px 0;
+  clear: left;
+}
+
+.react-datepicker__portal {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.8);
+  left: 0;
+  top: 0;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  z-index: 2147483647;
+}
+.react-datepicker__portal .react-datepicker__day-name,
+.react-datepicker__portal .react-datepicker__day,
+.react-datepicker__portal .react-datepicker__time-name {
+  width: 3rem;
+  line-height: 3rem;
+}
+@media (max-width: 400px), (max-height: 550px) {
+  .react-datepicker__portal .react-datepicker__day-name,
+.react-datepicker__portal .react-datepicker__day,
+.react-datepicker__portal .react-datepicker__time-name {
+    width: 2rem;
+    line-height: 2rem;
+  }
+}
+.react-datepicker__portal .react-datepicker__current-month,
+.react-datepicker__portal .react-datepicker-time__header {
+  font-size: 1.44rem;
+}
+</style><link rel="stylesheet" href="./flower.css"><script defer src="./runtime.js"></script></head><body class="elementor-default elementor-template-canvas elementor-kit-36082 elementor-page elementor-page-97395"><div class="elementor elementor-97395">
+                        <section class="elementor-section elementor-top-section elementor-element elementor-element-274d8559 elementor-section-full_width elementor-section-height-min-height elementor-section-items-top elementor-section-content-top elementor-section-height-default" data-id="274d8559" id="cover">
+                        <div class="elementor-container elementor-column-gap-no">
+                    <div class="elementor-column elementor-col-50 elementor-top-column elementor-element elementor-element-2e4d54e7 elementor-hidden-mobile" data-id="2e4d54e7">
+            <div class="elementor-widget-wrap elementor-element-populated">
+                        <section class="elementor-section elementor-inner-section elementor-element elementor-element-4311ea48 elementor-section-full_width elementor-section-height-min-height elementor-section-height-default elementor-sticky elementor-sticky--active elementor-section--handles-inside elementor-sticky--effects" data-id="4311ea48">
+                            <div class="elementor-background-overlay"></div>
+                            <div class="elementor-container elementor-column-gap-default">
+                    <div class="elementor-column elementor-col-100 elementor-inner-column elementor-element elementor-element-4979537f" data-id="4979537f">
+            <div class="elementor-widget-wrap elementor-element-populated">
+                        <section class="elementor-section elementor-inner-section elementor-element elementor-element-6612f7 elementor-section-height-min-height elementor-section-boxed elementor-section-height-default" data-id="6612f7">
+                        <div class="elementor-container elementor-column-gap-default">
+                    <div class="elementor-column elementor-col-100 elementor-inner-column elementor-element elementor-element-d98ef70" data-id="d98ef70">
+            <div class="elementor-widget-wrap elementor-element-populated">
+                        <div class="elementor-element elementor-element-68ccf4cd elementor-widget elementor-widget-spacer" data-id="68ccf4cd">
+                <div class="elementor-widget-container">
+                            <div class="elementor-spacer">
+            <div class="elementor-spacer-inner"></div>
+        </div>
+                        </div>
+                </div>
+                <div class="elementor-element elementor-element-589da961 animated-slow elementor-widget elementor-widget-heading" data-id="589da961" data-reveal="zoomIn" data-reveal-mobile="zoomIn">
+                <div class="elementor-widget-container">
+                    <h2 class="elementor-heading-title elementor-size-default">Our Wedding Invitation</h2>				</div>
+                </div>
+                <div class="elementor-element elementor-element-255ab3b4 animated-slow elementor-widget elementor-widget-heading" data-id="255ab3b4" data-reveal="fadeInUp" data-reveal-mobile="zoomIn">
+                <div class="elementor-widget-container">
+                    <h2 class="elementor-heading-title elementor-size-default"></h2>				</div>
+                </div>
+                <div class="elementor-element elementor-element-7a6a973e elementor-widget elementor-widget-heading" data-id="7a6a973e" data-reveal-mobile="zoomIn">
+                <div class="elementor-widget-container">
+                    <p class="elementor-heading-title elementor-size-default">“What counts in making a happy marriage is not so much how compatible you are, but how you deal with incompatibility. A great marriage is not when the perfect couple comes together. It is when an imperfect couple learns to enjoy their differences.”</p>				</div>
+                </div>
+                <div class="elementor-element elementor-element-56d404ea elementor-widget elementor-widget-heading" data-id="56d404ea">
+                <div class="elementor-widget-container">
+                    <p class="elementor-heading-title elementor-size-default">Kepada Yth. Bapak / Ibu /Saudara/i</p>				</div>
+                </div>
+                <div class="elementor-element elementor-element-5fac4413 elementor-widget elementor-widget-heading" data-id="5fac4413">
+                <div class="elementor-widget-container">
+                    <p class="elementor-heading-title elementor-size-default"></p>				</div>
+                </div>
+                    </div>
+        </div>
+                    </div>
+        </section>
+                    </div>
+        </div>
+                    </div>
+        </section><section class="elementor-section elementor-inner-section elementor-element elementor-element-4311ea48 elementor-section-full_width elementor-section-height-min-height elementor-section-height-default elementor-sticky elementor-sticky__spacer" data-id="4311ea48" style="visibility: hidden; transition: none; animation: auto ease 0s 1 normal none running none;">
+                            <div class="elementor-background-overlay"></div>
+                            <div class="elementor-container elementor-column-gap-default">
+                    <div class="elementor-column elementor-col-100 elementor-inner-column elementor-element elementor-element-4979537f" data-id="4979537f">
+            <div class="elementor-widget-wrap elementor-element-populated">
+                        <section class="elementor-section elementor-inner-section elementor-element elementor-element-6612f7 elementor-section-height-min-height elementor-section-boxed elementor-section-height-default" data-id="6612f7">
+                        <div class="elementor-container elementor-column-gap-default">
+                    <div class="elementor-column elementor-col-100 elementor-inner-column elementor-element elementor-element-d98ef70" data-id="d98ef70">
+            <div class="elementor-widget-wrap elementor-element-populated">
+                        <div class="elementor-element elementor-element-68ccf4cd elementor-widget elementor-widget-spacer" data-id="68ccf4cd">
+                <div class="elementor-widget-container">
+                            <div class="elementor-spacer">
+            <div class="elementor-spacer-inner"></div>
+        </div>
+                        </div>
+                </div>
+                <div class="elementor-element elementor-element-589da961 animated-slow elementor-widget elementor-widget-heading" data-id="589da961" data-reveal="zoomIn" data-reveal-mobile="zoomIn">
+                <div class="elementor-widget-container">
+                    <h2 class="elementor-heading-title elementor-size-default">Our Wedding Invitation</h2>				</div>
+                </div>
+                <div class="elementor-element elementor-element-255ab3b4 animated-slow elementor-widget elementor-widget-heading" data-id="255ab3b4" data-reveal="fadeInUp" data-reveal-mobile="zoomIn">
+                <div class="elementor-widget-container">
+                    <h2 class="elementor-heading-title elementor-size-default"></h2>				</div>
+                </div>
+                <div class="elementor-element elementor-element-7a6a973e elementor-widget elementor-widget-heading" data-id="7a6a973e" data-reveal-mobile="zoomIn">
+                <div class="elementor-widget-container">
+                    <p class="elementor-heading-title elementor-size-default">“What counts in making a happy marriage is not so much how compatible you are, but how you deal with incompatibility. A great marriage is not when the perfect couple comes together. It is when an imperfect couple learns to enjoy their differences.”</p>				</div>
+                </div>
+                <div class="elementor-element elementor-element-56d404ea elementor-widget elementor-widget-heading" data-id="56d404ea">
+                <div class="elementor-widget-container">
+                    <p class="elementor-heading-title elementor-size-default">Kepada Yth. Bapak / Ibu /Saudara/i</p>				</div>
+                </div>
+                <div class="elementor-element elementor-element-5fac4413 elementor-widget elementor-widget-heading" data-id="5fac4413">
+                <div class="elementor-widget-container">
+                    <p class="elementor-heading-title elementor-size-default"></p>				</div>
+                </div>
+                    </div>
+        </div>
+                    </div>
+        </section>
+                    </div>
+        </div>
+                    </div>
+        </section>
+                    </div>
+        </div>
+                <div class="elementor-column elementor-col-50 elementor-top-column elementor-element elementor-element-2c1466db" data-id="2c1466db" id="kolom-pertama">
+            <div class="elementor-widget-wrap elementor-element-populated">
+                        <section class="elementor-section elementor-inner-section elementor-element elementor-element-20cd6f27 elementor-section-height-min-height elementor-section-boxed elementor-section-height-default" data-id="20cd6f27">
+                            <div class="elementor-background-overlay"></div>
+                            <div class="elementor-container elementor-column-gap-no">
+                    <div class="elementor-column elementor-col-100 elementor-inner-column elementor-element elementor-element-7e619413" data-id="7e619413">
+            <div class="elementor-widget-wrap elementor-element-populated">
+                        <div class="elementor-element elementor-element-e311dc6 elementor-widget elementor-widget-spacer" data-id="e311dc6">
+                <div class="elementor-widget-container">
+                            <div class="elementor-spacer">
+            <div class="elementor-spacer-inner"></div>
+        </div>
+                        </div>
+                </div>
+                <section class="elementor-section elementor-inner-section elementor-element elementor-element-1b20fbc9 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="1b20fbc9">
+                        <div class="elementor-container elementor-column-gap-default">
+                    <div class="elementor-column elementor-col-100 elementor-inner-column elementor-element elementor-element-3d17b572" data-id="3d17b572">
+            <div class="elementor-widget-wrap elementor-element-populated">
+                        <div class="elementor-element elementor-element-3aa1de1b animated-slow elementor-widget elementor-widget-heading" data-id="3aa1de1b" data-reveal="fadeInDown">
+                <div class="elementor-widget-container">
+                    <h1 class="elementor-heading-title elementor-size-default">The Wedding of</h1>				</div>
+                </div>
+                <div class="elementor-element elementor-element-6557ab6a animated-slow elementor-widget elementor-widget-heading" data-id="6557ab6a" data-reveal="fadeInDown">
+                <div class="elementor-widget-container">
+                    <h1 class="elementor-heading-title elementor-size-default"></h1>				</div>
+                </div>
+                <div class="elementor-element elementor-element-4a60ef06 animated-slow elementor-widget elementor-widget-heading" data-id="4a60ef06" data-reveal="fadeInUp">
+                <div class="elementor-widget-container">
+                    <p class="elementor-heading-title elementor-size-default"></p>				</div>
+                </div>
+                    </div>
+        </div>
+                    </div>
+        </section>
+                    </div>
+        </div>
+                    </div>
+        </section>
+                <section class="elementor-section elementor-inner-section elementor-element elementor-element-23a88165 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="23a88165">
+                        <div class="elementor-container elementor-column-gap-no">
+                    <div class="elementor-column elementor-col-100 elementor-inner-column elementor-element elementor-element-6f4ec6b9" data-id="6f4ec6b9">
+            <div class="elementor-widget-wrap elementor-element-populated">
+                    <div class="elementor-background-overlay"></div>
+                        <section class="elementor-section elementor-inner-section elementor-element elementor-element-5b74ea2c elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="5b74ea2c">
+                        <div class="elementor-container elementor-column-gap-no">
+                    <div class="elementor-column elementor-col-100 elementor-inner-column elementor-element elementor-element-48402381" data-id="48402381">
+            <div class="elementor-widget-wrap elementor-element-populated">
+                    <div class="elementor-background-overlay"></div>
+                        <div class="elementor-element elementor-element-13c77000 elementor-widget elementor-widget-spacer" data-id="13c77000">
+                <div class="elementor-widget-container">
+                            <div class="elementor-spacer">
+            <div class="elementor-spacer-inner"></div>
+        </div>
+                        </div>
+                </div>
+                <div class="elementor-element elementor-element-f134b67 animated-slow elementor-widget elementor-widget-heading" data-id="f134b67" data-reveal="fadeInDown">
+                <div class="elementor-widget-container">
+                    <h2 class="elementor-heading-title elementor-size-default">Countdown</h2>				</div>
+                </div>
+                <div class="elementor-element elementor-element-921506d animated-slow elementor-widget elementor-widget-weddingpress-countdown" data-id="921506d" data-reveal="fadeInUp">
+                <div class="elementor-widget-container">
+
+    <div class="wpkoi-elements-countdown-wrapper">
+        <div class="wpkoi-elements-countdown-container wpkoi-elements-countdown-label-block">
+            <ul id="wpkoi-elements-countdown-921506d" class="wpkoi-elements-countdown-items">
+                <li class="wpkoi-elements-countdown-item"><div class="wpkoi-elements-countdown-days"><span data-days="" class="wpkoi-elements-countdown-digits">0</span><span class="wpkoi-elements-countdown-label">Hari</span></div></li>			    <li class="wpkoi-elements-countdown-item"><div class="wpkoi-elements-countdown-hours"><span data-hours="" class="wpkoi-elements-countdown-digits">0</span><span class="wpkoi-elements-countdown-label">Jam</span></div></li>			   <li class="wpkoi-elements-countdown-item"><div class="wpkoi-elements-countdown-minutes"><span data-minutes="" class="wpkoi-elements-countdown-digits">0</span><span class="wpkoi-elements-countdown-label">Menit</span></div></li>			   <li class="wpkoi-elements-countdown-item"><div class="wpkoi-elements-countdown-seconds"><span data-seconds="" class="wpkoi-elements-countdown-digits">0</span><span class="wpkoi-elements-countdown-label">Detik</span></div></li>			</ul>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+
+
+    </div>
+                </div>
+                <div class="elementor-element elementor-element-4e467933 animated-slow elementor-widget elementor-widget-heading" data-id="4e467933" data-reveal="fadeInUp">
+                <div class="elementor-widget-container">
+                    <p class="elementor-heading-title elementor-size-default">“ Dan di antara tanda-tanda (kebesaran) -Nya adalah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya "<br><br>( Ar-Ruum ayat 21 )</p>				</div>
+                </div>
+                <div class="elementor-element elementor-element-41e0f97a elementor-widget elementor-widget-spacer" data-id="41e0f97a">
+                <div class="elementor-widget-container">
+                            <div class="elementor-spacer">
+            <div class="elementor-spacer-inner"></div>
+        </div>
+                        </div>
+                </div>
+                    </div>
+        </div>
+                    </div>
+        </section>
+                    </div>
+        </div>
+                    </div>
+        </section>
+                <section class="elementor-section elementor-inner-section elementor-element elementor-element-3b959e79 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="3b959e79">
+                        <div class="elementor-container elementor-column-gap-no">
+                    <div class="elementor-column elementor-col-100 elementor-inner-column elementor-element elementor-element-7e9f0b5c" data-id="7e9f0b5c">
+            <div class="elementor-widget-wrap elementor-element-populated">
+                    <div class="elementor-background-overlay"></div>
+                        <div class="elementor-element elementor-element-3ad21784 elementor-widget elementor-widget-spacer" data-id="3ad21784">
+                <div class="elementor-widget-container">
+                            <div class="elementor-spacer">
+            <div class="elementor-spacer-inner"></div>
+        </div>
+                        </div>
+                </div>
+                <section class="elementor-section elementor-inner-section elementor-element elementor-element-1768d964 animated-slow elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="1768d964">
+                        <div class="elementor-container elementor-column-gap-default">
+                    <div class="elementor-column elementor-col-100 elementor-inner-column elementor-element elementor-element-6a3799de" data-id="6a3799de">
+            <div class="elementor-widget-wrap elementor-element-populated">
+                    <div class="elementor-background-overlay"></div>
+                        <div class="elementor-element elementor-element-2cc2c5f4 elementor-widget elementor-widget-spacer" data-id="2cc2c5f4">
+                <div class="elementor-widget-container">
+                            <div class="elementor-spacer">
+            <div class="elementor-spacer-inner"></div>
+        </div>
+                        </div>
+                </div>
+                <div class="elementor-element elementor-element-187d4735 animated-slow elementor-widget elementor-widget-heading" data-id="187d4735" data-reveal="fadeInDown">
+                <div class="elementor-widget-container">
+                    <p class="elementor-heading-title elementor-size-default">Assalamualaikum Wr. Wb.</p>				</div>
+                </div>
+                <div class="elementor-element elementor-element-c65c6f4 animated-slow elementor-widget elementor-widget-heading" data-id="c65c6f4" data-reveal="fadeInDown">
+                <div class="elementor-widget-container">
+                    <p class="elementor-heading-title elementor-size-default">Dengan memohon rahmat dan ridho Allah Subhanahu Wa Ta'ala, Kami mengundang Bapak/Ibu/Saudara/i, <br>untuk menghadiri Resepsi Pernikahan kami.</p>				</div>
+                </div>
+                <div class="elementor-element elementor-element-3fe9339a elementor-widget elementor-widget-spacer" data-id="3fe9339a">
+                <div class="elementor-widget-container">
+                            <div class="elementor-spacer">
+            <div class="elementor-spacer-inner"></div>
+        </div>
+                        </div>
+                </div>
+                <div class="elementor-element elementor-element-27709c9e elementor-widget elementor-widget-image" data-id="27709c9e">
+                <div class="elementor-widget-container">
+                                                            <img fetchpriority="high" decoding="async" width="1854" height="2560" src="./kartun-coklat-3-scaled.jpg" class="attachment-full size-full wp-image-97389">															</div>
+                </div>
+                <div class="elementor-element elementor-element-c214139 elementor-widget elementor-widget-heading" data-id="c214139">
+                <div class="elementor-widget-container">
+                    <h2 class="elementor-heading-title elementor-size-default"></h2>				</div>
+                </div>
+                <div class="elementor-element elementor-element-74914676 elementor-widget elementor-widget-heading" data-id="74914676">
+                <div class="elementor-widget-container">
+                    <h2 class="elementor-heading-title elementor-size-default"></h2>				</div>
+                </div>
+                <div class="elementor-element elementor-element-2a68207 elementor-widget-divider--view-line_icon elementor-view-default elementor-widget-divider--element-align-center elementor-widget elementor-widget-divider" data-id="2a68207">
+                <div class="elementor-widget-container">
+                            <div class="elementor-divider">
+            <span class="elementor-divider-separator">
+                            <div class="elementor-icon elementor-divider__element">
+                    <i aria-hidden="true" class="fas fa-hand-holding-heart"></i></div>
+                        </span>
+        </div>
+                        </div>
+                </div>
+                <div class="elementor-element elementor-element-799dd59d elementor-widget elementor-widget-image" data-id="799dd59d">
+                <div class="elementor-widget-container">
+                                                            <img decoding="async" width="1854" height="2560" src="./kartun-coklat-1-scaled.jpg" class="attachment-full size-full wp-image-97388">															</div>
+                </div>
+                <div class="elementor-element elementor-element-13c632da elementor-widget elementor-widget-heading" data-id="13c632da">
+                <div class="elementor-widget-container">
+                    <h2 class="elementor-heading-title elementor-size-default"></h2>				</div>
+                </div>
+                <div class="elementor-element elementor-element-4761a269 elementor-widget elementor-widget-heading" data-id="4761a269">
+                <div class="elementor-widget-container">
+                    <h2 class="elementor-heading-title elementor-size-default"></h2>				</div>
+                </div>
+                <div class="elementor-element elementor-element-3f56fc46 elementor-widget elementor-widget-spacer" data-id="3f56fc46">
+                <div class="elementor-widget-container">
+                            <div class="elementor-spacer">
+            <div class="elementor-spacer-inner"></div>
+        </div>
+                        </div>
+                </div>
+                    </div>
+        </div>
+                    </div>
+        </section>
+                    </div>
+        </div>
+                    </div>
+        </section>
+                <section class="elementor-section elementor-inner-section elementor-element elementor-element-5935e1de elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="5935e1de">
+                        <div class="elementor-container elementor-column-gap-no">
+                    <div class="elementor-column elementor-col-100 elementor-inner-column elementor-element elementor-element-4f3318e5" data-id="4f3318e5">
+            <div class="elementor-widget-wrap elementor-element-populated">
+                    <div class="elementor-background-overlay"></div>
+                        <section class="elementor-section elementor-inner-section elementor-element elementor-element-97cb557 animated-slow elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="97cb557">
+                        <div class="elementor-container elementor-column-gap-default">
+                    <div class="elementor-column elementor-col-100 elementor-inner-column elementor-element elementor-element-55b88e2" data-id="55b88e2">
+            <div class="elementor-widget-wrap elementor-element-populated">
+                    <div class="elementor-background-overlay"></div>
+                        <div class="elementor-element elementor-element-3cbd4df elementor-widget elementor-widget-spacer" data-id="3cbd4df">
+                <div class="elementor-widget-container">
+                            <div class="elementor-spacer">
+            <div class="elementor-spacer-inner"></div>
+        </div>
+                        </div>
+                </div>
+                <div class="elementor-element elementor-element-18b8ac3 elementor-widget elementor-widget-spacer" data-id="18b8ac3">
+                <div class="elementor-widget-container">
+                            <div class="elementor-spacer">
+            <div class="elementor-spacer-inner"></div>
+        </div>
+                        </div>
+                </div>
+                <div class="elementor-element elementor-element-8dbf859 elementor-widget elementor-widget-heading" data-id="8dbf859">
+                <div class="elementor-widget-container">
+                    <h2 class="elementor-heading-title elementor-size-default"></h2>				</div>
+                </div>
+                <div class="elementor-element elementor-element-3ecc0e3 elementor-mobile-align-center elementor-align-center elementor-icon-list--layout-traditional elementor-list-item-link-full_width elementor-widget elementor-widget-icon-list" data-id="3ecc0e3">
+                <div class="elementor-widget-container">
+                            <ul class="elementor-icon-list-items">
+                            <li class="elementor-icon-list-item">
+                                            <span class="elementor-icon-list-icon">
+                            <i aria-hidden="true" class="far fa-calendar-alt"></i>						</span>
+                                        <span class="elementor-icon-list-text"></span>
+                                    </li>
+                                <li class="elementor-icon-list-item">
+                                            <span class="elementor-icon-list-icon">
+                            <i aria-hidden="true" class="fas fa-clock"></i>						</span>
+                                        <span class="elementor-icon-list-text"></span>
+                                    </li>
+                        </ul>
+                        </div>
+                </div>
+                <div class="elementor-element elementor-element-cab7986 elementor-widget elementor-widget-heading" data-id="cab7986">
+                <div class="elementor-widget-container">
+                    <h2 class="elementor-heading-title elementor-size-default"></h2>				</div>
+                </div>
+                <div class="elementor-element elementor-element-521b9c6 elementor-mobile-align-center elementor-align-center animated-slow elementor-widget elementor-widget-button" data-id="521b9c6" data-reveal="zoomIn">
+                <div class="elementor-widget-container">
+                                    <div class="elementor-button-wrapper">
+                    <a class="elementor-button elementor-button-link elementor-size-sm elementor-animation-grow" rel="noopener noreferrer" target="_blank" hidden="">
+                        <span class="elementor-button-content-wrapper">
+                        <span class="elementor-button-icon">
+                <i aria-hidden="true" class="fas fa-map-marked-alt"></i>			</span>
+                                    <span class="elementor-button-text">Google maps</span>
+                    </span>
+                    </a>
+                </div>
+                                </div>
+                </div>
+                <div class="elementor-element elementor-element-6d5f6de elementor-widget elementor-widget-spacer" data-id="6d5f6de">
+                <div class="elementor-widget-container">
+                            <div class="elementor-spacer">
+            <div class="elementor-spacer-inner"></div>
+        </div>
+                        </div>
+                </div>
+                <div class="elementor-element elementor-element-42169c8 elementor-widget elementor-widget-image" data-id="42169c8">
+                <div class="elementor-widget-container">
+                                                            <img decoding="async" width="1600" height="1133" src="./kartun-coklat-cover.jpg" class="attachment-full size-full wp-image-97390">															</div>
+                </div>
+                <div class="elementor-element elementor-element-c6b311a elementor-widget elementor-widget-heading" data-id="c6b311a">
+                <div class="elementor-widget-container">
+                    <h2 class="elementor-heading-title elementor-size-default"></h2>				</div>
+                </div>
+                <div class="elementor-element elementor-element-0eb614f elementor-mobile-align-center elementor-align-center elementor-icon-list--layout-traditional elementor-list-item-link-full_width elementor-widget elementor-widget-icon-list" data-id="0eb614f">
+                <div class="elementor-widget-container">
+                            <ul class="elementor-icon-list-items">
+                            <li class="elementor-icon-list-item">
+                                            <span class="elementor-icon-list-icon">
+                            <i aria-hidden="true" class="far fa-calendar-alt"></i>						</span>
+                                        <span class="elementor-icon-list-text"></span>
+                                    </li>
+                                <li class="elementor-icon-list-item">
+                                            <span class="elementor-icon-list-icon">
+                            <i aria-hidden="true" class="fas fa-clock"></i>						</span>
+                                        <span class="elementor-icon-list-text"></span>
+                                    </li>
+                        </ul>
+                        </div>
+                </div>
+                <div class="elementor-element elementor-element-db66c97 elementor-widget elementor-widget-heading" data-id="db66c97">
+                <div class="elementor-widget-container">
+                    <h2 class="elementor-heading-title elementor-size-default"></h2>				</div>
+                </div>
+                <div class="elementor-element elementor-element-a3d504a elementor-mobile-align-center elementor-align-center animated-slow elementor-widget elementor-widget-button" data-id="a3d504a" data-reveal="zoomIn">
+                <div class="elementor-widget-container">
+                                    <div class="elementor-button-wrapper">
+                    <a class="elementor-button elementor-button-link elementor-size-sm elementor-animation-grow" rel="noopener noreferrer" target="_blank" hidden="">
+                        <span class="elementor-button-content-wrapper">
+                        <span class="elementor-button-icon">
+                <i aria-hidden="true" class="fas fa-map-marked-alt"></i>			</span>
+                                    <span class="elementor-button-text">Google maps</span>
+                    </span>
+                    </a>
+                </div>
+                                </div>
+                </div>
+                <div class="elementor-element elementor-element-cc94a32 elementor-widget elementor-widget-spacer" data-id="cc94a32">
+                <div class="elementor-widget-container">
+                            <div class="elementor-spacer">
+            <div class="elementor-spacer-inner"></div>
+        </div>
+                        </div>
+                </div>
+                <div class="elementor-element elementor-element-0179120 elementor-widget elementor-widget-spacer" data-id="0179120">
+                <div class="elementor-widget-container">
+                            <div class="elementor-spacer">
+            <div class="elementor-spacer-inner"></div>
+        </div>
+                        </div>
+                </div>
+                <div class="elementor-element elementor-element-4685f8f elementor-widget elementor-widget-spacer" data-id="4685f8f">
+                <div class="elementor-widget-container">
+                            <div class="elementor-spacer">
+            <div class="elementor-spacer-inner"></div>
+        </div>
+                        </div>
+                </div>
+                    </div>
+        </div>
+                    </div>
+        </section>
+                    </div>
+        </div>
+                    </div>
+        </section>
+                <section class="elementor-section elementor-inner-section elementor-element elementor-element-607bd0c elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="607bd0c">
+                        <div class="elementor-container elementor-column-gap-no">
+                    <div class="elementor-column elementor-col-100 elementor-inner-column elementor-element elementor-element-9a327ff" data-id="9a327ff">
+            <div class="elementor-widget-wrap elementor-element-populated">
+                    <div class="elementor-background-overlay"></div>
+                        <div class="elementor-element elementor-element-255257b elementor-widget elementor-widget-spacer" data-id="255257b">
+                <div class="elementor-widget-container">
+                            <div class="elementor-spacer">
+            <div class="elementor-spacer-inner"></div>
+        </div>
+                        </div>
+                </div>
+                <div class="elementor-element elementor-element-15f1635 elementor-widget elementor-widget-heading" data-id="15f1635">
+                <div class="elementor-widget-container">
+                    <p class="elementor-heading-title elementor-size-default">Love Story</p>				</div>
+                </div>
+                <div class="elementor-element elementor-element-3505fe0 elementor-widget elementor-widget-spacer" data-id="3505fe0">
+                <div class="elementor-widget-container">
+                            <div class="elementor-spacer">
+            <div class="elementor-spacer-inner"></div>
+        </div>
+                        </div>
+                </div>
+                <div class="elementor-element elementor-element-16cea4c elementor-widget elementor-widget-weddingpress-timeline" data-id="16cea4c">
+                <div class="elementor-widget-container">
+                            <div id="weddingpress-timeline-16cea4c" class="weddingpress-timeline weddingpress-timeline-skin-default weddingpress-timeline-left">
+            <div class="bdt-grid bdt-grid-collapse bdt-grid-stack" id="flower-story">
+
+
+                    </div>
+        <template id="flower-story-item"><div class="weddingpress-timeline-item left-part bdt-first-column">
+
+                        <div class="weddingpress-timeline-item-main-wrapper">
+                            <div class="weddingpress-timeline-line">
+                                <span></span>
+                            </div>
+                            <div class="weddingpress-timeline-item-main-container">
+
+                                <div class="weddingpress-timeline-icon">
+
+                                    <span>
+
+                                                                                    <i aria-hidden="true" class="fas fa-heart"></i>
+                                    </span>
+
+                                </div>
+                                        <div class="weddingpress-timeline-item-main">
+            <div class="weddingpress-timeline-arrow"></div>
+                        <div class="weddingpress-timeline-desc bdt-padding">
+                    <div class="weddingpress-timeline-title">
+                    <span></span>
+            </div>
+                            <ul class="weddingpress-timeline-meta bdt-subnav bdt-flex-middle">
+
+            <li class="">
+
+        </li></ul>
+                                <div class="weddingpress-timeline-excerpt">
+            <p></p>            </div>
+                                    </div>
+        </div>
+                                </div>
+                        </div>
+                    </div>
+
+
+
+
+                    </template></div>
+                    </div>
+                </div>
+                    </div>
+        </div>
+                    </div>
+        </section>
+                <section class="elementor-section elementor-inner-section elementor-element elementor-element-b66a2e0 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="b66a2e0">
+                        <div class="elementor-container elementor-column-gap-no">
+                    <div class="elementor-column elementor-col-100 elementor-inner-column elementor-element elementor-element-36cbd88" data-id="36cbd88">
+            <div class="elementor-widget-wrap elementor-element-populated">
+                    <div class="elementor-background-overlay"></div>
+                        <div class="elementor-element elementor-element-2ba27d5 elementor-widget elementor-widget-spacer" data-id="2ba27d5">
+                <div class="elementor-widget-container">
+                            <div class="elementor-spacer">
+            <div class="elementor-spacer-inner"></div>
+        </div>
+                        </div>
+                </div>
+                <div class="elementor-element elementor-element-769fead elementor-widget elementor-widget-heading" data-id="769fead">
+                <div class="elementor-widget-container">
+                    <p class="elementor-heading-title elementor-size-default">Our Gift</p>				</div>
+                </div>
+                <div class="elementor-element elementor-element-e4ee115 elementor-widget elementor-widget-heading" data-id="e4ee115" data-reveal="zoomIn">
+                <div class="elementor-widget-container">
+                    <span class="elementor-heading-title elementor-size-default">Doa Restu Anda merupakan karunia yang sangat berarti bagi kami. Namun jika memberi adalah ungkapan tanda kasih Anda, Anda dapat memberi gift</span>				</div>
+                </div>
+                <section class="elementor-section elementor-inner-section elementor-element elementor-element-92bad09 animated-slow elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="92bad09">
+                        <div class="elementor-container elementor-column-gap-default">
+                    <div class="elementor-column elementor-col-100 elementor-inner-column elementor-element elementor-element-6e33623" data-id="6e33623">
+            <div class="elementor-widget-wrap elementor-element-populated">
+                        <section class="elementor-section elementor-inner-section elementor-element elementor-element-1aab25c elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="1aab25c">
+                        <div class="elementor-container elementor-column-gap-default">
+                    <div class="elementor-column elementor-col-100 elementor-inner-column elementor-element elementor-element-d796c54" data-id="d796c54">
+            <div class="elementor-widget-wrap elementor-element-populated">
+                        <div class="elementor-element elementor-element-4212471 elementor-widget elementor-widget-image" data-id="4212471">
+                <div class="elementor-widget-container"><span class="flower-bank"></span></div></div>
+                <div class="elementor-element elementor-element-12e5db0 elementor-widget elementor-widget-image" data-id="12e5db0">
+                <div class="elementor-widget-container">
+                                                            <img loading="lazy" decoding="async" width="150" height="150" src="./chip-atm-undangan.png" class="attachment-full size-full wp-image-57">															</div>
+                </div>
+                <div class="elementor-element elementor-element-7598864 elementor-widget elementor-widget-heading" data-id="7598864">
+                <div class="elementor-widget-container">
+                    <h2 class="elementor-heading-title elementor-size-default"></h2>				</div>
+                </div>
+                <div class="elementor-element elementor-element-5934667 elementor-widget elementor-widget-heading" data-id="5934667">
+                <div class="elementor-widget-container">
+                    <h2 class="elementor-heading-title elementor-size-default"></h2>				</div>
+                </div>
+                <div class="elementor-element elementor-element-e02ddd9 elementor-align-right elementor-mobile-align-right elementor-widget elementor-widget-weddingpress-copy-text" data-id="e02ddd9">
+                <div class="elementor-widget-container"><button type="button" class="elementor-button flower-copy">Salin</button></div></div>
+                    </div>
+        </div>
+                    </div>
+        </section>
+                <section class="elementor-section elementor-inner-section elementor-element elementor-element-5f3d2bc elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="5f3d2bc">
+                        <div class="elementor-container elementor-column-gap-default">
+                    <div class="elementor-column elementor-col-100 elementor-inner-column elementor-element elementor-element-059c997" data-id="059c997">
+            <div class="elementor-widget-wrap elementor-element-populated">
+                        <div class="elementor-element elementor-element-37dd4ad elementor-widget elementor-widget-image" data-id="37dd4ad">
+                <div class="elementor-widget-container"><span class="flower-bank"></span></div></div>
+                <div class="elementor-element elementor-element-4608e6e elementor-widget elementor-widget-image" data-id="4608e6e">
+                <div class="elementor-widget-container">
+                                                            <img loading="lazy" decoding="async" width="150" height="150" src="./chip-atm-undangan.png" class="attachment-full size-full wp-image-57">															</div>
+                </div>
+                <div class="elementor-element elementor-element-f388030 elementor-widget elementor-widget-heading" data-id="f388030">
+                <div class="elementor-widget-container">
+                    <h2 class="elementor-heading-title elementor-size-default"></h2>				</div>
+                </div>
+                <div class="elementor-element elementor-element-cce200f elementor-widget elementor-widget-heading" data-id="cce200f">
+                <div class="elementor-widget-container">
+                    <h2 class="elementor-heading-title elementor-size-default"></h2>				</div>
+                </div>
+                <div class="elementor-element elementor-element-169ba85 elementor-align-right elementor-mobile-align-right elementor-widget elementor-widget-weddingpress-copy-text" data-id="169ba85">
+                <div class="elementor-widget-container"><button type="button" class="elementor-button flower-copy">Salin</button></div></div>
+                    </div>
+        </div>
+                    </div>
+        </section>
+                <section class="elementor-section elementor-inner-section elementor-element elementor-element-7fcddd4 showclick3 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="7fcddd4">
+                        <div class="elementor-container elementor-column-gap-default">
+                    <div class="elementor-column elementor-col-100 elementor-inner-column elementor-element elementor-element-6fe0622" data-id="6fe0622">
+            <div class="elementor-widget-wrap elementor-element-populated">
+                    <div class="elementor-background-overlay"></div>
+                        </div>
+        </div>
+                    </div>
+        </section>
+                    </div>
+        </div>
+                    </div>
+        </section>
+                </div>
+        </div>
+                    </div>
+        </section>
+                <section class="elementor-section elementor-inner-section elementor-element elementor-element-42961d82 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="42961d82">
+                            <div class="elementor-background-overlay"></div>
+                            <div class="elementor-container elementor-column-gap-no">
+                    <div class="elementor-column elementor-col-100 elementor-inner-column elementor-element elementor-element-79bd29b0" data-id="79bd29b0">
+            <div class="elementor-widget-wrap elementor-element-populated">
+                    <div class="elementor-background-overlay"></div>
+                        <section class="elementor-section elementor-inner-section elementor-element elementor-element-790c9537 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="790c9537">
+                        <div class="elementor-container elementor-column-gap-no">
+                    <div class="elementor-column elementor-col-100 elementor-inner-column elementor-element elementor-element-46b09dd1" data-id="46b09dd1">
+            <div class="elementor-widget-wrap elementor-element-populated">
+                    <div class="elementor-background-overlay"></div>
+                        <div class="elementor-element elementor-element-2546713e elementor-widget elementor-widget-spacer" data-id="2546713e">
+                <div class="elementor-widget-container">
+                            <div class="elementor-spacer">
+            <div class="elementor-spacer-inner"></div>
+        </div>
+                        </div>
+                </div>
+                <div class="elementor-element elementor-element-6567d1d4 animated-slow elementor-widget elementor-widget-heading" data-id="6567d1d4" data-reveal="fadeInDown">
+                <div class="elementor-widget-container">
+                    <div class="elementor-heading-title elementor-size-default">RSVP</div>				</div>
+                </div>
+                <div class="elementor-element elementor-element-b0bc895 animated-slow elementor-widget elementor-widget-heading" data-id="b0bc895" data-reveal="fadeInDown">
+                <div class="elementor-widget-container">
+                    <div class="elementor-heading-title elementor-size-default">Isi Buku Tamu</div>				</div>
+                </div>
+                <div class="elementor-element elementor-element-2cacf7d2 animated-slow elementor-widget elementor-widget-weddingpress-forms" data-id="2cacf7d2" data-reveal="fadeInUp" data-reveal-mobile="zoomIn">
+                <div class="elementor-widget-container"><div class="elementor-wdp-form-wrapper elementor-wdp-form-button-align-left">
+ <form class="wdp-form wdp-wa-form flower-form"><div class="wdp-form-fields-wrapper">
+ <label>Nama<input class="form-control" name="name" maxlength="100" required autocomplete="name" placeholder="Isikan Nama Anda"></label>
+ <label>Pesan<textarea class="form-control" name="message" rows="3" maxlength="1000" required placeholder="Berikan Ucapan dan Doa Restu"></textarea></label>
+ <label>Kehadiran<select class="form-control" name="attendance" required><option value="">Konfirmasi kehadiran</option><option>Hadir</option><option>Tidak Hadir</option><option>Masih Ragu</option></select></label>
+ <button class="elementor-button elementor-size-sm" type="submit">Kirim RSVP</button><p class="flower-status" role="status"></p></div></form>
+ </div></div></div>
+                <div class="elementor-element elementor-element-228a3ee9 elementor-widget elementor-widget-spacer" data-id="228a3ee9">
+                <div class="elementor-widget-container">
+                            <div class="elementor-spacer">
+            <div class="elementor-spacer-inner"></div>
+        </div>
+                        </div>
+                </div>
+                <div class="elementor-element elementor-element-5d64ac2f elementor-widget elementor-widget-spacer" data-id="5d64ac2f">
+                <div class="elementor-widget-container">
+                            <div class="elementor-spacer">
+            <div class="elementor-spacer-inner"></div>
+        </div>
+                        </div>
+                </div>
+                    </div>
+        </div>
+                    </div>
+        </section>
+                    </div>
+        </div>
+                    </div>
+        </section>
+                <section class="elementor-section elementor-inner-section elementor-element elementor-element-687221fc elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="687221fc">
+                            <div class="elementor-background-overlay"></div>
+                            <div class="elementor-container elementor-column-gap-no">
+                    <div class="elementor-column elementor-col-100 elementor-inner-column elementor-element elementor-element-ac78e2e" data-id="ac78e2e">
+            <div class="elementor-widget-wrap elementor-element-populated">
+                    <div class="elementor-background-overlay"></div>
+                        <section class="elementor-section elementor-inner-section elementor-element elementor-element-76d3f720 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="76d3f720">
+                        <div class="elementor-container elementor-column-gap-no">
+                    <div class="elementor-column elementor-col-100 elementor-inner-column elementor-element elementor-element-39c32a70" data-id="39c32a70">
+            <div class="elementor-widget-wrap elementor-element-populated">
+                    <div class="elementor-background-overlay"></div>
+                        <div class="elementor-element elementor-element-6af73b57 elementor-widget elementor-widget-spacer" data-id="6af73b57">
+                <div class="elementor-widget-container">
+                            <div class="elementor-spacer">
+            <div class="elementor-spacer-inner"></div>
+        </div>
+                        </div>
+                </div>
+                <div class="elementor-element elementor-element-2756baeb animated-slow elementor-widget elementor-widget-heading" data-id="2756baeb" data-reveal="fadeInDown">
+                <div class="elementor-widget-container">
+                    <div class="elementor-heading-title elementor-size-default">Ucapan &amp; Doa</div>				</div>
+                </div>
+                <div class="elementor-element elementor-element-3b3787a1 elementor-widget elementor-widget-weddingpress-guestbook" data-id="3b3787a1">
+                <div class="elementor-widget-container"><div class="guestbook-box-content elementor-comment-box-wrapper">
+ <form class="wdp-guestbook-form flower-form"><div class="wdp-form-fields-wrapper">
+ <label>Nama<input class="form-control" name="name" maxlength="100" required autocomplete="name" placeholder="Isikan Nama Anda"></label>
+ <label>Pesan<textarea class="form-control" name="message" rows="3" maxlength="1000" required placeholder="Berikan Ucapan dan Doa Restu"></textarea></label>
+ <label>Kehadiran<select class="form-control" name="attendance" required><option value="">Konfirmasi kehadiran</option><option>Hadir</option><option>Tidak Hadir</option><option>Masih Ragu</option></select></label>
+ <button class="elementor-button elementor-size-sm" type="submit">Kirimkan Ucapan</button><p class="flower-status" role="status"></p></div></form>
+ <div class="guestbook-list" id="flower-wishes"></div><button type="button" id="flower-more" class="elementor-button" hidden>Lihat lainnya</button></div></div></div>
+                <div class="elementor-element elementor-element-56981947 elementor-widget elementor-widget-spacer" data-id="56981947">
+                <div class="elementor-widget-container">
+                            <div class="elementor-spacer">
+            <div class="elementor-spacer-inner"></div>
+        </div>
+                        </div>
+                </div>
+                <div class="elementor-element elementor-element-5dbb1fb3 elementor-widget elementor-widget-spacer" data-id="5dbb1fb3">
+                <div class="elementor-widget-container">
+                            <div class="elementor-spacer">
+            <div class="elementor-spacer-inner"></div>
+        </div>
+                        </div>
+                </div>
+                    </div>
+        </div>
+                    </div>
+        </section>
+                    </div>
+        </div>
+                    </div>
+        </section>
+                <section class="elementor-section elementor-inner-section elementor-element elementor-element-107f747 elementor-section-height-min-height elementor-section-boxed elementor-section-height-default" data-id="107f747">
+                            <div class="elementor-background-overlay"></div>
+                            <div class="elementor-container elementor-column-gap-no">
+                    <div class="elementor-column elementor-col-100 elementor-inner-column elementor-element elementor-element-e6fa072" data-id="e6fa072">
+            <div class="elementor-widget-wrap elementor-element-populated">
+                        <div class="elementor-element elementor-element-4e0d1fd5 elementor-widget elementor-widget-spacer" data-id="4e0d1fd5">
+                <div class="elementor-widget-container">
+                            <div class="elementor-spacer">
+            <div class="elementor-spacer-inner"></div>
+        </div>
+                        </div>
+                </div>
+                <div class="elementor-element elementor-element-17a2b5c0 elementor-widget elementor-widget-spacer" data-id="17a2b5c0">
+                <div class="elementor-widget-container">
+                            <div class="elementor-spacer">
+            <div class="elementor-spacer-inner"></div>
+        </div>
+                        </div>
+                </div>
+                <section class="elementor-section elementor-inner-section elementor-element elementor-element-6849a0e2 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="6849a0e2">
+                        <div class="elementor-container elementor-column-gap-default">
+                    <div class="elementor-column elementor-col-100 elementor-inner-column elementor-element elementor-element-7ac6f6c9" data-id="7ac6f6c9">
+            <div class="elementor-widget-wrap elementor-element-populated">
+                        <div class="elementor-element elementor-element-512ed516 animated-slow elementor-widget elementor-widget-heading" data-id="512ed516" data-reveal="fadeInDown">
+                <div class="elementor-widget-container">
+                    <h1 class="elementor-heading-title elementor-size-default">Suatu kebahagiaan &amp; kehormatan bagi kami,
+apabila Bapak/Ibu/Saudara/i, berkenan hadir
+dan memberikan do'a restu kepada kami</h1>				</div>
+                </div>
+                <div class="elementor-element elementor-element-ef7b045 animated-slow elementor-widget elementor-widget-heading" data-id="ef7b045" data-reveal="fadeInDown">
+                <div class="elementor-widget-container">
+                    <h1 class="elementor-heading-title elementor-size-default">Kami Yang Berbahagia,</h1>				</div>
+                </div>
+                <div class="elementor-element elementor-element-49c30813 animated-slow elementor-widget elementor-widget-heading" data-id="49c30813" data-reveal="fadeInDown">
+                <div class="elementor-widget-container">
+                    <h1 class="elementor-heading-title elementor-size-default"></h1>				</div>
+                </div>
+                <div class="elementor-element elementor-element-26dd7e2b elementor-widget elementor-widget-spacer" data-id="26dd7e2b">
+                <div class="elementor-widget-container">
+                            <div class="elementor-spacer">
+            <div class="elementor-spacer-inner"></div>
+        </div>
+                        </div>
+                </div>
+                    </div>
+        </div>
+                    </div>
+        </section>
+                    </div>
+        </div>
+                    </div>
+        </section>
+                <section class="elementor-section elementor-inner-section elementor-element elementor-element-4db91927 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="4db91927">
+                        <div class="elementor-container elementor-column-gap-no">
+                    <div class="elementor-column elementor-col-100 elementor-inner-column elementor-element elementor-element-1a58e1b6" data-id="1a58e1b6">
+            <div class="elementor-widget-wrap elementor-element-populated">
+                        <div class="elementor-element elementor-element-474f9d69 elementor-widget elementor-widget-spacer" data-id="474f9d69">
+                <div class="elementor-widget-container">
+                            <div class="elementor-spacer">
+            <div class="elementor-spacer-inner"></div>
+        </div>
+                        </div>
+                </div>
+                <div class="elementor-element elementor-element-68e3516 animated-slow elementor-widget elementor-widget-heading" data-id="68e3516" data-reveal="fadeInDown">
+                <div class="elementor-widget-container">
+                    <div class="elementor-heading-title elementor-size-default"></div>				</div>
+                </div>
+                <div class="elementor-element elementor-element-34524360 elementor-widget elementor-widget-spacer" data-id="34524360">
+                <div class="elementor-widget-container">
+                            <div class="elementor-spacer">
+            <div class="elementor-spacer-inner"></div>
+        </div>
+                        </div>
+                </div>
+                <section class="elementor-section elementor-inner-section elementor-element elementor-element-1d281652 elementor-section-full_width elementor-section-content-middle elementor-section-height-default elementor-section-height-default" data-id="1d281652">
+                        <div class="elementor-container elementor-column-gap-default">
+                    <div class="elementor-column elementor-col-33 elementor-inner-column elementor-element elementor-element-4fb215ac" data-id="4fb215ac">
+            <div class="elementor-widget-wrap elementor-element-populated">
+                        </div>
+        </div>
+                <div class="elementor-column elementor-col-33 elementor-inner-column elementor-element elementor-element-2a4128" data-id="2a4128">
+            <div class="elementor-widget-wrap elementor-element-populated">
+                        <div class="elementor-element elementor-element-633321e elementor-widget elementor-widget-weddingpress-wellcome" data-id="633321e">
+                <div class="elementor-widget-container">
+
+        <div class="modalx removeModals" style='background-image: url("./kartun-coklat-2-scaled.jpg") !important;'>
+
+                        <div class="overlayy"></div>
+                            <div class="content-modalx">
+                                <div class="info_modalx">
+
+                                                                        <div class="wdp-txt-the-wedding" style="width:auto !important">The Wedding Of                                    </div>
+
+
+                                                                        <div class="wdp-mempelai" style="width: auto !important;"></div>
+
+
+
+                                                                        <div class="wdp-dear" style="width: auto !important;">Kpd Bpk/Ibu/Saudara/i</div>
+
+                                    <div class="wdp-name namatamu" style="width: auto !important;">Tamu Undangan</div>
+
+
+                                                                        <div class="wdp-button-wrapper" id="wdp-button-wrapper">
+                                        <button class="elementor-button">
+                                                                                        <span class="elementor-button-icon">
+                                                <i aria-hidden="true" class="far fa-envelope-open"></i>                                            </span>
+                                                                                        <span>Buka Undangan</span>
+                                        </button>
+                                    </div>
+
+
+
+
+
+                                </div>
+                            </div>
+                   </div>
+
+
+
+        </div>
+                </div>
+                    </div>
+        </div>
+                <div class="elementor-column elementor-col-33 elementor-inner-column elementor-element elementor-element-78ccbffd" data-id="78ccbffd">
+            <div class="elementor-widget-wrap elementor-element-populated">
+                        </div>
+        </div>
+                    </div>
+        </section>
+                    </div>
+        </div>
+                    </div>
+        </section>
+                    </div>
+        </div>
+                    </div>
+        </section>
+                </div>
+        <button id="flower-music" type="button" aria-label="Putar musik" hidden>♫</button><audio id="flower-audio" preload="none" loop></audio></body></html>

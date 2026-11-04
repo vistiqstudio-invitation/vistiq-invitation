@@ -63,7 +63,7 @@ function isLavenderMotionTheme(theme: string) {
 }
 
 function isNoPhotoTheme(theme: string) {
-  return theme === "ivory-botanica";
+  return (theme === "ivory-botanica" || theme === "flower-1");
 }
 
 function frameImage(invitation: InvitationFrameData | undefined, theme: string) {
@@ -94,7 +94,7 @@ export default function WeddingThemeSafeArea({
   const backdropImage = frameImage(invitation, theme);
   const weddingInvitation = invitation?.category === "wedding" ? invitation : null;
 
-  const content = (
+  const content = theme === "flower-1" ? children : (
     <div className={styles.root} data-wedding-theme={theme}>
       <div className={styles.desktopBackdrop} aria-hidden="true">
         {lavenderMotion && weddingInvitation ? (

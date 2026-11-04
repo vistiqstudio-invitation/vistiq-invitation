@@ -1,0 +1,23 @@
+
+
+.spancontent {
+    padding-bottom: 20px;
+}
+
+
+.copy-content {
+
+}
+
+.head-title {
+
+}
+
+
+.copy-content a[href^="tel:"],
+.copy-content a[href^="tel:"] * {
+    color: inherit !important;
+    text-decoration: none !important;
+    pointer-events: none !important;
+    cursor: text !important;
+}
