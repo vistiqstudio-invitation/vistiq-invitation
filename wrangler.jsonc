@@ -28,6 +28,10 @@
     {
       "pattern": "vistiqinvitation.com",
       "custom_domain": true
+    },
+    {
+      "pattern": "www.vistiqinvitation.com",
+      "custom_domain": true
     }
   ]
 }
