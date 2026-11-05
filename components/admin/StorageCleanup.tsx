@@ -43,10 +43,12 @@ async function runBatches(action: "check" | "delete", report: (message: string) 
 export default function StorageCleanup({ disabled = false }: { disabled?: boolean }) {
   const [running, setRunning] = useState(false);
   const [message, setMessage] = useState("");
+  const [pending, setPending] = useState<{ eligible: number; size: string } | null>(null);
 
   async function clean() {
     if (running) return;
     setRunning(true);
+    setPending(null);
     setMessage("Memeriksa referensi database dan ukuran salinan R2...");
     try {
       const checked = await runBatches("check", setMessage);
@@ -55,10 +57,21 @@ export default function StorageCleanup({ disabled = false }: { disabled?: boolea
         return;
       }
       const size = (checked.bytes / 1024 / 1024).toFixed(1);
-      if (!window.confirm(`Hapus permanen ${checked.eligible} salinan sumber Supabase (${size} MiB)? Salinan R2 telah diperiksa dan referensi database telah dipindahkan. Penghapusan ini tidak dapat dibatalkan melalui Supabase Storage.`)) {
-        setMessage(`Siap dibersihkan ${checked.eligible} file (${size} MiB).`);
-        return;
-      }
+      setPending({ eligible: checked.eligible, size });
+      setMessage(`Siap dibersihkan ${checked.eligible} file (${size} MiB). Silakan konfirmasi di bawah.`);
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : "Pembersihan terhenti. Proses bisa dijalankan ulang.");
+    } finally {
+      setRunning(false);
+    }
+  }
+
+  async function confirmCleanup() {
+    if (running || disabled || !pending) return;
+    setRunning(true);
+    setPending(null);
+    setMessage("Memeriksa ulang salinan R2 dan membersihkan sumber Supabase...");
+    try {
       const result = await runBatches("delete", setMessage);
       setMessage(`Pembersihan selesai. Dihapus ${result.removed} file, ditunda ${result.blocked}. Periksa Usage Supabase setelah angkanya diperbarui.`);
     } catch (error) {
@@ -73,6 +86,24 @@ export default function StorageCleanup({ disabled = false }: { disabled?: boolea
       <button type="button" className={styles.button} disabled={disabled || running} onClick={clean}>
         {running ? "Memeriksa penyimpanan..." : "Periksa dan bersihkan salinan Supabase"}
       </button>
+      {pending && (
+        <div className={styles.linkBox} role="group" aria-label="Konfirmasi pembersihan Supabase">
+          <p>
+            Hapus permanen {pending.eligible} salinan sumber Supabase ({pending.size} MiB)?
+            Salinan R2 telah diperiksa dan referensi database telah dipindahkan.
+            Penghapusan sumber ini tidak dapat dibatalkan melalui Supabase Storage.
+          </p>
+          <button type="button" className={styles.button} disabled={disabled || running} onClick={confirmCleanup}>
+            Ya, hapus {pending.eligible} salinan Supabase
+          </button>
+          <button type="button" disabled={running} onClick={() => {
+            setPending(null);
+            setMessage("Pembersihan dibatalkan. Tidak ada file yang dihapus.");
+          }}>
+            Batal
+          </button>
+        </div>
+      )}
       {message && <div className={styles.linkBox} role="status">{message}</div>}
     </div>
   );
