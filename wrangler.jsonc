@@ -23,5 +23,11 @@
     "R2_ACCOUNT_ID": "42dad13cae28bec30c33a1d52e1cfa5c",
     "R2_BUCKET_NAME": "vistiq-media",
     "R2_PUBLIC_URL": "https://media.vistiqinvitation.com"
-  }
+  },
+  "routes": [
+    {
+      "pattern": "vistiqinvitation.com",
+      "custom_domain": true
+    }
+  ]
 }
