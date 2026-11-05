@@ -7,9 +7,9 @@ import { themeList, aqiqahThemeList, khitanThemeList, birthdayThemeList } from "
 import ThemePreviewPanel from "@/components/ThemePreviewPanel";
 import SmartCoverEditor from "@/components/SmartCoverEditor";
 import { MUSIC_LIBRARY } from "@/lib/musicLibrary";
+import { uploadMediaToR2 } from "@/lib/uploadMedia";
 import styles from "@/styles/dashboard.module.css";
 
-const BUCKET = "invitation-assets";
 
 type PhotoField = "cover_photo" | "background_photo" | "bride_photo" | "groom_photo" | "story_1_photo" | "story_2_photo" | "story_3_photo" | "story_4_photo" | "story_5_photo" | "music_url";
 
@@ -408,32 +408,10 @@ export default function ResellerInvitationEditPage() {
         : file.name.split(".").pop() || "bin";
       const contentType = isImage ? "image/jpeg" : file.type;
 
-      const fileName = `${params.id}/${folder}-${Date.now()}-${Math.random()
-        .toString(36)
-        .slice(2)}.${extension}`;
-
-      const { error } = await supabase.storage
-        .from(BUCKET)
-        .upload(fileName, uploadBody, {
-          contentType,
-          cacheControl: "3600",
-        });
-
-      if (error) {
-        const statusCode = String((error as unknown as { statusCode?: string | number }).statusCode || "");
-        const tooLarge =
-          error.message.toLowerCase().includes("maximum allowed size") ||
-          statusCode === "413";
-
-        alert(
-          tooLarge
-            ? "Foto masih terlalu besar untuk diupload. Silakan pilih foto lain atau coba ulang."
-            : `Upload gagal: ${error.message}`
-        );
-        return "";
-      }
-
-      return supabase.storage.from(BUCKET).getPublicUrl(fileName).data.publicUrl;
+      const uploadFile = new File([uploadBody], `media.${extension}`, {
+        type: contentType,
+      });
+      return await uploadMediaToR2(uploadFile, folder, String(params.id));
     } catch (error) {
       const message =
         error instanceof Error

@@ -1,0 +1,94 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "vistiq-recovery-preview",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-11-05",
+  "compatibility_flags": [
+    "nodejs_compat",
+    "global_fetch_strictly_public"
+  ],
+  "workers_dev": true,
+  "minify": true,
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "services": [
+    {
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "vistiq-recovery-preview"
+    }
+  ],
+  "vars": {
+    "R2_ACCOUNT_ID": "42dad13cae28bec30c33a1d52e1cfa5c",
+    "R2_BUCKET_NAME": "vistiq-media",
+    "R2_PUBLIC_URL": "https://media.vistiqinvitation.com"
+  },
+  "routes": [
+    {
+      "pattern": "vistiqinvitation.com",
+      "custom_domain": true
+    },
+    {
+      "pattern": "www.vistiqinvitation.com",
+      "custom_domain": true
+    },
+    {
+      "pattern": "aiwan.vistiqinvitation.com/*",
+      "zone_name": "vistiqinvitation.com"
+    },
+    {
+      "pattern": "astrada.vistiqinvitation.com/*",
+      "zone_name": "vistiqinvitation.com"
+    },
+    {
+      "pattern": "cns.vistiqinvitation.com/*",
+      "zone_name": "vistiqinvitation.com"
+    },
+    {
+      "pattern": "digital.vistiqinvitation.com/*",
+      "zone_name": "vistiqinvitation.com"
+    },
+    {
+      "pattern": "elova.vistiqinvitation.com/*",
+      "zone_name": "vistiqinvitation.com"
+    },
+    {
+      "pattern": "idinvitation.vistiqinvitation.com/*",
+      "zone_name": "vistiqinvitation.com"
+    },
+    {
+      "pattern": "invitationbyour.vistiqinvitation.com/*",
+      "zone_name": "vistiqinvitation.com"
+    },
+    {
+      "pattern": "kisah.vistiqinvitation.com/*",
+      "zone_name": "vistiqinvitation.com"
+    },
+    {
+      "pattern": "luckyfamily5printing.vistiqinvitation.com/*",
+      "zone_name": "vistiqinvitation.com"
+    },
+    {
+      "pattern": "nabilahlumireinvitation.vistiqinvitation.com/*",
+      "zone_name": "vistiqinvitation.com"
+    },
+    {
+      "pattern": "naura-undangan.vistiqinvitation.com/*",
+      "zone_name": "vistiqinvitation.com"
+    },
+    {
+      "pattern": "ummproject.vistiqinvitation.com/*",
+      "zone_name": "vistiqinvitation.com"
+    },
+    {
+      "pattern": "welly.vistiqinvitation.com/*",
+      "zone_name": "vistiqinvitation.com"
+    },
+    {
+      "pattern": "yumnadigital.vistiqinvitation.com/*",
+      "zone_name": "vistiqinvitation.com"
+    }
+  ],
+  "keep_vars": true
+}

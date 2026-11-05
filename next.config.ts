@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
+    unoptimized: process.env.CLOUDFLARE_BUILD === "1",
     // Reseller/client uploads are stored in the public Supabase Storage
     // bucket. next/image rejects remote hosts that are not declared here,
     // which made successfully uploaded bride/groom photos render as an empty

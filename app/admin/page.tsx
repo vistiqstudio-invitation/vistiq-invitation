@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import DashboardSidebar from "@/components/admin/DashboardSidebar";
+import StorageCleanup from "@/components/admin/StorageCleanup";
 import ChangePasswordCard from "@/components/dashboard/ChangePasswordCard";
 import styles from "@/styles/dashboard.module.css";
 
@@ -470,7 +471,7 @@ export default function AdminPage() {
 
             <section className={styles.generatorCard}>
               <h2 className={styles.sectionTitle}>Migrasi Media ke Cloudflare R2</h2>
-              <p>Salin media undangan aktif ke R2 terlebih dahulu. File Supabase tidak dihapus dan URL database belum diubah.</p>
+              <p>Salin dan verifikasi media undangan aktif, lalu periksa salinan sumber yang siap dibersihkan.</p>
               <div className={styles.generatorWrap}>
                 <button onClick={runMediaMigration} className={styles.button} disabled={migrationRunning}>
                   {migrationRunning ? "Sedang Migrasi..." : "Mulai Migrasi ke R2"}
@@ -479,16 +480,17 @@ export default function AdminPage() {
               {migrationResult && <div className={styles.linkBox}>{migrationResult}</div>}
               <div className={styles.generatorWrap}>
                 <button onClick={runMediaVerification} className={styles.exportButton} disabled={verifyRunning || migrationRunning}>
-                  {verifyRunning ? "Sedang Verifikasi..." : "Verifikasi 238 Media di R2"}
+                  {verifyRunning ? "Sedang Verifikasi..." : "Verifikasi media R2"}
                 </button>
               </div>
               {verifyResult && <div className={styles.linkBox}>{verifyResult}</div>}
               <div className={styles.generatorWrap}>
                 <button onClick={runLogoMigration} className={styles.button} disabled={logoMigrationRunning || migrationRunning || verifyRunning}>
-                  {logoMigrationRunning ? "Sedang Migrasi Logo..." : "Migrasi 24 Logo Reseller ke R2"}
+                  {logoMigrationRunning ? "Sedang Migrasi Logo..." : "Migrasi logo reseller ke R2"}
                 </button>
               </div>
               {logoMigrationResult && <div className={styles.linkBox}>{logoMigrationResult}</div>}
+              <StorageCleanup disabled={migrationRunning || verifyRunning || logoMigrationRunning} />
             </section>
 
             <section className={styles.generatorCard}>

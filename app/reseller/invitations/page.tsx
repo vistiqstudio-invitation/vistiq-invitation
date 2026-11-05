@@ -10,10 +10,10 @@ import { themeList, aqiqahThemeList, khitanThemeList, birthdayThemeList } from "
 import SmartCoverEditor from "@/components/SmartCoverEditor";
 import ThemePreviewPanel from "@/components/ThemePreviewPanel";
 import { MUSIC_LIBRARY } from "@/lib/musicLibrary";
+import { uploadMediaToR2 } from "@/lib/uploadMedia";
 import { INVITATION_ACTIVATION_FEE } from "@/lib/resellerBilling";
 import styles from "@/styles/dashboard.module.css";
 
-const BUCKET = "invitation-assets";
 const ADMIN_WHATSAPP = "6281371338032";
 
 type PhotoField = "cover_photo" | "bride_photo" | "groom_photo" | "music_url";
@@ -294,21 +294,12 @@ export default function ResellerInvitationsPage() {
   const uploadToStorage = async (file: File, folder: string) => {
     if (!reseller) return "";
 
-    const ext = file.name.split(".").pop();
-    const fileName = `resellers/${reseller.id}/drafts/${folder}-${Date.now()}-${Math.random()
-      .toString(36)
-      .slice(2)}.${ext}`;
-
-    const { error } = await supabase.storage
-      .from(BUCKET)
-      .upload(fileName, file, { contentType: file.type });
-
-    if (error) {
-      alert(`Upload gagal: ${JSON.stringify(error, Object.getOwnPropertyNames(error))}`);
+    try {
+      return await uploadMediaToR2(file, folder, `reseller-${reseller.id}`);
+    } catch (error) {
+      alert(`Upload gagal: ${error instanceof Error ? error.message : "File gagal diunggah."}`);
       return "";
     }
-
-    return supabase.storage.from(BUCKET).getPublicUrl(fileName).data.publicUrl;
   };
 
   const uploadSingleFile = async (file: File, field: PhotoField) => {
