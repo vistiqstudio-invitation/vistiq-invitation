@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { isSameOriginRequest } from "@/lib/requestOrigin";
 import { createClient } from "@/lib/supabase/server";
 import { r2PublicUrl } from "@/lib/r2";
 import { VERIFIED_LEGACY_MEDIA } from "@/lib/verifiedLegacyMedia";
@@ -10,7 +11,7 @@ const SOURCE_ROOT = "https://tvjifuzhakaymzottdyf.supabase.co/storage/v1/object/
 
 export async function POST(request: Request) {
   try {
-    if (request.headers.get("origin") !== new URL(request.url).origin) {
+    if (!isSameOriginRequest(request)) {
       return NextResponse.json({ error: "Origin tidak diizinkan." }, { status: 403 });
     }
     const db = await createClient();
@@ -29,10 +30,10 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Konfirmasi pembersihan diperlukan." }, { status: 400 });
     }
 
-    const { data: references, error: referenceError } = await db.rpc("check_verified_media_cleanup_refs");
+    const { data: references, error: referenceError } = await db.rpc("get_verified_media_cleanup_status");
     if (referenceError || !Array.isArray(references)) throw new Error("Pemeriksaan referensi database gagal.");
-    const referenceMap = new Map<string, { referenced: boolean; bytes: number }>(
-      references.map((row: { name: string; referenced: boolean; bytes: number }) => [row.name, row]),
+    const referenceMap = new Map<string, { referenced: boolean; bytes: number; source_exists: boolean }>(
+      references.map((row: { name: string; referenced: boolean; bytes: number; source_exists: boolean }) => [row.name, row]),
     );
     const batch = VERIFIED_LEGACY_MEDIA.slice(offset, offset + BATCH_SIZE);
     const eligible: string[] = [];
@@ -44,6 +45,10 @@ export async function POST(request: Request) {
       const reference = referenceMap.get(file.name);
       if (!reference || Number(reference.bytes) !== file.bytes || reference.referenced) {
         blocked.push({ name: file.name, reason: "File masih dirujuk database." });
+        continue;
+      }
+      if (reference.source_exists === false) {
+        alreadyRemoved += 1;
         continue;
       }
       const destination = r2PublicUrl(`legacy/${BUCKET}/${file.name}`);

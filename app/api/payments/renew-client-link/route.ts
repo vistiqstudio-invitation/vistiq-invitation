@@ -1,5 +1,7 @@
 import "server-only";
 
+import { paymentConfigurationStatus } from "@/lib/paymentConfiguration";
+
 import crypto from "node:crypto";
 import { NextResponse } from "next/server";
 import { createClient as createServiceClient } from "@supabase/supabase-js";
@@ -17,7 +19,7 @@ export async function POST(request: Request) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   const midtransKey = process.env.MIDTRANS_SERVER_KEY;
-  if (!url || !serviceKey || !midtransKey) {
+  if (!paymentConfigurationStatus().ready || !url || !serviceKey || !midtransKey) {
     return NextResponse.json({ error: "Konfigurasi pembayaran belum lengkap." }, { status: 503 });
   }
   const db = createServiceClient(url, serviceKey, {

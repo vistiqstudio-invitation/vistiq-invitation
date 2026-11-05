@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import DashboardSidebar from "@/components/admin/DashboardSidebar";
 import StorageCleanup from "@/components/admin/StorageCleanup";
+import SystemStatus from "@/components/admin/SystemStatus";
 import ChangePasswordCard from "@/components/dashboard/ChangePasswordCard";
 import styles from "@/styles/dashboard.module.css";
 
@@ -468,6 +469,8 @@ export default function AdminPage() {
                 value={`Rp ${totalKomisi.toLocaleString("id-ID")}`}
               />
             </section>
+
+            <SystemStatus />
 
             <section className={styles.generatorCard}>
               <h2 className={styles.sectionTitle}>Migrasi Media ke Cloudflare R2</h2>

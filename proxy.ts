@@ -19,9 +19,9 @@ async function resellerForDomain(domain: string) {
     method: "POST",
     headers: { apikey: key, Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
     body: JSON.stringify({ p_domain: domain }),
-    next: { revalidate: 60 },
+    signal: AbortSignal.timeout(8_000),
   });
-  if (!response.ok) return null;
+  if (!response.ok) throw new Error("Tenant lookup unavailable");
   const rows = await response.json();
   return Array.isArray(rows) ? rows[0] : rows;
 }
@@ -34,11 +34,25 @@ export async function proxy(request: NextRequest) {
   const hostname = getHostname(request.headers.get("host") || request.headers.get("x-forwarded-host"));
   const deploymentHost = getHostname(process.env.VERCEL_URL || null);
   const headers = new Headers(request.headers);
+  // Tenant identity comes only from the trusted hostname lookup.
+  headers.delete("x-vistiq-reseller-id");
+  headers.delete("x-vistiq-custom-domain");
   let tenant: { reseller_id?: string } | null = null;
 
   const isPlatformHost = isPlatformHostname(hostname) || hostname === deploymentHost;
   if (!isPlatformHost) {
-    tenant = await resellerForDomain(hostname);
+    try {
+      tenant = await resellerForDomain(hostname);
+    } catch {
+      return new NextResponse("Halaman sementara tidak dapat diakses. Silakan coba lagi.", {
+        status: 503, headers: { "Cache-Control": "no-store", "Retry-After": "30" },
+      });
+    }
+    if (!tenant?.reseller_id) {
+      return new NextResponse("Halaman belum tersedia atau layanan domain belum aktif.", {
+        status: 404, headers: { "Cache-Control": "no-store" },
+      });
+    }
     if (tenant?.reseller_id) {
       headers.set("x-vistiq-reseller-id", tenant.reseller_id);
       headers.set("x-vistiq-custom-domain", hostname);

@@ -31,7 +31,7 @@ export async function POST(request: Request) {
     .digest("hex");
 
   const signature = String(body.signature_key ?? "");
-  const validSignature = signature.length === expectedSignature.length && crypto.timingSafeEqual(
+  const validSignature = /^[a-f0-9]{128}$/.test(signature) && crypto.timingSafeEqual(
     Buffer.from(signature),
     Buffer.from(expectedSignature),
   );

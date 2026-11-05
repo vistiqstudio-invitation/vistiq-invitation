@@ -63,8 +63,8 @@ export default function R2StorageMonitor() {
       )}
 
       <div style={{ marginTop: 6, padding: "5px 7px", borderRadius: 7, background: "#f8fafc", fontSize: 8, lineHeight: 1.3, color: "#64748b" }}>
-        <b style={{ color: "#334155" }}>Gratis 10 GB · Kapasitas tidak terbatas</b><br />
-        Pemakaian di atas 10 GB mengikuti billing Cloudflare.
+        <b style={{ color: "#334155" }}>Pantau penggunaan R2</b><br />
+        Penyimpanan, operasi, dan batas gratis mengikuti akun Cloudflare.
       </div>
 
       {usage && <div style={{ marginTop: 5, fontSize: 7, color: "#94a3b8" }}>Dicek {new Date(usage.checkedAt).toLocaleString("id-ID")}</div>}

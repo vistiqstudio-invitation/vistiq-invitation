@@ -1,5 +1,7 @@
 import "server-only";
 
+import { paymentConfigurationStatus } from "@/lib/paymentConfiguration";
+
 import { after, NextResponse } from "next/server";
 import { createClient as createServiceClient } from "@supabase/supabase-js";
 import { provisionPaidOrder } from "@/lib/provisionPaidOrder";
@@ -16,7 +18,7 @@ export async function GET(request: Request) {
   if (!isResellerClientOrder && !isPackageOrder && !isStorefrontOrder) {
     return NextResponse.json({ error: "Nomor pesanan tidak valid." }, { status: 400 });
   }
-  if (!serverKey) {
+  if (!paymentConfigurationStatus().ready || !serverKey) {
     return NextResponse.json({ error: "Konfigurasi pembayaran belum tersedia." }, { status: 503 });
   }
 

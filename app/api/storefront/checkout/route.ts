@@ -1,5 +1,7 @@
 import "server-only";
 
+import { paymentConfigurationStatus } from "@/lib/paymentConfiguration";
+
 import crypto from "node:crypto";
 import { NextResponse } from "next/server";
 import { createClient as createServiceClient } from "@supabase/supabase-js";
@@ -72,7 +74,7 @@ export async function POST(request: Request) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-  if (!serverKey || !supabaseUrl || !serviceRoleKey) {
+  if (!paymentConfigurationStatus().ready || !serverKey || !supabaseUrl || !serviceRoleKey) {
     return NextResponse.json({ error: "Konfigurasi checkout belum tersedia." }, { status: 503 });
   }
 

@@ -1,5 +1,7 @@
 import "server-only";
 
+import { paymentConfigurationStatus } from "@/lib/paymentConfiguration";
+
 import crypto from "node:crypto";
 import { NextResponse } from "next/server";
 import { createClient as createServiceClient } from "@supabase/supabase-js";
@@ -31,7 +33,7 @@ export async function POST(request: Request) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   const midtransKey = process.env.MIDTRANS_SERVER_KEY;
-  if (!supabaseUrl || !serviceKey || !midtransKey) return NextResponse.json({ error: "Konfigurasi pembayaran belum lengkap." }, { status: 503 });
+  if (!paymentConfigurationStatus().ready || !supabaseUrl || !serviceKey || !midtransKey) return NextResponse.json({ error: "Konfigurasi pembayaran belum lengkap." }, { status: 503 });
   let invitationId: number;
   try { invitationId = Number((await request.json()).invitationId); } catch { return NextResponse.json({ error: "Data pembayaran tidak valid." }, { status: 400 }); }
   if (!Number.isSafeInteger(invitationId) || invitationId <= 0) return NextResponse.json({ error: "ID undangan tidak valid." }, { status: 400 });

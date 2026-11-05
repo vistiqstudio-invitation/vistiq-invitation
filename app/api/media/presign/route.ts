@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { isSameOriginRequest } from "@/lib/requestOrigin";
 import { createClient } from "@/lib/supabase/server";
 import { createR2PresignedPutUrl, putR2Object } from "@/lib/r2";
 
@@ -7,7 +8,7 @@ const MAX_IMAGE_BYTES = 8 * 1024 * 1024;
 const MAX_AUDIO_BYTES = 15 * 1024 * 1024;
 
 function safeSegment(value: string) {
-  return value.toLowerCase().replace(/[^a-z0-9._-]+/g, "-").replace(/^-+|-+$/g, "");
+  return value.toLowerCase().slice(0, 128).replace(/[^a-z0-9._-]+/g, "-").replace(/^[.\-]+|[.\-]+$/g, "");
 }
 
 async function authorizedUser() {
@@ -37,6 +38,9 @@ function mediaKey(userId: string, scopeValue: string, folderValue: string, fileN
 
 export async function POST(request: Request) {
   try {
+    if (!isSameOriginRequest(request)) {
+      return NextResponse.json({ error: "Origin tidak diizinkan." }, { status: 403 });
+    }
     const user = await authorizedUser();
     if (!user) return NextResponse.json({ error: "Tidak diizinkan." }, { status: 401 });
 
@@ -56,6 +60,9 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   try {
+    if (!isSameOriginRequest(request)) {
+      return NextResponse.json({ error: "Origin tidak diizinkan." }, { status: 403 });
+    }
     const user = await authorizedUser();
     if (!user) return NextResponse.json({ error: "Tidak diizinkan." }, { status: 401 });
 

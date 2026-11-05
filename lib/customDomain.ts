@@ -38,13 +38,14 @@ const PLATFORM_HOSTS = new Set([
 
 export function isPlatformHostname(value: string | null) {
   const hostname = getHostname(value);
-  return !hostname || PLATFORM_HOSTS.has(hostname) || hostname.endsWith(".vercel.app");
+  return !hostname || PLATFORM_HOSTS.has(hostname) || hostname.endsWith(".vercel.app") || hostname.endsWith(".vistiqstudio.workers.dev");
 }
 
 const RESERVED_SUBDOMAINS = new Set([
   "www", "admin", "api", "app", "dashboard", "login", "client", "reseller",
   "affiliate", "owner", "mail", "email", "smtp", "ftp", "support", "help",
   "status", "billing", "checkout", "payment", "payments", "static", "assets",
+  "media", "cdn", "www2", "preview", "staging", "dev",
 ]);
 
 export function normalizeSubdomain(value: string) {

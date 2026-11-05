@@ -21,6 +21,8 @@ async function runBatches(action: "check" | "delete", report: (message: string) 
   let bytes = 0;
   let removed = 0;
   let blocked = 0;
+  let alreadyRemoved = 0;
+  const reasons = new Set<string>();
   while (true) {
     const response = await fetch("/api/admin/storage-cleanup", {
       method: "POST",
@@ -33,8 +35,10 @@ async function runBatches(action: "check" | "delete", report: (message: string) 
     bytes += result.bytes;
     removed += result.removed;
     blocked += result.blocked.length;
-    report(`Diperiksa ${result.nextOffset}/${result.total}. Memenuhi syarat ${eligible}, dihapus ${removed}, ditunda ${blocked}.`);
-    if (result.done) return { eligible, bytes, removed, blocked };
+    alreadyRemoved += result.alreadyRemoved;
+    result.blocked.forEach((file) => reasons.add(file.reason));
+    report(`Diperiksa ${result.nextOffset}/${result.total}. Memenuhi syarat ${eligible}, dihapus ${removed}, sudah bersih ${alreadyRemoved}, ditunda ${blocked}.`);
+    if (result.done) return { eligible, bytes, removed, blocked, alreadyRemoved, reasons: [...reasons] };
     if (result.nextOffset <= offset) throw new Error("Proses terhenti. Jalankan ulang pemeriksaan.");
     offset = result.nextOffset;
   }
@@ -53,7 +57,7 @@ export default function StorageCleanup({ disabled = false }: { disabled?: boolea
     try {
       const checked = await runBatches("check", setMessage);
       if (!checked.eligible) {
-        setMessage(`Pemeriksaan selesai. Tidak ada file yang memenuhi syarat. Ditunda ${checked.blocked}.`);
+        setMessage(`Pemeriksaan selesai. Sudah bersih ${checked.alreadyRemoved} file. Ditunda ${checked.blocked}.${checked.reasons.length ? " " + checked.reasons.join(" ") : " Tidak ada salinan sumber tambahan yang perlu dihapus."}`);
         return;
       }
       const size = (checked.bytes / 1024 / 1024).toFixed(1);
@@ -73,7 +77,7 @@ export default function StorageCleanup({ disabled = false }: { disabled?: boolea
     setMessage("Memeriksa ulang salinan R2 dan membersihkan sumber Supabase...");
     try {
       const result = await runBatches("delete", setMessage);
-      setMessage(`Pembersihan selesai. Dihapus ${result.removed} file, ditunda ${result.blocked}. Periksa Usage Supabase setelah angkanya diperbarui.`);
+      setMessage(`Pembersihan selesai. Dihapus ${result.removed} file, sudah bersih ${result.alreadyRemoved}, ditunda ${result.blocked}. Periksa Usage Supabase setelah angkanya diperbarui.`);
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Pembersihan terhenti. Proses bisa dijalankan ulang.");
     } finally {
