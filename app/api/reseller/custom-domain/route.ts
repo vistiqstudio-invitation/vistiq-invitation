@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 import { createClient as createServiceClient } from "@supabase/supabase-js";
 import { getSessionProfile } from "@/lib/supabase/dal";
 import { isValidCustomDomain, normalizeCustomDomain } from "@/lib/customDomain";
-import { getCloudflareDomainStatus, registerCloudflareDomain, removeCloudflareDomain } from "@/lib/cloudflareDomains";
+import { getCloudflareDomainStatus, registerCloudflareDomain } from "@/lib/cloudflareDomains";
 
 function adminClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -96,9 +96,11 @@ export async function POST(request: Request) {
       .maybeSingle();
     if (owner) return NextResponse.json({ error: "Domain ini sudah digunakan oleh akun lain." }, { status: 409 });
 
-    // Preserve the existing domain until the replacement has been saved.
-    // Never delete a live hostname silently during a failed replacement.
-    const previousDomain = context.reseller.custom_domain;
+    // Keep existing published URLs stable. Domain migration needs an explicit
+    // separate cutover flow rather than silently replacing the active mapping.
+    if (context.reseller.custom_domain && context.reseller.custom_domain !== domain) {
+      return NextResponse.json({ error: "Domain lama masih terhubung. Hubungi admin untuk migrasi domain tanpa memutus link undangan." }, { status: 409 });
+    }
     const result = await registerCloudflareDomain(domain);
     const status = result.status;
     const { error } = await context.supabase.from("resellers").update({
@@ -113,9 +115,6 @@ export async function POST(request: Request) {
       throw error;
     }
 
-    // Do not automatically delete the old Cloudflare hostname: it may still
-    // serve previously shared links. Admin can retire it after migration checks.
-    void previousDomain;
     return NextResponse.json({ ...result, status });
   } catch (error) {
     return errorResponse(error);
@@ -126,14 +125,15 @@ export async function DELETE() {
   try {
     const context = await currentReseller();
     if (!context) return NextResponse.json({ error: "Tidak diizinkan." }, { status: 403 });
-    if (context.reseller.custom_domain) await removeCloudflareDomain(context.reseller.custom_domain);
-
-    await context.supabase.from("resellers").update({
+    // Delink only in our database. Deleting the Cloudflare hostname would
+    // break already shared invitation URLs and must be handled by admin.
+    const { error } = await context.supabase.from("resellers").update({
       custom_domain: null,
       custom_domain_status: "not_configured",
       custom_domain_verified_at: null,
       custom_domain_error: null,
     }).eq("id", context.reseller.id);
+    if (error) throw error;
     return NextResponse.json({ ok: true });
   } catch (error) {
     return errorResponse(error);
