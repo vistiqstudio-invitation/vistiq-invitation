@@ -8,8 +8,11 @@ type DomainResult = {
   status: "not_configured" | "pending_dns" | "active";
   verified?: boolean;
   configured?: boolean;
-  dns?: { type: "A" | "CNAME"; name: string; value: string };
-  verification?: Array<{ type?: string; domain?: string; value?: string; reason?: string }>;
+  dns?: { type: "CNAME"; name: string; value: string };
+  verification?: Array<{ type?: string; name?: string; value?: string }>;
+  hostnameStatus?: string;
+  certificateStatus?: string;
+  routingReady?: boolean;
   error?: string;
 };
 
@@ -30,6 +33,7 @@ export default function CustomDomainCard({
 
   const request = async (method: string, body?: object) => {
     setLoading(true);
+    try {
     const response = await fetch("/api/reseller/custom-domain", {
       method,
       headers: body ? { "Content-Type": "application/json" } : undefined,
@@ -44,15 +48,21 @@ export default function CustomDomainCard({
     setResult(data);
     if (data.domain) setDomain(data.domain);
     return data;
+    } catch {
+      alert("Koneksi terputus. Periksa internet dan coba lagi.");
+      return null;
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- status is synchronized from the external Vercel API
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- status is synchronized from the Cloudflare API
     if (initialDomain) request("GET");
   }, [initialDomain]);
 
   const remove = async () => {
-    if (!confirm(`Hapus ${domain} dari brand Anda?`)) return;
+    if (!confirm(`Lepaskan ${domain} dari dashboard? Link undangan lama mungkin tidak dapat dibuka melalui domain ini. Lanjutkan?`)) return;
     const data = await request("DELETE");
     if (data) {
       setDomain("");
@@ -165,7 +175,7 @@ export default function CustomDomainCard({
         />
         {!active && (
           <button className={styles.button} disabled={loading || !domain.trim()} onClick={() => request("POST", { domain })}>
-            {loading ? "Memproses..." : initialDomain || result?.domain ? "Simpan Ulang" : "Hubungkan Domain"}
+            {loading ? "Memproses..." : initialDomain || result?.domain ? "Simpan / Perbarui" : "Hubungkan Domain"}
           </button>
         )}
       </div>
@@ -181,16 +191,19 @@ export default function CustomDomainCard({
             </p>
           ) : result.dns ? (
             <div style={{ marginTop: 12, fontSize: 13.5, lineHeight: 1.7 }}>
-              <p style={{ margin: "0 0 8px" }}>Tambahkan record berikut di tempat Anda membeli domain:</p>
+              <p style={{ margin: "0 0 8px" }}>Salin pengaturan ini ke pengelola DNS domain Anda (bukan selalu tempat membeli domain):</p>
               <div className={styles.linkBox}>
                 Tipe: {result.dns.type}<br />Nama/Host: {result.dns.name}<br />Nilai/Target: {result.dns.value}
+                <button type="button" style={{ marginLeft: 8 }} onClick={() => navigator.clipboard.writeText(result.dns!.value)}>Salin target</button>
               </div>
+              <p style={{ margin: "8px 0 0" }}>Domain utama (@) membutuhkan dukungan CNAME flattening atau ALIAS/ANAME dari penyedia DNS. Jika memakai Cloudflare DNS, gunakan CNAME untuk @ dan periksa record lama yang bentrok.</p>
               {result.verification?.map((item, index) => item.value ? (
-                <div className={styles.linkBox} style={{ marginTop: 8 }} key={`${item.domain}-${index}`}>
-                  Verifikasi {item.type || "TXT"}: {item.domain || "_vercel"}<br />Nilai: {item.value}
+                <div className={styles.linkBox} style={{ marginTop: 8 }} key={`${item.name}-${index}`}>
+                  Verifikasi {item.type || "TXT"}: {item.name || "@"}<br />Nilai: {item.value}
+                  <button type="button" style={{ marginLeft: 8 }} onClick={() => navigator.clipboard.writeText(item.value!)}>Salin nilai</button>
                 </div>
               ) : null)}
-              <p style={{ margin: "10px 0 0", color: "#92400e" }}>Perubahan DNS dapat membutuhkan waktu beberapa menit hingga 24 jam.</p>
+              <p style={{ margin: "10px 0 0", color: "#92400e" }}>Status Cloudflare: {result.hostnameStatus || "pending"}; SSL: {result.certificateStatus || "pending"}. DNS dan sertifikat dapat memerlukan waktu propagasi. Status aktif hanya diberikan setelah koneksi aplikasi diverifikasi.</p>
             </div>
           ) : null}
         </div>
@@ -199,7 +212,7 @@ export default function CustomDomainCard({
       {result?.domain && (
         <div style={{ display: "flex", gap: 10, marginTop: 12, flexWrap: "wrap" }}>
           {!active && <button className={styles.button} disabled={loading} onClick={() => request("POST", { action: "check" })}>Periksa Domain</button>}
-          <button className={styles.button} disabled={loading} onClick={remove} style={{ background: "#fff", color: "#dc2626", border: "1px solid #fecaca" }}>Hapus Domain</button>
+          <button className={styles.button} disabled={loading} onClick={remove} style={{ background: "#fff", color: "#dc2626", border: "1px solid #fecaca" }}>Lepaskan Domain</button>
         </div>
       )}
     </section>

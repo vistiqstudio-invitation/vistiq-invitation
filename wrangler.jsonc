@@ -22,6 +22,7 @@
   "vars": {
     "R2_ACCOUNT_ID": "42dad13cae28bec30c33a1d52e1cfa5c",
     "R2_BUCKET_NAME": "vistiq-media",
+    "CLOUDFLARE_ZONE_ID": "00490c1af532b05c9470f2926466cd97",
     "R2_PUBLIC_URL": "https://media.vistiqinvitation.com"
   },
   "routes": [

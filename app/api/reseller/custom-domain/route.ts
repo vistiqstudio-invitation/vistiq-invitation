@@ -4,12 +4,7 @@ import { NextResponse } from "next/server";
 import { createClient as createServiceClient } from "@supabase/supabase-js";
 import { getSessionProfile } from "@/lib/supabase/dal";
 import { isValidCustomDomain, normalizeCustomDomain } from "@/lib/customDomain";
-import {
-  addDomainToVercel,
-  getDomainStatus,
-  removeDomainFromVercel,
-  verifyDomainOnVercel,
-} from "@/lib/vercelDomains";
+import { getCloudflareDomainStatus, registerCloudflareDomain } from "@/lib/cloudflareDomains";
 
 function adminClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -51,8 +46,8 @@ export async function GET() {
     const domain = context.reseller.custom_domain;
     if (!domain) return NextResponse.json({ domain: null, status: "not_configured" });
 
-    const result = await getDomainStatus(domain);
-    const status = result.verified && result.configured ? "active" : "pending_dns";
+    const result = await getCloudflareDomainStatus(domain);
+    const status = result.status;
     await context.supabase.from("resellers").update({
       custom_domain_status: status,
       custom_domain_verified_at: status === "active" ? new Date().toISOString() : null,
@@ -78,8 +73,8 @@ export async function POST(request: Request) {
 
     if (action === "check") {
       if (!context.reseller.custom_domain) throw new Error("Belum ada domain yang disimpan.");
-      const result = await verifyDomainOnVercel(context.reseller.custom_domain);
-      const status = result.verified && result.configured ? "active" : "pending_dns";
+      const result = await registerCloudflareDomain(context.reseller.custom_domain);
+      const status = result.status;
       await context.supabase.from("resellers").update({
         custom_domain_status: status,
         custom_domain_verified_at: status === "active" ? new Date().toISOString() : null,
@@ -101,12 +96,13 @@ export async function POST(request: Request) {
       .maybeSingle();
     if (owner) return NextResponse.json({ error: "Domain ini sudah digunakan oleh akun lain." }, { status: 409 });
 
+    // Keep existing published URLs stable. Domain migration needs an explicit
+    // separate cutover flow rather than silently replacing the active mapping.
     if (context.reseller.custom_domain && context.reseller.custom_domain !== domain) {
-      await removeDomainFromVercel(context.reseller.custom_domain).catch(() => undefined);
+      return NextResponse.json({ error: "Domain lama masih terhubung. Hubungi admin untuk migrasi domain tanpa memutus link undangan." }, { status: 409 });
     }
-
-    const result = await addDomainToVercel(domain);
-    const status = result.verified && result.configured ? "active" : "pending_dns";
+    const result = await registerCloudflareDomain(domain);
+    const status = result.status;
     const { error } = await context.supabase.from("resellers").update({
       custom_domain: domain,
       custom_domain_status: status,
@@ -114,7 +110,8 @@ export async function POST(request: Request) {
       custom_domain_error: null,
     }).eq("id", context.reseller.id);
     if (error) {
-      await removeDomainFromVercel(domain).catch(() => undefined);
+      // The hostname may predate this request (e.g. manual Cloudflare setup).
+      // Do not remove it on an unrelated database failure.
       throw error;
     }
 
@@ -128,14 +125,15 @@ export async function DELETE() {
   try {
     const context = await currentReseller();
     if (!context) return NextResponse.json({ error: "Tidak diizinkan." }, { status: 403 });
-    if (context.reseller.custom_domain) await removeDomainFromVercel(context.reseller.custom_domain);
-
-    await context.supabase.from("resellers").update({
+    // Delink only in our database. Deleting the Cloudflare hostname would
+    // break already shared invitation URLs and must be handled by admin.
+    const { error } = await context.supabase.from("resellers").update({
       custom_domain: null,
       custom_domain_status: "not_configured",
       custom_domain_verified_at: null,
       custom_domain_error: null,
     }).eq("id", context.reseller.id);
+    if (error) throw error;
     return NextResponse.json({ ok: true });
   } catch (error) {
     return errorResponse(error);

@@ -1,0 +1,32 @@
+name: Validate reseller custom domains
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'app/api/reseller/custom-domain/**'
+      - 'lib/cloudflareDomains.ts'
+      - 'components/reseller/CustomDomainCard.tsx'
+      - '.github/workflows/validate-reseller-domains.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Typecheck
+        run: npx tsc --noEmit
+      - name: Targeted lint
+        run: npx eslint lib/cloudflareDomains.ts app/api/reseller/custom-domain/route.ts components/reseller/CustomDomainCard.tsx
+      - name: Existing recovery tests
+        run: npm run test:recovery
