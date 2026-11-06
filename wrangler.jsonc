@@ -7,7 +7,7 @@
     "nodejs_compat",
     "global_fetch_strictly_public"
   ],
-  "workers_dev": true,
+  "workers_dev": false,
   "minify": true,
   "assets": {
     "directory": ".open-next/assets",
@@ -25,72 +25,6 @@
     "CLOUDFLARE_ZONE_ID": "00490c1af532b05c9470f2926466cd97",
     "R2_PUBLIC_URL": "https://media.vistiqinvitation.com"
   },
-  "routes": [
-    {
-      "pattern": "vistiqinvitation.com",
-      "custom_domain": true
-    },
-    {
-      "pattern": "www.vistiqinvitation.com",
-      "custom_domain": true
-    },
-    {
-      "pattern": "aiwan.vistiqinvitation.com/*",
-      "zone_name": "vistiqinvitation.com"
-    },
-    {
-      "pattern": "astrada.vistiqinvitation.com/*",
-      "zone_name": "vistiqinvitation.com"
-    },
-    {
-      "pattern": "cns.vistiqinvitation.com/*",
-      "zone_name": "vistiqinvitation.com"
-    },
-    {
-      "pattern": "digital.vistiqinvitation.com/*",
-      "zone_name": "vistiqinvitation.com"
-    },
-    {
-      "pattern": "elova.vistiqinvitation.com/*",
-      "zone_name": "vistiqinvitation.com"
-    },
-    {
-      "pattern": "idinvitation.vistiqinvitation.com/*",
-      "zone_name": "vistiqinvitation.com"
-    },
-    {
-      "pattern": "invitationbyour.vistiqinvitation.com/*",
-      "zone_name": "vistiqinvitation.com"
-    },
-    {
-      "pattern": "kisah.vistiqinvitation.com/*",
-      "zone_name": "vistiqinvitation.com"
-    },
-    {
-      "pattern": "luckyfamily5printing.vistiqinvitation.com/*",
-      "zone_name": "vistiqinvitation.com"
-    },
-    {
-      "pattern": "nabilahlumireinvitation.vistiqinvitation.com/*",
-      "zone_name": "vistiqinvitation.com"
-    },
-    {
-      "pattern": "naura-undangan.vistiqinvitation.com/*",
-      "zone_name": "vistiqinvitation.com"
-    },
-    {
-      "pattern": "ummproject.vistiqinvitation.com/*",
-      "zone_name": "vistiqinvitation.com"
-    },
-    {
-      "pattern": "welly.vistiqinvitation.com/*",
-      "zone_name": "vistiqinvitation.com"
-    },
-    {
-      "pattern": "yumnadigital.vistiqinvitation.com/*",
-      "zone_name": "vistiqinvitation.com"
-    }
-  ],
   "keep_vars": true,
   "observability": {
     "enabled": true,
