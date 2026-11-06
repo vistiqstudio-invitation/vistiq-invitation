@@ -73,7 +73,7 @@ export async function POST(request: Request) {
 
     if (action === "check") {
       if (!context.reseller.custom_domain) throw new Error("Belum ada domain yang disimpan.");
-      const result = await getCloudflareDomainStatus(context.reseller.custom_domain);
+      const result = await registerCloudflareDomain(context.reseller.custom_domain);
       const status = result.status;
       await context.supabase.from("resellers").update({
         custom_domain_status: status,
