@@ -235,7 +235,9 @@ export default function ClientsPage() {
         whatsapp: client.whatsapp || "",
         packageName: client.package_name || "",
       });
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.setTimeout(() => {
+        document.getElementById("admin-client-credentials")?.scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 0);
     } catch {
       alert("Gagal menghubungi server. Coba lagi.");
     } finally {
@@ -377,7 +379,7 @@ export default function ClientsPage() {
           </button>
 
           {newClientCredentials && (
-            <div className={styles.linkBox} style={{ marginTop: 16 }}>
+            <div id="admin-client-credentials" className={styles.linkBox} style={{ marginTop: 16 }}>
               <p style={{ margin: "0 0 8px", fontWeight: 600 }}>
                 {newClientCredentials.kind === "reset"
                   ? `Password ${newClientCredentials.name} berhasil direset:`
@@ -390,10 +392,13 @@ export default function ClientsPage() {
                   Copy Pesan untuk Dikirim ke Client
                 </button>
                 {newClientCredentials.whatsapp && (
-                  <a href={clientWaLink()} target="_blank" className={styles.button}>
+                  <a href={clientWaLink()} target="_blank" rel="noopener noreferrer" className={styles.button}>
                     Kirim ke WA Otomatis
                   </a>
                 )}
+                <button onClick={() => setNewClientCredentials(null)} type="button" className={styles.button} style={{ background: "#64748b" }}>
+                  Tutup
+                </button>
               </div>
             </div>
           )}
