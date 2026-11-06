@@ -10,6 +10,7 @@ on:
       - 'components/**'
       - 'wrangler.jsonc'
       - 'package*.json'
+      - 'deploy-vistiq.cmd'
   workflow_dispatch:
 
 permissions:
@@ -53,7 +54,8 @@ jobs:
           path: |
             .open-next/
             wrangler.jsonc
+            deploy-vistiq.cmd
           include-hidden-files: true
-          compression-level: 1
+          compression-level: 9
           if-no-files-found: error
           retention-days: 7
