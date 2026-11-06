@@ -8,8 +8,11 @@ type DomainResult = {
   status: "not_configured" | "pending_dns" | "active";
   verified?: boolean;
   configured?: boolean;
-  dns?: { type: "A" | "CNAME"; name: string; value: string };
-  verification?: Array<{ type?: string; domain?: string; value?: string; reason?: string }>;
+  dns?: { type: "CNAME"; name: string; value: string };
+  verification?: Array<{ type?: string; name?: string; value?: string }>;
+  hostnameStatus?: string;
+  certificateStatus?: string;
+  routingReady?: boolean;
   error?: string;
 };
 
@@ -165,7 +168,7 @@ export default function CustomDomainCard({
         />
         {!active && (
           <button className={styles.button} disabled={loading || !domain.trim()} onClick={() => request("POST", { domain })}>
-            {loading ? "Memproses..." : initialDomain || result?.domain ? "Simpan Ulang" : "Hubungkan Domain"}
+            {loading ? "Memproses..." : initialDomain || result?.domain ? "Simpan / Perbarui" : "Hubungkan Domain"}
           </button>
         )}
       </div>
@@ -183,14 +186,14 @@ export default function CustomDomainCard({
             <div style={{ marginTop: 12, fontSize: 13.5, lineHeight: 1.7 }}>
               <p style={{ margin: "0 0 8px" }}>Tambahkan record berikut di tempat Anda membeli domain:</p>
               <div className={styles.linkBox}>
-                Tipe: {result.dns.type}<br />Nama/Host: {result.dns.name}<br />Nilai/Target: {result.dns.value}
+                Tipe: {result.dns.type}<br />Nama/Host: {result.dns.name}<br />Nilai/Target: {result.dns.value}<br />Jika menggunakan Cloudflare DNS, pastikan record sesuai panduan penyedia domain.
               </div>
               {result.verification?.map((item, index) => item.value ? (
-                <div className={styles.linkBox} style={{ marginTop: 8 }} key={`${item.domain}-${index}`}>
-                  Verifikasi {item.type || "TXT"}: {item.domain || "_vercel"}<br />Nilai: {item.value}
+                <div className={styles.linkBox} style={{ marginTop: 8 }} key={`${item.name}-${index}`}>
+                  Verifikasi {item.type || "TXT"}: {item.name || "@"}<br />Nilai: {item.value}
                 </div>
               ) : null)}
-              <p style={{ margin: "10px 0 0", color: "#92400e" }}>Perubahan DNS dapat membutuhkan waktu beberapa menit hingga 24 jam.</p>
+              <p style={{ margin: "10px 0 0", color: "#92400e" }}>Status Cloudflare: {result.hostnameStatus || "pending"}; SSL: {result.certificateStatus || "pending"}. DNS dan sertifikat dapat memerlukan waktu propagasi. Status aktif hanya diberikan setelah koneksi aplikasi diverifikasi.</p>
             </div>
           ) : null}
         </div>
