@@ -45,6 +45,7 @@ const NAV_ITEMS = [
 
 type Client = {
   id: string;
+  user_id?: string | null;
   name: string;
   whatsapp?: string;
   package_name?: string;
@@ -73,7 +74,9 @@ export default function ClientsPage() {
   });
   const [addingClient, setAddingClient] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [resettingId, setResettingId] = useState<string | null>(null);
   const [newClientCredentials, setNewClientCredentials] = useState<{
+    kind: "created" | "reset";
     name: string;
     email: string;
     password: string;
@@ -149,6 +152,7 @@ export default function ClientsPage() {
     }
 
     setNewClientCredentials({
+      kind: "created",
       name: form.name,
       email: result.email,
       password: result.password,
@@ -169,6 +173,9 @@ export default function ClientsPage() {
 
   const clientCredentialsMessage = () => {
     if (!newClientCredentials) return "";
+    if (newClientCredentials.kind === "reset") {
+      return `Halo ${newClientCredentials.name}, password akun undangan Vistiq Invitation Anda telah direset atas permintaan Anda.\n\nLink login: ${window.location.origin}/login\nEmail: ${newClientCredentials.email}\nPassword sementara: ${newClientCredentials.password}\n\nSilakan login dengan password sementara ini, kemudian ganti password melalui dashboard. Jangan bagikan password kepada orang lain.`;
+    }
     const category = categoryForPackageName(newClientCredentials.packageName);
     const checklist = DATA_CHECKLIST[category];
     return `Halo ${newClientCredentials.name}, berikut akun login dashboard undangan Anda di Vistiq Invitation:\n\nLink: ${window.location.origin}/login\nEmail: ${newClientCredentials.email}\nPassword: ${newClientCredentials.password}\n\nLewat dashboard ini Anda bisa generate link undangan per nama tamu, lihat RSVP, dan edit undangan.\n\nSupaya undangannya bisa langsung dipakai, mohon siapkan data berikut untuk diisi di dashboard:\n${checklist}\n\nKalau ada pertanyaan, jangan sungkan hubungi kami ya. Terima kasih!`;
@@ -198,6 +205,42 @@ export default function ClientsPage() {
     }
 
     fetchClients();
+  };
+
+  const resetClientPassword = async (client: Client) => {
+    if (!client.user_id) {
+      alert("Client ini belum memiliki akun login.");
+      return;
+    }
+    if (!confirm(`Reset password untuk "${client.name}"? Password sebelumnya tidak dapat digunakan untuk login baru.`)) return;
+
+    setResettingId(client.id);
+    try {
+      const response = await fetch("/api/admin/reset-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: client.user_id }),
+      });
+      const result = await response.json();
+      if (!response.ok || !result.password || !result.email) {
+        alert(result.error || "Gagal mereset password client.");
+        return;
+      }
+
+      setNewClientCredentials({
+        kind: "reset",
+        name: client.name,
+        email: result.email,
+        password: result.password,
+        whatsapp: client.whatsapp || "",
+        packageName: client.package_name || "",
+      });
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch {
+      alert("Gagal menghubungi server. Coba lagi.");
+    } finally {
+      setResettingId(null);
+    }
   };
 
   const deleteClient = async (client: Client) => {
@@ -336,10 +379,12 @@ export default function ClientsPage() {
           {newClientCredentials && (
             <div className={styles.linkBox} style={{ marginTop: 16 }}>
               <p style={{ margin: "0 0 8px", fontWeight: 600 }}>
-                Akun login {newClientCredentials.name} berhasil dibuat:
+                {newClientCredentials.kind === "reset"
+                  ? `Password ${newClientCredentials.name} berhasil direset:`
+                  : `Akun login ${newClientCredentials.name} berhasil dibuat:`}
               </p>
               <p style={{ margin: 0 }}>Email: {newClientCredentials.email}</p>
-              <p style={{ margin: "0 0 12px" }}>Password: {newClientCredentials.password}</p>
+              <p style={{ margin: "0 0 12px" }}>{newClientCredentials.kind === "reset" ? "Password sementara" : "Password"}: {newClientCredentials.password}</p>
               <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
                 <button onClick={copyClientCredentials} className={styles.exportButton}>
                   Copy Pesan untuk Dikirim ke Client
@@ -404,6 +449,19 @@ export default function ClientsPage() {
                     <p className={styles.date}>
                       {new Date(client.created_at).toLocaleDateString("id-ID")}
                     </p>
+
+                    {client.user_id ? (
+                      <button
+                        onClick={() => resetClientPassword(client)}
+                        disabled={resettingId === client.id}
+                        className={styles.button}
+                        style={{ fontSize: 11, padding: "6px 10px" }}
+                      >
+                        {resettingId === client.id ? "Mereset..." : "Reset Password"}
+                      </button>
+                    ) : (
+                      <span style={{ fontSize: 11, color: "#64748b" }}>Belum ada akun login</span>
+                    )}
 
                     <button
                       onClick={() => deleteClient(client)}
