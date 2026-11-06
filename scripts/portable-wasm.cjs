@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 "use strict";
 
-// Rebase OpenNext absolute Wasm imports so a CI-built Worker can deploy on Windows.
+// Rebase OpenNext absolute binary module imports so a CI-built Worker can deploy on Windows.
 const fs = require("node:fs");
 const path = require("node:path");
 const crypto = require("node:crypto");
@@ -12,7 +12,7 @@ if (!fs.existsSync(path.join(root, "worker.js"))) {
   process.exit(1);
 }
 const extensions = new Set([".js", ".mjs", ".cjs"]);
-const generatedAbsolute = /(["'])(\/(?:home|opt|tmp|workspace|build|Users|mnt|var)\/[^"'\r\n]+?\.wasm(?:\?module)?)\1/g;
+const generatedAbsolute = /(["'])(\/(?:home|opt|tmp|workspace|build|Users|mnt|var)\/[^"'\r\n]+?\.(?:wasm|bin|ttf|otf|woff2?|dat|txt|svg)(?:\?module)?)\1/g;
 let scanned = 0;
 let rebased = 0;
 const unresolved = [];
@@ -25,14 +25,14 @@ function examine(file) {
     updated = original.replace(generatedAbsolute, (full, quote, absoluteFile) => {
       const source = absoluteFile.replace(/\?module$/, "");
       if (!fs.existsSync(source) || !fs.statSync(source).isFile()) {
-        unresolved.push({ file, source, error: "Missing source Wasm" });
+        unresolved.push({ file, source, error: "Missing source binary module" });
         return full;
       }
       let target = source;
       const inside = path.relative(root, source);
       if (inside.startsWith(".." + path.sep) || path.isAbsolute(inside)) {
         const digest = crypto.createHash("sha256").update(source).digest("hex").slice(0, 16);
-        target = path.join(root, "portable-wasm", digest + "-" + path.basename(source));
+        target = path.join(root, "portable-modules", digest + "-" + path.basename(source));
         fs.mkdirSync(path.dirname(target), { recursive: true });
         if (!fs.existsSync(target)) fs.copyFileSync(source, target);
       }
@@ -44,7 +44,7 @@ function examine(file) {
     if (updated !== original) fs.writeFileSync(file, updated, "utf8");
   }
   for (const match of updated.matchAll(generatedAbsolute)) {
-    unresolved.push({ file, source: match[2], error: "Absolute Wasm import remains" });
+    unresolved.push({ file, source: match[2], error: "Absolute binary import remains" });
   }
 }
 function visit(dir) {
@@ -59,7 +59,7 @@ if (unresolved.length) {
   for (const bad of unresolved.slice(0, 12)) {
     console.error(bad.error + ": " + path.relative(root, bad.file) + " -> " + bad.source);
   }
-  console.error(unresolved.length + " unresolved Wasm paths; refusing to deploy.");
+  console.error(unresolved.length + " unresolved binary module paths; refusing to deploy.");
   process.exit(1);
 }
-console.log(mode + ": scanned " + scanned + " modules; rebased " + rebased + " Wasm imports; no absolute paths remain.");
+console.log(mode + ": scanned " + scanned + " modules; rebased " + rebased + " binary imports; no absolute paths remain.");
