@@ -23,6 +23,18 @@ if errorlevel 1 (
   pause
   exit /b 1
 )
+if not exist "scripts\portable-wasm.cjs" (
+  echo ERROR: File pemeriksa Wasm tidak ada. Unduh ZIP versi terbaru.
+  pause
+  exit /b 1
+)
+echo Memeriksa apakah paket bebas referensi file Linux...
+node scripts\portable-wasm.cjs --verify
+if errorlevel 1 (
+  echo PAKET TIDAK AMAN UNTUK WINDOWS. Jangan deploy. Unduh ZIP versi terbaru.
+  pause
+  exit /b 1
+)
 echo Memeriksa akun Cloudflare yang sudah login...
 call npx --yes wrangler whoami
 if errorlevel 1 (
