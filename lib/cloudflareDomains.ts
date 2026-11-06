@@ -92,7 +92,17 @@ function statusFor(item: CloudflareHostname): DomainStatus {
 
 export async function getCloudflareDomainStatus(domain: string): Promise<DomainStatus> {
   const hostname = await findHostname(domain);
-  if (!hostname) throw new Error("Domain belum terdaftar di Cloudflare Custom Hostnames.");
+  if (!hostname) return {
+    domain,
+    status: "pending_dns",
+    verified: false,
+    configured: false,
+    hostnameStatus: "not_registered",
+    certificateStatus: "not_requested",
+    dns: { type: "CNAME", name: domain.split(".").length === 2 ? "@" : domain, value: FALLBACK },
+    verification: [],
+    routingReady: false,
+  };
   return statusFor(await cfRequest<CloudflareHostname>(`/${encodeURIComponent(hostname.id)}`));
 }
 
