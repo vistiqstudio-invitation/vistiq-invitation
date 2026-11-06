@@ -7,6 +7,7 @@ on:
       - '.github/workflows/cloudflare-deployment-package.yml'
       - 'app/**'
       - 'lib/**'
+      - 'tests/**'
       - 'components/**'
       - 'wrangler.jsonc'
       - 'package*.json'
