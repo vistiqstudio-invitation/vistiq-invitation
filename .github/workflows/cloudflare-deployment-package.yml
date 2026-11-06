@@ -2,7 +2,7 @@ name: Build Cloudflare deployment package
 
 on:
   push:
-    branches: [ops/cloudflare-linux-build-artifact]
+    branches: [ops/cloudflare-linux-build-artifact, fix/portable-opennext-wasm]
     paths:
       - '.github/workflows/cloudflare-deployment-package.yml'
       - 'app/**'
@@ -11,6 +11,7 @@ on:
       - 'wrangler.jsonc'
       - 'package*.json'
       - 'deploy-vistiq.cmd'
+      - 'scripts/portable-wasm.cjs'
   workflow_dispatch:
 
 permissions:
@@ -42,11 +43,24 @@ jobs:
         run: npm run test:recovery
       - name: Build with OpenNext for Cloudflare
         run: npm run build:cloudflare
+      - name: Rebase absolute WebAssembly imports for Windows deployment
+        run: |
+          node scripts/portable-wasm.cjs
+          node scripts/portable-wasm.cjs --verify
       - name: Validate Cloudflare worker package
         run: |
           test -s .open-next/worker.js
           test -d .open-next/assets
           npx wrangler deploy --dry-run
+      - name: Test deployable package from relocated directory
+        run: |
+          mkdir -p "$RUNNER_TEMP/vistiq-relocated/scripts"
+          mv .open-next "$RUNNER_TEMP/vistiq-relocated/.open-next"
+          cp wrangler.jsonc "$RUNNER_TEMP/vistiq-relocated/"
+          cp scripts/portable-wasm.cjs "$RUNNER_TEMP/vistiq-relocated/scripts/"
+          node "$RUNNER_TEMP/vistiq-relocated/scripts/portable-wasm.cjs" --verify
+          npx wrangler deploy --dry-run --config "$RUNNER_TEMP/vistiq-relocated/wrangler.jsonc"
+          mv "$RUNNER_TEMP/vistiq-relocated/.open-next" .open-next
       - name: Create deployable artifact
         uses: actions/upload-artifact@v4
         with:
@@ -55,6 +69,7 @@ jobs:
             .open-next/
             wrangler.jsonc
             deploy-vistiq.cmd
+            scripts/portable-wasm.cjs
           include-hidden-files: true
           compression-level: 9
           if-no-files-found: error
