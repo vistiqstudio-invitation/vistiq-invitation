@@ -265,3 +265,19 @@ test('origin validation uses public Host behind an internal adapter URL', () => 
     })), false);
   }
 });
+
+test('client, reseller and admin invitation share links use the same Vistiq domain', () => {
+  const { PUBLIC_INVITATION_ORIGIN, publicInvitationUrl } = load('lib/publicInvitationUrl.ts');
+  assert.equal(PUBLIC_INVITATION_ORIGIN, 'https://www.vistiqinvitation.com');
+  assert.equal(publicInvitationUrl('lina-rifky'), 'https://www.vistiqinvitation.com/lina-rifky');
+  assert.equal(publicInvitationUrl('lina-rifky', 'Bapak Ahmad & Ibu Siti'), 'https://www.vistiqinvitation.com/lina-rifky?to=Bapak%20Ahmad%20%26%20Ibu%20Siti');
+
+  const client = fs.readFileSync(path.resolve(__dirname, '../app/client/page.tsx'), 'utf8');
+  const reseller = fs.readFileSync(path.resolve(__dirname, '../app/reseller/invitations/page.tsx'), 'utf8');
+  const admin = fs.readFileSync(path.resolve(__dirname, '../app/admin/invitations/page.tsx'), 'utf8');
+  assert.match(client, /const invitationUrl=publicInvitationUrl/);
+  assert.doesNotMatch(client, /custom_domain_status==="active"/);
+  for (const source of [reseller, admin]) {
+    assert.match(source, /const url = publicInvitationUrl\(slug\)/);
+  }
+});

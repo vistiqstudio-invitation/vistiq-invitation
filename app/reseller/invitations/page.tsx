@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { publicInvitationUrl } from "@/lib/publicInvitationUrl";
 import DashboardSidebar from "@/components/admin/DashboardSidebar";
 import WhatsAppIcon from "@/components/WhatsAppIcon";
 import { getResellerNavItems } from "@/components/reseller/navItems";
@@ -412,7 +413,7 @@ export default function ResellerInvitationsPage() {
   };
 
   const copyLink = async (slug: string) => {
-    const url = `${window.location.origin}/${slug}`;
+    const url = publicInvitationUrl(slug);
     await navigator.clipboard.writeText(url);
     alert("Link undangan berhasil disalin.");
   };
