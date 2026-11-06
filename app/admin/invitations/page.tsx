@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { publicInvitationUrl } from "@/lib/publicInvitationUrl";
 import DashboardSidebar from "@/components/admin/DashboardSidebar";
 import { themeList, aqiqahThemeList, khitanThemeList, birthdayThemeList } from "@/lib/theme";
 import ThemePreviewPanel from "@/components/ThemePreviewPanel";
@@ -246,7 +247,7 @@ export default function InvitationsPage() {
   };
 
   const copyLink = async (slug: string) => {
-    const url = `${window.location.origin}/${slug}`;
+    const url = publicInvitationUrl(slug);
     await navigator.clipboard.writeText(url);
     alert("Link undangan berhasil disalin.");
   };
