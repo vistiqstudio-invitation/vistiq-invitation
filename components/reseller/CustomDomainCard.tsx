@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styles from "@/styles/dashboard.module.css";
 
 type DomainResult = {
@@ -16,6 +16,14 @@ type DomainResult = {
   error?: string;
 };
 
+function domainErrorMessage(message: unknown, fallback: string) {
+  if (typeof message !== "string" || !message.trim()) return fallback;
+  if (/VERCEL_|CLOUDFLARE_|SUPABASE_|API.?TOKEN|PROJECT.?ID|SERVICE.?ROLE|konfigurasi|configuration/i.test(message)) {
+    return "Layanan pengaturan domain sedang disiapkan admin. Anda tetap dapat menggunakan alamat Vistiq atau subdomain yang sudah terpasang.";
+  }
+  return message;
+}
+
 export default function CustomDomainCard({
   initialDomain,
   initialSubdomain,
@@ -25,7 +33,10 @@ export default function CustomDomainCard({
 }) {
   const [domain, setDomain] = useState(initialDomain || "");
   const [result, setResult] = useState<DomainResult | null>(null);
-  const [loading, setLoading] = useState(Boolean(initialDomain));
+  const [loading, setLoading] = useState(false);
+  const [domainError, setDomainError] = useState("");
+  const [subdomainError, setSubdomainError] = useState("");
+  const [subdomainNotice, setSubdomainNotice] = useState("");
   const [subdomain, setSubdomain] = useState(initialSubdomain || "");
   const [hasSubdomain, setHasSubdomain] = useState(Boolean(initialSubdomain));
   const [subdomainLoading, setSubdomainLoading] = useState(false);
@@ -33,33 +44,31 @@ export default function CustomDomainCard({
 
   const request = async (method: string, body?: object) => {
     setLoading(true);
+    setDomainError("");
     try {
-    const response = await fetch("/api/reseller/custom-domain", {
-      method,
-      headers: body ? { "Content-Type": "application/json" } : undefined,
-      body: body ? JSON.stringify(body) : undefined,
-    });
-    const data = await response.json();
-    setLoading(false);
-    if (!response.ok) {
-      alert(data.error || "Proses domain gagal.");
-      return null;
-    }
-    setResult(data);
-    if (data.domain) setDomain(data.domain);
-    return data;
+      const response = await fetch("/api/reseller/custom-domain", {
+        method,
+        headers: body ? { "Content-Type": "application/json" } : undefined,
+        body: body ? JSON.stringify(body) : undefined,
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        setDomainError(domainErrorMessage(data.error, "Pengaturan domain belum dapat diproses. Silakan coba lagi atau hubungi admin."));
+        return null;
+      }
+      setResult(data);
+      if (data.domain) setDomain(data.domain);
+      return data;
     } catch {
-      alert("Koneksi terputus. Periksa internet dan coba lagi.");
+      setDomainError("Koneksi terputus. Periksa internet dan coba lagi.");
       return null;
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- status is synchronized from the Cloudflare API
-    if (initialDomain) request("GET");
-  }, [initialDomain]);
+  // Domain checks are manual while custom-domain setup is deferred.
+  // Opening the reseller dashboard must not call the domain provider.
 
   const remove = async () => {
     if (!confirm(`Lepaskan ${domain} dari dashboard? Link undangan lama mungkin tidak dapat dibuka melalui domain ini. Lanjutkan?`)) return;
@@ -71,40 +80,58 @@ export default function CustomDomainCard({
   };
 
   const active = result?.status === "active";
+  const savedDomain = result ? result.domain : initialDomain;
 
   const subdomainRequest = async (action: "check" | "activate") => {
     setSubdomainLoading(true);
     setAvailability(null);
-    const response = await fetch("/api/reseller/subdomain", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action, subdomain }),
-    });
-    const data = await response.json();
-    setSubdomainLoading(false);
-    if (!response.ok) {
-      setAvailability("unavailable");
-      alert(data.error || "Proses subdomain gagal.");
-      return;
-    }
-    setSubdomain(data.subdomain);
-    setAvailability("available");
-    if (action === "activate") {
-      setHasSubdomain(true);
-      alert(`Subdomain https://${data.hostname} berhasil diaktifkan.`);
+    setSubdomainError("");
+    setSubdomainNotice("");
+    try {
+      const response = await fetch("/api/reseller/subdomain", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action, subdomain }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        setSubdomainError(domainErrorMessage(data.error, "Pengaturan subdomain belum dapat diproses. Silakan coba lagi atau hubungi admin."));
+        return;
+      }
+      setSubdomain(data.subdomain);
+      setAvailability("available");
+      if (action === "activate") {
+        setHasSubdomain(true);
+        setSubdomainNotice(`Subdomain https://${data.hostname} berhasil diaktifkan.`);
+      }
+    } catch {
+      setSubdomainError("Koneksi terputus. Periksa internet dan coba lagi.");
+    } finally {
+      setSubdomainLoading(false);
     }
   };
 
   const removeSubdomain = async () => {
     if (!confirm(`Hapus ${subdomain}.vistiqinvitation.com dari brand Anda?`)) return;
     setSubdomainLoading(true);
-    const response = await fetch("/api/reseller/subdomain", { method: "DELETE" });
-    const data = await response.json();
-    setSubdomainLoading(false);
-    if (!response.ok) return alert(data.error || "Gagal menghapus subdomain.");
-    setSubdomain("");
-    setHasSubdomain(false);
-    setAvailability(null);
+    setSubdomainError("");
+    setSubdomainNotice("");
+    try {
+      const response = await fetch("/api/reseller/subdomain", { method: "DELETE" });
+      const data = await response.json();
+      if (!response.ok) {
+        setSubdomainError(domainErrorMessage(data.error, "Subdomain belum dapat dilepaskan. Silakan coba lagi atau hubungi admin."));
+        return;
+      }
+      setSubdomain("");
+      setHasSubdomain(false);
+      setAvailability(null);
+      setSubdomainNotice("Subdomain berhasil dilepaskan.");
+    } catch {
+      setSubdomainError("Koneksi terputus. Periksa internet dan coba lagi.");
+    } finally {
+      setSubdomainLoading(false);
+    }
   };
 
   return (
@@ -143,6 +170,8 @@ export default function CustomDomainCard({
             </>
           )}
         </div>
+        {subdomainError && <p role="alert" style={{ color: "#b91c1c", fontSize: 13.5, marginTop: 12 }}>{subdomainError}</p>}
+        {subdomainNotice && <p role="status" style={{ color: "#15803d", fontSize: 13.5, marginTop: 12 }}>{subdomainNotice}</p>}
         {availability === "available" && !hasSubdomain && (
           <p style={{ margin: "10px 0 0", color: "#15803d", fontWeight: 700, fontSize: 13.5 }}>Nama tersedia dan dapat diaktifkan.</p>
         )}
@@ -160,8 +189,9 @@ export default function CustomDomainCard({
 
       <h3 style={{ margin: "0 0 6px", fontSize: 16 }}>Custom Domain Milik Sendiri</h3>
       <p style={{ margin: "0 0 16px", fontSize: 13.5, color: "#64748b", lineHeight: 1.7 }}>
-        Hubungkan domain milik Anda. Setelah DNS aktif, domain akan membuka landing page,
-        halaman login, dan link undangan menggunakan alamat brand Anda sendiri.
+        Pemasangan custom domain sementara ditunda. Gunakan alamat Vistiq atau subdomain
+        gratis untuk aktivitas Anda. Domain yang sudah tersimpan hanya diperiksa saat
+        Anda menekan tombol Periksa Domain.
       </p>
 
       <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
@@ -179,6 +209,8 @@ export default function CustomDomainCard({
           </button>
         )}
       </div>
+
+      {domainError && <p role="alert" style={{ color: "#b91c1c", fontSize: 13.5, marginTop: 12 }}>{domainError}</p>}
 
       {result?.domain && (
         <div style={{ marginTop: 18, padding: 16, borderRadius: 10, background: active ? "#f0fdf4" : "#fffbeb", border: `1px solid ${active ? "#bbf7d0" : "#fde68a"}` }}>
@@ -209,9 +241,9 @@ export default function CustomDomainCard({
         </div>
       )}
 
-      {result?.domain && (
+      {savedDomain && (
         <div style={{ display: "flex", gap: 10, marginTop: 12, flexWrap: "wrap" }}>
-          {!active && <button className={styles.button} disabled={loading} onClick={() => request("POST", { action: "check" })}>Periksa Domain</button>}
+          <button className={styles.button} disabled={loading} onClick={() => request("GET")}>{loading ? "Memeriksa..." : "Periksa Domain"}</button>
           <button className={styles.button} disabled={loading} onClick={remove} style={{ background: "#fff", color: "#dc2626", border: "1px solid #fecaca" }}>Lepaskan Domain</button>
         </div>
       )}
