@@ -2,7 +2,7 @@ name: Build Cloudflare deployment package
 
 on:
   push:
-    branches: [ops/cloudflare-linux-build-artifact, fix/portable-opennext-wasm, ops/admin-client-reset-release-20261106]
+    branches: [ops/cloudflare-linux-build-artifact, fix/portable-opennext-wasm, ops/admin-client-reset-release-20261106, fix/reseller-domain-popup-20261107]
     paths:
       - '.github/workflows/cloudflare-deployment-package.yml'
       - 'app/**'
