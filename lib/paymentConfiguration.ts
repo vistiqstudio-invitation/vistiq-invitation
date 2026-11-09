@@ -7,7 +7,7 @@ export function hasPaymentMode() {
 }
 
 export function paymentConfigurationStatus() {
-  const required = ["NEXT_PUBLIC_SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY", "MIDTRANS_SERVER_KEY"];
+  const required = ["NEXT_PUBLIC_SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY", "MIDTRANS_SERVER_KEY", "MIDTRANS_SIGNATURE_SECRET_KEY"];
   const missing = required.filter((key) => !process.env[key]?.trim());
   if (!hasPaymentMode()) missing.push("MIDTRANS_IS_PRODUCTION");
   return {

@@ -8,8 +8,10 @@ import { provisionPaidOrder } from "@/lib/provisionPaidOrder";
 import { safelyProcessPaymentWhatsApp } from "@/lib/paymentWhatsApp";
 
 export async function POST(request: Request) {
-  const serverKey = process.env.MIDTRANS_SERVER_KEY;
-  if (!serverKey) return NextResponse.json({ error: "Missing configuration" }, { status: 503 });
+  // New Midtrans Server Keys authorize API calls; webhook signatures use the
+  // separate Signature Secret Key. Never fall back to a new API Server Key.
+  const signatureSecret = process.env.MIDTRANS_SIGNATURE_SECRET_KEY;
+  if (!signatureSecret?.trim()) return NextResponse.json({ error: "Missing configuration" }, { status: 503 });
 
   let body: Record<string, unknown>;
   try {
@@ -27,7 +29,7 @@ export async function POST(request: Request) {
   const grossAmount = String(body.gross_amount ?? "");
   const expectedSignature = crypto
     .createHash("sha512")
-    .update(`${orderId}${body.status_code ?? ""}${grossAmount}${serverKey}`)
+    .update(`${orderId}${body.status_code ?? ""}${grossAmount}${signatureSecret}`)
     .digest("hex");
 
   const signature = String(body.signature_key ?? "");

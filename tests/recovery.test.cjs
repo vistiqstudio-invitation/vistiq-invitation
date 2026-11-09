@@ -105,7 +105,7 @@ test('wrong R2 byte count blocks deletion', async () => {
 });
 
 test('payment readiness requires keys and an explicit valid mode', () => {
-  const names = ['MIDTRANS_SERVER_KEY','SUPABASE_SERVICE_ROLE_KEY','NEXT_PUBLIC_SUPABASE_URL','MIDTRANS_IS_PRODUCTION'];
+  const names = ['MIDTRANS_SERVER_KEY','SUPABASE_SERVICE_ROLE_KEY','NEXT_PUBLIC_SUPABASE_URL','MIDTRANS_IS_PRODUCTION','MIDTRANS_SIGNATURE_SECRET_KEY'];
   const previous = names.map((name) => process.env[name]);
   try {
     const { paymentConfigurationStatus } = load('lib/paymentConfiguration.ts');
@@ -119,6 +119,9 @@ test('payment readiness requires keys and an explicit valid mode', () => {
     assert.equal(paymentConfigurationStatus().ready, false);
     process.env.MIDTRANS_IS_PRODUCTION = 'true';
     assert.equal(paymentConfigurationStatus().mode, 'production');
+    assert.equal(paymentConfigurationStatus().ready, false);
+    assert.ok(paymentConfigurationStatus().missing.includes('MIDTRANS_SIGNATURE_SECRET_KEY'));
+    process.env.MIDTRANS_SIGNATURE_SECRET_KEY = 'test-signature-secret';
     assert.equal(paymentConfigurationStatus().ready, true);
     process.env.MIDTRANS_IS_PRODUCTION = 'false';
     assert.equal(paymentConfigurationStatus().mode, 'sandbox');
@@ -162,8 +165,8 @@ test('system status is owner-only and contains no secret values', async () => {
 
 
 test('malformed Unicode payment signatures are rejected without a server exception', async () => {
-  const previous = process.env.MIDTRANS_SERVER_KEY;
-  process.env.MIDTRANS_SERVER_KEY = 'test-signature-key';
+  const previous = process.env.MIDTRANS_SIGNATURE_SECRET_KEY;
+  process.env.MIDTRANS_SIGNATURE_SECRET_KEY = 'test-signature-key';
   try {
     const route = load('app/api/payments/notification/route.ts', {
       '@/lib/paymentPackages': {},
@@ -176,8 +179,48 @@ test('malformed Unicode payment signatures are rejected without a server excepti
     }));
     assert.equal(response.status, 403);
   } finally {
-    if (previous === undefined) delete process.env.MIDTRANS_SERVER_KEY;
-    else process.env.MIDTRANS_SERVER_KEY = previous;
+    if (previous === undefined) delete process.env.MIDTRANS_SIGNATURE_SECRET_KEY;
+    else process.env.MIDTRANS_SIGNATURE_SECRET_KEY = previous;
+  }
+});
+
+test('payment notifications require the independent signature secret before database writes', async () => {
+  const names = ['MIDTRANS_SERVER_KEY', 'MIDTRANS_SIGNATURE_SECRET_KEY', 'SUPABASE_SERVICE_ROLE_KEY', 'NEXT_PUBLIC_SUPABASE_URL'];
+  const previous = names.map(name => process.env[name]);
+  try {
+    process.env.MIDTRANS_SERVER_KEY = 'new-api-server-key';
+    process.env.MIDTRANS_SIGNATURE_SECRET_KEY = 'independent-webhook-secret';
+    process.env.SUPABASE_SERVICE_ROLE_KEY = 'test-service';
+    process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://example.supabase.co';
+    let databaseCalls = 0;
+    const route = load('app/api/payments/notification/route.ts', {
+      '@supabase/supabase-js': { createClient: () => {
+        databaseCalls++;
+        return { from: () => ({ select: () => ({ eq: () => ({ maybeSingle: async () => ({ data: null }) }) }) }) };
+      } },
+      '@/lib/paymentPackages': {}, '@/lib/provisionPaidOrder': {}, '@/lib/paymentWhatsApp': {},
+    });
+    const body = { order_id: 'VSTQ-IA-test-order', status_code: '200', gross_amount: '20000.00', transaction_status: 'settlement' };
+    const signedRequest = (secret, amount = body.gross_amount) => new Request('https://vistiqinvitation.com/api/payments/notification', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...body, gross_amount: amount, signature_key: require('node:crypto').createHash('sha512').update(body.order_id + body.status_code + body.gross_amount + secret).digest('hex') }),
+    });
+    let response = await route.POST(signedRequest(process.env.MIDTRANS_SERVER_KEY));
+    assert.equal(response.status, 403);
+    assert.equal(databaseCalls, 0);
+    response = await route.POST(signedRequest(process.env.MIDTRANS_SIGNATURE_SECRET_KEY, '1.00'));
+    assert.equal(response.status, 403);
+    assert.equal(databaseCalls, 0);
+    response = await route.POST(signedRequest(process.env.MIDTRANS_SIGNATURE_SECRET_KEY));
+    assert.equal(databaseCalls, 1);
+    // Valid signature still cannot authorize an unknown transaction.
+    assert.equal((await response.json()).error, 'Invalid reseller client transaction');
+    delete process.env.MIDTRANS_SIGNATURE_SECRET_KEY;
+    response = await route.POST(signedRequest(process.env.MIDTRANS_SERVER_KEY));
+    assert.equal(response.status, 503);
+    assert.equal(databaseCalls, 1);
+  } finally {
+    names.forEach((name, index) => previous[index] === undefined ? delete process.env[name] : process.env[name] = previous[index]);
   }
 });
 

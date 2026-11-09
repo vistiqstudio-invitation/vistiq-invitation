@@ -37,3 +37,9 @@ External reseller domains and automatic new-domain provisioning remain separate 
 Run `npm run test:recovery`, `npx tsc --noEmit`, targeted ESLint, `npm run build:cloudflare`, and `npx wrangler deploy --dry-run`. Do not deploy missing build environment variables.
 
 Worker logs sample 10% of invocations and tracing is disabled. Logs must be inspected in the Cloudflare account to explain the historical error rate; successful HTTP spot checks do not prove all requests succeed. Do not enable a paid plan as a recovery workaround.
+
+## Midtrans separate signing secret (October 2026 update)
+
+Set `MIDTRANS_SIGNATURE_SECRET_KEY` as a **Production runtime Secret** from the existing Midtrans Signature Secret Key. Do not rotate it as part of migration. Newly generated Server Keys are only for API authentication; notification signatures use the separate signing secret. Payment readiness now requires both keys and an explicit production mode so checkout is not opened before notification verification is configured. Existing pre-update merchants can put their unchanged original signing value in this variable; do not substitute a newly generated API key. Never store keys in source, frontend variables or screenshots.
+
+The notification handler verifies SHA512(order_id + status_code + gross_amount + SignatureSecretKey), then retains the existing persisted order/amount verification and activation path. API requests and status queries continue to use `MIDTRANS_SERVER_KEY`. After configuring runtime variables, deploy the updated package, verify configuration in the owner dashboard, check the existing Midtrans notification URL `/api/payments/notification`, and perform the authorized client activation flow. A configuration-presence check and mocked tests do not prove a real payment has settled or activated an invitation.
