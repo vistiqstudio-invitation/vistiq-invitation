@@ -13,7 +13,12 @@ function hideOnError(e: React.SyntheticEvent<HTMLImageElement>) {
 
 export default function Hero({ invitation }: { invitation: InvitationData }) {
   const opening = invitation.opening;
-  const weddingDate = invitation.events[0]?.rawDate || null;
+  const akadEvent = invitation.slug === "rika-roni"
+    ? invitation.events.find((event) => event.name.trim().toLowerCase() === "akad")
+    : null;
+  const weddingDate = akadEvent?.rawDate
+    ? `${akadEvent.rawDate.slice(0, 10)}T10:00:00+08:00`
+    : invitation.events[0]?.rawDate || null;
 
   return (
     <div className={styles.hero}>
