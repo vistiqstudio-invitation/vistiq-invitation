@@ -52,12 +52,22 @@ html.wayang-maroon body .vistiq-wayang .elementor-element-32cad1d9 > .elementor-
   background: var(--wayang-deep) !important;
   color: var(--wayang-paper) !important;
 }
-html.wayang-maroon body .vistiq-wayang #home .vistiq-wayang-gunungan-initial {
-  color: var(--wayang-deep);
-}
 
 .wayang-maroon .vistiq-wayang :is(.rsvp-card,.idb-copy-rek__box,.idb-kirim-hadiah__box,.idb-konfirmasi-transfer__box) {
   color: var(--wayang-deep);
 }
 .wayang-maroon .rsvp-avatar { background:#f4dce4; color:#591c2d; }
 .wayang-maroon .rsvp-item__status { color:#772d42; }
+
+/* Brighten only the cloud and gunungan artwork; keep puppet colors and motion. */
+.wayang-maroon .vistiq-wayang img:is([src*="vistiq-wayang-cloud-"],[src*="vistiq-wayang-gunungan"]),
+.wayang-maroon #home::before,
+.wayang-maroon #home::after,
+.wayang-maroon #sec::before,
+.wayang-maroon #sec #kolom::after {
+  filter: brightness(0) saturate(100%) invert(86%) sepia(35%) saturate(765%) hue-rotate(338deg) brightness(101%) contrast(93%);
+}
+
+html.wayang-maroon body .vistiq-wayang #home .vistiq-wayang-gunungan-initial {
+  color: var(--wayang-gold);
+}
