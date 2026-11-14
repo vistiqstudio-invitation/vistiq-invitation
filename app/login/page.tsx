@@ -32,11 +32,6 @@ export default function LoginPage() {
     if (saved) { setEmail(saved); setRememberDevice(true); }
   }, []);
 
-  const [showForgot, setShowForgot] = useState(false);
-  const [resetEmail, setResetEmail] = useState("");
-  const [sendingReset, setSendingReset] = useState(false);
-  const [resetSent, setResetSent] = useState(false);
-
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -147,46 +142,14 @@ export default function LoginPage() {
     } finally { setLoading(false); }
   };
 
-  const handleForgotPassword = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!resetEmail.trim()) {
-      alert("Masukkan email akun Anda.");
-      return;
-    }
-
-    setSendingReset(true);
-
-    const { error } = await supabase.auth.resetPasswordForEmail(
-      resetEmail.trim(),
-      { redirectTo: `${window.location.origin}/reset-password` }
-    );
-
-    setSendingReset(false);
-
-    if (error) {
-      alert(
-        `Gagal mengirim email reset.\n\nDetail: ${error.message}${
-          error.status ? ` (status ${error.status})` : ""
-        }\n\nCoba lagi beberapa saat lagi, atau cek Authentication > Logs di Supabase Dashboard.`
-      );
-      return;
-    }
-
-    setResetSent(true);
-  };
-
   return (
     <main className={styles.standalonePage}>
       <div className={styles.loginCard}>
         <p className={styles.label}>VISTIQ INVITATION</p>
         <h1 className={styles.title} style={{ fontSize: 30, color: "#1167b2" }}>
-          {showForgot ? "Lupa Password" : "Login Dashboard"}
+          Login Dashboard
         </h1>
-
-        {!showForgot ? (
-          <>
-            <form onSubmit={handleLogin} className={styles.form} autoComplete="on">
+        <form onSubmit={handleLogin} className={styles.form} autoComplete="on">
               <input
                 type="email"
                 name="username"
@@ -241,88 +204,19 @@ export default function LoginPage() {
               <button type="submit" className={styles.button} disabled={loading}>
                 {loading ? "Memproses..." : "Login"}
               </button>
-            </form>
-
-            <button
-              onClick={() => {
-                setShowForgot(true);
-                setResetSent(false);
-                setResetEmail(email);
-              }}
-              style={{
-                background: "none",
-                border: "none",
-                color: "#1167b2",
-                fontSize: 13.5,
-                marginTop: 16,
-                cursor: "pointer",
-                textDecoration: "underline",
-              }}
-            >
-              Lupa password?
-            </button>
-          </>
-        ) : resetSent ? (
-          <div>
-            <p style={{ color: "#334155", lineHeight: 1.7, marginBottom: 16 }}>
-              Kalau email <strong>{resetEmail}</strong> terdaftar, link untuk
-              atur ulang password sudah dikirim ke inbox tersebut. Buka email
-              itu dan klik link-nya secepatnya.
-            </p>
-
-            <p style={{ color: "#64748b", fontSize: 13, lineHeight: 1.7, marginBottom: 20 }}>
-              Kalau linknya langsung bilang &quot;kedaluwarsa&quot; padahal baru
-              dibuka (sering terjadi di Gmail karena link dipindai otomatis
-              sebelum sempat diklik), tidak perlu diulang - langsung hubungi
-              admin lewat{" "}
-              <a href={`https://wa.me/${WA_NUMBER}`} target="_blank" style={{ color: "#1167b2", fontWeight: 700 }}>
-                WhatsApp
-              </a>{" "}
-              untuk dibantu reset langsung.
-            </p>
-
-            <button
-              onClick={() => setShowForgot(false)}
-              className={styles.button}
-            >
-              Kembali ke Login
-            </button>
-          </div>
-        ) : (
-          <>
-            <p style={{ color: "#64748b", fontSize: 13.5, marginBottom: 16 }}>
-              Masukkan email akun Anda. Kami kirim link untuk atur password baru.
-            </p>
-
-            <form onSubmit={handleForgotPassword} className={styles.form}>
-              <input
-                type="email"
-                placeholder="Email akun Anda"
-                value={resetEmail}
-                onChange={(e) => setResetEmail(e.target.value)}
-                className={styles.input}
-              />
-
-              <button type="submit" className={styles.button} disabled={sendingReset}>
-                {sendingReset ? "Mengirim..." : "Kirim Link Reset"}
-              </button>
-            </form>
-
-            <button
-              onClick={() => setShowForgot(false)}
-              style={{
-                background: "none",
-                border: "none",
-                color: "#64748b",
-                fontSize: 13.5,
-                marginTop: 16,
-                cursor: "pointer",
-              }}
-            >
-              ← Kembali ke Login
-            </button>
-          </>
-        )}
+        </form>
+        <p style={{ color: "#64748b", fontSize: 13, lineHeight: 1.7, marginTop: 16 }}>
+          Lupa password atau tidak bisa login? Demi keamanan akun, hubungi admin
+          Vistiq untuk dibantu reset password langsung tanpa email.
+        </p>
+        <a
+          href={`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Halo Admin Vistiq, saya butuh bantuan login atau reset password akun undangan.")}`}
+          target="_blank"
+          rel="noreferrer"
+          style={{ display: "inline-block", color: "#1167b2", fontSize: 14, textDecoration: "underline", marginTop: 4 }}
+        >
+          Hubungi Admin Vistiq
+        </a>
       </div>
     </main>
   );
