@@ -110,6 +110,7 @@ export const AQIQAH_COVER_BY_THEME: Record<string, string> = {
 };
 
 export const BIRTHDAY_COVER_BY_THEME: Record<string, string> = {
+  "teddy-bear-party": "/theme-previews/birthday/teddy-bear-party.jpg",
   "princess-fairytale": "/photos/princess-fairytale/cover.webp",
   "space-explorer": "/photos/space-explorer/cover.webp",
   "dinosaur-adventure": "/photos/dinosaur-adventure/cover.webp",

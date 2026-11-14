@@ -11,6 +11,7 @@ const CHILD_PHOTO_BY_THEME: Record<string, string> = {
 };
 
 const GALLERY_BY_THEME: Record<string, string[]> = {
+  "teddy-bear-party": ["01_teddy_bear_utama", "07_birthday_cake", "06_gift_boxes"].map(name => `/photos/teddy-bear-party/${name}.webp`),
   "princess-fairytale": [
     "/photos/princess-fairytale/gallery-1.webp",
     "/photos/princess-fairytale/gallery-2.webp",
@@ -40,6 +41,11 @@ type ThemeCopy = {
 };
 
 const COPY_BY_THEME: Record<string, ThemeCopy> = {
+  "teddy-bear-party": {
+    childName: "Aiden",
+    opening: { greeting: "", title: "Birthday Party", description: "Yuk, tiup lilin, bermain, dan berbagi kue bersama di hari spesialku!", quote: "", quoteSource: "" },
+    location: "Taman Menteng, Jl. HOS Cokroaminoto, Jakarta Pusat",
+  },
   "princess-fairytale": {
     childName: "Putri Kecil",
     opening: {
@@ -89,6 +95,7 @@ const COPY_BY_THEME: Record<string, ThemeCopy> = {
 export function getDemoBirthdayInvitation(theme: string): BirthdayInvitationData {
   const copy = COPY_BY_THEME[theme] || COPY_BY_THEME["princess-fairytale"];
 
+  const teddy = theme === "teddy-bear-party";
   return {
     id: 0,
     slug: `demo-birthday-${theme}`,
@@ -96,16 +103,16 @@ export function getDemoBirthdayInvitation(theme: string): BirthdayInvitationData
     status: "active",
     category: "birthday",
     brand: null,
-    coverImage: COVER_BY_THEME[theme] || null,
-    musicUrl: null,
+    coverImage: teddy ? null : COVER_BY_THEME[theme] || null,
+    musicUrl: teddy ? "/music-library/acoustic-garden.mp3" : null,
     videoUrl: null,
-    mapsUrl: "https://maps.google.com",
+    mapsUrl: teddy ? "https://www.google.com/maps/search/?api=1&query=Taman+Menteng+Jakarta" : "https://maps.google.com",
     mapsEmbedUrl: "https://www.google.com/maps?q=Jakarta&output=embed",
     opening: copy.opening,
     child: {
       name: copy.childName,
       photo: CHILD_PHOTO_BY_THEME[theme] || null,
-      age: 7,
+      age: teddy ? 3 : 7,
       birthDate: null,
     },
     parents: {
@@ -113,12 +120,12 @@ export function getDemoBirthdayInvitation(theme: string): BirthdayInvitationData
       mother: "Ibu",
     },
     event: {
-      date: "Minggu, 20 September 2026",
-      rawDate: "2026-09-20T10:00:00",
+      date: teddy ? "Minggu, 20 Desember 2026" : "Minggu, 20 September 2026",
+      rawDate: teddy ? "2026-12-20T10:00:00+07:00" : "2026-09-20T10:00:00",
       time: "10.00 WIB",
       location: copy.location,
     },
     gallery: GALLERY_BY_THEME[theme] || [],
-    gifts: [],
+    gifts: teddy ? [{ owner: "Keluarga", bankName: null, accountNumber: null, accountName: "Kehadiran dan doa sudah jadi hadiah terindah." }] : [],
   };
 }

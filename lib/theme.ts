@@ -65,6 +65,7 @@ import AdatBaliMotion from "@/themes/adat-bali-motion/AdatBaliMotion";
 import AdatMinangMotion from "@/themes/adat-minang-motion/AdatMinangMotion";
 import JawaSepia from "@/themes/jawa-sepia/JawaSepia";
 import RoyalJava from "@/themes/royal-java/RoyalJava";
+import TeddyBirthday from "@/themes/teddy-bear-party/TeddyBirthday";
 import PrincessBirthday from "@/themes/princess-fairytale/PrincessBirthday";
 import SpaceBirthday from "@/themes/space-explorer/SpaceBirthday";
 import DinoBirthday from "@/themes/dinosaur-adventure/DinoBirthday";
@@ -252,9 +253,11 @@ export const khitanThemeList: ThemeMeta[] = [
 ];
 
 export const birthdayThemeRegistry: Record<string,(props:{invitation:BirthdayInvitationData})=>React.JSX.Element> = {
+  "teddy-bear-party": TeddyBirthday,
   "princess-fairytale":PrincessBirthday,"space-explorer":SpaceBirthday,"dinosaur-adventure":DinoBirthday,"superhero-city":SuperheroBirthday,
 };
 export const birthdayThemeList: ThemeMeta[] = [
+  {key:"teddy-bear-party",label:"Teddy Bear Party",description:"Pesta ulang tahun dengan teddy bear, balon baby blue, dan sentuhan krem serta emas",swatch:["#fff9ef","#bfdeef"],addedAt:"2026-11-14"},
   {key:"princess-fairytale",label:"Princess Fairytale",description:"Pink, ivory & emas dengan kastel, mahkota dan suasana pesta putri kerajaan",swatch:["#fff8fd","#d99abb"],addedAt:"2026-07-27"},
   {key:"space-explorer",label:"Space Explorer",description:"Navy, oranye & cyan dengan roket, planet dan suasana misi luar angkasa",swatch:["#0b1633","#ff8c3d"],addedAt:"2026-07-27"},
   {key:"dinosaur-adventure",label:"Dinosaur Adventure",description:"Hijau hutan, rust & amber dengan dinosaurus, pakis raksasa dan suasana ekspedisi purba",swatch:["#1f3d2e","#e8a33d"],addedAt:"2026-07-28"},
