@@ -5,7 +5,6 @@ import { r2PublicUrl } from "@/lib/r2";
 export const dynamic = "force-dynamic";
 export const maxDuration = 300;
 
-const fields = ["cover_image","music_url","gallery_1","gallery_2","gallery_3","gallery_4","groom_photo","bride_photo","cover_photo","gallery_photos","gallery1","gallery2","gallery3","gallery4","gallery5","gallery6","background_photo","story_1_photo","story_2_photo","story_3_photo","story_4_photo","story_5_photo"];
 const BATCH_SIZE = 25;
 
 function collect(v: unknown, out = new Set<string>()) {
@@ -30,7 +29,7 @@ async function ownerClient() {
 }
 
 async function sources(s: Awaited<ReturnType<typeof createClient>>) {
-  const { data, error } = await s.from("invitations").select(fields.join(",")).eq("is_active", true);
+  const { data, error } = await s.from("invitations").select("*");
   if (error) throw new Error(error.message);
   return [...collect(data)].sort();
 }
