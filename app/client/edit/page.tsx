@@ -109,6 +109,8 @@ export default function ClientEditPage() {
 
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(false);
+  const [giftShipping, setGiftShipping] = useState({ enabled: false, recipient: "", address: "" });
+  const [hadGiftShipping, setHadGiftShipping] = useState(false);
   const [saving, setSaving] = useState(false);
   const [invitationId, setInvitationId] = useState("");
   const [clientId, setClientId] = useState("");
@@ -282,6 +284,10 @@ export default function ClientEditPage() {
         gift_account_number: invitation.gift_account_number || "",
         gift_account_name: invitation.gift_account_name || "",
       });
+      const recipient = invitation.birthday_gift_recipient || "";
+      const address = invitation.birthday_gift_address || "";
+      setHadGiftShipping(Boolean(recipient || address));
+      setGiftShipping({ enabled: Boolean(recipient && address), recipient, address });
     } catch (err) {
       console.error(err);
     }
@@ -452,7 +458,16 @@ export default function ClientEditPage() {
   };
 
   const saveData = async () => {
+    const giftEnabled = form.category === "birthday" && form.theme === "teddy-bear-party" && giftShipping.enabled;
+    if (giftEnabled && (!giftShipping.recipient.trim() || !giftShipping.address.trim())) {
+      alert("Isi nama penerima dan alamat sebelum menampilkan opsi Kirim Kado.");
+      return;
+    }
     const cleanFields = {
+      ...(giftEnabled || hadGiftShipping ? {
+        birthday_gift_recipient: giftEnabled ? giftShipping.recipient.trim() : null,
+        birthday_gift_address: giftEnabled ? giftShipping.address.trim() : null,
+      } : {}),
       groom_nickname: form.groom_nickname.trim() || null,
       bride_nickname: form.bride_nickname.trim() || null,
       child_nickname: form.category === "khitan" ? (form.child_nickname.trim() || null) : null,
@@ -478,6 +493,7 @@ export default function ClientEditPage() {
         return;
       }
 
+      setHadGiftShipping(giftEnabled);
       alert("Data undangan berhasil disimpan.");
       return;
     }
@@ -530,6 +546,7 @@ export default function ClientEditPage() {
     }
 
     setInvitationId(inserted.id);
+    setHadGiftShipping(giftEnabled);
     alert(
       "Undangan berhasil dibuat dan dapat dilengkapi. Aktivasi dilakukan oleh admin Vistiq atau pengelola Mitra Brand Anda setelah pembayaran dikonfirmasi."
     );
@@ -839,6 +856,26 @@ export default function ClientEditPage() {
                 style={{ gridColumn: "1 / -1" }}
               />
             </div>
+            {form.category === "birthday" && form.theme === "teddy-bear-party" && (
+              <>
+                <h2 className={styles.editSectionTitle}>Kirim Kado</h2>
+                <div className={styles.formGrid}>
+                  <label style={{ gridColumn: "1 / -1" }}>
+                    <input type="checkbox" checked={giftShipping.enabled}
+                      onChange={e => setGiftShipping(prev => ({ ...prev, enabled: e.target.checked }))} />
+                    {" "}Tampilkan alamat kado di undangan publik
+                  </label>
+                  {giftShipping.enabled && <>
+                    <input aria-label="Nama penerima kado" placeholder="Nama penerima kado" maxLength={120}
+                      className={styles.input} value={giftShipping.recipient}
+                      onChange={e => setGiftShipping(prev => ({ ...prev, recipient: e.target.value }))} />
+                    <textarea aria-label="Alamat pengiriman kado" placeholder="Alamat pengiriman kado" maxLength={800}
+                      className={styles.input} rows={3} value={giftShipping.address}
+                      onChange={e => setGiftShipping(prev => ({ ...prev, address: e.target.value }))} />
+                  </>}
+                </div>
+              </>
+            )}
           </>
         ) : (
         <>

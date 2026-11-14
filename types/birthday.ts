@@ -31,4 +31,5 @@ export type BirthdayInvitationData = {
   } | null;
   gallery: string[];
   gifts: GiftAccount[];
+  giftShipping?: { recipient: string; address: string } | null;
 };

@@ -58,6 +58,20 @@ function Wishes({ id, guest }: { id: number; guest: string }) {
   </form>;
 }
 
+function CopyGift({ value, label }: { value: string; label: string }) {
+  const [status, setStatus] = useState("");
+  async function copy() {
+    try {
+      await navigator.clipboard.writeText(value);
+      setStatus("Berhasil disalin.");
+    } catch {
+      setStatus("Tidak bisa menyalin otomatis. Salin teks di atas secara manual.");
+    }
+  }
+  return <><button className={s.button} type="button" onClick={copy}>{label}</button>
+    <p role="status" className={s.status}>{status}</p></>;
+}
+
 export default function TeddyBirthday({ invitation }: { invitation: BirthdayInvitationData }) {
   const { opened, setOpened } = useInvitation();
   const guest = useSearchParams().get("to")?.trim() || "";
@@ -127,9 +141,23 @@ export default function TeddyBirthday({ invitation }: { invitation: BirthdayInvi
       <section className={`${s.section} ${s.sky}`}>
         <SectionReveal><p className={s.eyebrow}>RSVP</p><h2>Ucapan &amp; Doa</h2><Wishes id={invitation.id} guest={guest} /></SectionReveal>
       </section>
-      {gifts.length > 0 && <section className={s.section}>
+      {(gifts.some(gift => Boolean(gift.accountNumber)) || invitation.giftShipping) && <section className={s.section}>
         <SectionReveal><Decor file="06_gift_boxes" className={s.cake} /><h2>Birthday Gift</h2>
-          {gifts.map((gift, i) => <div className={s.card} key={i}><p className={s.lead}>{gift.bankName}</p><p>{gift.accountNumber}</p><p>{gift.accountName}</p></div>)}
+          <p>Kehadiran dan doa sudah jadi hadiah terindah.</p>
+          {invitation.id === 0 && <p className={s.status}>Rekening dan alamat ini hanya contoh. Jangan gunakan untuk transfer atau pengiriman.</p>}
+          {gifts.map((gift, i) => gift.accountNumber && <article className={s.card} key={i}>
+            <h3>Transfer Hadiah</h3>
+            {gift.bankName && <p className={s.lead}>{gift.bankName}</p>}
+            <p>{gift.accountNumber}</p>
+            {gift.accountName && <p>a.n. {gift.accountName}</p>}
+            <CopyGift value={gift.accountNumber} label="Salin Nomor Rekening" />
+          </article>)}
+          {invitation.giftShipping && <article className={s.card}>
+            <h3>Kirim Kado</h3>
+            <p className={s.lead}>{invitation.giftShipping.recipient}</p>
+            <p style={{ whiteSpace: "pre-line" }}>{invitation.giftShipping.address}</p>
+            <CopyGift value={invitation.giftShipping.address} label="Salin Alamat" />
+          </article>}
         </SectionReveal>
       </section>}
       <footer className={`${s.section} ${s.footer}`}>

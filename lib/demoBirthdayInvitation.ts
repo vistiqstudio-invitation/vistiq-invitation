@@ -126,6 +126,7 @@ export function getDemoBirthdayInvitation(theme: string): BirthdayInvitationData
       location: copy.location,
     },
     gallery: GALLERY_BY_THEME[theme] || [],
-    gifts: teddy ? [{ owner: "Keluarga", bankName: null, accountNumber: null, accountName: "Kehadiran dan doa sudah jadi hadiah terindah." }] : [],
+    gifts: teddy ? [{ owner: "Keluarga", bankName: "Bank Contoh", accountNumber: "0000 0000 00", accountName: "Keluarga Aiden (Contoh)" }] : [],
+    giftShipping: teddy ? { recipient: "Keluarga Aiden (Contoh)", address: "Jl. Pesta Teddy No. 3, Kota Contoh 00000" } : null,
   };
 }

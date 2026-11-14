@@ -425,7 +425,7 @@ function normalizeKhitanInvitation(raw: Record<string, any>): KhitanInvitationDa
   };
 }
 
-function normalizeBirthdayInvitation(raw: Record<string, any>): BirthdayInvitationData {
+function normalizeBirthdayInvitation(raw: Record<string, any>, live: boolean): BirthdayInvitationData {
   const event: BirthdayInvitationData["event"] =
     raw.aqiqah_date || raw.aqiqah_location || raw.aqiqah_time
       ? {
@@ -490,6 +490,9 @@ function normalizeBirthdayInvitation(raw: Record<string, any>): BirthdayInvitati
     event,
     gallery,
     gifts,
+    giftShipping: live && raw.theme === "teddy-bear-party" && raw.birthday_gift_recipient?.trim() && raw.birthday_gift_address?.trim()
+      ? { recipient: raw.birthday_gift_recipient.trim(), address: raw.birthday_gift_address.trim() }
+      : null,
   };
 }
 
@@ -570,7 +573,7 @@ export async function getInvitationBySlug(
       : raw.category === "khitan"
       ? normalizeKhitanInvitation(raw)
       : raw.category === "birthday"
-      ? normalizeBirthdayInvitation(raw)
+      ? normalizeBirthdayInvitation(raw, !error && Boolean(data))
       : normalizeInvitation(raw);
 
   if (publicBrand?.brand_name) {
