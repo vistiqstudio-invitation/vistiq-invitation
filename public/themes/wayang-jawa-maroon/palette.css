@@ -4,6 +4,7 @@ html.wayang-maroon {
   --wayang-rose: #772d42;
   --wayang-paper: #fff6e8;
   --wayang-gold: #edc98d;
+  --wayang-brown: #7f5839;
 }
 
 .wayang-maroon body,
@@ -29,7 +30,7 @@ html.wayang-maroon body .vistiq-wayang :is(.elementor-element-43f102f5 > .elemen
   fill: var(--wayang-rose) !important;
 }
 .wayang-maroon body .vistiq-wayang :is(.elementor-element-24134ce2,.elementor-element-3a4f4557,.elementor-element-d2eb9e9)::after {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 310' preserveAspectRatio='none'%3E%3Cpath fill='%23772d42' d='M0 10C240 60 620 110 1000 22L1000 253C670 315 320 234 0 300Z'/%3E%3C/svg%3E") !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 310' preserveAspectRatio='none'%3E%3Cpath fill='%23772d42' d='M0 10C240 60 620 110 1000 22L1000 253C670 315 320 234 0 300Z'/%3E%3Cpath fill='%23591c2d' d='M0 300C320 234 670 315 1000 253V310H0Z'/%3E%3C/svg%3E") !important;
 }
 .wayang-maroon .vistiq-cover-photo-widget::after {
   background: linear-gradient(to bottom,#591c2d00,#591c2d66 42%,#591c2ddb 78%,#591c2d00) !important;
@@ -85,4 +86,29 @@ html.wayang-maroon body .vistiq-wayang .elementor-element-41765daf .elementor-so
 }
 html.wayang-maroon body .vistiq-wayang .elementor-element-41765daf .elementor-social-icon :is(i,svg) {
   color: #fff !important;
+}
+
+/* Start the next section with the same maroon as the foot of each wave. */
+html.wayang-maroon body .vistiq-wayang .elementor-element-67d5794c {
+  background-color: var(--wayang-maroon) !important;
+}
+html.wayang-maroon body .vistiq-wayang :is(.elementor-element-3a4f4557,.elementor-element-d2eb9e9,.elementor-element-7772ea12,.elementor-element-647b74c1) {
+  background: var(--wayang-maroon) !important;
+}
+
+/* Remove the empty strip between Love Story and the countdown. */
+.wayang-maroon .vistiq-wayang .elementor-element-4957bc06 {
+  display: none !important;
+}
+html.wayang-maroon body .vistiq-wayang .elementor-element-5ec4d8e8 {
+  background-color: var(--wayang-maroon) !important;
+}
+
+html.wayang-maroon body .vistiq-wayang .elementor-element-1381b5f0 > .elementor-widget-container {
+  background-color: var(--wayang-brown) !important;
+}
+
+/* Keep the wishes heading directly on the section background. */
+html.wayang-maroon body .vistiq-wayang .elementor-element-60f34188 {
+  background: var(--wayang-maroon) !important;
 }
