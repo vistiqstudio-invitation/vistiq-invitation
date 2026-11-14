@@ -71,3 +71,8 @@ html.wayang-maroon body .vistiq-wayang .elementor-element-32cad1d9 > .elementor-
 html.wayang-maroon body .vistiq-wayang #home .vistiq-wayang-gunungan-initial {
   color: var(--wayang-gold);
 }
+
+/* Match the invitation credit panel to the dark maroon palette. */
+html.wayang-maroon body .vistiq-wayang .elementor-element-3ace8669 {
+  background-color: var(--wayang-deep);
+}
