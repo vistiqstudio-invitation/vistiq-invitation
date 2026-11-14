@@ -76,3 +76,13 @@ html.wayang-maroon body .vistiq-wayang #home .vistiq-wayang-gunungan-initial {
 html.wayang-maroon body .vistiq-wayang .elementor-element-3ace8669 {
   background-color: var(--wayang-deep) !important;
 }
+
+/* Dark maroon tiles with white icons in the bottom navigation. */
+html.wayang-maroon body .vistiq-wayang .elementor-element-41765daf .elementor-social-icon {
+  background-color: var(--wayang-deep) !important;
+  color: #fff !important;
+  --e-social-icon-icon-color: #fff;
+}
+html.wayang-maroon body .vistiq-wayang .elementor-element-41765daf .elementor-social-icon :is(i,svg) {
+  color: #fff !important;
+}
