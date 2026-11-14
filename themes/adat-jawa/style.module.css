@@ -38,3 +38,10 @@
     min-height: 100vh;
   }
 }
+
+.root[data-palette="maroon"],
+.root[data-palette="maroon"] .frame,
+.root[data-palette="maroon"] .error {
+  background: #591c2d;
+  color: #fff6e8;
+}

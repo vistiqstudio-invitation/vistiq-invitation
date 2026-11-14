@@ -1134,7 +1134,7 @@ function prepareReference(
   return () => cleanups.forEach((cleanup) => cleanup());
 }
 
-function buildReferenceDocument(source: string) {
+function buildReferenceDocument(source: string, maroon: boolean) {
   const parsed = new DOMParser().parseFromString(source, "text/html");
   parsed.querySelectorAll("script, noscript").forEach((node) => node.remove());
   parsed
@@ -1189,6 +1189,13 @@ function buildReferenceDocument(source: string) {
     "[data-rsvp=send][disabled]{opacity:.55;cursor:not-allowed;}",
   ].join("");
   parsed.head.appendChild(override);
+  if (maroon) {
+    parsed.documentElement.classList.add("wayang-maroon");
+    const palette = parsed.createElement("link");
+    palette.rel = "stylesheet";
+    palette.href = "/themes/wayang-jawa-maroon/palette.css";
+    parsed.head.appendChild(palette);
+  }
   return "<!doctype html>" + parsed.documentElement.outerHTML;
 }
 
@@ -1197,6 +1204,7 @@ export default function WayangJawa({
 }: {
   invitation: InvitationData;
 }) {
+  const maroon = invitation.theme === "wayang-jawa-maroon";
   const { setOpened } = useInvitation();
   const rsvp = useRsvpWishes(invitation.id);
   const frameRef = useRef<HTMLIFrameElement>(null);
@@ -1269,7 +1277,7 @@ export default function WayangJawa({
         return response.text();
       })
       .then((source) => {
-        if (active) setReferenceDocument(buildReferenceDocument(source));
+        if (active) setReferenceDocument(buildReferenceDocument(source, maroon));
       })
       .catch(() => {
         if (active) setLoadError(true);
@@ -1278,7 +1286,7 @@ export default function WayangJawa({
     return () => {
       active = false;
     };
-  }, []);
+  }, [maroon]);
 
   const handleFrameLoad = useCallback(() => {
     const doc = frameRef.current?.contentDocument;
@@ -1309,7 +1317,7 @@ export default function WayangJawa({
   }, []);
 
   return (
-    <main className={styles.root} data-reference-ready={String(frameReady)}>
+    <main className={styles.root} data-palette={maroon ? "maroon" : undefined} data-reference-ready={String(frameReady)}>
       {loadError ? (
         <div className={styles.error}>
           Undangan sedang dimuat ulang. Silakan coba beberapa saat lagi.

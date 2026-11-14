@@ -1,0 +1,63 @@
+html.wayang-maroon {
+  --wayang-maroon: #591c2d;
+  --wayang-deep: #3f1020;
+  --wayang-rose: #772d42;
+  --wayang-paper: #fff6e8;
+  --wayang-gold: #edc98d;
+}
+
+.wayang-maroon body,
+.wayang-maroon body #sec,
+.wayang-maroon body .vistiq-wayang :is(.elementor-element-1ac384c2,.elementor-element-c336586,.elementor-element-5eb5bd67,.elementor-element-1f7348e,.elementor-element-361fc64e,.elementor-element-535ed473,.elementor-element-647b74c1,.elementor-element-3a4f4557,.elementor-element-d2eb9e9,.elementor-element-7772ea12) {
+  background-color: var(--wayang-maroon) !important;
+  color: var(--wayang-paper);
+}
+
+.wayang-maroon body .vistiq-wayang :is(.elementor-element-67d5794c,.elementor-element-43f102f5,.elementor-element-6868f37e) {
+  background-image: linear-gradient(#591c2dc9,#591c2ded), url("/themes/wayang-jawa/vistiq-wayang-closing-background.webp") !important;
+}
+.wayang-maroon body .vistiq-wayang .elementor-element-5ec4d8e8 {
+  background-image: linear-gradient(#591c2de0,#591c2df5), url("/themes/wayang-jawa/vistiq-wayang-paper-background.jpg") !important;
+}
+.wayang-maroon body .vistiq-wayang .elementor-element-60b3c6d2 {
+  background: var(--wayang-rose) !important;
+}
+html.wayang-maroon body .vistiq-wayang .elementor-shape-fill {
+  fill: var(--wayang-maroon) !important;
+}
+html.wayang-maroon body .vistiq-wayang :is(.elementor-element-43f102f5 > .elementor-shape-bottom,.elementor-element-361fc64e > .elementor-shape-top) .elementor-shape-fill {
+  fill: var(--wayang-rose) !important;
+}
+.wayang-maroon body .vistiq-wayang :is(.elementor-element-24134ce2,.elementor-element-3a4f4557,.elementor-element-d2eb9e9)::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 310' preserveAspectRatio='none'%3E%3Cpath fill='%23772d42' d='M0 10C240 60 620 110 1000 22L1000 253C670 315 320 234 0 300Z'/%3E%3C/svg%3E") !important;
+}
+.wayang-maroon .vistiq-cover-photo-widget::after {
+  background: linear-gradient(to bottom,#591c2d00,#591c2d66 42%,#591c2ddb 78%,#591c2d00) !important;
+}
+.wayang-maroon .vistiq-wayang .elementor-element-c336586::before {
+  background-image: linear-gradient(180deg, transparent 50%, var(--wayang-maroon)) !important;
+}
+
+html.wayang-maroon body .vistiq-wayang :is(.elementor-heading-title,.elementor-widget-text-editor,.idb-timeline__title,.idb-timeline__desc) {
+  color: var(--wayang-paper) !important;
+}
+html.wayang-maroon body .vistiq-wayang :is(h1,h2).elementor-heading-title {
+  color: var(--wayang-gold) !important;
+}
+html.wayang-maroon body .vistiq-wayang .elementor-element-32cad1d9 > .elementor-widget-container {
+  background: var(--wayang-deep) !important;
+  border-color: #c99162 !important;
+}
+.wayang-maroon .vistiq-wayang :is(.elementor-button,.idb-loc-btn,.idb-countdown__item,.idb-social-icons__item) {
+  background: var(--wayang-deep) !important;
+  color: var(--wayang-paper) !important;
+}
+html.wayang-maroon body .vistiq-wayang #home .vistiq-wayang-gunungan-initial {
+  color: var(--wayang-deep);
+}
+
+.wayang-maroon .vistiq-wayang :is(.rsvp-card,.idb-copy-rek__box,.idb-kirim-hadiah__box,.idb-konfirmasi-transfer__box) {
+  color: var(--wayang-deep);
+}
+.wayang-maroon .rsvp-avatar { background:#f4dce4; color:#591c2d; }
+.wayang-maroon .rsvp-item__status { color:#772d42; }

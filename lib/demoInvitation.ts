@@ -442,6 +442,7 @@ const MUSIC_BY_THEME: Record<string, string> = {
 // identical on purpose, so switching themes in the picker is an
 // apples-to-apples comparison.
 export function getDemoInvitation(theme: string): InvitationData {
+  const assetTheme = theme === "wayang-jawa-maroon" ? "adat-jawa" : theme;
   const noPhotoTheme = (theme === "ivory-botanica" || theme === "flower-1");
 
   return {
@@ -453,8 +454,8 @@ export function getDemoInvitation(theme: string): InvitationData {
 
     brand: null,
 
-    coverImage: noPhotoTheme ? null : optimizedDemoImage(COVER_BY_THEME[theme] || "/themes/luxury-gold/cover.png"),
-    musicUrl: MUSIC_BY_THEME[theme] || DEFAULT_WEDDING_VOCAL_TRACK,
+    coverImage: noPhotoTheme ? null : optimizedDemoImage(COVER_BY_THEME[assetTheme] || "/themes/luxury-gold/cover.png"),
+    musicUrl: MUSIC_BY_THEME[assetTheme] || DEFAULT_WEDDING_VOCAL_TRACK,
     videoUrl: null,
     ...(theme === "adat-melayu" ? { liveStreamingUrl: "https://www.instagram.com/vistiqinvitation/", storyPhotos: ["/photos/melayu-gallery-3.webp"] } : {}),
 
@@ -467,7 +468,7 @@ export function getDemoInvitation(theme: string): InvitationData {
       name: "Rizky Pratama",
       nickname: "Rizky",
       parents: "Bapak Yusuf & Ibu Fatimah",
-      photo: noPhotoTheme ? null : optimizedDemoImage(GROOM_PHOTO_BY_THEME[theme] || "/themes/luxury-gold/groom.png"),
+      photo: noPhotoTheme ? null : optimizedDemoImage(GROOM_PHOTO_BY_THEME[assetTheme] || "/themes/luxury-gold/groom.png"),
       instagram: "rizkypratama",
     },
 
@@ -475,7 +476,7 @@ export function getDemoInvitation(theme: string): InvitationData {
       name: "Nabila Putri",
       nickname: "Nabila",
       parents: "Bapak Ahmad & Ibu Siti",
-      photo: noPhotoTheme ? null : optimizedDemoImage(BRIDE_PHOTO_BY_THEME[theme] || "/themes/luxury-gold/bride.png"),
+      photo: noPhotoTheme ? null : optimizedDemoImage(BRIDE_PHOTO_BY_THEME[assetTheme] || "/themes/luxury-gold/bride.png"),
       instagram: "nabilaputri",
     },
 
@@ -537,7 +538,7 @@ export function getDemoInvitation(theme: string): InvitationData {
       location: "Gedung Serbaguna Vistiq, Jakarta",
     },
 
-    gallery: noPhotoTheme ? [] : optimizedDemoImages(GALLERY_BY_THEME[theme] || [
+    gallery: noPhotoTheme ? [] : optimizedDemoImages(GALLERY_BY_THEME[assetTheme] || [
       "/gallery/1.jpg",
       "/gallery/2.jpg",
       "/gallery/3.jpg",
