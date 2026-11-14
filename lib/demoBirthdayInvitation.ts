@@ -4,6 +4,7 @@ import { BIRTHDAY_COVER_BY_THEME } from "@/lib/themeCoverImages";
 export const COVER_BY_THEME = BIRTHDAY_COVER_BY_THEME;
 
 const CHILD_PHOTO_BY_THEME: Record<string, string> = {
+  "teddy-bear-party": "/photos/teddy-bear-party/demo-profile.webp",
   "princess-fairytale": "/photos/princess-fairytale/profile.webp",
   "space-explorer": "/photos/space-explorer/profile.webp",
   "dinosaur-adventure": "/photos/dinosaur-adventure/profile.webp",
@@ -11,7 +12,7 @@ const CHILD_PHOTO_BY_THEME: Record<string, string> = {
 };
 
 const GALLERY_BY_THEME: Record<string, string[]> = {
-  "teddy-bear-party": ["01_teddy_bear_utama", "07_birthday_cake", "06_gift_boxes"].map(name => `/photos/teddy-bear-party/${name}.webp`),
+  "teddy-bear-party": [1, 2, 3].map(index => `/photos/teddy-bear-party/demo-gallery-${index}.webp`),
   "princess-fairytale": [
     "/photos/princess-fairytale/gallery-1.webp",
     "/photos/princess-fairytale/gallery-2.webp",

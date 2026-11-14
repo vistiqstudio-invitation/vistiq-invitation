@@ -133,7 +133,7 @@ export default function TeddyBirthday({ invitation }: { invitation: BirthdayInvi
       {invitation.gallery.length > 0 && <section className={s.section}>
         <SectionReveal><Decor file="04_cloud" className={s.galleryCloud} /><p className={s.eyebrow}>Sweet Memories</p><h2>Galeri Foto</h2>
           <div ref={gallery} className={s.gallery} tabIndex={0} aria-label="Galeri foto, geser untuk melihat">
-            {invitation.gallery.map((item, i) => <img src={item} key={`${item}-${i}`} alt={invitation.id ? `Foto ${child.name} ${i + 1}` : `Dekorasi pesta ${i + 1}`} loading="lazy" />)}
+            {invitation.gallery.map((item, i) => <img src={item} key={`${item}-${i}`} alt={`Foto ${child.name} ${i + 1}`} loading="lazy" />)}
           </div>
           {invitation.gallery.length > 1 && <div className={s.arrows}>{[-1,1].map(direction => <button type="button" key={direction} aria-label={direction === -1 ? "Foto sebelumnya" : "Foto berikutnya"} onClick={() => gallery.current?.scrollBy({left: direction * gallery.current.clientWidth * .8, behavior: reduced ? "auto" : "smooth"})}>{direction === -1 ? "‹" : "›"}</button>)}</div>}
         </SectionReveal>
