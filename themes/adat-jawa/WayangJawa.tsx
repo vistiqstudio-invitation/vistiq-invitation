@@ -728,7 +728,10 @@ function prepareGift(doc: Document, invitation: InvitationData) {
       accounts[0]?.accountName || displayName(invitation.groom);
   }
 
-  setVisibility(false);
+  // Only Ihsan & Reni: show the bank details immediately, without a reveal button.
+  const alwaysVisible = invitation.slug === "ihsan-reni";
+  setVisibility(alwaysVisible);
+  if (alwaysVisible) hideElement(buttonWidget);
 
   return () => {
     button.removeEventListener("click", activate);
