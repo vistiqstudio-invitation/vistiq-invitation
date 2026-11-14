@@ -78,6 +78,7 @@ export const THEME_CARD_PREVIEW_BY_THEME: Record<string, string> = {
   "flower-1": "/themes/flower-1/catalog-thumbnail.webp",
   "ivory-botanica": "/theme-previews/wedding/ivory-botanica-card.jpg",
   "adat-bali-motion": "/theme-previews/wedding/adat-bali-motion-card.jpg",
+  "adat-minang": "/themes/adat-minang/catalog.webp",
   "adat-minang-motion": "/theme-previews/wedding/adat-minang-motion-card.jpg",
   "adat-jawa": "/theme-previews/wedding/adat-jawa-card-20261015.webp",
   "wayang-jawa-maroon": "/themes/wayang-jawa-maroon/catalog.webp",
