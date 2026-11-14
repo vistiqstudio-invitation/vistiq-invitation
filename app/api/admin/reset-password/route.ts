@@ -5,8 +5,10 @@ import { createClient as createServiceClient } from "@supabase/supabase-js";
 import crypto from "node:crypto";
 import { getSessionProfile } from "@/lib/supabase/dal";
 
+const PASSWORD_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789";
+
 function generatePassword() {
-  return crypto.randomBytes(9).toString("base64url");
+  return Array.from({ length: 16 }, () => PASSWORD_ALPHABET[crypto.randomInt(PASSWORD_ALPHABET.length)]).join("");
 }
 
 // Sets a new password directly (bypassing the reset-email flow entirely),
@@ -16,13 +18,14 @@ function generatePassword() {
 export async function POST(request: Request) {
   const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const PUBLIC_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   const profile = await getSessionProfile();
   if (!profile || profile.role !== "owner") {
     return NextResponse.json({ error: "Tidak diizinkan." }, { status: 403 });
   }
 
-  if (!SUPABASE_URL || !SERVICE_ROLE_KEY) {
+  if (!SUPABASE_URL || !SERVICE_ROLE_KEY || !PUBLIC_ANON_KEY) {
     return NextResponse.json({ error: "Env var belum diset di server." }, { status: 500 });
   }
 
@@ -43,5 +46,23 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: error?.message || "Gagal mengubah password." }, { status: 400 });
   }
 
+  // Verify with the same public Auth credentials that the login page uses.
+  // Only return a temporary password when Supabase actually accepts it.
+  const verifyClient = createServiceClient(SUPABASE_URL, PUBLIC_ANON_KEY, {
+    auth: { autoRefreshToken: false, persistSession: false },
+  });
+  const { data: verified, error: verificationError } = await verifyClient.auth.signInWithPassword({
+    email: updated.user.email || "",
+    password,
+  });
+
+  if (verificationError || verified.user?.id !== updated.user.id) {
+    return NextResponse.json(
+      { error: "Password diubah, tetapi verifikasi login gagal. Hubungi admin sebelum mencoba reset lagi." },
+      { status: 502 }
+    );
+  }
+
+  await verifyClient.auth.signOut();
   return NextResponse.json({ email: updated.user.email, password });
 }
