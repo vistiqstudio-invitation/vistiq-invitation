@@ -125,6 +125,9 @@ export function getThemeCoverImage(themeKey: string, demoPath: string): string |
 }
 
 export function getThemeCardPreviewImage(themeKey: string, demoPath: string): string | null {
+  if (demoPath === "/demo-ulang-tahun" && themeKey === "teddy-bear-party") {
+    return BIRTHDAY_COVER_BY_THEME[themeKey];
+  }
   if (demoPath !== "/demo" && demoPath !== "/demo-khitan") return null;
   return THEME_CARD_PREVIEW_BY_THEME[themeKey] ?? null;
 }
