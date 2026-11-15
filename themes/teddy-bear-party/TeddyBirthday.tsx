@@ -100,7 +100,7 @@ export default function TeddyBirthday({ invitation }: { invitation: BirthdayInvi
   const photo = child.photo || invitation.coverImage;
   return <main className={`${s.root} ${safari ? safariStyles.safari : astronaut ? space.root : butterfly ? pink.root : ""}`} data-safari-theme={safari || undefined} data-astronaut-theme={astronaut || undefined} data-butterfly-theme={butterfly || undefined}>
     {musicUrl && <audio ref={audioRef} src={musicUrl} loop preload="none" />}
-    {!opened ? <section className={`${s.cover} ${astronaut ? space.cover : butterfly ? pink.cover : ""}`} data-safari-cover={safari || undefined}>
+    {!opened ? <section className={`${s.cover} ${astronaut ? space.cover : butterfly ? pink.cover : ""}`} data-safari-cover={safari || undefined} data-nabila-cover={nabilaNadila || undefined}>
       {safari && <>
         <Decor folder={folder} file="05_tropical_leaves" className={safariStyles.leafLeft} eager />
         <Decor folder={folder} file="05_tropical_leaves" className={safariStyles.leafRight} eager />
