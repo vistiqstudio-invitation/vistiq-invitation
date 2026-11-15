@@ -1,0 +1,36 @@
+.root[data-astronaut-theme] {
+  --cream: #fffaf0;
+  --sky: #e4effc;
+  --ink: #203758;
+  --muted: #445c79;
+  --gold: #7a542d;
+}
+.root .cover {
+  overflow: clip;
+  padding-top: clamp(95px, 16svh, 140px);
+  background: radial-gradient(ellipse at 50% 39%, #fffaf0 9%, transparent 69%), linear-gradient(165deg,#daeaff,#fdf7e9 49%,#d6e8ff);
+}
+.coverMoon,.coverPlanets,.rocket { position:absolute; object-fit:contain; z-index:-1; pointer-events:none; }
+.coverMoon { top:clamp(8px,3svh,30px); left:7%; width:clamp(90px,28%,156px); height:clamp(58px,12svh,104px); animation:drift 11s ease-in-out infinite; }
+.coverPlanets { top:clamp(9px,5svh,42px); right:6%; width:clamp(77px,24%,141px); height:clamp(55px,10svh,97px); animation:orbit 16s ease-in-out infinite; }
+.rocket { width:clamp(35px,13%,68px); top:35%; left:8%; animation:drift 7s ease-in-out infinite reverse; }
+.root .scene { width:min(90%,350px); height:clamp(145px,32svh,285px); }
+.root .astronaut { left:19%; width:62%; height:96%; }
+.root .balloons { width:29%; height:62%; right:0; top:20%; opacity:.86; }
+.root :is(button,a)[class*="button"],.root button[class*="music"] { background:#284775; color:#fffaf0; border-color:#b79258; }
+.root :is(button,a)[class*="button"]:hover,.root button[class*="music"]:hover { background:#1c355b; }
+.root :is([class*="countdown"] > div,article,form,input,textarea,select) { border-color:#b8cce5; }
+.root .frame { width:min(74%,275px); aspect-ratio:790/840; background:none; }
+.root .portrait { inset:10.5% auto auto 13.5%; width:72%; height:69%; object-position:center 30%; border-radius:0;
+  /* Extend the portrait slightly under the transparent artwork rim. */
+  clip-path: polygon(41.8% 0.7%, 30.7% 4.3%, 24.8% 8.0%, 24.8% 11.6%, 22.6% 15.2%, 19.7% 18.8%, 9.3% 22.5%, 7.1% 26.1%, 4.9% 29.7%, 3.4% 33.3%, 1.9% 37.0%, 1.2% 40.6%, 0.5% 44.2%, 0.5% 47.8%, 0.5% 51.4%, 0.5% 55.1%, 14.5% 58.7%, 18.9% 62.3%, 21.1% 65.9%, 21.9% 69.6%, 23.4% 73.2%, 26.3% 76.8%, 30.0% 80.4%, 27.1% 84.1%, 24.1% 87.7%, 23.4% 91.3%, 29.3% 94.9%, 41.1% 98.6%, 41.1% 98.6%, 58.1% 98.6%, 58.1% 98.6%, 69.2% 94.9%, 75.1% 91.3%, 78.8% 87.7%, 81.7% 84.1%, 86.9% 80.4%, 89.8% 76.8%, 92.1% 73.2%, 94.3% 69.6%, 95.8% 65.9%, 97.2% 62.3%, 98.0% 58.7%, 98.0% 55.1%, 98.7% 51.4%, 98.7% 47.8%, 98.0% 44.2%, 98.0% 40.6%, 96.5% 37.0%, 95.8% 33.3%, 94.3% 29.7%, 92.1% 26.1%, 84.7% 22.5%, 85.4% 18.8%, 83.2% 15.2%, 80.2% 11.6%, 75.8% 8.0%, 69.9% 4.3%, 58.8% 0.7%);
+}
+.root .footer { background:linear-gradient(180deg,var(--cream),#dceaff); }
+.farewell { position:relative; isolation:isolate; padding:24px clamp(22px,10vw,70px) 30px; max-width:450px; margin:auto; }
+.spaceBorder { position:absolute; width:100%; height:100%; inset:0; z-index:-1; pointer-events:none; opacity:.74; }
+.root .ribbonTitle { position:relative; isolation:isolate; display:grid; place-items:center; margin:0 auto .6rem; width:min(100%,230px); min-height:54px; font-size:clamp(1.48rem,6vw,2rem); }
+.ribbonTitle img { position:absolute; inset:0; width:100%; height:100%; z-index:-1; pointer-events:none; }
+.root .footer img[class*="footerBear"] { width:100%; max-width:560px; }
+@keyframes drift { 50% { transform:translateY(-9px) rotate(-3deg); } }
+@keyframes orbit { 50% { transform:rotate(5deg) translateY(-4px); } }
+@media(max-height:660px){.root .scene{height:clamp(125px,28svh,180px)}.root .cover{padding-top:88px}}

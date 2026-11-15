@@ -3,7 +3,10 @@ import { BIRTHDAY_COVER_BY_THEME } from "@/lib/themeCoverImages";
 
 export const COVER_BY_THEME = BIRTHDAY_COVER_BY_THEME;
 
+const astronautPhotoBase = "/photos/little-astronaut-party";
+
 const CHILD_PHOTO_BY_THEME: Record<string, string> = {
+  "little-astronaut-party": `${astronautPhotoBase}/demo-profile.webp`,
   "little-safari-party": "/photos/little-safari-party/demo-profile.webp",
   "teddy-bear-party": "/photos/teddy-bear-party/demo-profile.webp",
   "princess-fairytale": "/photos/princess-fairytale/profile.webp",
@@ -13,6 +16,7 @@ const CHILD_PHOTO_BY_THEME: Record<string, string> = {
 };
 
 const GALLERY_BY_THEME: Record<string, string[]> = {
+  "little-astronaut-party": [`${astronautPhotoBase}/demo-profile.webp`, `${astronautPhotoBase}/demo-gallery-2.webp`],
   "little-safari-party": ["/photos/little-safari-party/demo-profile.webp", "/photos/little-safari-party/demo-gallery-2.webp"],
   "teddy-bear-party": [1, 2, 3].map(index => `/photos/teddy-bear-party/demo-gallery-${index}.webp`),
   "princess-fairytale": [
@@ -44,6 +48,11 @@ type ThemeCopy = {
 };
 
 const COPY_BY_THEME: Record<string, ThemeCopy> = {
+  "little-astronaut-party": {
+    childName: "Aiden",
+    opening: { greeting: "", title: "Birthday Party", description: "Yuk, terbang bersamaku menuju hari penuh tawa, permainan, dan kebahagiaan di pesta ulang tahunku!", quote: "", quoteSource: "" },
+    location: "Rumah Kami",
+  },
   "little-safari-party": {
     childName: "Aiden",
     opening: { greeting: "", title: "Birthday Party", description: "Yuk, bermain, tertawa, dan berbagi kebahagiaan bersama di hari spesialku!", quote: "", quoteSource: "" },
@@ -104,6 +113,8 @@ export function getDemoBirthdayInvitation(theme: string): BirthdayInvitationData
   const copy = COPY_BY_THEME[theme] || COPY_BY_THEME["princess-fairytale"];
 
   const safari = theme === "little-safari-party";
+  const astronaut = theme === "little-astronaut-party";
+  const decemberParty = safari || astronaut;
   const teddy = theme === "teddy-bear-party";
   return {
     id: 0,
@@ -112,16 +123,16 @@ export function getDemoBirthdayInvitation(theme: string): BirthdayInvitationData
     status: "active",
     category: "birthday",
     brand: null,
-    coverImage: safari ? CHILD_PHOTO_BY_THEME[theme] : teddy ? GALLERY_BY_THEME[theme][1] : COVER_BY_THEME[theme] || null,
-    musicUrl: teddy || safari ? "/music-library/acoustic-garden.mp3" : null,
+    coverImage: decemberParty ? CHILD_PHOTO_BY_THEME[theme] : teddy ? GALLERY_BY_THEME[theme][1] : COVER_BY_THEME[theme] || null,
+    musicUrl: teddy || decemberParty ? "/music-library/acoustic-garden.mp3" : null,
     videoUrl: null,
-    mapsUrl: safari ? "https://www.google.com/maps/search/?api=1&query=Jakarta" : teddy ? "https://www.google.com/maps/search/?api=1&query=Taman+Menteng+Jakarta" : "https://maps.google.com",
+    mapsUrl: decemberParty ? "https://www.google.com/maps/search/?api=1&query=Jakarta" : teddy ? "https://www.google.com/maps/search/?api=1&query=Taman+Menteng+Jakarta" : "https://maps.google.com",
     mapsEmbedUrl: "https://www.google.com/maps?q=Jakarta&output=embed",
     opening: copy.opening,
     child: {
       name: copy.childName,
       photo: CHILD_PHOTO_BY_THEME[theme] || null,
-      age: teddy || safari ? 3 : 7,
+      age: teddy || decemberParty ? 3 : 7,
       birthDate: null,
     },
     parents: {
@@ -129,13 +140,14 @@ export function getDemoBirthdayInvitation(theme: string): BirthdayInvitationData
       mother: "Ibu",
     },
     event: {
-      date: teddy || safari ? "Minggu, 20 Desember 2026" : "Minggu, 20 September 2026",
-      rawDate: safari ? "2026-12-20T15:00:00+07:00" : teddy ? "2026-12-20T10:00:00+07:00" : "2026-09-20T10:00:00",
-      time: safari ? "15.00 WIB" : "10.00 WIB",
+      date: teddy || decemberParty ? "Minggu, 20 Desember 2026" : "Minggu, 20 September 2026",
+      rawDate: decemberParty ? "2026-12-20T15:00:00+07:00" : teddy ? "2026-12-20T10:00:00+07:00" : "2026-09-20T10:00:00",
+      time: decemberParty ? "15.00 WIB" : "10.00 WIB",
       location: copy.location,
+      ...(astronaut ? { address: "Jl. Bintang Kecil No. 3, Kota Contoh" } : {}),
     },
     gallery: GALLERY_BY_THEME[theme] || [],
-    gifts: teddy || safari ? [{ owner: "Keluarga", bankName: "Bank Contoh", accountNumber: "0000 0000 00", accountName: "Keluarga Aiden (Contoh)" }] : [],
-    giftShipping: safari ? { recipient: "Keluarga Aiden (Contoh)", address: "Jl. Rimba Ceria No. 3, Kota Contoh 00000" } : teddy ? { recipient: "Keluarga Aiden (Contoh)", address: "Jl. Pesta Teddy No. 3, Kota Contoh 00000" } : null,
+    gifts: teddy || decemberParty ? [{ owner: "Keluarga", bankName: "Bank Contoh", accountNumber: "0000 0000 00", accountName: "Keluarga Aiden (Contoh)" }] : [],
+    giftShipping: astronaut ? { recipient: "Keluarga Aiden (Contoh)", address: "Jl. Bintang Kecil No. 3, Kota Contoh 00000" } : safari ? { recipient: "Keluarga Aiden (Contoh)", address: "Jl. Rimba Ceria No. 3, Kota Contoh 00000" } : teddy ? { recipient: "Keluarga Aiden (Contoh)", address: "Jl. Pesta Teddy No. 3, Kota Contoh 00000" } : null,
   };
 }

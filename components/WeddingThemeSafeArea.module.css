@@ -572,3 +572,14 @@
 .root[data-wedding-theme="little-safari-party"] .desktopBackdropShade {
   background: linear-gradient(180deg, transparent 28%, rgba(36, 54, 38, .14) 54%, rgba(34, 52, 37, .84) 100%);
 }
+
+.root[data-wedding-theme="little-astronaut-party"] .desktopBackdrop { background: #dbe8f8; }
+.root[data-wedding-theme="little-astronaut-party"] .desktopBackdrop > img { object-position: center 28%; }
+.root[data-wedding-theme="little-astronaut-party"] .desktopBackdrop > img[src$="01_astronaut_boy.webp"] {
+  object-fit: contain;
+  object-position: center;
+  padding: 10vh 15%;
+}
+.root[data-wedding-theme="little-astronaut-party"] .desktopBackdropShade {
+  background: linear-gradient(to top,#152948b0 2%,#1832521f 72%,transparent);
+}

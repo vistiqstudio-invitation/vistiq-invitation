@@ -78,6 +78,9 @@ function frameImage(invitation: InvitationFrameData | undefined, theme: string) 
   if (theme === "little-safari-party" && invitation?.category === "birthday") {
     return configured || invitation.child.photo || invitation.gallery[0] || "/photos/little-safari-party/01_safari_animals.webp";
   }
+  if (theme === "little-astronaut-party" && invitation?.category === "birthday") {
+    return configured || invitation.child.photo || invitation.gallery[0] || "/photos/little-astronaut-party/01_astronaut_boy.webp";
+  }
   return configured || "/themes/luxury-gold/cover.webp";
 }
 

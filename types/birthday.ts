@@ -28,6 +28,7 @@ export type BirthdayInvitationData = {
     rawDate: string | null;
     time: string;
     location: string;
+    address?: string;
   } | null;
   gallery: string[];
   gifts: GiftAccount[];

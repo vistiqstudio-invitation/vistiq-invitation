@@ -254,10 +254,12 @@ export const khitanThemeList: ThemeMeta[] = [
 
 export const birthdayThemeRegistry: Record<string,(props:{invitation:BirthdayInvitationData})=>React.JSX.Element> = {
   "teddy-bear-party": TeddyBirthday,
+  "little-astronaut-party": TeddyBirthday,
   "little-safari-party": TeddyBirthday,
   "princess-fairytale":PrincessBirthday,"space-explorer":SpaceBirthday,"dinosaur-adventure":DinoBirthday,"superhero-city":SuperheroBirthday,
 };
 export const birthdayThemeList: ThemeMeta[] = [
+  {key:"little-astronaut-party",label:"Little Astronaut Party",description:"Pesta ulang tahun dengan astronaut cilik, roket, dan planet dalam nuansa biru lembut dan emas",swatch:["#e5f1fe","#314e78"],addedAt:"2026-11-15"},
   {key:"little-safari-party",label:"Little Safari Party",description:"Petualangan ulang tahun dengan hewan safari, sage lembut, dan nuansa krem hangat",swatch:["#fbf5e8","#a9bc9c"],addedAt:"2026-11-15"},
   {key:"teddy-bear-party",label:"Teddy Bear Party",description:"Pesta ulang tahun dengan teddy bear, balon baby blue, dan sentuhan krem serta emas",swatch:["#fff9ef","#bfdeef"],addedAt:"2026-11-14"},
   {key:"princess-fairytale",label:"Princess Fairytale",description:"Pink, ivory & emas dengan kastel, mahkota dan suasana pesta putri kerajaan",swatch:["#fff8fd","#d99abb"],addedAt:"2026-07-27"},
