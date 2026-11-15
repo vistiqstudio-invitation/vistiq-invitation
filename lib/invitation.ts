@@ -463,6 +463,13 @@ function normalizeBirthdayInvitation(raw: Record<string, any>, live: boolean): B
   }
 
   const parsedAge = Number(firstNonEmpty(raw.child_age, raw.birthday_age, raw.age));
+  const safari = raw.theme === "little-safari-party";
+  const birthDay = typeof raw.birth_date === "string" ? raw.birth_date.slice(0, 10) : "";
+  const eventDay = typeof raw.aqiqah_date === "string" ? raw.aqiqah_date.slice(0, 10) : "";
+  const isoDay = /^\d{4}-\d{2}-\d{2}$/;
+  const eventAge = safari && isoDay.test(birthDay) && isoDay.test(eventDay) && eventDay >= birthDay
+    ? Number(eventDay.slice(0, 4)) - Number(birthDay.slice(0, 4))
+    : 0;
 
   return {
     id: raw.id,
@@ -480,7 +487,7 @@ function normalizeBirthdayInvitation(raw: Record<string, any>, live: boolean): B
     child: {
       name: raw.baby_name || "",
       photo: firstNonEmpty(raw.cover_image, raw.cover_photo),
-      age: Number.isFinite(parsedAge) && parsedAge > 0 ? parsedAge : null,
+      age: Number.isFinite(parsedAge) && parsedAge > 0 ? parsedAge : eventAge || null,
       birthDate: raw.birth_date ? formatDate(raw.birth_date) : null,
     },
     parents: {
@@ -490,7 +497,7 @@ function normalizeBirthdayInvitation(raw: Record<string, any>, live: boolean): B
     event,
     gallery,
     gifts,
-    giftShipping: live && raw.theme === "teddy-bear-party" && raw.birthday_gift_recipient?.trim() && raw.birthday_gift_address?.trim()
+    giftShipping: live && (raw.theme === "teddy-bear-party" || raw.theme === "little-safari-party") && raw.birthday_gift_recipient?.trim() && raw.birthday_gift_address?.trim()
       ? { recipient: raw.birthday_gift_recipient.trim(), address: raw.birthday_gift_address.trim() }
       : null,
   };

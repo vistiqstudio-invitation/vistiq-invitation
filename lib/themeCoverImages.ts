@@ -111,6 +111,7 @@ export const AQIQAH_COVER_BY_THEME: Record<string, string> = {
 
 export const BIRTHDAY_COVER_BY_THEME: Record<string, string> = {
   "teddy-bear-party": "/theme-previews/birthday/teddy-bear-party.jpg",
+  "little-safari-party": "/theme-previews/birthday/little-safari-party.jpg",
   "princess-fairytale": "/photos/princess-fairytale/cover.webp",
   "space-explorer": "/photos/space-explorer/cover.webp",
   "dinosaur-adventure": "/photos/dinosaur-adventure/cover.webp",
@@ -125,7 +126,7 @@ export function getThemeCoverImage(themeKey: string, demoPath: string): string |
 }
 
 export function getThemeCardPreviewImage(themeKey: string, demoPath: string): string | null {
-  if (demoPath === "/demo-ulang-tahun" && themeKey === "teddy-bear-party") {
+  if (demoPath === "/demo-ulang-tahun" && (themeKey === "teddy-bear-party" || themeKey === "little-safari-party")) {
     return BIRTHDAY_COVER_BY_THEME[themeKey];
   }
   if (demoPath !== "/demo" && demoPath !== "/demo-khitan") return null;

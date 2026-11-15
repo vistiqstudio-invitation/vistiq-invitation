@@ -10,10 +10,11 @@ import { useCountdown } from "@/hooks/useCountdown";
 import { useMusicPlayer } from "@/hooks/useMusicPlayer";
 import type { BirthdayInvitationData } from "@/types/birthday";
 import s from "./style.module.css";
+import safariStyles from "./safari.module.css";
 
-const art = "/photos/teddy-bear-party/";
-function Decor({ file, className, eager = false }: { file: string; className?: string; eager?: boolean }) {
-  return <img className={className} src={art + file + ".webp"} alt="" aria-hidden="true" loading={eager ? "eager" : "lazy"} />;
+
+function Decor({ file, className, safari = false, eager = false }: { file: string; className?: string; safari?: boolean; eager?: boolean }) {
+  return <img className={className} src={`/photos/${safari ? "little-safari-party" : "teddy-bear-party"}/${file}.webp`} alt="" aria-hidden="true" loading={eager ? "eager" : "lazy"} />;
 }
 
 function Wishes({ id, guest }: { id: number; guest: string }) {
@@ -74,6 +75,8 @@ function CopyGift({ value, label }: { value: string; label: string }) {
 
 export default function TeddyBirthday({ invitation }: { invitation: BirthdayInvitationData }) {
   const { opened, setOpened } = useInvitation();
+  const safari = invitation.theme === "little-safari-party";
+  const character = safari ? "01_safari_animals" : "01_teddy_bear_utama";
   const guest = useSearchParams().get("to")?.trim() || "";
   const reduced = useReducedMotion();
   const SectionReveal = reduced ? "div" : Reveal;
@@ -88,35 +91,40 @@ export default function TeddyBirthday({ invitation }: { invitation: BirthdayInvi
   const mapLink = map && /^https?:\/\//i.test(map) ? map : event?.location ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.location)}` : null;
   const play = () => { if (musicUrl) void toggle().then(() => setMusicError(false)).catch(() => setMusicError(true)); };
   const photo = child.photo || invitation.coverImage;
-  return <main className={s.root}>
+  return <main className={`${s.root} ${safari ? safariStyles.safari : ""}`} data-safari-theme={safari || undefined}>
     {musicUrl && <audio ref={audioRef} src={musicUrl} loop preload="none" />}
-    {!opened ? <section className={s.cover}>
-      <Decor file="03_bunting_flag" className={s.bunting} eager />
-      <Decor file="04_cloud" className={s.coverCloud} eager />
+    {!opened ? <section className={s.cover} data-safari-cover={safari || undefined}>
+      {safari && <>
+        <Decor safari file="05_tropical_leaves" className={safariStyles.leafLeft} eager />
+        <Decor safari file="05_tropical_leaves" className={safariStyles.leafRight} eager />
+      </>}
+      <Decor safari={safari} file="03_bunting_flag" className={s.bunting} eager />
+      <Decor safari={safari} file="04_cloud" className={s.coverCloud} eager />
       <span className={s.sparkle} aria-hidden="true">✦</span>
       <p className={s.eyebrow}>Birthday Party</p>
       <h1>{child.name}</h1>
       {child.age !== null && <p className={s.age}>Is Turning {child.age}</p>}
       <div className={s.scene}>
-        <Decor file="02_balloon_cluster" className={s.balloons} eager />
-        <Decor file="01_teddy_bear_utama" className={s.bear} eager />
+        <Decor safari={safari} file="02_balloon_cluster" className={s.balloons} eager />
+        <Decor safari={safari} file={character} className={`${s.bear} ${safari ? safariStyles.animals : ""}`} eager />
       </div>
       <div className={s.guest}>
         <p>Kepada Yth.<br />Bapak/Ibu/Saudara/i</p>
         <strong>{guest || "Tamu Undangan"}</strong>
         <button className={`${s.button} ${s.open}`} onClick={() => { play(); setOpened(true); window.scrollTo(0, 0); }}>Buka Undangan <span aria-hidden="true">→</span></button>
       </div>
+      {safari && <Decor safari file="09_jungle_border" className={safariStyles.coverBorder} />}
     </section> : <>
       {date && <section className={`${s.section} ${s.sky}`}>
-        <Decor file="05_moon_stars" className={s.moon} />
+        <Decor safari={safari} file={safari ? "04_cloud" : "05_moon_stars"} className={s.moon} />
         <SectionReveal><p className={s.eyebrow}>Save the Date</p><h2>Menuju Hari Bahagia</h2>
         <div className={s.countdown}>{([["Hari", countdown.days], ["Jam", countdown.hours], ["Menit", countdown.minutes], ["Detik", countdown.seconds]] as const).map(([label, value]) => <div key={label}><strong>{String(value).padStart(2,"0")}</strong><span>{label}</span></div>)}</div></SectionReveal>
       </section>}
       <section className={s.section}>
         <SectionReveal><p className={s.eyebrow}>Si Kecil yang Berbahagia</p><h2>Hallo, Aku {child.name}</h2>
-        <div className={s.frame}>
-          {photo ? <img className={s.portrait} src={photo} alt={child.name} loading="lazy" /> : <Decor file="01_teddy_bear_utama" className={s.placeholder} />}
-          <Decor file="08_photo_frame" className={s.frameArt} />
+        <div className={`${s.frame} ${safari ? safariStyles.frame : ""}`}>
+          {photo ? <img className={`${s.portrait} ${safari ? safariStyles.portrait : ""}`} src={photo} alt={child.name} loading="lazy" /> : <Decor safari={safari} file={character} className={s.placeholder} />}
+          <Decor safari={safari} file="08_photo_frame" className={s.frameArt} />
         </div>
         {child.age !== null && <p className={s.lead}>Aku akan berulang tahun yang ke-{child.age}</p>}
         {opening.description && <p>{opening.description}</p>}
@@ -125,13 +133,13 @@ export default function TeddyBirthday({ invitation }: { invitation: BirthdayInvi
       </section>
       {event && <section className={`${s.section} ${s.sky}`}>
         <SectionReveal><p className={s.eyebrow}>Waktu &amp; Tempat</p><article className={s.card}>
-          <Decor file="07_birthday_cake" className={s.cake} /><h2>Birthday Party</h2>
+          <Decor safari={safari} file="07_birthday_cake" className={`${s.cake} ${safari ? safariStyles.pop : ""}`} /><h2>Birthday Party</h2>
           {event.date && <p className={s.lead}>{event.date}</p>}{event.time && <p>{event.time}</p>}{event.location && <p>{event.location}</p>}
           {mapLink && <a className={s.button} href={mapLink} target="_blank" rel="noopener noreferrer">Lihat Lokasi</a>}
         </article></SectionReveal>
       </section>}
       {invitation.gallery.length > 0 && <section className={s.section}>
-        <SectionReveal><Decor file="04_cloud" className={s.galleryCloud} /><p className={s.eyebrow}>Sweet Memories</p><h2>Galeri Foto</h2>
+        <SectionReveal><Decor safari={safari} file={safari ? "05_tropical_leaves" : "04_cloud"} className={s.galleryCloud} /><p className={s.eyebrow}>Sweet Memories</p><h2>Galeri Foto</h2>
           <div ref={gallery} className={s.gallery} tabIndex={0} aria-label="Galeri foto, geser untuk melihat">
             {invitation.gallery.map((item, i) => <img src={item} key={`${item}-${i}`} alt={`Foto ${child.name} ${i + 1}`} loading="lazy" />)}
           </div>
@@ -142,7 +150,7 @@ export default function TeddyBirthday({ invitation }: { invitation: BirthdayInvi
         <SectionReveal><p className={s.eyebrow}>RSVP</p><h2>Ucapan &amp; Doa</h2><Wishes id={invitation.id} guest={guest} /></SectionReveal>
       </section>
       {(gifts.some(gift => Boolean(gift.accountNumber)) || invitation.giftShipping) && <section className={s.section}>
-        <SectionReveal><Decor file="06_gift_boxes" className={s.cake} /><h2>Birthday Gift</h2>
+        <SectionReveal><Decor safari={safari} file="06_gift_boxes" className={`${s.cake} ${safari ? safariStyles.pop : ""}`} /><h2>Birthday Gift</h2>
           <p>Kehadiran dan doa sudah jadi hadiah terindah.</p>
           {invitation.id === 0 && <p className={s.status}>Rekening dan alamat ini hanya contoh. Jangan gunakan untuk transfer atau pengiriman.</p>}
           {gifts.map((gift, i) => gift.accountNumber && <article className={s.card} key={i}>
@@ -161,9 +169,9 @@ export default function TeddyBirthday({ invitation }: { invitation: BirthdayInvi
         </SectionReveal>
       </section>}
       <footer className={`${s.section} ${s.footer}`}>
-        <SectionReveal><Decor file="11_ribbon_banner" className={s.ribbon} /><h2>Thank You</h2><p>Terima kasih sudah menjadi bagian dari hari spesialku.</p><p className={s.lead}>{child.name}</p>
-        <Decor file="10_footer_teddy" className={s.footerBear} /></SectionReveal>
-        <Decor file="09_cloud_border" className={s.cloudBorder} /><p className={s.credit}>{invitation.brand?.name || "Vistiq Invitation"}</p>
+        <SectionReveal><Decor safari={safari} file="11_ribbon_banner" className={s.ribbon} /><h2>Thank You</h2><p>Terima kasih sudah menjadi bagian dari hari spesialku.</p><p className={s.lead}>{child.name}</p>
+        <Decor safari={safari} file={safari ? "10_footer_safari" : "10_footer_teddy"} className={s.footerBear} /></SectionReveal>
+        <Decor safari={safari} file={safari ? "09_jungle_border" : "09_cloud_border"} className={s.cloudBorder} /><p className={s.credit}>{invitation.brand?.name || "Vistiq Invitation"}</p>
       </footer>
       {musicUrl && <button type="button" className={s.music} aria-label={isPlaying ? "Jeda musik" : "Putar musik"} onClick={play}>{isPlaying ? "Ⅱ" : "♪"}</button>}
       {musicError && <p className={s.musicError} role="status">Musik belum bisa diputar.</p>}

@@ -562,3 +562,13 @@
 .root[data-wedding-theme="adat-melayu"] .desktopBackdrop > img[src="/photos/melayu-cover.webp"] {
   object-position: center top;
 }
+
+.root[data-wedding-theme="little-safari-party"] .desktopBackdrop { background: #e6ecdd; }
+.root[data-wedding-theme="little-safari-party"] .desktopBackdrop > img { object-position: center 23%; }
+.root[data-wedding-theme="little-safari-party"] .desktopBackdrop > img[src$="01_safari_animals.webp"] {
+  object-fit: contain;
+  object-position: center 38%;
+}
+.root[data-wedding-theme="little-safari-party"] .desktopBackdropShade {
+  background: linear-gradient(180deg, transparent 28%, rgba(36, 54, 38, .14) 54%, rgba(34, 52, 37, .84) 100%);
+}

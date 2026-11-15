@@ -75,6 +75,9 @@ function frameImage(invitation: InvitationFrameData | undefined, theme: string) 
   }
 
   const configured = invitation?.coverImage?.split("#", 1)[0];
+  if (theme === "little-safari-party" && invitation?.category === "birthday") {
+    return configured || invitation.child.photo || invitation.gallery[0] || "/photos/little-safari-party/01_safari_animals.webp";
+  }
   return configured || "/themes/luxury-gold/cover.webp";
 }
 

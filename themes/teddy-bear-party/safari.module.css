@@ -1,0 +1,21 @@
+.safari[data-safari-theme]{--cream:#fbf6ea;--sky:#e5eddf;--ink:#304735;--muted:#586552;--gold:#826149}
+.safari [data-safari-cover]{
+  background:radial-gradient(ellipse at 50% 28%,#fffdf7 6%,transparent 70%),linear-gradient(168deg,#fcf3df,#e4eddb 90%);
+}
+.safari :is(button,a):focus-visible{outline-color:#43604a}
+.safari :is(button,a)[class*="button"],.safari button[class*="music"]{
+  background:#526e53;border-color:#526e53;color:#fffdf4;
+}
+.safari :is(button,a)[class*="button"]:hover,.safari button[class*="music"]:hover{background:#435d46}
+.safari :is([class*="countdown"] > div,article,form,input,textarea,select){border-color:#cad7c1}
+.leafLeft,.leafRight{position:absolute;top:12%;width:clamp(64px,19%,105px);opacity:.65;z-index:-1;pointer-events:none}
+.leafLeft{left:-23px;animation:canopy 9s ease-in-out infinite}
+.leafRight{right:-23px;scale:-1 1;animation:canopy 11s ease-in-out infinite reverse}
+.coverBorder{position:absolute;bottom:0;left:0;width:100%;height:clamp(38px,9svh,84px);object-fit:cover;object-position:bottom;opacity:.45;pointer-events:none;z-index:-1}
+.safari .animals{width:96%;left:2%;height:87%}
+.safari .frame{aspect-ratio:4/5}
+.safari .portrait{object-position:center 26%}
+.pop{animation:arrive .85s ease-out both}
+@keyframes canopy{50%{transform:rotate(4deg) translateY(-4px)}}
+@keyframes arrive{from{transform:scale(.92)}to{transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){.leafLeft,.leafRight,.pop{animation:none}}
