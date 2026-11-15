@@ -81,6 +81,9 @@ function frameImage(invitation: InvitationFrameData | undefined, theme: string) 
   if (theme === "little-astronaut-party" && invitation?.category === "birthday") {
     return configured || invitation.child.photo || invitation.gallery[0] || "/photos/little-astronaut-party/01_astronaut_boy.webp";
   }
+  if (theme === "pink-butterfly-bow-party" && invitation?.category === "birthday") {
+    return configured || invitation.child.photo || invitation.gallery[0] || "/photos/pink-butterfly-bow-party/01_butterfly_bow_main.webp";
+  }
   return configured || "/themes/luxury-gold/cover.webp";
 }
 

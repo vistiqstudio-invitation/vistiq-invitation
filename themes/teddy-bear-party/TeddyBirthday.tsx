@@ -12,6 +12,7 @@ import type { BirthdayInvitationData } from "@/types/birthday";
 import s from "./style.module.css";
 import safariStyles from "./safari.module.css";
 import space from "./astronaut.module.css";
+import pink from "./butterfly.module.css";
 
 
 function Decor({ file, className, folder, eager = false }: { file: string; className?: string; folder: string; eager?: boolean }) {
@@ -78,8 +79,9 @@ export default function TeddyBirthday({ invitation }: { invitation: BirthdayInvi
   const { opened, setOpened } = useInvitation();
   const safari = invitation.theme === "little-safari-party";
   const astronaut = invitation.theme === "little-astronaut-party";
-  const folder = astronaut || safari ? invitation.theme : "teddy-bear-party";
-  const character = astronaut ? "01_astronaut_boy" : safari ? "01_safari_animals" : "01_teddy_bear_utama";
+  const butterfly = invitation.theme === "pink-butterfly-bow-party";
+  const folder = butterfly || astronaut || safari ? invitation.theme : "teddy-bear-party";
+  const character = butterfly ? "01_butterfly_bow_main" : astronaut ? "01_astronaut_boy" : safari ? "01_safari_animals" : "01_teddy_bear_utama";
   const guest = useSearchParams().get("to")?.trim() || "";
   const reduced = useReducedMotion();
   const SectionReveal = reduced ? "div" : Reveal;
@@ -94,9 +96,9 @@ export default function TeddyBirthday({ invitation }: { invitation: BirthdayInvi
   const mapLink = map && /^https?:\/\//i.test(map) ? map : event?.location ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.location)}` : null;
   const play = () => { if (musicUrl) void toggle().then(() => setMusicError(false)).catch(() => setMusicError(true)); };
   const photo = child.photo || invitation.coverImage;
-  return <main className={`${s.root} ${safari ? safariStyles.safari : astronaut ? space.root : ""}`} data-safari-theme={safari || undefined} data-astronaut-theme={astronaut || undefined}>
+  return <main className={`${s.root} ${safari ? safariStyles.safari : astronaut ? space.root : butterfly ? pink.root : ""}`} data-safari-theme={safari || undefined} data-astronaut-theme={astronaut || undefined} data-butterfly-theme={butterfly || undefined}>
     {musicUrl && <audio ref={audioRef} src={musicUrl} loop preload="none" />}
-    {!opened ? <section className={`${s.cover} ${astronaut ? space.cover : ""}`} data-safari-cover={safari || undefined}>
+    {!opened ? <section className={`${s.cover} ${astronaut ? space.cover : butterfly ? pink.cover : ""}`} data-safari-cover={safari || undefined}>
       {safari && <>
         <Decor folder={folder} file="05_tropical_leaves" className={safariStyles.leafLeft} eager />
         <Decor folder={folder} file="05_tropical_leaves" className={safariStyles.leafRight} eager />
@@ -106,16 +108,16 @@ export default function TeddyBirthday({ invitation }: { invitation: BirthdayInvi
         <Decor folder={folder} file="03_planets" className={space.coverPlanets} eager />
         <Decor folder={folder} file="02_rocket" className={space.rocket} eager />
       </> : <>
-        <Decor folder={folder} file="03_bunting_flag" className={s.bunting} eager />
-        <Decor folder={folder} file="04_cloud" className={s.coverCloud} eager />
+        <Decor folder={folder} file={butterfly ? "03_bunting_bow" : "03_bunting_flag"} className={s.bunting} eager />
+        <Decor folder={folder} file={butterfly ? "04_butterflies" : "04_cloud"} className={butterfly ? pink.coverFlutter : s.coverCloud} eager />
       </>}
       <span className={s.sparkle} aria-hidden="true">✦</span>
       <p className={s.eyebrow}>Birthday Party</p>
       <h1>{child.name}</h1>
       {child.age !== null && <p className={s.age}>Is Turning {child.age}</p>}
-      <div className={`${s.scene} ${astronaut ? space.scene : ""}`}>
-        <Decor folder={folder} file={astronaut ? "05_balloon_cluster" : "02_balloon_cluster"} className={`${s.balloons} ${astronaut ? space.balloons : ""}`} eager />
-        <Decor folder={folder} file={character} className={`${s.bear} ${safari ? safariStyles.animals : astronaut ? space.astronaut : ""}`} eager />
+      <div className={`${s.scene} ${astronaut ? space.scene : butterfly ? pink.scene : ""}`}>
+        <Decor folder={folder} file={butterfly ? "02_balloon_cluster_pink" : astronaut ? "05_balloon_cluster" : "02_balloon_cluster"} className={`${s.balloons} ${astronaut ? space.balloons : butterfly ? pink.balloons : ""}`} eager />
+        <Decor folder={folder} file={character} className={`${s.bear} ${safari ? safariStyles.animals : astronaut ? space.astronaut : butterfly ? pink.bow : ""}`} eager />
       </div>
       <div className={s.guest}>
         <p>Kepada Yth.<br />Bapak/Ibu/Saudara/i</p>
@@ -125,19 +127,20 @@ export default function TeddyBirthday({ invitation }: { invitation: BirthdayInvi
       {safari && <Decor folder={folder} file="09_jungle_border" className={safariStyles.coverBorder} />}
     </section> : <>
       {date && <section className={`${s.section} ${s.sky}`}>
-        <Decor folder={folder} file={astronaut ? "04_cloud_moon_stars" : safari ? "04_cloud" : "05_moon_stars"} className={s.moon} />
+        <Decor folder={folder} file={butterfly ? "04_butterflies" : astronaut ? "04_cloud_moon_stars" : safari ? "04_cloud" : "05_moon_stars"} className={butterfly ? pink.countdownFlutter : s.moon} />
         <SectionReveal><p className={s.eyebrow}>Save the Date</p><h2>Menuju Hari Bahagia</h2>
         <div className={s.countdown}>{([["Hari", countdown.days], ["Jam", countdown.hours], ["Menit", countdown.minutes], ["Detik", countdown.seconds]] as const).map(([label, value]) => <div key={label}><strong>{String(value).padStart(2,"0")}</strong><span>{label}</span></div>)}</div></SectionReveal>
       </section>}
       <section className={s.section}>
         <SectionReveal><p className={s.eyebrow}>Si Kecil yang Berbahagia</p><h2>Hallo, Aku {child.name}</h2>
-        <div className={`${s.frame} ${safari ? safariStyles.frame : astronaut ? space.frame : ""}`}>
-          {photo ? <img className={`${s.portrait} ${safari ? safariStyles.portrait : astronaut ? space.portrait : ""}`} src={photo} alt={child.name} loading="lazy" /> : <Decor folder={folder} file={character} className={s.placeholder} />}
+        <div className={`${s.frame} ${safari ? safariStyles.frame : astronaut ? space.frame : butterfly ? pink.frame : ""}`}>
+          {photo ? <img className={`${s.portrait} ${safari ? safariStyles.portrait : astronaut ? space.portrait : butterfly ? pink.portrait : ""}`} src={photo} alt={child.name} loading="lazy" /> : <Decor folder={folder} file={character} className={s.placeholder} />}
           <Decor folder={folder} file="08_photo_frame" className={s.frameArt} />
+          {butterfly && <Decor folder={folder} file="05_flower_cluster" className={pink.profileFlowers} />}
         </div>
         {child.age !== null && <p className={s.lead}>Aku akan berulang tahun yang ke-{child.age}</p>}
         {opening.description && <p>{opening.description}</p>}
-        {[parents.father, parents.mother].some(Boolean) && <p className={s.parents}>Putra/putri dari {[parents.father, parents.mother].filter(Boolean).join(" & ")}</p>}
+        {[parents.father, parents.mother].some(Boolean) && <p className={s.parents}>{butterfly ? "Putri dari" : "Putra/putri dari"} {[parents.father, parents.mother].filter(Boolean).join(" & ")}</p>}
         </SectionReveal>
       </section>
       {event && <section className={`${s.section} ${s.sky}`}>
@@ -148,7 +151,8 @@ export default function TeddyBirthday({ invitation }: { invitation: BirthdayInvi
         </article></SectionReveal>
       </section>}
       {invitation.gallery.length > 0 && <section className={s.section}>
-        <SectionReveal><Decor folder={folder} file={astronaut ? "03_planets" : safari ? "05_tropical_leaves" : "04_cloud"} className={s.galleryCloud} /><p className={s.eyebrow}>Sweet Memories</p><h2>Galeri Foto</h2>
+        <SectionReveal><Decor folder={folder} file={butterfly ? "05_flower_cluster" : astronaut ? "03_planets" : safari ? "05_tropical_leaves" : "04_cloud"} className={s.galleryCloud} /><p className={s.eyebrow}>Sweet Memories</p><h2>Galeri Foto</h2>
+          {butterfly && <Decor folder={folder} file="04_butterflies" className={pink.galleryFlutter} />}
           <div ref={gallery} className={s.gallery} tabIndex={0} aria-label="Galeri foto, geser untuk melihat">
             {invitation.gallery.map((item, i) => <img src={item} key={`${item}-${i}`} alt={`Foto ${child.name} ${i + 1}`} loading="lazy" />)}
           </div>
@@ -177,14 +181,17 @@ export default function TeddyBirthday({ invitation }: { invitation: BirthdayInvi
           </article>}
         </SectionReveal>
       </section>}
-      <footer className={`${s.section} ${s.footer} ${astronaut ? space.footer : ""}`}>
+      <footer className={`${s.section} ${s.footer} ${astronaut ? space.footer : butterfly ? pink.footer : ""}`}>
         <SectionReveal>{astronaut ? <div className={space.farewell}>
           <Decor folder={folder} file="09_space_border" className={space.spaceBorder} />
           <h2 className={space.ribbonTitle}><Decor folder={folder} file="11_ribbon_banner" />Thank You</h2>
           <p>Terima kasih sudah menjadi bagian dari petualangan kecilku di hari spesial ini.</p><p className={s.lead}>{child.name}</p>
-        </div> : <><Decor folder={folder} file="11_ribbon_banner" className={s.ribbon} /><h2>Thank You</h2><p>Terima kasih sudah menjadi bagian dari hari spesialku.</p><p className={s.lead}>{child.name}</p></>}
-        <Decor folder={folder} file={astronaut ? "10_footer_space" : safari ? "10_footer_safari" : "10_footer_teddy"} className={s.footerBear} /></SectionReveal>
-        {!astronaut && <Decor folder={folder} file={safari ? "09_jungle_border" : "09_cloud_border"} className={s.cloudBorder} />}<p className={s.credit}>{invitation.brand?.name || "Vistiq Invitation"}</p>
+        </div> : butterfly ? <>
+          <h2 className={pink.ribbonTitle}><Decor folder={folder} file="11_ribbon_banner" />Thank You</h2>
+          <p>Terima kasih sudah menjadi bagian dari hari spesialku. Kehadiran dan doamu membuat hariku semakin indah.</p><p className={s.lead}>{child.name}</p>
+        </> : <><Decor folder={folder} file="11_ribbon_banner" className={s.ribbon} /><h2>Thank You</h2><p>Terima kasih sudah menjadi bagian dari hari spesialku.</p><p className={s.lead}>{child.name}</p></>}
+        <Decor folder={folder} file={butterfly ? "10_footer_butterfly" : astronaut ? "10_footer_space" : safari ? "10_footer_safari" : "10_footer_teddy"} className={s.footerBear} /></SectionReveal>
+        {!astronaut && <Decor folder={folder} file={butterfly ? "09_butterfly_border" : safari ? "09_jungle_border" : "09_cloud_border"} className={butterfly ? pink.footerBorder : s.cloudBorder} />}<p className={s.credit}>{invitation.brand?.name || "Vistiq Invitation"}</p>
       </footer>
       {musicUrl && <button type="button" className={s.music} aria-label={isPlaying ? "Jeda musik" : "Putar musik"} onClick={play}>{isPlaying ? "Ⅱ" : "♪"}</button>}
       {musicError && <p className={s.musicError} role="status">Musik belum bisa diputar.</p>}

@@ -1,0 +1,58 @@
+.root[data-butterfly-theme] {
+  --cream: #fff9f3;
+  --sky: #f9e7eb;
+  --ink: #61364a;
+  --muted: #735361;
+  --gold: #825737;
+}
+.root .cover {
+  padding-top: clamp(88px, 16svh, 140px);
+  background: radial-gradient(ellipse at 50% 40%, #fffdfa 14%, transparent 70%), linear-gradient(165deg, #fff7ee, #f9e1e9);
+}
+.root .cover img[class*="bunting"] {
+  width: min(88%, 430px);
+  height: min(16svh, 131px);
+  top: clamp(8px, 3svh, 28px);
+}
+.coverFlutter {
+  position: absolute;
+  top: 20%;
+  right: 2%;
+  width: clamp(34px, 12%, 67px);
+  z-index: -1;
+  pointer-events: none;
+  opacity: .54;
+  animation: flutter 9s ease-in-out infinite;
+}
+.root .scene { width: min(92%, 365px); height: clamp(140px, 32svh, 280px); }
+.root .bow { height: 94%; width: 77%; left: 10%; }
+.root .balloons { height: 62%; width: 31%; top: 10%; right: 0; opacity: .78; }
+.root :is(button,a)[class*="button"], .root button[class*="music"] { background:#8b4d64; border-color:#ad7890; color:#fffaf6; }
+.root :is(button,a)[class*="button"]:hover, .root button[class*="music"]:hover { background:#723c51; }
+.root :is(button,a,input,select,textarea,[tabindex]):focus-visible { outline-color: #8b4d64; }
+.root :is([class*="countdown"] > div,article,form,input,select,textarea) { border-color: #e6c5d0; }
+.root :is(article,form) { background:#fffdfa; box-shadow:0 8px 24px #8e52670c; }
+.root div[class*="arrows"] button { background:#f4dae3; border-color:#dfb1c2; }
+.countdownFlutter { width:63px; margin:0 auto 8px; animation:flutter 10s ease-in-out infinite; }
+.root .frame { width:min(70%,245px); aspect-ratio:4/5; }
+.root .portrait {
+  inset:18% auto auto 15%;
+  width:69%;
+  height:69%;
+  border-radius:0;
+  object-position:center 28%;
+  /* Extend the photo under the artwork rim to fill its transparent opening. */
+  clip-path: polygon(46.2% 0.7%, 37.1% 4.3%, 20.8% 8.0%, 14.5% 11.6%, 7.2% 15.2%, 5.4% 18.8%, 4.5% 22.5%, 4.5% 26.1%, 5.4% 29.7%, 8.2% 33.3%, 8.2% 37.0%, 5.4% 40.6%, 8.2% 44.2%, 4.5% 47.8%, 4.5% 51.4%, 3.6% 55.1%, 1.8% 58.7%, 0.9% 62.3%, 0.9% 65.9%, 0.9% 69.6%, 2.7% 73.2%, 4.5% 76.8%, 7.2% 80.4%, 15.4% 84.1%, 17.2% 87.7%, 21.7% 91.3%, 42.6% 94.9%, 46.2% 98.6%, 46.2% 98.6%, 53.4% 98.6%, 53.4% 98.6%, 56.2% 94.9%, 78.8% 91.3%, 83.3% 87.7%, 84.2% 84.1%, 92.4% 80.4%, 95.1% 76.8%, 96.9% 73.2%, 98.7% 69.6%, 98.7% 65.9%, 98.7% 62.3%, 97.8% 58.7%, 96.9% 55.1%, 95.1% 51.4%, 91.5% 47.8%, 94.2% 44.2%, 90.6% 40.6%, 90.6% 37.0%, 93.3% 33.3%, 94.2% 29.7%, 95.1% 26.1%, 95.1% 22.5%, 95.1% 18.8%, 93.3% 15.2%, 86.1% 11.6%, 79.7% 8.0%, 64.3% 4.3%, 54.3% 0.7%);
+}
+.profileFlowers { position:absolute; width:27%; bottom:5%; right:-11%; pointer-events:none; transform:rotate(12deg); }
+.galleryFlutter { position:absolute; width:40px; top:22px; right:6%; pointer-events:none; opacity:.55; }
+.root .footer { background:linear-gradient(var(--cream),#f7e2e9); }
+.root .ribbonTitle { position:relative; display:grid; place-items:center; isolation:isolate; padding-top:10px; width:min(100%,242px); aspect-ratio:3; margin:0 auto 13px; font-size:clamp(1.4rem, 6vw, 2.05rem); }
+.ribbonTitle img { position:absolute; inset:0; width:100%; height:100%; z-index:-1; pointer-events:none; }
+.root .footer img[class*="footerBear"] { width:min(92%,400px); margin:5px auto 0; }
+.footerBorder { width:100%; mix-blend-mode:multiply; opacity:.73; margin:0 auto 8px; }
+@keyframes flutter { 50% { transform: translate(2px,-7px) rotate(-7deg); opacity:.75; } }
+@media (max-height:660px) {
+  .root .cover { padding-top:76px; }
+  .root .scene { height:clamp(125px, 28svh, 180px); }
+}

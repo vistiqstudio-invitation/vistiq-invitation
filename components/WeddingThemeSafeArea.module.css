@@ -583,3 +583,14 @@
 .root[data-wedding-theme="little-astronaut-party"] .desktopBackdropShade {
   background: linear-gradient(to top,#152948b0 2%,#1832521f 72%,transparent);
 }
+
+.root[data-wedding-theme="pink-butterfly-bow-party"] .desktopBackdrop { background:#f6e1e7; }
+.root[data-wedding-theme="pink-butterfly-bow-party"] .desktopBackdrop > img { object-position:center 27%; }
+.root[data-wedding-theme="pink-butterfly-bow-party"] .desktopBackdrop > img[src$="01_butterfly_bow_main.webp"] {
+  object-fit:contain;
+  object-position:center;
+  padding:11vh 13%;
+}
+.root[data-wedding-theme="pink-butterfly-bow-party"] .desktopBackdropShade {
+  background:linear-gradient(to top,#44273da8 2%,#6f43571a 70%,transparent);
+}
