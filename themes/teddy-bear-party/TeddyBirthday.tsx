@@ -131,7 +131,7 @@ export default function TeddyBirthday({ invitation }: { invitation: BirthdayInvi
     </section> : <>
       {date && <section className={`${s.section} ${s.sky}`}>
         <Decor folder={folder} file={butterfly ? "04_butterflies" : astronaut ? "04_cloud_moon_stars" : safari ? "04_cloud" : "05_moon_stars"} className={butterfly ? pink.countdownFlutter : s.moon} />
-        <SectionReveal><p className={s.eyebrow}>Save the Date</p><h2>Menuju Hari Bahagia</h2>
+        <SectionReveal><p className={s.eyebrow}>{nabilaNadila ? "Catat Tanggalnya" : "Save the Date"}</p><h2>{nabilaNadila ? "Pesta Ulang Tahun Nabila & Nadila" : "Menuju Hari Bahagia"}</h2>
         <div className={s.countdown}>{([["Hari", countdown.days], ["Jam", countdown.hours], ["Menit", countdown.minutes], ["Detik", countdown.seconds]] as const).map(([label, value]) => <div key={label}><strong>{String(value).padStart(2,"0")}</strong><span>{label}</span></div>)}</div></SectionReveal>
       </section>}
       <section className={s.section}>
