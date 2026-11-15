@@ -1,3 +1,4 @@
+import { invitationCopy } from "@/lib/invitationCopy";
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
@@ -30,12 +31,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // Version this URL whenever the OG renderer changes so WhatsApp does not
   // keep showing an older cached composition.
   const ogImage = `${PRIMARY_ORIGIN}/api/og/${encodeURIComponent(slug)}?v=7`;
-  let title = "Undangan Digital";
-  let description = "Kami mengundang Bapak/Ibu/Saudara/i untuk turut hadir dan memberikan doa restu.";
-  if (invitation.category === "aqiqah") { title = `Aqiqah ${invitation.baby.name} | ${invitation.brand?.name ?? "Vistiq Invitation"}`; description = `Undangan aqiqah ${invitation.baby.name}. ${description}`; }
-  else if (invitation.category === "khitan") { title = `Khitan ${invitation.child.name} | ${invitation.brand?.name ?? "Vistiq Invitation"}`; description = `Undangan khitan ${invitation.child.name}. ${description}`; }
-  else if (invitation.category === "birthday") { title = `Ulang Tahun ${invitation.child.name} | ${invitation.brand?.name ?? "Vistiq Invitation"}`; description = `Undangan ulang tahun ke-${invitation.child.age ?? ""} ${invitation.child.name}. Kami mengundang Bapak/Ibu/Saudara/i untuk turut hadir.`; }
-  else { title = `${invitation.groom.name} & ${invitation.bride.name} | ${invitation.brand?.name ?? "Wedding Invitation"}`; description = `Undangan pernikahan ${invitation.groom.name} & ${invitation.bride.name}. ${description}`; }
+  const category = invitation.category;
+  const copy = invitationCopy[category];
+  const name = category === "wedding"
+    ? [invitation.groom.name, invitation.bride.name].filter(Boolean).join(" & ")
+    : category === "aqiqah" ? invitation.baby.name : invitation.child.name;
+  const brand = invitation.brand?.name ?? "Vistiq Invitation";
+  const occasion = category === "birthday" && invitation.child.age
+    ? `ulang tahun ke-${invitation.child.age}`
+    : copy.label.toLowerCase();
+  const title = `${category === "wedding" ? name || copy.label : [copy.label, name].filter(Boolean).join(" ")} | ${brand}`;
+  const description = `Undangan ${[occasion, name].filter(Boolean).join(" ")}. ${category === "birthday" ? "Mari ikut merayakan hari spesial ini." : copy.openingDescription}`;
   return {
     metadataBase: new URL(origin), title, description,
     alternates: { canonical },

@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { themeList, aqiqahThemeList, khitanThemeList, birthdayThemeList } from "@/lib/theme";
 import ThemePreviewPanel from "@/components/ThemePreviewPanel";
+import { invitationCopy } from "@/lib/invitationCopy";
 import SmartCoverEditor from "@/components/SmartCoverEditor";
 import { MUSIC_LIBRARY } from "@/lib/musicLibrary";
 import styles from "@/styles/dashboard.module.css";
@@ -600,7 +601,7 @@ export default function AdminInvitationEditPage() {
 
             <div className={styles.formGrid}>
               <input
-                placeholder="Ucapan pembuka, contoh: Assalamu'alaikum Warahmatullahi Wabarakatuh"
+                placeholder={form.category === "birthday" ? "Sapaan pembuka, contoh: Halo, teman-teman!" : "Salam pembuka, contoh: Assalamu'alaikum Warahmatullahi Wabarakatuh"}
                 value={form.opening_greeting}
                 onChange={(e) => set("opening_greeting", e.target.value)}
                 className={styles.input}
@@ -608,7 +609,7 @@ export default function AdminInvitationEditPage() {
               />
 
               <textarea
-                placeholder={"Kalimat pembuka utama. Tekan Enter sebelum nama pengantin agar tampil pada baris baru."}
+                placeholder={invitationCopy[form.category].openingTitle}
                 value={form.opening_title}
                 onChange={(e) => set("opening_title", e.target.value)}
                 className={styles.textarea}
@@ -616,7 +617,7 @@ export default function AdminInvitationEditPage() {
               />
 
               <textarea
-                placeholder="Kalimat ajakan/kehormatan"
+                placeholder={invitationCopy[form.category].openingDescription}
                 value={form.opening_description}
                 onChange={(e) => set("opening_description", e.target.value)}
                 className={styles.textarea}
@@ -632,7 +633,7 @@ export default function AdminInvitationEditPage() {
               />
 
               <input
-                placeholder="Sumber kutipan, contoh: QS. Ar-Rum : 21"
+                placeholder="Sumber kutipan atau doa (opsional)"
                 value={form.opening_quote_source}
                 onChange={(e) => set("opening_quote_source", e.target.value)}
                 className={styles.input}
@@ -640,7 +641,7 @@ export default function AdminInvitationEditPage() {
               />
 
               <input
-                placeholder="Ucapan penutup, contoh: Tuhan memberkati"
+                placeholder={invitationCopy[form.category].closing}
                 value={form.closing_greeting}
                 onChange={(e) => set("closing_greeting", e.target.value)}
                 className={styles.input}

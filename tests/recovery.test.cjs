@@ -324,3 +324,22 @@ test('client, reseller and admin invitation share links use the same Vistiq doma
     assert.match(source, /const url = publicInvitationUrl\(slug\)/);
   }
 });
+
+test('guest messages use the selected occasion and never use stale couple names for children', () => {
+  const { invitationDisplayName, invitationShareMessage } = load('lib/invitationCopy.ts');
+  const url = 'https://www.vistiqinvitation.com/contoh?to=Tamu+Demo';
+  const names = { groom_name: 'Rizky', bride_name: 'Nabila', baby_name: 'Alya' };
+  for (const [category, occasion] of [['birthday', 'ulang tahun'], ['aqiqah', 'akikah'], ['khitan', 'khitan']]) {
+    const invitation = { ...names, category };
+    const message = invitationShareMessage('Tamu Demo', url, invitation);
+    assert.equal(invitationDisplayName(invitation), 'Alya');
+    assert.ok(message.includes(url));
+    assert.match(message, new RegExp(occasion, 'i'));
+    assert.match(message, /\*Alya\*/);
+    assert.doesNotMatch(message, /pernikahan|Rizky|Nabila/i);
+  }
+  const wedding = { ...names, category: 'wedding' };
+  assert.equal(invitationDisplayName(wedding), 'Rizky & Nabila');
+  assert.match(invitationShareMessage('Tamu Demo', url, wedding), /pernikahan \*Rizky & Nabila\*/);
+  assert.equal(invitationDisplayName({ category: 'khitan' }), 'Undangan Khitan');
+});

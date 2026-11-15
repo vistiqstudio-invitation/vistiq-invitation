@@ -4,6 +4,7 @@
 import { useRef, useState, type FormEvent } from "react";
 import { useSearchParams } from "next/navigation";
 import { useReducedMotion } from "framer-motion";
+import { invitationCopy } from "@/lib/invitationCopy";
 import Reveal from "@/components/Reveal";
 import { useInvitation } from "@/components/InvitationProvider";
 import { useCountdown } from "@/hooks/useCountdown";
@@ -150,7 +151,7 @@ export default function TeddyBirthday({ invitation }: { invitation: BirthdayInvi
           {butterfly && <Decor folder={folder} file="05_flower_cluster" className={pink.profileFlowers} />}
         </div>
         {nabilaNadila ? <p className={s.lead}>Yang ke 10 Tahun</p> : child.age !== null && <p className={s.lead}>Aku akan berulang tahun yang ke-{child.age}</p>}
-        {nabilaNadila ? <p>Kami mengundang teman-teman untuk merayakan hari ulang tahun kami.</p> : opening.description && <p>{opening.description}</p>}
+        {nabilaNadila ? <p>Kami mengundang teman-teman untuk merayakan hari ulang tahun kami.</p> : <p>{opening.description?.trim() ? opening.description : invitationCopy.birthday.openingDescription}</p>}
         {!nabilaNadila && [parents.father, parents.mother].some(Boolean) && <p className={s.parents}>{butterfly ? "Putri dari" : "Putra/putri dari"} {[parents.father, parents.mother].filter(Boolean).join(" & ")}</p>}
         </SectionReveal>
       </section>
