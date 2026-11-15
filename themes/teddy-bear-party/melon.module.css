@@ -1,0 +1,74 @@
+.root[data-melon-theme] {
+  --cream:#fffaea;
+  --sky:#eef7ff;
+  --ink:#28433a;
+  --muted:#466257;
+  --gold:#8d4e27;
+  --cover-pattern:url("/photos/rainbow-melon-party/11_background_soft.webp");
+}
+.root .cover {
+  padding-top:clamp(86px,15svh,130px);
+  background:radial-gradient(ellipse at 50% 40%,#fffdf6 10%,transparent 70%),linear-gradient(166deg,#fff5c9,#e5f5ff);
+}
+.root :is(.cover,.fun)::before {
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  background:var(--cover-pattern) center / cover no-repeat;
+  opacity:.13;
+}
+.root .cover img[class*="bunting"] {
+  width:min(87%,435px);
+  height:min(14svh,111px);
+  top:clamp(7px,2svh,21px);
+}
+.coverRainbow {
+  position:absolute;
+  top:18%;
+  left:2%;
+  z-index:-1;
+  width:clamp(39px,17%,94px);
+  opacity:.78;
+  pointer-events:none;
+  animation:rise 10s ease-in-out infinite;
+}
+.root .scene { width:min(92%,350px);height:clamp(145px,32svh,283px); }
+.root .mascot { width:72%;height:92%;left:11%; }
+.root .balloons { width:31%;height:66%;right:0;top:10%; }
+.root button[class*="open"] { background:#d4ecaa;border-color:#9fbc66;color:#29402c; }
+.root :is(button,a)[class*="button"]:not([class*="open"]),.root button[class*="music"] {
+  background:#cdebf6;color:#223d43;border-color:#9cc9da;
+}
+.root :is(button,a)[class*="button"]:hover,.root button[class*="music"]:hover { filter:brightness(.95); }
+.root :is(button,a,input,select,textarea,[tabindex]):focus-visible { outline-color:#365f45; }
+.root :is(article,form,input,select,textarea) { border-color:#cbdfd1; }
+.root div[class*="countdown"] > div:nth-child(1){background:#edf6d9;border-color:#caddaa;}
+.root div[class*="countdown"] > div:nth-child(2){background:#e6f5ff;border-color:#b4d9ef;}
+.root div[class*="countdown"] > div:nth-child(3){background:#fff4ca;border-color:#ebd783;}
+.root div[class*="countdown"] > div:nth-child(4){background:#ffebe4;border-color:#e9c0b4;}
+.root .frame { width:min(72%,260px); aspect-ratio:640/800; }
+.root .portrait {
+  inset:24.00% auto auto 11.25%;
+  width:75.62%;
+  height:61.50%;
+  border-radius:0;
+  object-position:center 24%;
+  /* Follow the opening so the photo extends beneath the artwork rim. */
+  clip-path:polygon(43.0% 0.0%, 36.4% 4.9%, 20.7% 9.8%, 16.5% 14.6%, 14.9% 19.5%, 6.6% 24.4%, 4.1% 29.3%, 4.1% 34.1%, 5.8% 39.0%, 2.5% 43.9%, 0.8% 48.8%, 0.0% 53.7%, 2.5% 58.5%, 2.5% 63.4%, 7.4% 68.3%, 7.4% 73.2%, 8.3% 78.0%, 15.7% 82.9%, 20.7% 87.8%, 24.8% 92.7%, 44.6% 97.6%, 46.3% 99.2%, 56.2% 99.2%, 57.0% 97.6%, 76.9% 92.7%, 81.8% 87.8%, 89.3% 82.9%, 92.6% 78.0%, 92.6% 73.2%, 92.6% 68.3%, 97.5% 63.4%, 99.2% 58.5%, 100.0% 53.7%, 100.0% 48.8%, 97.5% 43.9%, 95.9% 39.0%, 96.7% 34.1%, 96.7% 29.3%, 94.2% 24.4%, 86.8% 19.5%, 85.1% 14.6%, 81.0% 9.8%, 66.9% 4.9%, 57.9% 0.0%);
+}
+.fun {
+  isolation:isolate;
+  background:linear-gradient(180deg,var(--cream),#fff3cc 45%,var(--cream));
+}
+.notes { width:82px;margin:0 auto 10px;animation:rise 8s ease-in-out infinite; }
+.divider { width:min(100%,340px);height:auto;margin:5px auto 0; }
+.root .footer { background:linear-gradient(var(--cream),#edf6d9); }
+.root .footer img[class*="footerBear"] { width:100%;max-width:530px;margin:3px auto 0; }
+@keyframes rise { 50% { transform:translateY(-6px) rotate(-3deg); } }
+@media (max-height:650px) {
+  .root .cover { padding-top:76px; }
+  .root .scene { height:clamp(126px,27svh,175px); }
+}
+.root :is(h1,h2) { font-family:ui-rounded,"Trebuchet MS",system-ui,sans-serif; }

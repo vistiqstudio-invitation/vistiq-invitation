@@ -3,10 +3,12 @@ import { BIRTHDAY_COVER_BY_THEME } from "@/lib/themeCoverImages";
 
 export const COVER_BY_THEME = BIRTHDAY_COVER_BY_THEME;
 
+const melonPhotoBase = "/photos/rainbow-melon-party";
 const butterflyPhotoBase = "/photos/pink-butterfly-bow-party";
 const astronautPhotoBase = "/photos/little-astronaut-party";
 
 const CHILD_PHOTO_BY_THEME: Record<string, string> = {
+  "rainbow-melon-party": `${melonPhotoBase}/demo-profile.webp`,
   "pink-butterfly-bow-party": `${butterflyPhotoBase}/demo-profile.webp`,
   "little-astronaut-party": `${astronautPhotoBase}/demo-profile.webp`,
   "little-safari-party": "/photos/little-safari-party/demo-profile.webp",
@@ -18,6 +20,7 @@ const CHILD_PHOTO_BY_THEME: Record<string, string> = {
 };
 
 const GALLERY_BY_THEME: Record<string, string[]> = {
+  "rainbow-melon-party": [`${melonPhotoBase}/demo-profile.webp`, `${melonPhotoBase}/demo-gallery-2.webp`],
   "pink-butterfly-bow-party": [`${butterflyPhotoBase}/demo-profile.webp`, `${butterflyPhotoBase}/demo-gallery-2.webp`],
   "little-astronaut-party": [`${astronautPhotoBase}/demo-profile.webp`, `${astronautPhotoBase}/demo-gallery-2.webp`],
   "little-safari-party": ["/photos/little-safari-party/demo-profile.webp", "/photos/little-safari-party/demo-gallery-2.webp"],
@@ -51,6 +54,11 @@ type ThemeCopy = {
 };
 
 const COPY_BY_THEME: Record<string, ThemeCopy> = {
+  "rainbow-melon-party": {
+    childName: "Aiden",
+    opening: { greeting: "", title: "Birthday Party", description: "Yuk, bernyanyi, bermain, tertawa, dan berbagi kebahagiaan bersama di hari spesialku!", quote: "", quoteSource: "" },
+    location: "Rumah Kami",
+  },
   "pink-butterfly-bow-party": {
     childName: "Alya",
     opening: { greeting: "", title: "Birthday Party", description: "Yuk, datang dan rayakan hari spesialku bersama dengan penuh tawa, warna, dan kebahagiaan!", quote: "", quoteSource: "" },
@@ -123,7 +131,8 @@ export function getDemoBirthdayInvitation(theme: string): BirthdayInvitationData
   const safari = theme === "little-safari-party";
   const astronaut = theme === "little-astronaut-party";
   const butterfly = theme === "pink-butterfly-bow-party";
-  const decemberParty = safari || astronaut || butterfly;
+  const melon = theme === "rainbow-melon-party";
+  const decemberParty = safari || astronaut || butterfly || melon;
   const giftName = `Keluarga ${copy.childName} (Contoh)`;
   const teddy = theme === "teddy-bear-party";
   return {
@@ -154,10 +163,10 @@ export function getDemoBirthdayInvitation(theme: string): BirthdayInvitationData
       rawDate: decemberParty ? "2026-12-20T15:00:00+07:00" : teddy ? "2026-12-20T10:00:00+07:00" : "2026-09-20T10:00:00",
       time: decemberParty ? "15.00 WIB" : "10.00 WIB",
       location: copy.location,
-      ...(butterfly ? { address: "Jl. Taman Kupu-Kupu No. 3, Kota Contoh" } : astronaut ? { address: "Jl. Bintang Kecil No. 3, Kota Contoh" } : {}),
+      ...(melon ? { address: "Jl. Pelangi Ceria No. 3, Kota Contoh" } : butterfly ? { address: "Jl. Taman Kupu-Kupu No. 3, Kota Contoh" } : astronaut ? { address: "Jl. Bintang Kecil No. 3, Kota Contoh" } : {}),
     },
     gallery: GALLERY_BY_THEME[theme] || [],
     gifts: teddy || decemberParty ? [{ owner: "Keluarga", bankName: "Bank Contoh", accountNumber: "0000 0000 00", accountName: giftName }] : [],
-    giftShipping: butterfly ? { recipient: giftName, address: "Jl. Taman Kupu-Kupu No. 3, Kota Contoh 00000" } : astronaut ? { recipient: "Keluarga Aiden (Contoh)", address: "Jl. Bintang Kecil No. 3, Kota Contoh 00000" } : safari ? { recipient: "Keluarga Aiden (Contoh)", address: "Jl. Rimba Ceria No. 3, Kota Contoh 00000" } : teddy ? { recipient: "Keluarga Aiden (Contoh)", address: "Jl. Pesta Teddy No. 3, Kota Contoh 00000" } : null,
+    giftShipping: melon ? { recipient: giftName, address: "Jl. Pelangi Ceria No. 3, Kota Contoh 00000" } : butterfly ? { recipient: giftName, address: "Jl. Taman Kupu-Kupu No. 3, Kota Contoh 00000" } : astronaut ? { recipient: "Keluarga Aiden (Contoh)", address: "Jl. Bintang Kecil No. 3, Kota Contoh 00000" } : safari ? { recipient: "Keluarga Aiden (Contoh)", address: "Jl. Rimba Ceria No. 3, Kota Contoh 00000" } : teddy ? { recipient: "Keluarga Aiden (Contoh)", address: "Jl. Pesta Teddy No. 3, Kota Contoh 00000" } : null,
   };
 }

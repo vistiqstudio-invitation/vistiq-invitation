@@ -111,6 +111,7 @@ export const AQIQAH_COVER_BY_THEME: Record<string, string> = {
 
 export const BIRTHDAY_COVER_BY_THEME: Record<string, string> = {
   "teddy-bear-party": "/theme-previews/birthday/teddy-bear-party.jpg",
+  "rainbow-melon-party": "/theme-previews/birthday/rainbow-melon-party.jpg",
   "pink-butterfly-bow-party": "/theme-previews/birthday/pink-butterfly-bow-party.jpg",
   "little-astronaut-party": "/theme-previews/birthday/little-astronaut-party.jpg",
   "little-safari-party": "/theme-previews/birthday/little-safari-party.jpg",
@@ -128,7 +129,7 @@ export function getThemeCoverImage(themeKey: string, demoPath: string): string |
 }
 
 export function getThemeCardPreviewImage(themeKey: string, demoPath: string): string | null {
-  if (demoPath === "/demo-ulang-tahun" && (themeKey === "teddy-bear-party" || themeKey === "little-safari-party" || themeKey === "little-astronaut-party" || themeKey === "pink-butterfly-bow-party")) {
+  if (demoPath === "/demo-ulang-tahun" && (themeKey === "teddy-bear-party" || themeKey === "little-safari-party" || themeKey === "little-astronaut-party" || themeKey === "pink-butterfly-bow-party" || themeKey === "rainbow-melon-party")) {
     return BIRTHDAY_COVER_BY_THEME[themeKey];
   }
   if (demoPath !== "/demo" && demoPath !== "/demo-khitan") return null;

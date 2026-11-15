@@ -254,12 +254,14 @@ export const khitanThemeList: ThemeMeta[] = [
 
 export const birthdayThemeRegistry: Record<string,(props:{invitation:BirthdayInvitationData})=>React.JSX.Element> = {
   "teddy-bear-party": TeddyBirthday,
+  "rainbow-melon-party": TeddyBirthday,
   "pink-butterfly-bow-party": TeddyBirthday,
   "little-astronaut-party": TeddyBirthday,
   "little-safari-party": TeddyBirthday,
   "princess-fairytale":PrincessBirthday,"space-explorer":SpaceBirthday,"dinosaur-adventure":DinoBirthday,"superhero-city":SuperheroBirthday,
 };
 export const birthdayThemeList: ThemeMeta[] = [
+  {key:"rainbow-melon-party",label:"Rainbow Melon Party",description:"Pesta ulang tahun dengan maskot melon, pelangi, balon, dan nuansa musik yang ceria",swatch:["#fff5cb","#add780"],addedAt:"2026-11-15"},
   {key:"pink-butterfly-bow-party",label:"Pink Butterfly Bow Party",description:"Pesta ulang tahun dengan pita satin, kupu-kupu, dan bunga dalam nuansa blush pink dan krem",swatch:["#f8e0e5","#a55a70"],addedAt:"2026-11-15"},
   {key:"little-astronaut-party",label:"Little Astronaut Party",description:"Pesta ulang tahun dengan astronaut cilik, roket, dan planet dalam nuansa biru lembut dan emas",swatch:["#e5f1fe","#314e78"],addedAt:"2026-11-15"},
   {key:"little-safari-party",label:"Little Safari Party",description:"Petualangan ulang tahun dengan hewan safari, sage lembut, dan nuansa krem hangat",swatch:["#fbf5e8","#a9bc9c"],addedAt:"2026-11-15"},
