@@ -35,6 +35,14 @@
 .root div[class*="arrows"] button { background:#f4dae3; border-color:#dfb1c2; }
 .countdownFlutter { width:63px; margin:0 auto 8px; animation:flutter 10s ease-in-out infinite; }
 .root .frame { width:min(70%,245px); aspect-ratio:4/5; }
+/* Nabila & Nadila: keep the existing framed child photo fully visible on the cover. */
+.root .coverPhotoFrame {
+  width:min(78vw,270px,34svh);
+  aspect-ratio:4/5;
+  flex-shrink:0;
+  margin:10px auto 14px;
+}
+
 .root .portrait {
   inset:18% auto auto 15%;
   width:69%;
