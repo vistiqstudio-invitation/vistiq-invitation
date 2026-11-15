@@ -13,6 +13,7 @@ import ThemePreviewPanel from "@/components/ThemePreviewPanel";
 import { MUSIC_LIBRARY } from "@/lib/musicLibrary";
 import { uploadMediaToR2 } from "@/lib/uploadMedia";
 import { INVITATION_ACTIVATION_FEE } from "@/lib/resellerBilling";
+import { useSavedInvitation } from "@/hooks/useSavedInvitation";
 import styles from "@/styles/dashboard.module.css";
 
 const ADMIN_WHATSAPP = "6281371338032";
@@ -153,6 +154,7 @@ export default function ResellerInvitationsPage() {
   const [transactionsByClientId, setTransactionsByClientId] = useState<Record<string, Transaction>>({});
   const [activationsByInvitationId, setActivationsByInvitationId] = useState<Record<number, Transaction>>({});
   const [loading, setLoading] = useState(true);
+  const savedId = useSavedInvitation(loading);
   const [saving, setSaving] = useState(false);
   const [deletingId, setDeletingId] = useState<number | null>(null);
   const [activatingId, setActivatingId] = useState<number | null>(null);
@@ -1221,8 +1223,13 @@ export default function ResellerInvitationsPage() {
                     const client = clients.find((candidate) => candidate.id === item.client_id);
 
                     return (
-                    <div key={item.id} className={styles.row}>
+                    <div
+                      key={item.id}
+                      id={savedId === String(item.id) ? `saved-invitation-${item.id}` : undefined}
+                      className={savedId === String(item.id) ? `${styles.row} ${styles.savedInvitation}` : styles.row}
+                    >
                       <div>
+                        {savedId === String(item.id) && <p role="status" className={styles.saveSuccess}>Perubahan berhasil disimpan.</p>}
                         <strong>
                           {item.category === "aqiqah" || item.category === "khitan"
                             ? item.baby_name || "-"

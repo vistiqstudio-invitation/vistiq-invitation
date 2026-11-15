@@ -106,6 +106,7 @@ export default function AdminInvitationEditPage() {
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState("");
   const [notFound, setNotFound] = useState(false);
   const [slug, setSlug] = useState("");
   const [form, setForm] = useState<FormState>(initialForm);
@@ -376,6 +377,8 @@ export default function AdminInvitationEditPage() {
   };
 
   const saveData = async () => {
+    if (saving) return;
+    setSaveError("");
     setSaving(true);
 
     const payload = {
@@ -390,19 +393,24 @@ export default function AdminInvitationEditPage() {
       baby_gender: form.baby_gender || null,
     };
 
-    const { error } = await supabase
-      .from("invitations")
-      .update(payload)
-      .eq("id", params.id);
+    try {
+      const { data, error } = await supabase
+        .from("invitations")
+        .update(payload)
+        .eq("id", params.id)
+        .select("id")
+        .maybeSingle();
 
-    setSaving(false);
+      if (error || !data) {
+        throw new Error(error?.message || "Undangan tidak ditemukan atau akses ditolak.");
+      }
 
-    if (error) {
-      alert(`Gagal menyimpan data: ${error.message}`);
-      return;
+      router.replace(`/admin/invitations?saved=${encodeURIComponent(data.id)}`);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Silakan coba lagi.";
+      setSaveError(`Gagal menyimpan data: ${message}`);
+      setSaving(false);
     }
-
-    alert("Data undangan berhasil disimpan.");
   };
 
   if (loading) {
@@ -1164,6 +1172,7 @@ export default function AdminInvitationEditPage() {
           </div>
         </div>
 
+        {saveError && <p role="alert" className={styles.saveError}>{saveError}</p>}
         <button
           onClick={saveData}
           className={styles.button}

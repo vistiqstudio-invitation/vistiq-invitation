@@ -7,6 +7,7 @@ import { publicInvitationUrl } from "@/lib/publicInvitationUrl";
 import DashboardSidebar from "@/components/admin/DashboardSidebar";
 import { themeList, aqiqahThemeList, khitanThemeList, birthdayThemeList } from "@/lib/theme";
 import ThemePreviewPanel from "@/components/ThemePreviewPanel";
+import { useSavedInvitation } from "@/hooks/useSavedInvitation";
 import styles from "@/styles/dashboard.module.css";
 
 const NAV_ITEMS = [
@@ -52,6 +53,7 @@ export default function InvitationsPage() {
   const [invitations, setInvitations] = useState<Invitation[]>([]);
   const [clientsById, setClientsById] = useState<Record<string, ClientInfo>>({});
   const [loading, setLoading] = useState(true);
+  const savedId = useSavedInvitation(loading);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const initialForm = {
@@ -480,9 +482,14 @@ export default function InvitationsPage() {
                 const client = item.client_id ? clientsById[item.client_id] : null;
 
                 return (
-                <div key={item.id} className={styles.row}>
+                <div
+                      key={item.id}
+                      id={savedId === String(item.id) ? `saved-invitation-${item.id}` : undefined}
+                      className={savedId === String(item.id) ? `${styles.row} ${styles.savedInvitation}` : styles.row}
+                    >
                   <div>
-                    <strong>
+                    {savedId === String(item.id) && <p role="status" className={styles.saveSuccess}>Perubahan berhasil disimpan.</p>}
+                        <strong>
                       {item.category === "aqiqah" || item.category === "khitan"
                         ? item.baby_name || "-"
                         : `${item.groom_name || "-"} & ${item.bride_name || "-"}`}

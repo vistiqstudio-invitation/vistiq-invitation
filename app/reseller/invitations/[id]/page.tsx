@@ -122,6 +122,7 @@ export default function ResellerInvitationEditPage() {
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState("");
   const [notFound, setNotFound] = useState(false);
   const [slug, setSlug] = useState("");
   const [resellerPackage, setResellerPackage] = useState<"reseller" | "reseller_brand" | null>(null);
@@ -498,6 +499,8 @@ export default function ResellerInvitationEditPage() {
   };
 
   const saveData = async () => {
+    if (saving) return;
+    setSaveError("");
     setSaving(true);
 
     const normalizedEvents = weddingEvents
@@ -537,19 +540,24 @@ export default function ResellerInvitationEditPage() {
       client_price: form.client_price ? Number(form.client_price) : null,
     };
 
-    const { error } = await supabase
-      .from("invitations")
-      .update(payload)
-      .eq("id", params.id);
+    try {
+      const { data, error } = await supabase
+        .from("invitations")
+        .update(payload)
+        .eq("id", params.id)
+        .select("id")
+        .maybeSingle();
 
-    setSaving(false);
+      if (error || !data) {
+        throw new Error(error?.message || "Undangan tidak ditemukan atau akses ditolak.");
+      }
 
-    if (error) {
-      alert(`Gagal menyimpan data: ${error.message}`);
-      return;
+      router.replace(`/reseller/invitations?saved=${encodeURIComponent(data.id)}`);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Silakan coba lagi.";
+      setSaveError(`Gagal menyimpan data: ${message}`);
+      setSaving(false);
     }
-
-    alert("Data undangan berhasil disimpan.");
   };
 
   if (loading) {
@@ -1355,6 +1363,7 @@ export default function ResellerInvitationEditPage() {
           </div>
         </div>
 
+        {saveError && <p role="alert" className={styles.saveError}>{saveError}</p>}
         <button
           onClick={saveData}
           className={styles.button}

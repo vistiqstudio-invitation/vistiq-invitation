@@ -1292,3 +1292,31 @@
     line-height: 1.1;
   }
 }
+
+.saveError,
+.saveSuccess {
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin: 0.5rem 0;
+}
+
+.saveError {
+  color: #a32222;
+}
+
+.saveSuccess {
+  color: #14633c;
+}
+
+.savedInvitation {
+  animation: savedInvitationHighlight 3s ease-out;
+}
+
+@keyframes savedInvitationHighlight {
+  from { background-color: #e6f8ed; }
+  to { background-color: transparent; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .savedInvitation { animation: none; }
+}

@@ -113,6 +113,7 @@ export default function ClientEditPage() {
   const [giftShipping, setGiftShipping] = useState({ enabled: false, recipient: "", address: "" });
   const [hadGiftShipping, setHadGiftShipping] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState("");
   const [invitationId, setInvitationId] = useState("");
   const [clientId, setClientId] = useState("");
   const [form, setForm] = useState<FormState>(initialForm);
@@ -184,7 +185,16 @@ export default function ClientEditPage() {
         return;
       }
 
-      const invitation = invitations[0];
+      const requestedId = new URLSearchParams(window.location.search).get("id");
+      const invitation = requestedId
+        ? invitations.find((item) => String(item.id) === requestedId)
+        : invitations[0];
+
+      if (!invitation) {
+        setLoadError(true);
+        setLoading(false);
+        return;
+      }
 
       setInvitationId(invitation.id);
 
@@ -459,9 +469,11 @@ export default function ClientEditPage() {
   };
 
   const saveData = async () => {
+    if (saving) return;
+    setSaveError("");
     const giftEnabled = form.category === "birthday" && (form.theme === "teddy-bear-party" || form.theme === "little-safari-party" || form.theme === "little-astronaut-party" || form.theme === "pink-butterfly-bow-party" || form.theme === "rainbow-melon-party") && giftShipping.enabled;
     if (giftEnabled && (!giftShipping.recipient.trim() || !giftShipping.address.trim())) {
-      alert("Isi nama penerima dan alamat sebelum menampilkan opsi Kirim Kado.");
+      setSaveError("Isi nama penerima dan alamat sebelum menampilkan opsi Kirim Kado.");
       return;
     }
     const cleanFields = {
@@ -482,20 +494,24 @@ export default function ClientEditPage() {
     if (invitationId) {
       setSaving(true);
 
-      const { error } = await supabase
-        .from("invitations")
-        .update({ ...form, ...cleanFields })
-        .eq("id", invitationId);
+      try {
+        const { data, error } = await supabase
+          .from("invitations")
+          .update({ ...form, ...cleanFields })
+          .eq("id", invitationId)
+          .select("id")
+          .maybeSingle();
 
-      setSaving(false);
+        if (error || !data) {
+          throw new Error(error?.message || "Undangan tidak ditemukan atau akses ditolak.");
+        }
 
-      if (error) {
-        alert("Gagal menyimpan data.");
-        return;
+        router.replace(`/client?saved=${encodeURIComponent(data.id)}`);
+      } catch (error) {
+        const message = error instanceof Error ? error.message : "Silakan coba lagi.";
+        setSaveError(`Gagal menyimpan data: ${message}`);
+        setSaving(false);
       }
-
-      setHadGiftShipping(giftEnabled);
-      alert("Data undangan berhasil disimpan.");
       return;
     }
 
@@ -1343,6 +1359,7 @@ export default function ClientEditPage() {
           </div>
         </div>
 
+        {saveError && <p role="alert" className={styles.saveError}>{saveError}</p>}
         <button
           onClick={saveData}
           className={styles.button}
