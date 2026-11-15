@@ -80,6 +80,8 @@ export default function TeddyBirthday({ invitation }: { invitation: BirthdayInvi
   const safari = invitation.theme === "little-safari-party";
   const astronaut = invitation.theme === "little-astronaut-party";
   const butterfly = invitation.theme === "pink-butterfly-bow-party";
+  const nabilaNadila = invitation.slug === "ulang-tahun-putri-nabila-botutihe-dan-putri-nadila-botutihe";
+  const celebrationName = nabilaNadila ? "Nabila Botutihe dan Nadila Botutihe" : child.name;
   const folder = butterfly || astronaut || safari ? invitation.theme : "teddy-bear-party";
   const character = butterfly ? "01_butterfly_bow_main" : astronaut ? "01_astronaut_boy" : safari ? "01_safari_animals" : "01_teddy_bear_utama";
   const guest = useSearchParams().get("to")?.trim() || "";
@@ -112,9 +114,10 @@ export default function TeddyBirthday({ invitation }: { invitation: BirthdayInvi
         <Decor folder={folder} file={butterfly ? "04_butterflies" : "04_cloud"} className={butterfly ? pink.coverFlutter : s.coverCloud} eager />
       </>}
       <span className={s.sparkle} aria-hidden="true">✦</span>
-      <p className={s.eyebrow}>Birthday Party</p>
-      <h1>{child.name}</h1>
-      {child.age !== null && <p className={s.age}>Is Turning {child.age}</p>}
+      <p className={s.eyebrow}>{nabilaNadila ? "Undangan Ulang Tahun" : "Birthday Party"}</p>
+      {nabilaNadila && <p>Kami mengundang teman-teman untuk merayakan hari ulang tahun kami:</p>}
+      <h1>{celebrationName}</h1>
+      {nabilaNadila ? <p className={s.age}>Yang ke 10 Tahun</p> : child.age !== null && <p className={s.age}>Is Turning {child.age}</p>}
       <div className={`${s.scene} ${astronaut ? space.scene : butterfly ? pink.scene : ""}`}>
         <Decor folder={folder} file={butterfly ? "02_balloon_cluster_pink" : astronaut ? "05_balloon_cluster" : "02_balloon_cluster"} className={`${s.balloons} ${astronaut ? space.balloons : butterfly ? pink.balloons : ""}`} eager />
         <Decor folder={folder} file={character} className={`${s.bear} ${safari ? safariStyles.animals : astronaut ? space.astronaut : butterfly ? pink.bow : ""}`} eager />
@@ -132,20 +135,20 @@ export default function TeddyBirthday({ invitation }: { invitation: BirthdayInvi
         <div className={s.countdown}>{([["Hari", countdown.days], ["Jam", countdown.hours], ["Menit", countdown.minutes], ["Detik", countdown.seconds]] as const).map(([label, value]) => <div key={label}><strong>{String(value).padStart(2,"0")}</strong><span>{label}</span></div>)}</div></SectionReveal>
       </section>}
       <section className={s.section}>
-        <SectionReveal><p className={s.eyebrow}>Si Kecil yang Berbahagia</p><h2>Hallo, Aku {child.name}</h2>
+        <SectionReveal><p className={s.eyebrow}>{nabilaNadila ? "Kami yang Berbahagia" : "Si Kecil yang Berbahagia"}</p><h2>{nabilaNadila ? celebrationName : `Hallo, Aku ${child.name}`}</h2>
         <div className={`${s.frame} ${safari ? safariStyles.frame : astronaut ? space.frame : butterfly ? pink.frame : ""}`}>
           {photo ? <img className={`${s.portrait} ${safari ? safariStyles.portrait : astronaut ? space.portrait : butterfly ? pink.portrait : ""}`} src={photo} alt={child.name} loading="lazy" /> : <Decor folder={folder} file={character} className={s.placeholder} />}
           <Decor folder={folder} file="08_photo_frame" className={s.frameArt} />
           {butterfly && <Decor folder={folder} file="05_flower_cluster" className={pink.profileFlowers} />}
         </div>
-        {child.age !== null && <p className={s.lead}>Aku akan berulang tahun yang ke-{child.age}</p>}
-        {opening.description && <p>{opening.description}</p>}
-        {[parents.father, parents.mother].some(Boolean) && <p className={s.parents}>{butterfly ? "Putri dari" : "Putra/putri dari"} {[parents.father, parents.mother].filter(Boolean).join(" & ")}</p>}
+        {nabilaNadila ? <p className={s.lead}>Yang ke 10 Tahun</p> : child.age !== null && <p className={s.lead}>Aku akan berulang tahun yang ke-{child.age}</p>}
+        {nabilaNadila ? <p>Kami mengundang teman-teman untuk merayakan hari ulang tahun kami.</p> : opening.description && <p>{opening.description}</p>}
+        {!nabilaNadila && [parents.father, parents.mother].some(Boolean) && <p className={s.parents}>{butterfly ? "Putri dari" : "Putra/putri dari"} {[parents.father, parents.mother].filter(Boolean).join(" & ")}</p>}
         </SectionReveal>
       </section>
       {event && <section className={`${s.section} ${s.sky}`}>
         <SectionReveal><p className={s.eyebrow}>Waktu &amp; Tempat</p><article className={s.card}>
-          <Decor folder={folder} file="07_birthday_cake" className={`${s.cake} ${safari ? safariStyles.pop : ""}`} /><h2>Birthday Party</h2>
+          <Decor folder={folder} file="07_birthday_cake" className={`${s.cake} ${safari ? safariStyles.pop : ""}`} /><h2>{nabilaNadila ? "Undangan Ulang Tahun" : "Birthday Party"}</h2>
           {event.date && <p className={s.lead}>{event.date}</p>}{event.time && <p>{event.time}</p>}{event.location && <p>{event.location}</p>}{event.address && <p>{event.address}</p>}
           {mapLink && <a className={s.button} href={mapLink} target="_blank" rel="noopener noreferrer">Lihat Lokasi</a>}
         </article></SectionReveal>
@@ -187,8 +190,8 @@ export default function TeddyBirthday({ invitation }: { invitation: BirthdayInvi
           <h2 className={space.ribbonTitle}><Decor folder={folder} file="11_ribbon_banner" />Thank You</h2>
           <p>Terima kasih sudah menjadi bagian dari petualangan kecilku di hari spesial ini.</p><p className={s.lead}>{child.name}</p>
         </div> : butterfly ? <>
-          <h2 className={pink.ribbonTitle}><Decor folder={folder} file="11_ribbon_banner" />Thank You</h2>
-          <p>Terima kasih sudah menjadi bagian dari hari spesialku. Kehadiran dan doamu membuat hariku semakin indah.</p><p className={s.lead}>{child.name}</p>
+          <h2 className={pink.ribbonTitle}><Decor folder={folder} file="11_ribbon_banner" />{nabilaNadila ? "Sampai Jumpa!" : "Thank You"}</h2>
+          <p>{nabilaNadila ? "Jangan lupa hadir ya teman-teman... Kehadiran kalian sangat berarti bagi kami ♡" : "Terima kasih sudah menjadi bagian dari hari spesialku. Kehadiran dan doamu membuat hariku semakin indah."}</p><p className={s.lead}>{nabilaNadila ? celebrationName : child.name}</p>
         </> : <><Decor folder={folder} file="11_ribbon_banner" className={s.ribbon} /><h2>Thank You</h2><p>Terima kasih sudah menjadi bagian dari hari spesialku.</p><p className={s.lead}>{child.name}</p></>}
         <Decor folder={folder} file={butterfly ? "10_footer_butterfly" : astronaut ? "10_footer_space" : safari ? "10_footer_safari" : "10_footer_teddy"} className={s.footerBear} /></SectionReveal>
         {!astronaut && <Decor folder={folder} file={butterfly ? "09_butterfly_border" : safari ? "09_jungle_border" : "09_cloud_border"} className={butterfly ? pink.footerBorder : s.cloudBorder} />}<p className={s.credit}>{invitation.brand?.name || "Vistiq Invitation"}</p>
