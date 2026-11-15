@@ -190,7 +190,7 @@ export default function TeddyBirthday({ invitation }: { invitation: BirthdayInvi
           <h2 className={space.ribbonTitle}><Decor folder={folder} file="11_ribbon_banner" />Thank You</h2>
           <p>Terima kasih sudah menjadi bagian dari petualangan kecilku di hari spesial ini.</p><p className={s.lead}>{child.name}</p>
         </div> : butterfly ? <>
-          <h2 className={pink.ribbonTitle}><Decor folder={folder} file="11_ribbon_banner" />{nabilaNadila ? "Sampai Jumpa!" : "Thank You"}</h2>
+          <h2 className={nabilaNadila ? undefined : pink.ribbonTitle}>{!nabilaNadila && <Decor folder={folder} file="11_ribbon_banner" />}{nabilaNadila ? "Sampai Jumpa!" : "Thank You"}</h2>
           <p>{nabilaNadila ? "Jangan lupa hadir ya teman-teman... Kehadiran kalian sangat berarti bagi kami ♡" : "Terima kasih sudah menjadi bagian dari hari spesialku. Kehadiran dan doamu membuat hariku semakin indah."}</p><p className={s.lead}>{nabilaNadila ? celebrationName : child.name}</p>
         </> : <><Decor folder={folder} file="11_ribbon_banner" className={s.ribbon} /><h2>Thank You</h2><p>Terima kasih sudah menjadi bagian dari hari spesialku.</p><p className={s.lead}>{child.name}</p></>}
         <Decor folder={folder} file={butterfly ? "10_footer_butterfly" : astronaut ? "10_footer_space" : safari ? "10_footer_safari" : "10_footer_teddy"} className={s.footerBear} /></SectionReveal>
