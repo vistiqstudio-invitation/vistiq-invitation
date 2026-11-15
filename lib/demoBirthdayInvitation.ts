@@ -143,7 +143,7 @@ export function getDemoBirthdayInvitation(theme: string): BirthdayInvitationData
     category: "birthday",
     brand: null,
     coverImage: decemberParty ? CHILD_PHOTO_BY_THEME[theme] : teddy ? GALLERY_BY_THEME[theme][1] : COVER_BY_THEME[theme] || null,
-    musicUrl: teddy || decemberParty ? "/music-library/acoustic-garden.mp3" : null,
+    musicUrl: "/demo-audio/selamat-ulang-tahun-untukmu.mp3",
     videoUrl: null,
     mapsUrl: decemberParty ? "https://www.google.com/maps/search/?api=1&query=Jakarta" : teddy ? "https://www.google.com/maps/search/?api=1&query=Taman+Menteng+Jakarta" : "https://maps.google.com",
     mapsEmbedUrl: "https://www.google.com/maps?q=Jakarta&output=embed",

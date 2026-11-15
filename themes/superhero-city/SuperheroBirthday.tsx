@@ -53,12 +53,26 @@ export default function SuperheroBirthday({
   const { opened, setOpened } = useInvitation();
   const searchParams = useSearchParams();
   const guestName = searchParams.get("to") || "Bapak/Ibu/Saudara/i";
-  const { isPlaying, toggle } = useMusicPlayer(invitation.musicUrl, opened);
+  const { musicUrl } = invitation;
+  const { audioRef, isPlaying, toggle } = useMusicPlayer(musicUrl, false);
+  const audio = musicUrl && <audio ref={audioRef} src={musicUrl} loop preload="none" />;
+
+  const toggleMusic = () => {
+    void toggle().catch(() => {
+      // The music button remains available if the browser blocks playback.
+    });
+  };
+
+  const openInvitation = () => {
+    if (musicUrl) toggleMusic();
+    setOpened(true);
+  };
   const event = invitation.event;
 
   if (!opened) {
     return (
       <main className={styles.root}>
+        {audio}
         <section className={styles.cover}>
           {invitation.coverImage && (
             <motion.img
@@ -97,7 +111,7 @@ export default function SuperheroBirthday({
             <div className={styles.guestPanel}>
               <small>Kepada Yth.</small>
               <strong>{guestName}</strong>
-              <button className={styles.primaryButton} onClick={() => setOpened(true)}>
+              <button className={styles.primaryButton} onClick={openInvitation}>
                 Mulai Misi!
               </button>
             </div>
@@ -109,6 +123,7 @@ export default function SuperheroBirthday({
 
   return (
     <main className={styles.root}>
+      {audio}
       <FloatingSparks />
       <section className={`${styles.section} ${styles.hero}`}>
         <img
@@ -235,12 +250,12 @@ export default function SuperheroBirthday({
         </Reveal>
       </footer>
 
-      {invitation.musicUrl && (
+      {musicUrl && (
         <button
           type="button"
           aria-label={isPlaying ? "Jeda musik" : "Putar musik"}
           className={`${styles.musicButton} ${isPlaying ? styles.musicPlaying : ""}`}
-          onClick={toggle}
+          onClick={toggleMusic}
         >
           <span>{isPlaying ? "Ⅱ" : "♪"}</span>
         </button>
