@@ -174,7 +174,7 @@ export default function TeddyBirthday({ invitation }: { invitation: BirthdayInvi
             {gift.bankName && <p className={s.lead}>{gift.bankName}</p>}
             <p>{gift.accountNumber}</p>
             {gift.accountName && <p>a.n. {gift.accountName}</p>}
-            <CopyGift value={gift.accountNumber} label="Salin Nomor Rekening" />
+            <CopyGift value={gift.accountNumber} label={nabilaNadila ? "Salin Nomor" : "Salin Nomor Rekening"} />
           </article>)}
           {invitation.giftShipping && <article className={s.card}>
             <h3>Kirim Kado</h3>
