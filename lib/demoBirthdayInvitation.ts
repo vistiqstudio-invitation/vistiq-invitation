@@ -104,7 +104,7 @@ export function getDemoBirthdayInvitation(theme: string): BirthdayInvitationData
     status: "active",
     category: "birthday",
     brand: null,
-    coverImage: teddy ? null : COVER_BY_THEME[theme] || null,
+    coverImage: teddy ? GALLERY_BY_THEME[theme][1] : COVER_BY_THEME[theme] || null,
     musicUrl: teddy ? "/music-library/acoustic-garden.mp3" : null,
     videoUrl: null,
     mapsUrl: teddy ? "https://www.google.com/maps/search/?api=1&query=Taman+Menteng+Jakarta" : "https://maps.google.com",
