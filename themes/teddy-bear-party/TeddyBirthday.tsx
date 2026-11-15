@@ -118,10 +118,18 @@ export default function TeddyBirthday({ invitation }: { invitation: BirthdayInvi
       {nabilaNadila && <p>Kami mengundang teman-teman untuk merayakan hari ulang tahun kami:</p>}
       <h1>{celebrationName}</h1>
       {nabilaNadila ? <p className={s.age}>Yang ke 10 Tahun</p> : child.age !== null && <p className={s.age}>Is Turning {child.age}</p>}
-      <div className={`${s.scene} ${astronaut ? space.scene : butterfly ? pink.scene : ""}`}>
-        <Decor folder={folder} file={butterfly ? "02_balloon_cluster_pink" : astronaut ? "05_balloon_cluster" : "02_balloon_cluster"} className={`${s.balloons} ${astronaut ? space.balloons : butterfly ? pink.balloons : ""}`} eager />
-        <Decor folder={folder} file={character} className={`${s.bear} ${safari ? safariStyles.animals : astronaut ? space.astronaut : butterfly ? pink.bow : ""}`} eager />
-      </div>
+      {nabilaNadila && photo ? (
+        <div className={`${s.frame} ${pink.frame} ${pink.coverPhotoFrame}`}>
+          <img className={`${s.portrait} ${pink.portrait}`} src={photo} alt="Nabila dan Nadila" loading="eager" />
+          <Decor folder={folder} file="08_photo_frame" className={s.frameArt} eager />
+          <Decor folder={folder} file="05_flower_cluster" className={pink.profileFlowers} eager />
+        </div>
+      ) : (
+        <div className={`${s.scene} ${astronaut ? space.scene : butterfly ? pink.scene : ""}`}>
+          <Decor folder={folder} file={butterfly ? "02_balloon_cluster_pink" : astronaut ? "05_balloon_cluster" : "02_balloon_cluster"} className={`${s.balloons} ${astronaut ? space.balloons : butterfly ? pink.balloons : ""}`} eager />
+          <Decor folder={folder} file={character} className={`${s.bear} ${safari ? safariStyles.animals : astronaut ? space.astronaut : butterfly ? pink.bow : ""}`} eager />
+        </div>
+      )}
       <div className={s.guest}>
         <p>Kepada Yth.<br />Bapak/Ibu/Saudara/i</p>
         <strong>{guest || "Tamu Undangan"}</strong>
