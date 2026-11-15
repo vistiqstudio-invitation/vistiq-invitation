@@ -81,7 +81,6 @@ export default function TeddyBirthday({ invitation }: { invitation: BirthdayInvi
   const astronaut = invitation.theme === "little-astronaut-party";
   const butterfly = invitation.theme === "pink-butterfly-bow-party";
   const nabilaNadila = invitation.slug === "ulang-tahun-putri-nabila-botutihe-dan-putri-nadila-botutihe";
-  const celebrationName = nabilaNadila ? "Nabila Botutihe dan Nadila Botutihe" : child.name;
   const folder = butterfly || astronaut || safari ? invitation.theme : "teddy-bear-party";
   const character = butterfly ? "01_butterfly_bow_main" : astronaut ? "01_astronaut_boy" : safari ? "01_safari_animals" : "01_teddy_bear_utama";
   const guest = useSearchParams().get("to")?.trim() || "";
@@ -89,6 +88,7 @@ export default function TeddyBirthday({ invitation }: { invitation: BirthdayInvi
   const SectionReveal = reduced ? "div" : Reveal;
   const gallery = useRef<HTMLDivElement>(null);
   const { child, event, parents, opening, gifts, musicUrl, mapsUrl, mapsEmbedUrl } = invitation;
+  const celebrationName = nabilaNadila ? "Nabila Botutihe dan Nadila Botutihe" : child.name;
   const { audioRef, isPlaying, toggle } = useMusicPlayer(musicUrl, false);
   const [musicError, setMusicError] = useState(false);
   const rawDate = event?.rawDate;
