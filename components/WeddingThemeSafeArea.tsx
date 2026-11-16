@@ -84,6 +84,9 @@ function frameImage(invitation: InvitationFrameData | undefined, theme: string) 
   if (theme === "pink-butterfly-bow-party" && invitation?.category === "birthday") {
     return configured || invitation.child.photo || invitation.gallery[0] || "/photos/pink-butterfly-bow-party/01_butterfly_bow_main.webp";
   }
+  if (theme === "dino-adventure-party" && invitation?.category === "birthday") {
+    return configured || invitation.child.photo || invitation.gallery[0] || "/photos/dino-adventure-party/01_dino_group.webp";
+  }
   if (theme === "rainbow-melon-party" && invitation?.category === "birthday") {
     return configured || invitation.child.photo || invitation.gallery[0] || "/photos/rainbow-melon-party/01_melon_party_mascot.webp";
   }

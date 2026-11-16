@@ -471,7 +471,7 @@ export default function ClientEditPage() {
   const saveData = async () => {
     if (saving) return;
     setSaveError("");
-    const giftEnabled = form.category === "birthday" && (form.theme === "teddy-bear-party" || form.theme === "little-safari-party" || form.theme === "little-astronaut-party" || form.theme === "pink-butterfly-bow-party" || form.theme === "rainbow-melon-party") && giftShipping.enabled;
+    const giftEnabled = form.category === "birthday" && (form.theme === "teddy-bear-party" || form.theme === "little-safari-party" || form.theme === "little-astronaut-party" || form.theme === "pink-butterfly-bow-party" || form.theme === "rainbow-melon-party" || form.theme === "dino-adventure-party") && giftShipping.enabled;
     if (giftEnabled && (!giftShipping.recipient.trim() || !giftShipping.address.trim())) {
       setSaveError("Isi nama penerima dan alamat sebelum menampilkan opsi Kirim Kado.");
       return;
@@ -878,7 +878,7 @@ export default function ClientEditPage() {
                 style={{ gridColumn: "1 / -1" }}
               />
             </div>
-            {form.category === "birthday" && (form.theme === "teddy-bear-party" || form.theme === "little-safari-party" || form.theme === "little-astronaut-party" || form.theme === "pink-butterfly-bow-party" || form.theme === "rainbow-melon-party") && (
+            {form.category === "birthday" && (form.theme === "teddy-bear-party" || form.theme === "little-safari-party" || form.theme === "little-astronaut-party" || form.theme === "pink-butterfly-bow-party" || form.theme === "rainbow-melon-party" || form.theme === "dino-adventure-party") && (
               <>
                 <h2 className={styles.editSectionTitle}>Kirim Kado</h2>
                 <div className={styles.formGrid}>

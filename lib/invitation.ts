@@ -466,11 +466,12 @@ function normalizeBirthdayInvitation(raw: Record<string, any>, live: boolean): B
   const safari = raw.theme === "little-safari-party";
   const astronaut = raw.theme === "little-astronaut-party";
   const butterfly = raw.theme === "pink-butterfly-bow-party";
+  const dino = raw.theme === "dino-adventure-party";
   const melon = raw.theme === "rainbow-melon-party";
   const birthDay = typeof raw.birth_date === "string" ? raw.birth_date.slice(0, 10) : "";
   const eventDay = typeof raw.aqiqah_date === "string" ? raw.aqiqah_date.slice(0, 10) : "";
   const isoDay = /^\d{4}-\d{2}-\d{2}$/;
-  const eventAge = (safari || astronaut || butterfly || melon) && isoDay.test(birthDay) && isoDay.test(eventDay) && eventDay >= birthDay
+  const eventAge = (safari || astronaut || butterfly || melon || dino) && isoDay.test(birthDay) && isoDay.test(eventDay) && eventDay >= birthDay
     ? Number(eventDay.slice(0, 4)) - Number(birthDay.slice(0, 4))
     : 0;
 
@@ -500,7 +501,7 @@ function normalizeBirthdayInvitation(raw: Record<string, any>, live: boolean): B
     event,
     gallery,
     gifts,
-    giftShipping: live && (raw.theme === "teddy-bear-party" || safari || astronaut || butterfly || melon) && raw.birthday_gift_recipient?.trim() && raw.birthday_gift_address?.trim()
+    giftShipping: live && (raw.theme === "teddy-bear-party" || safari || astronaut || butterfly || melon || dino) && raw.birthday_gift_recipient?.trim() && raw.birthday_gift_address?.trim()
       ? { recipient: raw.birthday_gift_recipient.trim(), address: raw.birthday_gift_address.trim() }
       : null,
   };

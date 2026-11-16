@@ -1,0 +1,121 @@
+.root.root {
+  --cream: #fbf1dc;
+  --sky: #e8eed6;
+  --ink: #35452c;
+  --muted: #526248;
+  --gold: #795627;
+  background: var(--cream);
+}
+
+.root :is(h1, h2) {
+  font-family: ui-rounded, Georgia, serif;
+}
+
+.root [data-dino-cover] {
+  padding-inline: clamp(36px, 11%, 68px);
+  padding-bottom: max(100px, env(safe-area-inset-bottom));
+  background: radial-gradient(ellipse at 50% 34%, #fff7e7, transparent 70%),
+    linear-gradient(155deg, #f9edd0, #dce8c5);
+}
+
+.root [data-dino-cover] h1 {
+  font-size: clamp(2.65rem, 11vw, 4.9rem);
+  margin-bottom: .12em;
+}
+
+.root .bunting { top: 10px; }
+.root .coverCloud { top: 19%; width: 27%; opacity: .72; }
+.root .bear { width: 87%; height: 100%; left: 4%; }
+.root .balloons { width: 35%; height: 82%; right: -9%; top: -3%; }
+
+.leafLeft, .leafRight {
+  position: absolute;
+  z-index: -1;
+  width: clamp(64px, 26%, 150px);
+  pointer-events: none;
+  bottom: 18%;
+}
+
+.leafLeft { left: -11%; transform: rotate(20deg); }
+.leafRight { right: -11%; transform: scaleX(-1) rotate(20deg); }
+
+.root .coverBorder {
+  position: absolute;
+  z-index: -1;
+  width: 100%;
+  max-height: 108px;
+  object-fit: cover;
+  object-position: center bottom;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.root :is(section, footer):not([data-dino-cover]) {
+  isolation: isolate;
+  padding-inline: clamp(24px, 9%, 56px);
+  padding-block: clamp(35px, 8vw, 58px);
+}
+
+.root :is(section, footer)::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+  opacity: .13;
+  background:
+    url("/photos/dino-adventure-party/05_tropical_leaves.webp") left -37px top 30px / 120px auto no-repeat,
+    url("/photos/dino-adventure-party/05_tropical_leaves.webp") right -47px bottom 12px / 155px auto no-repeat,
+    url("/photos/dino-adventure-party/footprints.svg") left 4% bottom 8% / 56px auto no-repeat,
+    url("/photos/dino-adventure-party/footprints.svg") right 8% top 12% / 47px auto no-repeat;
+}
+
+.root .sky { background: linear-gradient(165deg, #f0f0db, #e1ebd0); }
+.root .moon { width: 94px; opacity: .72; }
+.root .profileCloud { position: absolute; z-index: -1; right: 2%; top: 24%; width: 18%; opacity: .22; }
+
+.root .countdown > div {
+  border-color: #a9b59a;
+  background: #fff4dc;
+  box-shadow: 0 4px 12px #535e3220;
+}
+.root .countdown > div:nth-child(2) { background: #dce8c9; }
+.root .countdown > div:nth-child(3) { background: #f1e3c6; }
+.root .countdown > div:nth-child(4) { background: #dcebef; }
+
+.root .frame { width: min(82%, 286px); }
+
+.root .card, .root form {
+  background: #fff6e4;
+  border-color: #acbb90;
+  box-shadow: 0 8px 26px #47553117;
+}
+
+.root .cake { width: 115px; }
+
+.root .gallery img {
+  border: 5px solid #fff4d9;
+  background: #e7edda;
+  box-shadow: 0 4px 14px #535e3220;
+}
+
+.root .adventure { background: linear-gradient(180deg, #f7ead0, #e6edd3); }
+.root .divider { width: 100%; max-height: 112px; object-fit: contain; margin: 14px auto 0; }
+.root .footer { background: linear-gradient(160deg, #ecedce, #e1e9cb); }
+
+.root :is(button, a), .root form :is(input, select, textarea) {
+  border-color: #a0ad82;
+}
+.root button, .root a {
+  background: #d3dfb6;
+  color: #344828;
+}
+.root :is(button, a):hover { background: #c0d09f; }
+.root .open { box-shadow: 0 5px 18px #5262393b; }
+.root .music { background: #fff4d9; border-color: #ac8a50; }
+
+@media (max-width: 360px) {
+  .root .countdown { gap: 4px; }
+  .root [data-dino-cover] { padding-inline: 30px; }
+  .root .coverBorder { max-height: 84px; }
+}
