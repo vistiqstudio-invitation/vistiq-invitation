@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import DashboardSidebar from "@/components/admin/DashboardSidebar";
 import StorageCleanup from "@/components/admin/StorageCleanup";
+import ResellerActivity, { type DashboardClient, type DashboardReseller, type DashboardInvitation } from "@/components/admin/ResellerActivity";
 import SystemStatus from "@/components/admin/SystemStatus";
 import ChangePasswordCard from "@/components/dashboard/ChangePasswordCard";
 import styles from "@/styles/dashboard.module.css";
@@ -27,37 +28,6 @@ type AppUser = {
   name: string;
   email: string;
   whatsapp?: string;
-  created_at: string;
-};
-
-type Client = {
-  id: string;
-  name: string;
-  whatsapp?: string;
-  package_name?: string;
-  status?: string;
-  created_at: string;
-};
-
-type Reseller = {
-  id: string;
-  name: string;
-  whatsapp?: string;
-  commission_percent?: number;
-  status?: string;
-  package?: "reseller" | "reseller_brand" | string | null;
-  brand_active?: boolean | null;
-  billing_model?: "legacy_commission" | "per_invitation";
-  created_at: string;
-};
-
-type Invitation = {
-  id: string;
-  slug: string;
-  theme?: string;
-  groom_name?: string;
-  bride_name?: string;
-  status?: string;
   created_at: string;
 };
 
@@ -86,27 +56,18 @@ type AffiliateCommission = {
   status: string;
 };
 
-type Rsvp = {
-  id: number;
-  name: string;
-  whatsapp?: string;
-  attendance: string;
-  message: string;
-  created_at: string;
-};
-
 export default function AdminPage() {
   const router = useRouter();
   const supabase = createClient();
 
   const [user, setUser] = useState<AppUser | null>(null);
-  const [clients, setClients] = useState<Client[]>([]);
-  const [resellers, setResellers] = useState<Reseller[]>([]);
-  const [invitations, setInvitations] = useState<Invitation[]>([]);
+  const [clients, setClients] = useState<DashboardClient[]>([]);
+  const [resellers, setResellers] = useState<DashboardReseller[]>([]);
+  const [invitations, setInvitations] = useState<DashboardInvitation[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [checkoutOrders, setCheckoutOrders] = useState<CheckoutOrder[]>([]);
   const [affiliateCommissions, setAffiliateCommissions] = useState<AffiliateCommission[]>([]);
-  const [rsvps, setRsvps] = useState<Rsvp[]>([]);
+  const [resellerDataUnavailable, setResellerDataUnavailable] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const [guestName, setGuestName] = useState("");
@@ -134,6 +95,28 @@ export default function AdminPage() {
     return data ?? [];
   };
 
+  const fetchDirectory = async <Row,>(table: string, columns: string): Promise<Row[] | null> => {
+    const pageSize = 500;
+    const rows: Row[] = [];
+    for (let offset = 0; ; offset += pageSize) {
+      const { data, error } = await supabase
+        .from(table)
+        .select(columns)
+        .order("id")
+        .range(offset, offset + pageSize - 1)
+        .returns<Row[]>();
+
+      if (error) {
+        console.error(error);
+        setDashboardError(true);
+        return null;
+      }
+
+      rows.push(...data);
+      if (data.length < pageSize) return rows;
+    }
+  };
+
   const fetchDashboard = async () => {
     setDashboardError(false);
 
@@ -145,27 +128,26 @@ export default function AdminPage() {
         transactionsData,
         checkoutOrdersData,
         affiliateCommissionsData,
-        rsvpData,
       ] = await Promise.all([
-        supabaseFetch("clients"),
-        supabaseFetch("resellers"),
-        supabaseFetch("invitations"),
+        fetchDirectory<DashboardClient>("clients", "id, name, reseller_id"),
+        fetchDirectory<DashboardReseller>("resellers", "id, name, brand_name, package"),
+        fetchDirectory<DashboardInvitation>("invitations", "id, client_id"),
         supabaseFetch("transactions"),
         supabaseFetch("checkout_orders"),
         supabaseFetch("affiliate_commissions"),
-        supabaseFetch("rsvp_wishes"),
       ]);
 
-      setClients(clientsData);
-      setResellers(resellersData);
-      setInvitations(invitationsData);
+      setClients(clientsData ?? []);
+      setResellers(resellersData ?? []);
+      setInvitations(invitationsData ?? []);
+      setResellerDataUnavailable(!clientsData || !resellersData || !invitationsData);
       setTransactions(transactionsData);
       setCheckoutOrders(checkoutOrdersData);
       setAffiliateCommissions(affiliateCommissionsData);
-      setRsvps(rsvpData);
     } catch (err) {
       console.error(err);
       setDashboardError(true);
+      setResellerDataUnavailable(true);
     }
 
     setLoading(false);
@@ -349,43 +331,6 @@ export default function AdminPage() {
 
   const totalKomisi = resellerCommission + outstandingAffiliateCommission;
 
-  const exportCSV = () => {
-    if (rsvps.length === 0) {
-      alert("Belum ada data RSVP.");
-      return;
-    }
-
-    const headers = ["Nama", "WhatsApp", "Kehadiran", "Ucapan", "Tanggal"];
-
-    const rows = rsvps.map((item) => [
-      item.name,
-      item.whatsapp || "-",
-      item.attendance,
-      item.message,
-      new Date(item.created_at).toLocaleString("id-ID"),
-    ]);
-
-    const csvContent = [
-      headers.join(","),
-      ...rows.map((row) =>
-        row.map((value) => `"${String(value).replace(/"/g, '""')}"`).join(",")
-      ),
-    ].join("\\n");
-
-    const blob = new Blob([csvContent], {
-      type: "text/csv;charset=utf-8;",
-    });
-
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-
-    link.href = url;
-    link.download = "rsvp-vistiq.csv";
-    link.click();
-
-    URL.revokeObjectURL(url);
-  };
-
   const generateLink = () => {
     if (!guestName.trim()) {
       alert("Masukkan nama tamu.");
@@ -422,17 +367,13 @@ export default function AdminPage() {
             <p className={styles.label}>OWNER DASHBOARD</p>
             <h1 className={styles.title}>Halo, {user?.name || "Owner"}</h1>
             <p className={styles.subtitle}>
-              Pantau client, reseller, undangan, RSVP, dan transaksi.
+              Pantau klien, reseller, undangan, dan transaksi.
             </p>
           </div>
 
           <div className={styles.actions}>
             <button onClick={fetchDashboard} className={styles.button}>
               Refresh
-            </button>
-
-            <button onClick={exportCSV} className={styles.exportButton}>
-              Export RSVP
             </button>
           </div>
         </header>
@@ -469,6 +410,13 @@ export default function AdminPage() {
                 value={`Rp ${totalKomisi.toLocaleString("id-ID")}`}
               />
             </section>
+
+            <ResellerActivity
+              clients={clients}
+              resellers={resellers}
+              invitations={invitations}
+              unavailable={resellerDataUnavailable}
+            />
 
             <SystemStatus />
 
@@ -523,63 +471,6 @@ export default function AdminPage() {
               )}
             </section>
 
-            <section className={styles.gridTwo}>
-              <Panel title="Client Terbaru">
-                {clients.length === 0 ? (
-                  <Empty text="Belum ada client." />
-                ) : (
-                  clients.slice(0, 5).map((item) => (
-                    <MiniItem
-                      key={item.id}
-                      title={item.name}
-                      meta={`${item.package_name || "-"} · ${
-                        item.status || "active"
-                      }`}
-                    />
-                  ))
-                )}
-              </Panel>
-
-              <Panel title="Reseller Terbaru">
-                {resellers.length === 0 ? (
-                  <Empty text="Belum ada reseller." />
-                ) : (
-                  resellers.slice(0, 5).map((item) => (
-                    <MiniItem
-                      key={item.id}
-                      title={item.name}
-                      meta={item.billing_model === "per_invitation"
-                        ? `${item.whatsapp || "-"} · Rp20.000/aktivasi`
-                        : `${item.whatsapp || "-"} · Sistem lama ${item.commission_percent || 0}%`}
-                    />
-                  ))
-                )}
-              </Panel>
-            </section>
-
-            <section className={styles.tableWrap}>
-              <h2 className={styles.sectionTitle}>RSVP Terbaru</h2>
-
-              {rsvps.length === 0 ? (
-                <p>Belum ada data RSVP.</p>
-              ) : (
-                <div className={styles.table}>
-                  {rsvps.slice(0, 8).map((item) => (
-                    <div className={styles.row} key={item.id}>
-                      <div>
-                        <strong>{item.name}</strong>
-                        <p>{item.whatsapp || "-"}</p>
-                      </div>
-
-                      <span className={styles.badge}>{item.attendance}</span>
-
-                      <p className={styles.message}>{item.message}</p>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </section>
-
             <ChangePasswordCard />
           </>
         )}
@@ -595,32 +486,4 @@ function StatCard({ title, value }: { title: string; value: string | number }) {
       <strong>{value}</strong>
     </div>
   );
-}
-
-function Panel({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <section className={styles.panel}>
-      <h2 className={styles.sectionTitle}>{title}</h2>
-      <div className={styles.panelList}>{children}</div>
-    </section>
-  );
-}
-
-function MiniItem({ title, meta }: { title: string; meta: string }) {
-  return (
-    <div className={styles.miniItem}>
-      <strong>{title}</strong>
-      <p>{meta}</p>
-    </div>
-  );
-}
-
-function Empty({ text }: { text: string }) {
-  return <p className={styles.empty}>{text}</p>;
 }
