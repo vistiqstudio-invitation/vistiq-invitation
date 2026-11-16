@@ -27,19 +27,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!invitation) return { title: "Undangan Tidak Ditemukan | Vistiq Invitation" };
   const origin = await requestOrigin();
   const canonical = `${origin}/${encodeURIComponent(slug)}`;
-  // Social crawlers must fetch the image from the primary public domain.
-  // Version this URL whenever the OG renderer changes so WhatsApp does not
-  // keep showing an older cached composition.
-  const directAxelCover = slug === "axel" && invitation.category === "birthday"
-    && invitation.coverImage && /^https:\/\//i.test(invitation.coverImage)
-    ? invitation.coverImage
-    : null;
-  // Axel's original photo is publicly served by Vistiq Media. Use that image
-  // directly instead of the composed OG renderer that previews as black.
-  const ogImage = directAxelCover
-    ? `${directAxelCover}${directAxelCover.includes("?") ? "&" : "?"}og=20261116`
-    : `${PRIMARY_ORIGIN}/api/og/${encodeURIComponent(slug)}?v=7`;
-  const ogImageType = directAxelCover ? "image/webp" : "image/png";
+  // Use the invitation's actual cover photograph for social previews.
+  // The shared OG renderer remains the fallback for invitations without a cover.
+  // URL of each uploaded cover is unique, so replacing the cover also changes
+  // the OG image address without requiring a fixed per-invitation version.
+  const cover = invitation.coverImage?.trim() || "";
+  const publicCover = /^https:\/\//i.test(cover)
+    ? cover
+    : cover.startsWith("/") && !cover.startsWith("//")
+      ? `${PRIMARY_ORIGIN}${cover}`
+      : null;
+  const ogImage = publicCover || `${PRIMARY_ORIGIN}/api/og/${encodeURIComponent(slug)}?v=8`;
+  const coverPath = publicCover?.split(/[?#]/, 1)[0].toLowerCase() || "";
+  const ogImageType = !publicCover ? "image/png"
+    : /\.png$/.test(coverPath) ? "image/png"
+    : /\.jpe?g$/.test(coverPath) ? "image/jpeg"
+    : /\.webp$/.test(coverPath) ? "image/webp"
+    : undefined;
   const category = invitation.category;
   const copy = invitationCopy[category];
   const name = category === "wedding"
