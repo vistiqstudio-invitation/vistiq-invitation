@@ -23,6 +23,16 @@
   margin-bottom: .12em;
 }
 
+.root [data-dino-cover] > :is(p, h1),
+.root .guest > :is(p, strong) {
+  animation: contentEnter .64s ease-out var(--entry-delay, 80ms) backwards;
+}
+
+.root [data-dino-cover] > h1 { --entry-delay: 160ms; }
+.root [data-dino-cover] > h1 + p { --entry-delay: 240ms; }
+.root .guest > p { --entry-delay: 320ms; }
+.root .guest > strong { --entry-delay: 410ms; }
+
 .root .bunting {
   top: 10px;
   transform-origin: 50% 12%;
@@ -92,6 +102,7 @@
   object-position: center bottom;
   bottom: 0;
   pointer-events: none;
+  animation: contentEnter .8s ease-out 120ms backwards;
 }
 
 .root :is(section, footer):not([data-dino-cover]) {
@@ -113,6 +124,19 @@
     url("/photos/dino-adventure-party/footprints.svg") left 4% bottom 8% / 56px auto no-repeat,
     url("/photos/dino-adventure-party/footprints.svg") right 8% top 12% / 47px auto no-repeat;
 }
+
+.root :is([data-dino-entered], [data-dino-cover])::before {
+  animation: trailEnter .9s ease-out backwards;
+}
+
+.root [data-dino-entered]:not(section, footer) {
+  animation: contentEnter .65s ease-out var(--entry-delay, 0ms) backwards;
+}
+
+.root [data-dino-entered]:nth-child(2) { --entry-delay: 80ms; }
+.root [data-dino-entered]:nth-child(3) { --entry-delay: 150ms; }
+.root [data-dino-entered]:nth-child(n + 4) { --entry-delay: 200ms; }
+.root [data-dino-entered]:focus-visible { animation: none; }
 
 .root .sky { background: linear-gradient(165deg, #f0f0db, #e1ebd0); }
 .root .moon { width: 94px; opacity: .72; }
@@ -155,8 +179,25 @@
   color: #344828;
 }
 .root :is(button, a):hover { background: #c0d09f; }
-.root .open { box-shadow: 0 5px 18px #5262393b; }
+.root .open {
+  box-shadow: 0 5px 18px #5262393b;
+  animation: contentEnter .64s ease-out .48s backwards, openPulse 4s ease-in-out 1.2s infinite;
+}
 .root .music { background: #fff4d9; border-color: #ac8a50; }
+
+@keyframes contentEnter {
+  from { opacity: .15; translate: 0 12px; }
+  to { opacity: 1; translate: 0 0; }
+}
+
+@keyframes trailEnter {
+  from { opacity: 0; }
+  to { opacity: .13; }
+}
+
+@keyframes openPulse {
+  50% { box-shadow: 0 5px 18px #5262393b, 0 0 0 5px #a0ad8240; }
+}
 
 @keyframes dinoEnter {
   from { opacity: 0; transform: translateY(15px) scale(.94); }
@@ -181,6 +222,15 @@
 @keyframes buntingSway {
   0%, 100% { transform: rotate(-1deg); }
   50% { transform: rotate(1deg); }
+}
+
+:where([inert]) .root [data-dino-cover] :is(p, h1, strong, img, button, span),
+:where([inert]) .root [data-dino-cover]::before {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root :is([data-dino-entered], [data-dino-cover])::before { animation: none; }
 }
 
 @media (max-width: 360px) {

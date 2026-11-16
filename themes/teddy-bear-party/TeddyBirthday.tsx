@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useSearchParams } from "next/navigation";
 import { useReducedMotion } from "framer-motion";
 import { invitationCopy } from "@/lib/invitationCopy";
@@ -90,8 +90,32 @@ export default function TeddyBirthday({ invitation }: { invitation: BirthdayInvi
   const character = dino ? "01_dino_group" : melon ? "01_melon_party_mascot" : butterfly ? "01_butterfly_bow_main" : astronaut ? "01_astronaut_boy" : safari ? "01_safari_animals" : "01_teddy_bear_utama";
   const guest = useSearchParams().get("to")?.trim() || "";
   const reduced = useReducedMotion();
-  const SectionReveal = reduced ? "div" : Reveal;
+  const SectionReveal = dino || reduced ? "div" : Reveal;
+  const dinoRoot = useRef<HTMLElement>(null);
   const gallery = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!dino || !opened || reduced || typeof IntersectionObserver === "undefined") return;
+
+    const root = dinoRoot.current;
+    if (!root) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      for (const { target, isIntersecting } of entries) {
+        if (!isIntersecting) continue;
+        target.setAttribute("data-dino-entered", "");
+        observer.unobserve(target);
+      }
+    }, { threshold: 0.15 });
+    const targets = root.querySelectorAll(
+      "section, footer, h2, h3, p, img, label, button, a[href], [data-dino-frame], [data-dino-time]",
+    );
+    targets.forEach((target) => {
+      if (!target.matches("[data-dino-entered], [data-dino-frame] *, ." + jungle.profileCloud)) {
+        observer.observe(target);
+      }
+    });
+    return () => observer.disconnect();
+  }, [dino, opened, reduced]);
   const { child, event, parents, opening, gifts, musicUrl, mapsUrl, mapsEmbedUrl } = invitation;
   const celebrationName = nabilaNadila ? "Nabila Botutihe dan Nadila Botutihe" : child.name;
   const { audioRef, isPlaying, toggle } = useMusicPlayer(musicUrl, false);
@@ -103,7 +127,7 @@ export default function TeddyBirthday({ invitation }: { invitation: BirthdayInvi
   const mapLink = map && /^https?:\/\//i.test(map) ? map : event?.location ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.location)}` : null;
   const play = () => { if (musicUrl) void toggle().then(() => setMusicError(false)).catch(() => setMusicError(true)); };
   const photo = child.photo || invitation.coverImage;
-  return <main className={`${s.root} ${dino ? jungle.root : ""} ${safari ? safariStyles.safari : astronaut ? space.root : butterfly ? pink.root : melon ? rainbow.root : ""}`} data-safari-theme={safari || undefined} data-astronaut-theme={astronaut || undefined} data-butterfly-theme={butterfly || undefined} data-melon-theme={melon || undefined}>
+  return <main ref={dino ? dinoRoot : undefined} className={`${s.root} ${dino ? jungle.root : ""} ${safari ? safariStyles.safari : astronaut ? space.root : butterfly ? pink.root : melon ? rainbow.root : ""}`} data-safari-theme={safari || undefined} data-astronaut-theme={astronaut || undefined} data-butterfly-theme={butterfly || undefined} data-melon-theme={melon || undefined}>
     {musicUrl && <audio ref={audioRef} src={musicUrl} loop preload="none" />}
     {!opened ? <section className={`${s.cover} ${astronaut ? space.cover : butterfly ? pink.cover : melon ? rainbow.cover : ""}`} data-dino-cover={dino || undefined} data-safari-cover={safari || undefined} data-nabila-cover={nabilaNadila || undefined}>
       {safari && <>
@@ -146,7 +170,7 @@ export default function TeddyBirthday({ invitation }: { invitation: BirthdayInvi
           </> : <Decor folder={folder} file={character} className={`${s.bear} ${safari ? safariStyles.animals : astronaut ? space.astronaut : butterfly ? pink.bow : melon ? rainbow.mascot : ""}`} eager />}
         </div>
       )}
-      <div className={s.guest}>
+      <div className={`${s.guest} ${dino ? jungle.guest : ""}`}>
         <p>Kepada Yth.<br />Bapak/Ibu/Saudara/i</p>
         <strong>{guest || "Tamu Undangan"}</strong>
         <button className={`${s.button} ${s.open} ${dino ? jungle.open : ""}`} onClick={() => { play(); setOpened(true); window.scrollTo(0, 0); }}>Buka Undangan <span aria-hidden="true">→</span></button>
@@ -156,12 +180,12 @@ export default function TeddyBirthday({ invitation }: { invitation: BirthdayInvi
       {date && <section className={`${s.section} ${s.sky} ${dino ? jungle.sky : ""}`}>
         <Decor folder={folder} file={melon ? "02_rainbow_cloud" : butterfly ? "04_butterflies" : astronaut ? "04_cloud_moon_stars" : dino ? "06_cloud" : safari ? "04_cloud" : "05_moon_stars"} className={butterfly ? pink.countdownFlutter : `${s.moon} ${dino ? jungle.moon : ""}`} />
         <SectionReveal><p className={s.eyebrow}>{nabilaNadila ? "Catat Tanggalnya" : "Save the Date"}</p><h2>{nabilaNadila ? "Pesta Ulang Tahun Nabila & Nadila" : "Menuju Hari Bahagia"}</h2>
-        <div className={`${s.countdown} ${dino ? jungle.countdown : ""}`}>{([["Hari", countdown.days], ["Jam", countdown.hours], ["Menit", countdown.minutes], ["Detik", countdown.seconds]] as const).map(([label, value]) => <div key={label}><strong>{String(value).padStart(2,"0")}</strong><span>{label}</span></div>)}</div></SectionReveal>
+        <div className={`${s.countdown} ${dino ? jungle.countdown : ""}`}>{([["Hari", countdown.days], ["Jam", countdown.hours], ["Menit", countdown.minutes], ["Detik", countdown.seconds]] as const).map(([label, value]) => <div key={label} data-dino-time={dino || undefined}><strong>{String(value).padStart(2,"0")}</strong><span>{label}</span></div>)}</div></SectionReveal>
       </section>}
       <section className={s.section}>
         {dino && <Decor folder={folder} file="06_cloud" className={jungle.profileCloud} />}
         <SectionReveal><p className={s.eyebrow}>{nabilaNadila ? "Kami yang Berbahagia" : "Si Kecil yang Berbahagia"}</p><h2>{nabilaNadila ? celebrationName : `Hallo, Aku ${child.name}`}</h2>
-        <div className={`${s.frame} ${dino ? jungle.frame : ""} ${safari ? safariStyles.frame : astronaut ? space.frame : butterfly ? pink.frame : melon ? rainbow.frame : ""}`}>
+        <div data-dino-frame={dino || undefined} className={`${s.frame} ${dino ? jungle.frame : ""} ${safari ? safariStyles.frame : astronaut ? space.frame : butterfly ? pink.frame : melon ? rainbow.frame : ""}`}>
           {photo ? <img className={`${s.portrait} ${safari ? safariStyles.portrait : astronaut ? space.portrait : butterfly ? pink.portrait : melon ? rainbow.portrait : ""}`} src={photo} alt={child.name} loading="lazy" /> : <Decor folder={folder} file={character} className={s.placeholder} />}
           <Decor folder={folder} file="08_photo_frame" className={s.frameArt} />
           {butterfly && <Decor folder={folder} file="05_flower_cluster" className={pink.profileFlowers} />}

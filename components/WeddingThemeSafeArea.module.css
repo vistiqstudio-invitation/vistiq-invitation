@@ -605,3 +605,30 @@
 .root[data-wedding-theme="rainbow-melon-party"] .desktopBackdropShade {
   background:linear-gradient(to top,#233c33b3 2%,#2e493123 72%,transparent);
 }
+
+@media (prefers-reduced-motion: no-preference) {
+  .root[data-wedding-theme="dino-adventure-party"] .desktopBackdrop > img {
+    animation: dinoBackdropEnter 1.4s ease-out both;
+  }
+
+  .root[data-wedding-theme="dino-adventure-party"] .desktopBackdropCopy > * {
+    animation: dinoBackdropCopyEnter .65s ease-out var(--dino-copy-delay, .12s) backwards;
+  }
+
+  .root[data-wedding-theme="dino-adventure-party"] .desktopBackdropCopy > h1 { --dino-copy-delay: .24s; }
+  .root[data-wedding-theme="dino-adventure-party"] .desktopBackdropCopy > span { --dino-copy-delay: .36s; }
+
+  :where([inert]) .root[data-wedding-theme="dino-adventure-party"] :is(.desktopBackdrop > img, .desktopBackdropCopy > *) {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes dinoBackdropEnter {
+  from { scale: 1.035; }
+  to { scale: 1; }
+}
+
+@keyframes dinoBackdropCopyEnter {
+  from { opacity: .15; translate: 0 12px; }
+  to { opacity: 1; translate: 0 0; }
+}
