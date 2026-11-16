@@ -70,8 +70,6 @@ export default function AdminPage() {
   const [resellerDataUnavailable, setResellerDataUnavailable] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const [guestName, setGuestName] = useState("");
-  const [generatedLink, setGeneratedLink] = useState("");
   const [dashboardError, setDashboardError] = useState(false);
   const [migrationRunning, setMigrationRunning] = useState(false);
   const [migrationResult, setMigrationResult] = useState<string>("");
@@ -129,9 +127,9 @@ export default function AdminPage() {
         checkoutOrdersData,
         affiliateCommissionsData,
       ] = await Promise.all([
-        fetchDirectory<DashboardClient>("clients", "id, name, reseller_id"),
+        fetchDirectory<DashboardClient>("clients", "id, name, email, status, reseller_id"),
         fetchDirectory<DashboardReseller>("resellers", "id, name, brand_name, package"),
-        fetchDirectory<DashboardInvitation>("invitations", "id, client_id"),
+        fetchDirectory<DashboardInvitation>("invitations", "id, client_id, slug, category, baby_name, groom_name, bride_name, is_active"),
         supabaseFetch("transactions"),
         supabaseFetch("checkout_orders"),
         supabaseFetch("affiliate_commissions"),
@@ -331,25 +329,6 @@ export default function AdminPage() {
 
   const totalKomisi = resellerCommission + outstandingAffiliateCommission;
 
-  const generateLink = () => {
-    if (!guestName.trim()) {
-      alert("Masukkan nama tamu.");
-      return;
-    }
-
-    const url = `${window.location.origin}/demo?to=${encodeURIComponent(
-      guestName
-    )}`;
-
-    setGeneratedLink(url);
-  };
-
-  const copyLink = async () => {
-    if (!generatedLink) return;
-    await navigator.clipboard.writeText(generatedLink);
-    alert("Link berhasil disalin.");
-  };
-
   return (
     <main className={styles.page}>
       <DashboardSidebar
@@ -442,33 +421,6 @@ export default function AdminPage() {
               </div>
               {logoMigrationResult && <div className={styles.linkBox}>{logoMigrationResult}</div>}
               <StorageCleanup disabled={migrationRunning || verifyRunning || logoMigrationRunning} />
-            </section>
-
-            <section className={styles.generatorCard}>
-              <h2 className={styles.sectionTitle}>Generator Link Tamu</h2>
-
-              <div className={styles.generatorWrap}>
-                <input
-                  value={guestName}
-                  onChange={(e) => setGuestName(e.target.value)}
-                  placeholder="Contoh: Bapak Ahmad"
-                  className={styles.input}
-                />
-
-                <button onClick={generateLink} className={styles.button}>
-                  Generate
-                </button>
-              </div>
-
-              {generatedLink && (
-                <>
-                  <div className={styles.linkBox}>{generatedLink}</div>
-
-                  <button onClick={copyLink} className={styles.exportButton}>
-                    Copy Link
-                  </button>
-                </>
-              )}
             </section>
 
             <ChangePasswordCard />
