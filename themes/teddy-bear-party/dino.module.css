@@ -23,21 +23,65 @@
   margin-bottom: .12em;
 }
 
-.root .bunting { top: 10px; }
-.root .coverCloud { top: 19%; width: 27%; opacity: .72; }
-.root .bear { width: 87%; height: 100%; left: 4%; }
-.root .balloons { width: 35%; height: 82%; right: -9%; top: -3%; }
-
-.leafLeft, .leafRight {
-  position: absolute;
-  z-index: -1;
-  width: clamp(64px, 26%, 150px);
-  pointer-events: none;
-  bottom: 18%;
+.root .bunting {
+  top: 10px;
+  transform-origin: 50% 12%;
+  animation: buntingSway 8s ease-in-out infinite;
 }
 
-.leafLeft { left: -11%; transform: rotate(20deg); }
-.leafRight { right: -11%; transform: scaleX(-1) rotate(20deg); }
+.root .coverCloud {
+  top: 19%;
+  width: 27%;
+  opacity: .78;
+  animation: cloudDrift 15s ease-in-out infinite;
+}
+
+.root .balloons { width: 35%; height: 82%; right: -9%; top: -3%; }
+
+.dinosaur {
+  position: absolute;
+  object-fit: contain;
+  object-position: center bottom;
+  transform-origin: center bottom;
+  pointer-events: none;
+  animation: dinoEnter .65s ease-out backwards,
+    dinoIdle var(--idle-time) ease-in-out infinite;
+  animation-delay: var(--enter-delay), calc(var(--enter-delay) + .65s);
+}
+
+.trex {
+  left: 5%; bottom: 16%; width: 48%; height: 65%;
+  --enter-delay: .14s; --idle-time: 4.3s; --lift: -7px; --tilt: 0deg;
+}
+.brachiosaurus {
+  right: 8%; bottom: 14%; width: 47%; height: 80%;
+  --enter-delay: .03s; --idle-time: 5.8s; --lift: -2px; --tilt: 3deg;
+}
+.triceratops {
+  left: 3%; bottom: 2%; width: 43%; height: 42%;
+  --enter-delay: .29s; --idle-time: 5s; --lift: -3px; --tilt: -2deg;
+}
+.stegosaurus {
+  right: 4%; bottom: 0; width: 49%; height: 39%;
+  --enter-delay: .45s; --idle-time: 6.3s; --lift: -4px; --tilt: 2deg;
+}
+
+.leaf {
+  position: absolute;
+  z-index: -1;
+  width: clamp(37px, 13.5%, 72px);
+  height: auto;
+  pointer-events: none;
+  transform-origin: 50% 93%;
+  transform: rotate(var(--lean));
+  animation: leafSway var(--sway-time) ease-in-out infinite alternate;
+  animation-delay: var(--sway-delay);
+}
+
+.monstera { left: -4%; bottom: 16%; --lean: 20deg; --sway-time: 3.8s; --sway-delay: -.9s; }
+.bananaLeaf { left: .5%; bottom: 15%; --lean: -26deg; --sway-time: 4.9s; --sway-delay: -2s; }
+.fern { right: 1%; bottom: 15%; --lean: 24deg; --sway-time: 4.2s; --sway-delay: -1.3s; }
+.goldenLeaf { right: -3%; bottom: 16%; --lean: -16deg; --sway-time: 5.4s; --sway-delay: -2.7s; }
 
 .root .coverBorder {
   position: absolute;
@@ -72,7 +116,7 @@
 
 .root .sky { background: linear-gradient(165deg, #f0f0db, #e1ebd0); }
 .root .moon { width: 94px; opacity: .72; }
-.root .profileCloud { position: absolute; z-index: -1; right: 2%; top: 24%; width: 18%; opacity: .22; }
+.root .profileCloud { position: absolute; z-index: -1; right: 2%; top: 24%; width: 18%; opacity: .22; animation: cloudDrift 17s ease-in-out infinite; }
 
 .root .countdown > div {
   border-color: #a9b59a;
@@ -113,6 +157,31 @@
 .root :is(button, a):hover { background: #c0d09f; }
 .root .open { box-shadow: 0 5px 18px #5262393b; }
 .root .music { background: #fff4d9; border-color: #ac8a50; }
+
+@keyframes dinoEnter {
+  from { opacity: 0; transform: translateY(15px) scale(.94); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes dinoIdle {
+  0%, 100% { transform: none; }
+  50% { transform: translateY(var(--lift)) rotate(var(--tilt)); }
+}
+
+@keyframes leafSway {
+  from { transform: rotate(calc(var(--lean) - 5deg)); }
+  to { transform: rotate(calc(var(--lean) + 5deg)); }
+}
+
+@keyframes cloudDrift {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(clamp(12px, 5vw, 28px)); }
+}
+
+@keyframes buntingSway {
+  0%, 100% { transform: rotate(-1deg); }
+  50% { transform: rotate(1deg); }
+}
 
 @media (max-width: 360px) {
   .root .countdown { gap: 4px; }

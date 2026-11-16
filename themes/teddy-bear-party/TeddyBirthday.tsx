@@ -106,9 +106,15 @@ export default function TeddyBirthday({ invitation }: { invitation: BirthdayInvi
   return <main className={`${s.root} ${dino ? jungle.root : ""} ${safari ? safariStyles.safari : astronaut ? space.root : butterfly ? pink.root : melon ? rainbow.root : ""}`} data-safari-theme={safari || undefined} data-astronaut-theme={astronaut || undefined} data-butterfly-theme={butterfly || undefined} data-melon-theme={melon || undefined}>
     {musicUrl && <audio ref={audioRef} src={musicUrl} loop preload="none" />}
     {!opened ? <section className={`${s.cover} ${astronaut ? space.cover : butterfly ? pink.cover : melon ? rainbow.cover : ""}`} data-dino-cover={dino || undefined} data-safari-cover={safari || undefined} data-nabila-cover={nabilaNadila || undefined}>
-      {(safari || dino) && <>
-        <Decor folder={folder} file="05_tropical_leaves" className={dino ? jungle.leafLeft : safariStyles.leafLeft} eager />
-        <Decor folder={folder} file="05_tropical_leaves" className={dino ? jungle.leafRight : safariStyles.leafRight} eager />
+      {safari && <>
+        <Decor folder={folder} file="05_tropical_leaves" className={safariStyles.leafLeft} eager />
+        <Decor folder={folder} file="05_tropical_leaves" className={safariStyles.leafRight} eager />
+      </>}
+      {dino && <>
+        <Decor folder={folder} file="08a_monstera_sage" className={`${jungle.leaf} ${jungle.monstera}`} eager />
+        <Decor folder={folder} file="08b_banana_leaf_olive" className={`${jungle.leaf} ${jungle.bananaLeaf}`} eager />
+        <Decor folder={folder} file="08c_curled_fern" className={`${jungle.leaf} ${jungle.fern}`} eager />
+        <Decor folder={folder} file="08d_golden_leaf" className={`${jungle.leaf} ${jungle.goldenLeaf}`} eager />
       </>}
       {astronaut ? <>
         <Decor folder={folder} file="04_cloud_moon_stars" className={space.coverMoon} eager />
@@ -116,7 +122,7 @@ export default function TeddyBirthday({ invitation }: { invitation: BirthdayInvi
         <Decor folder={folder} file="02_rocket" className={space.rocket} eager />
       </> : <>
         <Decor folder={folder} file={melon ? "05_bunting_rainbow" : butterfly ? "03_bunting_bow" : "03_bunting_flag"} className={`${s.bunting} ${dino ? jungle.bunting : ""}`} eager />
-        <Decor folder={folder} file={melon ? "02_rainbow_cloud" : butterfly ? "04_butterflies" : "04_cloud"} className={melon ? rainbow.coverRainbow : butterfly ? pink.coverFlutter : `${s.coverCloud} ${dino ? jungle.coverCloud : ""}`} eager />
+        <Decor folder={folder} file={melon ? "02_rainbow_cloud" : butterfly ? "04_butterflies" : dino ? "06_cloud" : "04_cloud"} className={melon ? rainbow.coverRainbow : butterfly ? pink.coverFlutter : `${s.coverCloud} ${dino ? jungle.coverCloud : ""}`} eager />
       </>}
       <span className={s.sparkle} aria-hidden="true">✦</span>
       <p className={s.eyebrow}>{nabilaNadila ? "Undangan Ulang Tahun" : "Birthday Party"}</p>
@@ -132,7 +138,12 @@ export default function TeddyBirthday({ invitation }: { invitation: BirthdayInvi
       ) : (
         <div className={`${s.scene} ${astronaut ? space.scene : butterfly ? pink.scene : melon ? rainbow.scene : ""}`}>
           <Decor folder={folder} file={melon ? "04_balloon_cluster" : butterfly ? "02_balloon_cluster_pink" : astronaut ? "05_balloon_cluster" : "02_balloon_cluster"} className={`${s.balloons} ${dino ? jungle.balloons : ""} ${astronaut ? space.balloons : butterfly ? pink.balloons : melon ? rainbow.balloons : ""}`} eager />
-          <Decor folder={folder} file={character} className={`${s.bear} ${dino ? jungle.bear : ""} ${safari ? safariStyles.animals : astronaut ? space.astronaut : butterfly ? pink.bow : melon ? rainbow.mascot : ""}`} eager />
+          {dino ? <>
+            <Decor folder={folder} file="02_dino_brachiosaurus" className={`${jungle.dinosaur} ${jungle.brachiosaurus}`} eager />
+            <Decor folder={folder} file="01_dino_trex" className={`${jungle.dinosaur} ${jungle.trex}`} eager />
+            <Decor folder={folder} file="03_dino_triceratops" className={`${jungle.dinosaur} ${jungle.triceratops}`} eager />
+            <Decor folder={folder} file="04_dino_stegosaurus" className={`${jungle.dinosaur} ${jungle.stegosaurus}`} eager />
+          </> : <Decor folder={folder} file={character} className={`${s.bear} ${safari ? safariStyles.animals : astronaut ? space.astronaut : butterfly ? pink.bow : melon ? rainbow.mascot : ""}`} eager />}
         </div>
       )}
       <div className={s.guest}>
@@ -143,12 +154,12 @@ export default function TeddyBirthday({ invitation }: { invitation: BirthdayInvi
       {(safari || dino) && <Decor folder={folder} file="09_jungle_border" className={dino ? jungle.coverBorder : safariStyles.coverBorder} eager={dino} />}
     </section> : <>
       {date && <section className={`${s.section} ${s.sky} ${dino ? jungle.sky : ""}`}>
-        <Decor folder={folder} file={melon ? "02_rainbow_cloud" : butterfly ? "04_butterflies" : astronaut ? "04_cloud_moon_stars" : (safari || dino) ? "04_cloud" : "05_moon_stars"} className={butterfly ? pink.countdownFlutter : `${s.moon} ${dino ? jungle.moon : ""}`} />
+        <Decor folder={folder} file={melon ? "02_rainbow_cloud" : butterfly ? "04_butterflies" : astronaut ? "04_cloud_moon_stars" : dino ? "06_cloud" : safari ? "04_cloud" : "05_moon_stars"} className={butterfly ? pink.countdownFlutter : `${s.moon} ${dino ? jungle.moon : ""}`} />
         <SectionReveal><p className={s.eyebrow}>{nabilaNadila ? "Catat Tanggalnya" : "Save the Date"}</p><h2>{nabilaNadila ? "Pesta Ulang Tahun Nabila & Nadila" : "Menuju Hari Bahagia"}</h2>
         <div className={`${s.countdown} ${dino ? jungle.countdown : ""}`}>{([["Hari", countdown.days], ["Jam", countdown.hours], ["Menit", countdown.minutes], ["Detik", countdown.seconds]] as const).map(([label, value]) => <div key={label}><strong>{String(value).padStart(2,"0")}</strong><span>{label}</span></div>)}</div></SectionReveal>
       </section>}
       <section className={s.section}>
-        {dino && <Decor folder={folder} file="04_cloud" className={jungle.profileCloud} />}
+        {dino && <Decor folder={folder} file="06_cloud" className={jungle.profileCloud} />}
         <SectionReveal><p className={s.eyebrow}>{nabilaNadila ? "Kami yang Berbahagia" : "Si Kecil yang Berbahagia"}</p><h2>{nabilaNadila ? celebrationName : `Hallo, Aku ${child.name}`}</h2>
         <div className={`${s.frame} ${dino ? jungle.frame : ""} ${safari ? safariStyles.frame : astronaut ? space.frame : butterfly ? pink.frame : melon ? rainbow.frame : ""}`}>
           {photo ? <img className={`${s.portrait} ${safari ? safariStyles.portrait : astronaut ? space.portrait : butterfly ? pink.portrait : melon ? rainbow.portrait : ""}`} src={photo} alt={child.name} loading="lazy" /> : <Decor folder={folder} file={character} className={s.placeholder} />}
