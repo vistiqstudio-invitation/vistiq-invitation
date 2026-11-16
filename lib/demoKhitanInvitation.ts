@@ -1,14 +1,7 @@
 import type { KhitanInvitationData } from "@/types/khitan";
 import { KHITAN_COVER_BY_THEME } from "@/lib/themeCoverImages";
 
-const MUSIC_BY_THEME: Record<string, string> = {
-  "khitan-warna": "/music/khitan-warna.mp3",
-  "khitan-ksatria": "/music/khitan-ksatria.mp3",
-  "khitan-raja": "/music/khitan-raja.mp3",
-  "khitan-berani": "/music/khitan-berani.mp3",
-  "khitan-petualang": "/music/khitan-petualang.mp3",
-  "khitan-elang": "/music/khitan-elang.mp3",
-};
+const DEMO_MUSIC_URL = "/music-library/elegant-waltz.mp3";
 
 const KHITAN_THEMES = [
   "khitan-warna",
@@ -52,7 +45,7 @@ export function getDemoKhitanInvitation(theme: string): KhitanInvitationData {
     brand: null,
 
     coverImage: COVER_BY_THEME[theme] || null,
-    musicUrl: MUSIC_BY_THEME[theme] || null,
+    musicUrl: DEMO_MUSIC_URL,
     videoUrl: null,
 
     mapsUrl: "https://maps.google.com",

@@ -1,0 +1,47 @@
+.controls {
+  position: fixed;
+  right: max(14px, env(safe-area-inset-right));
+  bottom: max(16px, env(safe-area-inset-bottom));
+  z-index: 9997;
+  display: grid;
+  gap: 8px;
+}
+
+.button {
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 1px solid #ffffffb3;
+  border-radius: 50%;
+  box-shadow: 0 4px 14px #0f172a33;
+  cursor: pointer;
+  font: 700 18px/1 system-ui, sans-serif;
+}
+
+.button:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 3px;
+}
+
+.scroll {
+  color: white;
+  background: #0f172ae0;
+  font-size: 15px;
+}
+
+.music {
+  color: #344828;
+  background: #fff4d9;
+  border-color: #ac8a50;
+}
+
+:global(body:has(nav[aria-label="Navigasi undangan"], [data-wedding-theme^="luxury-art-"], [data-wedding-theme="jawa-sasmaya"])) .controls {
+  bottom: max(76px, calc(env(safe-area-inset-bottom) + 64px));
+}
+
+:global(body:has([data-wedding-theme="luxury-art-garden"], [data-wedding-theme="luxury-art-love-paradise"])) .controls {
+  bottom: max(126px, calc(env(safe-area-inset-bottom) + 114px));
+}

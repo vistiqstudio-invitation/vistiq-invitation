@@ -787,6 +787,7 @@ function prepareReference(
   });
 
   const audio = doc.querySelector<HTMLAudioElement>(".idb-audio-el");
+  doc.querySelector(".idb-audio-box")?.setAttribute("data-invitation-music-box", "");
   const playButton = doc.querySelector<HTMLElement>(".idb-mute-sound");
   const pauseButton = doc.querySelector<HTMLElement>(".idb-unmute-sound");
   const syncAudioUi = () => {
@@ -1280,7 +1281,7 @@ export default function AzureBloom({ invitation }: { invitation: InvitationData 
 
   const handleFrameLoad = useCallback(() => {
     const doc = frameRef.current?.contentDocument;
-    if (!doc) return;
+    if (!doc?.querySelector(".elementor-33329") || frameDocumentRef.current === doc) return;
 
     frameCleanupRef.current?.();
     frameDocumentRef.current = doc;
@@ -1295,6 +1296,18 @@ export default function AzureBloom({ invitation }: { invitation: InvitationData 
     );
     setFrameReady(true);
   }, [guest, invitation, openInvitation]);
+
+  useEffect(() => {
+    if (!referenceDocument) return;
+    // Reference images can finish well after the interactive document is available.
+    const timer = window.setInterval(() => {
+      const doc = frameRef.current?.contentDocument;
+      if (!doc || doc.readyState === "loading" || !doc.querySelector(".elementor-33329")) return;
+      window.clearInterval(timer);
+      handleFrameLoad();
+    }, 100);
+    return () => window.clearInterval(timer);
+  }, [referenceDocument, handleFrameLoad]);
 
   useEffect(() => {
     if (!frameReady || !frameDocumentRef.current) return;
@@ -1318,6 +1331,7 @@ export default function AzureBloom({ invitation }: { invitation: InvitationData 
           ref={frameRef}
           className={styles.frame}
           srcDoc={referenceDocument}
+          data-invitation-frame
           title="Undangan pernikahan"
           allow="autoplay; fullscreen; picture-in-picture"
           onLoad={handleFrameLoad}

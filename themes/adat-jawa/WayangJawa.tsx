@@ -1331,6 +1331,7 @@ export default function WayangJawa({
           className={styles.frame}
           title={"Undangan " + coupleName(invitation)}
           srcDoc={referenceDocument}
+          data-invitation-frame
           onLoad={handleFrameLoad}
           allow="autoplay; clipboard-write"
           sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox"

@@ -1,18 +1,7 @@
 import type { AqiqahInvitationData } from "@/types/aqiqah";
 import { AQIQAH_COVER_BY_THEME } from "@/lib/themeCoverImages";
 
-const MUSIC_BY_THEME: Record<string, string> = {
-  "akikah-nur": "/music/akikah-nur.mp3",
-  "akikah-zaitun": "/music/akikah-zaitun.mp3",
-  // Both dedicated aqiqah tracks are already used above - this one reuses
-  // the next unused numbered wedding track (see reference_wedding_music_bank
-  // memory), same as any new wedding theme would.
-  "akikah-ceria": "/music/akikah-ceria.mp3",
-  "akikah-anugerah": "/music/akikah-anugerah.mp3",
-  "akikah-safir": "/music/akikah-safir.mp3",
-  "akikah-kasih": "/music/akikah-kasih.mp3",
-  "akikah-damai": "/music/akikah-damai.mp3",
-};
+const DEMO_MUSIC_URL = "/music-library/acoustic-garden.mp3";
 
 export const COVER_BY_THEME = AQIQAH_COVER_BY_THEME;
 
@@ -64,7 +53,7 @@ export function getDemoAqiqahInvitation(theme: string): AqiqahInvitationData {
     brand: null,
 
     coverImage: COVER_BY_THEME[theme] || null,
-    musicUrl: MUSIC_BY_THEME[theme] || null,
+    musicUrl: DEMO_MUSIC_URL,
     videoUrl: null,
 
     mapsUrl: "https://maps.google.com",

@@ -4,6 +4,7 @@ import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { FormEvent, type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { useInvitation } from "@/components/InvitationProvider";
 import { useRsvpWishes, type Attendance } from "@/hooks/useRsvpWishes";
 import type { InvitationData } from "@/types/invitation";
 import styles from "./style.module.css";
@@ -363,7 +364,7 @@ function Closing({ invitation }: { invitation: InvitationData }) {
 const nav = [["home", "home"], ["couple", "couple"], ["event", "calendar"], ["gallery", "gallery"], ["story", "heart"], ["wishes", "chat"], ["gift", "mail"]] as const;
 
 export default function ChampagneRomance({ invitation, previewMode = false }: { invitation: InvitationData; previewMode?: boolean }) {
-  const [opened, setOpened] = useState(false);
+  const { opened, setOpened } = useInvitation();
   const [contentReady, setContentReady] = useState(false);
   const [musicOn, setMusicOn] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -390,7 +391,7 @@ export default function ChampagneRomance({ invitation, previewMode = false }: { 
         {contentReady ? <>
           <motion.div className={styles.floatingActions} initial={{ opacity: 0, x: 18 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5, duration: 0.65, ease }}>
             <button type="button" aria-label="Kirim hadiah" onClick={() => scrollTo("gift")}><Icon name="gift"/></button>
-            <button type="button" aria-label="Musik" className={musicOn ? styles.musicOn : ""} onClick={toggleMusic}><Icon name="music"/></button>
+            <button type="button" aria-label={musicOn ? "Jeda musik" : "Putar musik"} className={musicOn ? styles.musicOn : ""} onClick={toggleMusic}><Icon name="music"/></button>
           </motion.div>
           <motion.nav className={styles.bottomNav} aria-label="Navigasi undangan" initial={{ opacity: 0, y: 30, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: 0.45, duration: 0.72, ease }}>
             {nav.map(([id, icon], i) => <motion.button type="button" key={id} aria-label={id} onClick={() => scrollTo(id)} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55 + i * 0.045, duration: 0.5, ease }}><Icon name={icon}/></motion.button>)}

@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
+import { useInvitation } from "@/components/InvitationProvider";
 import type { InvitationData } from "@/types/invitation";
 import { installIvoryBotanicaRsvp } from "@/lib/ivoryBotanicaRsvp";
 import styles from "./style.module.css";
@@ -31,4 +32,25 @@ function createFooterIcon(d:Document,k:FooterIconKind){const s=d.createElementNS
 function setFooterBranding(d:Document){const f=d.querySelector<HTMLElement>(".elementor-element-12b47c4c");if(!f)return;const w=f.querySelector<HTMLAnchorElement>('a[aria-label="WhatsApp"]');if(w){w.href=VISTIQ_ADMIN_WHATSAPP_URL;w.replaceChildren(createFooterIcon(d,"whatsapp"))}const i=f.querySelector<HTMLAnchorElement>('a[aria-label="Instagram"]');if(i){i.href=VISTIQ_INSTAGRAM_URL;i.replaceChildren(createFooterIcon(d,"instagram"))}}
 function applyOptionalSectionVisibility(d:Document,i:InvitationData){if(!d.body)return;const s=i.story.some(x=>Boolean(x.title?.trim()||x.description?.trim()||x.year?.trim())),l=Boolean(i.liveStreamingUrl?.trim()),g=i.gifts.some(x=>Boolean(x.bankName?.trim()||x.accountNumber?.trim()||x.accountName?.trim()));d.body.classList.toggle("idb-hide-love-story",!s);d.body.classList.toggle("idb-hide-live-streaming",!l);d.body.classList.toggle("idb-hide-wedding-gift",!g);d.body.classList.toggle("idb-hide-kirim-hadiah",!g);if(!g)d.querySelectorAll<HTMLElement>("#amplop,.amplop-section,.gift-con,.wedding-gift-con,.kirim-hadiah-con").forEach(e=>e.style.display="none")}
 function applyInvitationData(d:Document,i:InvitationData,g:string){const gs=shortName(i.groom),bs=shortName(i.bride),f=i.events[0],c=i.coverEvent||f;d.title=`${gs} & ${bs} — Ivory Botanica`;d.documentElement.lang="id";applyOptionalSectionVisibility(d,i);replaceText(d,"Habib & Adiba",`${gs} & ${bs}`);replaceText(d,"Rizky & Nabila",`${gs} & ${bs}`);replaceText(d,"Habib Yulianto",i.groom.name);replaceText(d,"Rizky Pratama",i.groom.name);replaceText(d,"Adiba Putri Syakila",i.bride.name);replaceText(d,"Nabila Putri",i.bride.name);if(i.slug==="alam-nada"){replaceText(d,"Putra Kedua","Putra");replaceText(d,"Putri Pertama","Putri")}setGuestName(d,g);replaceText(d,LEGACY_REFERENCE_DATE,c?.date||REFERENCE_DATE);replaceText(d,REFERENCE_DATE,c?.date||REFERENCE_DATE);setParents(d,"pria",i.groom.parents);setParents(d,"wanita",i.bride.parents);const r=ensureEventRoots(d,i.events.length);i.events.slice(0,r.length).forEach((e,n)=>setEventContent(r[n],e));const a=Array.from(d.querySelectorAll<HTMLAnchorElement>('.elementor-widget-bisdev_social_icons a[aria-label="Instagram"]')),v=[i.groom.instagram,i.bride.instagram,i.groom.instagram];a.forEach((x,n)=>{const q=v[n]||null,h=instagramHandle(q);if(!h){x.style.display="none";x.removeAttribute("href");const holder=x.closest<HTMLElement>(".elementor-widget-bisdev_social_icons");if(holder)holder.style.display="none";return}x.style.removeProperty("display");const holder=x.closest<HTMLElement>(".elementor-widget-bisdev_social_icons");if(holder)holder.style.removeProperty("display");x.href=instagramUrl(q);const l=x.querySelector<HTMLElement>(".idb-social-icons__text");if(l)l.textContent=`@${h}`});setEditableOpening(d,i);setAudioSource(d,i.musicUrl);setCountdown(d,c?.rawDate||f?.rawDate||null);localizeInternalLinks(d);setFooterBranding(d);installIvoryBotanicaRsvp(d,i,g)}
-export default function IvoryBotanica({invitation}:{invitation:InvitationData}){const ref=useRef<HTMLIFrameElement>(null);const handleLoad=useCallback(()=>{const d=ref.current?.contentDocument;if(d)applyInvitationData(d,invitation,currentGuest())},[invitation]);return <div className={styles.root}><iframe ref={ref} className={styles.frame} src={REFERENCE_PAGE} title={`Undangan ${shortName(invitation.groom)} dan ${shortName(invitation.bride)}`} allow="autoplay; fullscreen; picture-in-picture" onLoad={handleLoad}/></div>}
+export default function IvoryBotanica({ invitation }: { invitation: InvitationData }) {
+  const ref = useRef<HTMLIFrameElement>(null);
+  const prepared = useRef<{ document: Document; invitation: InvitationData } | null>(null);
+  const { setOpened } = useInvitation();
+
+  const handleLoad = useCallback(() => {
+    const document = ref.current?.contentDocument;
+    const open = document?.getElementById("open");
+    if (!document || !open || (prepared.current?.document === document && prepared.current.invitation === invitation)) return;
+    applyInvitationData(document, invitation, currentGuest());
+    open.addEventListener("click", () => setOpened(true), { capture: true, once: true });
+    prepared.current = { document, invitation };
+  }, [invitation, setOpened]);
+
+  useEffect(() => {
+    if (ref.current?.contentDocument?.readyState === "complete") handleLoad();
+  }, [handleLoad]);
+
+  return <div className={styles.root}>
+    <iframe ref={ref} className={styles.frame} src={REFERENCE_PAGE} title={`Undangan ${shortName(invitation.groom)} dan ${shortName(invitation.bride)}`} allow="autoplay; fullscreen; picture-in-picture" onLoad={handleLoad} />
+  </div>;
+}

@@ -606,11 +606,6 @@
   background:linear-gradient(to top,#233c33b3 2%,#2e493123 72%,transparent);
 }
 
-/* Dino's controls share the viewport with the global Auto Scroll button. */
-@media (min-width: 768px) {
-  .root[data-wedding-theme="dino-adventure-party"] .stage { transform: none; }
-}
-
 @media (prefers-reduced-motion: no-preference) {
   .root[data-wedding-theme="dino-adventure-party"] .desktopBackdrop > img {
     animation: dinoBackdropEnter 1.4s ease-out both;

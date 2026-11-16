@@ -2,21 +2,24 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useInvitation } from "@/components/InvitationProvider";
+import { getInvitationControlFrame, getInvitationScrollTarget } from "./invitationControlFrame";
+import { useInvitationMusicControl } from "./useInvitationMusicControl";
+import styles from "./InvitationControls.module.css";
 
 const SCROLL_SPEED = 24;
 const MANUAL_START_EVENT = "vistiq:auto-scroll-start";
 const MANUAL_MODE_SELECTOR = '[data-auto-scroll-mode="manual"]';
-const AUTO_SCROLL_DISABLED_SELECTOR = [
+const AUTO_SCROLL_MANUAL_SELECTOR = [
   '[data-wedding-theme="adat-bali-motion"]',
   '[data-wedding-theme="adat-minang-motion"]',
 ].join(",");
-const AUTO_SCROLL_DISABLED_PATHS = ["/adat-bali-motion", "/adat-minang-motion"];
+const AUTO_SCROLL_MANUAL_PATHS = ["/adat-bali-motion", "/adat-minang-motion"];
 
 export default function AutoScrollController() {
   const { opened } = useInvitation();
   const [running, setRunning] = useState(false);
   const [available, setAvailable] = useState(false);
-  const [manualOnly, setManualOnly] = useState(false);
+  const music = useInvitationMusicControl(opened);
   const [heroVisible, setHeroVisible] = useState(false);
   const frameRef = useRef<number | null>(null);
   const lastTimeRef = useRef<number | null>(null);
@@ -28,38 +31,14 @@ export default function AutoScrollController() {
         setRunning(false);
         setAvailable(false);
         setHeroVisible(false);
-        setManualOnly(false);
         startedRef.current = false;
       }, 0);
       return () => window.clearTimeout(resetTimer);
     }
 
-    const autoScrollDisabled =
-      AUTO_SCROLL_DISABLED_PATHS.some((path) => window.location.pathname.includes(path)) ||
-      Boolean(document.querySelector(AUTO_SCROLL_DISABLED_SELECTOR));
-    if (autoScrollDisabled) {
-      const disabledTimer = window.setTimeout(() => {
-        setRunning(false);
-        setAvailable(false);
-        setHeroVisible(false);
-        setManualOnly(false);
-        startedRef.current = false;
-      }, 0);
-      return () => window.clearTimeout(disabledTimer);
-    }
-
-    const isManualOnly = Boolean(document.querySelector(MANUAL_MODE_SELECTOR));
-    if (isManualOnly) {
-      const manualTimer = window.setTimeout(() => {
-        setManualOnly(true);
-        setRunning(false);
-        setAvailable(false);
-        startedRef.current = false;
-      }, 0);
-      return () => window.clearTimeout(manualTimer);
-    }
-
-    const manualResetTimer = window.setTimeout(() => setManualOnly(false), 0);
+    const manualOnly =
+      AUTO_SCROLL_MANUAL_PATHS.some((path) => window.location.pathname.includes(path)) ||
+      Boolean(document.querySelector(`${MANUAL_MODE_SELECTOR},${AUTO_SCROLL_MANUAL_SELECTOR}`));
 
     // Re-check the document after opening because images/fonts and theme sections
     // can change the final page height at different times on different devices.
@@ -67,7 +46,8 @@ export default function AutoScrollController() {
     // to start it manually, while automatic movement remains disabled.
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const updateAvailability = () => {
-      const canScroll = document.documentElement.scrollHeight > window.innerHeight + 80;
+      const target = getInvitationScrollTarget();
+      const canScroll = target.scrollHeight - target.clientHeight > 80;
       setAvailable(canScroll);
       return canScroll;
     };
@@ -77,7 +57,7 @@ export default function AutoScrollController() {
       const hero = document.querySelector<HTMLElement>("[data-opening-hero]");
       const heroBounds = hero?.getBoundingClientRect();
       const heroIsVisible = Boolean(heroBounds && heroBounds.top < window.innerHeight && heroBounds.bottom > 0);
-      if (canScroll && !reducedMotion && !startedRef.current && !heroIsVisible) {
+      if (canScroll && !manualOnly && !reducedMotion && !startedRef.current && !heroIsVisible) {
         startedRef.current = true;
         setRunning(true);
       }
@@ -87,12 +67,13 @@ export default function AutoScrollController() {
     const timers = [250, 900, 1800, 3200].map((delay) => window.setTimeout(maybeStart, delay));
     window.addEventListener("load", maybeStart);
     window.addEventListener("resize", updateAvailability);
+    document.addEventListener("load", updateAvailability, true);
 
     return () => {
-      window.clearTimeout(manualResetTimer);
       timers.forEach((timer) => window.clearTimeout(timer));
       window.removeEventListener("load", maybeStart);
       window.removeEventListener("resize", updateAvailability);
+      document.removeEventListener("load", updateAvailability, true);
     };
   }, [opened]);
 
@@ -101,9 +82,9 @@ export default function AutoScrollController() {
 
     const startManualScroll = () => {
       if (!document.querySelector(MANUAL_MODE_SELECTOR)) return;
-      const canScroll = document.documentElement.scrollHeight > window.innerHeight + 80;
+      const target = getInvitationScrollTarget();
+      const canScroll = target.scrollHeight - target.clientHeight > 80;
       if (!canScroll) return;
-      setManualOnly(true);
       setAvailable(true);
       startedRef.current = true;
       setRunning(true);
@@ -143,18 +124,20 @@ export default function AutoScrollController() {
       return;
     }
 
+    const target = getInvitationScrollTarget();
+    let distance = 0;
     const step = (time: number) => {
       if (lastTimeRef.current === null) lastTimeRef.current = time;
       const elapsed = Math.min(time - lastTimeRef.current, 50);
       lastTimeRef.current = time;
+      distance += (SCROLL_SPEED * elapsed) / 1000;
+      const pixels = Math.floor(distance);
+      if (pixels > 0) {
+        target.scrollBy({ top: pixels, behavior: "instant" });
+        distance -= pixels;
+      }
 
-      window.scrollBy({ top: (SCROLL_SPEED * elapsed) / 1000, left: 0 });
-
-      const bottomReached =
-        window.scrollY + window.innerHeight >=
-        document.documentElement.scrollHeight - 4;
-
-      if (bottomReached) {
+      if (target.scrollTop + target.clientHeight >= target.scrollHeight - 4) {
         setRunning(false);
         return;
       }
@@ -180,83 +163,55 @@ export default function AutoScrollController() {
       }
     };
 
-    window.addEventListener("wheel", pauseForManualControl, { passive: true });
-    window.addEventListener("touchstart", pauseForManualControl, { passive: true });
-    window.addEventListener("keydown", pauseForKeyboard);
+    const frameDocument = getInvitationControlFrame()?.contentDocument;
+    const targets: Array<Window | Document> = frameDocument ? [window, frameDocument] : [window];
+    targets.forEach((target) => {
+      target.addEventListener("wheel", pauseForManualControl, { passive: true });
+      target.addEventListener("touchstart", pauseForManualControl, { passive: true });
+      target.addEventListener("keydown", pauseForKeyboard as EventListener);
+    });
 
     return () => {
-      window.removeEventListener("wheel", pauseForManualControl);
-      window.removeEventListener("touchstart", pauseForManualControl);
-      window.removeEventListener("keydown", pauseForKeyboard);
+      targets.forEach((target) => {
+        target.removeEventListener("wheel", pauseForManualControl);
+        target.removeEventListener("touchstart", pauseForManualControl);
+        target.removeEventListener("keydown", pauseForKeyboard as EventListener);
+      });
     };
   }, [opened]);
 
-  if (!opened || !available || heroVisible || manualOnly) return null;
+  const showScroll = opened && available && !heroVisible;
+  if (!showScroll && !music) return null;
+
+  const scrollLabel = running ? "Jeda scroll otomatis" : "Lanjutkan scroll otomatis";
+  const musicLabel = music?.playing ? "Jeda musik" : "Putar musik";
 
   return (
-    <>
-      <button
-        type="button"
-        className="autoScrollButton"
-        onClick={() => setRunning((value) => !value)}
-        onTouchStart={(event) => event.stopPropagation()}
-        onWheel={(event) => event.stopPropagation()}
-        aria-label={running ? "Jeda scroll otomatis" : "Lanjutkan scroll otomatis"}
-        title={running ? "Jeda scroll otomatis" : "Lanjutkan scroll otomatis"}
-      >
-        <span aria-hidden="true">{running ? "Ⅱ" : "▶"}</span>
-        <small>{running ? "Jeda" : "Auto Scroll"}</small>
-      </button>
-
-      <style jsx>{`
-        .autoScrollButton {
-          position: fixed;
-          left: 18px;
-          bottom: 96px;
-          z-index: 9997;
-          min-width: 54px;
-          height: 54px;
-          padding: 0 13px;
-          border: 1px solid rgba(255, 255, 255, 0.7);
-          border-radius: 999px;
-          background: rgba(15, 23, 42, 0.88);
-          color: white;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          gap: 7px;
-          box-shadow: 0 12px 30px rgba(15, 23, 42, 0.25);
-          backdrop-filter: blur(10px);
-          font-family: Arial, Helvetica, sans-serif;
-          cursor: pointer;
-        }
-
-        .autoScrollButton span {
-          font-size: 14px;
-          line-height: 1;
-        }
-
-        .autoScrollButton small {
-          font-size: 10px;
-          font-weight: 800;
-          letter-spacing: 0.02em;
-          white-space: nowrap;
-        }
-
-        @media (max-width: 560px) {
-          .autoScrollButton {
-            left: 14px;
-            bottom: 88px;
-            min-width: 48px;
-            height: 48px;
-            padding: 0 11px;
-          }
-
-          .autoScrollButton small {
-            display: none;
-          }
-        }
-      `}</style>
-    </>
+    <div className={styles.controls} data-invitation-controls>
+      {showScroll && (
+        <button
+          type="button"
+          className={`${styles.button} ${styles.scroll}`}
+          onClick={() => setRunning((value) => !value)}
+          onTouchStart={(event) => event.stopPropagation()}
+          onWheel={(event) => event.stopPropagation()}
+          aria-label={scrollLabel}
+          title={scrollLabel}
+        >
+          <span aria-hidden="true">{running ? "Ⅱ" : "▶"}</span>
+        </button>
+      )}
+      {music && (
+        <button
+          type="button"
+          className={`${styles.button} ${styles.music}`}
+          onClick={music.toggle}
+          aria-label={musicLabel}
+          title={musicLabel}
+        >
+          <span aria-hidden="true">{music.playing ? "♫" : "♪"}</span>
+        </button>
+      )}
+    </div>
   );
 }
