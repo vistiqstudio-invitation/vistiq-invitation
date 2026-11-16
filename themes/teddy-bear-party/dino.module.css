@@ -183,11 +183,52 @@
   box-shadow: 0 5px 18px #5262393b;
   animation: contentEnter .64s ease-out .48s backwards, openPulse 4s ease-in-out 1.2s infinite;
 }
-.root .music { background: #fff4d9; border-color: #ac8a50; }
+:global(body):has(.root) {
+  --dino-controls-right: max(14px, env(safe-area-inset-right));
+  --dino-controls-bottom: max(16px, env(safe-area-inset-bottom));
+  --dino-controls-size: 48px;
+  --dino-controls-gap: 8px;
+}
+
+:global(body):has(.root) :global(button.autoScrollButton) {
+  left: auto;
+  right: var(--dino-controls-right);
+  bottom: calc(var(--dino-controls-bottom) + var(--dino-controls-size) + var(--dino-controls-gap));
+  width: var(--dino-controls-size);
+  min-width: var(--dino-controls-size);
+  height: var(--dino-controls-size);
+  padding: 0;
+}
+
+:global(body):has(.root) :global(button.autoScrollButton small) {
+  display: none;
+}
+
+.root .music {
+  right: var(--dino-controls-right);
+  bottom: var(--dino-controls-bottom);
+  width: var(--dino-controls-size);
+  height: var(--dino-controls-size);
+  padding: 0;
+  background: #fff4d9;
+  border-color: #ac8a50;
+}
+
+.root .music[data-dino-entered] { animation-name: controlEnter; }
+
+.root .musicError {
+  right: var(--dino-controls-right);
+  bottom: calc(var(--dino-controls-bottom) + 2 * (var(--dino-controls-size) + var(--dino-controls-gap)));
+}
 
 @keyframes contentEnter {
   from { opacity: .15; translate: 0 12px; }
   to { opacity: 1; translate: 0 0; }
+}
+
+@keyframes controlEnter {
+  from { opacity: .15; }
+  to { opacity: 1; }
 }
 
 @keyframes trailEnter {

@@ -286,7 +286,7 @@ export default function TeddyBirthday({ invitation }: { invitation: BirthdayInvi
         {!astronaut && !melon && !dino && <Decor folder={folder} file={butterfly ? "09_butterfly_border" : safari ? "09_jungle_border" : "09_cloud_border"} className={butterfly ? pink.footerBorder : s.cloudBorder} />}<p className={s.credit}>{invitation.brand?.name || "Vistiq Invitation"}</p>
       </footer>
       {musicUrl && <button type="button" className={`${s.music} ${dino ? jungle.music : ""}`} aria-label={isPlaying ? "Jeda musik" : "Putar musik"} onClick={play}>{isPlaying ? "Ⅱ" : "♪"}</button>}
-      {musicError && <p className={s.musicError} role="status">Musik belum bisa diputar.</p>}
+      {musicError && <p className={`${s.musicError} ${dino ? jungle.musicError : ""}`} role="status">Musik belum bisa diputar.</p>}
     </>}
   </main>;
 }
