@@ -629,6 +629,14 @@
   width: 100%;
 }
 
+.input.compactThemeSelect {
+  align-self: start;
+  justify-self: start;
+  width: fit-content;
+  max-width: 100%;
+  field-sizing: content;
+}
+
 .smallInput {
   padding: 10px 12px;
 }

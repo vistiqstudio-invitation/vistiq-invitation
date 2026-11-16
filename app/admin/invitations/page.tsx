@@ -379,9 +379,10 @@ export default function InvitationsPage() {
             </div>
 
             <select
+              aria-label="Tema undangan"
               value={form.theme}
               onChange={(e) => setForm({ ...form, theme: e.target.value })}
-              className={styles.input}
+              className={`${styles.input} ${styles.compactThemeSelect}`}
             >
               {(form.category === "aqiqah"
                 ? aqiqahThemeList
