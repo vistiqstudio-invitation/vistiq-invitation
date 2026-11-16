@@ -16,13 +16,14 @@ import { withFizanIslamicMotionDemoAssets } from "@/lib/fizanIslamicMotionDemo";
 import { withAzureBloomDemoAssets } from "@/lib/azureBloomDemo";
 import { withAdatBaliMotionDemoAssets } from "@/lib/adatBaliMotionDemo";
 import { withAdatMinangMotionDemoAssets } from "@/lib/adatMinangMotionDemo";
+import { getDemoBrand, type DemoThemePageProps } from "@/lib/demoBrand";
+import WhiteLabelFrame from "@/components/WhiteLabelFrame";
 import WeddingThemeSafeArea from "@/components/WeddingThemeSafeArea";
 
 export default async function DemoThemePage({
   params,
-}: {
-  params: Promise<{ theme: string }>;
-}) {
+  searchParams,
+}: DemoThemePageProps) {
   const { theme } = await params;
   const Theme = themeRegistry[theme];
 
@@ -45,9 +46,13 @@ export default async function DemoThemePage({
   invitation = withAdatBaliMotionDemoAssets(theme, invitation);
   invitation = withAdatMinangMotionDemoAssets(theme, invitation);
 
+  invitation = { ...invitation, brand: await getDemoBrand(searchParams) };
+
   return (
-    <WeddingThemeSafeArea theme={theme} invitation={invitation}>
-      <Theme invitation={invitation} />
-    </WeddingThemeSafeArea>
+    <WhiteLabelFrame brand={invitation.brand}>
+      <WeddingThemeSafeArea theme={theme} invitation={invitation}>
+        <Theme invitation={invitation} />
+      </WeddingThemeSafeArea>
+    </WhiteLabelFrame>
   );
 }
