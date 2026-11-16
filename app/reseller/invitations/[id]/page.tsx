@@ -611,9 +611,10 @@ export default function ResellerInvitationEditPage() {
 
         <div className={styles.formGrid}>
           <select
+            aria-label="Tema undangan"
             value={form.theme}
             onChange={(e) => set("theme", e.target.value)}
-            className={styles.input}
+            className={`${styles.input} ${styles.compactThemeSelect}`}
           >
             {(form.category === "aqiqah"
               ? aqiqahThemeList

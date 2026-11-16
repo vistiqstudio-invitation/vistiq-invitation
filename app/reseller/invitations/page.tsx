@@ -580,10 +580,10 @@ export default function ResellerInvitationsPage() {
                 </select>
 
                 <select
+                  aria-label="Tema undangan"
                   value={form.theme}
                   onChange={(e) => set("theme", e.target.value)}
-                  className={styles.input}
-                  style={{ alignSelf: "start" }}
+                  className={`${styles.input} ${styles.compactThemeSelect}`}
                   disabled={!form.category}
                 >
                   <option value="" disabled>Pilih Tema</option>

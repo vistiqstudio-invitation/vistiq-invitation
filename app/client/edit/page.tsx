@@ -639,7 +639,12 @@ export default function ClientEditPage() {
                 <option value="birthday">Ulang Tahun</option>
               </select>
 
-              <select value={form.theme} onChange={(e) => set("theme", e.target.value)} className={styles.input}>
+              <select
+                aria-label="Tema undangan"
+                value={form.theme}
+                onChange={(e) => set("theme", e.target.value)}
+                className={`${styles.input} ${styles.compactThemeSelect}`}
+              >
                 {(form.category === "aqiqah"
                   ? aqiqahThemeList
                   : form.category === "khitan"
