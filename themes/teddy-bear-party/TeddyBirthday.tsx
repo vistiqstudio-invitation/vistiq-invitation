@@ -161,11 +161,33 @@ export default function TeddyBirthday({ invitation }: { invitation: BirthdayInvi
         </SectionReveal>
       </section>
       {event && <section className={`${s.section} ${s.sky} ${dino ? jungle.sky : ""}`}>
-        <SectionReveal><p className={s.eyebrow}>Waktu &amp; Tempat</p><article className={`${s.card} ${dino ? jungle.card : ""}`}>
-          <Decor folder={folder} file="07_birthday_cake" className={`${s.cake} ${dino ? jungle.cake : ""} ${safari ? safariStyles.pop : ""}`} /><h2>{nabilaNadila ? "Undangan Ulang Tahun" : "Birthday Party"}</h2>
-          {event.date && <p className={s.lead}>{event.date}</p>}{event.time && <p>{event.time}</p>}{event.location && <p>{event.location}</p>}{event.address && <p>{event.address}</p>}
-          {mapLink && <a className={s.button} href={mapLink} target="_blank" rel="noopener noreferrer">Lihat Lokasi</a>}
-        </article></SectionReveal>
+        <SectionReveal>
+          <p className={s.eyebrow}>Waktu &amp; Tempat</p>
+          {invitation.slug === "axel" ? (
+            <>
+              <h2>Perayaan Ulang Tahun Axel</h2>
+              {event.date && <p className={s.lead}>{event.date}</p>}
+              {([
+                { title: "Acara Anak-anak", time: "15.00" },
+                { title: "Acara Orang Tua", time: "17.00" },
+              ] as const).map((session) => (
+                <article className={s.card} key={session.title}>
+                  <h3>{session.title}</h3>
+                  <p className={s.lead}>Pukul {session.time} (waktu setempat)</p>
+                  {event.location && <p>{event.location}</p>}
+                  {event.address && <p>{event.address}</p>}
+                  {mapLink && <a className={s.button} href={mapLink} target="_blank" rel="noopener noreferrer">Lihat Lokasi</a>}
+                </article>
+              ))}
+            </>
+          ) : (
+            <article className={`${s.card} ${dino ? jungle.card : ""}`}>
+              <Decor folder={folder} file="07_birthday_cake" className={`${s.cake} ${dino ? jungle.cake : ""} ${safari ? safariStyles.pop : ""}`} /><h2>{nabilaNadila ? "Undangan Ulang Tahun" : "Birthday Party"}</h2>
+              {event.date && <p className={s.lead}>{event.date}</p>}{event.time && <p>{event.time}</p>}{event.location && <p>{event.location}</p>}{event.address && <p>{event.address}</p>}
+              {mapLink && <a className={s.button} href={mapLink} target="_blank" rel="noopener noreferrer">Lihat Lokasi</a>}
+            </article>
+          )}
+        </SectionReveal>
       </section>}
       {invitation.gallery.length > 0 && <section className={s.section}>
         <SectionReveal><Decor folder={folder} file={melon ? "02_rainbow_cloud" : butterfly ? "05_flower_cluster" : astronaut ? "03_planets" : (safari || dino) ? "05_tropical_leaves" : "04_cloud"} className={s.galleryCloud} /><p className={s.eyebrow}>Sweet Memories</p><h2>Galeri Foto</h2>
