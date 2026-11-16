@@ -30,7 +30,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // Social crawlers must fetch the image from the primary public domain.
   // Version this URL whenever the OG renderer changes so WhatsApp does not
   // keep showing an older cached composition.
-  const ogImage = `${PRIMARY_ORIGIN}/api/og/${encodeURIComponent(slug)}?v=7`;
+  const directAxelCover = slug === "axel" && invitation.category === "birthday"
+    && invitation.coverImage && /^https:\/\//i.test(invitation.coverImage)
+    ? invitation.coverImage
+    : null;
+  // Axel's original photo is publicly served by Vistiq Media. Use that image
+  // directly instead of the composed OG renderer that previews as black.
+  const ogImage = directAxelCover
+    ? `${directAxelCover}${directAxelCover.includes("?") ? "&" : "?"}og=20261116`
+    : `${PRIMARY_ORIGIN}/api/og/${encodeURIComponent(slug)}?v=7`;
+  const ogImageType = directAxelCover ? "image/webp" : "image/png";
   const category = invitation.category;
   const copy = invitationCopy[category];
   const name = category === "wedding"
@@ -45,7 +54,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     metadataBase: new URL(origin), title, description,
     alternates: { canonical },
-    openGraph: { type:"website", url:canonical, siteName:invitation.brand?.name ?? "Vistiq Invitation", title, description, images:[{url:ogImage,secureUrl:ogImage,width:1200,height:630,alt:title,type:"image/png"}] },
+    openGraph: { type:"website", url:canonical, siteName:invitation.brand?.name ?? "Vistiq Invitation", title, description, images:[{url:ogImage,secureUrl:ogImage,width:1200,height:630,alt:title,type:ogImageType}] },
     twitter: { card:"summary_large_image", title, description, images:[ogImage] },
   };
 }
