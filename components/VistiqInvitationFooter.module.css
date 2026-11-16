@@ -1,0 +1,30 @@
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 20px max(16px, env(safe-area-inset-bottom));
+  background: #f1f7fd;
+  color: #153656;
+  font: 500 14px/1.4 system-ui, sans-serif;
+}
+
+.whatsapp {
+  display: grid;
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border-radius: 50%;
+  background: #176b47;
+  color: #fff;
+}
+
+.whatsapp:hover {
+  background: #105336;
+}
+
+.whatsapp:focus-visible {
+  outline: 2px solid #153656;
+  outline-offset: 3px;
+}

@@ -1,4 +1,5 @@
 import { invitationCopy } from "@/lib/invitationCopy";
+import type { ReactNode } from "react";
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
@@ -8,6 +9,7 @@ import { applyFlexibleWeddingEvents } from "@/lib/flexibleInvitationEvents";
 import { themeRegistry, aqiqahThemeRegistry, khitanThemeRegistry, birthdayThemeRegistry } from "@/lib/theme";
 import WhiteLabelFrame from "@/components/WhiteLabelFrame";
 import SmartCoverRuntime from "@/components/SmartCoverRuntime";
+import VistiqInvitationFooter from "@/components/VistiqInvitationFooter";
 import WeddingThemeSafeArea from "@/components/WeddingThemeSafeArea";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -67,12 +69,47 @@ export default async function InvitationPage({ params }: Props) {
   const { slug } = await params;
   const baseInvitation = await getCachedInvitationBySlug(slug);
   if (!baseInvitation || baseInvitation.status !== "active") notFound();
-  const invitation = baseInvitation.category === "wedding" ? await applyFlexibleWeddingEvents(baseInvitation) : baseInvitation;
-  if (invitation.category === "aqiqah") { const Theme=aqiqahThemeRegistry[invitation.theme]||aqiqahThemeRegistry["akikah-nur"]; return <WhiteLabelFrame brand={invitation.brand}><WeddingThemeSafeArea theme={invitation.theme} invitation={invitation}><SmartCoverRuntime coverImage={invitation.coverImage} title={invitation.baby.name}><Theme invitation={invitation}/></SmartCoverRuntime></WeddingThemeSafeArea></WhiteLabelFrame>; }
-  if (invitation.category === "khitan") { const Theme=khitanThemeRegistry[invitation.theme]||khitanThemeRegistry["khitan-warna"]; return <WhiteLabelFrame brand={invitation.brand}><WeddingThemeSafeArea theme={invitation.theme} invitation={invitation}><SmartCoverRuntime coverImage={invitation.coverImage} title={invitation.child.name}><Theme invitation={invitation}/></SmartCoverRuntime></WeddingThemeSafeArea></WhiteLabelFrame>; }
-  if (invitation.category === "birthday") { const Theme=birthdayThemeRegistry[invitation.theme]||birthdayThemeRegistry["princess-fairytale"]; return <WhiteLabelFrame brand={invitation.brand}><WeddingThemeSafeArea theme={invitation.theme} invitation={invitation}><SmartCoverRuntime coverImage={invitation.coverImage} title={invitation.child.name}><Theme invitation={invitation}/></SmartCoverRuntime></WeddingThemeSafeArea></WhiteLabelFrame>; }
-  const resolvedTheme=invitation.theme==="luxury-art-lx005"?"luxury-art-champagne-romance":invitation.theme;
-  const Theme=themeRegistry[resolvedTheme]||themeRegistry["luxury-gold"];
-  const weddingInvitation={...invitation,theme:resolvedTheme};
-  return <WhiteLabelFrame brand={invitation.brand}><WeddingThemeSafeArea theme={resolvedTheme} invitation={weddingInvitation}><SmartCoverRuntime coverImage={invitation.coverImage} title={`${invitation.groom.nickname||invitation.groom.name} & ${invitation.bride.nickname||invitation.bride.name}`}><Theme invitation={weddingInvitation}/></SmartCoverRuntime></WeddingThemeSafeArea></WhiteLabelFrame>;
+
+  const footer = baseInvitation.isDirectAdminInvitation && !(await headers()).has("x-vistiq-reseller-id")
+    ? <VistiqInvitationFooter />
+    : null;
+
+  function renderFrame(
+    invitation: NonNullable<Awaited<ReturnType<typeof getInvitationBySlug>>>,
+    title: string,
+    content: ReactNode
+  ) {
+    return (
+      <WhiteLabelFrame brand={invitation.brand}>
+        <WeddingThemeSafeArea theme={invitation.theme} invitation={invitation}>
+          <SmartCoverRuntime coverImage={invitation.coverImage} title={title}>
+            {content}
+          </SmartCoverRuntime>
+          {footer}
+        </WeddingThemeSafeArea>
+      </WhiteLabelFrame>
+    );
+  }
+
+  if (baseInvitation.category === "aqiqah") {
+    const Theme = aqiqahThemeRegistry[baseInvitation.theme] || aqiqahThemeRegistry["akikah-nur"];
+    return renderFrame(baseInvitation, baseInvitation.baby.name, <Theme invitation={baseInvitation} />);
+  }
+
+  if (baseInvitation.category === "khitan") {
+    const Theme = khitanThemeRegistry[baseInvitation.theme] || khitanThemeRegistry["khitan-warna"];
+    return renderFrame(baseInvitation, baseInvitation.child.name, <Theme invitation={baseInvitation} />);
+  }
+
+  if (baseInvitation.category === "birthday") {
+    const Theme = birthdayThemeRegistry[baseInvitation.theme] || birthdayThemeRegistry["princess-fairytale"];
+    return renderFrame(baseInvitation, baseInvitation.child.name, <Theme invitation={baseInvitation} />);
+  }
+
+  const invitation = await applyFlexibleWeddingEvents(baseInvitation);
+  const theme = invitation.theme === "luxury-art-lx005" ? "luxury-art-champagne-romance" : invitation.theme;
+  const Theme = themeRegistry[theme] || themeRegistry["luxury-gold"];
+  const weddingInvitation = { ...baseInvitation, ...invitation, theme };
+  const title = `${invitation.groom.nickname || invitation.groom.name} & ${invitation.bride.nickname || invitation.bride.name}`;
+  return renderFrame(weddingInvitation, title, <Theme invitation={weddingInvitation} />);
 }

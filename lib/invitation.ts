@@ -535,10 +535,9 @@ function routeEmergencyMedia(value: unknown): unknown {
 export async function getInvitationBySlug(
   slug: string
 ): Promise<
-  | InvitationData
-  | AqiqahInvitationData
-  | KhitanInvitationData
-  | BirthdayInvitationData
+  | ((InvitationData | AqiqahInvitationData | KhitanInvitationData | BirthdayInvitationData) & {
+      isDirectAdminInvitation: boolean;
+    })
   | null
 > {
   const supabase = await createClient();
@@ -595,5 +594,10 @@ export async function getInvitationBySlug(
     };
   }
 
-  return invitation;
+  // Direct admin creation is the only creation path without a client_id.
+  // Require explicit null so incomplete snapshot data cannot opt in.
+  return {
+    ...invitation,
+    isDirectAdminInvitation: raw.client_id === null && !invitation.brand,
+  };
 }
