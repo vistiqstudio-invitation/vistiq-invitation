@@ -70,7 +70,7 @@ export default async function InvitationPage({ params }: Props) {
   const baseInvitation = await getCachedInvitationBySlug(slug);
   if (!baseInvitation || baseInvitation.status !== "active") notFound();
 
-  const footer = baseInvitation.isDirectAdminInvitation && !(await headers()).has("x-vistiq-reseller-id")
+  const footer = baseInvitation.showVistiqFooter && !(await headers()).has("x-vistiq-reseller-id")
     ? <VistiqInvitationFooter />
     : null;
 

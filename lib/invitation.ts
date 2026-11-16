@@ -536,7 +536,7 @@ export async function getInvitationBySlug(
   slug: string
 ): Promise<
   | ((InvitationData | AqiqahInvitationData | KhitanInvitationData | BirthdayInvitationData) & {
-      isDirectAdminInvitation: boolean;
+      showVistiqFooter: boolean;
     })
   | null
 > {
@@ -570,11 +570,17 @@ export async function getInvitationBySlug(
     brand_color: string | null;
   };
   let publicBrand: PublicBrand | null = null;
+  // An explicit null also covers direct invitations in the emergency snapshot.
+  let showVistiqFooter = raw.client_id === null;
   if (!error && data) {
-    const { data: publicBrandRow } = await supabase
-      .rpc("get_invitation_brand_by_slug", { p_slug: slug })
-      .maybeSingle();
-    publicBrand = publicBrandRow as PublicBrand | null;
+    const [brandResult, footerResult] = await Promise.all([
+      supabase.rpc("get_invitation_brand_by_slug", { p_slug: slug }).maybeSingle(),
+      raw.client_id != null
+        ? supabase.rpc("invitation_has_vistiq_footer", { p_slug: slug })
+        : null,
+    ]);
+    publicBrand = brandResult.data as PublicBrand | null;
+    showVistiqFooter ||= footerResult?.data === true;
   }
 
   const invitation =
@@ -594,10 +600,8 @@ export async function getInvitationBySlug(
     };
   }
 
-  // Direct admin creation is the only creation path without a client_id.
-  // Require explicit null so incomplete snapshot data cannot opt in.
   return {
     ...invitation,
-    isDirectAdminInvitation: raw.client_id === null && !invitation.brand,
+    showVistiqFooter: showVistiqFooter && !invitation.brand,
   };
 }
