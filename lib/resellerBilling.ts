@@ -1,7 +1,7 @@
 export const RESELLER_REGULAR_JOIN_FEE = 149_000;
 export const RESELLER_PROMO_JOIN_FEE = 79_000;
-// The owner ends this promotion manually; the daily display timer is not expiry.
-export const RESELLER_PROMO_ACTIVE: boolean = true;
+// Registration currently uses the regular price.
+export const RESELLER_PROMO_ACTIVE: boolean = false;
 export const RESELLER_JOIN_FEE = RESELLER_PROMO_ACTIVE
   ? RESELLER_PROMO_JOIN_FEE
   : RESELLER_REGULAR_JOIN_FEE;
