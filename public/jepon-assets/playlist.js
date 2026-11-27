@@ -1,7 +1,10 @@
-const playlist = document.querySelector('.songs');
+const soundtrack = document.querySelector('#soundtrack');
+document.querySelector('#open-journey').addEventListener('click', () => {
+  if (selectedSong !== soundtrack) soundtrack.click();
+});
 let selectedSong = null;
 
-playlist.addEventListener('click', event => {
+document.addEventListener('click', event => {
   const button = event.target.closest('.song-choice');
   if (!button) return;
 
@@ -21,6 +24,7 @@ playlist.addEventListener('click', event => {
   player.referrerPolicy = 'strict-origin-when-cross-origin';
   player.allowFullscreen = true;
   player.src = 'https://www.youtube-nocookie.com/embed/' + button.dataset.video + '?autoplay=1&playsinline=1';
+  if (button === soundtrack) player.src += '&loop=1&playlist=' + button.dataset.video;
   button.after(player);
   button.setAttribute('aria-expanded', 'true');
   button.querySelector('em').textContent = '×';

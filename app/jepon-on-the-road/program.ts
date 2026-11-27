@@ -1,10 +1,13 @@
-export const departure = "12.30";
+export const departure = "12.00";
 export const pickups = [
   "Garasi Mekarsari",
-  "Rumah Bu Ummi",
+  "MPP",
+  "Indomaret Pasar Jepon",
+  "Bu Ummi",
   "SMA N 1 Jepon",
   "Bhayangkara Residence",
-  "RSUD Soesrapto Cepu"
+  "Tugu Jiken",
+  "RSUD Soeprapto Cepu"
 ];
 export const schedule = [
   [["11.30","Persiapan peserta"],[departure,"Keberangkatan"],["16.30","Ganti shuttle"],["17.00","Check-in"],["18.30","Makan malam, minlok & BBQ"],["22.00","Istirahat dan acara bebas"]],

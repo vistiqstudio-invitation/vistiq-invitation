@@ -17,3 +17,5 @@ footer{text-align:center;padding:65px 18px;background:#e2eddb}footer p{font-size
 .song-choice:focus-visible{outline:3px solid var(--green);outline-offset:-3px}
 .song-choice[aria-expanded="true"]{background:#e5eddf}
 .song-player{display:block;width:100%;aspect-ratio:16/9;min-height:200px;border:0;background:#172824;border-radius:10px;margin-bottom:12px}
+
+.soundtrack{margin-bottom:24px;border-bottom:1px solid #cdd6c5}.soundtrack small,.soundtrack b{display:block}.soundtrack em{font-style:normal}
