@@ -21,3 +21,5 @@ footer{text-align:center;padding:65px 18px;background:#e2eddb}footer p{font-size
 .soundtrack{margin-bottom:24px;border-bottom:1px solid #cdd6c5}.soundtrack small,.soundtrack b{display:block}.soundtrack em{font-style:normal}
 
 .participant-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));align-items:center;gap:14px}.participant-gallery img{display:block;width:100%;height:auto;border-radius:12px}
+
+.event-poster{display:block;margin-top:20px;cursor:zoom-in}.event-poster img{display:block;width:100%;height:auto;border-radius:10px}
