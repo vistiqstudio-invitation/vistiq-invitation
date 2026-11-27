@@ -1,0 +1,50 @@
+name: Publish approved Jepon gallery to R2
+on:
+  push:
+    branches: [ops/jepon-gallery-r2]
+    paths: ['.github/workflows/jepon-gallery-r2.yml']
+permissions:
+  contents: read
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - id: transfer
+        name: Prepare private photo transfer
+        run: |
+          cd "$RUNNER_TEMP"
+          openssl genpkey -algorithm X25519 -out gallery-key.pem
+          chmod 600 gallery-key.pem
+          openssl pkey -in gallery-key.pem -pubout -outform DER -out gallery-public.der
+          node -e "console.log('public='+require('fs').readFileSync('gallery-public.der').toString('base64url'))" >> "$GITHUB_OUTPUT"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gallery-key-${{ steps.transfer.outputs.public }}
+          path: ${{ runner.temp }}/gallery-public.der
+          retention-days: 1
+      - name: Install project CLI
+        run: npm ci --no-audit --no-fund
+      - name: Receive and validate seven approved photographs
+        run: |
+          for attempt in $(seq 1 80); do
+            git fetch -q origin ops/jepon-gallery-r2
+            if git cat-file -e FETCH_HEAD:transfer/galeri-7.enc 2>/dev/null; then break; fi
+            sleep 8
+          done
+          git restore --source FETCH_HEAD -- transfer
+          node scripts/receive-jepon-gallery.cjs
+      - name: Upload approved photographs using Wrangler
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          set -eu
+          for i in $(seq 1 7); do
+            n="galeri-$i.webp"
+            npx --no-install wrangler r2 object put "vistiq-media/invitations/jepon-on-the-road/gallery/$n" --remote --file "$RUNNER_TEMP/$n" --content-type image/webp
+          done
