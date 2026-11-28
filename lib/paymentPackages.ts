@@ -13,12 +13,6 @@ export const PAYMENT_PACKAGES = {
     description: "Akses dashboard reseller selamanya, aktivasi undangan Rp20.000",
     amount: RESELLER_JOIN_FEE,
   },
-  "reseller-brand": {
-    code: "RB",
-    name: "Paket Mitra Brand",
-    description: "Rp59.000/bulan + aktivasi Rp20.000 per undangan",
-    amount: 59000,
-  },
 } as const;
 
 export type PaymentPackageId = keyof typeof PAYMENT_PACKAGES;
@@ -29,5 +23,7 @@ export function isPaymentPackage(value: unknown): value is PaymentPackageId {
 
 export function packageFromOrderId(orderId: string) {
   const code = orderId.split("-")[1];
+  // Keep recognizing old paid RB orders using their immutable database quote.
+  if (code === "RB") return ["reseller-brand", { code: "RB", name: "Mitra Brand (akun lama)" }] as const;
   return Object.entries(PAYMENT_PACKAGES).find(([, item]) => item.code === code) ?? null;
 }

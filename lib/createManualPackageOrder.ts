@@ -25,16 +25,13 @@ type PackageOrderOptions = {
   settlementAppliedAt?: string | null;
 };
 
-function packageIdFor(pkg: ManualResellerPackage) {
-  return pkg === "reseller_brand" ? "reseller-brand" : "reseller";
-}
-
 async function createPackageOrder(
   supabase: SupabaseClient,
   input: ManualPackageOrderInput,
   options: PackageOrderOptions,
 ) {
-  const packageId = packageIdFor(input.package);
+  if (input.package !== "reseller") throw new Error("Mitra Brand adalah akun lama tanpa tagihan pendaftaran atau bulanan.");
+  const packageId = "reseller";
   const packageInfo = PAYMENT_PACKAGES[packageId];
   const amount = input.amount ?? packageInfo.amount;
 
@@ -42,7 +39,7 @@ async function createPackageOrder(
     throw new Error("Nominal pembayaran tidak valid.");
   }
 
-  const orderCode = packageId === "reseller-brand" ? "RB" : "RS";
+  const orderCode = "RS";
   const orderId = `VSTQ-MANUAL-${orderCode}-${Date.now()}-${crypto.randomBytes(4).toString("hex")}`;
   const createdAt = new Date().toISOString();
 

@@ -16,8 +16,7 @@ type BrandAccount = {
 };
 
 function isBrandAccessActive(reseller: BrandAccount) {
-  const notExpired = !reseller.brand_expires_at || new Date(reseller.brand_expires_at).getTime() > Date.now();
-  return reseller.package === "reseller_brand" && reseller.status === "active" && reseller.brand_active === true && notExpired;
+  return reseller.package === "reseller_brand" && reseller.status === "active" && reseller.brand_active === true;
 }
 
 export async function POST(request: Request) {
@@ -40,7 +39,7 @@ export async function POST(request: Request) {
     .maybeSingle();
 
   if (!reseller || !isBrandAccessActive(reseller)) {
-    return NextResponse.json({ error: "Akun Mitra Brand tidak aktif atau masa aktifnya telah habis." }, { status: 403 });
+    return NextResponse.json({ error: "Akun Mitra Brand tidak aktif." }, { status: 403 });
   }
 
   if (target === "client") {
@@ -53,49 +52,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: true, target, status: nextStatus });
   }
 
-  // Only the explicitly grandfathered commission model retains self-activation.
-  // A monthly brand subscription never includes per-invitation activation.
-  if (!reseller.brand_expires_at || reseller.billing_model !== "legacy_commission") {
-    return NextResponse.json(
-      { error: "Undangan dipublikasikan setelah biaya layanan Rp20.000 berhasil dibayar melalui Midtrans." },
-      { status: 409 },
-    );
-  }
-
-  const invitationId = Number(id);
-  if (!Number.isSafeInteger(invitationId) || invitationId <= 0) {
-    return NextResponse.json({ error: "ID undangan tidak valid." }, { status: 400 });
-  }
-
-  const { data: invitation } = await db
-    .from("invitations")
-    .select("id, client_id, is_active")
-    .eq("id", invitationId)
-    .maybeSingle();
-
-  if (!invitation?.client_id) return NextResponse.json({ error: "Undangan tidak ditemukan." }, { status: 404 });
-
-  const { data: ownedClient } = await db
-    .from("clients")
-    .select("id")
-    .eq("id", invitation.client_id)
-    .eq("reseller_id", reseller.id)
-    .maybeSingle();
-
-  if (!ownedClient) return NextResponse.json({ error: "Undangan bukan milik akun ini." }, { status: 403 });
-  if (invitation.is_active) return NextResponse.json({ success: true, target, status: "active" });
-
-  const { data: updatedInvitation, error } = await db
-    .from("invitations")
-    .update({ is_active: true })
-    .eq("id", invitationId)
-    .eq("client_id", ownedClient.id)
-    .select("id, is_active")
-    .maybeSingle();
-
-  if (error || !updatedInvitation) {
-    return NextResponse.json({ error: "Undangan gagal diaktifkan." }, { status: 500 });
-  }
-
-  return NextResponse.json({ success: true, target, status: "active" });
+  return NextResponse.json(
+    { error: "Undangan dipublikasikan setelah biaya layanan Rp20.000 berhasil dibayar melalui Midtrans." },
+    { status: 409 },
+  );
 }

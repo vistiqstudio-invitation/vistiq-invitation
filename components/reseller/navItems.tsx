@@ -4,7 +4,7 @@ import { IconDashboard, IconInvitation, IconUsers, IconWallet, IconPalette, Icon
 export function getResellerNavItems(
   pkg?: "reseller" | "reseller_brand" | null,
   resellerId?: string | null,
-  billingModel?: "legacy_commission" | "per_invitation" | "monthly_subscription" | null,
+  billingModel?: "legacy_commission" | "per_invitation" | null,
 ): SidebarItem[] {
   const items: SidebarItem[] = [
     { key: "dashboard", label: "Dashboard", href: "/reseller", icon: <IconDashboard /> },

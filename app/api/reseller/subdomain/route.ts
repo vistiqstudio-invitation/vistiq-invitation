@@ -28,8 +28,7 @@ async function currentReseller() {
 function packageHasDomainAccess(reseller: { package?: string; brand_active?: boolean; brand_expires_at?: string | null }) {
   if (reseller.package === "reseller") return true;
   return reseller.package === "reseller_brand" &&
-    reseller.brand_active === true &&
-    (!reseller.brand_expires_at || new Date(reseller.brand_expires_at).getTime() > Date.now());
+    reseller.brand_active === true;
 }
 
 function errorResponse(error: unknown) {

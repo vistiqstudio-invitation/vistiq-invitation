@@ -8,7 +8,6 @@ import { getResellerNavItems } from "@/components/reseller/navItems";
 import { MUSIC_LIBRARY } from "@/lib/musicLibrary";
 import styles from "@/styles/dashboard.module.css";
 
-const WA_NUMBER = "6281371338032";
 
 type Reseller = {
   id: string;
@@ -144,9 +143,6 @@ export default function ResellerMusikPage() {
   const isBrandPackage = reseller?.package === "reseller_brand";
   const brandingEnabled = reseller?.package === "reseller" || Boolean(reseller?.brand_active);
   const brandName = brandingEnabled && reseller?.brand_name ? reseller.brand_name : null;
-  const upgradeText = encodeURIComponent(
-    "Halo Vistiq Invitation, saya ingin upgrade ke paket Mitra Brand (white label, Rp59.000/bulan) untuk akses perpustakaan musik dan fitur lainnya."
-  );
 
   return (
     <main className={styles.page}>
@@ -177,17 +173,7 @@ export default function ResellerMusikPage() {
         ) : !isBrandPackage ? (
           <section className={styles.formCard}>
             <h2 className={styles.sectionTitle}>Khusus Mitra Brand</h2>
-            <p style={{ margin: "0 0 16px", fontSize: 13.5, color: "#64748b" }}>
-              Perpustakaan musik adalah salah satu benefit member premium paket Mitra Brand -
-              update tema dan konten baru setiap bulan, termasuk koleksi musik latar berlisensi ini.
-            </p>
-            <a
-              href={`https://wa.me/${WA_NUMBER}?text=${upgradeText}`}
-              target="_blank"
-              className={styles.button}
-            >
-              Upgrade ke Mitra Brand
-            </a>
+            <p>Fitur ini tetap tersedia untuk akun Mitra Brand lama. Pendaftaran saat ini hanya menyediakan paket Reseller.</p>
           </section>
         ) : (
           <>

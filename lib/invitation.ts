@@ -28,14 +28,7 @@ function resolveBrand(raw: Record<string, any>): Brand {
 
   if (reseller.package !== "reseller_brand" || !reseller.brand_active) return null;
 
-  // Mitra Brand is now a Rp99.000/month subscription (grandfathered
-  // lifetime resellers have brand_expires_at = null and never hit this).
-  // A lapsed subscription falls back to default Vistiq branding until the
-  // owner manually extends brand_expires_at after a renewal payment.
-  if (reseller.brand_expires_at && new Date(reseller.brand_expires_at) <= new Date()) {
-    return null;
-  }
-
+  // Existing Mitra Brand accounts retain lifetime branding.
   return {
     name: reseller.brand_name,
     logoUrl: reseller.logo_url || null,

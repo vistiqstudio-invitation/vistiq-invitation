@@ -84,7 +84,6 @@ export async function provisionPaidOrder(
       if (error) throw new Error(`Data client gagal dibuat: ${error.message}`);
     } else {
       const resellerBrand = claimed.package_id === "reseller-brand";
-      const brandExpiresAt = resellerBrand ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString() : null;
       const { error } = await supabase.from("resellers").insert({
         user_id: authUserId,
         name: claimed.customer_name,
@@ -94,7 +93,7 @@ export async function provisionPaidOrder(
         billing_model: "per_invitation",
         status: "active",
         brand_active: resellerBrand,
-        brand_expires_at: brandExpiresAt,
+        brand_expires_at: null,
       });
       if (error) throw new Error(`Data reseller gagal dibuat: ${error.message}`);
     }

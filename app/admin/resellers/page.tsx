@@ -9,7 +9,6 @@ import DashboardSidebar from "@/components/admin/DashboardSidebar";
 import WhatsAppIcon from "@/components/WhatsAppIcon";
 import styles from "@/styles/dashboard.module.css";
 import dialogStyles from "./reseller-dialog.module.css";
-import { PAYMENT_PACKAGES } from "@/lib/paymentPackages";
 
 const NAV_ITEMS = [
   { key: "dashboard", label: "Dashboard", href: "/admin" },
@@ -53,23 +52,6 @@ const PACKAGE_LABELS: Record<string, string> = {
   reseller: "Reseller",
   reseller_brand: "Mitra Brand - White Label",
 };
-
-function brandExpiryStatus(reseller: Reseller): { label: string; color: string } {
-  if (!reseller.brand_expires_at) {
-    return { label: "Lifetime", color: "#15803d" };
-  }
-
-  const expires = new Date(reseller.brand_expires_at);
-  const dateLabel = expires.toLocaleDateString("id-ID", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  });
-
-  return expires.getTime() <= Date.now()
-    ? { label: `Habis ${dateLabel}`, color: "#dc2626" }
-    : { label: `Aktif s/d ${dateLabel}`, color: "#b45309" };
-}
 
 const PACKAGE_DEFAULT_COMMISSION: Record<string, number> = {
   reseller: 80,
@@ -323,7 +305,6 @@ function ResellerCreateForm({
               className={styles.input}
             >
               <option value="reseller">Reseller ({RESELLER_JOIN_PRICE_LABEL} sekali + Rp20.000/aktivasi)</option>
-              <option value="reseller_brand">Mitra Brand (Rp59.000/bulan + Rp20.000/aktivasi)</option>
             </select>
 
             <div className={styles.input} style={{ display: "flex", alignItems: "center", color: "#475569" }}>
@@ -354,7 +335,6 @@ export default function ResellersPage() {
   const [credentials, setCredentials] = useState<CreatedCredentials | null>(null);
   const [resettingId, setResettingId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
-  const [creatingOrderId, setCreatingOrderId] = useState<string | null>(null);
   const [editingReseller, setEditingReseller] = useState<Reseller | null>(null);
   const [editForm, setEditForm] = useState({
     name: "",
@@ -569,48 +549,6 @@ export default function ResellersPage() {
     fetchResellers();
   };
 
-  const extendBrandExpiry = async (reseller: Reseller, months: number) => {
-    if (!confirm(`Buat order pembayaran manual untuk "${reseller.name}" selama ${months} bulan? Masa aktif baru akan bertambah setelah Owner menekan Pembayaran Sukses.`)) return;
-
-    setCreatingOrderId(reseller.id);
-    try {
-      const response = await fetch("/api/admin/create-manual-package-order", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          resellerId: reseller.id,
-          amount: PAYMENT_PACKAGES["reseller-brand"].amount * months,
-        }),
-      });
-      const result = await response.json();
-
-      if (!response.ok) {
-        alert(result.error || "Gagal membuat order perpanjangan.");
-        return;
-      }
-
-      alert(`Order ${result.orderId} dibuat. Buka Owner → Transaksi untuk mengonfirmasi setelah transfer masuk.`);
-    } finally {
-      setCreatingOrderId(null);
-    }
-  };
-
-  const setBrandLifetime = async (id: string, name: string) => {
-    if (!confirm(`Jadikan brand "${name}" lifetime (tanpa masa aktif)?`)) return;
-
-    const { error } = await supabase
-      .from("resellers")
-      .update({ brand_expires_at: null })
-      .eq("id", id);
-
-    if (error) {
-      alert(`Gagal mengubah ke lifetime: ${error.message}`);
-      return;
-    }
-
-    fetchResellers();
-  };
-
   const logout = async () => {
     await supabase.auth.signOut();
     router.push("/login");
@@ -749,7 +687,7 @@ export default function ResellersPage() {
                     style={{ fontSize: 12.5 }}
                   >
                     <option value="reseller">{PACKAGE_LABELS.reseller}</option>
-                    <option value="reseller_brand">{PACKAGE_LABELS.reseller_brand}</option>
+                    {reseller.package === "reseller_brand" && <option value="reseller_brand">{PACKAGE_LABELS.reseller_brand}</option>}
                   </select>
 
                   {reseller.billing_model === "per_invitation" ? (
@@ -773,37 +711,7 @@ export default function ResellersPage() {
                     Brand {reseller.brand_name ? `(${reseller.brand_name})` : ""}
                   </label>
 
-                  {reseller.package === "reseller_brand" && (
-                    <div className={styles.resellerBrandExpiry}>
-                      <span style={{ color: brandExpiryStatus(reseller).color }}>
-                        {brandExpiryStatus(reseller).label}
-                      </span>
-                      {/* Lifetime accounts (10 launch-promo resellers, brand_expires_at
-                          null) get no monthly-billing controls at all - "+1 Bulan" would
-                          set an expiry and accidentally convert them out of lifetime. */}
-                      {reseller.brand_expires_at && (
-                        <div>
-                          <button
-                            type="button"
-                            onClick={() => extendBrandExpiry(reseller, 1)}
-                            disabled={creatingOrderId === reseller.id}
-                            className={styles.button}
-                            style={{ fontSize: 10, padding: "4px 8px" }}
-                          >
-                            {creatingOrderId === reseller.id ? "Membuat..." : "Buat Tagihan +1 Bulan"}
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => setBrandLifetime(reseller.id, reseller.name)}
-                            className={styles.button}
-                            style={{ fontSize: 10, padding: "4px 8px", background: "#64748b" }}
-                          >
-                            Jadikan Lifetime
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  )}
+                  {reseller.package === "reseller_brand" && <span className={styles.badge}>AKUN LAMA · TANPA BIAYA BULANAN</span>}
 
                   <select
                     value={reseller.status || "active"}

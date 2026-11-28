@@ -26,8 +26,7 @@ function canUsePerInvitationService(reseller: {
   if (reseller.status !== "active" || reseller.billing_model !== "per_invitation") return false;
   if (reseller.package === "reseller") return true;
   return reseller.package === "reseller_brand"
-    && reseller.brand_active === true
-    && (!reseller.brand_expires_at || Date.parse(reseller.brand_expires_at) > Date.now());
+    && reseller.brand_active === true;
 }
 
 export async function POST(request: Request) {

@@ -271,25 +271,20 @@ export default function AdminTransactionsPage() {
         <section className={styles.formCard}>
           <h2 className={styles.sectionTitle}>Catat Order Paket Manual</h2>
           <p style={{ margin: "0 0 16px", fontSize: 13.5, color: "#64748b" }}>
-            Gunakan untuk akun reseller yang sudah dibuat sebelumnya atau perpanjangan Mitra Brand. Order tetap pending sampai pembayaran dikonfirmasi.
+            Catat biaya pendaftaran untuk akun Reseller yang sudah dibuat sebelumnya. Order tetap pending sampai pembayaran dikonfirmasi.
           </p>
           <div className={styles.formGrid}>
             <select
               value={manualResellerId}
               onChange={(event) => {
                 const nextId = event.target.value;
-                const nextReseller = resellers.find((item) => item.id === nextId);
                 setManualResellerId(nextId);
-                setManualAmount(
-                  nextReseller?.package === "reseller_brand"
-                    ? String(PAYMENT_PACKAGES["reseller-brand"].amount)
-                    : String(PAYMENT_PACKAGES.reseller.amount),
-                );
+                setManualAmount(String(PAYMENT_PACKAGES.reseller.amount));
               }}
               className={styles.input}
             >
               <option value="">Pilih reseller</option>
-              {resellers.map((item) => (
+              {resellers.filter((item) => item.package === "reseller").map((item) => (
                 <option key={item.id} value={item.id}>
                   {item.name} · {item.package === "reseller_brand" ? "Mitra Brand" : "Reseller"}
                 </option>
@@ -307,7 +302,7 @@ export default function AdminTransactionsPage() {
           </div>
           {selectedManualReseller && (
             <p style={{ margin: "10px 0 0", fontSize: 12.5, color: "#475569" }}>
-              Paket yang dicatat: {selectedManualReseller.package === "reseller_brand" ? "Mitra Brand (bulanan)" : "Reseller (sekali bayar)"}. Nominal dapat disesuaikan untuk histori harga lama.
+              Paket yang dicatat: Reseller (sekali bayar). Nominal dapat disesuaikan untuk histori harga lama.
             </p>
           )}
           <button onClick={createManualOrder} className={styles.button} disabled={creatingManualOrder} style={{ marginTop: 14 }}>

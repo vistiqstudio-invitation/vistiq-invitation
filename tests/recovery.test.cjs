@@ -368,14 +368,16 @@ test('paid Reseller and Mitra Brand orders both provision per-invitation billing
     assert.equal(resellerRow.commission_percent, 0);
     assert.equal(resellerRow.package, packageId === 'reseller-brand' ? 'reseller_brand' : 'reseller');
     assert.equal(resellerRow.brand_active, packageId === 'reseller-brand');
-    if (packageId === 'reseller-brand') assert.ok(Date.parse(resellerRow.brand_expires_at) > Date.now());
+    assert.equal(resellerRow.brand_expires_at, null);
   }
 });
 
-test('Mitra Brand package explains the separate activation fee', () => {
-  const { PAYMENT_PACKAGES } = load('lib/paymentPackages.ts', { './resellerBilling': load('lib/resellerBilling.ts') });
-  assert.equal(PAYMENT_PACKAGES['reseller-brand'].amount, 59000);
-  assert.match(PAYMENT_PACKAGES['reseller-brand'].description, /20\.000 per undangan/);
+test('only current packages can be sold while historical Mitra Brand orders stay readable', () => {
+  const { PAYMENT_PACKAGES, isPaymentPackage, packageFromOrderId } = load('lib/paymentPackages.ts', { './resellerBilling': load('lib/resellerBilling.ts') });
+  assert.equal(PAYMENT_PACKAGES.reseller.amount, 149000);
+  assert.equal(isPaymentPackage('reseller-brand'), false);
+  assert.equal(PAYMENT_PACKAGES['reseller-brand'], undefined);
+  assert.equal(packageFromOrderId('VSTQ-RB-historical')[0], 'reseller-brand');
 });
 
 test('monthly and per-invitation brand accounts cannot use free invitation activation', async () => {
@@ -383,7 +385,7 @@ test('monthly and per-invitation brand accounts cannot use free invitation activ
   process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://test.supabase.co';
   process.env.SUPABASE_SERVICE_ROLE_KEY = 'test-service-key';
   try {
-    for (const model of ['monthly_subscription', 'per_invitation', null]) {
+    for (const model of ['monthly_subscription', 'per_invitation', 'legacy_commission', null]) {
       const db = { from: (table) => {
         assert.equal(table, 'resellers', 'must reject before reading or updating invitations');
         return { select: () => ({ eq: () => ({ maybeSingle: async () => ({ data: {
@@ -404,14 +406,14 @@ test('monthly and per-invitation brand accounts cannot use free invitation activ
   } finally { process.env = previous; }
 });
 
-test('activation payments accept active Reseller and Mitra Brand accounts but reject expired brands', async () => {
+test('activation payments accept active Reseller and lifetime Mitra Brand accounts regardless of stale expiry', async () => {
   const previous = { ...process.env };
   Object.assign(process.env, { NEXT_PUBLIC_SUPABASE_URL: 'https://test.supabase.co', SUPABASE_SERVICE_ROLE_KEY: 'test-service-key', MIDTRANS_SERVER_KEY: 'test-key' });
   try {
     for (const [pkg, expires, expected] of [
       ['reseller', null, 404],
       ['reseller_brand', new Date(Date.now() + 86400000).toISOString(), 404],
-      ['reseller_brand', new Date(Date.now() - 86400000).toISOString(), 409],
+      ['reseller_brand', new Date(Date.now() - 86400000).toISOString(), 404],
     ]) {
       const db = { from: (table) => ({ select: () => ({ eq: () => ({ maybeSingle: async () => ({ data:
         table === 'resellers' ? { id: 'reseller', package: pkg, billing_model: 'per_invitation', status: 'active', brand_active: true, brand_expires_at: expires } : null,
@@ -427,4 +429,14 @@ test('activation payments accept active Reseller and Mitra Brand accounts but re
       assert.equal(response.status, expected);
     }
   } finally { process.env = previous; }
+});
+
+test('retired brand accounts cannot receive new manual package bills', async () => {
+  const helper = load('lib/createManualPackageOrder.ts', {
+    '@/lib/paymentPackages': load('lib/paymentPackages.ts', { './resellerBilling': load('lib/resellerBilling.ts') }),
+  });
+  const db = { from: () => { throw new Error('must reject before creating a bill'); } };
+  await assert.rejects(helper.createManualPackageOrder(db, {
+    resellerId: 'brand', package: 'reseller_brand', name: 'Brand', email: 'brand@example.com', whatsapp: '08123456789',
+  }), /tanpa tagihan pendaftaran atau bulanan/);
 });
