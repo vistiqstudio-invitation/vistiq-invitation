@@ -101,3 +101,28 @@
 .saveDate[data-della-andrey="true"] .dateGunungan{
   bottom:clamp(96px,19vw,116px);
 }
+
+/* Della & Andrey only: anchor the guest greeting and CTA to the foot of the cover,
+   below the faces, without moving or scaling the photo. */
+.opening[data-della-cover="true"] .guest{
+  position:absolute;
+  left:16px;
+  right:16px;
+  bottom:max(75px, env(safe-area-inset-bottom));
+  z-index:6;
+  justify-items:center;
+  gap:7px;
+}
+.opening[data-della-cover="true"] .guest button{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  min-height:48px;
+}
+@media(max-height:600px){
+  .opening[data-della-cover="true"] .guest{
+    bottom:max(51px,env(safe-area-inset-bottom));
+    gap:4px;
+  }
+}
