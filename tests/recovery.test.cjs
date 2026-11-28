@@ -343,3 +343,88 @@ test('guest messages use the selected occasion and never use stale couple names 
   assert.match(invitationShareMessage('Tamu Demo', url, wedding), /pernikahan \*Rizky & Nabila\*/);
   assert.equal(invitationDisplayName({ category: 'khitan' }), 'Undangan Khitan');
 });
+
+// Billing regressions: a brand subscription pays for brand access, while each
+// new invitation still needs its own activation payment.
+test('paid Reseller and Mitra Brand orders both provision per-invitation billing', async () => {
+  for (const packageId of ['reseller', 'reseller-brand']) {
+    let resellerRow;
+    const db = {
+      rpc: () => ({ maybeSingle: async () => ({ data: {
+        order_id: 'test-order', package_id: packageId, package_name: 'Test',
+        customer_name: 'Test', customer_email: 'test@example.com', customer_phone: '08123456789',
+      } }) }),
+      auth: {
+        admin: { createUser: async () => ({ data: { user: { id: 'new-user' } } }) },
+        resetPasswordForEmail: async () => ({ error: null }),
+      },
+      from: (table) => ({
+        insert: async (row) => { assert.equal(table, 'resellers'); resellerRow = row; return { error: null }; },
+        update: () => ({ eq: async () => ({ error: null }) }),
+      }),
+    };
+    await load('lib/provisionPaidOrder.ts').provisionPaidOrder(db, 'test-order', 'https://vistiqinvitation.com');
+    assert.equal(resellerRow.billing_model, 'per_invitation');
+    assert.equal(resellerRow.commission_percent, 0);
+    assert.equal(resellerRow.package, packageId === 'reseller-brand' ? 'reseller_brand' : 'reseller');
+    assert.equal(resellerRow.brand_active, packageId === 'reseller-brand');
+    if (packageId === 'reseller-brand') assert.ok(Date.parse(resellerRow.brand_expires_at) > Date.now());
+  }
+});
+
+test('Mitra Brand package explains the separate activation fee', () => {
+  const { PAYMENT_PACKAGES } = load('lib/paymentPackages.ts', { './resellerBilling': load('lib/resellerBilling.ts') });
+  assert.equal(PAYMENT_PACKAGES['reseller-brand'].amount, 59000);
+  assert.match(PAYMENT_PACKAGES['reseller-brand'].description, /20\.000 per undangan/);
+});
+
+test('monthly and per-invitation brand accounts cannot use free invitation activation', async () => {
+  const previous = { ...process.env };
+  process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://test.supabase.co';
+  process.env.SUPABASE_SERVICE_ROLE_KEY = 'test-service-key';
+  try {
+    for (const model of ['monthly_subscription', 'per_invitation', null]) {
+      const db = { from: (table) => {
+        assert.equal(table, 'resellers', 'must reject before reading or updating invitations');
+        return { select: () => ({ eq: () => ({ maybeSingle: async () => ({ data: {
+          id: 'brand', package: 'reseller_brand', status: 'active', brand_active: true,
+          brand_expires_at: new Date(Date.now() + 86400000).toISOString(), billing_model: model,
+        } }) }) }) };
+      } };
+      const route = load('app/api/reseller/activate/route.ts', {
+        '@/lib/supabase/dal': { getSessionProfile: async () => ({ id: 'reseller-user', role: 'reseller' }) },
+        '@supabase/supabase-js': { createClient: () => db },
+      });
+      const response = await route.POST(new Request('https://vistiqinvitation.com/api/reseller/activate', {
+        method: 'POST', body: JSON.stringify({ target: 'invitation', id: 123 }),
+      }));
+      assert.equal(response.status, 409);
+      assert.match((await response.json()).error, /20\.000/);
+    }
+  } finally { process.env = previous; }
+});
+
+test('activation payments accept active Reseller and Mitra Brand accounts but reject expired brands', async () => {
+  const previous = { ...process.env };
+  Object.assign(process.env, { NEXT_PUBLIC_SUPABASE_URL: 'https://test.supabase.co', SUPABASE_SERVICE_ROLE_KEY: 'test-service-key', MIDTRANS_SERVER_KEY: 'test-key' });
+  try {
+    for (const [pkg, expires, expected] of [
+      ['reseller', null, 404],
+      ['reseller_brand', new Date(Date.now() + 86400000).toISOString(), 404],
+      ['reseller_brand', new Date(Date.now() - 86400000).toISOString(), 409],
+    ]) {
+      const db = { from: (table) => ({ select: () => ({ eq: () => ({ maybeSingle: async () => ({ data:
+        table === 'resellers' ? { id: 'reseller', package: pkg, billing_model: 'per_invitation', status: 'active', brand_active: true, brand_expires_at: expires } : null,
+      }) }) }) }) };
+      const route = load('app/api/reseller/invitation-activation/route.ts', {
+        '@/lib/paymentConfiguration': { paymentConfigurationStatus: () => ({ ready: true }) },
+        '@/lib/supabase/dal': { getSessionProfile: async () => ({ id: 'reseller-user', role: 'reseller' }) },
+        '@supabase/supabase-js': { createClient: () => db },
+      });
+      const response = await route.POST(new Request('https://vistiqinvitation.com/api/reseller/invitation-activation', {
+        method: 'POST', body: JSON.stringify({ invitationId: 123 }),
+      }));
+      assert.equal(response.status, expected);
+    }
+  } finally { process.env = previous; }
+});

@@ -53,8 +53,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: true, target, status: nextStatus });
   }
 
-  const isMonthlyLegacy = Boolean(reseller.brand_expires_at) && reseller.billing_model !== "per_invitation";
-  if (!isMonthlyLegacy) {
+  // Only the explicitly grandfathered commission model retains self-activation.
+  // A monthly brand subscription never includes per-invitation activation.
+  if (!reseller.brand_expires_at || reseller.billing_model !== "legacy_commission") {
     return NextResponse.json(
       { error: "Undangan dipublikasikan setelah biaya layanan Rp20.000 berhasil dibayar melalui Midtrans." },
       { status: 409 },

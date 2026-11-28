@@ -91,7 +91,7 @@ export async function provisionPaidOrder(
         whatsapp: claimed.customer_phone,
         package: resellerBrand ? "reseller_brand" : "reseller",
         commission_percent: 0,
-        billing_model: resellerBrand ? "monthly_subscription" : "per_invitation",
+        billing_model: "per_invitation",
         status: "active",
         brand_active: resellerBrand,
         brand_expires_at: brandExpiresAt,

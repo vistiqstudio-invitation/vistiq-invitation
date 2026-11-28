@@ -21,10 +21,13 @@ function canUsePerInvitationService(reseller: {
   billing_model?: string | null;
   status?: string | null;
   brand_active?: boolean | null;
+  brand_expires_at?: string | null;
 }) {
   if (reseller.status !== "active" || reseller.billing_model !== "per_invitation") return false;
   if (reseller.package === "reseller") return true;
-  return reseller.package === "reseller_brand" && reseller.brand_active === true;
+  return reseller.package === "reseller_brand"
+    && reseller.brand_active === true
+    && (!reseller.brand_expires_at || Date.parse(reseller.brand_expires_at) > Date.now());
 }
 
 export async function POST(request: Request) {
@@ -39,7 +42,7 @@ export async function POST(request: Request) {
   if (!Number.isSafeInteger(invitationId) || invitationId <= 0) return NextResponse.json({ error: "ID undangan tidak valid." }, { status: 400 });
 
   const db = createServiceClient(supabaseUrl, serviceKey, { auth: { autoRefreshToken: false, persistSession: false } });
-  const { data: reseller } = await db.from("resellers").select("id, package, billing_model, status, brand_active").eq("user_id", profile.id).maybeSingle();
+  const { data: reseller } = await db.from("resellers").select("id, package, billing_model, status, brand_active, brand_expires_at").eq("user_id", profile.id).maybeSingle();
   if (!reseller || reseller.status !== "active") return NextResponse.json({ error: "Akun belum aktif." }, { status: 403 });
   if (!canUsePerInvitationService(reseller)) return NextResponse.json({ error: "Pembayaran biaya layanan Rp20.000 belum tersedia untuk akun ini." }, { status: 409 });
 

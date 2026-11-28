@@ -16,7 +16,7 @@ export const PAYMENT_PACKAGES = {
   "reseller-brand": {
     code: "RB",
     name: "Paket Mitra Brand",
-    description: "Rp59.000/bulan, bebas buat dan aktifkan undangan selama langganan aktif",
+    description: "Rp59.000/bulan + aktivasi Rp20.000 per undangan",
     amount: 59000,
   },
 } as const;
