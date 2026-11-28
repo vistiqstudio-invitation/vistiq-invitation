@@ -49,9 +49,45 @@
 .bankLogo{display:flex;align-items:center;justify-content:center;width:88px;height:40px;padding:7px 9px;border-radius:5px;background:#fff;flex:none}.bankLogo img{display:block;width:100%;height:100%;object-fit:contain}.bankMark{gap:8px}.bankMark small{font-size:12px}.bankMark[data-bank="mandiri"] .bankLogo{width:84px;height:40px;padding:7px 8px}.bankMark[data-bank="bca"] .bankLogo{width:88px;height:40px;padding:9px 7px}
 @media(max-width:360px){.bankLogo{width:72px;height:36px}.bankMark[data-bank="mandiri"] .bankLogo,.bankMark[data-bank="bca"] .bankLogo{width:72px;height:36px}.bankMark small{font-size:10px}}
 
-/* Optional physical gift address; currently rendered only for Della & Andrey. */
-.giftAddress{margin:22px auto 0;padding:20px 18px;border:1px solid #cbaa87;border-radius:12px;background:#fff8ed;color:#4d3021;box-shadow:0 8px 22px #3e251912;text-align:center;max-width:440px}
-.giftAddress h3{font-size:21px;font-weight:600;margin:0 0 12px;color:#81532f}
-.giftAddress address{font-size:15px;font-style:normal;line-height:1.7;overflow-wrap:anywhere}
-.giftAddress button{margin-top:17px;background:#81532f;color:white;border:0;border-radius:6px;padding:10px 18px;cursor:pointer}
-.giftAddress button:focus-visible{outline:2px solid #81532f;outline-offset:3px}
+/* Della & Andrey only: make the physical gift address match the bank cards. */
+.giftAddress{
+  position:relative;
+  width:100%;
+  max-width:none;
+  min-height:195px;
+  margin:14px 0 0;
+  padding:20px 20px 68px;
+  border:0;
+  border-radius:13px;
+  background:linear-gradient(135deg,#9b704d,#674027);
+  color:#fff;
+  box-shadow:0 10px 22px #3e251937;
+  text-align:left;
+}
+.giftAddress h3{
+  color:#fff;
+  font-size:16px;
+  font-weight:600;
+  margin:0 0 16px;
+  line-height:1.4;
+}
+.giftAddress address{
+  color:#fff;
+  font-size:16px;
+  font-style:normal;
+  line-height:1.55;
+  overflow-wrap:break-word;
+}
+.giftAddress button{
+  position:absolute;
+  right:15px;
+  bottom:15px;
+  padding:6px 10px;
+  border:1px solid #fff;
+  border-radius:0;
+  background:transparent;
+  color:#fff;
+  cursor:pointer;
+}
+.giftAddress button:hover{background:#ffffff20}
+.giftAddress button:focus-visible{outline:2px solid #fff;outline-offset:3px}
