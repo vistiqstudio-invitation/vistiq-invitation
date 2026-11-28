@@ -91,3 +91,7 @@
 }
 .giftAddress button:hover{background:#ffffff20}
 .giftAddress button:focus-visible{outline:2px solid #fff;outline-offset:3px}
+
+/* Full SeaBank wordmark needs a wider white badge than square bank icons. */
+.bankMark[data-bank="seabank"] .bankLogo{width:124px;height:40px;padding:6px 7px}
+@media(max-width:360px){.bankMark[data-bank="seabank"] .bankLogo{width:112px;height:36px;padding:5px 6px}}
